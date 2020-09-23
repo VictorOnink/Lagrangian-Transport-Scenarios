@@ -95,7 +95,7 @@ def FileNames(rootodirec,scenario,ensemble,startyear,Input,restart,run,
         odirec=rootodirec+"SDResus_"+str(shoreDepen)+"/st_"+str(shoreTime)+"_rt_"+str(resusTime)+"_e_"+str(ensemble)+"/"
         ofile=odirec+prefix+"_dep="+str(shoreDepen)+"_st="+str(shoreTime)+"_rt="+str(resusTime)+"_y="+str(startyear)+"_I="+str(Input)+"_r="+str(restart)+"_run="+str(run)+".nc"
         rfile=odirec+prefix+"_dep="+str(shoreDepen)+"_st="+str(shoreTime)+"_rt="+str(resusTime)+"_y="+str(startyear)+"_I="+str(Input)+"_r="+str(restart-1)+"_run="+str(run)+".nc"
-
+    print(ofile)
     return ofile, rfile
 
 ##############################################################################
