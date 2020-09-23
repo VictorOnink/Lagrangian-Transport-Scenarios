@@ -8,7 +8,7 @@ Created on Mon Sep 21 15:04:13 2020
 Different implementations of beaching
 """
 import math 
-import parcels.rng as rng
+from parcels import rng as random
 import os
 
 scenario=int(os.environ['SCENARIO'])
@@ -59,11 +59,11 @@ def beachStochastic(particle,fieldset,time):
     if particle.beach==0:
         dist=fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
         if dist<10: 
-            if rng.random()>fieldset.p_beach:
+            if random.random()>fieldset.p_beach:
                 particle.beach=1
     #Now the part where we build in the resuspension
     elif particle.beach==1:
-        if rng.random()>fieldset.p_resus:
+        if random.random()>fieldset.p_resus:
             particle.beach=0
     #Update the age of the particle
     particle.age+=particle.dt
@@ -76,12 +76,12 @@ def beachShoreResus(particle,fieldset,time):
     if particle.beach==0:
         dist=fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
         if dist<10:
-            if rng.random()>fieldset.p_beach:
+            if random.random()>fieldset.p_beach:
                 particle.beach=1
     #Next the resuspension part
     elif particle.beach==1:
         p_resus=fieldset.p_resus[time, particle.depth, particle.lat, particle.lon]
-        if rng.random()>p_resus:
+        if random.random()>p_resus:
             particle.beach=0
     #Update the age of the particle
     particle.age+=particle.dt

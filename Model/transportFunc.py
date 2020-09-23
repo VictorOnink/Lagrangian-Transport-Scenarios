@@ -84,13 +84,16 @@ def BrownianMotion2D_floating(particle, fieldset, time):
     Assumes that fieldset has fields Kh_zonal and Kh_meridional
     we don't want particles to jump on land and thereby beach"""
     if particle.beach==0:
-        r = 1/3.
-        kh_meridional = fieldset.Kh_meridional[time, particle.depth, particle.lat, particle.lon]
-        lat_p = particle.lat + random.uniform(-1., 1.) * math.sqrt(2*math.fabs(particle.dt)*kh_meridional/r)
-        kh_zonal = fieldset.Kh_zonal[time, particle.depth, particle.lat, particle.lon]
-        lon_p = particle.lon + random.uniform(-1., 1.) * math.sqrt(2*math.fabs(particle.dt)*kh_zonal/r)
-        particle.lon=lon_p
-        particle.lat=lat_p
+        # Wiener increment with zero mean and std of sqrt(dt)
+        dWx = random.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
+        dWy = random.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
+    
+        bx = math.sqrt(2 * fieldset.Kh_zonal[time, particle.depth, particle.lat, particle.lon])
+        by = math.sqrt(2 * fieldset.Kh_meridional[time, particle.depth, particle.lat, particle.lon])
+    
+        particle.lon += bx * dWx
+        particle.lat += by * dWy
+
 
 ##############################################################################
 ##############################################################################
