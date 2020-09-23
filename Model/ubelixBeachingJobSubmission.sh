@@ -68,7 +68,7 @@ echo $RUNNAMEPREFIX
 
 #The number of runs we do, dependent on the input scenario.
 if [ "$INPUT" -eq "0" ]; then
-    runlength=1
+    runlength=0
 elif [ "$INPUT" -eq "1" ]; then
     runlength=3
 fi
@@ -99,12 +99,12 @@ do
 	   for i in {1..12} 
 	   do
 		partGrab="part"$i
-		echo ${!partGrab} >> jobsubmissionFile_${RUN}_${restartnum}.sh
+		echo ${!partGrab} >> jobsubmissionFile_${RUN}_${RESTARTNUM}.sh
 	   done
 	   if [ "$RESTARTNUM" -eq "$START" ]; then
    	      jobid=$(sbatch --parsable jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
            else
-	      jobid=$(sbatch --parsable --dependency=afterok:${jobid} jobsubmissionFile_${RUN}_${restartnum}.sh)
+	      jobid=$(sbatch --parsable --dependency=afterok:${jobid} jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
 	   fi
 	   #rm jobsubmissionFile_${RUN}_${restartnum}.sh
 	done
