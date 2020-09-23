@@ -15,15 +15,16 @@ SHOREDEPEN=0
 #the starting year of the simulation, and how many years the simulation will take
 STARTTIME=2010
 #Which input distribution do we want to use? 0=Jambeck, 1=lebreton
-INPUT=1
+INPUT=0
 #Start year of the simulation. 0 = new simulation, otherwise it picks up from a previous simulation
 START=0 
 #Number of years the simulation runs
-SIMLEN=5
+SIMLEN=1
 #Inclusion of Stokes drift. 0 = include stokes, 1 = do not include stokes
 STOKES=0 
 #Ensemble member
 ENSEMBLE=1
+
 export SCENARIO
 export ENSEMBLE
 export SHORETIME
@@ -41,22 +42,22 @@ if [ "$SCENARIO" -eq "0" ]; then
 	RUNNAMEPREFIX="AdvDifOnly_y="${STARTTIME}"_"
 	if [ "$STOKES" -eq "1" ]; then
 	    RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
-    fi
+        fi
 elif [ "$SCENARIO" -eq "1" ]; then
 	RUNNAMEPREFIX="Prox_vic="${VICINITY}"_y="${STARTTIME}"_"
 	if [ "$STOKES" -eq "1" ]; then
 	    RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
-    fi
+        fi
 elif [ "$SCENARIO" -eq "2" ]; then
 	RUNNAMEPREFIX="Stochastic_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTTIME}"_"
 	if [ "$STOKES" -eq "1" ]; then
 	    RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
-    fi
+        fi
 elif [ "$SCENARIO" -eq "3" ]; then
-    RUNNAMEPREFIX="SDResus_SD="${shoreDepen}"_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTTIME}"_"
-    if [ "$STOKES" -eq "1" ]; then
+        RUNNAMEPREFIX="SDResus_SD="${shoreDepen}"_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTTIME}"_"
+        if [ "$STOKES" -eq "1" ]; then
 	    RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
-    fi
+        fi
 fi
 
 RUNNAMEPREFIX=${RUNNAMEPREFIX}"ENSEMBLE="${ENSEMBLE}
@@ -67,7 +68,7 @@ echo $RUNNAMEPREFIX
 
 #The number of runs we do, dependent on the input scenario.
 if [ "$INPUT" -eq "0" ]; then
-    runlength=8
+    runlength=1
 elif [ "$INPUT" -eq "1" ]; then
     runlength=3
 fi
@@ -86,8 +87,8 @@ do
 	   part4="#SBATCH --job-name="$runname
 	   part5="#SBATCH --output="runOutput/$runname".o%j"
 	   part6="#SBATCH --mem-per-cpu=6G"
-       part7="#SBATCH --time=00:10:00"
-       part8="#SBATCH --partition=debug"
+           part7="#SBATCH --time=00:10:00"
+           part8="#SBATCH --partition=debug"
 	   #loading the bash and setting the environment
 	   part9="source /home/ubelix/climate/vo18e689/.bash_profile"
 	   part10="source /home/ubelix/climate/vo18e689/anaconda3/bin/activate py3_parcels_v2_2"
@@ -100,11 +101,11 @@ do
 		partGrab="part"$i
 		echo ${!partGrab} >> jobsubmissionFile_${RUN}_${restartnum}.sh
 	   done
-	   if [ "$restartnum" -eq "$START" ]; then
+	   if [ "$RESTARTNUM" -eq "$START" ]; then
    	      jobid=$(sbatch --parsable jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
            else
 	      jobid=$(sbatch --parsable --dependency=afterok:${jobid} jobsubmissionFile_${RUN}_${restartnum}.sh)
 	   fi
-	   rm jobsubmissionFile_${RUN}_${restartnum}.sh
+	   #rm jobsubmissionFile_${RUN}_${restartnum}.sh
 	done
 done
