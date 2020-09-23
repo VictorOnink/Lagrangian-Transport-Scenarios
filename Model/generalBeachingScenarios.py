@@ -8,7 +8,7 @@ Here is one general file that will contain all the different beaching scenarios
 """
 #Loading all the components from parcels
 from parcels import ErrorCode
-from parcels import ParcelsRandom
+import parcels.rng as rng
 #Loading the functions I have for the particle classes, advection, beaching and setup
 from beachFunc import DeleteParticle,beachAdvDifOnly,beachVicinity,beachStochastic,beachShoreResus
 from transportFunc import AntiBeachNudging,AdvectionRK4_floating,BrownianMotion2D_floating,initialInput
@@ -133,7 +133,7 @@ else:
     pset = CreatePSET(scenario,lons,lats,beached,age_par,weights,starttime,
                       repeatStep,fieldset)
     
-ParcelsRandom.seed(102334155)
+rng.seed(102334155)
 
 #%% 
 os.system('echo "Loading the relevant kernels"')
