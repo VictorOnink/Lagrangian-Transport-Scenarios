@@ -12,8 +12,8 @@ import numpy as np
 from operator import attrgetter
 import os
 
-shoreTime,resusTime=int(os.environ['SHORETIME']),int(os.environ['RESUSTIME']) #days, days
-vicinity=int(os.environ['VICINITY']) #days
+shoreTime,resusTime=10,69#int(os.environ['SHORETIME']),int(os.environ['RESUSTIME']) #days, days
+vicinity=1#int(os.environ['VICINITY']) #days
 
 class AdvDifParticle(JITParticle):
     #First we keep track of whether a particle is on a land cell or not

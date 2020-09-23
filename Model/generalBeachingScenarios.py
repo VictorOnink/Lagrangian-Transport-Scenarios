@@ -30,39 +30,39 @@ import os
 os.system('echo "Loading the general run parameters"')
 #0=First Order, 1 = Coastal proximity, 2 = simple beaching/resuspension,
 #3 = coasttype dependence
-scenario=int(os.environ['SCENARIO'])
+scenario=1#int(os.environ['SCENARIO'])
 os.system('echo "scenario="'+str(scenario))
 #for scenario 1, the time a particle needs to be near the coast to be deleted
-vicinity=int(os.environ['VICINITY']) #days
+vicinity=1#int(os.environ['VICINITY']) #days
 os.system('echo "vicinity="'+str(vicinity))
 #for scenario 2, the beaching and resuspension timescales
-shoreTime,resusTime=int(os.environ['SHORETIME']),int(os.environ['RESUSTIME']) #days, days
+shoreTime,resusTime=10,69#int(os.environ['SHORETIME']),int(os.environ['RESUSTIME']) #days, days
 #For scenario 3, how does the coastline dependence work? 
 #0 = more sand is less likely beaching, 1 = more land is more likely beaching
-shoreDepen = int(os.environ['shoreDepen'])
+shoreDepen = 0#int(os.environ['shoreDepen'])
 #for multiple sub runs, which one is being run
-run=int(os.environ['run'])
+run=1#int(os.environ['run'])
 os.system('echo "run="'+str(run))
 #restart stage, where 0 = a completely new set up runs, and progressively higher
 #values indicate the year of the simulation at which new run starts
 #e.g. 1 means we start after one year of simulation, 2 after two years, etc.
-restart=int(os.environ['restartnum'])
+restart=0#int(os.environ['restartnum'])
 os.system('echo "restart="'+str(restart))
 #starting year of the simulation
-startyear= int(os.environ['STARTTIME'])
+startyear=2010# int(os.environ['STARTTIME'])
 os.system('echo "starting year="'+str(startyear))
 #Which input file we use. if input=0, then we use Jambeck
-Input=int(os.environ['INPUT'])
+Input=0#int(os.environ['INPUT'])
 os.system('echo "input="'+str(Input))
 #Inclusion of Stokes Drift. 0 = included, 1 = not included
-stokes = int(os.environ['STOKES'])
+stokes = 0#int(os.environ['STOKES'])
 #The option to run multiple ensembles, which we of course don't want saved in the
 #same folder since they they would overwrite each other...
-ensemble = int(os.environ['ENSEMBLE'])
+ensemble = 1#int(os.environ['ENSEMBLE'])
 
 #To save myself a lot of hassle, we will have a server parameter:
 # 0 = kup cluster, 1 = ubelix
-server = 1
+server = 0
 
 
 #%%
@@ -168,12 +168,12 @@ os.system('echo "The actual calculation of the particle trajectories"')
 ###############################################################################
 # finally the execution                                                       #
 ###############################################################################
-pfile = pset.ParticleFile(name=ofile,
-                          outputdt=timedelta(hours=24))
+# pfile = pset.ParticleFile(name=ofile,
+#                           outputdt=timedelta(hours=24))
 
-pset.execute(totalKernel,
-             runtime=timedelta(days=simulationlength.days),
-             dt=timedelta(minutes=10),
-             recovery={ErrorCode.ErrorOutOfBounds: DeleteParticle},
-             output_file=pfile
-             )
+# pset.execute(totalKernel,
+#              runtime=timedelta(days=simulationlength.days),
+#              dt=timedelta(minutes=10),
+#              recovery={ErrorCode.ErrorOutOfBounds: DeleteParticle},
+#              output_file=pfile
+#              )
