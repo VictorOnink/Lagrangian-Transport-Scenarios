@@ -362,15 +362,15 @@ def CreateFieldSet(server,stokes,scenario):
     if scenario==2:
         #Beaching and resuspension particles are global constants, so now they
         #don't need to be recomputed every timestep
-        p_beach=math.exp(-timedelta(minutes=10).total_seconds()/(shoreTime*86400.))
-        p_resus=math.exp(-timedelta(minutes=10).total_seconds()/(resusTime*86400.))
-        fieldset.add_constant('p_beach',p_beach)
-        fieldset.add_constant('p_resus',p_resus)
+        p_b=math.exp(-timedelta(minutes=10).total_seconds()/(shoreTime*86400.))
+        p_r=math.exp(-timedelta(minutes=10).total_seconds()/(resusTime*86400.))
+        fieldset.add_constant('p_beach',p_b)
+        fieldset.add_constant('p_resus',p_r)
     if scenario==3:
         #Here only the beaching probability is a global constant, the resuspension
         #probability will instead be represented using a field
-        p_beach=math.exp(-timedelta(minutes=10).total_seconds()/(shoreTime*86400.))
-        fieldset.add_constant('p_beach',p_beach)
+        p_b=math.exp(-timedelta(minutes=10).total_seconds()/(shoreTime*86400.))
+        fieldset.add_constant('p_beach',p_b)
         
     ###########################################################################
     # and finally (for now), the coastline type                               #

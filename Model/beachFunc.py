@@ -114,7 +114,7 @@ def ProbShore(shoreDepen,scenario,sandy):
     """
     if scenario==3:
         if shoreDepen==0:
-            p_resus=resusTime*(0.75+0.25*sandy)
+            p_r=resusTime*(0.75+0.25*sandy)
         if shoreDepen==1:
-            p_resus=resusTime*(0.25+0.75*sandy)
-        return p_resus
+            p_r=resusTime*(0.25+0.75*sandy)
+        return p_r
