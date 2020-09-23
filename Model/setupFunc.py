@@ -14,10 +14,10 @@ import os
 from datetime import timedelta
 import math
 
-scenario=1#int(os.environ['SCENARIO'])
-vicinity=1#int(os.environ['VICINITY']) #days
-shoreTime,resusTime=10,69#int(os.environ['SHORETIME']),int(os.environ['RESUSTIME']) #days, days
-shoreDepen = 0#int(os.environ['shoreDepen'])
+scenario=int(os.environ['SCENARIO'])
+vicinity=int(os.environ['VICINITY']) #days
+shoreTime,resusTime=int(os.environ['SHORETIME']),int(os.environ['RESUSTIME']) #days, days
+shoreDepen = int(os.environ['SHOREDEPEN'])
 
 
 ##############################################################################

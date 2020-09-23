@@ -11,9 +11,9 @@ import math
 import parcels.rng as rng
 import os
 
-scenario=1#int(os.environ['SCENARIO'])
-shoreDepen = 0#int(os.environ['shoreDepen'])
-shoreTime,resusTime=10,69#int(os.environ['SHORETIME']),int(os.environ['RESUSTIME']) #days, days
+scenario=int(os.environ['SCENARIO'])
+shoreDepen = int(os.environ['SHOREDEPEN'])
+shoreTime,resusTime=int(os.environ['SHORETIME']),int(os.environ['RESUSTIME']) #days, days
 
 ###############################################################################
 # The delete particle Kernel                                                  #
