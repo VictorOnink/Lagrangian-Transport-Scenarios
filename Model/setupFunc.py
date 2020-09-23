@@ -275,18 +275,18 @@ def CreateFieldSet(server,stokes,scenario):
     #Loading in the surface currents and Stokes drift
     filenames = {'U': datadirec+"HYCOM/HYCOM*20*.nc",
                  'V': datadirec+"HYCOM/HYCOM*20*.nc",
-                 #'Ust': datadirec+"WaveWatchIIIstokes/ww3.20*_uss.nc",
-                 #'Vst': datadirec+"WaveWatchIIIstokes/ww3.20*_uss.nc",
+                 'Ust': datadirec+"WaveWatchIIIstokes/ww3.20*_uss.nc",
+                 'Vst': datadirec+"WaveWatchIIIstokes/ww3.20*_uss.nc",
                     }
     variables = {'U': 'water_u',
                  'V': 'water_v',
-                 #'Ust': 'uuss',
-                 #'Vst': 'vuss',
+                 'Ust': 'uuss',
+                 'Vst': 'vuss',
                     }
     dimensions = {'U':{'time': 'time','depth':'depth','lat': 'lat','lon': 'lon'},
                   'V':{'time': 'time','depth':'depth','lat': 'lat','lon': 'lon'},
-                  #'Ust':{'lat': 'latitude','lon': 'longitude','time': 'time'},
-                  #'Vst':{'lat': 'latitude','lon': 'longitude','time': 'time'},
+                  'Ust':{'lat': 'latitude','lon': 'longitude','time': 'time'},
+                  'Vst':{'lat': 'latitude','lon': 'longitude','time': 'time'},
                   }
     
     fieldset = FieldSet.from_netcdf(filenames, variables, dimensions,allow_time_extrapolation=True)
