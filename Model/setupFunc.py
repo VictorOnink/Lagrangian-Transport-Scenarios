@@ -9,7 +9,7 @@ from netCDF4 import Dataset
 import numpy as np
 from parcels import ParticleSet,GeographicPolar,Geographic,FieldSet,Field
 from particleClasses import AdvDifParticle,vicinityParticle,StochasticParticle
-
+import os
 
 def FileNames(rootodirec,scenario,ensemble,startyear,Input,restart,run,
               vicinity=0,shoreTime=10,resusTime=69,shoreDepen=0,stokes=0):
@@ -245,7 +245,8 @@ def CreateFieldSet(server,stokes,scenario):
     elif server==1:
         datadirec="/home/ubelix/climate/shared/onink/"
         dataInputdirec="/home/ubelix/climate/shared/onink/Input/"
-    
+        
+    os.system('echo "Creating the main fieldset"')
     #Loading in the surface currents and Stokes drift
     filenames = {'U': datadirec+"HYCOM/HYCOM*20*.nc",
                  'V': datadirec+"HYCOM/HYCOM*20*.nc",
@@ -268,6 +269,7 @@ def CreateFieldSet(server,stokes,scenario):
     ###########################################################################
     # Adding the Stokes drift to the HYCOM currents                           #
     ###########################################################################
+    os.system('echo "Adding Stokes drift"')
     if stokes==0:
         fieldset.Ust.units = GeographicPolar()
         fieldset.Vst.units = Geographic()
@@ -282,6 +284,7 @@ def CreateFieldSet(server,stokes,scenario):
     # Adding the border current, which applies for all scenarios except for 0 #
     ###########################################################################
     if scenario!=0:
+        os.system('echo "Adding the border current"')
         datasetBor=Dataset(dataInputdirec+'boundary_velocities_HYCOM.nc')
         borU=datasetBor.variables['MaskUvel'][:]
         borU[borU!=0]=borU[borU!=0]/abs(borU[borU!=0])
@@ -300,6 +303,7 @@ def CreateFieldSet(server,stokes,scenario):
     ###########################################################################
     # Adding the horizontal diffusion                                         #
     ###########################################################################
+    os.system('echo "Adding diffusion"')
     kh=10 #m^2 s^-1, following Lacerda et al. (2019) and Liubertseva et al. (2018)
     dataset=Dataset(datadirec+'HYCOM/HYCOM_Surface_3h_2000-01-01.nc')
     uo=dataset.variables['water_u'][0,0,:,:]
@@ -313,11 +317,13 @@ def CreateFieldSet(server,stokes,scenario):
     # Adding in the  land cell identifiers                                    #
     ###########################################################################
     if scenario==0:
+        os.system('echo "Adding land/water boolean field"')
         landID=np.load(dataInputdirec+'land_cell_identifier.npy')
         fieldset.add_field(Field('landID', landID,lon=lonBor,lat=latBor,mesh='spherical'))
     ###########################################################################
     # Distance to the shore                                                   #
     ###########################################################################
+    os.system('echo "Adding distance to shore"')
     datasetCoast=Dataset(dataInputdirec+'distance2coast.nc')
     distance=datasetCoast.variables['distance'][0,:,:]
     lonD,latD=datasetCoast.variables['lon'][:],datasetCoast.variables['lat'][:]
@@ -327,11 +333,13 @@ def CreateFieldSet(server,stokes,scenario):
     # and finally (for now), the coastline type                               #
     ###########################################################################
     if scenario==3:
+        os.system('echo "Adding coastline type"')
         coasttype=np.load(dataInputdirec+'coastline_sand_vs_not_sand.npy')
         fieldset.add_field(Field('coasttype', coasttype,lon=lon_kh,lat=lat_kh,mesh='spherical'))
     ###########################################################################
     # Now the periodic halo for when we go across the 180/-180 degree line    #
     ###########################################################################
+    os.system('echo "Finally, the periodic halo"')
     fieldset.add_periodic_halo(zonal=True)
 
     return fieldset
