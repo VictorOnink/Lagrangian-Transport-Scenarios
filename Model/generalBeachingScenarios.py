@@ -7,21 +7,16 @@ Created on Wed Nov 27 09:47:40 2019
 Here is one general file that will contain all the different beaching scenarios
 """
 #Loading all the components from parcels
-from parcels import FieldSet, ParticleSet, JITParticle,ErrorCode
-from parcels import Variable,Field
-from parcels import GeographicPolar,Geographic
-from parcels import rng as random
+from parcels import ErrorCode
+from parcels import ParcelsRandom
 #Loading the functions I have for the particle classes, advection, beaching and setup
-from beachFunc import *
+from beachFunc import DeleteParticle,beachAdvDifOnly,beachVicinity,beachStochastic,beachShoreResus
 from transportFunc import AntiBeachNudging,AdvectionRK4_floating,BrownianMotion2D_floating,initialInput
-from setupFunc import FileNames,removeNan,restartInitialPosition,CreatePSET,CreateFieldSet
+from setupFunc import FileNames,restartInitialPosition,CreatePSET,CreateFieldSet
 #And various other packages of use
 from datetime import timedelta, datetime
 import numpy as np
-from operator import attrgetter
-import math
 import time
-from netCDF4 import Dataset
 import os
 
 ###############################################################################
@@ -138,7 +133,7 @@ else:
     pset = CreatePSET(scenario,lons,lats,beached,age_par,weights,starttime,
                       repeatStep,fieldset)
     
-random.seed(int(time.time())*100000)
+ParcelsRandom.seed(102334155)
 
 #%% 
 os.system('echo "Loading the relevant kernels"')
@@ -164,16 +159,16 @@ else:
     totalKernel=pset.Kernel(initialInput)+pset.Kernel(AdvectionRK4_floating)+pset.Kernel(BrownianMotion2D_floating)+pset.Kernel(AntiBeachNudging)+beachK
     
 #%%
-os.system('echo "The actual calculation of the particle trajectories"')
 ###############################################################################
 # finally the execution                                                       #
 ###############################################################################
-# pfile = pset.ParticleFile(name=ofile,
-#                           outputdt=timedelta(hours=24))
+os.system('echo "The actual calculation of the particle trajectories"')
+pfile = pset.ParticleFile(name=ofile,
+                          outputdt=timedelta(hours=24))
 
-# pset.execute(totalKernel,
-#              runtime=timedelta(days=simulationlength.days),
-#              dt=timedelta(minutes=10),
-#              recovery={ErrorCode.ErrorOutOfBounds: DeleteParticle},
-#              output_file=pfile
-#              )
+pset.execute(totalKernel,
+              runtime=timedelta(days=simulationlength.days),
+              dt=timedelta(minutes=10),
+              recovery={ErrorCode.ErrorOutOfBounds: DeleteParticle},
+              output_file=pfile
+              )

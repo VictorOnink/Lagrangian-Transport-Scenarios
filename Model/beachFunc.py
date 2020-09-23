@@ -8,10 +8,13 @@ Created on Mon Sep 21 15:04:13 2020
 Different implementations of beaching
 """
 import math 
-from parcels import rng as random
+from parcels import ParcelsRandom
+import os
 
+scenario=1#int(os.environ['SCENARIO'])
+shoreDepen = 0#int(os.environ['shoreDepen'])
+shoreTime,resusTime=10,69#int(os.environ['SHORETIME']),int(os.environ['RESUSTIME']) #days, days
 
-        
 ###############################################################################
 # The delete particle Kernel                                                  #
 ###############################################################################
@@ -26,28 +29,28 @@ def DeleteParticle(particle, fieldset, time):
 ###############################################################################
     
 def beachAdvDifOnly(particle,fieldset,time):
-        #A particle is considered beached if it is within a land cell
-        if math.floor(fieldset.landID[time,particle.depth,particle.lat,particle.lon])==1:
-            particle.beach=1
-        #Update the age of the particle
-        particle.age+=particle.dt
+    #A particle is considered beached if it is within a land cell
+    if math.floor(fieldset.landID[time,particle.depth,particle.lat,particle.lon])==1:
+        particle.beach=1
+    #Update the age of the particle
+    particle.age+=particle.dt
         
 ##############################################################################
 ##############################################################################
 ##############################################################################
 
 def beachVicinity(particle,fieldset,time):
-        if particle.beach==0:        
-            dist=fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
-            #If a particle is within 10 km of the shore
-            if dist<10:
-                particle.prox+=particle.dt
-            else:
-                particle.prox=0.
-            if particle.prox>86400*particle.vic:
-                particle.beach=1
-        #Update the age of the particle
-        particle.age+=particle.dt
+    if particle.beach==0:        
+        dist=fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
+        #If a particle is within 10 km of the shore
+        if dist<10:
+            particle.prox+=particle.dt
+        else:
+            particle.prox=0.
+        if particle.prox>86400*fieldset.vic:
+            particle.beach=1
+    #Update the age of the particle
+    particle.age+=particle.dt
 
 ##############################################################################
 ##############################################################################
@@ -56,13 +59,11 @@ def beachStochastic(particle,fieldset,time):
     if particle.beach==0:
         dist=fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
         if dist<10: 
-            beach_prob=math.exp(-particle.dt/(particle.LamBeach*86400.))
-            if random.random(0.,1.)>beach_prob:
+            if ParcelsRandom.random()>fieldset.p_beach:
                 particle.beach=1
     #Now the part where we build in the resuspension
     elif particle.beach==1:
-        resus_prob=math.exp(-particle.dt/(particle.LamResus*86400.))
-        if random.random(0.,1.)>resus_prob:
+        if ParcelsRandom.random()>fieldset.p_resus:
             particle.beach=0
     #Update the age of the particle
     particle.age+=particle.dt
@@ -74,18 +75,46 @@ def beachStochastic(particle,fieldset,time):
 def beachShoreResus(particle,fieldset,time):
     if particle.beach==0:
         dist=fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
-        #s=sandiness
-        s=fieldset.coasttype[time, particle.depth, particle.lat, particle.lon]
         if dist<10:
-            # beach_prob=math.exp(-particle.dt/(particle.coastPar*(0.75+0.25*s)*86400.))
-            beach_prob=math.exp(-particle.dt/(particle.LamBeach*86400.))
-            if random.random(0,1.)>beach_prob:
+            if ParcelsRandom.random()>fieldset.p_beach:
                 particle.beach=1
     #Next the resuspension part
     elif particle.beach==1:
-        s=fieldset.coasttype[time, particle.depth, particle.lat, particle.lon]
-        resus_prob=math.exp(-particle.dt/(particle.LamResus*(0.75+0.25*s)*86400.))
-        if random.random(0,1.)>resus_prob:
+        p_resus=fieldset.p_resus[time, particle.depth, particle.lat, particle.lon]
+        if ParcelsRandom.random()>p_resus:
             particle.beach=0
     #Update the age of the particle
     particle.age+=particle.dt
+    
+##############################################################################
+##############################################################################
+##############################################################################
+
+def ProbShore(shoreDepen,scenario,sandy):
+    """
+    Here we calculate a field for the resuspension timescale, depending on
+    which dependence scenario we want to examine. The function is written to
+    be flexible, additional scenarios can be added easily and depending on
+    future work I can also compute and return spatially varying beaching
+    timescales.
+
+    Parameters
+    ----------
+    shoreDepen : int
+        Indicator of which shore dependence scenario we want to run.
+    scenario : int
+        Which scenario are we running in general.
+    sandy : array
+        Degree of sandiness for each HYCOM cell.
+
+    Returns
+    -------
+    p_resus, which is an array with the same size as sandy.
+
+    """
+    if scenario==3:
+        if shoreDepen==0:
+            p_resus=resusTime*(0.75+0.25*sandy)
+        if shoreDepen==1:
+            p_resus=resusTime*(0.25+0.75*sandy)
+        return p_resus

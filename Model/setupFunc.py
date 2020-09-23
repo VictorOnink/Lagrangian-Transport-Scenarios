@@ -9,7 +9,16 @@ from netCDF4 import Dataset
 import numpy as np
 from parcels import ParticleSet,GeographicPolar,Geographic,FieldSet,Field
 from particleClasses import AdvDifParticle,vicinityParticle,StochasticParticle
+from beachFunc import ProbShore
 import os
+from datetime import timedelta
+import math
+
+scenario=1#int(os.environ['SCENARIO'])
+vicinity=1#int(os.environ['VICINITY']) #days
+shoreTime,resusTime=10,69#int(os.environ['SHORETIME']),int(os.environ['RESUSTIME']) #days, days
+shoreDepen = 0#int(os.environ['shoreDepen'])
+
 
 ##############################################################################
 ##############################################################################
@@ -274,8 +283,8 @@ def CreateFieldSet(server,stokes,scenario):
                  #'Ust': 'uuss',
                  #'Vst': 'vuss',
                     }
-    dimensions = {'U':{'time': 'time','depth':'d','lat': 'lat','lon': 'lon'},
-                  'V':{'time': 'time','depth':'d','lat': 'lat','lon': 'lon'},
+    dimensions = {'U':{'time': 'time','depth':'depth','lat': 'lat','lon': 'lon'},
+                  'V':{'time': 'time','depth':'depth','lat': 'lat','lon': 'lon'},
                   #'Ust':{'lat': 'latitude','lon': 'longitude','time': 'time'},
                   #'Vst':{'lat': 'latitude','lon': 'longitude','time': 'time'},
                   }
@@ -290,12 +299,12 @@ def CreateFieldSet(server,stokes,scenario):
         fieldset.Ust.units = GeographicPolar()
         fieldset.Vst.units = Geographic()
         fieldset=FieldSet(U=fieldset.U+fieldset.Ust,
-                         V=fieldset.V+fieldset.Vst,
-                         )
+                          V=fieldset.V+fieldset.Vst,
+                          )
     else:
         fieldset=FieldSet(U=fieldset.U,
-                         V=fieldset.V
-                         )
+                          V=fieldset.V
+                          )
     ###########################################################################
     # Adding the border current, which applies for all scenarios except for 0 #
     ###########################################################################
@@ -303,17 +312,19 @@ def CreateFieldSet(server,stokes,scenario):
         os.system('echo "Adding the border current"')
         datasetBor=Dataset(dataInputdirec+'boundary_velocities_HYCOM.nc')
         borU=datasetBor.variables['MaskUvel'][:]
-        borU[borU!=0]=borU[borU!=0]/abs(borU[borU!=0])
         borV=datasetBor.variables['MaskVvel'][:]
+        #Normalizing the border current so that the total current is always 1m/s
+        borU[borU!=0]=borU[borU!=0]/abs(borU[borU!=0])
         borV[borV!=0]=borV[borV!=0]/abs(borV[borV!=0])
         borMag=np.sqrt(np.square(borU)+np.square(borV))
-        nonzeroMag=borMag>0
         borMag[borMag==0]=1
         borU=np.divide(borU,borMag)
         borV=np.divide(borV,borMag)
+        #Adding the actual field
         lonBor,latBor=datasetBor.variables['lon'][:],datasetBor.variables['lat'][:]
         fieldset.add_field(Field('borU', borU,lon=lonBor,lat=latBor,mesh='spherical'))
         fieldset.add_field(Field('borV', borV,lon=lonBor,lat=latBor,mesh='spherical'))
+        #making sure the units are interpreted as 1 m/s
         fieldset.borU.units = GeographicPolar()
         fieldset.borV.units = Geographic()
     ###########################################################################
@@ -346,12 +357,32 @@ def CreateFieldSet(server,stokes,scenario):
     fieldset.add_field(Field('distance2shore', distance,lon=lonD,lat=latD,mesh='spherical'))
     
     ###########################################################################
+    # Adding fieldset constants                                               #
+    ###########################################################################
+    if scenario==1:
+        #The vicinity timescale
+        fieldset.add_constant('vic',vicinity)
+    if scenario==2:
+        #Beaching and resuspension particles are global constants, so now they
+        #don't need to be recomputed every timestep
+        p_beach=math.exp(-timedelta(minutes=10).total_seconds()/(shoreTime*86400.))
+        p_resus=math.exp(-timedelta(minutes=10).total_seconds()/(resusTime*86400.))
+        fieldset.add_constant('p_beach',p_beach)
+        fieldset.add_constant('p_resus',p_resus)
+    if scenario==3:
+        #Here only the beaching probability is a global constant, the resuspension
+        #probability will instead be represented using a field
+        p_beach=math.exp(-timedelta(minutes=10).total_seconds()/(shoreTime*86400.))
+        fieldset.add_constant('p_beach',p_beach)
+        
+    ###########################################################################
     # and finally (for now), the coastline type                               #
     ###########################################################################
     if scenario==3:
         os.system('echo "Adding coastline type"')
-        coasttype=np.load(dataInputdirec+'coastline_sand_vs_not_sand.npy')
-        fieldset.add_field(Field('coasttype', coasttype,lon=lon_kh,lat=lat_kh,mesh='spherical'))
+        s=np.load(dataInputdirec+'coastline_sand_vs_not_sand.npy')
+        p_resus=np.exp(-timedelta(minutes=10).total_seconds()/(ProbShore(shoreDepen,scenario,s)*86400.))        
+        fieldset.add_field(Field('p_resus', p_resus,lon=lon_kh,lat=lat_kh,mesh='spherical'))
     ###########################################################################
     # Now the periodic halo for when we go across the 180/-180 degree line    #
     ###########################################################################
