@@ -257,8 +257,8 @@ def CreateFieldSet(server,stokes,scenario):
                  'Ust': 'uuss',
                  'Vst': 'vuss',
                     }
-    dimensions = {'U':{'lat': 'lat','lon': 'lon','time': 'time','depth':'depth'},
-                  'V':{'lat': 'lat','lon': 'lon','time': 'time','depth':'depth'},
+    dimensions = {'U':{'time': 'time','depth':'depth','lat': 'lat','lon': 'lon'},
+                  'V':{'time': 'time','depth':'depth','lat': 'lat','lon': 'lon'},
                   'Ust':{'lat': 'latitude','lon': 'longitude','time': 'time'},
                   'Vst':{'lat': 'latitude','lon': 'longitude','time': 'time'},
                   }
