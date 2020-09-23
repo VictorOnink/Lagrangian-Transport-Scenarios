@@ -11,6 +11,9 @@ from parcels import ParticleSet,GeographicPolar,Geographic,FieldSet,Field
 from particleClasses import AdvDifParticle,vicinityParticle,StochasticParticle
 import os
 
+##############################################################################
+##############################################################################
+##############################################################################
 def FileNames(rootodirec,scenario,ensemble,startyear,Input,restart,run,
               vicinity=0,shoreTime=10,resusTime=69,shoreDepen=0,stokes=0):
     """
@@ -86,6 +89,9 @@ def FileNames(rootodirec,scenario,ensemble,startyear,Input,restart,run,
 
     return ofile, rfile
 
+##############################################################################
+##############################################################################
+##############################################################################
 def removeNan(dataset,variable,lastSelec,finalTime,lastTimeSelec):
     """
     This function inputs a dataset object for the rfile. We then take the last
@@ -122,6 +128,9 @@ def removeNan(dataset,variable,lastSelec,finalTime,lastTimeSelec):
     varSelec[lastTimeSelec!=finalTime]=2
     return varSelec
 
+##############################################################################
+##############################################################################
+##############################################################################
 def restartInitialPosition(rfile,restart,scenario):
     """
     Parameters
@@ -163,6 +172,9 @@ def restartInitialPosition(rfile,restart,scenario):
     else:
         return lon_reset,lat_reset,beach_reset,age_reset,weight_reset
 
+##############################################################################
+##############################################################################
+##############################################################################
 def CreatePSET(scenario,lons,lats,beached,age_par,weights,starttime,
                repeatStep,fieldset,prox_par=0):
     """
@@ -215,6 +227,10 @@ def CreatePSET(scenario,lons,lats,beached,age_par,weights,starttime,
                            time=starttime, repeatdt=repeatStep)
     return pset
 
+##############################################################################
+##############################################################################
+##############################################################################
+
 def CreateFieldSet(server,stokes,scenario):
     """
     Creating the fieldset object containing all the fields
@@ -250,18 +266,18 @@ def CreateFieldSet(server,stokes,scenario):
     #Loading in the surface currents and Stokes drift
     filenames = {'U': datadirec+"HYCOM/HYCOM*20*.nc",
                  'V': datadirec+"HYCOM/HYCOM*20*.nc",
-                 'Ust': datadirec+"WaveWatchIIIstokes/ww3.20*_uss.nc",
-                 'Vst': datadirec+"WaveWatchIIIstokes/ww3.20*_uss.nc",
+                 #'Ust': datadirec+"WaveWatchIIIstokes/ww3.20*_uss.nc",
+                 #'Vst': datadirec+"WaveWatchIIIstokes/ww3.20*_uss.nc",
                     }
     variables = {'U': 'water_u',
                  'V': 'water_v',
-                 'Ust': 'uuss',
-                 'Vst': 'vuss',
+                 #'Ust': 'uuss',
+                 #'Vst': 'vuss',
                     }
     dimensions = {'U':{'time': 'time','depth':'depth','lat': 'lat','lon': 'lon'},
                   'V':{'time': 'time','depth':'depth','lat': 'lat','lon': 'lon'},
-                  'Ust':{'lat': 'latitude','lon': 'longitude','time': 'time'},
-                  'Vst':{'lat': 'latitude','lon': 'longitude','time': 'time'},
+                  #'Ust':{'lat': 'latitude','lon': 'longitude','time': 'time'},
+                  #'Vst':{'lat': 'latitude','lon': 'longitude','time': 'time'},
                   }
     
     fieldset = FieldSet.from_netcdf(filenames, variables, dimensions,allow_time_extrapolation=True)

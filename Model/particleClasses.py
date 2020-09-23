@@ -15,6 +15,9 @@ import os
 shoreTime,resusTime=10,69#int(os.environ['SHORETIME']),int(os.environ['RESUSTIME']) #days, days
 vicinity=1#int(os.environ['VICINITY']) #days
 
+##############################################################################
+##############################################################################
+##############################################################################
 class AdvDifParticle(JITParticle):
     #First we keep track of whether a particle is on a land cell or not
     on_land = Variable('on_land', dtype=np.int32, to_write=False,
@@ -30,6 +33,9 @@ class AdvDifParticle(JITParticle):
     #Distance of the particle to the coast
     distance= Variable('distance',dtype=np.float32,initial=0)
     
+##############################################################################
+##############################################################################
+##############################################################################
 class vicinityParticle(JITParticle):
     #First we keep track of how long a particle has been close to the shore
     prox = Variable('prox', dtype=np.int32, initial=attrgetter('prox'))
@@ -46,7 +52,10 @@ class vicinityParticle(JITParticle):
     weights = Variable('weights',dtype=np.float32,initial=attrgetter('weights'))
     #Distance of the particle to the coast
     distance= Variable('distance',dtype=np.float32,initial=0)
-    
+
+##############################################################################
+##############################################################################
+##############################################################################
 class StochasticParticle(JITParticle):
     #Now the beaching variables
     #0=open ocean, 1=beached

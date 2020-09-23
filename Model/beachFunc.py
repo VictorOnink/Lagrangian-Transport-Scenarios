@@ -32,6 +32,10 @@ def beachAdvDifOnly(particle,fieldset,time):
         #Update the age of the particle
         particle.age+=particle.dt
         
+##############################################################################
+##############################################################################
+##############################################################################
+
 def beachVicinity(particle,fieldset,time):
         if particle.beach==0:        
             dist=fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
@@ -44,7 +48,10 @@ def beachVicinity(particle,fieldset,time):
                 particle.beach=1
         #Update the age of the particle
         particle.age+=particle.dt
-        
+
+##############################################################################
+##############################################################################
+##############################################################################
 def beachStochastic(particle,fieldset,time):
     if particle.beach==0:
         dist=fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
@@ -59,6 +66,10 @@ def beachStochastic(particle,fieldset,time):
             particle.beach=0
     #Update the age of the particle
     particle.age+=particle.dt
+
+##############################################################################
+##############################################################################
+##############################################################################
     
 def beachShoreResus(particle,fieldset,time):
     if particle.beach==0:

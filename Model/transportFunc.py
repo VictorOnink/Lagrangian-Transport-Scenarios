@@ -10,6 +10,9 @@ Plastic transport kernels for floating plastic
 import math 
 from parcels import rng as random
 
+##############################################################################
+##############################################################################
+##############################################################################
 
 def AntiBeachNudging(particle,fieldset,time):
     """    
@@ -25,7 +28,11 @@ def AntiBeachNudging(particle,fieldset,time):
         borUab,borVab=fieldset.borU[time, d1, particle.lat, particle.lon],fieldset.borV[time, d1, particle.lat, particle.lon]
         particle.lon-=borUab*particle.dt
         particle.lat-=borVab*particle.dt
-        
+
+##############################################################################
+##############################################################################
+##############################################################################
+
 def AdvectionRK4_floating(particle, fieldset, time):
     """Advection of particles using fourth-order Runge-Kutta integration.
 
@@ -68,6 +75,10 @@ def AdvectionRK4_floating(particle, fieldset, time):
             particle.lon+=360
         particle.lat += (v1 + 2*v2 + 2*v3 + v4) / 6. * particle.dt
 
+##############################################################################
+##############################################################################
+##############################################################################
+
 def BrownianMotion2D_floating(particle, fieldset, time):
     """Kernel for simple Brownian particle diffusion in zonal and meridional direction.
     Assumes that fieldset has fields Kh_zonal and Kh_meridional
@@ -80,6 +91,10 @@ def BrownianMotion2D_floating(particle, fieldset, time):
         lon_p = particle.lon + random.uniform(-1., 1.) * math.sqrt(2*math.fabs(particle.dt)*kh_zonal/r)
         particle.lon=lon_p
         particle.lat=lat_p
+
+##############################################################################
+##############################################################################
+##############################################################################
 
 def initialInput(particle,fieldset,time):
     """
