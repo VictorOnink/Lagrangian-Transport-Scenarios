@@ -80,8 +80,7 @@ def beachShoreResus(particle,fieldset,time):
                 particle.beach=1
     #Next the resuspension part
     elif particle.beach==1:
-        p_resus=fieldset.p_resus[time, particle.depth, particle.lat, particle.lon]
-        if random.random()>p_resus:
+        if random.random()>fieldset.p_resus[time, particle.depth, particle.lat, particle.lon]:
             particle.beach=0
     #Update the age of the particle
     particle.age+=particle.dt
@@ -114,7 +113,7 @@ def ProbShore(shoreDepen,scenario,sandy):
     """
     if scenario==3:
         if shoreDepen==0:
-            p_r=resusTime*(0.75+0.25*sandy)
+            p_resus=resusTime*(0.75+0.25*sandy)
         if shoreDepen==1:
-            p_r=resusTime*(0.25+0.75*sandy)
-        return p_r
+            p_resus=resusTime*(0.25+0.75*sandy)
+        return p_resus

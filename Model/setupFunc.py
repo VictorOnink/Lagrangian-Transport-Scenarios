@@ -378,8 +378,8 @@ def CreateFieldSet(server,stokes,scenario):
     if scenario==3:
         os.system('echo "Adding coastline type"')
         s=np.load(dataInputdirec+'coastline_sand_vs_not_sand.npy')
-        p_resus=np.exp(-timedelta(minutes=10).total_seconds()/(ProbShore(shoreDepen,scenario,s)*86400.))        
-        fieldset.add_field(Field('p_resus', p_resus,lon=lon_kh,lat=lat_kh,mesh='spherical'))
+        p_r=np.exp(-timedelta(minutes=10).total_seconds()/(ProbShore(shoreDepen,scenario,s)*86400.))        
+        fieldset.add_field(Field('p_resus', p_r,lon=lon_kh,lat=lat_kh,mesh='spherical'))
     ###########################################################################
     # Now the periodic halo for when we go across the 180/-180 degree line    #
     ###########################################################################

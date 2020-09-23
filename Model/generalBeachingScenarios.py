@@ -172,3 +172,5 @@ pset.execute(totalKernel,
               recovery={ErrorCode.ErrorOutOfBounds: DeleteParticle},
               output_file=pfile
               )
+
+pfile.export()
