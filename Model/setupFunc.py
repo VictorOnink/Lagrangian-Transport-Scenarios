@@ -314,8 +314,6 @@ def CreateFieldSet(server,stokes,scenario):
         borU=datasetBor.variables['MaskUvel'][:]
         borV=datasetBor.variables['MaskVvel'][:]
         #Normalizing the border current so that the total current is always 1m/s
-        borU[borU!=0]=borU[borU!=0]/abs(borU[borU!=0])
-        borV[borV!=0]=borV[borV!=0]/abs(borV[borV!=0])
         borMag=np.sqrt(np.square(borU)+np.square(borV))
         borMag[borMag==0]=1
         borU=np.divide(borU,borMag)
@@ -343,10 +341,9 @@ def CreateFieldSet(server,stokes,scenario):
     ###########################################################################
     # Adding in the  land cell identifiers                                    #
     ###########################################################################
-    if scenario==0:
-        os.system('echo "Adding land/water boolean field"')
-        landID=np.load(dataInputdirec+'land_cell_identifier.npy')
-        fieldset.add_field(Field('landID', landID,lon=lonBor,lat=latBor,mesh='spherical'))
+    os.system('echo "Adding land/water boolean field"')
+    landID=np.load(dataInputdirec+'land_cell_identifier.npy')
+    fieldset.add_field(Field('landID', landID,lon=lonBor,lat=latBor,mesh='spherical'))
     ###########################################################################
     # Distance to the shore                                                   #
     ###########################################################################
