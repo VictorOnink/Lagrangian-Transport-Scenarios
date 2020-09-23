@@ -107,6 +107,6 @@ do
            else
 	      jobid=$(sbatch --parsable --dependency=afterok:${jobid} jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
 	   fi
-	   #rm jobsubmissionFile_${RUN}_${restartnum}.sh
+	   rm jobsubmissionFile_${RUN}_${restartnum}.sh
 	done
 done
