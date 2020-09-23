@@ -311,8 +311,8 @@ def CreateFieldSet(server,stokes,scenario):
     if scenario!=0:
         os.system('echo "Adding the border current"')
         datasetBor=Dataset(dataInputdirec+'boundary_velocities_HYCOM.nc')
-        borU=datasetBor.variables['MaskUvel'][:]
-        borV=datasetBor.variables['MaskVvel'][:]
+        borU=datasetBor.variables['MaskUvel'][0,:,:]
+        borV=datasetBor.variables['MaskVvel'][0,:,:]
         #Normalizing the border current so that the total current is always 1m/s
         borMag=np.sqrt(np.square(borU)+np.square(borV))
         borMag[borMag==0]=1
