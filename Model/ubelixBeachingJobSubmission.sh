@@ -26,6 +26,7 @@ STOKES=0
 ENSEMBLE=1
 
 export SCENARIO
+export VICINITY
 export ENSEMBLE
 export SHORETIME
 export RESUSTIME
