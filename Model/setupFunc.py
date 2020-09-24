@@ -403,8 +403,8 @@ def CreateFieldSet(server,stokes,scenario):
     ###########################################################################
     if scenario==4:
         os.system('echo "Adding 10m winds"')
-        filenames = glob.glob(datadirec+"Wind/ERA5-wind10m*.nc")
-        filenames.sort()
+        filenames = {'u10': datadirec+"Wind/ERA5-wind10m*.nc",
+                     'v10': datadirec+"Wind/ERA5-wind10m*.nc"}
         variables = {'u10': 'u10','v10': 'v10'}
         dimensions = {'time': 'time','lat': 'latitude','lon': 'longitude'}
         #Creating a fieldset for the wind data
