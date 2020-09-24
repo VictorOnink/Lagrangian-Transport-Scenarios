@@ -402,7 +402,7 @@ def CreateFieldSet(server,stokes,scenario):
     ###########################################################################
     if scenario==4:
         os.system('echo "Adding 10m winds"')
-        filenames = [datadirec+"Wind/ERA5-wind10m*.nc"]
+        filenames = datadirec+"Wind/ERA5-wind10m*.nc"
         variables = {'u10': 'u10','v10': 'v10'}
         dimensions = {'time': 'time','lat': 'latitude','lon': 'longitude'}
         fieldset.add_field(Field.from_netcdf(filenames,variables,dimensions,
