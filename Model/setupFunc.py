@@ -406,7 +406,7 @@ def CreateFieldSet(server,stokes,scenario):
         filenames = glob.glob(datadirec+"Wind/ERA5-wind10m*.nc")
         filenames.sort()
         # variables = {'u10': 'u10','v10': 'v10'}
-        variables = ('u10','v10')
+        variables = (('u10','u10'),('v10','v10'))
         dimensions = {'time': 'time','lat': 'latitude','lon': 'longitude'}
         fieldset.add_field(Field.from_netcdf(filenames,variables,dimensions,
                                              allow_time_extrapolation=True))
