@@ -408,8 +408,7 @@ def CreateFieldSet(server,stokes,scenario):
         # variables = {'u10': 'u10','v10': 'v10'}
         variables = (('wU','u10'),('wV','v10'))
         dimensions = {'time': 'time','lat': 'latitude','lon': 'longitude'}
-        fieldset.add_field(Field.from_netcdf(filenames,variables,dimensions,
-                                             allow_time_extrapolation=True))
+        fieldset.add_field(Field.from_netcdf(filenames,variables,dimensions))
                       
                       
     
