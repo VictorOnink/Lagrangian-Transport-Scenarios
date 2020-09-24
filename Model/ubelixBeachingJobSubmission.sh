@@ -3,8 +3,8 @@
 #####################################################################################
 # General run parameters                                                            #
 #####################################################################################
-#0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent
-SCENARIO=3
+#0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4=Turrell (2020)
+SCENARIO=4
 #for scenario 1, the time a particle must be near the coast to beach (in days)
 VICINITY=2
 #for scenario 2, the beaching and resuspension timescales (in days)
@@ -12,6 +12,8 @@ SHORETIME=10
 RESUSTIME=69
 #for scenario 3, the shore dependence scenario.
 SHOREDEPEN=0
+#for scenario 4, the minimum wind speed for resuspension. Divide by 10 for actual value
+WMIN=3
 #the starting year of the simulation, and how many years the simulation will take
 STARTTIME=2010
 #Which input distribution do we want to use? 0=Jambeck, 1=lebreton
@@ -31,6 +33,7 @@ export ENSEMBLE
 export SHORETIME
 export RESUSTIME
 export SHOREDEPEN
+export WMIN
 export STARTTIME
 export INPUT
 export START
@@ -59,7 +62,13 @@ elif [ "$SCENARIO" -eq "3" ]; then
         if [ "$STOKES" -eq "1" ]; then
 	    RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
         fi
+elif [ "$SCENARIO" -eq "4" ]; then
+        RUNNAMEPREFIX="Turrell_Wmin="${WMIN}"_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTTIME}"_"
+        if [ "$STOKES" -eq "1" ]; then
+	    RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
+        fi
 fi
+
 
 RUNNAMEPREFIX=${RUNNAMEPREFIX}"ENSEMBLE="${ENSEMBLE}
 echo $RUNNAMEPREFIX

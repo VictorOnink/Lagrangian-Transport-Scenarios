@@ -18,6 +18,7 @@ scenario=int(os.environ['SCENARIO'])
 vicinity=int(os.environ['VICINITY']) #days
 shoreTime,resusTime=int(os.environ['SHORETIME']),int(os.environ['RESUSTIME']) #days, days
 shoreDepen = int(os.environ['SHOREDEPEN'])
+Wmin=int(os.environ['WMIN'])/10
 
 
 ##############################################################################
@@ -39,6 +40,7 @@ def FileNames(rootodirec,scenario,ensemble,startyear,Input,restart,run,
                                  1 = Coastal vicinity
                                  2 = Stochastic
                                  3 = Shore dependent resuspension
+                                 4 = Turrell (2020) resuspension
     ensemble : int
         Which ensemble member.
     startyear : int
@@ -95,7 +97,13 @@ def FileNames(rootodirec,scenario,ensemble,startyear,Input,restart,run,
         odirec=rootodirec+"SDResus_"+str(shoreDepen)+"/st_"+str(shoreTime)+"_rt_"+str(resusTime)+"_e_"+str(ensemble)+"/"
         ofile=odirec+prefix+"_dep="+str(shoreDepen)+"_st="+str(shoreTime)+"_rt="+str(resusTime)+"_y="+str(startyear)+"_I="+str(Input)+"_r="+str(restart)+"_run="+str(run)+".nc"
         rfile=odirec+prefix+"_dep="+str(shoreDepen)+"_st="+str(shoreTime)+"_rt="+str(resusTime)+"_y="+str(startyear)+"_I="+str(Input)+"_r="+str(restart-1)+"_run="+str(run)+".nc"
-    print(ofile)
+    elif scenario==4:
+        prefix='Turrell'
+        if stokes==1:
+            prefix+='_NS'
+        odirec=rootodirec+"Turrell/st_"+str(shoreTime)+"_rt_"+str(resusTime)+"_W_"+str(Wmin)+"_e_"+str(ensemble)+"/"
+        ofile=odirec+prefix+"_Wmin="+str(Wmin)+"_st="+str(shoreTime)+"_rt="+str(resusTime)+"_y="+str(startyear)+"_I="+str(Input)+"_r="+str(restart)+"_run="+str(run)+".nc"
+        rfile=odirec+prefix+"_Wmin="+str(Wmin)+"_st="+str(shoreTime)+"_rt="+str(resusTime)+"_y="+str(startyear)+"_I="+str(Input)+"_r="+str(restart-1)+"_run="+str(run)+".nc"
     return ofile, rfile
 
 ##############################################################################
@@ -196,6 +204,7 @@ def CreatePSET(scenario,lons,lats,beached,age_par,weights,starttime,
                                  1 = Coastal vicinity
                                  2 = Stochastic
                                  3 = Shore dependent resuspension
+                                 4 = Turrell (2020) resuspension
     lons : array Nx1
         starting longitudes.
     lats : array Nx1
@@ -223,7 +232,8 @@ def CreatePSET(scenario,lons,lats,beached,age_par,weights,starttime,
     pset.
 
     """
-    pclass={0:AdvDifParticle,1:vicinityParticle,2:StochasticParticle,3:StochasticParticle}
+    pclass={0:AdvDifParticle,1:vicinityParticle,2:StochasticParticle,3:StochasticParticle,
+            4:StochasticParticle}
     if scenario==1:
         pset = ParticleSet(fieldset=fieldset, pclass=pclass[scenario], 
                            lon=lons, lat=lats,beach=beached,age=age_par,
@@ -257,6 +267,7 @@ def CreateFieldSet(server,stokes,scenario):
                                  1 = Coastal vicinity
                                  2 = Stochastic
                                  3 = Shore dependent resuspension
+                                 4 = Turrell (2020) resuspension
 
     Returns
     -------
@@ -371,15 +382,34 @@ def CreateFieldSet(server,stokes,scenario):
         #probability will instead be represented using a field
         p_b=math.exp(-timedelta(minutes=10).total_seconds()/(shoreTime*86400.))
         fieldset.add_constant('p_beach',p_b)
+    if scenario==4:
+        #The global constant resuspension probability
+        p_b=math.exp(-timedelta(minutes=10).total_seconds()/(shoreTime*86400.))
+        fieldset.add_constant('p_beach',p_b)
+        #The minimum wind speed for 
+        fieldset.add_constant('Wmin',Wmin)
         
     ###########################################################################
-    # and finally (for now), the coastline type                               #
+    # The coastline type                                                      #
     ###########################################################################
     if scenario==3:
         os.system('echo "Adding coastline type"')
         s=np.load(dataInputdirec+'coastline_sand_vs_not_sand.npy')
         p_r=np.exp(-timedelta(minutes=10).total_seconds()/(ProbShore(shoreDepen,scenario,s)*86400.))        
         fieldset.add_field(Field('p_resus', p_r,lon=lon_kh,lat=lat_kh,mesh='spherical'))
+    ###########################################################################
+    # The 10m winds                                                           #
+    ###########################################################################
+    if scenario==4:
+        os.system('echo "Adding 10m winds"')
+        filenames = [datadirec+"Wind/ERA5-wind10m*.nc"]
+        variables = {'u10': 'u10','v10': 'v10'}
+        dimensions = {'time': 'time','lat': 'latitude','lon': 'longitude'}
+        fieldset.add_field(Field.from_netcdf(filenames,variables,dimensions,
+                                             allow_time_extrapolation=True))
+                      
+                      
+    
     ###########################################################################
     # Now the periodic halo for when we go across the 180/-180 degree line    #
     ###########################################################################

@@ -15,6 +15,7 @@ scenario=int(os.environ['SCENARIO'])
 shoreDepen = int(os.environ['SHOREDEPEN'])
 shoreTime,resusTime=int(os.environ['SHORETIME']),int(os.environ['RESUSTIME']) #days, days
 
+
 ###############################################################################
 # The delete particle Kernel                                                  #
 ###############################################################################
