@@ -421,8 +421,8 @@ def CreateFieldSet(server,stokes,scenario):
         windVar = {'windU':'u10', 'windV':'v10'}
         windDimen = { 'time':'time','lat': 'latitude','lon': 'longitude'}
         fieldset_wnd=FieldSet.from_netcdf(windFiles,windVar,windDimen,allow_time_extrapolation=True)
-        fieldset.add_field(fieldset_wnd.windU)
-        fieldset.add_field(fieldset_wnd.windV)
+        # fieldset.add_field(fieldset_wnd.windU)
+        # fieldset.add_field(fieldset_wnd.windV)
 
                       
                       
