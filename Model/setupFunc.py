@@ -416,17 +416,23 @@ def CreateFieldSet(server,stokes,scenario):
         fieldset_wind.u10.units = GeographicPolar()
         fieldset_wind.v10.units = Geographic()
         #Adding the wind fields to the general fieldset
-        os.system('echo "Adding wind to fieldset"')
         fieldset.add_field(fieldset_wind.u10)
         fieldset.add_field(fieldset_wind.v10)
-        
-        # windFiles = {'windU': datadirec+'Wind/ERA5-wind10m*20*.nc',
-        #              'windV': datadirec+'Wind/ERA5-wind10m*20*.nc'}
-        # windVar = {'u10':'u10', 'v10':'v10'}
-        # windDimen = { 'time':'time', 'lat':'latitude', 'lon':'longitude'}
-        # fieldset_wnd=FieldSet.from_netcdf(windFiles,windVar,windDimen,allow_time_extrapolation=True)
-        # fieldset.add_field(fieldset_wnd.windU)
-        # fieldset.add_field(fieldset_wnd.windV)
+    ###########################################################################
+    # Sea surface elevation                                                   #
+    ###########################################################################
+    if scenario==4:
+        os.system('echo "Adding sea surface elevation"')
+        elevfiles = glob.glob(datadirec+"HYCOM/HYCOM_SeaEleve_3h_20*.nc")
+        elevfiles.sort()
+        filenames = {'u10': windfiles,
+                      'v10': windfiles}
+        variables = {'eta': 'surf_el'}
+        dimensions = {'time': 'time','lat': 'lat','lon': 'lon'}
+        #Creating a fieldset for the wind data
+        fieldset_sea = FieldSet.from_netcdf(filenames,variables,dimensions,allow_time_extrapolation=True)
+        #Adding the wind fields to the general fieldset
+        fieldset.add_field(fieldset_sea.eta)
 
                       
                       
