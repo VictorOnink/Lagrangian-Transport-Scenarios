@@ -406,6 +406,7 @@ def CreateFieldSet(server,stokes,scenario):
     if scenario==4:
         os.system('echo "Adding 10m winds"')
         windfiles = glob.glob(datadirec+"Wind/ERA5-wind10m*.nc")
+        windfiles.sort()
         filenames = {'u10': windfiles,
                       'v10': windfiles}
         variables = {'u10': 'u10','v10': 'v10'}
