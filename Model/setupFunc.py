@@ -428,7 +428,7 @@ def CreateFieldSet(server,stokes,scenario):
         filenames = {'u10': windfiles,
                       'v10': windfiles}
         variables = {'eta': 'surf_el'}
-        dimensions = {'time': 'time','lat': 'latitude','lon': 'longitude'}
+        dimensions = {'time': 'time','depth':'depth','lat': 'lat','lon': 'lon'}
         #Creating a fieldset for the wind data
         fieldset_sea = FieldSet.from_netcdf(filenames,variables,dimensions,allow_time_extrapolation=True)
         #Adding the wind fields to the general fieldset
