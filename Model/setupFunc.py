@@ -307,16 +307,18 @@ def CreateFieldSet(server,stokes,scenario):
     # Adding the Stokes drift to the HYCOM currents                           #
     ###########################################################################
     os.system('echo "Adding Stokes drift"')
-    if stokes==0:
-        fieldset.Ust.units = GeographicPolar()
-        fieldset.Vst.units = Geographic()
-        fieldset=FieldSet(U=fieldset.U+fieldset.Ust,
-                          V=fieldset.V+fieldset.Vst,
-                          )
-    else:
-        fieldset=FieldSet(U=fieldset.U,
-                          V=fieldset.V
-                          )
+    # if stokes==0:
+    #     fieldset.Ust.units = GeographicPolar()
+    #     fieldset.Vst.units = Geographic()
+    #     fieldset=FieldSet(U=fieldset.U+fieldset.Ust,
+    #                       V=fieldset.V+fieldset.Vst,
+    #                       )
+    # else:
+    #     fieldset=FieldSet(U=fieldset.U,
+    #                       V=fieldset.V
+    #                       )
+    fieldset.Ust.units = GeographicPolar()
+    fieldset.Vst.units = Geographic()
     ###########################################################################
     # Adding the border current, which applies for all scenarios except for 0 #
     ###########################################################################
@@ -417,8 +419,8 @@ def CreateFieldSet(server,stokes,scenario):
         # fieldset.add_field(fieldset_wind.v10)
         
         windFiles = {'windU': datadirec+'Wind/ERA5-wind10m*20*.nc',
-                 'windV': datadirec+'Wind/ERA5-wind10m*20*.nc'}
-        windVar = {'windU':'u10', 'windV':'v10'}
+                     'windV': datadirec+'Wind/ERA5-wind10m*20*.nc'}
+        windVar = {'u10':'u10', 'v10':'v10'}
         windDimen = { 'time':'time','lat': 'latitude','lon': 'longitude'}
         fieldset_wnd=FieldSet.from_netcdf(windFiles,windVar,windDimen,allow_time_extrapolation=True)
         fieldset.add_field(fieldset_wnd.windU)

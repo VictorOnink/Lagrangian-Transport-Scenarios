@@ -48,32 +48,43 @@ def AdvectionRK4_floating(particle, fieldset, time):
         if particle.lon<-180:
             particle.lon+=360
         (u1, v1) = fieldset.UV[time, d2, particle.lat, particle.lon]
-        lon1, lat1 = (particle.lon + u1*.5*particle.dt, particle.lat + v1*.5*particle.dt)
+        (uS1, vS1) = fieldset.Ust[time, d2, particle.lat, particle.lon],fieldset.Vst[time, d2, particle.lat, particle.lon]
+        # lon1, lat1 = (particle.lon + u1*.5*particle.dt, particle.lat + v1*.5*particle.dt)
+        lon1, lat1 = (particle.lon + (u1+uS1)*.5*particle.dt, particle.lat + (v1+vS1)*.5*particle.dt)
+
         if lon1>180:
             lon1-=360
         if lon1<-180:
             lon1+=360
         (u2, v2) = fieldset.UV[time + .5 * particle.dt, d2, lat1, lon1]
-        lon2, lat2 = (particle.lon + u2*.5*particle.dt, particle.lat + v2*.5*particle.dt)
+        (uS2, vS2) = fieldset.Ust[time + .5 * particle.dt, d2, lat1, lon1],fieldset.Vst[time + .5 * particle.dt, d2, lat1, lon1]
+        # lon2, lat2 = (particle.lon + u2*.5*particle.dt, particle.lat + v2*.5*particle.dt)
+        lon2, lat2 = (particle.lon + (u2+uS2)*.5*particle.dt, particle.lat + (v2+vS2)*.5*particle.dt)
+
         if lon2>180:
             lon2-=360
         if lon2<-180:
             lon2+=360
         (u3, v3) = fieldset.UV[time + .5 * particle.dt, d2, lat2, lon2]
-        lon3, lat3 = (particle.lon + u3*particle.dt, particle.lat + v3*particle.dt)
+        (uS3, vS3) = fieldset.Ust[time + .5 * particle.dt, d2, lat2, lon2],fieldset.Vst[time + .5 * particle.dt, d2, lat2, lon2]
+        # lon3, lat3 = (particle.lon + u3*particle.dt, particle.lat + v3*particle.dt)
+        lon3, lat3 = (particle.lon + (u3+uS3)*particle.dt, particle.lat + (v3+vS3)*particle.dt)
         
         if lon3>180:
             lon3-=360
         if lon3<-180:
             lon3+=360
         (u4, v4) = fieldset.UV[time + particle.dt, d2, lat3, lon3]
+        (uS4, vS4) = fieldset.Ust[time + particle.dt, d2, lat3, lon3],fieldset.Vst[time + particle.dt, d2, lat3, lon3]
         
-        particle.lon += (u1 + 2*u2 + 2*u3 + u4) / 6. * particle.dt
+        # particle.lon += (u1 + 2*u2 + 2*u3 + u4) / 6. * particle.dt
+        particle.lon += ((u1+uS1) + 2*(u2+uS2) + 2*(u3+uS3) + (u4+uS4)) / 6. * particle.dt
         if particle.lon>180:
             particle.lon-=360
         if particle.lon<-180:
             particle.lon+=360
-        particle.lat += (v1 + 2*v2 + 2*v3 + v4) / 6. * particle.dt
+        # particle.lat += (v1 + 2*v2 + 2*v3 + v4) / 6. * particle.dt
+        particle.lat += ((v1+vS1) + 2*(v2+vS2) + 2*(v3+vS3) + (v4+vS4)) / 6. * particle.dt
 
 ##############################################################################
 ##############################################################################
