@@ -108,8 +108,9 @@ def beachTurrellResus(particle,fieldset,time):
         if dist<10:
             if random.random()>fieldset.p_beach:
                 particle.beach=1
+                particle.depth=fieldset.eta[t,d,la,lo]
     #Resuspension
-    if particle.beach==1:
+    elif particle.beach==1:
         sea_elev=fieldset.eta[t,d,la,lo]
         #If particles are beached above sea level, then they will remain there
         if particle.depth<sea_elev:
