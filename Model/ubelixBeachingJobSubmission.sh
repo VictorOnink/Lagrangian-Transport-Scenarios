@@ -78,7 +78,7 @@ echo $RUNNAMEPREFIX
 
 #The number of runs we do, dependent on the input scenario.
 if [ "$INPUT" -eq "0" ]; then
-    runlength=0
+    runlength=8
 elif [ "$INPUT" -eq "1" ]; then
     runlength=3
 fi
