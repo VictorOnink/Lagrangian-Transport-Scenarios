@@ -75,9 +75,11 @@ def beachStochastic(particle,fieldset,time):
     
 def beachShoreResus(particle,fieldset,time):
     if particle.beach==0:
+        print("Particle [%d]" % (particle.id))
         dist=fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
         if dist<10:
             if random.random()>fieldset.p_beach:
+                print('You have beached')
                 particle.beach=1
     #Next the resuspension part
     elif particle.beach==1:

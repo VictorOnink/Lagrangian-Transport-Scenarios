@@ -373,24 +373,24 @@ def CreateFieldSet(server,stokes,scenario):
     if scenario==1:
         #The vicinity timescale
         fieldset.add_constant('vic',vicinity)
-    if scenario==2:
+    # if scenario==2:
         # Beaching and resuspension particles are global constants, so now they
         # don't need to be recomputed every timestep
-        p_b=math.exp(-timedelta(minutes=10).total_seconds()/(shoreTime*86400.))
-        p_r=math.exp(-timedelta(minutes=10).total_seconds()/(resusTime*86400.))
-        fieldset.add_constant('p_beach',p_b)
-        fieldset.add_constant('p_resus',p_r)
+    p_b=math.exp(-timedelta(minutes=10).total_seconds()/(shoreTime*86400.))
+    p_r=math.exp(-timedelta(minutes=10).total_seconds()/(resusTime*86400.))
+    fieldset.add_constant('p_beach',p_b)
+    fieldset.add_constant('p_resus',p_r)
     if scenario==3:
         #Here only the beaching probability is a global constant, the resuspension
         #probability will instead be represented using a field
         p_b=math.exp(-timedelta(minutes=10).total_seconds()/(shoreTime*86400.))
         fieldset.add_constant('p_beach',p_b)
-    if scenario==4:
-        #The global constant resuspension probability
-        p_b=math.exp(-timedelta(minutes=10).total_seconds()/(shoreTime*86400.))
-        fieldset.add_constant('p_beach',p_b)
-        #The minimum wind speed for 
-        fieldset.add_constant('Wmin',Wmin/10)
+    # if scenario==4:
+    #     #The global constant resuspension probability
+    #     p_b=math.exp(-timedelta(minutes=10).total_seconds()/(shoreTime*86400.))
+    #     fieldset.add_constant('p_beach',p_b)
+    #     #The minimum wind speed for 
+    #     fieldset.add_constant('Wmin',Wmin/10)
         
     ###########################################################################
     # The coastline type                                                      #
