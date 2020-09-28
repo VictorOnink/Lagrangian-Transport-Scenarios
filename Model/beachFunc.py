@@ -90,6 +90,54 @@ def beachShoreResus(particle,fieldset,time):
 ##############################################################################
 ##############################################################################
 
+def beachTurrellResus(particle,fieldset,time):
+    """
+
+    Beaching is implemented the same way as in beachStochastic and beachShoreResus.
+    
+    Resuspension is based on Turrell 2018 & 2020. Resuspension is possible when
+    water levels are at the same level as that of the beached particle. Then,
+    only when the offshore wind component is greater than the threshold Wmin
+    will the particle actually be resuspended
+
+    """
+    t,d,la,lo=time, particle.depth, particle.lat, particle.lon
+    #Beaching
+    if particle.beach==0:
+        dist=fieldset.distance2shore[t,d,la,lo]
+        if dist<10:
+            if random.random()>fieldset.p_beach:
+                particle.beach=1
+    #Resuspension
+    if particle.beach==1:
+        eta=fieldset.eta[t,d,la,lo]
+        #If particles are beached above sea level, then they will remain there
+        if particle.z<eta:
+            #particles will get pushed up to the present water level
+            particle.z=eta
+            #Now, we need to get the offshore wind component
+            bU,bV=fieldset.borU[t,d,la,lo]*-1*1852*60*math.cos(la*math.pi/180),fieldset.borV[t,d,la,lo]*-1*1852*60
+            wU,wV=fieldset.U[t,d,la,lo]*1852*60*math.cos(la*math.pi/180),fieldset.V[t,d,la,lo]*1852*60
+            #magnitude of the b and w vectors, and then dot product between them
+            mB,mW=math.sqrt(bU**2+bV**2),math.sqrt(wU**2+wV**2)
+            dot=bU*wU+bV*wV
+            #Angle between b and w
+            alpha=math.acos(dot/(mB*mW))
+            #If the angle between the wind and border current is <90 degrees,
+            #then the wind is directed offshore
+            if alpha<math.pi/2:
+                #If the offshore component of wind is greater than Wmin, then
+                #the particle gets resuspended
+                if mW*math.cos(alpha)<fieldset.Wmin:
+                    particle.beach=0
+                
+
+
+
+##############################################################################
+##############################################################################
+##############################################################################
+
 def ProbShore(shoreDepen,scenario,sandy):
     """
     Here we calculate a field for the resuspension timescale, depending on

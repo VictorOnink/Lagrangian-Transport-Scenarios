@@ -10,13 +10,12 @@ Here is one general file that will contain all the different beaching scenarios
 from parcels import ErrorCode
 import parcels.rng as rng
 #Loading the functions I have for the particle classes, advection, beaching and setup
-from beachFunc import DeleteParticle,beachAdvDifOnly,beachVicinity,beachStochastic,beachShoreResus
+from beachFunc import DeleteParticle,beachAdvDifOnly,beachVicinity,beachStochastic,beachShoreResus,beachTurrellResus
 from transportFunc import AntiBeachNudging,AdvectionRK4_floating,BrownianMotion2D_floating,initialInput
 from setupFunc import FileNames,restartInitialPosition,CreatePSET,CreateFieldSet
 #And various other packages of use
 from datetime import timedelta, datetime
 import numpy as np
-import time
 import os
 
 ###############################################################################
@@ -151,7 +150,8 @@ elif scenario==2:
     beachK=pset.Kernel(beachStochastic)
 elif scenario==3:
     beachK=pset.Kernel(beachShoreResus)
-
+elif scenario==4:
+    beachK=pset.Kernel(beachTurrellResus)
         
 ###############################################################################
 # And now the overall kernel                                                  #

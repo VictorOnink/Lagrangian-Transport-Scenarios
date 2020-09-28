@@ -19,9 +19,6 @@ vicinity=int(os.environ['VICINITY']) #days
 ##############################################################################
 ##############################################################################
 class AdvDifParticle(JITParticle):
-    #First we keep track of whether a particle is on a land cell or not
-    on_land = Variable('on_land', dtype=np.int32, to_write=False,
-                        initial=0)
     #Now the beaching variables
     #0=open ocean, 1=beached
     beach    = Variable('beach', dtype=np.int32,
