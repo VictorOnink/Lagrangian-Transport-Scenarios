@@ -101,10 +101,9 @@ def beachTurrellResus(particle,fieldset,time):
     will the particle actually be resuspended
 
     """
-    t,d,la,lo=time, particle.depth, particle.lat, particle.lon
     #Beaching
     if particle.beach==0:
-        dist=fieldset.distance2shore[t,d,la,lo]
+        dist=fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
         if dist<10:
             if random.random()>fieldset.p_beach:
                 particle.beach=1
