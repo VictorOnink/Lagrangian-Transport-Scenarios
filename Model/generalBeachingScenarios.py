@@ -109,7 +109,7 @@ if restart==0:
         lons=np.load(dataInputdirec+'Lebreton2010/Leb'+str(2010)+'Lons'+str(run)+'.npy')
         lats=np.load(dataInputdirec+'Lebreton2010/Leb'+str(2010)+'Lats'+str(run)+'.npy')
         weights=np.load(dataInputdirec+'Lebreton2010/Leb'+str(2010)+'Weight'+str(run)+'.npy')
-    beached=np.zeros(len(lons),dtype=np.int32)
+    beached=np.ones(len(lons),dtype=np.int32)
     age_par=np.zeros(len(lons),dtype=np.int32)
     if scenario==1:
         prox_par=np.zeros(len(lons),dtype=np.int32)
