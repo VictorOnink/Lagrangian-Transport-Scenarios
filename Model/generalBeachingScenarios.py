@@ -151,7 +151,8 @@ elif scenario==2:
 elif scenario==3:
     beachK=pset.Kernel(beachShoreResus)
 elif scenario==4:
-    beachK=pset.Kernel(beachTurrellResus)
+    # beachK=pset.Kernel(beachTurrellResus)
+    beachK=pset.Kernel(beachStochastic)
         
 ###############################################################################
 # And now the overall kernel                                                  #
