@@ -110,11 +110,11 @@ def beachTurrellResus(particle,fieldset,time):
                 particle.beach=1
     #Resuspension
     if particle.beach==1:
-        eta=fieldset.eta[t,d,la,lo]
+        sea_elev=fieldset.eta[t,d,la,lo]
         #If particles are beached above sea level, then they will remain there
-        if particle.depth<eta:
+        if particle.depth<sea_elev:
             #particles will get pushed up to the present water level
-            particle.depth=eta
+            particle.depth=sea_elev
             #Now, we need to get the offshore wind component
             bU,bV=fieldset.borU[t,d,la,lo]*-1*1852*60*math.cos(la*math.pi/180),fieldset.borV[t,d,la,lo]*-1*1852*60
             wU,wV=fieldset.U[t,d,la,lo]*1852*60*math.cos(la*math.pi/180),fieldset.V[t,d,la,lo]*1852*60
