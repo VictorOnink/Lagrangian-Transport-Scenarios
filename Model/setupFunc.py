@@ -421,17 +421,17 @@ def CreateFieldSet(server,stokes,scenario):
     ###########################################################################
     # Sea surface elevation                                                   #
     ###########################################################################
-    if scenario==4:
-        os.system('echo "Adding sea surface elevation"')
-        elevfiles = glob.glob(datadirec+"HYCOM/HYCOM_SeaEleve_3h_20*.nc")
-        elevfiles.sort()
-        filenames = {'eta': elevfiles}
-        variables = {'eta': 'surf_el'}
-        dimensions = {'time': 'time','lat': 'lat','lon': 'lon'}
-        #Creating a fieldset for the wind data
-        fieldset_sea = FieldSet.from_netcdf(filenames,variables,dimensions,allow_time_extrapolation=True)
-        #Adding the wind fields to the general fieldset
-        fieldset.add_field(fieldset_sea.eta)
+    # if scenario==4:
+    #     os.system('echo "Adding sea surface elevation"')
+    #     elevfiles = glob.glob(datadirec+"HYCOM/HYCOM_SeaEleve_3h_20*.nc")
+    #     elevfiles.sort()
+    #     filenames = {'eta': elevfiles}
+    #     variables = {'eta': 'surf_el'}
+    #     dimensions = {'time': 'time','lat': 'lat','lon': 'lon'}
+    #     #Creating a fieldset for the wind data
+    #     fieldset_sea = FieldSet.from_netcdf(filenames,variables,dimensions,allow_time_extrapolation=True)
+    #     #Adding the wind fields to the general fieldset
+    #     fieldset.add_field(fieldset_sea.eta)
 
                       
                       
