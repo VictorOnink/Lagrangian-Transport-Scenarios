@@ -403,21 +403,21 @@ def CreateFieldSet(server,stokes,scenario):
     ###########################################################################
     # The 10m winds                                                           #
     ###########################################################################
-    if scenario==4:
-        os.system('echo "Adding 10m winds"')
-        windfiles = glob.glob(datadirec+"Wind/ERA5-wind10m*.nc")
-        windfiles.sort()
-        filenames = {'u10': windfiles,
-                      'v10': windfiles}
-        variables = {'u10': 'u10','v10': 'v10'}
-        dimensions = {'time': 'time','lat': 'latitude','lon': 'longitude'}
-        #Creating a fieldset for the wind data
-        fieldset_wind = FieldSet.from_netcdf(filenames,variables,dimensions,allow_time_extrapolation=True)
-        fieldset_wind.u10.units = GeographicPolar()
-        fieldset_wind.v10.units = Geographic()
-        #Adding the wind fields to the general fieldset
-        fieldset.add_field(fieldset_wind.u10)
-        fieldset.add_field(fieldset_wind.v10)
+    # if scenario==4:
+    #     os.system('echo "Adding 10m winds"')
+    #     windfiles = glob.glob(datadirec+"Wind/ERA5-wind10m*.nc")
+    #     windfiles.sort()
+    #     filenames = {'u10': windfiles,
+    #                   'v10': windfiles}
+    #     variables = {'u10': 'u10','v10': 'v10'}
+    #     dimensions = {'time': 'time','lat': 'latitude','lon': 'longitude'}
+    #     #Creating a fieldset for the wind data
+    #     fieldset_wind = FieldSet.from_netcdf(filenames,variables,dimensions,allow_time_extrapolation=True)
+    #     fieldset_wind.u10.units = GeographicPolar()
+    #     fieldset_wind.v10.units = Geographic()
+    #     #Adding the wind fields to the general fieldset
+    #     fieldset.add_field(fieldset_wind.u10)
+    #     fieldset.add_field(fieldset_wind.v10)
     ###########################################################################
     # Sea surface elevation                                                   #
     ###########################################################################
