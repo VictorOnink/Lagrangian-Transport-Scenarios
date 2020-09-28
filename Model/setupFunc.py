@@ -285,10 +285,10 @@ def CreateFieldSet(server,stokes,scenario):
         
     os.system('echo "Creating the main fieldset"')
     #Loading in the surface currents and Stokes drift
-    filenames = {'U': datadirec+"HYCOM/HYCOM_Surface*20*.nc",
-                 'V': datadirec+"HYCOM/HYCOM_Surface*20*.nc",
-                 'Ust': datadirec+"WaveWatchIIIstokes/ww3.20*_uss.nc",
-                 'Vst': datadirec+"WaveWatchIIIstokes/ww3.20*_uss.nc",
+    filenames = {'U': datadirec+"HYCOM/HYCOM_Surface*2000*.nc",
+                 'V': datadirec+"HYCOM/HYCOM_Surface*2000*.nc",
+                 'Ust': datadirec+"WaveWatchIIIstokes/ww3.2010*_uss.nc",
+                 'Vst': datadirec+"WaveWatchIIIstokes/ww3.2010*_uss.nc",
                     }
     variables = {'U': 'water_u',
                  'V': 'water_v',
