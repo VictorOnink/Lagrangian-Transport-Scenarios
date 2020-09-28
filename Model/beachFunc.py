@@ -105,6 +105,7 @@ def beachTurrellResus(particle,fieldset,time):
         dist=fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
         if dist<10:
             if random.random()>fieldset.p_beach:
+                print('You have beached')
                 particle.beach=1
                 # particle.depth=fieldset.eta[t,d,la,lo]
     #Resuspension
