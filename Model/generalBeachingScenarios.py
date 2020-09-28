@@ -84,7 +84,7 @@ if server==0:
 elif server==1:
     rootodirec="/home/ubelix/climate/shared/onink/Output/"
 
-ofile,rfile=FileNames(rootodirec,scenario,ensemble,startyear,Input,restart,run,
+ofile,rfile=FileNames(rootodirec,scenario,ensemble,startyear,Input,restart,run,Wmin,
                       vicinity,shoreTime,resusTime,shoreDepen,stokes)
 
 ###############################################################################
