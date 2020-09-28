@@ -101,7 +101,7 @@ def beachTurrellResus(particle,fieldset,time):
     """
     #Beaching
     if particle.beach==0:
-        print(str(particle.id))
+        print("Particle [%d]" % (particle.id))
         dist=fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
         if dist<10:
             if random.random()>fieldset.p_beach:
