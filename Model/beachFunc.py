@@ -100,7 +100,7 @@ def beachTurrellResus(particle,fieldset,time):
     only when the offshore wind component is greater than the threshold Wmin
     will the particle actually be resuspended
     """
-    print("Particle [%d]" % (particle.id))
+    # print("Particle [%d]" % (particle.id))
     # if particle.beach==0:
     #     dist=fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
     #     if dist<10:
