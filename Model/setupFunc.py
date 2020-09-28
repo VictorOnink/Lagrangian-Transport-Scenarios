@@ -19,13 +19,13 @@ scenario=int(os.environ['SCENARIO'])
 vicinity=int(os.environ['VICINITY']) #days
 shoreTime,resusTime=int(os.environ['SHORETIME']),int(os.environ['RESUSTIME']) #days, days
 shoreDepen = int(os.environ['SHOREDEPEN'])
-Wmin=int(os.environ['WMIN'])/10
+Wmin=int(os.environ['WMIN'])
 
 
 ##############################################################################
 ##############################################################################
 ##############################################################################
-def FileNames(rootodirec,scenario,ensemble,startyear,Input,restart,run,
+def FileNames(rootodirec,scenario,ensemble,startyear,Input,restart,run,Wmin,
               vicinity=0,shoreTime=10,resusTime=69,shoreDepen=0,stokes=0):
     """
     A function that returns the filename of the outputfile and the restart file
@@ -102,7 +102,7 @@ def FileNames(rootodirec,scenario,ensemble,startyear,Input,restart,run,
         prefix='Turrell'
         if stokes==1:
             prefix+='_NS'
-        odirec=rootodirec+"Turrell/st_"+str(shoreTime)+"_rt_"+str(resusTime)+"_W_"+str(Wmin)+"_e_"+str(ensemble)+"/"
+        odirec=rootodirec+"Turrell/st_"+str(shoreTime)+"_W_"+str(Wmin)+"_e_"+str(ensemble)+"/"
         ofile=odirec+prefix+"_Wmin="+str(Wmin)+"_st="+str(shoreTime)+"_y="+str(startyear)+"_I="+str(Input)+"_r="+str(restart)+"_run="+str(run)+".nc"
         rfile=odirec+prefix+"_Wmin="+str(Wmin)+"_st="+str(shoreTime)+"_y="+str(startyear)+"_I="+str(Input)+"_r="+str(restart-1)+"_run="+str(run)+".nc"
     return ofile, rfile
@@ -390,7 +390,7 @@ def CreateFieldSet(server,stokes,scenario):
         p_b=math.exp(-timedelta(minutes=10).total_seconds()/(shoreTime*86400.))
         fieldset.add_constant('p_beach',p_b)
         #The minimum wind speed for 
-        fieldset.add_constant('Wmin',Wmin)
+        fieldset.add_constant('Wmin',Wmin)/10
         
     ###########################################################################
     # The coastline type                                                      #

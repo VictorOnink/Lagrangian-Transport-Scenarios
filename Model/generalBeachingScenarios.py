@@ -35,7 +35,7 @@ shoreTime,resusTime=int(os.environ['SHORETIME']),int(os.environ['RESUSTIME']) #d
 #0 = more sand is less likely beaching, 1 = more land is more likely beaching
 shoreDepen = int(os.environ['SHOREDEPEN'])
 #for scenario 4, what is the minimum off-shore wind speed for resuspension?
-Wmin=int(os.environ['WMIN'])/10
+Wmin=int(os.environ['WMIN'])
 #for multiple sub runs, which one is being run
 run=int(os.environ['RUN'])
 os.system('echo "run="'+str(run))
