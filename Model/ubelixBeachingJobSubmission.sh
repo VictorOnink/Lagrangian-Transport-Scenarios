@@ -4,7 +4,7 @@
 # General run parameters                                                            #
 #####################################################################################
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4=Turrell (2020)
-SCENARIO=4
+SCENARIO=3
 #for scenario 1, the time a particle must be near the coast to beach (in days)
 VICINITY=2
 #for scenario 2, the beaching and resuspension timescales (in days)
