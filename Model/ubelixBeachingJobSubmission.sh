@@ -12,7 +12,7 @@ SHORETIME=10
 RESUSTIME=69
 #for scenario 3, the shore dependence scenario.
 SHOREDEPEN=0
-#for scenario 4, the minimum wind speed for resuspension. Divide by 10 for actual value
+#for scenario 4, the minimum wind speed for resusplension. Divide by 10 for actual value
 WMIN=3
 #the starting year of the simulation, and how many years the simulation will take
 STARTTIME=2010
