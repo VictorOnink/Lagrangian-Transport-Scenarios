@@ -105,6 +105,7 @@ def FileNames(rootodirec,scenario,ensemble,startyear,Input,restart,run,Wmin,
         odirec=rootodirec+"Turrell/st_"+str(shoreTime)+"_W_"+str(Wmin)+"_e_"+str(ensemble)+"/"
         ofile=odirec+prefix+"_Wmin="+str(Wmin)+"_st="+str(shoreTime)+"_y="+str(startyear)+"_I="+str(Input)+"_r="+str(restart)+"_run="+str(run)+".nc"
         rfile=odirec+prefix+"_Wmin="+str(Wmin)+"_st="+str(shoreTime)+"_y="+str(startyear)+"_I="+str(Input)+"_r="+str(restart-1)+"_run="+str(run)+".nc"
+    os.system("echo "+ofile)
     return ofile, rfile
 
 ##############################################################################
