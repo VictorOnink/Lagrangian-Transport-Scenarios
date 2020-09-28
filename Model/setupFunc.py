@@ -390,7 +390,7 @@ def CreateFieldSet(server,stokes,scenario):
         p_b=math.exp(-timedelta(minutes=10).total_seconds()/(shoreTime*86400.))
         fieldset.add_constant('p_beach',p_b)
         #The minimum wind speed for 
-        fieldset.add_constant('Wmin',Wmin)/10
+        fieldset.add_constant('Wmin',Wmin/10)
         
     ###########################################################################
     # The coastline type                                                      #
