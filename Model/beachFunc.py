@@ -92,21 +92,22 @@ def beachShoreResus(particle,fieldset,time):
 
 def beachTurrellResus(particle,fieldset,time):
     """
-
     Beaching is implemented the same way as in beachStochastic and beachShoreResus.
     
     Resuspension is based on Turrell 2018 & 2020. Resuspension is possible when
     water levels are at the same level as that of the beached particle. Then,
     only when the offshore wind component is greater than the threshold Wmin
     will the particle actually be resuspended
-
     """
     #Beaching
+    print('check beach')
     if particle.beach==0:
+        print('get dist')
         dist=fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
         if dist<10:
             if random.random()>fieldset.p_beach:
                 particle.beach=1
+                print('yep')
                 # particle.depth=fieldset.eta[t,d,la,lo]
     #Resuspension
     # elif particle.beach==1:
