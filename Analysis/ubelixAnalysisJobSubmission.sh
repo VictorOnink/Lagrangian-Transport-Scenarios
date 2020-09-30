@@ -17,6 +17,9 @@ export RESUSTIME
 #For scenario 3, we need to indicate if beaching is more likely with sand or not sand. 0 = more sand is less likely beaching and resuspension, 1 = more sand is more likely beaching and resuspension
 SHOREDEPEN=0
 export SHOREDEPEN
+#for scenario 4, the minimum wind speed for resusplension. Divide by 10 for actual value
+WMIN=3
+export WMIN
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010
 export STARTYEAR
