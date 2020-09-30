@@ -58,8 +58,8 @@ class Parameters(object):
         os.system('echo The beaching scenario is '+self.input)
         
 class FileNames(object):
-    def __init__(self,Parameters):
-        Parameters.__init__(self)
+    def __init__(self,par):
+        par.__init__(self)
         
     def printScenario(self):
         os.system('echo The beaching scenario is '+self.scenario)
