@@ -15,6 +15,7 @@ class FileNames(object):
         #Naming the scenario
         scenarionames = {0:'AdvectionDiffusionOnly',1:'CoastalProximity',2:'Stochastic',
                          3:'ShoreDependentResuspension',4:'TurrellResuspension'}
+        self.sce=sce
         self.scenario = scenarionames[sce]
         #Beaching scenario specific parameters
         if self.scenario == 'CoastalProximity':
@@ -36,6 +37,7 @@ class FileNames(object):
         #Input scenario specific parameters
         inputnames={0:'Jambeck',1:'Lebreton'}
         self.input = inputnames[inp]
+        self.inp
         #Number of runs in each input scenario
         if self.input == 'Jambeck':
             self.run = 8
@@ -111,24 +113,24 @@ class FileNames(object):
         prefix=prefixDeterminant(self.scenario,self.stokes)
         if self.scenario=='AdvectionDiffusionOnly':
             odirec=self.rootdirec+"AdvDifOnly_e_"+str(self.ensemble)+"/"
-            ofile=odirec+prefix+"_y="+str(self.startyear)+"_I="+str(self.Input)+"_r="+str(self.restart)+"_run="+str(self.run)+".nc"
-            rfile=odirec+prefix+"_y="+str(self.startyear)+"_I="+str(self.Input)+"_r="+str(self.restart-1)+"_run="+str(self.run)+".nc"
+            ofile=odirec+prefix+"_y="+str(self.startyear)+"_I="+str(self.inp)+"_r="+str(self.restart)+"_run="+str(self.run)+".nc"
+            rfile=odirec+prefix+"_y="+str(self.startyear)+"_I="+str(self.inp)+"_r="+str(self.restart-1)+"_run="+str(self.run)+".nc"
         elif self.scenario=='CoastalProximity':
             odirec=self.rootdirec+"coastal_v_"+str(self.vicinity)+"_e_"+str(self.ensemble)+"/"
-            ofile=odirec+prefix+"_v="+str(self.vicinity)+"_y="+str(self.startyear)+"_I="+str(self.Input)+"_r="+str(self.restart)+"_run="+str(self.run)+".nc"
-            rfile=odirec+prefix+"_v="+str(self.vicinity)+"_y="+str(self.startyear)+"_I="+str(self.Input)+"_r="+str(self.restart-1)+"_run="+str(self.run)+".nc"
+            ofile=odirec+prefix+"_v="+str(self.vicinity)+"_y="+str(self.startyear)+"_I="+str(self.inp)+"_r="+str(self.restart)+"_run="+str(self.run)+".nc"
+            rfile=odirec+prefix+"_v="+str(self.vicinity)+"_y="+str(self.startyear)+"_I="+str(self.inp)+"_r="+str(self.restart-1)+"_run="+str(self.run)+".nc"
         elif self.scenario=='Stochastic':
             odirec=self.rootdirec+"st_"+str(self.shoretime)+"_rs_"+str(self.resustime)+"_e_"+str(self.ensemble)+"/"
-            ofile=odirec+prefix+"_st="+str(self.shoretime)+"_rt="+str(self.resustime)+"_y="+str(self.startyear)+"_I="+str(self.Input)+"_r="+str(self.restart)+"_run="+str(self.run)+".nc"
-            rfile=odirec+prefix+"_st="+str(self.shoretime)+"_rt="+str(self.resustime)+"_y="+str(self.startyear)+"_I="+str(self.Input)+"_r="+str(self.restart-1)+"_run="+str(self.run)+".nc"
+            ofile=odirec+prefix+"_st="+str(self.shoretime)+"_rt="+str(self.resustime)+"_y="+str(self.startyear)+"_I="+str(self.inp)+"_r="+str(self.restart)+"_run="+str(self.run)+".nc"
+            rfile=odirec+prefix+"_st="+str(self.shoretime)+"_rt="+str(self.resustime)+"_y="+str(self.startyear)+"_I="+str(self.inp)+"_r="+str(self.restart-1)+"_run="+str(self.run)+".nc"
         elif self.scenario=='ShoreDependentResuspension':
             odirec=self.rootdirec+"SDResus_"+str(self.shoreDepen)+"/st_"+str(self.shoretime)+"_rt_"+str(self.resustime)+"_e_"+str(self.ensemble)+"/"
-            ofile=odirec+prefix+"_dep="+str(self.shoreDepen)+"_st="+str(self.shoretime)+"_rt="+str(self.resustime)+"_y="+str(self.startyear)+"_I="+str(self.Input)+"_r="+str(self.restart)+"_run="+str(self.run)+".nc"
-            rfile=odirec+prefix+"_dep="+str(self.shoreDepen)+"_st="+str(self.shoretime)+"_rt="+str(self.resustime)+"_y="+str(self.startyear)+"_I="+str(self.Input)+"_r="+str(self.restart-1)+"_run="+str(self.run)+".nc"
+            ofile=odirec+prefix+"_dep="+str(self.shoreDepen)+"_st="+str(self.shoretime)+"_rt="+str(self.resustime)+"_y="+str(self.startyear)+"_I="+str(self.inp)+"_r="+str(self.restart)+"_run="+str(self.run)+".nc"
+            rfile=odirec+prefix+"_dep="+str(self.shoreDepen)+"_st="+str(self.shoretime)+"_rt="+str(self.resustime)+"_y="+str(self.startyear)+"_I="+str(self.inp)+"_r="+str(self.restart-1)+"_run="+str(self.run)+".nc"
         elif self.scenario=='TurrellResuspension':
             odirec=self.rootdirec+"Turrell/st_"+str(self.shoreTime)+"_W_"+str(self.Wmin)+"_e_"+str(self.ensemble)+"/"
-            ofile=odirec+prefix+"_Wmin="+str(self.Wmin)+"_st="+str(self.shoretime)+"_y="+str(self.startyear)+"_I="+str(self.Input)+"_r="+str(self.restart)+"_run="+str(self.run)+".nc"
-            rfile=odirec+prefix+"_Wmin="+str(self.Wmin)+"_st="+str(self.shoretime)+"_y="+str(self.startyear)+"_I="+str(self.Input)+"_r="+str(self.restart-1)+"_run="+str(self.run)+".nc"
+            ofile=odirec+prefix+"_Wmin="+str(self.Wmin)+"_st="+str(self.shoretime)+"_y="+str(self.startyear)+"_I="+str(self.inp)+"_r="+str(self.restart)+"_run="+str(self.run)+".nc"
+            rfile=odirec+prefix+"_Wmin="+str(self.Wmin)+"_st="+str(self.shoretime)+"_y="+str(self.startyear)+"_I="+str(self.inp)+"_r="+str(self.restart-1)+"_run="+str(self.run)+".nc"
         os.system("echo "+ofile)
         return ofile, rfile
 
