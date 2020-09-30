@@ -10,6 +10,9 @@ This will be a class that I will use for all my file naming
 import os
 
 class parameters:
+    """
+    This class is for storing all the different run parameters 
+    """
     def __init__(self,sce,vic,st,rt,sd,Wmin,inp,year,stoke,ens,simlen):
         #Naming the scenario
         scenarionames = {0:'AdvectionDiffusionOnly',1:'CoastalProximity',2:'Stochastic',
