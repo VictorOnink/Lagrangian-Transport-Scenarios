@@ -16,5 +16,5 @@ par=parameters(sce=int(os.environ['SCENARIO']),vic=int(os.environ['VICINITY']),
                stoke=int(os.environ['STOKES']),ens=int(os.environ['ENSEMBLE']),
                simlen=int(os.environ['SIMLEN']))
 os.system('echo The beaching scenario is '+par.scenario)
-# par.printScenario()
+par.printScenario()
 # FileNames.printScenario()
