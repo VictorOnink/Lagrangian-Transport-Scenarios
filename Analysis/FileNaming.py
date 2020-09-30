@@ -153,7 +153,7 @@ class FileNames(object):
                         0:'',1:'_NS'}
             return 'Timeslice_'+components[scenario]+components[stokes]
         date='01-01-2020'
-        ofile=prefixDeterminant(self.scenario,self.stokes)+'_sy='+str(self.startyear)+'_'+date+'.npy'
+        ofile=sliceDirec+prefixDeterminant(self.scenario,self.stokes)+'_sy='+str(self.startyear)+'_d='+date+'.npy'
         os.system("echo "+ofile)
         return ofile
         
