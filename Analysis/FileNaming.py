@@ -56,7 +56,7 @@ class parameters:
     
     @classmethod
     def printScenario(self):
-        os.system('echo The beaching scenario is '+self.scenario)
+        os.system('echo The beaching scenario is '+parameters.scenario)
         
 # class filenames(parameters):
 #     def __init__(self):
