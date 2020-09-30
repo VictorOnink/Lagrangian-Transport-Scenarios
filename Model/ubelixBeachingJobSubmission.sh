@@ -15,7 +15,7 @@ SHOREDEPEN=0
 #for scenario 4, the minimum wind speed for resusplension. Divide by 10 for actual value
 WMIN=3
 #the starting year of the simulation, and how many years the simulation will take
-STARTTIME=2010
+STARTYEAR=2010
 #Which input distribution do we want to use? 0=Jambeck, 1=lebreton
 INPUT=0
 #Start year of the simulation. 0 = new simulation, otherwise it picks up from a previous simulation
@@ -29,12 +29,11 @@ ENSEMBLE=1
 
 export SCENARIO
 export VICINITY
-export ENSEMBLE
 export SHORETIME
 export RESUSTIME
 export SHOREDEPEN
 export WMIN
-export STARTTIME
+export STARTYEAR
 export INPUT
 export START
 export SIMLEN
@@ -43,27 +42,27 @@ export ENSEMBLE
 
 #Setting the name of the job
 if [ "$SCENARIO" -eq "0" ]; then
-	RUNNAMEPREFIX="AdvDifOnly_y="${STARTTIME}"_"
+	RUNNAMEPREFIX="AdvDifOnly_y="${STARTYEAR}"_"
 	if [ "$STOKES" -eq "1" ]; then
 	    RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
         fi
 elif [ "$SCENARIO" -eq "1" ]; then
-	RUNNAMEPREFIX="Prox_vic="${VICINITY}"_y="${STARTTIME}"_"
+	RUNNAMEPREFIX="Prox_vic="${VICINITY}"_y="${STARTYEAR}"_"
 	if [ "$STOKES" -eq "1" ]; then
 	    RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
         fi
 elif [ "$SCENARIO" -eq "2" ]; then
-	RUNNAMEPREFIX="Stochastic_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTTIME}"_"
+	RUNNAMEPREFIX="Stochastic_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTYEAR}"_"
 	if [ "$STOKES" -eq "1" ]; then
 	    RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
         fi
 elif [ "$SCENARIO" -eq "3" ]; then
-        RUNNAMEPREFIX="SDResus_SD="${shoreDepen}"_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTTIME}"_"
+        RUNNAMEPREFIX="SDResus_SD="${shoreDepen}"_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTYEAR}"_"
         if [ "$STOKES" -eq "1" ]; then
 	    RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
         fi
 elif [ "$SCENARIO" -eq "4" ]; then
-        RUNNAMEPREFIX="Turrell_Wmin="${WMIN}"_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTTIME}"_"
+        RUNNAMEPREFIX="Turrell_Wmin="${WMIN}"_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTYEAR}"_"
         if [ "$STOKES" -eq "1" ]; then
 	    RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
         fi
@@ -104,7 +103,7 @@ do
 	   part10="source /home/ubelix/climate/vo18e689/anaconda3/bin/activate py3_parcels_v2_2"
 	   part11='cd "/home/ubelix/climate/vo18e689/codes/Next-Stage-Plastic-Beaching/Model/"'
 	   #And now the actual running of the code
-	   part12="python generalBeachingScenarios.py -p 10 -v"
+	   part12="python ModelMasterFile.py -p 10 -v"
 	   #and now the creation of the submission file
 	   for i in {1..12} 
 	   do

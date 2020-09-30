@@ -155,4 +155,3 @@ def initialInput(particle,fieldset,time):
                     particle.lat=potLat
                     particle.lon=potLon
                 check+=1
-

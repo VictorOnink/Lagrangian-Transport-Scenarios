@@ -10,9 +10,9 @@ Here is one general file that will contain all the different beaching scenarios
 from parcels import ErrorCode
 import parcels.rng as rng
 #Loading the functions I have for the particle classes, advection, beaching and setup
-from beachFunc import DeleteParticle,beachAdvDifOnly,beachVicinity,beachStochastic,beachShoreResus,beachTurrellResus
-from transportFunc import AntiBeachNudging,AdvectionRK4_floating,BrownianMotion2D_floating,initialInput
-from setupFunc import FileNames,restartInitialPosition,CreatePSET,CreateFieldSet
+from ParticleBeaching import DeleteParticle
+from ParticleSetup import FileNames,restartInitialPosition,CreatePSET,ParticleBehavior
+from DataSetup import CreateFieldSet
 #And various other packages of use
 from datetime import timedelta, datetime
 import numpy as np
@@ -24,8 +24,10 @@ import os
 os.system('echo "Loading the general run parameters"')
 #0=First Order, 1 = Coastal proximity, 2 = simple beaching/resuspension,
 #3 = coasttype dependence, 4= Turrell (2020)
-scenario=int(os.environ['SCENARIO'])
-os.system('echo "scenario="'+str(scenario))
+scenarionames={0:'AdvectionDiffusionOnly',1:'CoastalProximity',2:'Stochastic',
+               3:'ShoreDependentResuspension',4:'TurrellResuspension'}
+scenario=scenarionames[int(os.environ['SCENARIO'])]
+os.system('echo "scenario = "'+str(scenario))
 #for scenario 1, the time a particle needs to be near the coast to be deleted
 vicinity=int(os.environ['VICINITY']) #days
 os.system('echo "vicinity="'+str(vicinity))
@@ -45,11 +47,13 @@ os.system('echo "run="'+str(run))
 restart=int(os.environ['RESTARTNUM'])
 os.system('echo "restart="'+str(restart))
 #starting year of the simulation
-startyear=int(os.environ['STARTTIME'])
+startyear=int(os.environ['STARTYEAR'])
 os.system('echo "starting year="'+str(startyear))
 #Which input file we use. if input=0, then we use Jambeck
-Input=int(os.environ['INPUT'])
-os.system('echo "input="'+str(Input))
+inp=int(os.environ['INPUT'])
+inputnames={0:'Jambeck',1:'Lebreton'}
+Input=inputnames[inp]
+os.system('echo "input scenario = "'+str(Input))
 #Inclusion of Stokes Drift. 0 = included, 1 = not included
 stokes = int(os.environ['STOKES'])
 #The option to run multiple ensembles, which we of course don't want saved in the
@@ -59,7 +63,6 @@ ensemble = int(os.environ['ENSEMBLE'])
 #To save myself a lot of hassle, we will have a server parameter:
 # 0 = kup cluster, 1 = ubelix
 server = 1
-
 
 #%%
 os.system('echo "Create the fieldset"')
@@ -101,21 +104,21 @@ simulationlength=endtime-starttime
 # previous file                                                               #
 ###############################################################################
 if restart==0:
-    if Input==0:
+    if Input=='Jambeck':
         lons=np.load(dataInputdirec+'Jambeck2010/Jam'+str(2010)+'Lons'+str(run)+'.npy')
         lats=np.load(dataInputdirec+'Jambeck2010/Jam'+str(2010)+'Lats'+str(run)+'.npy')
         weights=np.load(dataInputdirec+'Jambeck2010/Jam'+str(2010)+'Weight'+str(run)+'.npy')
-    if Input==1:
+    if Input=='Lebreton':
         lons=np.load(dataInputdirec+'Lebreton2010/Leb'+str(2010)+'Lons'+str(run)+'.npy')
         lats=np.load(dataInputdirec+'Lebreton2010/Leb'+str(2010)+'Lats'+str(run)+'.npy')
         weights=np.load(dataInputdirec+'Lebreton2010/Leb'+str(2010)+'Weight'+str(run)+'.npy')
     beached=np.zeros(len(lons),dtype=np.int32)
     age_par=np.zeros(len(lons),dtype=np.int32)
-    if scenario==1:
+    if scenario=='CoastalProximity':
         prox_par=np.zeros(len(lons),dtype=np.int32)
     repeatStep=timedelta(days=31)
 else:
-    if scenario==1:
+    if scenario=='CoastalProximity':
         lons,lats,beached,age_par,prox_par,weights=restartInitialPosition(rfile,restart,scenario)
     else:
         lons,lats,beached,age_par,weights=restartInitialPosition(rfile,restart,scenario)
@@ -127,7 +130,7 @@ lons[lons>180]-=360
 ###############################################################################
 
 #Creating the particle set, with an initial re-release time of 4 weeks if restart==0
-if scenario==1:
+if scenario=='CoastalProximity':
     pset = CreatePSET(scenario,lons,lats,beached,age_par,weights,starttime,
                       repeatStep,fieldset,prox_par)
 else:
@@ -137,29 +140,8 @@ else:
 rng.seed(102334155)
 
 #%% 
-os.system('echo "Loading the relevant kernels"')
-
-###############################################################################
-# The beaching kernel                                                         #
-###############################################################################
-if scenario==0:
-    beachK=pset.Kernel(beachAdvDifOnly)
-elif scenario==1:
-    beachK=pset.Kernel(beachVicinity)
-elif scenario==2:
-    beachK=pset.Kernel(beachStochastic)
-elif scenario==3:
-    beachK=pset.Kernel(beachShoreResus)
-elif scenario==4:
-    beachK=pset.Kernel(beachTurrellResus)
-        
-###############################################################################
-# And now the overall kernel                                                  #
-###############################################################################
-if scenario==0:
-    totalKernel=pset.Kernel(initialInput)+pset.Kernel(AdvectionRK4_floating)+pset.Kernel(BrownianMotion2D_floating)+beachK
-else:
-    totalKernel=pset.Kernel(initialInput)+pset.Kernel(AdvectionRK4_floating)+pset.Kernel(BrownianMotion2D_floating)+pset.Kernel(AntiBeachNudging)+beachK
+os.system('echo "Defining the particle behavior"')
+ParticleKernel=ParticleBehavior(pset,scenario)
     
 #%%
 ###############################################################################
@@ -169,11 +151,11 @@ os.system('echo "The actual calculation of the particle trajectories"')
 pfile = pset.ParticleFile(name=ofile,
                           outputdt=timedelta(hours=24))
 
-pset.execute(totalKernel,
-              runtime=timedelta(days=simulationlength.days),
-              dt=timedelta(minutes=10),
-              recovery={ErrorCode.ErrorOutOfBounds: DeleteParticle},
-              output_file=pfile
-              )
+pset.execute(ParticleKernel,
+             runtime=timedelta(days=simulationlength.days),
+             dt=timedelta(minutes=10),
+             recovery={ErrorCode.ErrorOutOfBounds: DeleteParticle},
+             output_file=pfile
+             )
 
 pfile.export()

@@ -11,7 +11,9 @@ import math
 from parcels import rng as random
 import os
 
-scenario=int(os.environ['SCENARIO'])
+scenarionames={0:'AdvectionDiffusionOnly',1:'CoastalProximity',2:'Stochastic',
+               3:'ShoreDependentResuspension',4:'TurrellResuspension'}
+scenario=scenarionames[int(os.environ['SCENARIO'])]
 shoreDepen = int(os.environ['SHOREDEPEN'])
 shoreTime,resusTime=int(os.environ['SHORETIME']),int(os.environ['RESUSTIME']) #days, days
 
@@ -163,7 +165,7 @@ def ProbShore(shoreDepen,scenario,sandy):
     p_resus, which is an array with the same size as sandy.
 
     """
-    if scenario==3:
+    if scenario=='ShoreDependentResuspension':
         if shoreDepen==0:
             p_resus=resusTime*(0.75+0.25*sandy)
         if shoreDepen==1:
