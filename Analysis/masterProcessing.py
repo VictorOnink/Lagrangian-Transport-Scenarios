@@ -7,7 +7,7 @@ Created on Tue Sep 29 15:53:54 2020
 """
 import os
 from FileNaming import parameters
-from FileNaming import FileNames
+# from FileNaming import FileNames
 #%%
 par=parameters(sce=int(os.environ['SCENARIO']),vic=int(os.environ['VICINITY']),
                st=int(os.environ['SHORETIME']),rt=int(os.environ['RESUSTIME']),
