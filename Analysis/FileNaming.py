@@ -9,7 +9,7 @@ This will be a class that I will use for all my file naming
 """
 import os
 
-class parameters:
+class parameters(object):
     """
     This class is for storing all the different run parameters 
     """
