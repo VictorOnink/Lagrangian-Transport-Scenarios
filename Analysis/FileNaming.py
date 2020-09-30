@@ -10,6 +10,9 @@ This will be a class that I will use for all my file naming
 import os
 
 class parameters:
+    scenarionames = {0:'AdvectionDiffusionOnly',1:'CoastalProximity',2:'Stochastic',
+                         3:'ShoreDependentResuspension',4:'TurrellResuspension'}
+    scenario = scenarionames[int(os.environ['SCENARIO'])]
     def __init__(self):
         #Naming the scenario
         scenarionames = {0:'AdvectionDiffusionOnly',1:'CoastalProximity',2:'Stochastic',

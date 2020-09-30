@@ -9,5 +9,5 @@ import os
 from FileNaming import parameters
 #%%
 os.system('echo '+str(int(os.environ['SCENARIO'])))
-os.system('echo The beaching scenario is '+parameters.input)
+os.system('echo The beaching scenario is '+parameters.scenario)
 parameters.printScenario()
