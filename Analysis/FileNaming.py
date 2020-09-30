@@ -147,7 +147,16 @@ class FileNames(object):
         #but in a subdirectory /timeslices
         sliceDirec=parcelsFile[:parcelsFile.rfind("/")]+'/timeslices/'
         os.system("echo "+sliceDirec)
-
-
+        def prefixDeterminant(scenario,stokes):
+            components={'AdvectionDiffusionOnly':'AdvDifOnly','CoastalProximity':'Prox','Stochastic':'Stochastic',
+                        'ShoreDependentResuspension':'SDResus','TurrellResuspension':'Turrell',
+                        0:'',1:'_NS'}
+            return 'Timeslice_'+components[scenario]+components[stokes]
+        date='01-01-2020'
+        ofile=prefixDeterminant(self.scenario,self.stokes)+'_sy='+str(self.startyear)+'_'+date+'.npy'
+        os.system("echo "+ofile)
+        return ofile
+        
+        
     
     
