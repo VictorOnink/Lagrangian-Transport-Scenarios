@@ -38,6 +38,7 @@ class parameters(object):
         #Input scenario specific parameters
         inputnames={0:'Jambeck',1:'Lebreton'}
         self.input = inputnames[inp]
+        os.system('echo The beaching scenario is '+self.input)
         #Number of runs in each input scenario
         if self.input == 'Jambeck':
             self.run = 8
@@ -53,7 +54,7 @@ class parameters(object):
         #Length of the simulation (years)
         self.simlen = simlen
     
-    @classmethod
+   
     def printScenario(self):
         os.system('echo The beaching scenario is '+self.input)
         
