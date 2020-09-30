@@ -9,7 +9,7 @@ This will be a class that I will use for all my file naming
 """
 import os
 
-class parameters(object):
+class Parameters(object):
     """
     This class is for storing all the different run parameters 
     """
@@ -38,7 +38,6 @@ class parameters(object):
         #Input scenario specific parameters
         inputnames={0:'Jambeck',1:'Lebreton'}
         self.input = inputnames[inp]
-        os.system('echo The beaching scenario is '+self.input)
         #Number of runs in each input scenario
         if self.input == 'Jambeck':
             self.run = 8
@@ -58,13 +57,13 @@ class parameters(object):
     def printScenario(self):
         os.system('echo The beaching scenario is '+self.input)
         
-# class FileNames(parameters):
-#     def __init__(self):
-#         parameters.__init__(self)
+class FileNames(Parameters):
+    def __init__(self):
+        Parameters.__init__(self)
         
-#     @classmethod
-#     def printScenario(self):
-#         os.system('echo The beaching scenario is '+self.scenario)
+    @classmethod
+    def printScenario(self):
+        os.system('echo The beaching scenario is '+self.scenario)
 
     
     
