@@ -11,7 +11,8 @@ import os
 
         
 class FileNames(object):
-    def __init__(self,sce,vic,st,rt,sd,Wmin,inp,year,stoke,ens,simlen,server=1):
+    def __init__(self,sce,vic,st,rt,sd,Wmin,inp,year,stoke,ens,simlen,server=1,
+                 restart=0,run=None):
         #Naming the scenario
         scenarionames = {0:'AdvectionDiffusionOnly',1:'CoastalProximity',2:'Stochastic',
                          3:'ShoreDependentResuspension',4:'TurrellResuspension'}
@@ -39,10 +40,15 @@ class FileNames(object):
         self.input = inputnames[inp]
         self.inp = inp
         #Number of runs in each input scenario
-        if self.input == 'Jambeck':
-            self.run = 8
-        elif self.input == 'Lebreton':
-            self.run = 3
+        if run==None:
+            if self.input == 'Jambeck':
+                self.run = 8
+            elif self.input == 'Lebreton':
+                self.run = 3
+        else:
+            self.run=run
+        #Restart position of simulation. 0 = new similation
+        self.restart=restart
         #Parameters relevant for all scenarios
         #Starting year of the simulation
         self.startyear = year
