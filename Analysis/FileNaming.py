@@ -140,19 +140,17 @@ class FileNames(object):
         os.system("echo "+ofile)
         return ofile, rfile
     
-    def timeSlice(self):
+    def timeSlice(self,date):
         #Get the raw parcels file we use for the input
         parcelsFile,_=self.parcelsOutput()
         #The timeslices will be stored in the same directory as the parcels file,
         #but in a subdirectory /timeslices
         sliceDirec=parcelsFile[:parcelsFile.rfind("/")]+'/timeslices/'
-        os.system("echo "+sliceDirec)
         def prefixDeterminant(scenario,stokes):
             components={'AdvectionDiffusionOnly':'AdvDifOnly','CoastalProximity':'Prox','Stochastic':'Stochastic',
                         'ShoreDependentResuspension':'SDResus','TurrellResuspension':'Turrell',
                         0:'',1:'_NS'}
             return 'Timeslice_'+components[scenario]+components[stokes]
-        date='01-01-2020'
         ofile=sliceDirec+prefixDeterminant(self.scenario,self.stokes)+'_sy='+str(self.startyear)+'_d='+date+'.npy'
         os.system("echo "+ofile)
         return ofile
