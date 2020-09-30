@@ -16,3 +16,4 @@ fn=FileNames(sce=int(os.environ['SCENARIO']),vic=int(os.environ['VICINITY']),
              simlen=int(os.environ['SIMLEN']))
 os.system('echo The beaching scenario is '+fn.scenario)
 fn.printScenario()
+fn.parcelsOutput()
