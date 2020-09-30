@@ -15,7 +15,7 @@ class FileNames(object):
         #Naming the scenario
         scenarionames = {0:'AdvectionDiffusionOnly',1:'CoastalProximity',2:'Stochastic',
                          3:'ShoreDependentResuspension',4:'TurrellResuspension'}
-        self.sce=sce
+        self.sce = sce
         self.scenario = scenarionames[sce]
         #Beaching scenario specific parameters
         if self.scenario == 'CoastalProximity':
@@ -37,7 +37,7 @@ class FileNames(object):
         #Input scenario specific parameters
         inputnames={0:'Jambeck',1:'Lebreton'}
         self.input = inputnames[inp]
-        self.inp
+        self.inp = inp
         #Number of runs in each input scenario
         if self.input == 'Jambeck':
             self.run = 8
