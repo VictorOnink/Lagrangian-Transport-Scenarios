@@ -6,7 +6,7 @@ Created on Tue Sep 29 15:53:54 2020
 @author: victoronink
 """
 import os
-from FileNaming import parameters,filenames
+from FileNaming import parameters,FileNames
 #%%
 par=parameters(sce=int(os.environ['SCENARIO']),vic=int(os.environ['VICINITY']),
                st=int(os.environ['SHORETIME']),rt=int(os.environ['RESUSTIME']),
@@ -15,5 +15,4 @@ par=parameters(sce=int(os.environ['SCENARIO']),vic=int(os.environ['VICINITY']),
                stoke=int(os.environ['STOKES']),ens=int(os.environ['ENSEMBLE']),
                simlen=int(os.environ['SIMLEN']))
 par.printScenario()
-
-os.system('echo The beaching scenario is '+filenames.scenario)
+FileNames.printScenario()

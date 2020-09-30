@@ -15,7 +15,6 @@ class parameters:
         scenarionames = {0:'AdvectionDiffusionOnly',1:'CoastalProximity',2:'Stochastic',
                          3:'ShoreDependentResuspension',4:'TurrellResuspension'}
         self.scenario = scenarionames[sce]
-        
         #Beaching scenario specific parameters
         if self.scenario == 'CoastalProximity':
             #Time near coast before beaching
@@ -33,7 +32,6 @@ class parameters:
             self.shoretime = st
             #Resuspension windspeed (m/s)
             self.Wmin = Wmin
-        
         #Input scenario specific parameters
         inputnames={0:'Jambeck',1:'Lebreton'}
         self.input = inputnames[inp]
@@ -42,7 +40,6 @@ class parameters:
             self.run = 8
         elif self.input == 'Lebreton':
             self.run = 3
-
         #Parameters relevant for all scenarios
         #Starting year of the simulation
         self.startyear = year
@@ -57,6 +54,13 @@ class parameters:
     def printScenario(self):
         os.system('echo The beaching scenario is '+self.scenario)
         
-# class filenames(parameters):
-#     def __init__(self):
-#         parameters.__init__(self)
+class filenames(parameters):
+    def __init__(self):
+        parameters.__init__(self)
+        
+    @classmethod
+    def printScenario(self):
+        os.system('echo The beaching scenario is '+self.scenario)
+
+    
+    
