@@ -250,6 +250,6 @@ def ParticleBehavior(pset,scenario):
     if scenario=='AdvectionDiffusionOnly':
         totalKernel=baseKernel+pset.Kernel(beachK[scenario])
     else:
-        totalKernel=baseKernel+pset.Kernel(AntiBeachNudging)+beachK
+        totalKernel=baseKernel+pset.Kernel(AntiBeachNudging)+pset.Kernel(beachK[scenario])
     return totalKernel
 
