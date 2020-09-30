@@ -139,6 +139,15 @@ class FileNames(object):
             rfile=odirec+prefix+"_Wmin="+str(self.Wmin)+"_st="+str(self.shoretime)+"_y="+str(self.startyear)+"_I="+str(self.inp)+"_r="+str(self.restart-1)+"_run="+str(self.run)+".nc"
         os.system("echo "+ofile)
         return ofile, rfile
+    
+    def timeSlice(self):
+        #Get the raw parcels file we use for the input
+        parcelsFile,_=self.parcelsOutput()
+        #The timeslices will be stored in the same directory as the parcels file,
+        #but in a subdirectory /timeslices
+        sliceDirec=parcelsFile[:parcelsFile.rfind("/")]+'/timeslices/'
+        os.system("echo "+sliceDirec)
+
 
     
     
