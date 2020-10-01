@@ -1,6 +1,6 @@
 import os
-
 from dotenv import load_dotenv
+from datetime import timedelta
 
 load_dotenv()
 
@@ -60,9 +60,23 @@ STOKES: int = int(os.environ['STOKES'])
 # same folder since they they would overwrite each other...
 ENSEMBLE = int(os.environ['ENSEMBLE'])
 
+#The integration timestep of the model
+TIME_STEP = timedelta(minutes=10)
 
 # LOG
 os.system('echo "scenario = '+str(SCENARIO_NAME))
+if SCENARIO_NAME=='CoastalProximity':
+    os.system('echo "vicinity = "' + str(VICINITY))
+elif SCENARIO_NAME=="Stochastic":
+    os.system('echo "shoretime = "' + str(SHORE_TIME))
+    os.system('echo "resustime = "' + str(RESUS_TIME))
+elif SCENARIO_NAME=='ShoreDependentResuspension':
+    os.system('echo "shoretime = "' + str(SHORE_TIME))
+    os.system('echo "resustime = "' + str(RESUS_TIME))
+    os.system('echo "shoredepen = "' + str(SHORE_DEP))
+elif SCENARIO_NAME=='TurrellResuspension':
+    os.system('echo "shoretime = "' + str(SHORE_TIME))
+    os.system('echo "Wmin = "' + str(WMIN))
 os.system('echo "run="'+str(RUN))
 os.system('echo "restart="'+str(RESTART))
 os.system('echo "starting year="'+str(START_YEAR))
