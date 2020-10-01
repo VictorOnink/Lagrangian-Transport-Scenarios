@@ -17,4 +17,5 @@ fn=FileNames(sce=int(os.environ['SCENARIO']),vic=int(os.environ['VICINITY']),
 os.system('echo The beaching scenario is '+fn.scenario)
 fn.parcelsOutput()
 date='01-01-2020'
+suffix='_lon'
 fn.timeSlice(date)
