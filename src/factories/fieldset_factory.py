@@ -4,14 +4,12 @@ from netCDF4 import Dataset
 import numpy as np
 from parcels import GeographicPolar, Geographic,FieldSet,Field
 import math
-from datetime import timedelta
 
 
 class FieldSetFactory():
     """"""
     @classmethod
     def create_fieldset(cls, server: int, stokes: int,
-                        stokes_drift: bool = False,
                         border_current: bool = False,
                         diffusion: bool = False,
                         landID: bool = False,
@@ -46,7 +44,7 @@ class FieldSetFactory():
         input_dir = _get_input_directory(server=server)
 
         fieldset = _get_base_fieldset(data_dir=data_dir)
-        if stokes_drift:
+        if stokes==0:
             _add_stokes_drift(fieldset=fieldset, input_dir=input_dir)
         if border_current:
             _add_border_current(fieldset=fieldset, input_dir=input_dir)
@@ -268,7 +266,7 @@ def _compute_ShoreResus_Field(input_dir: str):
     :param SCENARIO:
     :return:
     """
-    if settings.SCENARIO == 'ShoreDependentResuspension':
+    if settings.SCENARIO_NAME == 'ShoreDependentResuspension':
         s = np.load(input_dir + 'coastline_sand_vs_not_sand.npy')
         if settings.SHORE_DEP == 0:
             resusCor = settings.RESUS_TIME*(0.75+0.25*s)
