@@ -4,6 +4,7 @@ import src.settings as settings
 import src.scenarios.base_scenario as base
 from src.factories.fieldset_factory import FieldSetFactory
 from src.factories.particle_factory import ParticleFactory
+from src.factories.execute_factory import ExecuteFactory
 
 
 class CoastalProximity(base.BaseScenario):
@@ -20,12 +21,12 @@ class CoastalProximity(base.BaseScenario):
         return fieldset
 
 
-    def create_particle(self) -> JITParticle:
-        particle = ParticleFactory().create_particle()
+    def create_particle(self,fieldset: FieldSet) -> JITParticle:
+        particle = ParticleFactory().create_particle_set(server=self.server,fieldset=fieldset)
         return particle
 
-    def run(self) -> None:
-        pass
+    def run(self, pset: ParticleSet) -> None:
+        ExecuteFactory().execute_scenario(server=self.server,pset=pset)
 
 def _file_names_proximity(input_dir: str):
     prefix=base.prefix_determinant(settings.SCENARIO_NAME,settings.STOKES)

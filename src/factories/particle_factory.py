@@ -5,8 +5,7 @@ from parcels import JITParticle, Variable
 from operator import attrgetter
 from src.factories.fieldset_factory import _get_input_directory
 from datetime import timedelta, datetime
-from src.scenarios.coastal_proximity import _create_pset_proximity,_file_names_proximity,_get_restart_variables_proximity,_particle_input_new_simulation_proximity
-
+import src.scenarios.coastal_proximity as proximity
 
 class ParticleFactory:
     """A factory class for the particles"""
@@ -96,7 +95,7 @@ def _nan_removal(dataset: netcdf_dataset, variable: str, last_selec: array,
 
 def _get_rfile(input_dir: str):
     if settings.SCENARIO_NAME=='CoastalProximity':
-        _,rfile=_file_names_proximity(input_dir)
+        _,rfile=proximity._file_names_proximity(input_dir)
     return rfile
 
 def _get_restart_variables(rfile):
@@ -122,13 +121,13 @@ def _get_restart_variables(rfile):
 
     """
     if settings.SCENARIO_NAME=='CoastalProximity':
-        var_dict=_get_restart_variables_proximity(rfile)
+        var_dict=proximity._get_restart_variables_proximity(rfile)
     #Returning the dictionary
     return var_dict
 
 def _particle_input_new_simulation(input_dir: str):
     if settings.SCENARIO_NAME=='CoastalProximity':
-        var_dict=_particle_input_new_simulation_proximity(input_dir)
+        var_dict=proximity._particle_input_new_simulation_proximity(input_dir)
     return var_dict
 
 def _get_repeat_dt():
@@ -147,5 +146,5 @@ def _get_start_end_time():
 def _create_pset(fieldset: FieldSet, particle_type: pclass, var_dict: dict,
                            start_time: datetime, repeat_dt: timedelta):
     if settings.SCENARIO_NAME=='CoastalProximity':
-        pset=_create_pset_proximity(fieldset, particle_type, var_dict, start_time, repeat_dt)
+        pset=proximity._create_pset_proximity(fieldset, particle_type, var_dict, start_time, repeat_dt)
     return pset

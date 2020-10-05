@@ -7,7 +7,9 @@ def run():
     stokes = set.STOKES
     server = set.SERVER
     scenario = ScenarioFactory.create_scenario(scenario_name=scenario_name, stokes=stokes, server=server)
-    scenario
+    fieldset = scenario.create_fieldset()
+    pset = scenario.create_particle(fieldset)
+    scenario.run(pset)
 
 
 if __name__ == "__main__":

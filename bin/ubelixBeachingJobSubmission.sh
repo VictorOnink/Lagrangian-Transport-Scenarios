@@ -101,9 +101,9 @@ do
 	   #loading the bash and setting the environment
 	   part9="source /home/ubelix/climate/vo18e689/.bash_profile"
 	   part10="source /home/ubelix/climate/vo18e689/anaconda3/bin/activate py3_parcels_v2_2"
-	   part11='cd "/home/ubelix/climate/vo18e689/codes/Next-Stage-Plastic-Beaching/Model/"'
+	   part11='cd "/home/ubelix/climate/vo18e689/codes/Next-Stage-Plastic-Beaching/src/"'
 	   #And now the actual running of the code
-	   part12="python ModelMasterFile.py -p 10 -v"
+	   part12="python main.py -p 10 -v"
 	   #and now the creation of the submission file
 	   for i in {1..12} 
 	   do

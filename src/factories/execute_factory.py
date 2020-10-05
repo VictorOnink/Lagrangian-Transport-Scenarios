@@ -2,7 +2,7 @@ import src.settings as settings
 from parcels import ErrorCode
 from src.factories.fieldset_factory import _get_input_directory
 from src.factories.particle_factory import _get_start_end_time
-from datetime import timedelta, datetime
+from datetime import timedelta
 import parcels.rng as rng
 from time import time
 import src.scenarios.coastal_proximity as proximity
