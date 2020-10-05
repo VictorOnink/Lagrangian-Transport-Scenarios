@@ -22,12 +22,6 @@
     <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/ubelixBeachingJobSubmission.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/ubelixBeachingJobSubmission.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/factories/execute_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/factories/execute_factory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/factories/fieldset_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/factories/fieldset_factory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/factories/particle_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/factories/particle_factory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/factories/scenario_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/factories/scenario_factory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/coastal_proximity.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/coastal_proximity.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
