@@ -1,13 +1,13 @@
 # import os
-# import src.settings as settings
+# import settings as settings
 # import numpy as np
 # from parcels import JITParticle, Variable, FieldSet
 # from operator import attrgetter
 # from datetime import timedelta, datetime
 #
 # from netCDF4 import Dataset
-# from src.utils import _add_var_particle, _get_input_directory, _get_repeat_dt, _get_start_end_time
-# from src.utils import BaseParticle
+# from utils import _add_var_particle, _get_input_directory, _get_repeat_dt, _get_start_end_time
+# from utils import BaseParticle
 #
 #
 # class ParticleFactory:

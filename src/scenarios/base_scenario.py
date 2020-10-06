@@ -4,10 +4,10 @@ from datetime import timedelta
 from parcels import FieldSet, JITParticle, ParticleSet, ErrorCode
 import numpy as np
 from netCDF4 import Dataset
-from src.utils import _set_random_seed, _delete_particle,_nan_removal,_get_start_end_time,_get_repeat_dt
-import src.settings as settings
+from utils import _set_random_seed, _delete_particle,_nan_removal,_get_start_end_time,_get_repeat_dt
+import settings as settings
 import os
-from src.factories.pset_variable_factory import PsetVariableFactory as pvf
+from factories.pset_variable_factory import PsetVariableFactory as pvf
 
 class BaseScenario(ABC):
     server: int

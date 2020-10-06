@@ -1,5 +1,5 @@
-import src.scenarios.base_scenario as base_scenario
-import src.scenarios.coastal_proximity as prox
+import scenarios.base_scenario as base_scenario
+import scenarios.coastal_proximity as prox
 
 
 class ScenarioFactory:

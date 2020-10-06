@@ -1,9 +1,9 @@
 from parcels import FieldSet, ParticleSet
 import numpy as np
-import src.settings as settings
-import src.scenarios.base_scenario as base_scenario
-import src.factories.fieldset_factory as fieldset_factory
-import src.utils as utils
+import settings as settings
+import scenarios.base_scenario as base_scenario
+import factories.fieldset_factory as fieldset_factory
+import utils as utils
 from datetime import datetime, timedelta
 
 

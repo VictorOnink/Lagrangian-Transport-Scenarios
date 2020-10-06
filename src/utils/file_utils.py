@@ -1,6 +1,6 @@
 from operator import attrgetter
 
-import src.settings as settings
+import settings as settings
 from datetime import datetime, timedelta
 from netCDF4 import Dataset
 import numpy as np

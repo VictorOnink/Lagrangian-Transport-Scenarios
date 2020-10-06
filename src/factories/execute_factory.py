@@ -1,12 +1,12 @@
-# import src.settings as settings
+# import settings as settings
 # from parcels import ErrorCode, ParticleSet
-# import src.utils as utils
+# import utils as utils
 # from datetime import timedelta
 # import parcels.rng as rng
 # from time import time
-# # from src.scenarios.coastal_proximity import _particle_behavior_proximity
-# import src.scenarios.coastal_proximity as proximity
-# from src.scenarios.base_scenario import DeleteParticle
+# # from scenarios.coastal_proximity import _particle_behavior_proximity
+# import scenarios.coastal_proximity as proximity
+# from scenarios.base_scenario import DeleteParticle
 # import os
 #
 # class ExecuteFactory:

@@ -1,5 +1,5 @@
-import src.settings as set
-import src.factories.scenario_factory as scenario_factory
+import settings as set
+import factories.scenario_factory as scenario_factory
 
 
 def run():

@@ -1,5 +1,5 @@
 import numpy as np
-import src.settings as settings
+import settings as settings
 
 
 class PsetVariableFactory:

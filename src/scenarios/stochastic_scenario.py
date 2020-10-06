@@ -1,6 +1,6 @@
 from parcels import ParticleSet, JITParticle, FieldSet
 
-from src.scenarios.base_scenario import BaseScenario
+from scenarios.base_scenario import BaseScenario
 
 
 class StochasticSeneratio(BaseScenario):
