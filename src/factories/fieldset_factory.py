@@ -63,7 +63,7 @@ class FieldSetFactory():
         if beach_timescale:
             _add_beachTimescale_field(fieldset=fieldset)
         if resus_timescale:
-            _add_resusTimescale_field(fieldset=fieldset)
+            _add_resusTimescale_field(fieldset=fieldset,data_dir=input_dir)
         if wind_min:
             _add_minResuspensionWind_constant(fieldset=fieldset)
         if halo:
