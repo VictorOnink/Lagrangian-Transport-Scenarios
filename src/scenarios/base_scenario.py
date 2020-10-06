@@ -64,6 +64,7 @@ class BaseScenario(ABC):
             return self._get_restart_variables(rfile=self.self._file_names(new=False), var_list=self.var_list)
 
     def run(self) -> object:
+        os.system('echo "Creating the particle set"')
         pset = self._get_pset(fieldset=self.field_set, particle_type=self.particle,
                               var_dict=self._get_var_dict(),start_time=_get_start_end_time(time='start'),
                               repeat_dt=_get_repeat_dt())
@@ -72,7 +73,7 @@ class BaseScenario(ABC):
         os.system('echo "Setting the random seed"')
         _set_random_seed(seed=settings.SEED)
         os.system('echo "Defining the particle behavior"')
-        behavior_kernel = self._get_particle_behavior(pset)
+        behavior_kernel = self._get_particle_behavior()
         os.system('echo "Setting the output file"')
         os.system('echo "Determine the simulation length"')
         _, _, simulation_length = _get_start_end_time()

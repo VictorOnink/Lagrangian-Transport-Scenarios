@@ -7,7 +7,7 @@ import scenarios.base_scenario as base_scenario
 import factories.fieldset_factory as fieldset_factory
 import utils as utils
 from datetime import datetime, timedelta
-
+import os
 
 class CoastalProximity(base_scenario.BaseScenario):
     """Coastal proximity scenario"""
@@ -20,6 +20,7 @@ class CoastalProximity(base_scenario.BaseScenario):
     var_list = ['lon', 'lat', 'beach', 'age', 'weights', 'prox']
 
     def create_fieldset(self) -> FieldSet:
+        os.system('echo "Creating the fieldset"')
         fieldset = fieldset_factory.FieldSetFactory().create_fieldset(server=self.server, stokes=self.stokes,
                                                                       border_current=True, diffusion=True,
                                                                       landID=True, distance=True, vicinity=True)
@@ -31,6 +32,7 @@ class CoastalProximity(base_scenario.BaseScenario):
 
         :return:
         """
+        os.system('echo "Creating the particle set"')
         pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
                            lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
                            age=var_dict['age'], prox=var_dict['prox'], weights=var_dict['weights'],
@@ -38,6 +40,7 @@ class CoastalProximity(base_scenario.BaseScenario):
         return pset
 
     def _get_pclass(self):
+        os.system('echo "Creating the particle class"')
         class particle_type(JITParticle):
             # First we keep track of how long a particle has been close to the shore
             prox = Variable('prox', dtype=np.int32, initial=attrgetter('prox'))
@@ -59,9 +62,11 @@ class CoastalProximity(base_scenario.BaseScenario):
     def _file_names(self, new: bool = False):
         odirec = self.input_dir + "coastal_v_" + str(settings.VICINITY) + "_e_" + str(settings.ENSEMBLE) + "/"
         if new==True:
+            os.system('echo "Set the output file name"')
             return odirec + self.prefix + "_v=" + str(settings.VICINITY) + "_y=" + str(settings.START_YEAR) + "_I=" + \
                     str(settings.INPUT) + "_r=" + str(settings.RESTART) + "_run=" + str(settings.RESTART) + ".nc"
         else:
+            os.system('echo "Set the restart file name"')
             return odirec + self.prefix + "_v=" + str(settings.VICINITY) + "_y=" + str(settings.START_YEAR) + "_I=" + \
                     str(settings.INPUT) + "_r=" + str(settings.RESTART - 1) + "_run=" + str(settings.RESTART) + ".nc"
 
@@ -85,8 +90,9 @@ class CoastalProximity(base_scenario.BaseScenario):
         particle.age += particle.dt
 
 
-    def _get_particle_behavior(self, pset: ParticleSet):
-        base_behavior = pset.Kernel(utils._initial_input) + pset.Kernel(utils._floating_advection_rk4) + \
-                        pset.Kernel(utils._floating_2d_brownian_motion)
-        total_behavior = base_behavior + pset.Kernel(utils._anti_beach_nudging) + pset.Kernel(self._beaching_kernel)
+    def _get_particle_behavior(self):
+        os.system('echo "Setting the particle behavior"')
+        base_behavior = self.pset.Kernel(utils._initial_input) + self.pset.Kernel(utils._floating_advection_rk4) + \
+                        self.pset.Kernel(utils._floating_2d_brownian_motion)
+        total_behavior = base_behavior + self.pset.Kernel(utils._anti_beach_nudging) + self.pset.Kernel(self._beaching_kernel)
         return total_behavior
