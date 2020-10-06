@@ -255,7 +255,7 @@ def _compute_ShoreResus_Field(input_dir: str):
             resus_field = settings.RESUS_TIME*(0.25+0.75*s)
         return resus_field
 
-def _add_resusTimescale_field(fieldset: FieldSet, input_dir: str):
+def _add_resusTimescale_field(fieldset: FieldSet, data_dir: str):
     """
 
     :param fieldset:
@@ -268,7 +268,7 @@ def _add_resusTimescale_field(fieldset: FieldSet, input_dir: str):
 
     elif settings.SCENARIO_NAME == 'ShoreDependentResuspension':
         p_r = np.exp(-settings.TIME_STEP.total_seconds() / (_compute_ShoreResus_Field(input_dir) * 86400.))
-        dataset = Dataset(input_dir + 'HYCOM/HYCOM_Surface_3h_2000-01-01.nc')
+        dataset = Dataset(data_dir + 'HYCOM/HYCOM_Surface_3h_2000-01-01.nc')
         lat_s = dataset.variables['lat'][:]
         lon_s = dataset.variables['lon'][:]
         fieldset.add_field(Field('p_resus', p_r, lon=lon_s, lat=lat_s, mesh='spherical'))
