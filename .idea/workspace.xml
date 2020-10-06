@@ -19,13 +19,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="fixed settings print statement">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/factories/fieldset_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/factories/fieldset_factory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/factories/scenario_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/factories/scenario_factory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/advection_diffusion_only.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/advection_diffusion_only_scenario.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/stochastic_scenario.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/stochastic_scenario.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/settings.py" afterDir="false" />
+    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="Adding the Stochastic scenario">
+      <change beforePath="$PROJECT_DIR$/bin/simulation_submission.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/simulation_submission.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -276,7 +271,14 @@
       <option name="project" value="LOCAL" />
       <updated>1601994328267</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Adding the Stochastic scenario">
+      <created>1601998958134</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1601998958134</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -300,7 +302,8 @@
     <MESSAGE value="Working coastal proximity scenario" />
     <MESSAGE value="Adding the advection and diffusion only scenario" />
     <MESSAGE value="fixed settings print statement" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed settings print statement" />
+    <MESSAGE value="Adding the Stochastic scenario" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding the Stochastic scenario" />
   </component>
   <component name="WindowStateProjectService">
     <state x="456" y="252" key="#com.intellij.codeInsight.template.impl.EditVariableDialog" timestamp="1601911510421">
@@ -365,10 +368,10 @@
     </state>
     <state x="221" y="67" key="SettingsEditor/0.23.1440.811@0.23.1440.811" timestamp="1601544733848" />
     <state x="221" y="67" key="SettingsEditor/0.23.1440.812@0.23.1440.812" timestamp="1601911551870" />
-    <state x="320" y="168" key="Vcs.Push.Dialog.v2" timestamp="1601994331259">
+    <state x="320" y="168" key="Vcs.Push.Dialog.v2" timestamp="1601998961704">
       <screen x="0" y="23" width="1440" height="812" />
     </state>
-    <state x="320" y="168" key="Vcs.Push.Dialog.v2/0.23.1440.812@0.23.1440.812" timestamp="1601994331259" />
+    <state x="320" y="168" key="Vcs.Push.Dialog.v2/0.23.1440.812@0.23.1440.812" timestamp="1601998961704" />
     <state x="100" y="123" width="1240" height="612" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1601912681118">
       <screen x="0" y="23" width="1440" height="812" />
     </state>
