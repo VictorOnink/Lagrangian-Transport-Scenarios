@@ -90,9 +90,9 @@ class CoastalProximity(base_scenario.BaseScenario):
         particle.age += particle.dt
 
 
-    def _get_particle_behavior(self):
+    def _get_particle_behavior(self, pset: ParticleSet):
         os.system('echo "Setting the particle behavior"')
-        base_behavior = self.pset.Kernel(utils._initial_input) + self.pset.Kernel(utils._floating_advection_rk4) + \
-                        self.pset.Kernel(utils._floating_2d_brownian_motion)
-        total_behavior = base_behavior + self.pset.Kernel(utils._anti_beach_nudging) + self.pset.Kernel(self._beaching_kernel)
+        base_behavior = pset.Kernel(utils._initial_input) + pset.Kernel(utils._floating_advection_rk4) + \
+                        pset.Kernel(utils._floating_2d_brownian_motion)
+        total_behavior = base_behavior + pset.Kernel(utils._anti_beach_nudging) + pset.Kernel(self._beaching_kernel)
         return total_behavior

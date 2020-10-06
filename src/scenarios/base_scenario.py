@@ -73,7 +73,7 @@ class BaseScenario(ABC):
         os.system('echo "Setting the random seed"')
         _set_random_seed(seed=settings.SEED)
         os.system('echo "Defining the particle behavior"')
-        behavior_kernel = self._get_particle_behavior()
+        behavior_kernel = self._get_particle_behavior(pset=pset)
         os.system('echo "Setting the output file"')
         os.system('echo "Determine the simulation length"')
         _, _, simulation_length = _get_start_end_time()
