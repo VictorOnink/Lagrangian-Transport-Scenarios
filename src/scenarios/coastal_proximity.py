@@ -47,7 +47,7 @@ class CoastalProximity(base_scenario.BaseScenario):
 
     class particle_type(JITParticle):
         # First we keep track of how long a particle has been close to the shore
-        prox = Variable('prox', dtype=np.int32, initial=attrgetter('prox'))
+        #prox = Variable('prox', dtype=np.int32, initial=attrgetter('prox'))
         # Now the beaching variables
         # 0=open ocean, 1=beached
         beach = Variable('beach', dtype=np.int32,
@@ -57,7 +57,10 @@ class CoastalProximity(base_scenario.BaseScenario):
         # Weight of the particle in tons
         weights = Variable('weights', dtype=np.float32, initial=attrgetter('weights'))
         # Distance of the particle to the coast
-        distance = Variable('distance', dtype=np.float32, initial=0)
+        #distance = Variable('distance', dtype=np.float32, initial=0)
+
+    utils._add_var_particle(particle_type, 'prox')
+    utils._add_var_particle(particle_type, 'distance', dtype=np.float32, set_initial=False)
 
     def _file_names(self, new: bool = False):
         odirec = self.input_dir + "coastal_v_" + str(settings.VICINITY) + "_e_" + str(settings.ENSEMBLE) + "/"
