@@ -1,4 +1,6 @@
-from parcels import FieldSet, ParticleSet
+from operator import attrgetter
+
+from parcels import FieldSet, ParticleSet, Variable
 import numpy as np
 import settings as settings
 import scenarios.base_scenario as base_scenario
@@ -36,9 +38,23 @@ class CoastalProximity(base_scenario.BaseScenario):
         return pset
 
     def _get_pclass(self):
-        particle_type = utils.BaseParticle
-        utils._add_var_particle(particle_type, 'prox')
-        utils._add_var_particle(particle_type, 'distance', dtype=np.float32, set_initial=False)
+        class particle_type(JITParticle):
+            # First we keep track of how long a particle has been close to the shore
+            prox = Variable('prox', dtype=np.int32, initial=attrgetter('prox'))
+            # Now the beaching variables
+            # 0=open ocean, 1=beached
+            beach = Variable('beach', dtype=np.int32,
+                             initial=attrgetter('beach'))
+            # Finally, I want to keep track of the age of the particle
+            age = Variable('age', dtype=np.int32, initial=attrgetter('age'))
+            # Weight of the particle in tons
+            weights = Variable('weights', dtype=np.float32, initial=attrgetter('weights'))
+            # Distance of the particle to the coast
+            distance = Variable('distance', dtype=np.float32, initial=0)
+
+        # particle_type = utils.BaseParticle
+        # utils._add_var_particle(particle_type, 'prox')
+        # utils._add_var_particle(particle_type, 'distance', dtype=np.float32, set_initial=False)
 
     def _file_names(self, new: bool = False):
         odirec = self.input_dir + "coastal_v_" + str(settings.VICINITY) + "_e_" + str(settings.ENSEMBLE) + "/"

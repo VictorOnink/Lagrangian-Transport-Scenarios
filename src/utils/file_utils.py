@@ -75,7 +75,7 @@ def _get_repeat_dt():
     if settings.RESTART == 0:
         repeat_dt = timedelta(days=31)
     else:
-        repeat_dt = timedelta(days=31)
+        repeat_dt = None
     return repeat_dt
 
 def _add_var_particle(particleType: JITParticle, name: str, dtype=np.int32,
