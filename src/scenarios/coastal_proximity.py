@@ -81,10 +81,10 @@ class CoastalProximity(base_scenario.BaseScenario):
             dist = fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
             # If a particle is within 10 km of the shore
             if dist < 10:
-                particle.proximity += particle.dt
+                particle.prox += particle.dt
             else:
-                particle.proximity = 0.
-            if particle.proximity > 86400 * fieldset.vic:
+                particle.prox = 0.
+            if particle.prox > 86400 * fieldset.vic:
                 particle.beach = 1
         # Update the age of the particle
         particle.age += particle.dt
