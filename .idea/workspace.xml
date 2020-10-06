@@ -19,8 +19,11 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="Alright, all changes have been made and we are ready for the first test run :)">
+    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="Take 2">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/ubelixAnalysisJobSubmission.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/analysis_submission.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/ubelixBeachingJobSubmission.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/simulation_submission.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,7 +113,14 @@
       <option name="project" value="LOCAL" />
       <updated>1601979736251</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Take 2">
+      <created>1601980627147</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1601980627147</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -128,7 +138,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="More changes" />
     <MESSAGE value="Alright, all changes have been made and we are ready for the first test run :)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Alright, all changes have been made and we are ready for the first test run :)" />
+    <MESSAGE value="Take 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="Take 2" />
   </component>
   <component name="WindowStateProjectService">
     <state x="456" y="252" key="#com.intellij.codeInsight.template.impl.EditVariableDialog" timestamp="1601911510421">
@@ -193,14 +204,18 @@
     </state>
     <state x="221" y="67" key="SettingsEditor/0.23.1440.811@0.23.1440.811" timestamp="1601544733848" />
     <state x="221" y="67" key="SettingsEditor/0.23.1440.812@0.23.1440.812" timestamp="1601911551870" />
-    <state x="320" y="168" key="Vcs.Push.Dialog.v2" timestamp="1601979742029">
+    <state x="320" y="168" key="Vcs.Push.Dialog.v2" timestamp="1601980632284">
       <screen x="0" y="23" width="1440" height="812" />
     </state>
-    <state x="320" y="168" key="Vcs.Push.Dialog.v2/0.23.1440.812@0.23.1440.812" timestamp="1601979742029" />
+    <state x="320" y="168" key="Vcs.Push.Dialog.v2/0.23.1440.812@0.23.1440.812" timestamp="1601980632284" />
     <state x="100" y="123" width="1240" height="612" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1601912681118">
       <screen x="0" y="23" width="1440" height="812" />
     </state>
     <state x="100" y="123" width="1240" height="612" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.1440.812@0.23.1440.812" timestamp="1601912681118" />
+    <state x="421" y="61" width="598" height="735" key="find.popup" timestamp="1601980586681">
+      <screen x="0" y="23" width="1440" height="812" />
+    </state>
+    <state x="421" y="61" width="598" height="735" key="find.popup/0.23.1440.812@0.23.1440.812" timestamp="1601980586681" />
     <state x="385" y="158" width="670" height="677" key="search.everywhere.popup" timestamp="1601976114866">
       <screen x="0" y="23" width="1440" height="812" />
     </state>

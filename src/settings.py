@@ -8,7 +8,7 @@ load_dotenv()
 # DIRECTORIES
 DATA_DIR_SERVERS: dict = {0: "/alphadata04/onink/lagrangian_sim/", 1: "/home/ubelix/climate/shared/onink/"}
 DATA_INPUT_DIR_SERVERS: dict = {0: "/alphadata04/onink/lagrangian_sim/BeachingSim/Input/",
-                                         1: "/home/ubelix/climate/shared/onink/"}
+                                         1: "/home/ubelix/climate/shared/onink/Input/"}
 
 
 
