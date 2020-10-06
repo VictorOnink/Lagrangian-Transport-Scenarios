@@ -49,11 +49,11 @@ class CoastalProximity(base_scenario.BaseScenario):
             return odirec + self.prefix + "_v=" + str(settings.VICINITY) + "_y=" + str(settings.START_YEAR) + "_I=" + \
                     str(settings.INPUT) + "_r=" + str(settings.RESTART - 1) + "_run=" + str(settings.RESTART) + ".nc"
 
-    def _get_var_dict(self):
-        if settings.RESTART==0:
-            return self._get_var_dict(settings.INPUT, self.var_list)
-        else:
-            return self._get_restart_variables(rfile=self.self._file_names(new=False),var_list=self.var_list)
+    # def _get_var_dict(self):
+    #     if settings.RESTART==0:
+    #         return self._get_var_dict()
+    #     else:
+    #         return self._get_restart_variables(rfile=self.self._file_names(new=False),var_list=self.var_list)
 
     def _beaching_kernel(particle, fieldset, time):
         if particle.beach == 0:

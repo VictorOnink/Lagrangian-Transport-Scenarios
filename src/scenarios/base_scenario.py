@@ -49,7 +49,10 @@ class BaseScenario(ABC):
 
     @abstractmethod
     def _get_var_dict(self) -> dict:
-        return pvf.initialize_variable_dict_from_varlist(self.var_list)
+        if settings.RESTART == 0:
+            return pvf.initialize_variable_dict_from_varlist(self.var_list)
+        else:
+            return self._get_restart_variables(rfile=self.self._file_names(new=False), var_list=self.var_list)
 
     @abstractmethod
     def _beaching_kernel(self) -> ParticleSet:
