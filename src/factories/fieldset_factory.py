@@ -153,7 +153,7 @@ def _add_diffusion(fieldset: FieldSet, data_dir: str):
     :param input_dir:
     """
     os.system('echo "Adding diffusion"')
-    kh = 10  # m^2 s^-1, following Lacerda et al. (2019) and Liubertseva et al. (2018)
+    kh = settings.KH_HOR  # m^2 s^-1
     dataset = Dataset(data_dir + 'HYCOM/HYCOM_Surface_3h_2000-01-01.nc')
     uo = dataset.variables['water_u'][0, 0, :, :]
     lat_kh = dataset.variables['lat'][:]

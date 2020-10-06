@@ -1,6 +1,7 @@
 import scenarios.base_scenario as base_scenario
-import scenarios.advection_diffusion_only as AdvDifOnly
+import scenarios.advection_diffusion_only_scenario as AdvDifOnly
 import scenarios.coastal_proximity as prox
+import scenarios.stochastic_scenario as stochastic
 
 
 class ScenarioFactory:
@@ -10,6 +11,8 @@ class ScenarioFactory:
             return AdvDifOnly.AdvectionDiffusionOnly(server=server, stokes=stokes)
         elif scenario_name == "CoastalProximity":
             return prox.CoastalProximity(server=server, stokes=stokes)
+        elif scenario_name == "Stochastic":
+            return stochastic.Stochastic(server=server, stokes=stokes)
         else:
             raise ValueError("invalid model scenario")
 

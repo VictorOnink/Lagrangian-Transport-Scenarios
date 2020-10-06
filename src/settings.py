@@ -59,6 +59,7 @@ ENSEMBLE = int(os.environ['ENSEMBLE'])
 TIME_STEP = timedelta(minutes=10)
 OUTPUT_TIME_STEP = timedelta(hours=24)
 SEED = 'Fixed'
+KH_HOR = 10 #m^2 / s, following Lacerda et al. (2019) and Liubertseva et al. (2018)
 
 # LOG
 os.system('echo "scenario = "'+str(SCENARIO_NAME))
