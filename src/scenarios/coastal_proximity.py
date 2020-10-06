@@ -1,6 +1,4 @@
-from operator import attrgetter
-
-from parcels import FieldSet, ParticleSet, Variable, JITParticle
+from parcels import FieldSet, ParticleSet
 import numpy as np
 import settings as settings
 import scenarios.base_scenario as base_scenario
@@ -29,7 +27,6 @@ class CoastalProximity(base_scenario.BaseScenario):
     def _get_pset(self, fieldset: FieldSet, particle_type: utils.BaseParticle, var_dict: dict,
                    start_time: datetime, repeat_dt: timedelta):
         """
-
         :return:
         """
         os.system('echo "Creating the particle set"')
@@ -46,21 +43,6 @@ class CoastalProximity(base_scenario.BaseScenario):
         utils._add_var_particle(particle_type, 'distance', dtype=np.float32, set_initial=False)
         return particle_type
 
-    # class particle_type(JITParticle):
-    #     # First we keep track of how long a particle has been close to the shore
-    #     #prox = Variable('prox', dtype=np.int32, initial=attrgetter('prox'))
-    #     # Now the beaching variables
-    #     # 0=open ocean, 1=beached
-    #     beach = Variable('beach', dtype=np.int32,
-    #                      initial=attrgetter('beach'))
-    #     # Finally, I want to keep track of the age of the particle
-    #     age = Variable('age', dtype=np.int32, initial=attrgetter('age'))
-    #     # Weight of the particle in tons
-    #     weights = Variable('weights', dtype=np.float32, initial=attrgetter('weights'))
-    #     # Distance of the particle to the coast
-    #     #distance = Variable('distance', dtype=np.float32, initial=0)
-
-
     def _file_names(self, new: bool = False):
         odirec = self.input_dir + "coastal_v_" + str(settings.VICINITY) + "_e_" + str(settings.ENSEMBLE) + "/"
         if new==True:
@@ -71,12 +53,6 @@ class CoastalProximity(base_scenario.BaseScenario):
             os.system('echo "Set the restart file name"')
             return odirec + self.prefix + "_v=" + str(settings.VICINITY) + "_y=" + str(settings.START_YEAR) + "_I=" + \
                     str(settings.INPUT) + "_r=" + str(settings.RESTART - 1) + "_run=" + str(settings.RESTART) + ".nc"
-
-    # def _get_var_dict(self):
-    #     if settings.RESTART==0:
-    #         return self._get_var_dict()
-    #     else:
-    #         return self._get_restart_variables(rfile=self.self._file_names(new=False),var_list=self.var_list)
 
     def _beaching_kernel(particle, fieldset, time):
         if particle.beach == 0:
