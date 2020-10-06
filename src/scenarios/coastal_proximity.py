@@ -41,9 +41,10 @@ class CoastalProximity(base_scenario.BaseScenario):
 
     def _get_pclass(self):
         os.system('echo "Creating the particle class"')
-        # particle_type = utils.BaseParticle
-        # utils._add_var_particle(particle_type, 'prox')
-        # utils._add_var_particle(particle_type, 'distance', dtype=np.float32, set_initial=False)
+        particle_type = utils.BaseParticle
+        utils._add_var_particle(particle_type, 'prox')
+        utils._add_var_particle(particle_type, 'distance', dtype=np.float32, set_initial=False)
+        return particle_type
 
     # class particle_type(JITParticle):
     #     # First we keep track of how long a particle has been close to the shore
@@ -59,9 +60,6 @@ class CoastalProximity(base_scenario.BaseScenario):
     #     # Distance of the particle to the coast
     #     #distance = Variable('distance', dtype=np.float32, initial=0)
 
-    particle_type = utils.BaseParticle
-    utils._add_var_particle(particle_type, 'prox')
-    utils._add_var_particle(particle_type, 'distance', dtype=np.float32, set_initial=False)
 
     def _file_names(self, new: bool = False):
         odirec = self.input_dir + "coastal_v_" + str(settings.VICINITY) + "_e_" + str(settings.ENSEMBLE) + "/"
