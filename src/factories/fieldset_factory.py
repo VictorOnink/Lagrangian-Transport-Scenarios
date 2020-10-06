@@ -49,7 +49,7 @@ class FieldSetFactory():
         if border_current:
             _add_border_current(fieldset=fieldset,data_dir=input_dir)
         if diffusion:
-            _add_diffusion(fieldset=fieldset, data_dir=input_dir)
+            _add_diffusion(fieldset=fieldset, data_dir=data_dir)
         if landID:
             _add_landID_field(fieldset=fieldset,data_dir=input_dir)
         if distance:
