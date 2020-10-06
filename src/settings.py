@@ -61,7 +61,7 @@ OUTPUT_TIME_STEP = timedelta(hours=24)
 SEED = 'Fixed'
 
 # LOG
-os.system('echo "scenario = '+str(SCENARIO_NAME))
+os.system('echo "scenario = "'+str(SCENARIO_NAME))
 if SCENARIO_NAME=='CoastalProximity':
     os.system('echo "vicinity = "' + str(VICINITY))
 elif SCENARIO_NAME=="Stochastic":
