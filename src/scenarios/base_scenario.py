@@ -61,7 +61,19 @@ class BaseScenario(ABC):
                                                              input_dir=self.input_dir,
                                                              var_list=self.var_list)
         else:
-            return self._get_restart_variables(rfile=self.self._file_names(new=False), var_list=self.var_list)
+            return self._get_restart_variables(rfile=self.self._file_names(new=False),
+                                               var_list=self.var_list)
+
+    def _get_restart_variables(self):
+        dataset = Dataset(self._file_names(new=self._file_names(new=False)))
+        time = dataset.variables['time'][:]
+        final_time = time[0, -1]
+        last_selec = np.ma.notmasked_edges(time, axis=1)[1]
+        last_time_selec = time[last_selec[0], last_selec[1]]
+        var_dict = {}
+        for var in self.var_list:
+            var_dict[var] = _nan_removal(dataset, var, last_selec, final_time, last_time_selec)
+        return var_dict
 
     def run(self) -> object:
         os.system('echo "Creating the particle set"')
@@ -74,9 +86,6 @@ class BaseScenario(ABC):
         _set_random_seed(seed=settings.SEED)
         os.system('echo "Defining the particle behavior"')
         behavior_kernel = self._get_particle_behavior(pset=pset)
-        os.system('echo "Setting the output file"')
-        os.system('echo "Determine the simulation length"')
-        _, _, simulation_length = _get_start_end_time()
         os.system('echo "The actual execution of the run"')
         pset.execute(behavior_kernel,
                      runtime=timedelta(days=_get_start_end_time(time='length')),
@@ -86,13 +95,3 @@ class BaseScenario(ABC):
                      )
         pfile.export()
 
-    def _get_restart_variables(self):
-        dataset = Dataset(self._file_names(new=self._file_names(new=False)))
-        time = dataset.variables['time'][:]
-        final_time = time[0, -1]
-        last_selec = np.ma.notmasked_edges(time, axis=1)[1]
-        last_time_selec = time[last_selec[0], last_selec[1]]
-        var_dict = {}
-        for var in self.var_list:
-            var_dict[var] = _nan_removal(dataset, var, last_selec, final_time, last_time_selec)
-        return var_dict
