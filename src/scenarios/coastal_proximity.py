@@ -1,6 +1,6 @@
 from operator import attrgetter
 
-from parcels import FieldSet, ParticleSet, Variable
+from parcels import FieldSet, ParticleSet, Variable, JITParticle
 import numpy as np
 import settings as settings
 import scenarios.base_scenario as base_scenario
