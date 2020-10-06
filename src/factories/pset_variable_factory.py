@@ -5,9 +5,9 @@ import settings as settings
 class PsetVariableFactory:
     @staticmethod
     def initialize_variable_dict_from_varlist(input_scenario: str, var_list: list) -> dict:
-        beach = True if "beach" in varlist else False
-        age = True if "age" in varlist else False
-        prox = True if "prox" in varlist else False
+        beach = True if "beach" in var_list else False
+        age = True if "age" in var_list else False
+        prox = True if "prox" in var_list else False
         return PsetVariableFactory.initialize_variable_dict(input_scenario=input_scenario, beach=beach, age=age, prox=prox)
 
 
