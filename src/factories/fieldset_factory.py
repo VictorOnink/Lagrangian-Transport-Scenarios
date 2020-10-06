@@ -47,13 +47,13 @@ class FieldSetFactory():
         if stokes==0:
             _add_stokes_drift(fieldset=fieldset, data_dir=data_dir)
         if border_current:
-            _add_border_current(fieldset=fieldset,input_dir=input_dir)
+            _add_border_current(fieldset=fieldset,data_dir=input_dir)
         if diffusion:
-            _add_diffusion(fieldset=fieldset, input_dir=input_dir)
+            _add_diffusion(fieldset=fieldset, data_dir=input_dir)
         if landID:
-            _add_landID_field(fieldset=fieldset,input_dir=input_dir)
+            _add_landID_field(fieldset=fieldset,data_dir=input_dir)
         if distance:
-            _add_distance2shore_field(fieldset=fieldset, input_dir=input_dir)
+            _add_distance2shore_field(fieldset=fieldset, data_dir=input_dir)
         if wind:
             _add_wind_field(fieldset=fieldset,data_dir=data_dir)
         if sea_elev:
@@ -121,14 +121,14 @@ def _add_stokes_drift(fieldset: FieldSet, data_dir:str):
     fieldset.add_field(fieldset_stoke.Vst)
 
 
-def _add_border_current(fieldset: FieldSet, input_dir:str):
+def _add_border_current(fieldset: FieldSet, data_dir:str):
     """
 
     :param fieldset:
     :param input_dir:
     """
     os.system('echo "Adding the border current"')
-    datasetBor = Dataset(input_dir + 'boundary_velocities_HYCOM.nc')
+    datasetBor = Dataset(data_dir + 'boundary_velocities_HYCOM.nc')
     borU = datasetBor.variables['MaskUvel'][0, :, :]
     borV = datasetBor.variables['MaskVvel'][0, :, :]
     # Normalizing the border current so that the total current is always 1m/s
@@ -164,19 +164,19 @@ def _add_diffusion(fieldset: FieldSet, data_dir: str):
     fieldset.add_field(Field('Kh_meridional', kh_f, lon=lon_kh, lat=lat_kh, mesh='spherical'))
 
 
-def _add_landID_field(fieldset: FieldSet, input_dir: str):
+def _add_landID_field(fieldset: FieldSet, data_dir: str):
     """
 
     :param fieldset:
     :param input_dir:
     """
     os.system('echo "Adding land/water boolean field"')
-    landID=np.load(input_dir+'land_cell_identifier.npy')
-    datasetBor = Dataset(input_dir + 'boundary_velocities_HYCOM.nc')
+    landID=np.load(data_dir+'land_cell_identifier.npy')
+    datasetBor = Dataset(data_dir + 'boundary_velocities_HYCOM.nc')
     lonBor, latBor = datasetBor.variables['lon'][:], datasetBor.variables['lat'][:]
     fieldset.add_field(Field('landID', landID,lon=lonBor,lat=latBor,mesh='spherical'))
 
-def _add_distance2shore_field(fieldset: FieldSet, input_dir: str):
+def _add_distance2shore_field(fieldset: FieldSet, data_dir: str):
     """
 
     :param fieldset:
@@ -184,7 +184,7 @@ def _add_distance2shore_field(fieldset: FieldSet, input_dir: str):
     :return:
     """
     os.system('echo "Adding distance to shore"')
-    datasetCoast=Dataset(input_dir+'distance2coast.nc')
+    datasetCoast=Dataset(data_dir+'distance2coast.nc')
     distance=datasetCoast.variables['distance'][0,:,:]
     lonD,latD=datasetCoast.variables['lon'][:],datasetCoast.variables['lat'][:]
     fieldset.add_field(Field('distance2shore', distance,lon=lonD,lat=latD,mesh='spherical'))
