@@ -4,7 +4,8 @@ from netCDF4 import Dataset
 import numpy as np
 from parcels import GeographicPolar, Geographic, FieldSet, Field
 import math
-
+import glob
+import src.utils as utils
 
 class FieldSetFactory():
     """"""
@@ -26,7 +27,6 @@ class FieldSetFactory():
 
         :param server:
         :param stokes:
-        :param stokes_drift:
         :param border_current:
         :param diffusion:
         :param landID:
@@ -40,24 +40,24 @@ class FieldSetFactory():
         :param halo:
         :return:
         """
-        data_dir = _get_data_directory(server=server)
-        input_dir = _get_input_directory(server=server)
+        data_dir = utils._get_data_directory(server=server)
+        input_dir = utils._get_input_directory(server=server)
 
         fieldset = _get_base_fieldset(data_dir=data_dir)
         if stokes==0:
-            _add_stokes_drift(fieldset=fieldset, input_dir=input_dir)
+            _add_stokes_drift(fieldset=fieldset, data_dir=data_dir)
         if border_current:
-            _add_border_current(fieldset=fieldset, input_dir=input_dir)
+            _add_border_current(fieldset=fieldset,input_dir=input_dir)
         if diffusion:
             _add_diffusion(fieldset=fieldset, input_dir=input_dir)
         if landID:
-            _add_landID_field(fieldset=fieldset, input_dir=input_dir)
+            _add_landID_field(fieldset=fieldset,input_dir=input_dir)
         if distance:
             _add_distance2shore_field(fieldset=fieldset, input_dir=input_dir)
         if wind:
-            _add_wind_field(fieldset=fieldset,input_dir=input_dir)
+            _add_wind_field(fieldset=fieldset,data_dir=data_dir)
         if sea_elev:
-            _add_seaElevation_field(fieldset=fieldset,input_dir=input_dir)
+            _add_seaElevation_field(fieldset=fieldset,data_dir=data_dir)
         if vicinity:
             _add_vicinity_constant(fieldset=fieldset)
         if beach_timescale:
@@ -69,24 +69,6 @@ class FieldSetFactory():
         if halo:
             _add_halo(fieldset)
         return fieldset
-
-
-def _get_data_directory(server: int) -> str:
-    """
-
-    :param server:
-    :return:
-    """
-    return settings.DATA_DIR_SERVERS[server]
-
-
-def _get_input_directory(server: int) -> str:
-    """
-
-    :param server:
-    :return:
-    """
-    return settings.DATA_INPUT_DIR_SERVERS[server]
 
 
 def _get_base_fieldset(data_dir: str) -> FieldSet:
@@ -112,7 +94,7 @@ def _get_base_fieldset(data_dir: str) -> FieldSet:
     return fieldset
 
 
-def _add_stokes_drift(fieldset: FieldSet, input_dir:str):
+def _add_stokes_drift(fieldset: FieldSet, data_dir:str):
     """
     Do we include stokes drift yes or no.
     :param fieldset:
@@ -164,7 +146,7 @@ def _add_border_current(fieldset: FieldSet, input_dir:str):
 
 
 
-def _add_diffusion(fieldset: FieldSet, input_dir: str):
+def _add_diffusion(fieldset: FieldSet, data_dir: str):
     """
 
     :param fieldset:
@@ -172,7 +154,7 @@ def _add_diffusion(fieldset: FieldSet, input_dir: str):
     """
     os.system('echo "Adding diffusion"')
     kh = 10  # m^2 s^-1, following Lacerda et al. (2019) and Liubertseva et al. (2018)
-    dataset = Dataset(input_dir + 'HYCOM/HYCOM_Surface_3h_2000-01-01.nc')
+    dataset = Dataset(data_dir + 'HYCOM/HYCOM_Surface_3h_2000-01-01.nc')
     uo = dataset.variables['water_u'][0, 0, :, :]
     lat_kh = dataset.variables['lat'][:]
     lon_kh = dataset.variables['lon'][:]
@@ -209,7 +191,7 @@ def _add_distance2shore_field(fieldset: FieldSet, input_dir: str):
 
 
 
-def _add_wind_field(fieldset: FieldSet, input_dir: str):
+def _add_wind_field(fieldset: FieldSet, data_dir: str):
     """
 
     :param fieldset:
@@ -217,7 +199,7 @@ def _add_wind_field(fieldset: FieldSet, input_dir: str):
     :return:
     """
     os.system('echo "Adding 10m winds"')
-    windfiles = glob.glob(input_dir + "Wind/ERA5-wind10m*.nc")
+    windfiles = glob.glob(data_dir + "Wind/ERA5-wind10m*.nc")
     windfiles.sort()
     filenames = {'u10': windfiles,
                  'v10': windfiles}
@@ -231,11 +213,11 @@ def _add_wind_field(fieldset: FieldSet, input_dir: str):
     fieldset.add_field(fieldset_wind.u10)
     fieldset.add_field(fieldset_wind.v10)
 
-def _add_seaElevation_field(fieldset: FieldSet, input_dir: str):
+def _add_seaElevation_field(fieldset: FieldSet, data_dir: str):
     os.system('echo "Adding sea surface elevation"')
-    elevfiles = glob.glob(input_dir + "HYCOM/HYCOM_SeaEleve_3h_20*.nc")
-    elevfiles.sort()
-    filenames = {'eta': elevfiles}
+    elev_files = glob.glob(data_dir + "HYCOM/HYCOM_SeaEleve_3h_20*.nc")
+    elev_files.sort()
+    filenames = {'eta': elev_files}
     variables = {'eta': 'surf_el'}
     dimensions = {'time': 'time', 'lat': 'lat', 'lon': 'lon'}
     # Creating a fieldset for the wind data
@@ -262,17 +244,16 @@ def _add_beachTimescale_field(fieldset: FieldSet):
 def _compute_ShoreResus_Field(input_dir: str):
     """
 
-    :param SHORE_DEP:
-    :param SCENARIO:
+    :param input_dir:
     :return:
     """
     if settings.SCENARIO_NAME == 'ShoreDependentResuspension':
         s = np.load(input_dir + 'coastline_sand_vs_not_sand.npy')
         if settings.SHORE_DEP == 0:
-            resusCor = settings.RESUS_TIME*(0.75+0.25*s)
+            resus_field = settings.RESUS_TIME*(0.75+0.25*s)
         if settings.SHORE_DEP == 1:
-            resusCor = settings.RESUS_TIME*(0.25+0.75*s)
-        return resusCor
+            resus_field = settings.RESUS_TIME*(0.25+0.75*s)
+        return resus_field
 
 def _add_resusTimescale_field(fieldset: FieldSet, input_dir: str):
     """

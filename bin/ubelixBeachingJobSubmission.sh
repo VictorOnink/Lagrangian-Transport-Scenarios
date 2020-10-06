@@ -26,6 +26,8 @@ SIMLEN=1
 STOKES=0 
 #Ensemble member
 ENSEMBLE=1
+#Ubelix server, so server==1
+SERVER=1
 
 export SCENARIO
 export VICINITY
@@ -39,6 +41,7 @@ export START
 export SIMLEN
 export STOKES
 export ENSEMBLE
+export SERVER
 
 #Setting the name of the job
 if [ "$SCENARIO" -eq "0" ]; then

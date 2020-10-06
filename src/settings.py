@@ -6,20 +6,15 @@ load_dotenv()
 
 
 # DIRECTORIES
-DATA_DIR_SERVERS: dict[int:str] = {0: "/alphadata04/onink/lagrangian_sim/",
-                                   1: "/home/ubelix/climate/shared/onink/"}
-DATA_INPUT_DIR_SERVERS: dict[int:str] = {0: "/alphadata04/onink/lagrangian_sim/BeachingSim/Input/",
+DATA_DIR_SERVERS: dict = {0: "/alphadata04/onink/lagrangian_sim/", 1: "/home/ubelix/climate/shared/onink/"}
+DATA_INPUT_DIR_SERVERS: dict = {0: "/alphadata04/onink/lagrangian_sim/BeachingSim/Input/",
                                          1: "/home/ubelix/climate/shared/onink/"}
 
 
 
 # SCENARIO SETTINGS
 SERVER: int = int(os.environ["SERVER"])
-SCENARIO_DICT: dict[int:str] = {0: 'AdvectionDiffusionOnly',
-                                1: 'CoastalProximity',
-                                2: 'Stochastic',
-                                3: 'ShoreDependentResuspension',
-                                4: 'TurrellResuspension'}
+SCENARIO_DICT: dict = {0: 'AdvectionDiffusionOnly', 1: 'CoastalProximity', 2: 'Stochastic', 3: 'ShoreDependentResuspension', 4: 'TurrellResuspension'}
 
 SCENARIO_NUM: int = int(os.environ["SCENARIO"])
 SCENARIO_NAME: str = SCENARIO_DICT[SCENARIO_NUM]
@@ -62,6 +57,8 @@ ENSEMBLE = int(os.environ['ENSEMBLE'])
 
 #The integration timestep of the model
 TIME_STEP = timedelta(minutes=10)
+OUTPUT_TIME_STEP = timedelta(hours=24)
+SEED = 'Fixed'
 
 # LOG
 os.system('echo "scenario = '+str(SCENARIO_NAME))

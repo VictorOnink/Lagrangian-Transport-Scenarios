@@ -1,12 +1,12 @@
-from src.scenarios.base_scenario import BaseScenario
-from src.scenarios.coastal_proximity import CoastalProximity
+import src.scenarios.base_scenario as base_scenario
+import src.scenarios.coastal_proximity as prox
 
 
 class ScenarioFactory:
-    @classmethod
-    def create_scenario(cls, scenario_name, server, stokes) -> BaseScenario:
+    @staticmethod
+    def create_scenario(scenario_name, server, stokes) -> base_scenario.BaseScenario:
         if scenario_name == "CoastalProximity":
-            return CoastalProximity(server=server, stokes=stokes)
+            return prox.CoastalProximity(server=server, stokes=stokes)
 
 
 
