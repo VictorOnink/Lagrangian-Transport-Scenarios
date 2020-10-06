@@ -57,7 +57,9 @@ class BaseScenario(ABC):
 
     def _get_var_dict(self) -> dict:
         if settings.RESTART == 0:
-            return pvf.initialize_variable_dict_from_varlist(input_scenario=settings.INPUT,var_list=self.var_list)
+            return pvf.initialize_variable_dict_from_varlist(input_scenario=settings.INPUT,
+                                                             input_dir=self.input_dir,
+                                                             var_list=self.var_list)
         else:
             return self._get_restart_variables(rfile=self.self._file_names(new=False), var_list=self.var_list)
 

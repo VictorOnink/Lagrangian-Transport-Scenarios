@@ -161,7 +161,14 @@
       <option name="project" value="LOCAL" />
       <updated>1601983977531</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="try again">
+      <created>1601984356734</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1601984356734</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -247,10 +254,10 @@
     </state>
     <state x="221" y="67" key="SettingsEditor/0.23.1440.811@0.23.1440.811" timestamp="1601544733848" />
     <state x="221" y="67" key="SettingsEditor/0.23.1440.812@0.23.1440.812" timestamp="1601911551870" />
-    <state x="320" y="168" key="Vcs.Push.Dialog.v2" timestamp="1601983981077">
+    <state x="320" y="168" key="Vcs.Push.Dialog.v2" timestamp="1601984359587">
       <screen x="0" y="23" width="1440" height="812" />
     </state>
-    <state x="320" y="168" key="Vcs.Push.Dialog.v2/0.23.1440.812@0.23.1440.812" timestamp="1601983981077" />
+    <state x="320" y="168" key="Vcs.Push.Dialog.v2/0.23.1440.812@0.23.1440.812" timestamp="1601984359587" />
     <state x="100" y="123" width="1240" height="612" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1601912681118">
       <screen x="0" y="23" width="1440" height="812" />
     </state>
