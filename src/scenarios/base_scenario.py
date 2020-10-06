@@ -31,10 +31,6 @@ class BaseScenario(ABC):
     def create_fieldset(self) -> FieldSet:
         pass
 
-    # @abstractmethod
-    # def create_particle_set(self) -> JITParticle:
-    #     pass
-
     @abstractmethod
     def _get_pset(self) -> ParticleSet:
         pass
