@@ -21,7 +21,7 @@ class BaseScenario(ABC):
         self.server = server
         self.stokes = stokes
         self.field_set = self.create_fieldset()
-        self.particle = self.create_particle()
+        self.particle = self._get_pclass()
 
     @property
     def var_list(self):
@@ -60,7 +60,7 @@ class BaseScenario(ABC):
         pass
 
     def run(self) -> object:
-        pset = self._get_pset(fieldset=self.create_fieldset(), particle_type=self._get_pclass(),
+        pset = self._get_pset(fieldset=self.field_set, particle_type=self.particle,
                               var_dict=self._get_var_dict(),start_time=_get_start_end_time(time='start'),
                               repeat_dt=_get_repeat_dt())
         pfile = pset.ParticleFile(name=self._file_names(new=True),
