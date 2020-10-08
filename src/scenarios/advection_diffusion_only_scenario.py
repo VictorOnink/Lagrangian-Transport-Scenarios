@@ -23,7 +23,8 @@ class AdvectionDiffusionOnly(base_scenario.BaseScenario):
     def create_fieldset(self) -> FieldSet:
         os.system('echo "Creating the fieldset"')
         fieldset = fieldset_factory.FieldSetFactory().create_fieldset(server=self.server, stokes=self.stokes,
-                                                                      diffusion=True, landID=True, distance=True)
+                                                                      diffusion=True, landID=True, distance=True,
+                                                                      coastal_zone=False)
         return fieldset
 
     def _get_pset(self, fieldset: FieldSet, particle_type: utils.BaseParticle, var_dict: dict,

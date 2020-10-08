@@ -75,7 +75,7 @@ class Turrell_Resuspension(base_scenario.BaseScenario):
         # Beaching
         if particle.beach == 0:
             dist = fieldset.distance2shore[t, d, la, lo]
-            if dist < settings.COAST_D:
+            if dist < fieldset.Coastal_Boundary:
                 if random.random() > fieldset.p_beach:
                     particle.beach = 1
                     particle.depth = fieldset.eta[t, d, la, lo]

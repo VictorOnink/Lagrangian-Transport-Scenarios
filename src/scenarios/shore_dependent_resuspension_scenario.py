@@ -64,7 +64,7 @@ class SD_Resuspension(base_scenario.BaseScenario):
     def _beaching_kernel(particle, fieldset, time):
         if particle.beach == 0:
             dist = fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
-            if dist < settings.COAST_D:
+            if dist < fieldset.Coastal_Boundary:
                 if random.random() > fieldset.p_beach:
                     particle.beach = 1
         # Next the resuspension part

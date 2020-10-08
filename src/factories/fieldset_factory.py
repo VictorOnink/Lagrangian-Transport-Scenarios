@@ -21,6 +21,7 @@ class FieldSetFactory():
                         beach_timescale: bool = False,
                         resus_timescale: bool = False,
                         wind_min: bool = False,
+                        coastal_zone: bool = True,
                         halo: bool = True
                         ):
         """
@@ -66,6 +67,8 @@ class FieldSetFactory():
             _add_resusTimescale_field(fieldset=fieldset, data_dir=data_dir, input_dir=input_dir)
         if wind_min:
             _add_minResuspensionWind_constant(fieldset=fieldset)
+        if coastal_zone:
+            _add_coastal_zone_boundary(fieldset=fieldset)
         if halo:
             _add_halo(fieldset)
         return fieldset
@@ -276,6 +279,10 @@ def _add_resusTimescale_field(fieldset: FieldSet, data_dir: str, input_dir: str)
 def _add_minResuspensionWind_constant(fieldset: FieldSet):
     # The minimum offshore wind speed for resuspension to be possible
     fieldset.add_constant('Wmin', settings.WMIN / 10)
+
+def _add_coastal_zone_boundary(fieldset: FieldSet):
+    #The distance from the nearest coastline that is defines the coastal zone within which beaching occurs
+    fieldset.add_constant('Coastal_Boundary', settings.COAST_D)
 
 def _add_halo(fieldset: FieldSet):
     os.system('echo "Finally, the periodic halo"')
