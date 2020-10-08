@@ -58,7 +58,7 @@ class CoastalProximity(base_scenario.BaseScenario):
         if particle.beach == 0:
             dist = fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
             # If a particle is within 10 km of the shore
-            if dist < 10:
+            if dist < settings.COAST_D:
                 particle.prox += particle.dt
             else:
                 particle.prox = 0.

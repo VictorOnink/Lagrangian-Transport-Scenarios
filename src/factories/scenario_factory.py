@@ -3,6 +3,7 @@ import scenarios.advection_diffusion_only_scenario as AdvDifOnly
 import scenarios.coastal_proximity as prox
 import scenarios.stochastic_scenario as stochastic
 import scenarios.shore_dependent_resuspension_scenario as SD_resuspension
+import scenarios.Turrel_Beaching_scenario as Turrell
 
 
 class ScenarioFactory:
@@ -16,6 +17,8 @@ class ScenarioFactory:
             return stochastic.Stochastic(server=server, stokes=stokes)
         elif scenario_name == 'ShoreDependentResuspension':
             return SD_resuspension.SD_Resuspension(server=server, stokes=stokes)
+        elif scenario_name == 'TurrellResuspension':
+            return Turrell.Turrell_Resuspension(server=server, stokes=stokes)
         else:
             raise ValueError("invalid model scenario")
 

@@ -10,13 +10,13 @@ import parcels.rng as random
 import math
 
 
-class SD_Resuspension(base_scenario.BaseScenario):
+class Turrell_Resuspension(base_scenario.BaseScenario):
     """Stochastic beaching and shore dependent resuspension """
 
     def __init__(self, server, stokes):
         """Constructor for coastal_proximity"""
         super().__init__(server, stokes)
-        self.prefix = "SDResus"
+        self.prefix = "Turrell"
         self.input_dir = utils._get_input_directory(server=self.server)
 
     var_list = ['lon', 'lat', 'beach', 'age', 'weights']
@@ -25,7 +25,8 @@ class SD_Resuspension(base_scenario.BaseScenario):
         os.system('echo "Creating the fieldset"')
         fieldset = fieldset_factory.FieldSetFactory().create_fieldset(server=self.server, stokes=self.stokes,
                                                                       border_current=True, diffusion=True, landID=True,
-                                                                      distance=True,beach_timescale=True,resus_timescale=True
+                                                                      distance=True,beach_timescale=True,wind=True,
+                                                                      sea_elev=True, wind_min=True
                                                                       )
         return fieldset
 
@@ -48,13 +49,12 @@ class SD_Resuspension(base_scenario.BaseScenario):
         return particle_type
 
     def _file_names(self, new: bool = False):
-        odirec = self.input_dir + "SDResus_"+str(settings.SHORE_DEP)+"/st_"+str(settings.SHORE_TIME)+\
-                 "_rt_"+str(settings.RESUS_TIME)+"_e_"+str(settings.ENSEMBLE)+"/"
+        odirec = self.input_dir+"Turrell/st_"+str(settings.SHORE_TIME)+"_W_"+str(settings.WMIN)+\
+                 "_e_"+str(settings.ENSEMBLE)+"/"
         if new == True:
             os.system('echo "Set the output file name"')
-            return odirec + self.prefix +"_dep="+str(settings.SHORE_DEP)+"_st="+str(settings.SHORE_TIME)+"_rt="\
-                   +str(settings.RESUS_TIME)+"_y="+str(settings.START_YEAR)+"_I="+str(settings.INPUT)+"_r="+\
-                   str(settings.RESTART)+"_run="+str(settings.RUN)+".nc"
+            return odirec + self.prefix +"_Wmin="+str(settings.WMIN)+"_st="+str(settings.SHORE_TIME)+"_y="\
+                   +str(settings.START_YEAR)+"_I="+str(settings.INPUT)+"_r="+str(settings.RESTART)+"_run="+str(settings.RUN)+".nc"
         else:
             os.system('echo "Set the restart file name"')
             return odirec + self.prefix + "_dep=" + str(settings.SHORE_DEP) + "_st=" + str(settings.SHORE_TIME) + "_rt=" \
@@ -62,15 +62,49 @@ class SD_Resuspension(base_scenario.BaseScenario):
                    str(settings.RESTART - 1) + "_run=" + str(settings.RUN) + ".nc"
 
     def _beaching_kernel(particle, fieldset, time):
+        """
+            Beaching is implemented the same way as in the stochastic and shore dependent resuspension
+            scenarios.
+
+            Resuspension is based on Turrell 2018 & 2020. Resuspension is possible when
+            water levels are at the same level as that of the beached particle. Then,
+            only when the offshore wind component is greater than the threshold Wmin
+            will the particle actually be resuspended
+            """
+        t, d, la, lo = time, particle.depth, particle.lat, particle.lon
+        # Beaching
         if particle.beach == 0:
-            dist = fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
+            dist = fieldset.distance2shore[t, d, la, lo]
             if dist < settings.COAST_D:
                 if random.random() > fieldset.p_beach:
                     particle.beach = 1
-        # Next the resuspension part
+                    particle.depth = fieldset.eta[t, d, la, lo]
+        # Resuspension
         elif particle.beach == 1:
-            if random.random() > fieldset.p_resus[time, particle.depth, particle.lat, particle.lon]:
-                particle.beach = 0
+            sea_elev = fieldset.eta[t, d, la, lo]
+            # If particles are beached above sea level, then they will remain there
+            if particle.depth < sea_elev:
+                # particles will get pushed up to the present water level
+                particle.depth = sea_elev
+                # Now, we need to get the offshore wind component, for which we first get the direction
+                # of the border current. We convert the border current back to m/s and multiply by -1 to reverse
+                #the sign such that the current is directed offshore
+                bU, bV = fieldset.borU[t, d, la, lo] * -1 * 1852 * 60 * math.cos(la * math.pi / 180), fieldset.borV[
+                    t, d, la, lo] * -1 * 1852 * 60
+                wU, wV = fieldset.U[t, d, la, lo] * 1852 * 60 * math.cos(la * math.pi / 180), fieldset.V[
+                    t, d, la, lo] * 1852 * 60
+                # magnitude of the b and w vectors, and then dot product between them
+                mB, mW = math.sqrt(bU ** 2 + bV ** 2), math.sqrt(wU ** 2 + wV ** 2)
+                dot = bU * wU + bV * wV
+                # Angle between b and w
+                alpha = math.acos(dot / (mB * mW))
+                # If the angle between thexs wind and border current is <90 degrees,
+                # then the wind is directed offshore
+                if alpha < math.pi / 2:
+                    # If the offshore component of wind is greater than Wmin, then
+                    # the particle gets resuspended
+                    if mW * math.cos(alpha) < fieldset.Wmin:
+                        particle.beach = 0
         # Update the age of the particle
         particle.age += particle.dt
 

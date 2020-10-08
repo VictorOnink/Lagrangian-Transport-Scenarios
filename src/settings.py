@@ -30,7 +30,8 @@ RESUS_TIME: int = int(os.environ['RESUSTIME'])  # days
 # 0 = more sand is less likely beaching, 1 = more land is more likely beaching
 SHORE_DEP: int = int(os.environ['SHOREDEPEN'])
 
-# for scenario 4, what is the minimum off-shore wind speed for resuspension?
+# for scenario 4, what is the minimum off-shore wind speed for resuspension? Divide by 10 to get the actual
+# minimum speed in m/s
 WMIN: int = int(os.environ['WMIN'])
 
 # for multiple sub runs, which one is being run
@@ -55,11 +56,12 @@ STOKES: int = int(os.environ['STOKES'])
 # same folder since they they would overwrite each other...
 ENSEMBLE = int(os.environ['ENSEMBLE'])
 
-#The integration timestep of the model
-TIME_STEP = timedelta(minutes=10)
-OUTPUT_TIME_STEP = timedelta(hours=24)
-SEED = 'Fixed'
+#Model setup parameters
+TIME_STEP = timedelta(minutes=10) #integration timestep
+OUTPUT_TIME_STEP = timedelta(hours=24) #timestep of saving particle positions to the output file
+SEED = 'Fixed' #Seed for the rng
 KH_HOR = 10 #m^2 / s, following Lacerda et al. (2019) and Liubertseva et al. (2018)
+COAST_D = 10 #km, the distance from the nearest shoreline that falls under the coastal zone.
 
 # LOG
 os.system('echo "scenario = "'+str(SCENARIO_NAME))
