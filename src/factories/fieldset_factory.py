@@ -63,7 +63,7 @@ class FieldSetFactory():
         if beach_timescale:
             _add_beachTimescale_field(fieldset=fieldset)
         if resus_timescale:
-            _add_resusTimescale_field(fieldset=fieldset,data_dir=input_dir)
+            _add_resusTimescale_field(fieldset=fieldset, data_dir=input_dir)
         if wind_min:
             _add_minResuspensionWind_constant(fieldset=fieldset)
         if halo:
@@ -267,7 +267,7 @@ def _add_resusTimescale_field(fieldset: FieldSet, data_dir: str):
         fieldset.add_constant('p_resus', p_r)
 
     elif settings.SCENARIO_NAME == 'ShoreDependentResuspension':
-        p_r = np.exp(-settings.TIME_STEP.total_seconds() / (_compute_ShoreResus_Field(input_dir) * 86400.))
+        p_r = np.exp(-settings.TIME_STEP.total_seconds() / (_compute_ShoreResus_Field(data_dir) * 86400.))
         dataset = Dataset(data_dir + 'HYCOM/HYCOM_Surface_3h_2000-01-01.nc')
         lat_s = dataset.variables['lat'][:]
         lon_s = dataset.variables['lon'][:]
