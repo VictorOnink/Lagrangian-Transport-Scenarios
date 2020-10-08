@@ -47,19 +47,19 @@ class Stochastic(base_scenario.BaseScenario):
         utils._add_var_particle(particle_type, 'distance', dtype=np.float32, set_initial=False)
         return particle_type
 
-    def _file_names(self, new: bool = False):
+    def _file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART):
         odirec = self.input_dir + "st_" + str(settings.SHORE_TIME) + "_rs_" + str(settings.RESUS_TIME) + \
                  "_e_" + str(settings.ENSEMBLE) + "/"
         if new == True:
             os.system('echo "Set the output file name"')
             return odirec + self.prefix + "_st=" + str(settings.SHORE_TIME) + "_rt=" + str(settings.RESUS_TIME) + \
-                   "_y=" + str(settings.START_YEAR) + "_I=" + str(settings.INPUT) + "_r=" + str(settings.RESTART) + \
-                   "_run=" + str(settings.RUN) + ".nc"
+                   "_y=" + str(settings.START_YEAR) + "_I=" + str(settings.INPUT) + "_r=" + str(restart) + \
+                   "_run=" + str(run) + ".nc"
         else:
             os.system('echo "Set the restart file name"')
             return odirec + self.prefix + "_st=" + str(settings.SHORE_TIME) + "_rt=" + str(settings.RESUS_TIME) + \
-                   "_y=" + str(settings.START_YEAR) + "_I=" + str(settings.INPUT) + "_r=" + str(settings.RESTART - 1) + \
-                   "_run=" + str(settings.RUN) + ".nc"
+                   "_y=" + str(settings.START_YEAR) + "_I=" + str(settings.INPUT) + "_r=" + str(restart - 1) + \
+                   "_run=" + str(run) + ".nc"
 
     def _beaching_kernel(particle, fieldset, time):
         if particle.beach == 0:
