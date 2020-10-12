@@ -37,7 +37,7 @@ SHORE_DEP: int = int(os.environ['SHOREDEPEN'])
 # minimum speed in m/s
 WMIN: int = int(os.environ['WMIN'])
 
-if SUBMISSION == 'analysis':
+if SUBMISSION == 'simulationr':
     # for multiple sub runs, which one is being run
     RUN: int = int(os.environ['RUN'])
 
@@ -89,7 +89,7 @@ elif SCENARIO_NAME=='ShoreDependentResuspension':
 elif SCENARIO_NAME=='TurrellResuspension':
     os.system('echo "shoretime = "' + str(SHORE_TIME))
     os.system('echo "Wmin = "' + str(WMIN))
-if SUBMISSION == 'simulation':
+if SUBMISSION=='simulation':
     os.system('echo "run="'+str(RUN))
     os.system('echo "restart="'+str(RESTART))
 os.system('echo "starting year="'+str(START_YEAR))
