@@ -37,7 +37,7 @@ SHORE_DEP: int = int(os.environ['SHOREDEPEN'])
 # minimum speed in m/s
 WMIN: int = int(os.environ['WMIN'])
 
-if SUBMISSION == 'simulationr':
+if SUBMISSION == 'simulation':
     # for multiple sub runs, which one is being run
     RUN: int = int(os.environ['RUN'])
 
