@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from netCDF4 import Dataset
 import numpy as np
 from parcels import JITParticle, Variable
+import os
 
 def _get_data_directory(server: int) -> str:
     """
@@ -22,6 +23,15 @@ def _get_input_directory(server: int) -> str:
     :return:
     """
     return settings.DATA_INPUT_DIR_SERVERS[server]
+
+def _get_output_directory(server: int) -> str:
+    """
+
+    :param server:
+    :return:
+    """
+    return settings.DATA_OUTPUT_DIR_SERVERS[server]
+
 
 def _get_start_end_time(time:str):
     start_time = datetime(settings.START_YEAR + settings.RESTART, 1, 1, 0, 0)
@@ -86,3 +96,10 @@ def _add_var_particle(particleType: JITParticle, name: str, dtype=np.int32,
         init = 0
     var = Variable(name, dtype=dtype, initial=init)
     setattr(particleType, name, var)
+
+def _check_direc_exist(direc: str):
+    if os.path.isdir(direc)==False:
+        os.mkdir(direc)
+
+def _check_file_exist(File: str):
+    return os.path.isfile(File)

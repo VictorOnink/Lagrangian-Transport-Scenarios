@@ -1,0 +1,56 @@
+import numpy as np
+import os
+
+
+def AreaCalc(size_Lat, size_Lon):  # Calculate surface area of grid cells
+    deg2rd = np.pi / 180.
+    r = 6378.1
+    lon_bins = np.linspace(-180, 180, size_Lon + 1)
+    lat_bins = np.linspace(-80, 80, size_Lat + 1)
+    Area = np.array([[deg2rd * (lon_bins[i + 1] - lon_bins[i]) * (np.sin(deg2rd * lat_bins[j + 1])
+                                                                  - np.sin(deg2rd * lat_bins[j])) for i in
+                      range(len(lon_bins) - 1)]
+                     for j in range(len(lat_bins) - 1)])
+    Area = np.transpose(r * r * Area)
+    return Area  # km^2
+
+
+def histogram(lon_data, lat_data, bins_Lon, bins_Lat, weight_data=0,
+                    counting=False, area_correc=True):
+    """
+    :param lon_data: Nx1 or (N,) array
+    :param lat_data: Nx1 or (N,) array
+    :param bins_Lon: LONx1 array
+    :param bins_Lat: LATx1 array
+    :param weight_data: 0 if we are only interested in counts, else Nx1 or (N,) array
+    :param concentration: True = we return a concentration, else
+    :return:
+    """
+    lon_data, lat_data = lon_data.reshape(np.size(lon_data)), lat_data.reshape(np.size(lat_data))
+    weight_data = weight_data.reshape(np.size(weight_data))
+    masses = np.zeros((len(bins_Lat), len(bins_Lon)))
+    counts = np.zeros((len(bins_Lat), len(bins_Lon)))
+    if counting == False:
+        for i in range(np.array(lon_data).shape[0]):
+            if weight_data[i] > 0:
+                lat_selec, lon_selec = np.argmin(np.abs(lat_data[i] - bins_Lat)), np.argmin(
+                    np.abs(lon_data[i] - bins_Lon))
+                masses[lat_selec, lon_selec] += weight_data[i]
+                counts[lat_selec, lon_selec] += 1
+        masses[counts > 0] = np.divide(masses[counts > 0], counts[counts > 0])
+        if area_correc == True:
+            masses = np.divide(masses, AreaCalc(size_Lat=len(bins_Lat), size_Lon=len(bins_Lon)))
+        return masses  # weight / km^2
+    else:
+        for i in range(np.array(lon_data).shape[0]):
+            if weight_data[i] > 0:
+                lat_selec, lon_selec = np.argmin(np.abs(lat_data[i] - bins_Lat)), np.argmin(
+                    np.abs(lon_data[i] - bins_Lon))
+                counts[lat_selec, lon_selec] += 1
+        if area_correc == True:
+            counts = np.divide(counts, AreaCalc(size_Lat=len(bins_Lat), size_Lon=len(bins_Lon)))
+        return counts  # counts / km^2
+
+def _analysis_save_file_name(input_file: str, prefix: str, out_type: str = '.mat'):
+    _, file_name = os.path.split(input_file)
+    return prefix + '_' + file_name.split('_r=')[0] + out_type

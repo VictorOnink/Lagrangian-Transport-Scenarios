@@ -4,11 +4,13 @@ from datetime import timedelta
 
 load_dotenv()
 
-
+SUBMISSION = os.environ["SUBMISSION"]
 # DIRECTORIES
 DATA_DIR_SERVERS: dict = {0: "/alphadata04/onink/lagrangian_sim/", 1: "/home/ubelix/climate/shared/onink/"}
 DATA_INPUT_DIR_SERVERS: dict = {0: "/alphadata04/onink/lagrangian_sim/BeachingSim/Input/",
                                          1: "/home/ubelix/climate/shared/onink/Input/"}
+DATA_OUTPUT_DIR_SERVERS: dict = {0:"/alphadata04/onink/lagrangian_sim/BeachingSim/Output/",
+                                 1:"/home/ubelix/climate/shared/onink/Output/"}
 
 
 
@@ -34,20 +36,28 @@ SHORE_DEP: int = int(os.environ['SHOREDEPEN'])
 # minimum speed in m/s
 WMIN: int = int(os.environ['WMIN'])
 
-# for multiple sub runs, which one is being run
-RUN: int = int(os.environ['RUN'])
+if SUBMISSION == 'analysis':
+    # for multiple sub runs, which one is being run
+    RUN: int = int(os.environ['RUN'])
 
-# restart stage, where 0 = a completely new set up runs, and progressively higher
-# values indicate the year of the simulation at which new run starts
-# e.g. 1 means we start after one year of simulation, 2 after two years, etc.
-RESTART: int = int(os.environ['RESTARTNUM'])
+    # restart stage, where 0 = a completely new set up runs, and progressively higher
+    # values indicate the year of the simulation at which new run starts
+    # e.g. 1 means we start after one year of simulation, 2 after two years, etc.
+    RESTART: int = int(os.environ['RESTARTNUM'])
 
 # starting year of the simulation
 START_YEAR: int = int(os.environ['STARTYEAR'])
 
+# How many years does the simulation run?
+SIM_LENGTH: int = int(os.environ['SIMLEN'])
+
 # Which input file we use. if input=0, then we use Jambeck
 INPUT_NAMES = {0: 'Jambeck', 1: 'Lebreton'}
 INPUT = INPUT_NAMES[int(os.environ['INPUT'])]
+if INPUT == 'Jambeck':
+    RUN_RANGE: int = 9
+elif INPUT == 'Lebreton':
+    RUN_RANGE: int = 4
 
 # Inclusion of Stokes Drift. 0 = included, 1 = not included
 STOKES: int = int(os.environ['STOKES'])
@@ -62,6 +72,7 @@ OUTPUT_TIME_STEP = timedelta(hours=24) #timestep of saving particle positions to
 SEED = 'Fixed' #Seed for the rng
 KH_HOR = 10 #m^2 / s, following Lacerda et al. (2019) and Liubertseva et al. (2018)
 COAST_D = 10 #km, the distance from the nearest shoreline that falls under the coastal zone.
+BUOYANT = 0.54 #54% of plastic entering the ocean in 2010 is buoyant (based on Geyers et al., 2017)
 
 # LOG
 os.system('echo "scenario = "'+str(SCENARIO_NAME))

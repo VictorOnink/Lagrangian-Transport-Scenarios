@@ -14,6 +14,7 @@ class CoastalProximity(base_scenario.BaseScenario):
         super().__init__(server, stokes)
         self.prefix = "Prox"
         self.input_dir = utils._get_input_directory(server=self.server)
+        self.output_dir = utils._get_output_directory(server=self.server)
 
     var_list = ['lon', 'lat', 'beach', 'age', 'weights', 'prox']
 
@@ -44,7 +45,7 @@ class CoastalProximity(base_scenario.BaseScenario):
         return particle_type
 
     def _file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART):
-        odirec = self.input_dir + "coastal_v_" + str(settings.VICINITY) + "_e_" + str(settings.ENSEMBLE) + "/"
+        odirec = self.output_dir + "coastal_v_" + str(settings.VICINITY) + "_e_" + str(settings.ENSEMBLE) + "/"
         if new==True:
             os.system('echo "Set the output file name"')
             return odirec + self.prefix + "_v=" + str(settings.VICINITY) + "_y=" + str(settings.START_YEAR) + "_I=" + \

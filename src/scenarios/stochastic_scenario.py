@@ -18,6 +18,7 @@ class Stochastic(base_scenario.BaseScenario):
         super().__init__(server, stokes)
         self.prefix = "Stochastic"
         self.input_dir = utils._get_input_directory(server=self.server)
+        self.output_dir = utils._get_output_directory(server=self.server)
 
     var_list = ['lon', 'lat', 'beach', 'age', 'weights']
 
@@ -48,7 +49,7 @@ class Stochastic(base_scenario.BaseScenario):
         return particle_type
 
     def _file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART):
-        odirec = self.input_dir + "st_" + str(settings.SHORE_TIME) + "_rs_" + str(settings.RESUS_TIME) + \
+        odirec = self.output_dir + "st_" + str(settings.SHORE_TIME) + "_rs_" + str(settings.RESUS_TIME) + \
                  "_e_" + str(settings.ENSEMBLE) + "/"
         if new == True:
             os.system('echo "Set the output file name"')

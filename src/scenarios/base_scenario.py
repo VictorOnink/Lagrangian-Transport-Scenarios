@@ -4,10 +4,11 @@ from datetime import timedelta
 from parcels import FieldSet, JITParticle, ParticleSet, ErrorCode
 import numpy as np
 from netCDF4 import Dataset
-from utils import _set_random_seed, _delete_particle,_nan_removal,_get_start_end_time,_get_repeat_dt
+from utils import _set_random_seed, _delete_particle, _nan_removal, _get_start_end_time, _get_repeat_dt
 import settings as settings
 import os
 from factories.pset_variable_factory import PsetVariableFactory as pvf
+
 
 class BaseScenario(ABC):
     server: int
@@ -17,6 +18,7 @@ class BaseScenario(ABC):
     prefix: str
 
     """A base class for the different scenarios"""
+
     def __init__(self, server, stokes):
         self.server = server
         self.stokes = stokes
@@ -36,7 +38,7 @@ class BaseScenario(ABC):
         pass
 
     @abstractmethod
-    def _get_pclass(self)-> ParticleSet:
+    def _get_pclass(self) -> ParticleSet:
         pass
 
     @abstractmethod
@@ -74,7 +76,7 @@ class BaseScenario(ABC):
     def run(self) -> object:
         os.system('echo "Creating the particle set"')
         pset = self._get_pset(fieldset=self.field_set, particle_type=self.particle,
-                              var_dict=self._get_var_dict(),start_time=_get_start_end_time(time='start'),
+                              var_dict=self._get_var_dict(), start_time=_get_start_end_time(time='start'),
                               repeat_dt=_get_repeat_dt())
         pfile = pset.ParticleFile(name=self._file_names(new=True),
                                   outputdt=settings.OUTPUT_TIME_STEP)
@@ -91,3 +93,15 @@ class BaseScenario(ABC):
                      )
         pfile.export()
 
+    def return_full_run_directory(self) -> dict:
+        """
+        Return a directory with all file names depending on the restart and run variables
+        :return:
+        """
+        file_dict = {}
+        for run in range(settings.RUN_RANGE):
+            restart_direc = {}
+            for restart in range(settings.SIM_LENGTH):
+                restart_direc[restart] = self._file_names(new=True, run=run, restart=restart)
+            file_dict[run] = restart_direc
+        return file_dict

@@ -3,35 +3,37 @@
 #####################################################################################
 # First we define the general parameters of the run                                 #
 #####################################################################################
+SUBMISSION = 'simulation'
+export SUBMISSION
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent
 SCENARIO=3
-export SCENARIO
 #for scenario 1, the time a particle must be near the coast to beach (in days)
 VICINITY=2
-export VICINITY
 #for scenario 2, the beaching and resuspension timescales (in days)
 SHORETIME=26
-export SHORETIME
 RESUSTIME=69
-export RESUSTIME
 #For scenario 3, we need to indicate if beaching is more likely with sand or not sand. 0 = more sand is less likely beaching and resuspension, 1 = more sand is more likely beaching and resuspension
 SHOREDEPEN=0
-export SHOREDEPEN
 #for scenario 4, the minimum wind speed for resusplension. Divide by 10 for actual value
 WMIN=3
-export WMIN
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010
-export STARTYEAR
 SIMLEN=5 #Number of years the simulation runs
-export SIMLEN
 STOKES=0 #0 = include stokes, 1 = do not include stokes
-export STOKES
 INPUT=0 #0=Jambeck, higher values aren't relevant yet but can be added
-export INPUT
-
 ENSEMBLE=1 #For when we want to run multiple iterations of the same parameter setup
+
+export SCENARIO
+export VICINITY
+export SHORETIME
+export RESUSTIME
+export SHOREDEPEN
+export WMIN
+export SIMLEN
+export STOKES
+export INPUT
 export ENSEMBLE
+export STARTYEAR
 
 #Now, we can set the job name prefix
 
