@@ -89,7 +89,8 @@ elif SCENARIO_NAME=='ShoreDependentResuspension':
 elif SCENARIO_NAME=='TurrellResuspension':
     os.system('echo "shoretime = "' + str(SHORE_TIME))
     os.system('echo "Wmin = "' + str(WMIN))
-os.system('echo "run="'+str(RUN))
-os.system('echo "restart="'+str(RESTART))
+if SUBMISSION == 'simulation':
+    os.system('echo "run="'+str(RUN))
+    os.system('echo "restart="'+str(RESTART))
 os.system('echo "starting year="'+str(START_YEAR))
 os.system('echo "input scenario = "'+str(INPUT))
