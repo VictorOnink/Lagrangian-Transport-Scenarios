@@ -22,7 +22,8 @@ class BaseScenario(ABC):
     def __init__(self, server, stokes):
         self.server = server
         self.stokes = stokes
-        self.field_set = self.create_fieldset()
+        if settings.SUBMISSION == 'simulation':
+            self.field_set = self.create_fieldset()
         self.particle = self._get_pclass()
 
     @property
