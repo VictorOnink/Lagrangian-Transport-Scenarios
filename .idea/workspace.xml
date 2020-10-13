@@ -19,9 +19,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="updating the submission bash script">
+    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="fieldset in base scenario not generated for analysis submission">
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/base_scenario.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/base_scenario.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -391,7 +392,14 @@
       <option name="project" value="LOCAL" />
       <updated>1602519465822</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="fieldset in base scenario not generated for analysis submission">
+      <created>1602573415346</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1602573415346</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -426,7 +434,8 @@
     <MESSAGE value="all file name functions for the scenarios can now be used to call specific run/restart files for use later in the analysis section" />
     <MESSAGE value="starting to really build in the analysis factory, with first the concentration function" />
     <MESSAGE value="updating the submission bash script" />
-    <option name="LAST_COMMIT_MESSAGE" value="updating the submission bash script" />
+    <MESSAGE value="fieldset in base scenario not generated for analysis submission" />
+    <option name="LAST_COMMIT_MESSAGE" value="fieldset in base scenario not generated for analysis submission" />
   </component>
   <component name="WindowStateProjectService">
     <state x="456" y="252" key="#com.intellij.codeInsight.template.impl.EditVariableDialog" timestamp="1601911510421">
@@ -450,25 +459,25 @@
       <screen x="0" y="23" width="1440" height="811" />
     </state>
     <state x="507" y="210" key="FileChooserDialogImpl/0.23.1440.811@0.23.1440.811" timestamp="1601544716057" />
-    <state width="1419" height="209" key="GridCell.Tab.0.bottom" timestamp="1602510303220">
+    <state width="1419" height="209" key="GridCell.Tab.0.bottom" timestamp="1602574678291">
       <screen x="0" y="23" width="1440" height="812" />
     </state>
-    <state width="1419" height="209" key="GridCell.Tab.0.bottom/0.23.1440.812@0.23.1440.812" timestamp="1602510303220" />
+    <state width="1419" height="209" key="GridCell.Tab.0.bottom/0.23.1440.812@0.23.1440.812" timestamp="1602574678291" />
     <state width="1419" height="209" key="GridCell.Tab.0.bottom/0.23.1440.816@0.23.1440.816" timestamp="1602071031505" />
-    <state width="1419" height="209" key="GridCell.Tab.0.center" timestamp="1602510303219">
+    <state width="1419" height="209" key="GridCell.Tab.0.center" timestamp="1602574678290">
       <screen x="0" y="23" width="1440" height="812" />
     </state>
-    <state width="1419" height="209" key="GridCell.Tab.0.center/0.23.1440.812@0.23.1440.812" timestamp="1602510303219" />
+    <state width="1419" height="209" key="GridCell.Tab.0.center/0.23.1440.812@0.23.1440.812" timestamp="1602574678290" />
     <state width="1419" height="209" key="GridCell.Tab.0.center/0.23.1440.816@0.23.1440.816" timestamp="1602071031503" />
-    <state width="1419" height="209" key="GridCell.Tab.0.left" timestamp="1602510303219">
+    <state width="1419" height="209" key="GridCell.Tab.0.left" timestamp="1602574678290">
       <screen x="0" y="23" width="1440" height="812" />
     </state>
-    <state width="1419" height="209" key="GridCell.Tab.0.left/0.23.1440.812@0.23.1440.812" timestamp="1602510303219" />
+    <state width="1419" height="209" key="GridCell.Tab.0.left/0.23.1440.812@0.23.1440.812" timestamp="1602574678290" />
     <state width="1419" height="209" key="GridCell.Tab.0.left/0.23.1440.816@0.23.1440.816" timestamp="1602071031502" />
-    <state width="1419" height="209" key="GridCell.Tab.0.right" timestamp="1602510303220">
+    <state width="1419" height="209" key="GridCell.Tab.0.right" timestamp="1602574678291">
       <screen x="0" y="23" width="1440" height="812" />
     </state>
-    <state width="1419" height="209" key="GridCell.Tab.0.right/0.23.1440.812@0.23.1440.812" timestamp="1602510303220" />
+    <state width="1419" height="209" key="GridCell.Tab.0.right/0.23.1440.812@0.23.1440.812" timestamp="1602574678291" />
     <state width="1419" height="209" key="GridCell.Tab.0.right/0.23.1440.816@0.23.1440.816" timestamp="1602071031504" />
     <state width="1419" height="260" key="GridCell.Tab.1.bottom" timestamp="1601898939410">
       <screen x="0" y="23" width="1440" height="812" />
@@ -495,10 +504,10 @@
     </state>
     <state x="221" y="67" key="SettingsEditor/0.23.1440.811@0.23.1440.811" timestamp="1601544733848" />
     <state x="221" y="67" key="SettingsEditor/0.23.1440.812@0.23.1440.812" timestamp="1601911551870" />
-    <state x="320" y="168" key="Vcs.Push.Dialog.v2" timestamp="1602519468344">
+    <state x="320" y="168" key="Vcs.Push.Dialog.v2" timestamp="1602573421117">
       <screen x="0" y="23" width="1440" height="812" />
     </state>
-    <state x="320" y="168" key="Vcs.Push.Dialog.v2/0.23.1440.812@0.23.1440.812" timestamp="1602519468344" />
+    <state x="320" y="168" key="Vcs.Push.Dialog.v2/0.23.1440.812@0.23.1440.812" timestamp="1602573421117" />
     <state x="320" y="169" key="Vcs.Push.Dialog.v2/0.23.1440.816@0.23.1440.816" timestamp="1602170515320" />
     <state x="320" y="170" key="Vcs.Push.Dialog.v2/0.23.1440.821@0.23.1440.821" timestamp="1602157768117" />
     <state x="100" y="123" width="1240" height="612" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1601912681118">
