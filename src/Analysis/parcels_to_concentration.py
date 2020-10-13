@@ -24,8 +24,7 @@ def parcels_to_concentration(file_dict: dict):
     # Counter for the number of files
     counter = 0
     # loop through the runs
-    pbar = progressbar.progressbar()
-    for run in pbar(range(settings.RUN_RANGE)):
+    for run in progressbar.progressbar(range(settings.RUN_RANGE)):
         # Loop through the restart files
         for restart in range(settings.SIM_LENGTH):
             # Load the lon, lat, weight data
