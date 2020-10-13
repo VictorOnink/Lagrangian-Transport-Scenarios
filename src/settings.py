@@ -52,7 +52,7 @@ if SUBMISSION == 'analysis':
     RESTART: int = 0
     #Now, which analysis do we want to run
     ANALYSIS_DICT={0: False, 1: True}
-    CONCENTRATION = ANALYSIS_DICT[int(os.environ['STARTYEAR'])]
+    CONCENTRATION = ANALYSIS_DICT[int(os.environ['CONCENTRATION'])]
 
 # starting year of the simulation
 START_YEAR: int = int(os.environ['STARTYEAR'])
