@@ -19,10 +19,11 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="now it works?">
+    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="print statement in the seed setting function, so that we always know the value used for the random seed">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/analysis_submission.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/analysis_submission.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/run_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/run_utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -420,7 +421,14 @@
       <option name="project" value="LOCAL" />
       <updated>1602576314538</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="print statement in the seed setting function, so that we always know the value used for the random seed">
+      <created>1602578673911</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1602578673911</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -458,7 +466,8 @@
     <MESSAGE value="fieldset in base scenario not generated for analysis submission" />
     <MESSAGE value="still not working..." />
     <MESSAGE value="now it works?" />
-    <option name="LAST_COMMIT_MESSAGE" value="now it works?" />
+    <MESSAGE value="print statement in the seed setting function, so that we always know the value used for the random seed" />
+    <option name="LAST_COMMIT_MESSAGE" value="print statement in the seed setting function, so that we always know the value used for the random seed" />
   </component>
   <component name="WindowStateProjectService">
     <state x="456" y="252" key="#com.intellij.codeInsight.template.impl.EditVariableDialog" timestamp="1601911510421">

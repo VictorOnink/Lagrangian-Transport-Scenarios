@@ -5,12 +5,12 @@
 #####################################################################################
 SUBMISSION='analysis'
 export SUBMISSION
-#0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent
-SCENARIO=3
+#0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4=Turrell
+SCENARIO=4
 #for scenario 1, the time a particle must be near the coast to beach (in days)
 VICINITY=2
 #for scenario 2, the beaching and resuspension timescales (in days)
-SHORETIME=26
+SHORETIME=10
 RESUSTIME=69
 #For scenario 3, we need to indicate if beaching is more likely with sand or not sand. 0 = more sand is less likely beaching and resuspension, 1 = more sand is more likely beaching and resuspension
 SHOREDEPEN=0
@@ -18,7 +18,7 @@ SHOREDEPEN=0
 WMIN=3
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010
-SIMLEN=5 #Number of years the simulation runs
+SIMLEN=1 #Number of years the simulation runs
 STOKES=0 #0 = include stokes, 1 = do not include stokes
 INPUT=0 #0=Jambeck, higher values aren't relevant yet but can be added
 ENSEMBLE=1 #For when we want to run multiple iterations of the same parameter setup
@@ -34,6 +34,11 @@ export STOKES
 export INPUT
 export ENSEMBLE
 export STARTYEAR
+
+#A number of switches to indicate which analysis steps we want to run
+CONCENTRATION=1
+
+export CONCENTRATION
 
 #Now, we can set the job name prefix
 
