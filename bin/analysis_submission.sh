@@ -3,7 +3,7 @@
 #####################################################################################
 # First we define the general parameters of the run                                 #
 #####################################################################################
-SUBMISSION='simulation'
+SUBMISSION='analysis'
 export SUBMISSION
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent
 SCENARIO=3
