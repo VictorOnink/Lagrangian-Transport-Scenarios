@@ -19,9 +19,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="i was an idiot, but i fixed the mistake now">
+    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="try again">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/factories/analysis_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/factories/analysis_factory.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,13 +89,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-00002" summary="More changes">
-      <created>1601892078602</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1601892078602</updated>
     </task>
     <task id="LOCAL-00003" summary="Alright, all changes have been made and we are ready for the first test run :)">
       <created>1601979736251</created>
@@ -433,7 +426,14 @@
       <option name="project" value="LOCAL" />
       <updated>1602580666323</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="try again">
+      <created>1602581918428</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1602581918428</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -453,7 +453,6 @@
     <MESSAGE value="Alright, all changes have been made and we are ready for the first test run :)" />
     <MESSAGE value="Take 2" />
     <MESSAGE value="fixed the input_dir" />
-    <MESSAGE value="try again" />
     <MESSAGE value="Working coastal proximity scenario" />
     <MESSAGE value="Adding the advection and diffusion only scenario" />
     <MESSAGE value="fixed settings print statement" />
@@ -473,7 +472,8 @@
     <MESSAGE value="now it works?" />
     <MESSAGE value="print statement in the seed setting function, so that we always know the value used for the random seed" />
     <MESSAGE value="i was an idiot, but i fixed the mistake now" />
-    <option name="LAST_COMMIT_MESSAGE" value="i was an idiot, but i fixed the mistake now" />
+    <MESSAGE value="try again" />
+    <option name="LAST_COMMIT_MESSAGE" value="try again" />
   </component>
   <component name="WindowStateProjectService">
     <state x="456" y="252" key="#com.intellij.codeInsight.template.impl.EditVariableDialog" timestamp="1601911510421">
@@ -542,10 +542,10 @@
     </state>
     <state x="221" y="67" key="SettingsEditor/0.23.1440.811@0.23.1440.811" timestamp="1601544733848" />
     <state x="221" y="67" key="SettingsEditor/0.23.1440.812@0.23.1440.812" timestamp="1601911551870" />
-    <state x="320" y="168" key="Vcs.Push.Dialog.v2" timestamp="1602580669251">
+    <state x="320" y="168" key="Vcs.Push.Dialog.v2" timestamp="1602581921806">
       <screen x="0" y="23" width="1440" height="812" />
     </state>
-    <state x="320" y="168" key="Vcs.Push.Dialog.v2/0.23.1440.812@0.23.1440.812" timestamp="1602580669251" />
+    <state x="320" y="168" key="Vcs.Push.Dialog.v2/0.23.1440.812@0.23.1440.812" timestamp="1602581921806" />
     <state x="320" y="169" key="Vcs.Push.Dialog.v2/0.23.1440.816@0.23.1440.816" timestamp="1602170515320" />
     <state x="320" y="170" key="Vcs.Push.Dialog.v2/0.23.1440.821@0.23.1440.821" timestamp="1602157768117" />
     <state x="100" y="123" width="1240" height="612" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1601912681118">
