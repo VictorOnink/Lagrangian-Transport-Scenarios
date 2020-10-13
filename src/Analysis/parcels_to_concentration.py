@@ -3,12 +3,9 @@ import utils
 
 import matplotlib.pyplot as plt
 from netCDF4 import Dataset
-from copy import deepcopy
 import numpy as np
 from scipy import io
-import os
-import time
-
+import progressbar
 
 def parcels_to_concentration(file_dict: dict):
     dataset = Dataset(settings.DATA_DIR_SERVERS[settings.SERVER] + 'HYCOM/HYCOM_Surface_3h_2000-01-01.nc')
@@ -27,7 +24,8 @@ def parcels_to_concentration(file_dict: dict):
     # Counter for the number of files
     counter = 0
     # loop through the runs
-    for run in range(settings.RUN_RANGE):
+    pbar = progressbar.progressbar()
+    for run in pbar(range(settings.RUN_RANGE)):
         # Loop through the restart files
         for restart in range(settings.SIM_LENGTH):
             # Load the lon, lat, weight data
