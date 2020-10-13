@@ -1,5 +1,6 @@
 from datetime import time
 import parcels.rng as rng
+import os
 
 def _set_random_seed(seed: str):
     """
@@ -11,8 +12,10 @@ def _set_random_seed(seed: str):
     :return:
     """
     if seed == 'Fixed':
-        rng.seed(11235811)
+        seed_value = 11235811
     elif seed == 'TimeSeed':
-        rng.seed(int(time())*1000000)
+        seed_value = int(time())*1000000
     else:
-        rng.seed(int(seed))
+        seed_value = int(seed)
+    os.system('echo "The random seed is "'+str(seed_value))
+    rng.seed(seed_value)
