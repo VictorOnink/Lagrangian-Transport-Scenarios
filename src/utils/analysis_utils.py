@@ -11,7 +11,7 @@ def AreaCalc(size_Lat, size_Lon):  # Calculate surface area of grid cells
                                                                   - np.sin(deg2rd * lat_bins[j])) for i in
                       range(len(lon_bins) - 1)]
                      for j in range(len(lat_bins) - 1)])
-    Area = np.transpose(r * r * Area)
+    Area = r * r * Area
     return Area  # km^2
 
 
