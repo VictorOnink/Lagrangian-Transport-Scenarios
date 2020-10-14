@@ -23,7 +23,7 @@ def parcels_to_max_distance(file_dict: dict, lon_min: float = -180, lon_max: flo
             lon, lat = dataset.variables['lon'][:, :-1], dataset.variables['lat'][:, :-1]
             distance = dataset.variables['distance'][:, :-1]
             # Get the maximum distance over the course of each trajectory
-            max_distance_file = np.nanmax(distance, axis=0, keepdims=True)
+            max_distance_file = np.nanmax(distance, axis=1, keepdims=True)
             os.system('echo "max_distance_file shape "'+str(max_distance_file.shape))
             if restart == 0:
                 # If this is the beginning of the run, we want to see if the initial positions of the particles fall
