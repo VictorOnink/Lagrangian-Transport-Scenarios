@@ -49,7 +49,8 @@ def parcels_to_timeseries(file_dict: dict, lon_min: int = 26.7, lon_max: int = 4
                     # and the total mass of particles in the simulation at that time, excluding all particles where the
                     # beach indicator is 2, since that is only for particles that were previously deleted.
                     weight_total = np.nansum(weight_sel[(time_sel == t_value) & (beach_sel != 2)])
-                    total_weight[t] +=
+                    if weight_total != np.nan:
+                        total_weight[t] += weight_beached
     # Get the output dictionary
     output_dict = {'beached': beached_weight, 'total': total_weight}
     # Saving the computed concentration, where we have a few default names for the prefix
