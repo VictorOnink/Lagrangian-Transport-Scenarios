@@ -18,9 +18,9 @@ def AreaCalc(size_Lat, size_Lon):  # Calculate surface area of grid cells
 def histogram(lon_data, lat_data, bins_Lon, bins_Lat, weight_data=0,
               area_correc=True, operation='sum'):
     """
-    operation -> 'sum' = get array with sum of weights per cell
-                 'mean' = get array with mean of weights per cell
-                 'count' = get array with counts of occurences within each cell
+    operation -> 'sum' = get array with sum of weights per cell, divided by km^2
+                 'mean' = get array with mean of weights per cell, divided by km^2
+                 'count' = get array with counts of occurences within each cell, divided by km^2
     :param lon_data: Nx1 or (N,) array
     :param lat_data: Nx1 or (N,) array
     :param bins_Lon: LONx1 array

@@ -5,6 +5,7 @@ from netCDF4 import Dataset
 import numpy as np
 from scipy import io
 import progressbar
+import os
 
 
 def parcels_to_timeseries(file_dict: dict, lon_min: int = -180, lon_max: int = 180, lat_min: int = -90,
@@ -21,6 +22,7 @@ def parcels_to_timeseries(file_dict: dict, lon_min: int = -180, lon_max: int = 1
             time_list = np.append(time_list, dataset.variables['time'][0, :-1])
     beached_weight = np.zeros(time_list.shape)
     total_weight = np.zeros(time_list.shape)
+    os.system('echo "Start running through the loops of the files')
     # loop through the runs
     for run in progressbar.progressbar(range(settings.RUN_RANGE)):
         # Loop through the restart files
@@ -42,6 +44,8 @@ def parcels_to_timeseries(file_dict: dict, lon_min: int = -180, lon_max: int = 1
                 if np.nansum(np.array(time_sel == t_value) * 1) > 0:
                     # We calculate the total mass of particles that are beached
                     beached_weight[t] += np.nansum(weight_sel[(time_sel == t_value) & (beach_sel == 1)])
+                    if beached_weight[t]==np.nan:
+                        beached_weight[t]=0
                     # and the total mass of particles in the simulation at that time, excluding all particles where the
                     # beach indicator is 2, since that is only for particles that were previously deleted.
                     total_weight[t] += np.nansum(weight_sel[(time_sel == t_value) & (beach_sel != 2)])
@@ -55,6 +59,7 @@ def parcels_to_timeseries(file_dict: dict, lon_min: int = -180, lon_max: int = 1
 
     output_name = output_direc + utils._analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
     io.savemat(output_name, output_dict)
+    os.system('echo "The timeseries has been saved"')
 
 
 def _particles_in_subarea(lon, lat, weight, beach, time, domain):

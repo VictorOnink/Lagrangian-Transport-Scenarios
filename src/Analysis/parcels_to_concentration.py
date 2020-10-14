@@ -6,6 +6,7 @@ from netCDF4 import Dataset
 import numpy as np
 from scipy import io
 import progressbar
+import os
 
 def parcels_to_concentration(file_dict: dict):
     dataset = Dataset(settings.DATA_DIR_SERVERS[settings.SERVER] + 'HYCOM/HYCOM_Surface_3h_2000-01-01.nc')
@@ -50,7 +51,7 @@ def parcels_to_concentration(file_dict: dict):
     prefix = 'concentration'
     output_name = output_direc + utils._analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
     io.savemat(output_name, {'concentration': overall_concentration})
-
+    os.system('echo "The concentration has been saved"')
 
 class Hexagonal2DGrid(object):
     """
