@@ -53,6 +53,7 @@ if SUBMISSION == 'analysis':
     #Now, which analysis do we want to run
     ANALYSIS_DICT={0: False, 1: True}
     CONCENTRATION = ANALYSIS_DICT[int(os.environ['CONCENTRATION'])]
+    TIMESERIES = ANALYSIS_DICT[int(os.environ['TIMESERIES'])]
 
 # starting year of the simulation
 START_YEAR: int = int(os.environ['STARTYEAR'])

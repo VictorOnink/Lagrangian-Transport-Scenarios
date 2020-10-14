@@ -20,7 +20,7 @@ def parcels_to_concentration(file_dict: dict):
     lat_min, lat_max = -90, 90
     hex_grid = Hexagonal2DGrid((bin_number, bin_number), [lon_min, lon_max, lat_min, lat_max])
 
-    output_direc = utils._get_output_directory(server=settings.SERVER) + 'Ccncentrations/'
+    output_direc = utils._get_output_directory(server=settings.SERVER) + 'concentrations/'
     # Counter for the number of files
     counter = 0
     # loop through the runs

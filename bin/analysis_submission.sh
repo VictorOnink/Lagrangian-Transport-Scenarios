@@ -36,9 +36,11 @@ export ENSEMBLE
 export STARTYEAR
 
 #A number of switches to indicate which analysis steps we want to run
-CONCENTRATION=1
+CONCENTRATION=0
+TIMESERIES=1
 
 export CONCENTRATION
+export TIMESERIES
 
 #Now, we can set the job name prefix
 
