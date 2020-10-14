@@ -53,7 +53,7 @@ if SUBMISSION == 'analysis':
     ANALYSIS_DICT = {0: False, 1: True}
     CONCENTRATION = ANALYSIS_DICT[int(os.environ['CONCENTRATION'])]
     TIMESERIES = ANALYSIS_DICT[int(os.environ['TIMESERIES'])]
-    MAX_DISTANCE = ANALYSIS_DICT[int(os.environ['CONCENTRATION'])]
+    MAX_DISTANCE = ANALYSIS_DICT[int(os.environ['MAX_DISTANCE'])]
 
 # starting year of the simulation
 START_YEAR: int = int(os.environ['STARTYEAR'])
