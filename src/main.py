@@ -10,18 +10,19 @@ def run():
         scenario_name = set.SCENARIO_NAME
         stokes = set.STOKES
         server = set.SERVER
-        scenario = scenario_factory.ScenarioFactory.create_scenario(scenario_name=scenario_name, stokes=stokes, server=server)
+        scenario = scenario_factory.ScenarioFactory.create_scenario(scenario_name=scenario_name, stokes=stokes,
+                                                                    server=server)
         scenario.run()
     elif set.SUBMISSION == 'analysis':
         os.system('echo "Running the analysis"')
         scenario_name = set.SCENARIO_NAME
         stokes = set.STOKES
         server = set.SERVER
-        scenario = scenario_factory.ScenarioFactory.create_scenario(scenario_name=scenario_name, stokes=stokes, server=server)
+        scenario = scenario_factory.ScenarioFactory.create_scenario(scenario_name=scenario_name, stokes=stokes,
+                                                                    server=server)
         file_dict = scenario.return_full_run_directory()
-        analysis_factory.AnalysisFactory.create_procedure(file_dict=file_dict, concentration=set.CONCENTRATION, timeseries=set.TIMESERIES)
-
-
+        analysis_factory.AnalysisFactory.create_procedure(file_dict=file_dict, concentration=set.CONCENTRATION,
+                                                          timeseries=set.TIMESERIES, max_distance=set.MAX_DISTANCE)
 
 
 if __name__ == "__main__":
