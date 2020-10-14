@@ -32,11 +32,9 @@ def parcels_to_max_distance(file_dict: dict, lon_min: float = -180, lon_max: flo
             if restart == 0:
                 max_distance_file = max_distance_file[within_domain]
                 max_distance_run = max_distance_file.reshape((len(max_distance_file), 1))
-                os.system('echo "shape of max_distance_run"'+str(max_distance_run.shape))
             else:
                 max_distance_file = max_distance_file[within_domain]
                 max_distance_run = np.hstack((max_distance_run, max_distance_file.reshape((len(max_distance_file), 1))))
-                os.system('echo "shape of max_distance_run"' + str(max_distance_run.shape))
         if run == 0:
             max_distance_simulation = np.nanmax(max_distance_run, axis=1, keepdims=True)
         else:
