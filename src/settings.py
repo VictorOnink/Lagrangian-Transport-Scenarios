@@ -5,19 +5,18 @@ from datetime import timedelta
 load_dotenv()
 
 SUBMISSION = str(os.environ["SUBMISSION"])
-os.system('echo "run="'+SUBMISSION)
+os.system('echo "run="' + SUBMISSION)
 # DIRECTORIES
 DATA_DIR_SERVERS: dict = {0: "/alphadata04/onink/lagrangian_sim/", 1: "/home/ubelix/climate/shared/onink/"}
 DATA_INPUT_DIR_SERVERS: dict = {0: "/alphadata04/onink/lagrangian_sim/BeachingSim/Input/",
-                                         1: "/home/ubelix/climate/shared/onink/Input/"}
-DATA_OUTPUT_DIR_SERVERS: dict = {0:"/alphadata04/onink/lagrangian_sim/BeachingSim/Output/",
-                                 1:"/home/ubelix/climate/shared/onink/Output/"}
-
-
+                                1: "/home/ubelix/climate/shared/onink/Input/"}
+DATA_OUTPUT_DIR_SERVERS: dict = {0: "/alphadata04/onink/lagrangian_sim/BeachingSim/Output/",
+                                 1: "/home/ubelix/climate/shared/onink/Output/"}
 
 # SCENARIO SETTINGS
 SERVER: int = int(os.environ["SERVER"])
-SCENARIO_DICT: dict = {0: 'AdvectionDiffusionOnly', 1: 'CoastalProximity', 2: 'Stochastic', 3: 'ShoreDependentResuspension', 4: 'TurrellResuspension'}
+SCENARIO_DICT: dict = {0: 'AdvectionDiffusionOnly', 1: 'CoastalProximity', 2: 'Stochastic',
+                       3: 'ShoreDependentResuspension', 4: 'TurrellResuspension'}
 
 SCENARIO_NUM: int = int(os.environ["SCENARIO"])
 SCENARIO_NAME: str = SCENARIO_DICT[SCENARIO_NUM]
@@ -47,13 +46,14 @@ if SUBMISSION == 'simulation':
     RESTART: int = int(os.environ['RESTARTNUM'])
 
 if SUBMISSION == 'analysis':
-    #Just default values to not run into errors
+    # Just default values to not run into errors
     RUN: int = 0
     RESTART: int = 0
-    #Now, which analysis do we want to run
-    ANALYSIS_DICT={0: False, 1: True}
+    # Now, which analysis do we want to run
+    ANALYSIS_DICT = {0: False, 1: True}
     CONCENTRATION = ANALYSIS_DICT[int(os.environ['CONCENTRATION'])]
     TIMESERIES = ANALYSIS_DICT[int(os.environ['TIMESERIES'])]
+    MAX_DISTANCE = ANALYSIS_DICT[int(os.environ['CONCENTRATION'])]
 
 # starting year of the simulation
 START_YEAR: int = int(os.environ['STARTYEAR'])
@@ -76,30 +76,30 @@ STOKES: int = int(os.environ['STOKES'])
 # same folder since they they would overwrite each other...
 ENSEMBLE = int(os.environ['ENSEMBLE'])
 
-#Model setup parameters
-TIME_STEP = timedelta(minutes=10) #integration timestep
-OUTPUT_TIME_STEP = timedelta(hours=24) #timestep of saving particle positions to the output file
-SEED = 'Fixed' #Seed for the rng
-KH_HOR = 10 #m^2 / s, following Lacerda et al. (2019) and Liubertseva et al. (2018)
-COAST_D = 10 #km, the distance from the nearest shoreline that falls under the coastal zone.
-BUOYANT = 0.54 #54% of plastic entering the ocean in 2010 is buoyant (based on Geyers et al., 2017)
+# Model setup parameters
+TIME_STEP = timedelta(minutes=10)  # integration timestep
+OUTPUT_TIME_STEP = timedelta(hours=24)  # timestep of saving particle positions to the output file
+SEED = 'Fixed'  # Seed for the rng
+KH_HOR = 10  # m^2 / s, following Lacerda et al. (2019) and Liubertseva et al. (2018)
+COAST_D = 10  # km, the distance from the nearest shoreline that falls under the coastal zone.
+BUOYANT = 0.54  # 54% of plastic entering the ocean in 2010 is buoyant (based on Geyers et al., 2017)
 
 # LOG
-os.system('echo "scenario = "'+str(SCENARIO_NAME))
-if SCENARIO_NAME=='CoastalProximity':
+os.system('echo "scenario = "' + str(SCENARIO_NAME))
+if SCENARIO_NAME == 'CoastalProximity':
     os.system('echo "vicinity = "' + str(VICINITY))
-elif SCENARIO_NAME=="Stochastic":
+elif SCENARIO_NAME == "Stochastic":
     os.system('echo "shoretime = "' + str(SHORE_TIME))
     os.system('echo "resustime = "' + str(RESUS_TIME))
-elif SCENARIO_NAME=='ShoreDependentResuspension':
+elif SCENARIO_NAME == 'ShoreDependentResuspension':
     os.system('echo "shoretime = "' + str(SHORE_TIME))
     os.system('echo "resustime = "' + str(RESUS_TIME))
     os.system('echo "shoredepen = "' + str(SHORE_DEP))
-elif SCENARIO_NAME=='TurrellResuspension':
+elif SCENARIO_NAME == 'TurrellResuspension':
     os.system('echo "shoretime = "' + str(SHORE_TIME))
     os.system('echo "Wmin = "' + str(WMIN))
-if SUBMISSION=='simulation':
-    os.system('echo "run="'+str(RUN))
-    os.system('echo "restart="'+str(RESTART))
-os.system('echo "starting year="'+str(START_YEAR))
-os.system('echo "input scenario = "'+str(INPUT))
+if SUBMISSION == 'simulation':
+    os.system('echo "run="' + str(RUN))
+    os.system('echo "restart="' + str(RESTART))
+os.system('echo "starting year="' + str(START_YEAR))
+os.system('echo "input scenario = "' + str(INPUT))

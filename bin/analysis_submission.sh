@@ -37,10 +37,12 @@ export STARTYEAR
 
 #A number of switches to indicate which analysis steps we want to run
 CONCENTRATION=0
-TIMESERIES=1
+TIMESERIES=0
+MAX_DISTANCE=1
 
 export CONCENTRATION
 export TIMESERIES
+export MAX_DISTANCE
 
 #Now, we can set the job name prefix
 
