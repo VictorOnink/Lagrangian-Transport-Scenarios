@@ -8,8 +8,8 @@ import progressbar
 import os
 
 
-def parcels_to_timeseries(file_dict: dict, lon_min: int = -180, lon_max: int = 180, lat_min: int = -90,
-                          lat_max: int = 90):
+def parcels_to_timeseries(file_dict: dict, lon_min: int = 26.7, lon_max: int = 42.4, lat_min: int = 41,
+                          lat_max: int = 47):
     domain = [lon_min, lon_max, lat_min, lat_max]
     output_direc = utils._get_output_directory(server=settings.SERVER) + 'timeseries/'
     # Get the time axis
@@ -43,12 +43,13 @@ def parcels_to_timeseries(file_dict: dict, lon_min: int = -180, lon_max: int = 1
                 # If any of the times of the arrays match that of the time_list, then...
                 if np.nansum(np.array(time_sel == t_value) * 1) > 0:
                     # We calculate the total mass of particles that are beached
-                    beached_weight[t] += np.nansum(weight_sel[(time_sel == t_value) & (beach_sel == 1)])
-                    if beached_weight[t]==np.nan:
-                        beached_weight[t]=0
+                    weight_beached = np.nansum(weight_sel[(time_sel == t_value) & (beach_sel == 1)])
+                    if weight_beached != np.nan:
+                        beached_weight[t] += weight_beached
                     # and the total mass of particles in the simulation at that time, excluding all particles where the
                     # beach indicator is 2, since that is only for particles that were previously deleted.
-                    total_weight[t] += np.nansum(weight_sel[(time_sel == t_value) & (beach_sel != 2)])
+                    weight_total = np.nansum(weight_sel[(time_sel == t_value) & (beach_sel != 2)])
+                    total_weight[t] +=
     # Get the output dictionary
     output_dict = {'beached': beached_weight, 'total': total_weight}
     # Saving the computed concentration, where we have a few default names for the prefix
