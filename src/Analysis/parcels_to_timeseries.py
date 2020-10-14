@@ -8,8 +8,8 @@ import progressbar
 import os
 
 
-def parcels_to_timeseries(file_dict: dict, lon_min: int = 26.7, lon_max: int = 42.4, lat_min: int = 41,
-                          lat_max: int = 47):
+def parcels_to_timeseries(file_dict: dict, lon_min: float = -180, lon_max: float = 180, lat_min: float = -90,
+                          lat_max: float = 90):
     domain = [lon_min, lon_max, lat_min, lat_max]
     output_direc = utils._get_output_directory(server=settings.SERVER) + 'timeseries/'
     # Get the time axis
@@ -22,7 +22,7 @@ def parcels_to_timeseries(file_dict: dict, lon_min: int = 26.7, lon_max: int = 4
             time_list = np.append(time_list, dataset.variables['time'][0, :-1])
     beached_weight = np.zeros(time_list.shape)
     total_weight = np.zeros(time_list.shape)
-    os.system('echo "Start running through the loops of the files"')
+    os.system('echo "Start running through the restart and run files"')
     # loop through the runs
     for run in progressbar.progressbar(range(settings.RUN_RANGE)):
         # Loop through the restart files
@@ -35,8 +35,8 @@ def parcels_to_timeseries(file_dict: dict, lon_min: int = 26.7, lon_max: int = 4
             weight = dataset.variables['weights'][:, :-1] * settings.BUOYANT
             beach = dataset.variables['beach'][:, :-1]
             # Get the domain specific timeseries
-            weight_sel, beach_sel, time_sel = _particles_in_subarea(lon=lon, lat=lat, weight=weight, beach=beach,
-                                                                    time=time, domain=domain)
+            weight_sel, beach_sel, time_sel = utils._particles_in_domain(domain=domain, lon=lon, lat=lat, weight=weight,
+                                                                         beach=beach, time=time, return_sub_array=True)
             # Loop through all time_list values, which cover the entire length of the simulation and not solely this
             # specific year saved in the file
             for t, t_value in enumerate(time_list):
@@ -62,12 +62,3 @@ def parcels_to_timeseries(file_dict: dict, lon_min: int = 26.7, lon_max: int = 4
     output_name = output_direc + utils._analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
     io.savemat(output_name, output_dict)
     os.system('echo "The timeseries has been saved"')
-
-
-def _particles_in_subarea(lon, lat, weight, beach, time, domain):
-    lon_min, lon_max, lat_min, lat_max = domain
-    # Select only particles that are within the domain that we are interested in
-    select = (lon >= lon_min) & (lon <= lon_max) & (lat >= lat_min) & (lat <= lat_max)
-    # And now we return the time, weight and beach arrays of the particles that are within
-    # the domain of interest
-    return weight[select], beach[select], time[select]

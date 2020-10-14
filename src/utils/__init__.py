@@ -9,4 +9,4 @@ from utils.BaseParticle import BaseParticle
 #Here we have the utilities that are more commonly used for analysis
 
 from utils.file_utils import _check_direc_exist, _check_file_exist
-from utils.analysis_utils import histogram, _analysis_save_file_name
+from utils.analysis_utils import histogram, _analysis_save_file_name, _particles_in_domain

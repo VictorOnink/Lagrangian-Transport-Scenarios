@@ -47,10 +47,12 @@ def parcels_to_concentration(file_dict: dict):
             counter += 1
     # Divide by the number of files we are averaging over
     overall_concentration /= counter
+    # Create the output dictionary
+    output_dict = {'concentration': overall_concentration, 'lon': lon_hyc, 'lat': lat_hyc}
     # Saving the computed concentration
     prefix = 'concentration'
     output_name = output_direc + utils._analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
-    io.savemat(output_name, {'concentration': overall_concentration})
+    io.savemat(output_name, output_dict)
     os.system('echo "The concentration has been saved"')
 
 class Hexagonal2DGrid(object):
@@ -80,3 +82,4 @@ def hexbin(x, y, c, hexgrid):
     counts = hexbin.get_array().copy()
     center = hexbin.get_offsets()
     return counts, center
+

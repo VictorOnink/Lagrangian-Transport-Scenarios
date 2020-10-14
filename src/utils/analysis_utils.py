@@ -58,3 +58,16 @@ def histogram(lon_data, lat_data, bins_Lon, bins_Lat, weight_data=0,
 def _analysis_save_file_name(input_file: str, prefix: str, out_type: str = '.mat'):
     _, file_name = os.path.split(input_file)
     return prefix + '_' + file_name.split('_r=')[0] + out_type
+
+
+def _particles_in_domain(domain, lon, lat, weight=0, beach=0, time=0,
+                         return_sub_array=False):
+    lon_min, lon_max, lat_min, lat_max = domain
+    # Select only particles that are within the domain that we are interested in
+    select = (lon >= lon_min) & (lon <= lon_max) & (lat >= lat_min) & (lat <= lat_max)
+    # And now we return the time, weight and beach arrays of the particles that are within
+    # the domain of interest
+    if return_sub_array==True:
+        return weight[select], beach[select], time[select]
+    else:
+        return select
