@@ -22,7 +22,7 @@ def parcels_to_timeseries(file_dict: dict, lon_min: int = 26.7, lon_max: int = 4
             time_list = np.append(time_list, dataset.variables['time'][0, :-1])
     beached_weight = np.zeros(time_list.shape)
     total_weight = np.zeros(time_list.shape)
-    os.system('echo "Start running through the loops of the files')
+    os.system('echo "Start running through the loops of the files"')
     # loop through the runs
     for run in progressbar.progressbar(range(settings.RUN_RANGE)):
         # Loop through the restart files
