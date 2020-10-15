@@ -45,6 +45,10 @@ if SUBMISSION == 'simulation':
     # e.g. 1 means we start after one year of simulation, 2 after two years, etc.
     RESTART: int = int(os.environ['RESTARTNUM'])
 
+    # Which advection data we want to use.
+    ADVECTION_DICT: dict = {0: 'HYCOM_GLOBAL'}
+    ADVECTION_DATA: str = ADVECTION_DICT[os.environ['ADVECTION_DATA']]
+
 if SUBMISSION == 'analysis':
     # Just default values to not run into errors
     RUN: int = 0
