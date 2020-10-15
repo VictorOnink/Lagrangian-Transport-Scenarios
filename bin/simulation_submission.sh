@@ -42,6 +42,7 @@ export SHOREDEPEN
 export WMIN
 export STARTYEAR
 export INPUT
+export ADVECTION_DATA
 export START
 export SIMLEN
 export STOKES
