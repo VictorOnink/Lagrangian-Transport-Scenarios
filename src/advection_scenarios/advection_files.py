@@ -20,6 +20,7 @@ class AdvectionFiles:
         self.data_dir = utils._get_data_directory(server=server)
         self.input_dir = utils._get_input_directory(server=server)
         self.advection_scenario = advection_scenario
+        os.system('echo "The advection scenario is "' + self.advection_scenario)
 
     def file_names(self):
         if self.advection_scenario == 'HYCOM_GLOBAL':
@@ -82,6 +83,6 @@ class AdvectionFiles:
         file_dict = {}
         for var in variables:
             file_dict[str(var)] = var
-
+        os.system('echo "The advection scenario is "' + str(file_dict))
         return file_dict
 
