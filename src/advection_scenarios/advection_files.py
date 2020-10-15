@@ -58,7 +58,7 @@ class AdvectionFiles:
             WIND_dimensions = {'time': 'time', 'lat': 'latitude', 'lon': 'longitude'}
 
             # The shore type
-            COAST_TYPE_filename = self.input_dir + 'coastline_sand_vs_not_sand.npy'
+            COAST_TYPE_filename = self.input_dir + 'HYCOM_GLOBAL_Luijendijk_sandy.npy'
 
             # Basic grid data
             dataset = Dataset(UV_filenames[0])
@@ -76,16 +76,22 @@ class AdvectionFiles:
         if utils._check_file_exist(DISTANCE_filename):
             os.system('echo "distance to coast file exists"')
 
+        # Land ID
+        LANDID_filename = self.input_dir + prefix + '_land_cell_identifier.npy'
+        if utils._check_file_exist(LANDID_filename):
+            os.system('echo "LANDID file exists"')
+
         # Putting everything in a dictionary so we can output it
-        variablesnames = ['UV_filenames', 'UV_variables', 'UV_dimensions', 'STOKES_filenames', 'STOKES_variables',
+        variable_names = ['UV_filenames', 'UV_variables', 'UV_dimensions', 'STOKES_filenames', 'STOKES_variables',
                           'STOKES_dimensions', 'ELEV_filenames', 'ELEV_variables', 'ELEV_dimensions',
                           'WIND_filenames', 'WIND_variables', 'WIND_dimensions', 'COAST_TYPE_filename', 'GRID', 'LON',
-                          'LAT', 'BORDER_filename', 'DISTANCE_filename']
+                          'LAT', 'BORDER_filename', 'DISTANCE_filename','LANDID_filename']
         variables = [UV_filenames, UV_variables, UV_dimensions, STOKES_filenames, STOKES_variables, STOKES_dimensions,
                      ELEV_filenames, ELEV_variables, ELEV_dimensions, WIND_filenames, WIND_variables, WIND_dimensions,
-                     COAST_TYPE_filename, GRID, LON, LAT, BORDER_filename, DISTANCE_filename]
+                     COAST_TYPE_filename, GRID, LON, LAT, BORDER_filename, DISTANCE_filename, LANDID_filename]
+
         file_dict = {}
         for var in range(len(variables)):
-            file_dict[variablesnames[var]] = variables[var]
+            file_dict[variable_names[var]] = variables[var]
         os.system('echo "The advection scenario is "' + str(file_dict.keys()))
         return file_dict
