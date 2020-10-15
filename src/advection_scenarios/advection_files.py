@@ -37,7 +37,7 @@ class AdvectionFiles:
 
             # The stokes drift fields
             STOKES_filenames = glob.glob(self.data_dir + "WaveWatchIIIstokes/ww3.{}*_uss.nc".format(
-                                         settings.START_YEAR + settings.RESTART))
+                settings.START_YEAR + settings.RESTART))
             STOKES_filenames.sort()
             STOKES_variables = {'Ust': 'uuss', 'Vst': 'vuss'}
             STOKES_dimensions = {'Ust': {'lat': 'latitude', 'lon': 'longitude', 'time': 'time'},
@@ -76,13 +76,16 @@ class AdvectionFiles:
         if utils._check_file_exist(DISTANCE_filename):
             os.system('echo "distance to coast file exists"')
 
-        #Putting everything in a dictionary so we can output it
+        # Putting everything in a dictionary so we can output it
+        variablesnames = ['UV_filenames', 'UV_variables', 'UV_dimensions', 'STOKES_filenames', 'STOKES_variables',
+                          'STOKES_dimensions', 'ELEV_filenames', 'ELEV_variables', 'ELEV_dimensions',
+                          'WIND_filenames', 'WIND_variables', 'WIND_dimensions', 'COAST_TYPE_filename', 'GRID', 'LON',
+                          'LAT', 'BORDER_filename', 'DISTANCE_filename']
         variables = [UV_filenames, UV_variables, UV_dimensions, STOKES_filenames, STOKES_variables, STOKES_dimensions,
                      ELEV_filenames, ELEV_variables, ELEV_dimensions, WIND_filenames, WIND_variables, WIND_dimensions,
                      COAST_TYPE_filename, GRID, LON, LAT, BORDER_filename, DISTANCE_filename]
         file_dict = {}
-        for var in variables:
-            file_dict[str(var)] = var
+        for var in range(len(variables)):
+            file_dict[variablesnames[var]] = variables[var]
         os.system('echo "The advection scenario is "' + str(file_dict.keys()))
         return file_dict
-
