@@ -83,6 +83,6 @@ class AdvectionFiles:
         file_dict = {}
         for var in variables:
             file_dict[str(var)] = var
-        os.system('echo "The advection scenario is "' + str(file_dict))
+        os.system('echo "The advection scenario is "' + str(file_dict.keys()))
         return file_dict
 
