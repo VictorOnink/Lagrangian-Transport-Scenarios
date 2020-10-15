@@ -50,7 +50,7 @@ class FieldSetFactory():
                                                             advection_scenario=settings.ADVECTION_DATA)
         file_dict = advection_scenario.file_names()
 
-        fieldset = _get_base_fieldset(data_dir=data_dir)
+        fieldset = _get_base_fieldset(file_dict=file_dict)
         if stokes == 0:
             _add_stokes_drift(fieldset=fieldset, data_dir=data_dir)
         if border_current:
@@ -80,7 +80,7 @@ class FieldSetFactory():
         return fieldset
 
 
-def _get_base_fieldset(data_dir: str) -> FieldSet:
+def _get_base_fieldset(file_dict: dict) -> FieldSet:
     """
 
     :param data_dir:
@@ -91,19 +91,11 @@ def _get_base_fieldset(data_dir: str) -> FieldSet:
     # Loading in the surface currents, where we always load in the 2000-01-01 file to ensure that time is always given
     # relative to the same starting point, whereas we then only load in the files for the specific year that the
     # simulation runs in. This speeds up the fieldset creation somewhat.
-    HYCOM_files = glob.glob(data_dir + "HYCOM/HYCOM_Surface*2000-01-01.nc") + \
-                  glob.glob(data_dir + "HYCOM/HYCOM_Surface*{}*.nc".format(settings.START_YEAR + settings.RESTART))
-    filenames = {'U': HYCOM_files,
-                 'V': HYCOM_files,
+    filenames = {'U': file_dict['UV_filenames'],
+                 'V': file_dict['UV_filenames'],
                  }
-    variables = {'U': 'water_u',
-                 'V': 'water_v',
-                 }
-    dimensions = {'U': {'time': 'time', 'depth': 'depth', 'lat': 'lat', 'lon': 'lon'},
-                  'V': {'time': 'time', 'depth': 'depth', 'lat': 'lat', 'lon': 'lon'},
-                  }
-
-    fieldset = FieldSet.from_netcdf(filenames, variables, dimensions, allow_time_extrapolation=True)
+    fieldset = FieldSet.from_netcdf(filenames, file_dict['UV_variables'], file_dict['UV_dimensions'],
+                                    allow_time_extrapolation=True)
     return fieldset
 
 
