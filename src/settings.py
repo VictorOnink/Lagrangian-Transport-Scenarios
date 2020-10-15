@@ -47,7 +47,7 @@ if SUBMISSION == 'simulation':
 
     # Which advection data we want to use.
     ADVECTION_DICT: dict = {0: 'HYCOM_GLOBAL'}
-    ADVECTION_DATA: str = ADVECTION_DICT[os.environ['ADVECTION_DATA']]
+    ADVECTION_DATA: str = ADVECTION_DICT[int(os.environ['ADVECTION_DATA'])]
 
 if SUBMISSION == 'analysis':
     # Just default values to not run into errors
