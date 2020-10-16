@@ -27,8 +27,8 @@ def create_border_current(output_name: str, filenames: list, variables: dict, di
             if is_ocean(u_data[j, i], v_data[j, i]):
                 mask = land_borders(u_data, v_data, j, i, nx)
                 if not mask.all():
-                    u_vel[0, 0, j, i] = sum(mask[:, 2]) - sum(mask[:, 0])
-                    v_vel[0, 0, j, i] = sum(mask[2, :]) - sum(mask[0, :])
+                    u_vel[j, i] = sum(mask[:, 2]) - sum(mask[:, 0])
+                    v_vel[j, i] = sum(mask[2, :]) - sum(mask[0, :])
     # Get the shore and coastal arrays
     shore = get_shore_cells(grid=grid)
     coastal = get_coastal_cells(grid=grid)
