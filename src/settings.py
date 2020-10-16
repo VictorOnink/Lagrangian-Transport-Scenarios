@@ -46,7 +46,7 @@ if SUBMISSION == 'simulation':
     RESTART: int = int(os.environ['RESTARTNUM'])
 
     # Which advection data we want to use.
-    ADVECTION_DICT: dict = {0: 'HYCOM_GLOBAL'}
+    ADVECTION_DICT: dict = {0: 'HYCOM_GLOBAL', 1: 'HYCOM_CARIBBEAN'}
     ADVECTION_DATA: str = ADVECTION_DICT[int(os.environ['ADVECTION_DATA'])]
 
 if SUBMISSION == 'analysis':

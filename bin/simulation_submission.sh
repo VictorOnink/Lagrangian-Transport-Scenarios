@@ -21,8 +21,8 @@ STARTYEAR=2010
 #Which input distribution do we want to use? 0=Jambeck, 1=lebreton
 INPUT=0
 #Which advection data do we want to use?
-#0 = Global HYCOM
-ADVECTION_DATA=0
+# 0 = Global HYCOM, 1 = Caribbean HYCOM
+ADVECTION_DATA=1
 #Start year of the simulation. 0 = new simulation, otherwise it picks up from a previous simulation
 START=0 
 #Number of years the simulation runs
