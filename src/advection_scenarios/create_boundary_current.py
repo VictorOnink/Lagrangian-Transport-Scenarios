@@ -4,7 +4,7 @@ from numpy import array
 import xarray
 import progressbar
 from copy import deepcopy
-
+import os
 
 def create_border_current(output_name: str, filenames: list, variables: dict, dimensions: dict, grid: array):
     # Setting up the fieldset containing the UV fields
