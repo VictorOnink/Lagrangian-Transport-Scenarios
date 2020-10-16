@@ -1,9 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
-from netCDF4 import Dataset
-from collections import Iterable
-from matplotlib import colors
-from copy import deepcopy
 import xarray
 import progressbar
 import geopy.distance
