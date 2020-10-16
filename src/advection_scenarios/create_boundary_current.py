@@ -21,7 +21,7 @@ def create_border_current(output_name: str, filenames: list, variables: dict, di
     for i in progressbar.progressbar(range(0, nx)):
         for j in range(1, ny - 1):
             if is_ocean(fieldset.U.data[0, 0, j, i], fieldset.V.data[0, 0, j, i]):
-                mask = land_borders(fieldset.U.data[0, :, :], fieldset.V.data[0, :, :], j, i, nx)
+                mask = land_borders(fieldset.U.data[0, 0, :, :], fieldset.V.data[0, 0, :, :], j, i, nx)
                 if not mask.all():
                     u_vel[0, j, i] = sum(mask[:, 2]) - sum(mask[:, 0])
                     v_vel[0, j, i] = sum(mask[2, :]) - sum(mask[0, :])
