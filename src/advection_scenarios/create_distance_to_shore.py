@@ -35,13 +35,13 @@ def create_distance_to_shore(output_name: str, grid: np.array, lon: np.array, la
                 while len(land_lon) == 0:
                     for lat_step in [-cells, cells]:
                         for lon_step in range(-cells, cells + 1):
-                            if (lat_index + lat_step) < n_lat:
+                            if boundary_conditions(n_lat, n_lon, lat_index, lat_step, lon_index, lon_step):
                                 if mask[(lat_index + lat_step) % n_lat, (lon_index + lon_step) % n_lon]:
                                     land_lat.append((lat_index + lat_step) % n_lat)
                                     land_lon.append((lon_index + lon_step) % n_lon)
                     for lat_step in range(-cells, cells + 1):
                         for lon_step in [-cells, cells]:
-                            if allow_circular_conditions(n_lat, n_lon, lat_index, lat_step, lon_index, lon_step):
+                            if boundary_conditions(n_lat, n_lon, lat_index, lat_step, lon_index, lon_step):
                                 if mask[(lat_index + lat_step) % n_lat, (lon_index + lon_step) % n_lon]:
                                     land_lat.append((lat_index + lat_step) % n_lat)
                                     land_lon.append((lon_index + lon_step) % n_lon)
@@ -62,7 +62,7 @@ def create_distance_to_shore(output_name: str, grid: np.array, lon: np.array, la
     dset.to_netcdf(output_name)
 
 
-def allow_circular_conditions(n_lat: int, n_lon: int, lat_index: int, k: int, lon_index: int, m: int):
+def boundary_conditions(n_lat: int, n_lon: int, lat_index: int, k: int, lon_index: int, m: int):
     if settings.ADVECTION_DATA == 'HYCOM_GLOBAL':
         return (lat_index + k) < n_lat
     if settings.ADVECTION_DATA == 'HYCOM_CARIBBEAN':
