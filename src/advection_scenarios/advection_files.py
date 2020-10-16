@@ -150,7 +150,7 @@ class AdvectionFiles:
             os.system('echo "LANDID file exists"')
         else:
             os.system('echo "The LANDID file does not yet exist"')
-            create_land_ID.create_land_ID(output_name=DISTANCE_filename, grid=GRID, lon=LON, lat=LAT)
+            create_land_ID.create_land_ID(output_name=LANDID_filename, grid=GRID, lon=LON, lat=LAT)
             if utils._check_file_exist(BORDER_filename):
                 os.system('echo "The LANDID file for "' + str(prefix) + ' has been created')
             else:
