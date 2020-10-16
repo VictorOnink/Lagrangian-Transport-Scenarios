@@ -51,7 +51,7 @@ def create_distance_to_shore(output_name: str, grid: np.array, lon: np.array, la
                 for points in range(len(land_lon)):
                     dis.append(geopy.distance.distance((lat[lat_index], lon[lon_index]),
                                                        (lat[land_lat[points]], lon[land_lon[points]])).km)
-                distance[0, lat_index, lon_index] += np.min(dis)
+                distance[lat_index, lon_index] += np.min(dis)
             else:
                 memory_var = 1
     # Saving the entire distance field
