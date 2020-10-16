@@ -24,7 +24,6 @@ def create_distance_to_shore(output_name: str, grid: np.array, lon: np.array, la
     memory_var = 1
 
     # The actual distance computation loop
-    # TODO: optimize using numpy array tools
     for lat_index in progressbar.progressbar(range(mask.shape[0])):
         for lon_index in range(mask.shape[1]):
             if not mask[lat_index, lon_index]:
