@@ -24,8 +24,8 @@ def create_border_current(output_name: str, filenames: list, variables: dict, di
             if is_ocean(fieldset.U.data[0, 0, j, i], fieldset.V.data[0, 0, j, i]):
                 mask = land_borders(fieldset.U.data[0, 0, :, :], fieldset.V.data[0, 0, :, :], j, i, nx)
                 if not mask.all():
-                    u_vel[0, j, i] = sum(mask[:, 2]) - sum(mask[:, 0])
-                    v_vel[0, j, i] = sum(mask[2, :]) - sum(mask[0, :])
+                    u_vel[0, 0, j, i] = sum(mask[:, 2]) - sum(mask[:, 0])
+                    v_vel[0, 0, j, i] = sum(mask[2, :]) - sum(mask[0, :])
     # Get the shore and coastal arrays
     shore = get_shore_cells(grid=grid)
     coastal = get_coastal_cells(grid=grid)
@@ -36,13 +36,13 @@ def create_border_current(output_name: str, filenames: list, variables: dict, di
         for j in range(1, ny - 1):
             if shore[j, i] == 1 or coastal[j, i] == 1:
                 k = [-1, 1]
-                u_vel_all[0, j, i] += (u_vel[0, j, (i + k[0]) % nx] + u_vel[0, j, (i + k[1]) % nx])
-                v_vel_all[0, j, i] += (v_vel[0, (j + k[0]) % ny, i] + v_vel[0, (j + k[1]) % ny, i])
+                u_vel_all[0, 0, j, i] += (u_vel[0, 0, j, (i + k[0]) % nx] + u_vel[0, 0, j, (i + k[1]) % nx])
+                v_vel_all[0, 0, j, i] += (v_vel[0, 0, (j + k[0]) % ny, i] + v_vel[0, 0, (j + k[1]) % ny, i])
     # Carry out normalisation
     u_vel_all, v_vel_all = normalisation(u_vel_all, v_vel_all)
 
     # We don't care about the depth dimensions, we only want to keep lon and lat parts
-    u_vel_all, v_vel_all = u_vel_all[0, :, :], v_vel_all[0, :, :]
+    u_vel_all, v_vel_all = u_vel_all[0, 0, :, :], v_vel_all[0, 0, :, :]
 
     # Creating the netCDF file
     coords = [('lat', fieldset.U.lat), ('lon', fieldset.U.lon)]
