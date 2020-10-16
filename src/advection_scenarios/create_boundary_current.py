@@ -55,7 +55,7 @@ def create_border_current(output_name: str, filenames: list, variables: dict, di
 def set_fieldset(filenames: list, variables: dict, dimensions: dict):
     filenames = {'U': filenames[0],
                  'V': filenames[0]}
-    return FieldSet.from_netcdf(filenames, variables, dimensions)
+    return FieldSet.from_netcdf(filenames, variables, dimensions, allow_time_extrapolation=True)
 
 
 def is_ocean(u: float, v: float):
