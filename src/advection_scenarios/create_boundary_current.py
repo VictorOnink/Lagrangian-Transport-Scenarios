@@ -16,6 +16,7 @@ def create_border_current(output_name: str, filenames: list, variables: dict, di
     # Creating the arrays that we will use for the first round of getting the border currents
     u_vel = np.zeros(fieldset.U.data.shape)
     v_vel = np.zeros(fieldset.V.data.shape)
+    os.system('echo {}'.format(fieldset.U.data.shape))
 
     # Looping through all the cells, checking if they are border currents or not
     for i in progressbar.progressbar(range(0, nx)):
