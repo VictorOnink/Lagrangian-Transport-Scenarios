@@ -13,16 +13,19 @@ def create_border_current(output_name: str, filenames: list, variables: dict, di
     nx = fieldset.U.lon.size
     ny = fieldset.U.lat.size
 
+    # U and V data
+    u_data = reduce_array(fieldset.U.data)
+    v_data = reduce_array(fieldset.V.data)
+
     # Creating the arrays that we will use for the first round of getting the border currents
-    u_vel = np.zeros(fieldset.U.data.shape)
-    v_vel = np.zeros(fieldset.V.data.shape)
-    os.system('echo {}'.format(fieldset.U.data.shape))
+    u_vel = np.zeros(u_data)
+    v_vel = np.zeros(v_data)
 
     # Looping through all the cells, checking if they are border currents or not
     for i in progressbar.progressbar(range(0, nx)):
         for j in range(1, ny - 1):
-            if is_ocean(fieldset.U.data[0, 0, j, i], fieldset.V.data[0, 0, j, i]):
-                mask = land_borders(fieldset.U.data[0, 0, :, :], fieldset.V.data[0, 0, :, :], j, i, nx)
+            if is_ocean(u_data[j, i], v_data[j, i]):
+                mask = land_borders(u_data, v_data, j, i, nx)
                 if not mask.all():
                     u_vel[0, 0, j, i] = sum(mask[:, 2]) - sum(mask[:, 0])
                     v_vel[0, 0, j, i] = sum(mask[2, :]) - sum(mask[0, :])
@@ -36,13 +39,10 @@ def create_border_current(output_name: str, filenames: list, variables: dict, di
         for j in range(1, ny - 1):
             if shore[j, i] == 1 or coastal[j, i] == 1:
                 k = [-1, 1]
-                u_vel_all[0, 0, j, i] += (u_vel[0, 0, j, (i + k[0]) % nx] + u_vel[0, 0, j, (i + k[1]) % nx])
-                v_vel_all[0, 0, j, i] += (v_vel[0, 0, (j + k[0]) % ny, i] + v_vel[0, 0, (j + k[1]) % ny, i])
+                u_vel_all[j, i] += (u_vel[j, (i + k[0]) % nx] + u_vel[j, (i + k[1]) % nx])
+                v_vel_all[j, i] += (v_vel[(j + k[0]) % ny, i] + v_vel[(j + k[1]) % ny, i])
     # Carry out normalisation
     u_vel_all, v_vel_all = normalisation(u_vel_all, v_vel_all)
-
-    # We don't care about the depth dimensions, we only want to keep lon and lat parts
-    u_vel_all, v_vel_all = u_vel_all[0, 0, :, :], v_vel_all[0, 0, :, :]
 
     # Creating the netCDF file
     coords = [('lat', fieldset.U.lat), ('lon', fieldset.U.lon)]
@@ -57,6 +57,16 @@ def set_fieldset(filenames: list, variables: dict, dimensions: dict):
     filenames = {'U': filenames[0],
                  'V': filenames[0]}
     return FieldSet.from_netcdf(filenames, variables, dimensions, allow_time_extrapolation=True)
+
+
+def reduce_array(data: array):
+    if len(data.shape) == 4:
+        data = data[0, 0, :, :]
+    elif len(data.shape) == 3:
+        data = data[0, :, :]
+    else:
+        os.system('echo "What weird data are you working with? It has shape {}"'.format(data.shape))
+    return data
 
 
 def is_ocean(u: float, v: float):
