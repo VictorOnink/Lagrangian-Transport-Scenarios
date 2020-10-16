@@ -5,6 +5,7 @@ import glob
 from netCDF4 import Dataset
 import os
 
+import advection_scenarios.create_boundary_current as create_boundary_current
 
 class AdvectionFiles:
     """
@@ -119,6 +120,13 @@ class AdvectionFiles:
             os.system('echo "border current file exists"')
         else:
             os.system('echo "The border current file does not yet exist"')
+            create_boundary_current.create_border_current(output_name=BORDER_filename, filenames=UV_filenames,
+                                                          variables=UV_variables, dimensions=UV_dimensions,
+                                                          grid=GRID)
+            if utils._check_file_exist(BORDER_filename):
+                os.system('echo "The border current for "'+str(prefix)+' has been created')
+            else:
+                os.system('echo "The border current file still does not exist"')
 
         # Distance to shore (from ocean cells to the nearest land cell)
         DISTANCE_filename = self.input_dir + prefix + '_distance2coast.nc'
