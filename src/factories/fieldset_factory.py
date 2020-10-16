@@ -162,7 +162,8 @@ def _add_landID_field(fieldset: FieldSet, file_dict: dict):
     :param input_dir:
     """
     os.system('echo "Adding land/water boolean field"')
-    landID = np.load(file_dict['LANDID_filename'])
+    dataset = Dataset(file_dict['LANDID_filename'])
+    landID = dataset.variables['land_ID'][:]
     fieldset.add_field(Field('landID', landID, lon=file_dict['LON'], lat=file_dict['LAT'], mesh='spherical'))
 
 
