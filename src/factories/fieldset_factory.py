@@ -125,14 +125,14 @@ def _add_border_current(fieldset: FieldSet, file_dict: dict):
     """
     os.system('echo "Adding the border current"')
     datasetBor = Dataset(file_dict['BORDER_filename'])
-    borU = datasetBor.variables['MaskUvel'][0, :, :]
-    borV = datasetBor.variables['MaskVvel'][0, :, :]
+    borU = datasetBor.variables['border_u'][0, :, :]
+    borV = datasetBor.variables['border_v'][0, :, :]
     # Normalizing the border current so that the total current is always 1m/s
-    borMag = np.sqrt(np.square(borU) + np.square(borV))
-    borMag[borMag == 0] = 1
-    borU = np.divide(borU, borMag)
-    borV = np.divide(borV, borMag)
-    # Adding the actual field
+    # borMag = np.sqrt(np.square(borU) + np.square(borV))
+    # borMag[borMag == 0] = 1
+    # borU = np.divide(borU, borMag)
+    # borV = np.divide(borV, borMag)
+    # # Adding the actual field
     fieldset.add_field(Field('borU', borU, lon=file_dict['LON'], lat=file_dict['LAT'], mesh='spherical'))
     fieldset.add_field(Field('borV', borV, lon=file_dict['LON'], lat=file_dict['LAT'], mesh='spherical'))
     # making sure the units are interpreted as m s^-1
