@@ -125,8 +125,8 @@ def _add_border_current(fieldset: FieldSet, file_dict: dict):
     """
     os.system('echo "Adding the border current"')
     datasetBor = Dataset(file_dict['BORDER_filename'])
-    borU = datasetBor.variables['border_u'][0, :, :]
-    borV = datasetBor.variables['border_v'][0, :, :]
+    borU = datasetBor.variables['border_u'][:]
+    borV = datasetBor.variables['border_v'][:]
     # Normalizing the border current so that the total current is always 1m/s
     # borMag = np.sqrt(np.square(borU) + np.square(borV))
     # borMag[borMag == 0] = 1
