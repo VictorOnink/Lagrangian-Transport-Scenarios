@@ -59,7 +59,7 @@ def set_fieldset(filenames: list, variables: dict, dimensions: dict):
 
 
 def is_ocean(u: float, v: float):
-    return (u == 0) & (v == 0)
+    return u == 0 and v == 0
 
 
 def land_borders(u: array, v: array, m: int, k: int, nx: int):
