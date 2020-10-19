@@ -58,9 +58,8 @@ def create_border_current(output_name: str, filenames: list, variables: dict, di
     dset.to_netcdf(output_name)
 
     # Just to check some basics to see if it did what I want
-    all_cells = (coastal == 1) & (shore == 1)
     magnitude = np.sqrt(np.square(u_vel_all) + np.square(v_vel_all))
-    os.system('echo "The maximum magnitude is {}"'.format(np.nanmax(magnitude[all_cells])))
+    os.system('echo "The maximum magnitude is {}"'.format(np.nanmax(magnitude)))
 
 
 def set_fieldset(filenames: list, variables: dict, dimensions: dict):
