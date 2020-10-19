@@ -29,7 +29,6 @@ def create_border_current(output_name: str, filenames: list, variables: dict, di
     # Looping through all the cells, checking if they are border currents or not
     for i in progressbar.progressbar(range(0, nx)):
         for j in range(1, ny - 1):
-            # if is_ocean(u_data[j, i], v_data[j, i]):
             if coastal[j, i] == 1:
                 j_steps, i_steps = np.array([j - 1, j, j + 1]) % nx, np.array([i - 1, i, i + 1]) % ny
                 grid_select = np.ix_(j_steps, i_steps)
@@ -59,7 +58,14 @@ def create_border_current(output_name: str, filenames: list, variables: dict, di
 
     # Just to check some basics to see if it did what I want
     magnitude = np.sqrt(np.square(u_vel_all) + np.square(v_vel_all))
-    os.system('echo "The maximum magnitude is {}"'.format(np.max(magnitude, axis=(0, 1))))
+    if np.max(magnitude, axis=(0, 1)) != 1:
+        os.system('echo "WARNING: The maximum magnitude is too high, namely {} m/s"'.format(np.max(magnitude, axis=(0, 1)) != 0))
+    if np.max(np.abs(u_vel_all), axis=(0, 1)) > 1:
+        os.system('echo "WARNING: The maximum u component is too high, namely {} m/s"'.format(
+            np.max(np.abs(u_vel_all), axis=(0, 1))))
+    if np.max(np.abs(v_vel_all), axis=(0, 1)) > 1:
+        os.system('echo "WARNING: The maximum v component is too high, namely {} m/s"'.format(
+            np.max(np.abs(v_vel_all), axis=(0, 1))))
 
 
 def set_fieldset(filenames: list, variables: dict, dimensions: dict):
