@@ -21,17 +21,20 @@ def create_border_current(output_name: str, filenames: list, variables: dict, di
     u_vel = np.zeros(u_data.shape)
     v_vel = np.zeros(v_data.shape)
 
-    # Looping through all the cells, checking if they are border currents or not
-    for i in progressbar.progressbar(range(0, nx)):
-        for j in range(1, ny - 1):
-            if is_ocean(u_data[j, i], v_data[j, i]):
-                mask = land_borders(u_data, v_data, j, i, nx)
-                if not mask.all():
-                    u_vel[j, i] = sum(mask[:, 2]) - sum(mask[:, 0])
-                    v_vel[j, i] = sum(mask[2, :]) - sum(mask[0, :])
     # Get the shore and coastal arrays
     shore = get_shore_cells(grid=grid)
     coastal = get_coastal_cells(grid=grid)
+
+    # Looping through all the cells, checking if they are border currents or not
+    for i in progressbar.progressbar(range(0, nx)):
+        for j in range(1, ny - 1):
+            #if is_ocean(u_data[j, i], v_data[j, i]):
+            if coastal[j, i] == 1:
+                mask = land_borders(u_data, v_data, j, i, nx)
+                if not mask.all():
+                    u_vel[j, i] = sum(mask[:, 2]) - sum(mask[:, 0])
+
+
     # Assure that all shore and coastal cells have border current values
     u_vel_all = deepcopy(u_vel)
     v_vel_all = deepcopy(v_vel)
@@ -90,7 +93,7 @@ def get_coastal_cells(grid: array):
             if not mask[i, j]:
                 for k in [-1, 0, 1]:
                     for m in [-1, 0, 1]:
-                        if abs(k) != abs(m):  # find if there is land directly adjacent
+                        if k != 0 and m != 0:  # find if there is land directly adjacent
                             if mask[(i + k) % mask.shape[0], (j + m) % mask.shape[1]]:
                                 coastal[i, j] = 1
     return coastal
@@ -105,7 +108,7 @@ def get_shore_cells(grid: array):
             if mask[i, j]:
                 for k in [-1, 0, 1]:
                     for m in [-1, 0, 1]:
-                        if abs(k) != abs(m):  # find if there is ocean directly adjacent
+                        if k != 0 and m != 0:  # find if there is ocean directly adjacent
                             if not mask[(i + k) % mask.shape[0], (j + m) % mask.shape[1]]:
                                 shore[i, j] = 1
     return shore

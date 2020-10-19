@@ -43,9 +43,6 @@ class FieldSetFactory():
         :param halo:
         :return:
         """
-        data_dir = utils._get_data_directory(server=server)
-        input_dir = utils._get_input_directory(server=server)
-
         advection_scenario = advection_files.AdvectionFiles(server=server, stokes=stokes,
                                                             advection_scenario=settings.ADVECTION_DATA)
         file_dict = advection_scenario.file_names()

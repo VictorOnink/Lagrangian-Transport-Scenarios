@@ -38,8 +38,7 @@ class AdvectionFiles:
             UV_filenames.sort()
             UV_variables = {'U': 'water_u', 'V': 'water_v'}
             UV_dimensions = {'U': {'time': 'time', 'depth': 'depth', 'lat': 'lat', 'lon': 'lon'},
-                             'V': {'time': 'time', 'depth': 'depth', 'lat': 'lat', 'lon': 'lon'},
-                             }
+                             'V': {'time': 'time', 'depth': 'depth', 'lat': 'lat', 'lon': 'lon'}}
 
             # The stokes drift fields
             STOKES_filenames = glob.glob(self.data_dir + "WaveWatchIIIstokes/ww3.{}*_uss.nc".format(
