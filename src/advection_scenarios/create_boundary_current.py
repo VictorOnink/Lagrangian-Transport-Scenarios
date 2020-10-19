@@ -33,11 +33,6 @@ def create_border_current(output_name: str, filenames: list, variables: dict, di
             if coastal[j, i] == 1:
                 j_steps, i_steps = np.array([j - 1, j, j + 1]) % nx, np.array([i - 1, i, i + 1]) % ny
                 grid_select = np.ix_(j_steps, i_steps)
-                try:
-                    u_data[grid_select]
-                    os.system('echo "this is not an issue, shape {}"'.format(u_data[grid_select].shape))
-                except:
-                    os.system('echo "it does not like the grid selecting"')
                 mask = land_borders(u_data[grid_select], v_data[grid_select], j, i, nx)
                 if not mask.all():
                     u_vel[j, i] = sum(mask[:, 2]) - sum(mask[:, 0])
@@ -61,6 +56,11 @@ def create_border_current(output_name: str, filenames: list, variables: dict, di
     coord_dict = {'lon': fieldset.U.lon, 'lat': fieldset.U.lat}
     dset = xarray.Dataset({'border_u': u_vel_xarray, 'border_v': v_vel_xarray}, coords=coord_dict)
     dset.to_netcdf(output_name)
+
+    # Just to check some basics to see if it did what I want
+    all_cells = (coastal == 1) & (shore == 1)
+    magnitude = np.sqrt(np.square(u_vel_all) + np.square(v_vel_all))
+    os.system('echo "The maximum magnitude is {}"'.format(np.nanmax(magnitude[all_cells])))
 
 
 def set_fieldset(filenames: list, variables: dict, dimensions: dict):
