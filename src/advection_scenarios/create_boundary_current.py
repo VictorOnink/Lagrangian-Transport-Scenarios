@@ -6,6 +6,7 @@ import progressbar
 from copy import deepcopy
 import os
 
+
 def create_border_current(output_name: str, filenames: list, variables: dict, dimensions: dict, grid: array):
     # Setting up the fieldset containing the UV fields
     fieldset = set_fieldset(filenames, variables, dimensions)
@@ -28,12 +29,13 @@ def create_border_current(output_name: str, filenames: list, variables: dict, di
     # Looping through all the cells, checking if they are border currents or not
     for i in progressbar.progressbar(range(0, nx)):
         for j in range(1, ny - 1):
-            #if is_ocean(u_data[j, i], v_data[j, i]):
+            # if is_ocean(u_data[j, i], v_data[j, i]):
             if coastal[j, i] == 1:
-                mask = land_borders(u_data, v_data, j, i, nx)
+                j_steps, i_steps = np.array([j - 1, j, j + 1]) % nx, np.array([i - 1, i, i + 1]) % ny
+                grid_select = np.ix_(j_steps, i_steps)
+                mask = land_borders(u_data[grid_select], v_data[grid_select], j, i, nx)
                 if not mask.all():
                     u_vel[j, i] = sum(mask[:, 2]) - sum(mask[:, 0])
-
 
     # Assure that all shore and coastal cells have border current values
     u_vel_all = deepcopy(u_vel)
@@ -80,7 +82,8 @@ def land_borders(u: array, v: array, m: int, k: int, nx: int):
     mask = np.ones((3, 3), dtype=bool)
     for i in [-1, 0, 1]:
         for j in [-1, 0, 1]:
-            mask[j + 1, i + 1] = is_ocean(u[j + m, (i + k) % nx], v[j + m, (i + k) % nx])
+            # mask[j + 1, i + 1] = is_ocean(u[j + m, (i + k) % nx], v[j + m, (i + k) % nx])
+            mask[j + 1, i + 1] = is_ocean(u, v)
     return mask
 
 
