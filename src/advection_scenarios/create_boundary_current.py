@@ -32,7 +32,7 @@ def create_border_current(output_name: str, filenames: list, variables: dict, di
             if coastal[j, i] == 1:
                 j_steps, i_steps = np.array([j - 1, j, j + 1]) % nx, np.array([i - 1, i, i + 1]) % ny
                 grid_select = np.ix_(j_steps, i_steps)
-                mask = land_borders(u_data[grid_select], v_data[grid_select], j, i, nx)
+                mask = land_borders(u_data[grid_select], v_data[grid_select])
                 if not mask.all():
                     u_vel[j, i] = sum(mask[:, 2]) - sum(mask[:, 0])
 
@@ -88,13 +88,10 @@ def is_ocean(u: float, v: float):
     return u == 0 and v == 0
 
 
-def land_borders(u: array, v: array, m: int, k: int, nx: int):
+def land_borders(u: array, v: array):
     mask = np.ones((3, 3), dtype=bool)
-    # for i in [-1, 0, 1]:
-    #     for j in [-1, 0, 1]:
     for i in range(mask.shape[0]):
         for j in range(mask.shape[1]):
-            # mask[j + 1, i + 1] = is_ocean(u[j + m, (i + k) % nx], v[j + m, (i + k) % nx])
             mask[i, j] = is_ocean(u[i, j], v[i, j])
     return mask
 
