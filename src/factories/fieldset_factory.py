@@ -24,7 +24,9 @@ class FieldSetFactory():
                         resus_timescale: bool = False,
                         wind_min: bool = False,
                         coastal_zone: bool = True,
+                        grid_spacing: bool = True,
                         halo: bool = True
+
                         ):
         """
 
@@ -263,6 +265,15 @@ def _add_minResuspensionWind_constant(fieldset: FieldSet):
 def _add_coastal_zone_boundary(fieldset: FieldSet):
     # The distance from the nearest coastline that is defines the coastal zone within which beaching occurs
     fieldset.add_constant('Coastal_Boundary', settings.COAST_D)
+
+def _add_grid_spacing(fieldset: FieldSet, file_dict: dict):
+    # Adding in the lon and lat grid spacing for use in the initial scattering of particles on the first time step
+    os.system('echo "Adding lon and lat grid spacing"')
+    datasetCoast = Dataset(file_dict['GRIDSPACING_filename'])
+    dlon = datasetCoast.variables['lon_spacing'][:]
+    dlat = datasetCoast.variables['lat_spacing'][:]
+    fieldset.add_field(Field('dlon', dlon, lon=file_dict['LON'], lat=file_dict['LAT'], mesh='spherical'))
+    fieldset.add_field(Field('dlat', dlat, lon=file_dict['LON'], lat=file_dict['LAT'], mesh='spherical'))
 
 
 def _add_halo(fieldset: FieldSet):

@@ -15,14 +15,14 @@ RESUSTIME=69
 #for scenario 3, the shore dependence scenario.
 SHOREDEPEN=0
 #for scenario 4, the minimum wind speed for resusplension. Divide by 10 for actual value
-WMIN=4
+WMIN=3
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010
 #Which input distribution do we want to use? 0=Jambeck, 1=lebreton
 INPUT=0
 #Which advection data do we want to use?
 # 0 = Global HYCOM, 1 = Caribbean HYCOM
-ADVECTION_DATA=1
+ADVECTION_DATA=0
 #Start year of the simulation. 0 = new simulation, otherwise it picks up from a previous simulation
 START=0 
 #Number of years the simulation runs
