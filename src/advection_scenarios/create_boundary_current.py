@@ -85,10 +85,12 @@ def is_ocean(u: float, v: float):
 
 def land_borders(u: array, v: array, m: int, k: int, nx: int):
     mask = np.ones((3, 3), dtype=bool)
-    for i in [-1, 0, 1]:
-        for j in [-1, 0, 1]:
+    # for i in [-1, 0, 1]:
+    #     for j in [-1, 0, 1]:
+    for i in range(mask.shape[0]):
+        for j in range(mask.shape[1]):
             # mask[j + 1, i + 1] = is_ocean(u[j + m, (i + k) % nx], v[j + m, (i + k) % nx])
-            mask[j + 1, i + 1] = is_ocean(u, v)
+            mask[i, j] = is_ocean(u[i, j], v[i, j])
     return mask
 
 
