@@ -59,7 +59,8 @@ def create_border_current(output_name: str, filenames: list, variables: dict, di
     # Just to check some basics to see if it did what I want
     magnitude = np.sqrt(np.square(u_vel_all) + np.square(v_vel_all))
     if np.max(magnitude, axis=(0, 1)) != 1:
-        os.system('echo "WARNING: The maximum magnitude is too high, namely {} m/s"'.format(np.max(magnitude, axis=(0, 1)) != 0))
+        os.system('echo "WARNING: The maximum magnitude is too high, namely {} m/s"'.format(
+            np.max(magnitude, axis=(0, 1)) != 0))
     if np.max(np.abs(u_vel_all), axis=(0, 1)) > 1:
         os.system('echo "WARNING: The maximum u component is too high, namely {} m/s"'.format(
             np.max(np.abs(u_vel_all), axis=(0, 1))))

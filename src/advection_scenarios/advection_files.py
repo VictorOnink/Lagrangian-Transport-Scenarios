@@ -8,6 +8,7 @@ import os
 import advection_scenarios.create_boundary_current as create_boundary_current
 import advection_scenarios.create_distance_to_shore as create_distance_to_shore
 import advection_scenarios.create_land_ID as create_land_ID
+import advection_scenarios.create_grid_spacing as create_grid_spacing
 
 
 class AdvectionFiles:
@@ -155,14 +156,27 @@ class AdvectionFiles:
             else:
                 os.system('echo "The LANDID file still does not exist"')
 
+        # Grid size
+        GRIDSPACING_filename = self.input_dir + prefix + '_grid_spacing.nc'
+        if utils._check_file_exist(GRIDSPACING_filename):
+            os.system('echo "Grid spacing file exists"')
+        else:
+            os.system('echo "The grid spacing file does not yet exist"')
+            create_grid_spacing.create_grid_spacing(output_name=GRIDSPACING_filename, grid=GRID, lon=LON, lat=LAT)
+            if utils._check_file_exist(GRIDSPACING_filename):
+                os.system('echo "The grid spacing file for "' + str(prefix) + ' has been created')
+            else:
+                os.system('echo "The grid spacing file still does not exist"')
+
         # Putting everything in a dictionary so we can output it
         variable_names = ['UV_filenames', 'UV_variables', 'UV_dimensions', 'STOKES_filenames', 'STOKES_variables',
                           'STOKES_dimensions', 'ELEV_filenames', 'ELEV_variables', 'ELEV_dimensions',
                           'WIND_filenames', 'WIND_variables', 'WIND_dimensions', 'COAST_TYPE_filename', 'GRID', 'LON',
-                          'LAT', 'BORDER_filename', 'DISTANCE_filename', 'LANDID_filename']
+                          'LAT', 'BORDER_filename', 'DISTANCE_filename', 'LANDID_filename', 'GRIDSPACING_filename']
         variables = [UV_filenames, UV_variables, UV_dimensions, STOKES_filenames, STOKES_variables, STOKES_dimensions,
                      ELEV_filenames, ELEV_variables, ELEV_dimensions, WIND_filenames, WIND_variables, WIND_dimensions,
-                     COAST_TYPE_filename, GRID, LON, LAT, BORDER_filename, DISTANCE_filename, LANDID_filename]
+                     COAST_TYPE_filename, GRID, LON, LAT, BORDER_filename, DISTANCE_filename, LANDID_filename,
+                     GRIDSPACING_filename]
 
         file_dict = {}
         for var in range(len(variables)):
