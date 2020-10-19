@@ -76,7 +76,7 @@ def reduce_array(data: array):
         data = data[0, :, :]
     else:
         os.system('echo "What weird data are you working with? It has shape {}"'.format(data.shape))
-    return data
+    return np.array(data)
 
 
 def is_ocean(u: float, v: float):
