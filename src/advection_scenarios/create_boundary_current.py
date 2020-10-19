@@ -35,6 +35,7 @@ def create_border_current(output_name: str, filenames: list, variables: dict, di
                 grid_select = np.ix_(j_steps, i_steps)
                 try:
                     u_data[grid_select]
+                    os.system('echo "this is not an issue"')
                 except:
                     os.system('echo "it does not like the grid selecting"')
                 mask = land_borders(u_data[grid_select], v_data[grid_select], j, i, nx)

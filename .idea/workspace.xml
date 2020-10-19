@@ -20,7 +20,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="trying to speed up the border current significantly">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/advection_scenarios/create_boundary_current.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/advection_scenarios/create_boundary_current.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -89,13 +88,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-00063" summary="adding maximum distance code">
-      <created>1602687259892</created>
-      <option name="number" value="00063" />
-      <option name="presentableId" value="LOCAL-00063" />
-      <option name="project" value="LOCAL" />
-      <updated>1602687259892</updated>
     </task>
     <task id="LOCAL-00064" summary="adding maximum distance code">
       <created>1602687443568</created>
@@ -433,7 +425,14 @@
       <option name="project" value="LOCAL" />
       <updated>1603098119501</updated>
     </task>
-    <option name="localTasksCounter" value="112" />
+    <task id="LOCAL-00112" summary="trying to speed up the border current significantly">
+      <created>1603098622022</created>
+      <option name="number" value="00112" />
+      <option name="presentableId" value="LOCAL-00112" />
+      <option name="project" value="LOCAL" />
+      <updated>1603098622022</updated>
+    </task>
+    <option name="localTasksCounter" value="113" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -551,11 +550,11 @@
     </state>
     <state x="221" y="67" key="SettingsEditor/0.23.1440.811@0.23.1440.811" timestamp="1601544733848" />
     <state x="221" y="67" key="SettingsEditor/0.23.1440.812@0.23.1440.812" timestamp="1601911551870" />
-    <state x="320" y="161" key="Vcs.Push.Dialog.v2" timestamp="1603098122630">
+    <state x="320" y="161" key="Vcs.Push.Dialog.v2" timestamp="1603098624715">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="204" y="-887" key="Vcs.Push.Dialog.v2/0.0.1440.900/-223.-1080.1920.1080@-223.-1080.1920.1080" timestamp="1603095368950" />
-    <state x="320" y="161" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1603098122630" />
+    <state x="320" y="161" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1603098624715" />
     <state x="320" y="168" key="Vcs.Push.Dialog.v2/0.23.1440.812@0.23.1440.812" timestamp="1602584102515" />
     <state x="320" y="169" key="Vcs.Push.Dialog.v2/0.23.1440.816@0.23.1440.816" timestamp="1602170515320" />
     <state x="320" y="170" key="Vcs.Push.Dialog.v2/0.23.1440.821@0.23.1440.821" timestamp="1602157768117" />
