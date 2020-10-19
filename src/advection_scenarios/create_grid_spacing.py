@@ -9,7 +9,7 @@ def create_grid_spacing(output_name: str, grid: np.array, lon: np.array, lat: np
     grid_lon_spacing = np.zeros(grid.shape)
     grid_lat_spacing = np.zeros(grid.shape)
 
-    for lat_step in range(grid.shape[0] - 1):
+    for lat_step in progressbar.progressbar(range(grid.shape[0] - 1)):
         for lon_step in range(grid.shape[1] - 1):
             grid_lon_spacing[lat_step, lon_step] = np.abs(lon[lon_step] - lon[lon_step + 1])
             grid_lat_spacing[lat_step, lon_step] = np.abs(lat[lat_step] - lat[lat_step + 1])
