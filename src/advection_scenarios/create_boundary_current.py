@@ -33,6 +33,10 @@ def create_border_current(output_name: str, filenames: list, variables: dict, di
             if coastal[j, i] == 1:
                 j_steps, i_steps = np.array([j - 1, j, j + 1]) % nx, np.array([i - 1, i, i + 1]) % ny
                 grid_select = np.ix_(j_steps, i_steps)
+                try:
+                    u_data[grid_select]
+                except:
+                    os.system('echo "it does not like the grid selecting"')
                 mask = land_borders(u_data[grid_select], v_data[grid_select], j, i, nx)
                 if not mask.all():
                     u_vel[j, i] = sum(mask[:, 2]) - sum(mask[:, 0])
