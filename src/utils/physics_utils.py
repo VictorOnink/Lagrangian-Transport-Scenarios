@@ -109,11 +109,11 @@ def _initial_input(particle, fieldset, time):
     if particle.age == 0:
         check = 0
         distCur = fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
-        dlon = fieldset.dlon[time, particle.depth, particle.lat, particle.lon]
-        dlat = fieldset.dlat[time, particle.depth, particle.lat, particle.lon]
+        d_lon = fieldset.dlon[time, particle.depth, particle.lat, particle.lon]
+        d_lat = fieldset.dlat[time, particle.depth, particle.lat, particle.lon]
         while check < 100000:
-            potential_lat = particle.lat + random.uniform(-dlat, dlat)
-            potential_lon = particle.lon + random.uniform(-dlon, dlon)
+            potential_lat = particle.lat + random.uniform(-d_lat, d_lat)
+            potential_lon = particle.lon + random.uniform(-d_lon, d_lon)
             potential_land = math.floor(fieldset.landID[time, particle.depth, particle.lat, particle.lon])
             potential_dist = fieldset.distance2shore[time, particle.depth, potential_lat, potential_lon]
             if potential_land == 0 and potential_dist <= distCur:
