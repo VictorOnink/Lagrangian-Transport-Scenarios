@@ -74,6 +74,8 @@ class FieldSetFactory():
             _add_minResuspensionWind_constant(fieldset=fieldset)
         if coastal_zone:
             _add_coastal_zone_boundary(fieldset=fieldset)
+        if grid_spacing:
+            _add_grid_spacing(fieldset=fieldset, file_dict=file_dict)
         if halo:
             _add_halo(fieldset)
         return fieldset
