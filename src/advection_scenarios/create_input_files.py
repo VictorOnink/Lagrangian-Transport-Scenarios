@@ -61,11 +61,21 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
         releases = math.floor(timedelta(days=365) / settings.REPEAT_DT_R0) + 1
         inputs_coastal_grid /= releases
         # How many particles will be released per cell, and what are the assigned weights
-        particle_number, particle_weight, particle_remain_num, particle_remain = number_weights_releases(input_grid=inputs_coastal_grid)
+        particle_number, particle_weight, particle_remain_num, particle_remain = number_weights_releases(
+            input_grid=inputs_coastal_grid)
         # Get arrays of all particles release points and associated weights
-        particle_lat, particle_lon, particle_weight = particle_grid_to_list(particle_number=particle_number, particle_weight=particle_weight,
-                                                                            particle_remain_num=particle_remain_num, particle_remain=particle_remain,
+        particle_lat, particle_lon, particle_weight = particle_grid_to_list(particle_number=particle_number,
+                                                                            particle_weight=particle_weight,
+                                                                            particle_remain_num=particle_remain_num,
+                                                                            particle_remain=particle_remain,
                                                                             lon=lon, lat=lat)
+        # How much of the plastic is being accounted for
+        missing_percent = np.divide(np.sum(inputs_coastal_grid) - np.sum(particle_weight),
+                                    np.sum(inputs_coastal_grid)) * 100
+        os.system('echo "The particles account for {}% of the total inputs"'.format(100 - missing_percent))
+        os.system('echo "We release {} particles per release step, so {} per year"'.format(len(particle_lat),
+                                                                                           len(particle_lat)*releases))
+
 
 def get_mismanaged_fraction_Jambeck(grid: np.array, lon: np.array, lat: np.array, prefix: str):
     mismanaged_file = settings.INPUT_DIREC + 'Jambeck_mismanaged_fraction_2010.nc'
@@ -133,8 +143,7 @@ def input_to_nearest_coastal(coastal: np.array, inputs_grid: np.array, lon: np.a
             while len(coastal_lon) < 1:
                 for lat_step in [-step, step]:
                     for lon_step in range(-step, step + 1):
-                        if coastal[
-                            (lat_point + lat_step) % coastal.shape[0], (lon_point + lon_step) % coastal.shape[1]]:
+                        if coastal[(lat_point + lat_step) % coastal.shape[0], (lon_point + lon_step) % coastal.shape[1]]:
                             coastal_lat.append((lat_point + lat_step) % coastal.shape[0])
                             coastal_lon.append((lon_point + lon_step) % coastal.shape[1])
                 step += 1
@@ -183,7 +192,7 @@ def particle_grid_to_list(particle_number: np.array, particle_weight: np.array, 
                     particle_lat.append(lat[lat_index])
                     particle_lon.append(lon[lon_index])
                     particle_mass.append(particle_weight[lat_index, lon_index])
-            if particle_remain_num [lat_index, lon_index] > 0:
+            if particle_remain_num[lat_index, lon_index] > 0:
                 for reps in range(particle_remain_num[lat_index, lon_index]):
                     particle_lat.append(lat[lat_index])
                     particle_lon.append(lon[lon_index])
