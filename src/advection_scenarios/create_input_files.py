@@ -14,7 +14,7 @@ import fiona
 from shapely import vectorized
 from shapely.geometry import shape
 import xarray
-
+import progressbar
 
 def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array):
     # Create the output prefix and then check if any files with such prefixes exist
@@ -81,8 +81,10 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
 def get_mismanaged_fraction_Jambeck(dataset: Dataset):
     mismanaged_file = settings.INPUT_DIREC + 'Jambeck_mismanaged_grid.nc'
     if utils._check_file_exist(mismanaged_file):
+        os.system('echo "The mismanaged grid already exists"')
         return Dataset(mismanaged_file).variables['mismanaged_plastic'][:]
     else:
+        os.system('echo "We need to generate the mismanaged grid"')
         # Load the grid of the population data
         lon_pop, lat_pop = dataset.variables['longitude'][:], dataset.variables['latitude'][:]
         Lon, Lat = np.meshgrid(lon_pop, lat_pop)
@@ -96,7 +98,7 @@ def get_mismanaged_fraction_Jambeck(dataset: Dataset):
         countries = fiona.open(settings.INPUT_DIREC +
                                'country_shapefile/gpw_v4_national_identifier_grid_rev11_30_sec.shp')
         # Looping through all the countries, and marking which of the grid cells fall within which
-        for country_index in range(len(countries)):
+        for country_index in progressbar.progressbar(range(len(countries))):
             if countries[country_index]['properties']['NAME0'] in jambeck_country:
                 country_geometry = shape(countries[country_index]['geometry'])
                 country_mask = vectorized.contains(country_geometry, Lon, Lat)
@@ -111,6 +113,7 @@ def get_mismanaged_fraction_Jambeck(dataset: Dataset):
         dcoo = {'lat': lat_pop, 'lon': lon_pop}
         dset = xarray.Dataset({'mismanaged_plastic': dist}, coords=dcoo)
         dset.to_netcdf(mismanaged_file)
+        os.system('echo "The mismanaged grid has now been created and saved for future use"')
         return mismanged_grid
 
 
