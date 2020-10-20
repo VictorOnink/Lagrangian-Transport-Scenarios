@@ -120,13 +120,14 @@ def input_to_nearest_coastal(coastal: np.array, inputs_grid: np.array, lon: np.a
         else:
             step = 1
             coastal_lon, coastal_lat, coastal_distance = [], [], []
-            while len(coastal_lon) < 0:
+            while len(coastal_lon) < 1:
                 for lat_step in [-step, step]:
                     for lon_step in range(-step, step + 1):
                         if coastal[
                             (lat_point + lat_step) % coastal.shape[0], (lon_point + lon_step) % coastal.shape[1]]:
                             coastal_lat.append((lat_point + lat_step) % coastal.shape[0])
                             coastal_lon.append((lon_point + lon_step) % coastal.shape[1])
+                step += 1
         # Now find the coastal cell that is geographically the closest to the input
         nearest_dist = geopy.distance.distance((lat[lat_point], lon[lon_point]),
                                                (lat[coastal_lat[0]], lon[coastal_lon[0]]))
