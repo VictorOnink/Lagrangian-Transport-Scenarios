@@ -191,10 +191,9 @@ def particle_grid_to_list(particle_number: np.array, particle_weight: np.array, 
                     particle_lon.append(lon[lon_index])
                     particle_mass.append(particle_weight[lat_index, lon_index])
             if particle_remain_num[lat_index, lon_index] > 0:
-                for reps in range(particle_remain_num[lat_index, lon_index]):
-                    particle_lat.append(lat[lat_index])
-                    particle_lon.append(lon[lon_index])
-                    particle_mass.append(particle_remain[lat_index, lon_index])
+                particle_lat.append(lat[lat_index])
+                particle_lon.append(lon[lon_index])
+                particle_mass.append(particle_remain[lat_index, lon_index])
     particle_lat, particle_lon, particle_mass = np.array(particle_lat), np.array(particle_lon), np.array(particle_mass)
     non_zero = particle_mass > 0
     return particle_lat[non_zero], particle_lon[non_zero], particle_mass[non_zero]
