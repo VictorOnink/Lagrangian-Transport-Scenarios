@@ -1,28 +1,25 @@
 import settings
 import utils
+from advection_scenarios.create_distance_to_shore import create_distance_to_shore_land
 
 import numpy as np
 import glob
 import os
-import xarray
 from netCDF4 import Dataset
 import pandas as pd
 import geopy.distance
-from datetime import datetime, timedelta
-import fiona
-from collections import Iterable
-from matplotlib import colors
-import cartopy.crs as ccrs
-import cartopy.feature as cpf
-from copy import deepcopy
-from progressbar import ProgressBar
+from datetime import timedelta
 import math
+import fiona
+from shapely import vectorized
+from shapely.geometry import shape
+import xarray
 
 
 def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array):
     # Create the output prefix and then check if any files with such prefixes exist
     if settings.INPUT in ['Jambeck', 'Lebreton']:
-        output_prefix = settings.INPUT_DIREC + settings.INPUT + '_' + prefix + '_2010_'
+        output_prefix = settings.INPUT_DIREC + settings.INPUT + '_{}_{}_'.format(prefix, settings.START_YEAR)
     else:
         os.system('echo "Perhaps take another look at what input you are using?"')
 
@@ -34,13 +31,13 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
         if settings.INPUT == 'Jambeck':
             # Get the population data
             dataset = Dataset(settings.INPUT_DIREC + 'gpw_v4_population_count_adjusted_rev11_2pt5_min.nc')
-            population = np.array(dataset.variables[
-                                      'UN WPP-Adjusted Population Count, v4.11 (2000, 2005, 2010, 2015, 2020): 2.5 arc-minutes'][
-                                  2, :, :])
+            var_name = 'UN WPP-Adjusted Population Count, v4.11 (2000, 2005, 2010, 2015, 2020): 2.5 arc-minutes'
+            population = np.array(dataset.variables[var_name][2, :, :])
+            ocean = np.array(dataset.variables[var_name][7, :, :])
             lon_population = dataset.variables['longitude'][:]
             lat_population = dataset.variables['latitude'][:]
             # Get the mismanaged plastic fraction
-            mismanaged = get_mismanaged_fraction_Jambeck(grid=grid, lon=lon, lat=lat, prefix=prefix)
+            mismanaged = get_mismanaged_fraction_Jambeck(dataset=dataset)
             # Get the distance from land to shore
         elif settings.INPUT == 'Lebreton':
             lebData = pd.read_csv(settings.INPUT_DIREC + 'PlasticRiverInputs.csv')
@@ -81,14 +78,40 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
         os.system('echo "The input files have been created"')
 
 
-def get_mismanaged_fraction_Jambeck(grid: np.array, lon: np.array, lat: np.array, prefix: str):
-    mismanaged_file = settings.INPUT_DIREC + 'Jambeck_mismanaged_fraction_2010.nc'
+def get_mismanaged_fraction_Jambeck(dataset: Dataset):
+    mismanaged_file = settings.INPUT_DIREC + 'Jambeck_mismanaged_grid.nc'
     if utils._check_file_exist(mismanaged_file):
-        dataset = Dataset(mismanaged_file)
-        return dataset.variables['mismanaged fraction'][:]
+        return Dataset(mismanaged_file).variables['mismanaged_plastic'][:]
     else:
-        os.system('echo "I can not find the original code that was used to generate this so I will fill this in '
-                  'later..."')
+        # Load the grid of the population data
+        lon_pop, lat_pop = dataset.variables['longitude'][:], dataset.variables['latitude'][:]
+        Lon, Lat = np.meshgrid(lon_pop, lat_pop)
+        # Load the Jambeck estimates of mismanaged plastic per capita
+        jambeck_excel = pd.read_excel(settings.INPUT_DIREC + 'Jambeck2010data.xlsx')
+        jambeck_country = list(jambeck_excel['Country'])
+        jambeck_data = jambeck_excel['Mismanaged plastic waste [kg/person/day]']
+        # Initialize grid for mismanaged plastic estimates
+        mismanged_grid = np.zeros(Lon.shape, dtype='int') * 99999
+        # Getting the country shapefiles
+        countries = fiona.open(settings.INPUT_DIREC +
+                               'country_shapefile/gpw_v4_national_identifier_grid_rev11_30_sec.shp')
+        # Looping through all the countries, and marking which of the grid cells fall within which
+        for country_index in range(len(countries)):
+            if countries[country_index]['properties']['NAME0'] in jambeck_country:
+                country_geometry = shape(countries[country_index]['geometry'])
+                country_mask = vectorized.contains(country_geometry, Lon, Lat)
+                if country_index in [145, 146]:
+                    # 122 is the Netherlands Antilles value
+                    mismanged_grid[country_mask] = jambeck_data[122]
+                else:
+                    mismanged_grid[country_mask] = jambeck_data[jambeck_country.index(countries[country_index]['properties']['NAME0'])]
+        # Saving the entire distance field
+        coords = [('lat', lat_pop), ('lon', lon_pop)]
+        dist = xarray.DataArray(mismanged_grid, coords=coords)
+        dcoo = {'lat': lat_pop, 'lon': lon_pop}
+        dset = xarray.Dataset({'mismanaged_plastic': dist}, coords=dcoo)
+        dset.to_netcdf(mismanaged_file)
+        return mismanged_grid
 
 
 def within_domain(lon: np.array, lat: np.array, lon_inputs: np.array, lat_inputs: np.array, plastic_inputs: np.array):
