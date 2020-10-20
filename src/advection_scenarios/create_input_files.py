@@ -17,22 +17,25 @@ from geopy import distance
 from progressbar import ProgressBar
 import math
 
+
 def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array):
     # Create the output prefix and then check if any files with such prefixes exist
     if settings.INPUT in ['Jambeck', 'Lebreton']:
-        output_prefix = settings.INPUT_DIREC + settings.INPUT + '_' + prefix+'_2010_'
+        output_prefix = settings.INPUT_DIREC + settings.INPUT + '_' + prefix + '_2010_'
     else:
         os.system('echo "Perhaps take another look at what input you are using?"')
 
-    #Check existence
-    if len(glob.glob(output_prefix+'*')) > 0:
+    # Check existence
+    if len(glob.glob(output_prefix + '*')) > 0:
         os.system('echo "The input files {} are already present"'.format(output_prefix))
     else:
         os.system('echo "We need to create the input files {}"'.format(output_prefix))
         if settings.INPUT == 'Jambeck':
             # Get the population data
             dataset = Dataset(settings.INPUT_DIREC + 'gpw_v4_population_count_adjusted_rev11_2pt5_min.nc')
-            population = np.array(dataset.variables['UN WPP-Adjusted Population Count, v4.11 (2000, 2005, 2010, 2015, 2020): 2.5 arc-minutes'][2, :, :])
+            population = np.array(dataset.variables[
+                                      'UN WPP-Adjusted Population Count, v4.11 (2000, 2005, 2010, 2015, 2020): 2.5 arc-minutes'][
+                                  2, :, :])
             lon_population = dataset.variables['longitude'][:]
             lat_population = dataset.variables['latitude'][:]
             # Get the mismanaged plastic fraction
@@ -51,7 +54,7 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
         # Get the ocean cells adjacent to coastal ocean cells, as these are the ones in which the particles will
         # be placed. For brevity, we will refer to these cells as coastal in the code here
         coastal = get_coastal_extended(grid=grid, coastal=get_coastal_cells(grid=grid))
-        os.system('echo "Working up to getting the coastal fraction"')
+
 
 def get_mismanaged_fraction_Jambeck(grid: np.array, lon: np.array, lat: np.array, prefix: str):
     mismanaged_file = settings.INPUT_DIREC + 'Jambeck_mismanaged_fraction_2010.nc'
@@ -68,6 +71,10 @@ def within_domain(lon: np.array, lat: np.array, lon_inputs: np.array, lat_inputs
     lat_max, lat_min = np.max(lat), np.min(lon)
     # Check which cells are within the domain
     domain = (lon_inputs <= lon_max) & (lon_inputs >= lon_min) & (lat_inputs >= lat_min) & (lat_inputs <= lat_max)
+    os.system('echo "Of the original {} particles in the {} scenario, {} are within the domain"'.format(len(lon),
+                                                                                                        settings.INPUT,
+                                                                                                        np.sum(
+                                                                                                            domain * 1)))
     return lon_inputs[domain], lat_inputs[domain], plastic_inputs[domain]
 
 
