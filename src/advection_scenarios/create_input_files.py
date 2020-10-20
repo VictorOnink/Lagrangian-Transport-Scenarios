@@ -73,8 +73,8 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
         missing_percent = np.divide(np.sum(inputs_coastal_grid) - np.sum(particle_weight),
                                     np.sum(inputs_coastal_grid)) * 100
         os.system('echo "The particles account for {}% of the total inputs"'.format(100 - missing_percent))
-        os.system('echo "We release {} particles per release step, so {} per year"'.format(len(particle_lat),
-                                                                                           len(particle_lat)*releases))
+        str_format = (len(particle_lat), len(particle_lat)*releases, releases)
+        os.system('echo "We release {} particles per release step, so {} per year over {} steps"'.format(str_format))
 
 
 def get_mismanaged_fraction_Jambeck(grid: np.array, lon: np.array, lat: np.array, prefix: str):
@@ -92,10 +92,8 @@ def within_domain(lon: np.array, lat: np.array, lon_inputs: np.array, lat_inputs
     lat_max, lat_min = np.max(lat), np.min(lon)
     # Check which cells are within the domain
     domain = (lon_inputs <= lon_max) & (lon_inputs >= lon_min) & (lat_inputs >= lat_min) & (lat_inputs <= lat_max)
-    os.system('echo "Of the original {} particles in the {} scenario, {} are within the domain"'.format(len(lon_inputs),
-                                                                                                        settings.INPUT,
-                                                                                                        np.sum(
-                                                                                                            domain * 1)))
+    str_format = (len(lon_inputs), settings.INPUT, np.sum(domain * 1))
+    os.system('echo "Of the original {} input sites in the {} scenario, {} are within the domain"'.format(str_format))
     return lon_inputs[domain], lat_inputs[domain], plastic_inputs[domain]
 
 
@@ -197,4 +195,5 @@ def particle_grid_to_list(particle_number: np.array, particle_weight: np.array, 
                     particle_lat.append(lat[lat_index])
                     particle_lon.append(lon[lon_index])
                     particle_mass.append(particle_remain[lat_index, lon_index])
-    return np.array(particle_lat), np.array(particle_lon), np.array(particle_mass)
+    non_zero = particle_mass > 0
+    return np.array(particle_lat[non_zero]), np.array(particle_lon[non_zero]), np.array(particle_mass[non_zero])
