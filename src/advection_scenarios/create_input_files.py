@@ -7,13 +7,14 @@ import os
 import xarray
 from netCDF4 import Dataset
 import pandas as pd
+import geopy.distance
+from datetime import datetime, timedelta
 import fiona
 from collections import Iterable
 from matplotlib import colors
 import cartopy.crs as ccrs
 import cartopy.feature as cpf
 from copy import deepcopy
-import geopy.distance
 from progressbar import ProgressBar
 import math
 
@@ -56,6 +57,15 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
         coastal = get_coastal_extended(grid=grid, coastal=get_coastal_cells(grid=grid))
         # Getting the inputs onto the coastal cells
         inputs_coastal_grid = input_to_nearest_coastal(coastal=coastal, inputs_grid=inputs_grid, lon=lon, lat=lat)
+        # The inputs so far are annual, how many particle releases will occur per year
+        releases = math.floor(timedelta(days=365) / settings.REPEAT_DT_R0) + 1
+        inputs_coastal_grid /= releases
+        # How many particles will be released per cell, and what are the assigned weights
+        particle_number, particle_weight, particle_remain_num, particle_remain = number_weights_releases(input_grid=inputs_coastal_grid)
+        # Get arrays of all particles release points and associated weights
+        particle_lat, particle_lon, particle_weight = particle_grid_to_list(particle_number=particle_number, particle_weight=particle_weight,
+                                                                            particle_remain_num=particle_remain_num, particle_remain=particle_remain,
+                                                                            lon=lon, lat=lat)
 
 def get_mismanaged_fraction_Jambeck(grid: np.array, lon: np.array, lat: np.array, prefix: str):
     mismanaged_file = settings.INPUT_DIREC + 'Jambeck_mismanaged_fraction_2010.nc'
@@ -141,3 +151,41 @@ def input_to_nearest_coastal(coastal: np.array, inputs_grid: np.array, lon: np.a
                     nearest_lat, nearest_lon = coastal_lat[candidate], coastal_lon[candidate]
         inputs_coastal_grid[nearest_lat, nearest_lon] += inputs_grid[lat_point, lon_point]
     return inputs_coastal_grid
+
+
+def number_weights_releases(input_grid: np.array):
+    particle_number = np.zeros(input_grid.shape)
+    particle_weight = np.zeros(input_grid.shape)
+    particle_remain = np.zeros(input_grid.shape)
+    particle_remain_num = np.zeros(input_grid.shape)
+    # First all the inputs lower than the cutoff and greater than minimum
+    selection = (input_grid < settings.INPUT_MAX) & (input_grid >= settings.INPUT_MIN)
+    particle_number[selection] += 1
+    particle_weight[selection] += input_grid[selection]
+    # Next we consider the cells where we have inputs greater than the cutoff
+    selection = input_grid >= settings.INPUT_MAX
+    particle_number[selection] += np.floor(input_grid[selection] / settings.INPUT_MAX)
+    particle_weight[selection] += settings.INPUT_MAX
+    # Finally, we have the remainder for when inputs are not multiples of the cutoff, and so we have a remainder
+    selection = (np.multiply(particle_number, particle_weight) - input_grid) > settings.INPUT_MIN
+    particle_remain_num[selection] += 1
+    particle_remain[selection] += (np.multiply(particle_number, particle_weight)[selection] - input_grid[selection])
+    return particle_number, particle_weight, particle_remain_num, particle_remain
+
+
+def particle_grid_to_list(particle_number: np.array, particle_weight: np.array, particle_remain_num: np.array,
+                          particle_remain: np.array, lon: np.array, lat: np.array):
+    particle_lat, particle_lon, particle_mass = [], [], []
+    for lat_index in range(particle_number.shape[0]):
+        for lon_index in range(particle_number.shape[1]):
+            if particle_number[lat_index, lon_index] > 0:
+                for reps in range(particle_number[lat_index, lon_index]):
+                    particle_lat.append(lat[lat_index])
+                    particle_lon.append(lon[lon_index])
+                    particle_mass.append(particle_weight[lat_index, lon_index])
+            if particle_remain_num [lat_index, lon_index] > 0:
+                for reps in range(particle_remain_num[lat_index, lon_index]):
+                    particle_lat.append(lat[lat_index])
+                    particle_lon.append(lon[lon_index])
+                    particle_mass.append(particle_remain[lat_index, lon_index])
+    return np.array(particle_lat), np.array(particle_lon), np.array(particle_mass)

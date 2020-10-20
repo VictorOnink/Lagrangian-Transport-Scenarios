@@ -72,6 +72,8 @@ INPUT_DIREC_DICT = {0: DATA_INPUT_DIR_SERVERS[SERVER] + 'Jambeck_Inputs/',
 INPUT = INPUT_NAMES[int(os.environ['INPUT'])]
 INPUT_DIREC = INPUT_DIREC_DICT[int(os.environ['INPUT'])]
 
+INPUT_MAX = 10.0 # Maximum plastic mass input assigned to one particle in tons
+INPUT_MIN = 0.0 # Minimum plastic mass input for a cell in order to be considered for the input
 if INPUT == 'Jambeck':
     RUN_RANGE: int = 9
 elif INPUT == 'Lebreton':
@@ -87,6 +89,8 @@ ENSEMBLE = int(os.environ['ENSEMBLE'])
 # Model setup parameters
 TIME_STEP = timedelta(minutes=10)  # integration timestep
 OUTPUT_TIME_STEP = timedelta(hours=24)  # timestep of saving particle positions to the output file
+REPEAT_DT_R0 = timedelta(days=31) # timestep of releasing particles for restart == 0. Otherwise, REPEAT_DT = None
+REPEAT_DT_ELSE = None
 SEED = 'Fixed'  # Seed for the rng
 KH_HOR = 10  # m^2 / s, following Lacerda et al. (2019) and Liubertseva et al. (2018)
 COAST_D = 10  # km, the distance from the nearest shoreline that falls under the coastal zone.
