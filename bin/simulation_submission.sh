@@ -19,7 +19,7 @@ WMIN=3
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010
 #Which input distribution do we want to use? 0=Jambeck, 1=lebreton
-INPUT=1
+INPUT=0
 #Which advection data do we want to use?
 # 0 = Global HYCOM, 1 = Caribbean HYCOM
 ADVECTION_DATA=1
