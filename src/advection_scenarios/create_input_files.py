@@ -176,7 +176,7 @@ def number_weights_releases(input_grid: np.array):
     # Finally, we have the remainder for when inputs are not multiples of the cutoff, and so we have a remainder
     selection = (input_grid - np.multiply(particle_number, particle_weight)) > settings.INPUT_MIN
     particle_remain_num[selection] += 1
-    particle_remain[selection] += (np.multiply(particle_number, particle_weight)[selection] - input_grid[selection])
+    particle_remain[selection] += (input_grid[selection] - np.multiply(particle_number, particle_weight)[selection])
     return particle_number.astype('int'), particle_weight, particle_remain_num.astype('int'), particle_remain
 
 
