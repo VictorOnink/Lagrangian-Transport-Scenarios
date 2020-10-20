@@ -67,7 +67,9 @@ SIM_LENGTH: int = int(os.environ['SIMLEN'])
 
 # Which input file we use. if input=0, then we use Jambeck
 INPUT_NAMES = {0: 'Jambeck', 1: 'Lebreton'}
+INPUT_DIREC_DICT = {0: DATA_INPUT_DIR_SERVERS + 'Jambeck_Inputs/', 1: DATA_INPUT_DIR_SERVERS + 'Lebreton_Inputs/'}
 INPUT = INPUT_NAMES[int(os.environ['INPUT'])]
+INPUT_DIREC = INPUT_DIREC_DICT[int(os.environ['INPUT'])]
 if INPUT == 'Jambeck':
     RUN_RANGE: int = 9
 elif INPUT == 'Lebreton':

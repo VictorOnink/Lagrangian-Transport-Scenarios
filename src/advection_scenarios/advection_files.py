@@ -9,6 +9,7 @@ import advection_scenarios.create_boundary_current as create_boundary_current
 import advection_scenarios.create_distance_to_shore as create_distance_to_shore
 import advection_scenarios.create_land_ID as create_land_ID
 import advection_scenarios.create_grid_spacing as create_grid_spacing
+import advection_scenarios.create_input_files as create_input_files
 
 
 class AdvectionFiles:
@@ -167,6 +168,9 @@ class AdvectionFiles:
                 os.system('echo "The grid spacing file for "' + str(prefix) + ' has been created')
             else:
                 os.system('echo "The grid spacing file still does not exist"')
+
+        # Checking for the input files
+        create_input_files.create_input_files(prefix=prefix, grid=GRID, lon=LON, lat=LAT)
 
         # Putting everything in a dictionary so we can output it
         variable_names = ['UV_filenames', 'UV_variables', 'UV_dimensions', 'STOKES_filenames', 'STOKES_variables',

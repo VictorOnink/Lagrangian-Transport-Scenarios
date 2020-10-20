@@ -122,51 +122,6 @@ def _initial_input(particle, fieldset, time):
                 particle.lon = potential_lon
             check += 1
 
-# def _initial_input(particle, fieldset, time):
-#     """
-#     Since we have many instances that particles start at the very same position,
-#     when a particle is first added to the simulation it will get a random kick
-#     that moves it slightly away from the initial position, and so with multiple
-#     particles we will see a sort of star pattern around the central position.
-#     However, the particle shouldn't be put on land though, so a particle will
-#     have 100000 attempts to be placed in the simulation within a cell that is not
-#     land. If it doesn't work after 100000 attempts, then the particle just ends up
-#     starting from the unchanged position. We also set it so that the initial
-#     position of the particle is always closer to land than the original position
-#
-#     Note: Tests show that at most we get at most around 7 or 8 particles per
-#     release getting placed immediately on land. this varies a bit
-#
-#     """
-#     if particle.age == 0:
-#         # The low latitudes/equatorial regions have larger grid sizes
-#         if math.fabs(particle.lat) < 40.:
-#             check = 0
-#             distCur = fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
-#             while check < 100000:
-#                 potLat = particle.lat + random.uniform(-0.08, 0.08)
-#                 potLon = particle.lon + random.uniform(-0.08, 0.08)
-#                 potLand = math.floor(fieldset.landID[time, particle.depth, particle.lat, particle.lon])
-#                 distPot = fieldset.distance2shore[time, particle.depth, potLat, potLon]
-#                 if potLand == 0 and distPot <= distCur:
-#                     check += 100001
-#                     particle.lat = potLat
-#                     particle.lon = potLon
-#                 check += 1
-#         # Higher latitudes above 40 degrees
-#         else:
-#             check = 0
-#             distCur = fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
-#             while check < 100000:
-#                 potLat = particle.lat + random.uniform(-0.04, 0.04)
-#                 potLon = particle.lon + random.uniform(-0.04, 0.04)
-#                 potLand = math.floor(fieldset.landID[time, particle.depth, particle.lat, particle.lon])
-#                 distPot = fieldset.distance2shore[time, particle.depth, potLat, potLon]
-#                 if potLand == 0 and distPot <= distCur:
-#                     check += 100001
-#                     particle.lat = potLat
-#                     particle.lon = potLon
-#                 check += 1
 
 def _delete_particle(particle, fieldset, time):
     #This delete particle format from Philippe Delandmeter
