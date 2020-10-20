@@ -89,7 +89,7 @@ def get_mismanaged_fraction_Jambeck(dataset: Dataset):
         # Load the Jambeck estimates of mismanaged plastic per capita
         jambeck_excel = pd.read_excel(settings.INPUT_DIREC + 'Jambeck2010data.xlsx')
         jambeck_country = list(jambeck_excel['Country'])
-        jambeck_data = jambeck_excel['Mismanaged plastic waste [kg/person/day]']
+        jambeck_data = jambeck_excel['Mismanaged plastic waste [kg/person/day]7']
         # Initialize grid for mismanaged plastic estimates
         mismanged_grid = np.zeros(Lon.shape, dtype='int') * 99999
         # Getting the country shapefiles
