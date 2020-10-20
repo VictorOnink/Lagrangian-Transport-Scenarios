@@ -88,7 +88,7 @@ echo $RUNNAMEPREFIX
 if [ "$INPUT" -eq "0" ]; then
     runlength=0 #8
 elif [ "$INPUT" -eq "1" ]; then
-    runlength=3 #3
+    runlength=0 #3
 fi
 
 #Create a loop to run over all 
