@@ -170,7 +170,7 @@ def number_weights_releases(input_grid: np.array):
     selection = (np.multiply(particle_number, particle_weight) - input_grid) > settings.INPUT_MIN
     particle_remain_num[selection] += 1
     particle_remain[selection] += (np.multiply(particle_number, particle_weight)[selection] - input_grid[selection])
-    return particle_number, particle_weight, particle_remain_num, particle_remain
+    return particle_number.astype('int'), particle_weight, particle_remain_num.astype('int'), particle_remain
 
 
 def particle_grid_to_list(particle_number: np.array, particle_weight: np.array, particle_remain_num: np.array,
