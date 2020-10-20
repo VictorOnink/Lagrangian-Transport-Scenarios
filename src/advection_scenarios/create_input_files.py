@@ -13,7 +13,7 @@ from matplotlib import colors
 import cartopy.crs as ccrs
 import cartopy.feature as cpf
 from copy import deepcopy
-from geopy import distance
+import geopy.distance
 from progressbar import ProgressBar
 import math
 
@@ -54,7 +54,8 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
         # Get the ocean cells adjacent to coastal ocean cells, as these are the ones in which the particles will
         # be placed. For brevity, we will refer to these cells as coastal in the code here
         coastal = get_coastal_extended(grid=grid, coastal=get_coastal_cells(grid=grid))
-
+        # Getting the inputs onto the coastal cells
+        inputs_coastal_grid = input_to_nearest_coastal(coastal=coastal, inputs_grid=inputs_grid, lon=lon, lat=lat)
 
 def get_mismanaged_fraction_Jambeck(grid: np.array, lon: np.array, lat: np.array, prefix: str):
     mismanaged_file = settings.INPUT_DIREC + 'Jambeck_mismanaged_fraction_2010.nc'
@@ -103,3 +104,39 @@ def get_coastal_extended(grid: np.array, coastal: np.array):
                         if coastal[(lat_index + lat_step) % mask.shape[0], (lon_index + lon_step) % mask.shape[1]]:
                             coastal_extended[lat_index, lon_index] = True
     return coastal_extended
+
+
+def input_to_nearest_coastal(coastal: np.array, inputs_grid: np.array, lon: np.array, lat: np.array):
+    # Find the positions with non-zero inputs
+    non_zero_inputs = np.where(inputs_grid > 0)
+    inputs_coastal_grid = np.zeros(coastal.shape)
+    # Looping through the non-zero points to find the nearest one with
+    for point in range(len(non_zero_inputs[0])):
+        lat_point, lon_point = non_zero_inputs[0][point], non_zero_inputs[1][point]
+        # If the input is already in the coastal cell
+        if coastal[lat_point, lon_point]:
+            inputs_coastal_grid[lat_point, lon_point] += inputs_grid[lat_point, lon_point]
+        # Else find the nearest coastal cell
+        else:
+            step = 1
+            coastal_lon, coastal_lat, coastal_distance = [], [], []
+            while len(coastal_lon) < 0:
+                for lat_step in [-step, step]:
+                    for lon_step in range(-step, step + 1):
+                        if coastal[
+                            (lat_point + lat_step) % coastal.shape[0], (lon_point + lon_step) % coastal.shape[1]]:
+                            coastal_lat.append((lat_point + lat_step) % coastal.shape[0])
+                            coastal_lon.append((lon_point + lon_step) % coastal.shape[1])
+        # Now find the coastal cell that is geographically the closest to the input
+        nearest_dist = geopy.distance.distance((lat[lat_point], lon[lon_point]),
+                                               (lat[coastal_lat[0]], lon[coastal_lon[0]]))
+        nearest_lat, nearest_lon = coastal_lat[0], coastal_lon[0]
+        if len(coastal_lon) > 0:
+            for candidate in range(len(coastal_lon)):
+                distance = geopy.distance.distance((lat[lat_point], lon[lon_point]),
+                                                   (lat[coastal_lat[candidate]], lon[coastal_lon[candidate]]))
+                if distance < nearest_dist:
+                    nearest_dist = distance
+                    nearest_lat, nearest_lon = coastal_lat[candidate], coastal_lon[candidate]
+        inputs_coastal_grid[nearest_lat, nearest_lon] += inputs_grid[lat_point, lon_point]
+    return inputs_coastal_grid
