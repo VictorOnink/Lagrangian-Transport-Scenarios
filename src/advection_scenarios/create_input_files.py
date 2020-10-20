@@ -25,7 +25,7 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
         os.system('echo "Perhaps take another look at what input you are using?"')
 
     #Check existence
-    if len(glob.glob(output_prefix+'*') > 0):
+    if len(glob.glob(output_prefix+'*')) > 0:
         os.system('echo "The input files {} are already present"'.format(output_prefix))
     else:
         os.system('echo "We need to create the input files {}"'.format(output_prefix))
