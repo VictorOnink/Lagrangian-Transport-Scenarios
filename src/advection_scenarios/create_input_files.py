@@ -73,12 +73,13 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
         missing_percent = np.divide(np.sum(inputs_coastal_grid) - np.sum(particle_weight),
                                     np.sum(inputs_coastal_grid)) * 100
         os.system('echo "The particles account for {}% of the total inputs"'.format(100 - missing_percent))
-        str_format = len(particle_lat), len(particle_lat)*releases, releases
+        str_format = len(particle_lat), len(particle_lat) * releases, releases
         os.system('echo "We release {} particles per release step, so {} per year over {} steps"'.format(*str_format))
         # Dividing the particles into runs
         split_to_runs(particle_lat=particle_lat, particle_lon=particle_lon, particle_weight=particle_weight,
-                      utput_prefix=output_prefix)
+                      output_prefix=output_prefix)
         os.system('echo "The input files have been created"')
+
 
 def get_mismanaged_fraction_Jambeck(grid: np.array, lon: np.array, lat: np.array, prefix: str):
     mismanaged_file = settings.INPUT_DIREC + 'Jambeck_mismanaged_fraction_2010.nc'
@@ -144,7 +145,8 @@ def input_to_nearest_coastal(coastal: np.array, inputs_grid: np.array, lon: np.a
             while len(coastal_lon) < 1:
                 for lat_step in [-step, step]:
                     for lon_step in range(-step, step + 1):
-                        if coastal[(lat_point + lat_step) % coastal.shape[0], (lon_point + lon_step) % coastal.shape[1]]:
+                        if coastal[
+                            (lat_point + lat_step) % coastal.shape[0], (lon_point + lon_step) % coastal.shape[1]]:
                             coastal_lat.append((lat_point + lat_step) % coastal.shape[0])
                             coastal_lon.append((lon_point + lon_step) % coastal.shape[1])
                 step += 1
@@ -201,11 +203,12 @@ def particle_grid_to_list(particle_number: np.array, particle_weight: np.array, 
     non_zero = particle_mass > 0
     return particle_lat[non_zero], particle_lon[non_zero], particle_mass[non_zero]
 
+
 def split_to_runs(particle_lat: np.array, particle_lon: np.array, particle_weight: np.array,
-                  output_prefix: str, sub_division:int = settings.INPUT_DIV):
+                  output_prefix: str, sub_division: int = settings.INPUT_DIV):
     run_number = len(particle_lat) // sub_division + 1
     var_dict = {'lon': particle_lon, 'lat': particle_lat, 'weight': particle_weight}
     for run in range(run_number):
         for variables in var_dict:
-            var_run = var_dict[variables][run*sub_division:(run+1)*sub_division]
-            np.save(output_prefix+'{}_run={}.npy'.format(variables, run), var_run)
+            var_run = var_dict[variables][run * sub_division:(run + 1) * sub_division]
+            np.save(output_prefix + '{}_run={}.npy'.format(variables, run), var_run)
