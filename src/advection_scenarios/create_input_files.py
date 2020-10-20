@@ -71,7 +71,7 @@ def within_domain(lon: np.array, lat: np.array, lon_inputs: np.array, lat_inputs
     lat_max, lat_min = np.max(lat), np.min(lon)
     # Check which cells are within the domain
     domain = (lon_inputs <= lon_max) & (lon_inputs >= lon_min) & (lat_inputs >= lat_min) & (lat_inputs <= lat_max)
-    os.system('echo "Of the original {} particles in the {} scenario, {} are within the domain"'.format(len(lon),
+    os.system('echo "Of the original {} particles in the {} scenario, {} are within the domain"'.format(len(lon_inputs),
                                                                                                         settings.INPUT,
                                                                                                         np.sum(
                                                                                                             domain * 1)))
