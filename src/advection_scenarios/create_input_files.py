@@ -103,7 +103,7 @@ def get_mismanaged_fraction_Jambeck(dataset: Dataset):
         jambeck_country = list(jambeck_excel['Country'])
         jambeck_data = jambeck_excel['Mismanaged plastic waste [kg/person/day]7']
         # Initialize grid for mismanaged plastic estimates
-        mismanaged_grid = np.zeros(Lon.shape) * 99999
+        mismanaged_grid = np.zeros(Lon.shape)
         # Getting the country shapefiles
         countries = fiona.open(settings.INPUT_DIREC +
                                'country_shapefile/gpw_v4_national_identifier_grid_rev11_30_sec.shp')
@@ -117,12 +117,12 @@ def get_mismanaged_fraction_Jambeck(dataset: Dataset):
                     mismanaged_grid[country_mask] = jambeck_data[122]
                 else:
                     mismanaged_grid[country_mask] = jambeck_data[jambeck_country.index(countries[country_index]['properties']['NAME0'])]
-        mismanaged_grid[mismanaged_grid == 99999] = 0
         # Saving the entire distance field
+        os.system('echo "Starting to save the mismanaged grid"')
         coords = [('lat', lat_pop), ('lon', lon_pop)]
-        dist = xarray.DataArray(mismanaged_grid, coords=coords)
+        misman = xarray.DataArray(mismanaged_grid, coords=coords)
         dcoo = {'lat': lat_pop, 'lon': lon_pop}
-        dset = xarray.Dataset({'mismanaged_plastic': dist}, coords=dcoo)
+        dset = xarray.Dataset({'mismanaged_plastic': misman}, coords=dcoo)
         dset.to_netcdf(mismanaged_file)
         os.system('echo "The mismanaged grid has now been created and saved for future use"')
         return mismanaged_grid
