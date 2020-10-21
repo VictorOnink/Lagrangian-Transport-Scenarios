@@ -8,7 +8,6 @@ import settings
 def create_distance_to_shore(output_name: str, grid: np.array, lon: np.array, lat: np.array):
     # Getting the dimensions of the model grid
     mask = grid.mask
-    Lon, Lat = np.meshgrid(lon, lat)
     n_lon, n_lat = len(lon), len(lat)
 
     # Initializing the distance array
@@ -59,7 +58,6 @@ def create_distance_to_shore(output_name: str, grid: np.array, lon: np.array, la
 def create_distance_to_shore_land(output_name: str, grid: np.array, lon: np.array, lat: np.array):
     # Getting the dimensions of the model grid
     mask = grid.mask
-    Lon, Lat = np.meshgrid(lon, lat)
     n_lon, n_lat = len(lon), len(lat)
 
     # Initializing the distance array
