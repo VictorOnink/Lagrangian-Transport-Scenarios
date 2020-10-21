@@ -133,7 +133,14 @@ def get_distance_to_shore(filename: str, grid: np.array, lon: np.array, lat: np.
         os.system('echo "The mismanaged grid already exists"')
     else:
         create_distance_to_shore_land(output_name=filename, grid=grid, lon=lon, lat=lat)
-    return Dataset(filename).variables['distance'][0, :, :]
+    return slicing_correction(Dataset(filename).variables['distance'][:, :])
+
+
+def slicing_correction(array: np.array):
+    if len(array.shape) == 2:
+        return array
+    elif len(array.shape) == 3:
+        return array[0, :, :]
 
 
 def within_domain(lon: np.array, lat: np.array, lon_inputs: np.array, lat_inputs: np.array, plastic_inputs: np.array):
