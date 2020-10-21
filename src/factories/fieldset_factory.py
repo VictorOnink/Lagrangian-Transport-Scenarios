@@ -4,8 +4,6 @@ from netCDF4 import Dataset
 import numpy as np
 from parcels import GeographicPolar, Geographic, FieldSet, Field
 import math
-import glob
-import utils as utils
 from advection_scenarios import advection_files
 
 class FieldSetFactory():

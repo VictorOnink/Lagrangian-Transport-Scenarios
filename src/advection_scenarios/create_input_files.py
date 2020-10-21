@@ -60,11 +60,7 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
         inputs_grid = utils.histogram(lon_data=lon_inputs, lat_data=lat_inputs, bins_Lon=lon, bins_Lat=lat,
                                       weight_data=plastic_inputs, area_correc=False)
         if settings.INPUT == 'Jambeck':
-            os.system('echo "Prior to applying the distance cutoff, '
-                      'we have {} cells contributing to inouts"'.format(len(np.where(inputs_grid > 0)[0])))
-            inputs_grid[(distance > 50) & (inputs_grid != 0)] = 0
-            os.system('echo "Afterwards we have {} cells contributing to '
-                      'inputs"'.format(len(np.where(inputs_grid > 0)[0])))
+            inputs_grid[distance > 50] = 0
         # Get the ocean cells adjacent to coastal ocean cells, as these are the ones in which the particles will
         # be placed. For brevity, we will refer to these cells as coastal in the code here
         coastal = get_coastal_extended(grid=grid, coastal=get_coastal_cells(grid=grid))

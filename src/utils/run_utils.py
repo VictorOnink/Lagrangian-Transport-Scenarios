@@ -1,5 +1,5 @@
 from datetime import time
-from parcels import ParcelsRandom as random
+import parcels.ParcelsRandom as random
 import os
 
 def _set_random_seed(seed: str):

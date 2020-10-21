@@ -1,5 +1,5 @@
 import math
-from parcels import ParcelsRandom as random
+import parcels.ParcelsRandom as random
 
 def _anti_beach_nudging(particle, fieldset, time):
     """
