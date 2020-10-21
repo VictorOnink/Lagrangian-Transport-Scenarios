@@ -42,7 +42,9 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
             distance_file = settings.INPUT_DIREC + prefix + '_distance_to_coast_land.nc'
             distance = get_distance_to_shore(filename=distance_file, grid=grid, lon=lon, lat=lat)
             # The yearly mismanaged plastic
-            mismanaged_total = np.multiply(mismanaged, population) * 365
+            transport_to_ocean = 0.15 # percentage of mismanaged plastic that reaches the ocean
+            kg_to_tons = 1000
+            mismanaged_total = np.multiply(mismanaged, population) * 365 * transport_to_ocean / kg_to_tons
             # Get everything in column arrays to load
             lon_inputs = Lon_population[mismanaged_total > 0].flatten()
             lat_inputs = Lat_population[mismanaged_total > 0].flatten()
