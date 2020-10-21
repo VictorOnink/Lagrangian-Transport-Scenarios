@@ -12,7 +12,7 @@ def _set_random_seed(seed: str):
     :return:
     """
     if seed == 'Fixed':
-        seed_value = 11235811
+        seed_value = int(11235811)
     elif seed == 'TimeSeed':
         seed_value = int(time())*1000000
     else:

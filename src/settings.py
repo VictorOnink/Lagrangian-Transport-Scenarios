@@ -73,7 +73,7 @@ INPUT = INPUT_NAMES[int(os.environ['INPUT'])]
 INPUT_DIREC = INPUT_DIREC_DICT[int(os.environ['INPUT'])]
 
 INPUT_MAX = 10.0 # Maximum plastic mass input assigned to one particle in tons
-INPUT_MIN = 0.0 # Minimum plastic mass input for a cell in order to be considered for the input
+INPUT_MIN = 0.08 # Minimum plastic mass input for a cell in order to be considered for the input
 INPUT_DIV = 5000 # The number of particles per release step per run
 if INPUT == 'Jambeck':
     RUN_RANGE: int = 9
