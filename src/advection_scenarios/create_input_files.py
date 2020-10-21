@@ -93,7 +93,7 @@ def get_mismanaged_fraction_Jambeck(dataset: Dataset):
         jambeck_country = list(jambeck_excel['Country'])
         jambeck_data = jambeck_excel['Mismanaged plastic waste [kg/person/day]7']
         # Initialize grid for mismanaged plastic estimates
-        mismanged_grid = np.zeros(Lon.shape, dtype='int') * 99999
+        mismanaged_grid = np.zeros(Lon.shape) * 99999
         # Getting the country shapefiles
         countries = fiona.open(settings.INPUT_DIREC +
                                'country_shapefile/gpw_v4_national_identifier_grid_rev11_30_sec.shp')
@@ -104,17 +104,18 @@ def get_mismanaged_fraction_Jambeck(dataset: Dataset):
                 country_mask = vectorized.contains(country_geometry, Lon, Lat)
                 if country_index in [145, 146]:
                     # 122 is the Netherlands Antilles value
-                    mismanged_grid[country_mask] = jambeck_data[122]
+                    mismanaged_grid[country_mask] = jambeck_data[122]
                 else:
-                    mismanged_grid[country_mask] = jambeck_data[jambeck_country.index(countries[country_index]['properties']['NAME0'])]
+                    mismanaged_grid[country_mask] = jambeck_data[jambeck_country.index(countries[country_index]['properties']['NAME0'])]
+        mismanaged_grid[mismanaged_grid == 99999] = 0
         # Saving the entire distance field
         coords = [('lat', lat_pop), ('lon', lon_pop)]
-        dist = xarray.DataArray(mismanged_grid, coords=coords)
+        dist = xarray.DataArray(mismanaged_grid, coords=coords)
         dcoo = {'lat': lat_pop, 'lon': lon_pop}
         dset = xarray.Dataset({'mismanaged_plastic': dist}, coords=dcoo)
         dset.to_netcdf(mismanaged_file)
         os.system('echo "The mismanaged grid has now been created and saved for future use"')
-        return mismanged_grid
+        return mismanaged_grid
 
 
 def within_domain(lon: np.array, lat: np.array, lon_inputs: np.array, lat_inputs: np.array, plastic_inputs: np.array):
