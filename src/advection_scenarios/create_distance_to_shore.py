@@ -100,6 +100,7 @@ def create_distance_to_shore_land(output_name: str, grid: np.array, lon: np.arra
                 distance[lat_index, lon_index] += np.min(dis)
             else:
                 memory_var = 1
+    distance[mask == False] = 0
     # Saving the entire distance field
     coords = [('lat', lat), ('lon', lon)]
     dist = xarray.DataArray(distance, coords=coords)
