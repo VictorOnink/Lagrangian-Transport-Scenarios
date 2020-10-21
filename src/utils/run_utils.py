@@ -1,5 +1,5 @@
 from datetime import time
-import parcels.rng as rng
+from parcels import ParcelsRandom as random
 import os
 
 def _set_random_seed(seed: str):
@@ -18,4 +18,4 @@ def _set_random_seed(seed: str):
     else:
         seed_value = int(seed)
     os.system('echo "The random seed is "'+str(seed_value))
-    rng.seed(seed_value)
+    random.seed(seed_value)

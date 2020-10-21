@@ -51,7 +51,7 @@ class FieldSetFactory():
 
         fieldset = _get_base_fieldset(file_dict=file_dict)
         if stokes == 0:
-            _add_stokes_drift(fieldset=fieldset, file_dict=file_dict)
+            fieldset = _add_stokes_drift(fieldset=fieldset, file_dict=file_dict)
         if border_current:
             _add_border_current(fieldset=fieldset, file_dict=file_dict)
         if diffusion:
@@ -114,8 +114,9 @@ def _add_stokes_drift(fieldset: FieldSet, file_dict: dict):
     fieldset_stoke.Ust.units = GeographicPolar()
     fieldset_stoke.Vst.units = Geographic()
     # Adding the Stokes drift fields to the general fieldset
-    fieldset.add_field(fieldset_stoke.Ust)
-    fieldset.add_field(fieldset_stoke.Vst)
+    fieldset = FieldSet(U=fieldset.U+fieldset_stoke.Ust,
+                        V=fieldset.V+fieldset_stoke.Vst)
+    return fieldset
 
 
 def _add_border_current(fieldset: FieldSet, file_dict: dict):

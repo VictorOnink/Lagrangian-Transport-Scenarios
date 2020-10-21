@@ -33,14 +33,20 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
             dataset = Dataset(settings.INPUT_DIREC + 'gpw_v4_population_count_adjusted_rev11_2pt5_min.nc')
             var_name = 'UN WPP-Adjusted Population Count, v4.11 (2000, 2005, 2010, 2015, 2020): 2.5 arc-minutes'
             population = np.array(dataset.variables[var_name][2, :, :])
-            ocean = np.array(dataset.variables[var_name][7, :, :])
             lon_population = dataset.variables['longitude'][:]
             lat_population = dataset.variables['latitude'][:]
+            Lon_population, Lat_population = np.meshgrid(lon_population, lat_population)
             # Get the mismanaged plastic fraction
             mismanaged = get_mismanaged_fraction_Jambeck(dataset=dataset)
             # Get the distance from land to shore
-            distance_file = settings.INPUT_DIREC + prefix + '_distance2coast_land.nc'
-            distance = create_distance_to_shore_land(grid=grid,lon=lon,lat=lat)
+            distance_file = settings.INPUT_DIREC + prefix + '_distance_to_coast_land.nc'
+            distance = get_distance_to_shore(filename=distance_file, grid=grid, lon=lon, lat=lat)
+            # The yearly mismanaged plastic
+            mismanaged_total = np.multiply(mismanaged, population) * 365
+            # Get everything in column arrays to load
+            lon_inputs = Lon_population[mismanaged_total > 0].flatten()
+            lat_inputs = Lat_population[mismanaged_total > 0].flatten()
+            plastic_inputs = mismanaged_total[mismanaged_total > 0].flatten()
         elif settings.INPUT == 'Lebreton':
             lebData = pd.read_csv(settings.INPUT_DIREC + 'PlasticRiverInputs.csv')
             lon_inputs, lat_inputs = np.array(lebData['X']), np.array(lebData['Y'])
@@ -51,6 +57,8 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
         # Get the inputs onto the grid of the advection data
         inputs_grid = utils.histogram(lon_data=lon_inputs, lat_data=lat_inputs, bins_Lon=lon, bins_Lat=lat,
                                       weight_data=plastic_inputs, area_correc=False)
+        if settings.INPUT == 'Jambeck':
+            inputs_grid[distance > 50] = 0
         # Get the ocean cells adjacent to coastal ocean cells, as these are the ones in which the particles will
         # be placed. For brevity, we will refer to these cells as coastal in the code here
         coastal = get_coastal_extended(grid=grid, coastal=get_coastal_cells(grid=grid))
@@ -118,6 +126,14 @@ def get_mismanaged_fraction_Jambeck(dataset: Dataset):
         dset.to_netcdf(mismanaged_file)
         os.system('echo "The mismanaged grid has now been created and saved for future use"')
         return mismanaged_grid
+
+
+def get_distance_to_shore(filename: str, grid: np.array, lon: np.array, lat: np.array):
+    if utils._check_file_exist(filename):
+        os.system('echo "The mismanaged grid already exists"')
+    else:
+        create_distance_to_shore_land(filename=filename, grid=grid, lon=lon, lat=lat)
+    return Dataset(filename).variables['distance'][0, :, :]
 
 
 def within_domain(lon: np.array, lat: np.array, lon_inputs: np.array, lat_inputs: np.array, plastic_inputs: np.array):
