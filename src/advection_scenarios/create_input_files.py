@@ -39,6 +39,8 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
             # Get the mismanaged plastic fraction
             mismanaged = get_mismanaged_fraction_Jambeck(dataset=dataset)
             # Get the distance from land to shore
+            distance_file = settings.INPUT_DIREC + prefix + '_distance2coast_land.nc'
+            distance = create_distance_to_shore_land(grid=grid,lon=lon,lat=lat)
         elif settings.INPUT == 'Lebreton':
             lebData = pd.read_csv(settings.INPUT_DIREC + 'PlasticRiverInputs.csv')
             lon_inputs, lat_inputs = np.array(lebData['X']), np.array(lebData['Y'])
