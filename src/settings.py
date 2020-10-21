@@ -71,14 +71,15 @@ INPUT_DIREC_DICT = {0: DATA_INPUT_DIR_SERVERS[SERVER] + 'Jambeck_Inputs/',
                     1: DATA_INPUT_DIR_SERVERS[SERVER] + 'Lebreton_Inputs/'}
 INPUT = INPUT_NAMES[int(os.environ['INPUT'])]
 INPUT_DIREC = INPUT_DIREC_DICT[int(os.environ['INPUT'])]
-
-INPUT_MAX = 10.0 # Maximum plastic mass input assigned to one particle in tons
-INPUT_MIN = 0.08 # Minimum plastic mass input for a cell in order to be considered for the input
 INPUT_DIV = 5000 # The number of particles per release step per run
 if INPUT == 'Jambeck':
     RUN_RANGE: int = 9
+    INPUT_MAX = 10.0  # Maximum plastic mass input assigned to one particle in tons
+    INPUT_MIN = 0.08  # Minimum plastic mass input for a cell in order to be considered for the input
 elif INPUT == 'Lebreton':
     RUN_RANGE: int = 4
+    INPUT_MAX = 10.0  # Maximum plastic mass input assigned to one particle in tons
+    INPUT_MIN = 0.0  # Minimum plastic mass input for a cell in order to be considered for the input
 
 # Inclusion of Stokes Drift. 0 = included, 1 = not included
 STOKES: int = int(os.environ['STOKES'])
