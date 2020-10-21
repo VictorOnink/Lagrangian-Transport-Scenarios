@@ -89,8 +89,8 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
         str_format = len(particle_lat), len(particle_lat) * releases, releases
         os.system('echo "We release {} particles per release step, so {} per year over {} steps"'.format(*str_format))
         # Dividing the particles into runs
-        # split_to_runs(particle_lat=particle_lat, particle_lon=particle_lon, particle_weight=particle_weight,
-        #               output_prefix=output_prefix)
+        split_to_runs(particle_lat=particle_lat, particle_lon=particle_lon, particle_weight=particle_weight,
+                      output_prefix=output_prefix)
         os.system('echo "The input files have been created"')
 
 
