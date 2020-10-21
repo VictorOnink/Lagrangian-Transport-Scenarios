@@ -44,9 +44,8 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
             # The yearly mismanaged plastic
             mismanaged_total = np.multiply(mismanaged, population) * 365
             # Get everything in column arrays to load
-            lon_inputs = Lon_population[mismanaged_total > 0].flatten()
-            lat_inputs = Lat_population[mismanaged_total > 0].flatten()
-            plastic_inputs = mismanaged_total[mismanaged_total > 0].flatten()
+            lon_inputs, lat_inputs, plastic_inputs = convert_to_column(lon=Lon_population, lat=Lat_population,
+                                                                       input=mismanaged_total)
         elif settings.INPUT == 'Lebreton':
             lebData = pd.read_csv(settings.INPUT_DIREC + 'PlasticRiverInputs.csv')
             lon_inputs, lat_inputs = np.array(lebData['X']), np.array(lebData['Y'])
@@ -141,6 +140,13 @@ def slicing_correction(array: np.array):
         return array
     elif len(array.shape) == 3:
         return array[0, :, :]
+
+
+def convert_to_column(lon: np.array, lat: np.array, input: np.array):
+    var_list = [lon, lat, input]
+    var_list = [var.flatten() for var in var_list]
+    var_list = [var[var_list[2] == 0] for var in var_list]
+    return tuple(var_list)
 
 
 def within_domain(lon: np.array, lat: np.array, lon_inputs: np.array, lat_inputs: np.array, plastic_inputs: np.array):
