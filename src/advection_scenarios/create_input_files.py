@@ -44,8 +44,9 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
             # The yearly mismanaged plastic
             mismanaged_total = np.multiply(mismanaged, population) * 365
             # Get everything in column arrays to load
-            lon_inputs, lat_inputs, plastic_inputs = convert_to_column(lon=Lon_population, lat=Lat_population,
-                                                                       input=mismanaged_total)
+            lon_inputs = Lon_population[mismanaged_total > 0].flatten()
+            lat_inputs = Lat_population[mismanaged_total > 0].flatten()
+            plastic_inputs = mismanaged_total[mismanaged_total > 0].flatten()
         elif settings.INPUT == 'Lebreton':
             lebData = pd.read_csv(settings.INPUT_DIREC + 'PlasticRiverInputs.csv')
             lon_inputs, lat_inputs = np.array(lebData['X']), np.array(lebData['Y'])
@@ -142,18 +143,12 @@ def slicing_correction(array: np.array):
         return array[0, :, :]
 
 
-def convert_to_column(lon: np.array, lat: np.array, input: np.array):
-    var_list = [lon, lat, input]
-    var_list = [var.flatten() for var in var_list]
-    var_list = [var[var_list[2] == 0] for var in var_list]
-    return tuple(var_list)
-
-
 def within_domain(lon: np.array, lat: np.array, lon_inputs: np.array, lat_inputs: np.array, plastic_inputs: np.array):
     lon_max, lon_min = np.max(lon), np.min(lon)
     lat_max, lat_min = np.max(lat), np.min(lon)
-    # Check which cells are within the domain
-    domain = (lon_inputs <= lon_max) & (lon_inputs >= lon_min) & (lat_inputs >= lat_min) & (lat_inputs <= lat_max)
+    # Check which cells are within the domain and non-zero inputs
+    domain = (lon_inputs <= lon_max) & (lon_inputs >= lon_min) & (lat_inputs >= lat_min) & \
+             (lat_inputs <= lat_max) & (plastic_inputs > 0)
     str_format = (len(lon_inputs), settings.INPUT, np.sum(domain * 1))
     os.system('echo "Of the original {} input sites in the {} scenario, {} are within the domain"'.format(*str_format))
     return lon_inputs[domain], lat_inputs[domain], plastic_inputs[domain]
