@@ -105,8 +105,8 @@ do
 	   part4="#SBATCH --job-name="$runname
 	   part5="#SBATCH --output="runOutput/$runname".o%j"
 	   part6="#SBATCH --mem-per-cpu=6G"
-           part7="#SBATCH --time=00:10:00"
-           part8="#SBATCH --partition=debug"
+           part7="#SBATCH --time=00:20:00"
+           part8="#SBATCH --partition=all"
 	   #loading the bash and setting the environment
 	   part9="source /home/ubelix/climate/vo18e689/.bash_profile"
 	   part10="source /home/ubelix/climate/vo18e689/anaconda3/bin/activate py3_parcels_v2_2"
