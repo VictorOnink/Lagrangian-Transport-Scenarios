@@ -1,6 +1,7 @@
 from datetime import time
-import parcels.rng as random
+from parcels import ParcelsRandom as random
 import os
+
 
 def _set_random_seed(seed: str):
     """
