@@ -38,7 +38,7 @@ class FragmentationCozar(base_scenario.BaseScenario):
         os.system('echo "Creating the particle set"')
         pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
                            lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
-                           age=var_dict['age'], weights=var_dict['weights'],
+                           age=var_dict['age'], weights=var_dict['weight'],
                            time=start_time, repeatdt=repeat_dt)
         return pset
 

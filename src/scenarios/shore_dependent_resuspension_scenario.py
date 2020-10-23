@@ -19,7 +19,7 @@ class SD_Resuspension(base_scenario.BaseScenario):
         self.input_dir = utils._get_input_directory(server=self.server)
         self.output_dir = utils._get_output_directory(server=self.server)
 
-    var_list = ['lon', 'lat', 'beach', 'age', 'weights']
+    var_list = ['lon', 'lat', 'beach', 'age', 'weight']
 
     def create_fieldset(self) -> FieldSet:
         os.system('echo "Creating the fieldset"')
@@ -37,7 +37,7 @@ class SD_Resuspension(base_scenario.BaseScenario):
         os.system('echo "Creating the particle set"')
         pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
                            lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
-                           age=var_dict['age'], weights=var_dict['weights'],
+                           age=var_dict['age'], weights=var_dict['weight'],
                            time=start_time, repeatdt=repeat_dt)
         return pset
 
