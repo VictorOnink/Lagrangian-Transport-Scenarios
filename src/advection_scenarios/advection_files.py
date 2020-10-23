@@ -118,6 +118,50 @@ class AdvectionFiles:
             LON = dataset.variables['lon'][:]
             LAT = dataset.variables['lat'][:]
 
+        if self.advection_scenario == 'CMEMS_MEDITERRANEAN':
+            prefix = 'CMEMS_MEDITERRANEAN'
+            # The core UV velocity fields
+            UV_filenames = glob.glob(self.data_dir + "CMEMS_MED/NEMO-MED-2010-01-01_00:00:00.nc") + \
+                           glob.glob(self.data_dir + "CMEMS_MED/NEMO-MED-{}*.nc".format(
+                               settings.START_YEAR + settings.RESTART))
+            # Remove duplicates
+            UV_filenames = list(dict.fromkeys(UV_filenames))
+            UV_filenames.sort()
+            UV_variables = {'U': 'vozocrtx', 'V': 'vomecrty'}
+            UV_dimensions = {'U': {'time': 'time', 'depth': 'depth', 'lat': 'lat', 'lon': 'lon'},
+                             'V': {'time': 'time', 'depth': 'depth', 'lat': 'lat', 'lon': 'lon'}}
+
+            # The stokes drift fields
+            STOKES_filenames = glob.glob(self.data_dir + "WaveWatchIIIstokes/WAVE-MED-{}*.nc".format(
+                settings.START_YEAR + settings.RESTART))
+            STOKES_filenames.sort()
+            STOKES_variables = {'Ust': 'VSDX', 'Vst': 'VSDY'}
+            STOKES_dimensions = {'Ust': {'time': 'time', 'lat': 'lat', 'lon': 'lon'},
+                                 'Vst': {'time': 'time', 'lat': 'lat', 'lon': 'lon'},
+                                 }
+
+            # The sea surface elevation fields
+            ELEV_filenames = glob.glob(
+                self.data_dir + "HYCOM/HYCOM_SeaEleve_3h_{}*.nc".format(settings.START_YEAR + settings.RESTART))
+            ELEV_filenames.sort()
+            ELEV_variables = {'eta': 'surf_el'}
+            ELEV_dimensions = {'time': 'time', 'lat': 'lat', 'lon': 'lon'}
+
+            # The surface winds
+            WIND_filenames = glob.glob(self.data_dir + "Wind/ERA5-wind10m*.nc")
+            WIND_filenames.sort()
+            WIND_variables = {'u10': 'u10', 'v10': 'v10'}
+            WIND_dimensions = {'time': 'time', 'lat': 'latitude', 'lon': 'longitude'}
+
+            # The shore type
+            COAST_TYPE_filename = self.input_dir + 'HYCOM_GLOBAL_Luijendijk_sandy.npy'
+
+            # Basic grid data
+            dataset = Dataset(UV_filenames[0])
+            GRID = dataset.variables['vozocrtx'][0, 0, :, :]
+            LON = dataset.variables['lon'][:]
+            LAT = dataset.variables['lat'][:]
+
         # The border current
         BORDER_filename = self.input_dir + prefix + '_boundary_velocities.nc'
         if utils._check_file_exist(BORDER_filename):

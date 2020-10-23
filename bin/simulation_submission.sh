@@ -6,7 +6,7 @@
 SUBMISSION='simulation'
 export SUBMISSION
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4=Turrell (2020)
-SCENARIO=4
+SCENARIO=2
 #for scenario 1, the time a particle must be near the coast to beach (in days)
 VICINITY=2
 #for scenario 2, the beaching and resuspension timescales (in days)
@@ -21,8 +21,8 @@ STARTYEAR=2010
 #Which input distribution do we want to use? 0=Jambeck, 1=lebreton
 INPUT=0
 #Which advection data do we want to use?
-# 0 = Global HYCOM, 1 = Caribbean HYCOM
-ADVECTION_DATA=1
+# 0 = Global HYCOM, 1 = Caribbean HYCOM, 2 = Mediterranean CMEMS
+ADVECTION_DATA=2
 #Start year of the simulation. 0 = new simulation, otherwise it picks up from a previous simulation
 START=0 
 #Number of years the simulation runs
