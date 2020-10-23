@@ -216,7 +216,8 @@ def input_to_nearest_coastal(coastal: np.array, inputs_grid: np.array, lon: np.a
                 if distance < nearest_dist:
                     nearest_dist = distance
                     nearest_lat, nearest_lon = coastal_lat[candidate], coastal_lon[candidate]
-        inputs_coastal_grid[nearest_lat, nearest_lon] += inputs_grid[lat_point, lon_point]
+        if nearest_dist < 51:
+            inputs_coastal_grid[nearest_lat, nearest_lon] += inputs_grid[lat_point, lon_point]
     return inputs_coastal_grid
 
 
