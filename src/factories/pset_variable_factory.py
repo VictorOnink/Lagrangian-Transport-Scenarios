@@ -20,13 +20,6 @@ class PsetVariableFactory:
         var_dict = {}
         for variable in ['lon', 'lat', 'weight']:
             var_dict[variable] = np.load(start_files[variable])
-        # if input_scenario == 'Jambeck':
-        #     var_dict = _create_Jambeck(input_dir)
-        # elif input_scenario == 'Lebreton':
-        #     var_dict = _create_Lebreton(input_dir)
-        # else:
-        #     raise ValueError("invalid input scenario")
-
         if beach:
             var_dict['beach'] = np.zeros(len(var_dict['lon']), dtype=np.int32)
         if age:
@@ -36,28 +29,5 @@ class PsetVariableFactory:
         if size:
             var_dict['size'] = np.ones(len(var_dict['lon']), dtype=np.float32)
         return var_dict
-
-
-# def _create_Jambeck(input_dir: str) -> dict:
-#     var_dict = {}
-#     var_dict['lon'] = np.load(
-#         input_dir + 'Jambeck2010/Jam' + str(2010) + 'Lons' + str(settings.RUN) + '.npy')
-#     var_dict['lat'] = np.load(
-#         input_dir + 'Jambeck2010/Jam' + str(2010) + 'Lats' + str(settings.RUN) + '.npy')
-#     var_dict['weights'] = np.load(
-#         input_dir + 'Jambeck2010/Jam' + str(2010) + 'Weight' + str(settings.RUN) + '.npy')
-#     return var_dict
-#
-#
-# def _create_Lebreton(input_dir: str) -> dict:
-#     var_dict = {}
-#     var_dict['lon'] = np.load(
-#         input_dir + 'Lebreton2010/Leb' + str(2010) + 'Lons' + str(settings.RUN) + '.npy')
-#     var_dict['lat'] = np.load(
-#         input_dir + 'Lebreton2010/Leb' + str(2010) + 'Lats' + str(settings.RUN) + '.npy')
-#     var_dict['weights'] = np.load(
-#         input_dir + 'Lebreton2010/Leb' + str(2010) + 'Weight' + str(settings.RUN) + '.npy')
-#     return var_dict
-
 
 
