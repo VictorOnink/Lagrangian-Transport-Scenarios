@@ -111,3 +111,5 @@ def boundary_conditions(n_lat: int, n_lon: int, lat_index: int, k: int, lon_inde
         return (lat_index + k) < n_lat
     if settings.ADVECTION_DATA == 'HYCOM_CARIBBEAN':
         return ((lat_index + k) < n_lat) & ((lat_index + k) >= 0) & ((lon_index + m) < n_lon) & ((lon_index + m) >= 0)
+    if settings.ADVECTION_DATA == 'CMEMS_MEDITERRANEAN':
+        return ((lat_index + k) < n_lat) & ((lat_index + k) >= 0) & ((lon_index + m) < n_lon) & ((lon_index + m) >= 0)
