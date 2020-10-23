@@ -28,6 +28,7 @@ class AdvectionFiles:
         self.advection_scenario = advection_scenario
         os.system('echo "The advection scenario is "' + self.advection_scenario)
 
+    @property
     def file_names(self):
         if self.advection_scenario == 'HYCOM_GLOBAL':
             prefix = 'HYCOM_GLOBAL'
@@ -215,16 +216,22 @@ class AdvectionFiles:
 
         # Checking for the input files
         create_input_files.create_input_files(prefix=prefix, grid=GRID, lon=LON, lat=LAT)
+        STARTFILES_filename = {}
+        for variable in ['lon', 'lat', 'weight']:
+            str_format = (prefix, settings.START_YEAR, variable, settings.run)
+            STARTFILES_filename[variable] = settings.INPUT_DIREC + settings.INPUT + \
+                                            '_{}_{}_{}_run={}.npy'.format(*str_format)
 
         # Putting everything in a dictionary so we can output it
         variable_names = ['UV_filenames', 'UV_variables', 'UV_dimensions', 'STOKES_filenames', 'STOKES_variables',
                           'STOKES_dimensions', 'ELEV_filenames', 'ELEV_variables', 'ELEV_dimensions',
                           'WIND_filenames', 'WIND_variables', 'WIND_dimensions', 'COAST_TYPE_filename', 'GRID', 'LON',
-                          'LAT', 'BORDER_filename', 'DISTANCE_filename', 'LANDID_filename', 'GRIDSPACING_filename']
+                          'LAT', 'BORDER_filename', 'DISTANCE_filename', 'LANDID_filename', 'GRIDSPACING_filename',
+                          'STARTFILES_filename']
         variables = [UV_filenames, UV_variables, UV_dimensions, STOKES_filenames, STOKES_variables, STOKES_dimensions,
                      ELEV_filenames, ELEV_variables, ELEV_dimensions, WIND_filenames, WIND_variables, WIND_dimensions,
                      COAST_TYPE_filename, GRID, LON, LAT, BORDER_filename, DISTANCE_filename, LANDID_filename,
-                     GRIDSPACING_filename]
+                     GRIDSPACING_filename, STARTFILES_filename]
 
         file_dict = {}
         for var in range(len(variables)):

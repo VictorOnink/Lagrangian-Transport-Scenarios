@@ -26,7 +26,7 @@ class BaseScenario(ABC):
         if settings.SUBMISSION == 'simulation':
             advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
                                                                 advection_scenario=settings.ADVECTION_DATA)
-            self.file_dict = advection_scenario.file_names()
+            self.file_dict = advection_scenario.file_names
             self.field_set = self.create_fieldset()
         self.particle = self._get_pclass()
 
@@ -60,9 +60,8 @@ class BaseScenario(ABC):
 
     def _get_var_dict(self) -> dict:
         if settings.RESTART == 0:
-            return pvf.initialize_variable_dict_from_varlist(input_scenario=settings.INPUT,
-                                                             input_dir=self.input_dir,
-                                                             var_list=self.var_list)
+            return pvf.initialize_variable_dict_from_varlist(var_list=self.var_list,
+                                                             start_files=self.file_dict['STARTFILES_filename'])
         else:
             return self._get_restart_variables(rfile=self.self._file_names(new=False),
                                                var_list=self.var_list)

@@ -268,3 +268,4 @@ def split_to_runs(particle_lat: np.array, particle_lon: np.array, particle_weigh
         for variables in var_dict:
             var_run = var_dict[variables][run * sub_division:(run + 1) * sub_division]
             np.save(output_prefix + '{}_run={}.npy'.format(variables, run), var_run)
+
