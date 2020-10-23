@@ -4,13 +4,12 @@ from netCDF4 import Dataset
 import numpy as np
 from parcels import GeographicPolar, Geographic, FieldSet, Field
 import math
-from advection_scenarios import advection_files
 
 class FieldSetFactory():
     """"""
 
     @classmethod
-    def create_fieldset(cls, server: int, stokes: int,
+    def create_fieldset(cls, file_dict: dict, stokes: int,
                         border_current: bool = False,
                         diffusion: bool = False,
                         landID: bool = False,
@@ -43,10 +42,6 @@ class FieldSetFactory():
         :param halo:
         :return:
         """
-        advection_scenario = advection_files.AdvectionFiles(server=server, stokes=stokes,
-                                                            advection_scenario=settings.ADVECTION_DATA)
-        file_dict = advection_scenario.file_names()
-
         fieldset = _get_base_fieldset(file_dict=file_dict)
         if stokes == 0:
             fieldset = _add_stokes_drift(fieldset=fieldset, file_dict=file_dict)

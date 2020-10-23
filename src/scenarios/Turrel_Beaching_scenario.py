@@ -24,7 +24,7 @@ class Turrell_Resuspension(base_scenario.BaseScenario):
 
     def create_fieldset(self) -> FieldSet:
         os.system('echo "Creating the fieldset"')
-        fieldset = fieldset_factory.FieldSetFactory().create_fieldset(server=self.server, stokes=self.stokes,
+        fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict, stokes=self.stokes,
                                                                       border_current=True, diffusion=True, landID=True,
                                                                       distance=True,beach_timescale=True,wind=True,
                                                                       sea_elev=True, wind_min=True

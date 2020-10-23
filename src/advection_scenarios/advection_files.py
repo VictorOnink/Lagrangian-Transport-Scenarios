@@ -140,7 +140,7 @@ class AdvectionFiles:
                                  'Vst': {'time': 'time', 'lat': 'lat', 'lon': 'lon'},
                                  }
 
-            # The sea surface elevation fields
+            # The sea surface elevation fields, not really essential for the work here at the moment
             ELEV_filenames = glob.glob(
                 self.data_dir + "HYCOM/HYCOM_SeaEleve_3h_{}*.nc".format(settings.START_YEAR + settings.RESTART))
             ELEV_filenames.sort()

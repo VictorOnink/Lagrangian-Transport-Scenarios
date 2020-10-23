@@ -8,6 +8,7 @@ from utils import _set_random_seed, _delete_particle, _nan_removal, _get_start_e
 import settings as settings
 import os
 from factories.pset_variable_factory import PsetVariableFactory as pvf
+from advection_scenarios import advection_files
 
 
 class BaseScenario(ABC):
@@ -23,6 +24,9 @@ class BaseScenario(ABC):
         self.server = server
         self.stokes = stokes
         if settings.SUBMISSION == 'simulation':
+            advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
+                                                                advection_scenario=settings.ADVECTION_DATA)
+            self.file_dict = advection_scenario.file_names()
             self.field_set = self.create_fieldset()
         self.particle = self._get_pclass()
 

@@ -7,19 +7,20 @@ import utils as utils
 from datetime import datetime, timedelta
 import os
 from parcels import ParcelsRandom as random
+import math
 
 
-class SD_Resuspension(base_scenario.BaseScenario):
-    """Stochastic beaching and shore dependent resuspension """
+class FragmentationCozar(base_scenario.BaseScenario):
+    """Fragmentation scenario based on the Cozar fragmentation model. Beaching based on the stochastic scenario"""
 
     def __init__(self, server, stokes):
-        """Constructor for coastal_proximity"""
+        """Constructor for FragmentationCozar"""
         super().__init__(server, stokes)
-        self.prefix = "SDResus"
+        self.prefix = "Stochastic"
         self.input_dir = utils._get_input_directory(server=self.server)
         self.output_dir = utils._get_output_directory(server=self.server)
 
-    var_list = ['lon', 'lat', 'beach', 'age', 'weights']
+    var_list = ['lon', 'lat', 'beach', 'age', 'size']
 
     def create_fieldset(self) -> FieldSet:
         os.system('echo "Creating the fieldset"')
@@ -48,18 +49,18 @@ class SD_Resuspension(base_scenario.BaseScenario):
         return particle_type
 
     def _file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART):
-        odirec = self.output_dir + "SDResus_"+str(settings.SHORE_DEP)+"/st_"+str(settings.SHORE_TIME)+\
-                 "_rt_"+str(settings.RESUS_TIME)+"_e_"+str(settings.ENSEMBLE)+"/"
+        odirec = self.output_dir + "st_" + str(settings.SHORE_TIME) + "_rs_" + str(settings.RESUS_TIME) + \
+                 "_e_" + str(settings.ENSEMBLE) + "/"
         if new == True:
             os.system('echo "Set the output file name"')
-            return odirec + self.prefix +"_dep="+str(settings.SHORE_DEP)+"_st="+str(settings.SHORE_TIME)+"_rt="\
-                   +str(settings.RESUS_TIME)+"_y="+str(settings.START_YEAR)+"_I="+str(settings.INPUT)+"_r="+\
-                   str(restart)+"_run="+str(run)+".nc"
+            return odirec + self.prefix + "_st=" + str(settings.SHORE_TIME) + "_rt=" + str(settings.RESUS_TIME) + \
+                   "_y=" + str(settings.START_YEAR) + "_I=" + str(settings.INPUT) + "_r=" + str(restart) + \
+                   "_run=" + str(run) + ".nc"
         else:
             os.system('echo "Set the restart file name"')
-            return odirec + self.prefix + "_dep=" + str(settings.SHORE_DEP) + "_st=" + str(settings.SHORE_TIME) + "_rt=" \
-                   + str(settings.RESUS_TIME) + "_y=" + str(settings.START_YEAR) + "_I=" + str(settings.INPUT) + "_r=" + \
-                   str(restart - 1) + "_run=" + str(run) + ".nc"
+            return odirec + self.prefix + "_st=" + str(settings.SHORE_TIME) + "_rt=" + str(settings.RESUS_TIME) + \
+                   "_y=" + str(settings.START_YEAR) + "_I=" + str(settings.INPUT) + "_r=" + str(restart - 1) + \
+                   "_run=" + str(run) + ".nc"
 
     def _beaching_kernel(particle, fieldset, time):
         if particle.beach == 0:
@@ -67,9 +68,9 @@ class SD_Resuspension(base_scenario.BaseScenario):
             if dist < fieldset.Coastal_Boundary:
                 if random.random() > fieldset.p_beach:
                     particle.beach = 1
-        # Next the resuspension part
+        # Now the part where we build in the resuspension
         elif particle.beach == 1:
-            if random.random() > fieldset.p_resus[time, particle.depth, particle.lat, particle.lon]:
+            if random.random() > fieldset.p_resus:
                 particle.beach = 0
         # Update the age of the particle
         particle.age += particle.dt
