@@ -132,7 +132,7 @@ class AdvectionFiles:
                              'V': {'time': 'time', 'depth': 'depth', 'lat': 'lat', 'lon': 'lon'}}
 
             # The stokes drift fields
-            STOKES_filenames = glob.glob(self.data_dir + "WaveWatchIIIstokes/WAVE-MED-{}*.nc".format(
+            STOKES_filenames = glob.glob(self.data_dir + "WAVE_MED/WAVE-MED-{}*.nc".format(
                 settings.START_YEAR + settings.RESTART))
             STOKES_filenames.sort()
             STOKES_variables = {'Ust': 'VSDX', 'Vst': 'VSDY'}
