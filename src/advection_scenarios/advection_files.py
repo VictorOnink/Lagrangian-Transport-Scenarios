@@ -218,7 +218,7 @@ class AdvectionFiles:
         create_input_files.create_input_files(prefix=prefix, grid=GRID, lon=LON, lat=LAT)
         STARTFILES_filename = {}
         for variable in ['lon', 'lat', 'weight']:
-            str_format = (prefix, settings.START_YEAR, variable, settings.run)
+            str_format = (prefix, settings.START_YEAR, variable, settings.RUN)
             STARTFILES_filename[variable] = settings.INPUT_DIREC + settings.INPUT + \
                                             '_{}_{}_{}_run={}.npy'.format(*str_format)
 
