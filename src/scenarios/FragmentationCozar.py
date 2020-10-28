@@ -51,6 +51,7 @@ class FragmentationCozar(base_scenario.BaseScenario):
         particle_type = utils.BaseParticle
         utils._add_var_particle(particle_type, 'distance', dtype=np.float32, set_initial=False)
         utils._add_var_particle(particle_type, 'density', dtype=np.float32, set_initial=False, to_write=False)
+        utils._add_var_particle(particle_type, 'dynamic_viscosity', dtype=np.float32, set_initial=False)
         utils._add_var_particle(particle_type, 'size', dtype=np.float32)
         return particle_type
 
@@ -81,9 +82,25 @@ class FragmentationCozar(base_scenario.BaseScenario):
         # Update the age of the particle
         particle.age += particle.dt
 
+
+    def _get_kinematic_viscosity(particle, fieldset, time):
+        # Using equations 25 - 29 from Kooi et al. 2017
+        # Salinity and Temperature at the particle position
+        Sz = fieldset.abs_salinity[time, particle.depth, particle.lat, particle.lon]
+        Tz = fieldset.cons_temperature[time, particle.depth, particle.lat, particle.lon]
+        # The constants A and B
+        A = 1.541 + 1.998E-2 * Tz - 9.52E-5 * Tz * Tz
+        B = 7.974 - 7.561E-2 * Tz - 4.724E-4 * Tz * Tz
+        # Calculating the water dynamic viscosity
+        mu_wz = 4.2844E-5 + 1 / (0.156 * (Tz + 64.993)**2 - 91.296)
+        # Calculating the sea water dynamic viscosity
+        particle.dynamic_viscosity = mu_wz(1 + A * Sz + B * Sz * Sz)
+
     def _get_particle_behavior(self, pset: ParticleSet):
         os.system('echo "Setting the particle behavior"')
         base_behavior = pset.Kernel(utils._initial_input) + pset.Kernel(PolyTEOS10_bsq) + \
-                        pset.Kernel(utils._floating_advection_rk4) + pset.Kernel(utils._floating_2d_brownian_motion)
+                        pset.Kernel(self._get_kinematic_viscosity) + \
+                        pset.Kernel(utils._floating_advection_rk4) + \
+                        pset.Kernel(utils._floating_2d_brownian_motion)
         total_behavior = base_behavior + pset.Kernel(utils._anti_beach_nudging) + pset.Kernel(self._beaching_kernel)
         return total_behavior
