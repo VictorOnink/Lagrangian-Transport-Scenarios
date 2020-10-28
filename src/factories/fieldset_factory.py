@@ -247,12 +247,15 @@ def _add_temperature_field(fieldset: FieldSet, file_dict: dict):
 def _add_bathymetry_field(fieldset: FieldSet, file_dict: dict):
     os.system('echo "Adding ocean bathymetry"')
     _check_presence(variable='BATH_filenames', file_dict=file_dict)
-    filenames = {'bathymetry': file_dict['BATH_filenames']}
-    # Creating a fieldset for the wind data
-    fieldset_bath = FieldSet.from_netcdf(filenames, file_dict['BATH_variables'], file_dict['BATH_dimensions'],
-                                        allow_time_extrapolation=True)
-    # Adding the wind fields to the general fieldset
-    fieldset.add_field(fieldset_bath.bathymetry)
+    dataset = Dataset(file_dict['BATH_filenames'])
+    # # Creating a fieldset for the wind data
+    # fieldset_bath = FieldSet.from_netcdf(filenames, file_dict['BATH_variables'], file_dict['BATH_dimensions'],
+    #                                     allow_time_extrapolation=True)
+    # # Adding the wind fields to the general fieldset
+    # fieldset.add_field(fieldset_bath.bathymetry)
+
+    fieldset.add_field(Field('bathymetry', dataset.variables['deptho'][:], lon=dataset.variables['longitude'][:],
+                             lat=dataset.variables['latitude'][:], mesh='spherical'))
 
 def _add_vicinity_constant(fieldset: FieldSet):
     """
