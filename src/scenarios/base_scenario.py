@@ -96,6 +96,7 @@ class BaseScenario(ABC):
                      output_file=pfile
                      )
         pfile.export()
+        os.system('echo "Run completed"')
 
     def return_full_run_directory(self) -> dict:
         """
