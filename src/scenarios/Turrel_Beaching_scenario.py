@@ -6,7 +6,7 @@ import factories.fieldset_factory as fieldset_factory
 import utils as utils
 from datetime import datetime, timedelta
 import os
-from parcels import rng as random
+from parcels import ParcelsRandom as random
 import math
 
 
@@ -65,7 +65,7 @@ class Turrell_Resuspension(base_scenario.BaseScenario):
             os.system('echo "Set the restart file name"')
             return odirec + self.prefix +'_{}'.format(settings.ADVECTION_DATA) + "_Wmin="+str(settings.WMIN)+\
                    "_st="+str(settings.SHORE_TIME)+"_y=" +str(settings.START_YEAR)+"_I="+str(settings.INPUT)+\
-                   "_r="+str(restart - 1)+"_run="+str(run)+".nc"
+                   "_r="+str(restart)+"_run="+str(run)+".nc"
 
     def _beaching_kernel(particle, fieldset, time):
         """
