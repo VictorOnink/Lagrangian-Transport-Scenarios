@@ -54,8 +54,8 @@ class FragmentationCozar(base_scenario.BaseScenario):
         return particle_type
 
     def _file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART):
-        odirec = self.output_dir + "st_" + str(settings.SHORE_TIME) + "_rs_" + str(settings.RESUS_TIME) + \
-                 "_e_" + str(settings.ENSEMBLE) + "/"
+        odirec = self.output_dir + "Cozar_Fragmentation/st_" + str(settings.SHORE_TIME) + "_rs_" + \
+                 str(settings.RESUS_TIME) + "_e_" + str(settings.ENSEMBLE) + "/"
         if new == True:
             os.system('echo "Set the output file name"')
             return odirec + self.prefix + '_{}'.format(settings.ADVECTION_DATA) + "_st=" + str(settings.SHORE_TIME) + \

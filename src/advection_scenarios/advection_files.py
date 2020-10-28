@@ -222,14 +222,8 @@ class AdvectionFiles:
 
             # Ocean bathymetry
             BATH_filenames = self.data_dir + "CMEMS_MED/MED-MFC_006_004_mask_bathy.nc"
-            BATH_variables = {'bathymetry': 'deptho'}
-            BATH_dimensions = {'bathymetry': {'lat': 'latitude', 'lon': 'longitude'}}
             file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='BATH_filenames',
                                           variable=BATH_filenames)
-            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='BATH_variables',
-                                          variable=BATH_variables)
-            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='BATH_dimensions',
-                                          variable=BATH_dimensions)
 
             # The surface winds
             WIND_filenames = glob.glob(self.data_dir + "Wind/ERA5-wind10m*.nc")

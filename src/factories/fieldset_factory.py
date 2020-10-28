@@ -226,7 +226,7 @@ def _add_salinity_field(fieldset: FieldSet, file_dict: dict):
     os.system('echo "Adding ocean salinity"')
     _check_presence(variable='SALINITY_filenames', file_dict=file_dict)
     filenames = {'abs_salinity': file_dict['SALINITY_filenames']}
-    # Creating a fieldset for the wind data
+    # Creating a fieldset for the salinity data
     fieldset_sal = FieldSet.from_netcdf(filenames, file_dict['SALINITY_variables'], file_dict['SALINITY_dimensions'],
                                         allow_time_extrapolation=True)
     # Adding the wind fields to the general fieldset
@@ -237,10 +237,10 @@ def _add_temperature_field(fieldset: FieldSet, file_dict: dict):
     os.system('echo "Adding ocean temperature"')
     _check_presence(variable='TEMP_filenames', file_dict=file_dict)
     filenames = {'cons_temperature': file_dict['TEMP_filenames']}
-    # Creating a fieldset for the wind data
+    # Creating a fieldset for the temperature data
     fieldset_temp = FieldSet.from_netcdf(filenames, file_dict['TEMP_variables'], file_dict['TEMP_dimensions'],
                                         allow_time_extrapolation=True)
-    # Adding the wind fields to the general fieldset
+    # Adding the temperature field to the general fieldset
     fieldset.add_field(fieldset_temp.cons_temperature)
 
 
@@ -248,14 +248,9 @@ def _add_bathymetry_field(fieldset: FieldSet, file_dict: dict):
     os.system('echo "Adding ocean bathymetry"')
     _check_presence(variable='BATH_filenames', file_dict=file_dict)
     dataset = Dataset(file_dict['BATH_filenames'])
-    # # Creating a fieldset for the wind data
-    # fieldset_bath = FieldSet.from_netcdf(filenames, file_dict['BATH_variables'], file_dict['BATH_dimensions'],
-    #                                     allow_time_extrapolation=True)
-    # # Adding the wind fields to the general fieldset
-    # fieldset.add_field(fieldset_bath.bathymetry)
-
     fieldset.add_field(Field('bathymetry', dataset.variables['deptho'][:], lon=dataset.variables['longitude'][:],
                              lat=dataset.variables['latitude'][:], mesh='spherical'))
+
 
 def _add_vicinity_constant(fieldset: FieldSet):
     """
