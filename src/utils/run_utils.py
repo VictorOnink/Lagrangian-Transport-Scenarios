@@ -1,5 +1,5 @@
 from datetime import time
-from parcels import ParcelsRandom as random
+from parcels import rng as random
 import os
 
 

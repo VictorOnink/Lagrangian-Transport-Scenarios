@@ -7,7 +7,7 @@ import factories.fieldset_factory as fieldset_factory
 import utils as utils
 from datetime import datetime, timedelta
 import os
-from parcels import ParcelsRandom as random
+from parcels import rng as random
 import math
 
 
