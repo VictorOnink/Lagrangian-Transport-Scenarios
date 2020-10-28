@@ -77,6 +77,12 @@ elif [ "$SCENARIO" -eq "4" ]; then
 	    RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
         fi
 fi
+elif [ "$SCENARIO" -eq "5" ]; then
+        RUNNAMEPREFIX="CozarFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTYEAR}"_"
+        if [ "$STOKES" -eq "1" ]; then
+	    RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
+        fi
+fi
 
 
 RUNNAMEPREFIX=${RUNNAMEPREFIX}"ENSEMBLE="${ENSEMBLE}
