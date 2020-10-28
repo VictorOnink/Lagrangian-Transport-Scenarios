@@ -118,8 +118,10 @@ def _add_stokes_drift(fieldset: FieldSet, file_dict: dict):
     fieldset_stoke.Ust.units = GeographicPolar()
     fieldset_stoke.Vst.units = Geographic()
     # Adding the Stokes drift fields to the general fieldset
-    fieldset = FieldSet(U=fieldset.U + fieldset_stoke.Ust,
-                        V=fieldset.V + fieldset_stoke.Vst)
+    # fieldset = FieldSet(U=fieldset.U + fieldset_stoke.Ust,
+    #                     V=fieldset.V + fieldset_stoke.Vst)
+    fieldset.add_field(fieldset_stoke.Ust)
+    fieldset.add_field(fieldset_stoke.Vst)
     return fieldset
 
 
