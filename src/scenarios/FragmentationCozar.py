@@ -50,7 +50,7 @@ class FragmentationCozar(base_scenario.BaseScenario):
         os.system('echo "Creating the particle class"')
         particle_type = utils.BaseParticle
         utils._add_var_particle(particle_type, 'distance', dtype=np.float32, set_initial=False)
-        utils._add_var_particle(particle_type, 'density', dtype=np.float32, set_initial=False)
+        utils._add_var_particle(particle_type, 'density', dtype=np.float32, set_initial=False, to_write=False)
         utils._add_var_particle(particle_type, 'size', dtype=np.float32)
         return particle_type
 

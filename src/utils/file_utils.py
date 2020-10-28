@@ -94,12 +94,12 @@ def _get_repeat_dt():
 
 
 def _add_var_particle(particleType: JITParticle, name: str, dtype=np.int32,
-                      set_initial: bool = True):
+                      set_initial: bool = True, to_write: bool = True):
     if set_initial == True:
         init = attrgetter(name)
     else:
         init = 0
-    var = Variable(name, dtype=dtype, initial=init)
+    var = Variable(name, dtype=dtype, initial=init, to_write=to_write)
     setattr(particleType, name, var)
 
 
