@@ -54,13 +54,14 @@ class Turrell_Resuspension(base_scenario.BaseScenario):
                  "_e_"+str(settings.ENSEMBLE)+"/"
         if new == True:
             os.system('echo "Set the output file name"')
-            return odirec + self.prefix +"_Wmin="+str(settings.WMIN)+"_st="+str(settings.SHORE_TIME)+"_y="\
-                   +str(settings.START_YEAR)+"_I="+str(settings.INPUT)+"_r="+str(restart)+"_run="+str(run)+".nc"
+            return odirec + self.prefix +'_{}'.format(settings.ADVECTION_DATA) + "_Wmin="+str(settings.WMIN)+\
+                   "_st="+str(settings.SHORE_TIME)+"_y=" +str(settings.START_YEAR)+"_I="+str(settings.INPUT)+\
+                   "_r="+str(restart)+"_run="+str(run)+".nc"
         else:
             os.system('echo "Set the restart file name"')
-            return odirec + self.prefix + "_dep=" + str(settings.SHORE_DEP) + "_st=" + str(settings.SHORE_TIME) + "_rt=" \
-                   + str(settings.RESUS_TIME) + "_y=" + str(settings.START_YEAR) + "_I=" + str(settings.INPUT) + "_r=" + \
-                   str(restart - 1) + "_run=" + str(run) + ".nc"
+            return odirec + self.prefix +'_{}'.format(settings.ADVECTION_DATA) + "_Wmin="+str(settings.WMIN)+\
+                   "_st="+str(settings.SHORE_TIME)+"_y=" +str(settings.START_YEAR)+"_I="+str(settings.INPUT)+\
+                   "_r="+str(restart - 1)+"_run="+str(run)+".nc"
 
     def _beaching_kernel(particle, fieldset, time):
         """

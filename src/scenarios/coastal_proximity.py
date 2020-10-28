@@ -48,12 +48,14 @@ class CoastalProximity(base_scenario.BaseScenario):
         odirec = self.output_dir + "coastal_v_" + str(settings.VICINITY) + "_e_" + str(settings.ENSEMBLE) + "/"
         if new==True:
             os.system('echo "Set the output file name"')
-            return odirec + self.prefix + "_v=" + str(settings.VICINITY) + "_y=" + str(settings.START_YEAR) + "_I=" + \
-                    str(settings.INPUT) + "_r=" + str(restart) + "_run=" + str(run) + ".nc"
+            return odirec + self.prefix + '_{}'.format(settings.ADVECTION_DATA) + "_v=" + str(settings.VICINITY) + \
+                   "_y=" + str(settings.START_YEAR) + "_I=" + str(settings.INPUT) + "_r=" + str(restart) + \
+                   "_run=" + str(run) + ".nc"
         else:
             os.system('echo "Set the restart file name"')
-            return odirec + self.prefix + "_v=" + str(settings.VICINITY) + "_y=" + str(settings.START_YEAR) + "_I=" + \
-                    str(settings.INPUT) + "_r=" + str(restart - 1) + "_run=" + str(run) + ".nc"
+            return odirec + self.prefix + '_{}'.format(settings.ADVECTION_DATA) + "_v=" + str(settings.VICINITY) + \
+                   "_y=" + str(settings.START_YEAR) + "_I=" + str(settings.INPUT) + "_r=" + str(restart - 1) + \
+                   "_run=" + str(run) + ".nc"
 
     def _beaching_kernel(particle, fieldset, time):
         if particle.beach == 0:

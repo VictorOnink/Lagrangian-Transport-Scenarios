@@ -27,7 +27,7 @@ class PsetVariableFactory:
         if prox:
             var_dict['prox'] = np.zeros(len(var_dict['lon']), dtype=np.int32)
         if size:
-            var_dict['size'] = np.ones(len(var_dict['lon']), dtype=np.float32)
+            var_dict['size'] = np.ones(len(var_dict['lon']), dtype=np.float32)*settings.INIT_SIZE
         return var_dict
 
 
