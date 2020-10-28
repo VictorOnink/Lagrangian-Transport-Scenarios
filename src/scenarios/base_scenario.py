@@ -81,7 +81,7 @@ class BaseScenario(ABC):
         os.system('echo "Creating the particle set"')
         pset = self._get_pset(fieldset=self.field_set, particle_type=self.particle,
                               var_dict=self._get_var_dict(), start_time=_get_start_end_time(time='start'),
-                              repeat_dt=_get_repeat_dt())
+                              repeat_dt=self.repeat_dt)
         pfile = pset.ParticleFile(name=self._file_names(new=True),
                                   outputdt=settings.OUTPUT_TIME_STEP)
         os.system('echo "Setting the random seed"')

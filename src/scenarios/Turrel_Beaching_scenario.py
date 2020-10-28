@@ -19,6 +19,10 @@ class Turrell_Resuspension(base_scenario.BaseScenario):
         self.prefix = "Turrell"
         self.input_dir = utils._get_input_directory(server=self.server)
         self.output_dir = utils._get_output_directory(server=self.server)
+        if settings.RESTART == 0:
+            self.repeat_dt = timedelta(days=31)
+        else:
+            self.repeat_dt = None
 
     var_list = ['lon', 'lat', 'beach', 'age', 'weight']
 

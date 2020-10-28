@@ -20,6 +20,7 @@ class FragmentationCozar(base_scenario.BaseScenario):
         self.prefix = "Frag_cozar"
         self.input_dir = utils._get_input_directory(server=self.server)
         self.output_dir = utils._get_output_directory(server=self.server)
+        self.repeat_dt = None
 
     var_list = ['lon', 'lat', 'beach', 'age', 'size', 'density']
 

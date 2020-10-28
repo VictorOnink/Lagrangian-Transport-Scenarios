@@ -102,7 +102,7 @@ if SCENARIO_NAME == 'FragmentationCozar':
 #                                                                                                                      #
 ########################################################################################################################
 # THE INPUT SCENARIO
-INPUT_NAMES = {0: 'Jambeck', 1: 'Lebreton'}
+INPUT_NAMES = {0: 'Jambeck', 1: 'Lebreton', 2: 'Point release'}
 INPUT = INPUT_NAMES[int(os.environ['INPUT'])]
 # DIRECTORY CONTAINING INITIAL INPUTS FOR RESTART == 0
 INPUT_DIREC = INPUT_DIREC_DICT[int(os.environ['INPUT'])]
@@ -152,7 +152,10 @@ TIME_STEP = timedelta(minutes=10)  # integration timestep
 # MODEL OUTPUT TIMESTEP
 OUTPUT_TIME_STEP = timedelta(hours=24)
 # PARTICLE RELEASE TIMESTEP
-REPEAT_DT_R0 = timedelta(days=31) # timestep of releasing particles for restart == 0. Otherwise, REPEAT_DT = None
+if SCENARIO_NAME != 'FragmentationCozar':
+    REPEAT_DT_R0 = timedelta(days=31) # timestep of releasing particles for restart == 0. Otherwise, REPEAT_DT = None
+else:
+    REPEAT_DT_R0 = None
 REPEAT_DT_ELSE = None
 # RNG SEED VALUE
 SEED = 'Fixed'
