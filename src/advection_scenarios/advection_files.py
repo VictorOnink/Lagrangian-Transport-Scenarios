@@ -209,7 +209,7 @@ class AdvectionFiles:
                                           variable=TEMP_dimensions)
 
             # Ocean Salinity
-            SALINITY_filenames = glob.glob(self.data_dir + "CMEMS_MED/NEMO-MED-TEMP-{}*.nc".format(
+            SALINITY_filenames = glob.glob(self.data_dir + "CMEMS_MED/NEMO-MED-SALINITY-{}*.nc".format(
                 settings.START_YEAR + settings.RESTART))
             SALINITY_variables = {'abs_salinity': 'vosaline'}
             SALINITY_dimensions = {'abs_salinity': {'time': 'time', 'depth': 'depth', 'lat': 'lat', 'lon': 'lon'}}
