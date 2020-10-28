@@ -112,7 +112,7 @@ do
 	   part4="#SBATCH --job-name="$runname
 	   part5="#SBATCH --output="runOutput/$runname".o%j"
 	   part6="#SBATCH --mem-per-cpu=6G"
-	   if [ "DEBUG" -eq "1" ]; then
+	   if [ "$DEBUG" -eq "1" ]; then
             part7="#SBATCH --time=00:10:00"
             part8="#SBATCH --partition=debug"
       else
