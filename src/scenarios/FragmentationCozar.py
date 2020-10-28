@@ -52,6 +52,8 @@ class FragmentationCozar(base_scenario.BaseScenario):
         utils._add_var_particle(particle_type, 'distance', dtype=np.float32, set_initial=False)
         utils._add_var_particle(particle_type, 'density', dtype=np.float32, set_initial=False, to_write=False)
         utils._add_var_particle(particle_type, 'dynamic_viscosity', dtype=np.float32, set_initial=False)
+        utils._add_var_particle(particle_type, 'temperature', dtype=np.float32, set_initial=False)
+        utils._add_var_particle(particle_type, 'salinity', dtype=np.float32, set_initial=False)
         utils._add_var_particle(particle_type, 'size', dtype=np.float32)
         return particle_type
 
@@ -95,6 +97,8 @@ class FragmentationCozar(base_scenario.BaseScenario):
         mu_wz = 4.2844E-5 + 1 / (0.156 * (Tz + 64.993)**2 - 91.296)
         # Calculating the sea water dynamic viscosity
         particle.dynamic_viscosity = mu_wz*(1 + A * Sz + B * Sz * Sz)
+        particle.temperature = Tz
+        particle.salinity = Sz
 
     def _get_particle_behavior(self, pset: ParticleSet):
         os.system('echo "Setting the particle behavior"')

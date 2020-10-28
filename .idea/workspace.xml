@@ -19,9 +19,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="final statement indicating run completing to run function">
+    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="bug fix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/FragmentationCozar.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/FragmentationCozar.py" afterDir="false" />
     </list>
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
     <list id="c5adc810-e024-4e30-b33b-a2709ed2c5b7" name="moving the release repeat timescale to the scenario" comment="" />
@@ -92,20 +91,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-00147" summary="bug fix">
-      <created>1603197504059</created>
-      <option name="number" value="00147" />
-      <option name="presentableId" value="LOCAL-00147" />
-      <option name="project" value="LOCAL" />
-      <updated>1603197504059</updated>
-    </task>
-    <task id="LOCAL-00148" summary="creating the mismanaged plastic grid">
-      <created>1603204824853</created>
-      <option name="number" value="00148" />
-      <option name="presentableId" value="LOCAL-00148" />
-      <option name="project" value="LOCAL" />
-      <updated>1603204824853</updated>
     </task>
     <task id="LOCAL-00149" summary="updating the submission file for jambeck again">
       <created>1603204970027</created>
@@ -436,7 +421,21 @@
       <option name="project" value="LOCAL" />
       <updated>1603895835869</updated>
     </task>
-    <option name="localTasksCounter" value="196" />
+    <task id="LOCAL-00196" summary="adding in dynamic viscosity kernel">
+      <created>1603900866204</created>
+      <option name="number" value="00196" />
+      <option name="presentableId" value="LOCAL-00196" />
+      <option name="project" value="LOCAL" />
+      <updated>1603900866204</updated>
+    </task>
+    <task id="LOCAL-00197" summary="bug fix">
+      <created>1603900991756</created>
+      <option name="number" value="00197" />
+      <option name="presentableId" value="LOCAL-00197" />
+      <option name="project" value="LOCAL" />
+      <updated>1603900991756</updated>
+    </task>
+    <option name="localTasksCounter" value="198" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -452,7 +451,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="add some statements so i can track the progress of the calculations" />
     <MESSAGE value="adding in the distance to coast from land file" />
     <MESSAGE value="Updating for the new parcels version&#10;Distance2coast from land implemented for Jambeck runs" />
     <MESSAGE value="bug test, I wish it was a fix" />
@@ -465,7 +463,6 @@
     <MESSAGE value="typo" />
     <MESSAGE value="calculing the input filenames in the base scenario, and then loading them into the fieldset factory" />
     <MESSAGE value="see if it works loading the created input files" />
-    <MESSAGE value="bug fix" />
     <MESSAGE value="i think everything works now..." />
     <MESSAGE value="indeed, everything worked" />
     <MESSAGE value="Started adding in the Cozar fragmentation scenario&#10;Change to how variables are added to file_dict in advection files" />
@@ -477,7 +474,9 @@
     <MESSAGE value="moving the release repeat timescale to the scenario" />
     <MESSAGE value="don't write the sea water density to the output file for storage convenience" />
     <MESSAGE value="final statement indicating run completing to run function" />
-    <option name="LAST_COMMIT_MESSAGE" value="final statement indicating run completing to run function" />
+    <MESSAGE value="adding in dynamic viscosity kernel" />
+    <MESSAGE value="bug fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="bug fix" />
   </component>
   <component name="WindowStateProjectService">
     <state x="456" y="252" key="#com.intellij.codeInsight.template.impl.EditVariableDialog" timestamp="1601911510421">
@@ -564,10 +563,10 @@
     <state x="72" y="-1021" key="SettingsEditor/0.0.1440.900/-223.-1080.1920.1080@-223.-1080.1920.1080" timestamp="1603186122963" />
     <state x="221" y="67" key="SettingsEditor/0.23.1440.811@0.23.1440.811" timestamp="1601544733848" />
     <state x="221" y="67" key="SettingsEditor/0.23.1440.812@0.23.1440.812" timestamp="1601911551870" />
-    <state x="204" y="-887" key="Vcs.Push.Dialog.v2" timestamp="1603895837865">
+    <state x="204" y="-887" key="Vcs.Push.Dialog.v2" timestamp="1603901011712">
       <screen x="-223" y="-1080" width="1920" height="1080" />
     </state>
-    <state x="204" y="-887" key="Vcs.Push.Dialog.v2/0.0.1440.900/-223.-1080.1920.1080@-223.-1080.1920.1080" timestamp="1603895837865" />
+    <state x="204" y="-887" key="Vcs.Push.Dialog.v2/0.0.1440.900/-223.-1080.1920.1080@-223.-1080.1920.1080" timestamp="1603901011712" />
     <state x="320" y="161" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1603270347635" />
     <state x="320" y="168" key="Vcs.Push.Dialog.v2/0.23.1440.812@0.23.1440.812" timestamp="1602584102515" />
     <state x="320" y="169" key="Vcs.Push.Dialog.v2/0.23.1440.816@0.23.1440.816" timestamp="1602170515320" />
