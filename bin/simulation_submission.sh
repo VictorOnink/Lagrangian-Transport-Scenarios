@@ -5,6 +5,7 @@
 #####################################################################################
 SUBMISSION='simulation'
 export SUBMISSION
+DEBUG = 1 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Cozar based fragmentation
 SCENARIO=5
@@ -112,8 +113,13 @@ do
 	   part4="#SBATCH --job-name="$runname
 	   part5="#SBATCH --output="runOutput/$runname".o%j"
 	   part6="#SBATCH --mem-per-cpu=6G"
+	   if [ "DEBUG" -eq "1" ]; then
            part7="#SBATCH --time=00:10:00"
            part8="#SBATCH --partition=debug"
+     else
+           part7="#SBATCH --time=48:00:00"
+           part8="#SBATCH --partition=all"
+     fi
 	   #loading the bash and setting the environment
 	   part9="source /home/ubelix/climate/vo18e689/.bash_profile"
 	   part10="source /home/ubelix/climate/vo18e689/anaconda3/bin/activate py3_parcels_v2_2"
