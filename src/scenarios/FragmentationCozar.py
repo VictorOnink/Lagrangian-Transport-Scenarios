@@ -94,7 +94,7 @@ class FragmentationCozar(base_scenario.BaseScenario):
         # Calculating the water dynamic viscosity
         mu_wz = 4.2844E-5 + 1 / (0.156 * (Tz + 64.993)**2 - 91.296)
         # Calculating the sea water dynamic viscosity
-        particle.dynamic_viscosity = mu_wz(1 + A * Sz + B * Sz * Sz)
+        particle.dynamic_viscosity = mu_wz*(1 + A * Sz + B * Sz * Sz)
 
     def _get_particle_behavior(self, pset: ParticleSet):
         os.system('echo "Setting the particle behavior"')
