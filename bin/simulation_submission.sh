@@ -77,7 +77,6 @@ elif [ "$SCENARIO" -eq "4" ]; then
         if [ "$STOKES" -eq "1" ]; then
 	    RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
         fi
-fi
 elif [ "$SCENARIO" -eq "5" ]; then
         RUNNAMEPREFIX="CozarFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTYEAR}"_"
         if [ "$STOKES" -eq "1" ]; then
@@ -114,12 +113,12 @@ do
 	   part5="#SBATCH --output="runOutput/$runname".o%j"
 	   part6="#SBATCH --mem-per-cpu=6G"
 	   if [ "DEBUG" -eq "1" ]; then
-           part7="#SBATCH --time=00:10:00"
-           part8="#SBATCH --partition=debug"
-     else
-           part7="#SBATCH --time=48:00:00"
-           part8="#SBATCH --partition=all"
-     fi
+            part7="#SBATCH --time=00:10:00"
+            part8="#SBATCH --partition=debug"
+      else
+            part7="#SBATCH --time=48:00:00"
+            part8="#SBATCH --partition=all"
+      fi
 	   #loading the bash and setting the environment
 	   part9="source /home/ubelix/climate/vo18e689/.bash_profile"
 	   part10="source /home/ubelix/climate/vo18e689/anaconda3/bin/activate py3_parcels_v2_2"
