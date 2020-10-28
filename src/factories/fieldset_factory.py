@@ -294,13 +294,13 @@ def _add_resus_timescale_field(fieldset: FieldSet, file_dict: dict):
     :param input_dir:
     :return:
     """
-    if settings.SCENARIO_NAME == 'Stochastic':
-        p_r = math.exp(-settings.TIME_STEP.total_seconds() / (settings.RESUS_TIME * 86400.))
-        fieldset.add_constant('p_resus', p_r)
-
-    elif settings.SCENARIO_NAME == 'ShoreDependentResuspension':
+    if settings.SCENARIO_NAME == 'ShoreDependentResuspension':
         p_r = np.exp(-settings.TIME_STEP.total_seconds() / (_compute_shore_resus_Field(file_dict) * 86400.))
         fieldset.add_field(Field('p_resus', p_r, lon=file_dict['LON'], lat=file_dict['LAT'], mesh='spherical'))
+
+    else:
+        p_r = math.exp(-settings.TIME_STEP.total_seconds() / (settings.RESUS_TIME * 86400.))
+        fieldset.add_constant('p_resus', p_r)
 
 
 def _add_min_resuspension_wind_constant(fieldset: FieldSet):
