@@ -167,7 +167,8 @@ if SCENARIO_NAME != 'AdvectionDiffusionOnly':
 if SCENARIO_NAME == 'FragmentationCozar':
     # INITIAL PARTICLE SIZE (m): THE HEIGHT OF A STANDARD COKE BOTTLE
     INIT_SIZE = 0.35 # m, the height of a standard coke bottle
-
+    # INITIAL DENSITY (KG/M^3): 920 = polypropylene
+    INIT_DENSITY = 920
 ########################################################################################################################
 #                                                                                                                      #
 #                                                     LOG                                                              #

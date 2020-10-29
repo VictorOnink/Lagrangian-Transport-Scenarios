@@ -22,7 +22,7 @@ class FragmentationCozar(base_scenario.BaseScenario):
         self.output_dir = utils._get_output_directory(server=self.server)
         self.repeat_dt = None
 
-    var_list = ['lon', 'lat', 'beach', 'age', 'size', 'density']
+    var_list = ['lon', 'lat', 'beach', 'age', 'size', 'rho_plastic']
 
     def create_fieldset(self) -> FieldSet:
         os.system('echo "Creating the fieldset"')
@@ -43,7 +43,7 @@ class FragmentationCozar(base_scenario.BaseScenario):
         pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
                            lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
                            age=var_dict['age'], weights=var_dict['weight'], size=var_dict['size'],
-                           time=start_time, repeatdt=repeat_dt)
+                           rho_plastic=var_dict['rho_plastic'], time=start_time, repeatdt=repeat_dt)
         return pset
 
     def _get_pclass(self):
@@ -51,7 +51,10 @@ class FragmentationCozar(base_scenario.BaseScenario):
         particle_type = utils.BaseParticle
         utils._add_var_particle(particle_type, 'distance', dtype=np.float32, set_initial=False)
         utils._add_var_particle(particle_type, 'density', dtype=np.float32, set_initial=False, to_write=False)
-        utils._add_var_particle(particle_type, 'kinematic_viscosity', dtype=np.float32, set_initial=False)
+        utils._add_var_particle(particle_type, 'kinematic_viscosity', dtype=np.float32, set_initial=False,
+                                to_write=False)
+        utils._add_var_particle(particle_type, 'rise_velocity', dtype=np.float32, set_initial=False)
+        utils._add_var_particle(particle_type, 'rho_plastic', dtype=np.float32, set_initial=True, to_write=False)
         utils._add_var_particle(particle_type, 'size', dtype=np.float32)
         return particle_type
 
@@ -82,22 +85,73 @@ class FragmentationCozar(base_scenario.BaseScenario):
         # Update the age of the particle
         particle.age += particle.dt
 
-
     def _get_kinematic_viscosity(particle, fieldset, time):
         # Using equations 25 - 29 from Kooi et al. 2017
+        # We are assuming that
         # Salinity and Temperature at the particle position, where salinity is converted from g/kg -> kg/kg
-        Sz = fieldset.abs_salinity[time, particle.depth, particle.lat, particle.lon]/1000
+        Sz = fieldset.abs_salinity[time, particle.depth, particle.lat, particle.lon] / 1000
         Tz = fieldset.cons_temperature[time, particle.depth, particle.lat, particle.lon]
         # The constants A and B
-        A = 1.541 + 1.998 * 10**-2 * Tz - 9.52 * 10**-5 * math.pow(Tz, 2)
-        B = 7.974 - 7.561 * 10**-2 * Tz + 4.724 * 10**-4 * math.pow(Tz, 2)
+        A = 1.541 + 1.998 * 10 ** -2 * Tz - 9.52 * 10 ** -5 * math.pow(Tz, 2)
+        B = 7.974 - 7.561 * 10 ** -2 * Tz + 4.724 * 10 ** -4 * math.pow(Tz, 2)
         # Calculating the water dynamic viscosity
-        mu_wz = 4.2844 * 10**-5 + math.pow(0.156 * math.pow(Tz + 64.993, 2) - 91.296, -1)
+        mu_wz = 4.2844 * 10 ** -5 + math.pow(0.156 * math.pow(Tz + 64.993, 2) - 91.296, -1)
         # Calculating the sea water kinematic viscosity
-        particle.kinematic_viscosity = mu_wz*(1 + A * Sz + B * math.pow(Sz, 2)) / particle.density
+        particle.kinematic_viscosity = mu_wz * (1 + A * Sz + B * math.pow(Sz, 2)) / particle.density
 
+    def Kooi_no_biofouling(particle, fieldset, time):
+        """
+        Kernel to compute the vertical velocity (Vs) of particles due to their different sizes and densities
+        This is very heavily based on the Kernel "Kooi_no_biofouling" written by Delphine Lobelle
+        https://github.com/dlobelle/TOPIOS/blob/master/scripts/Kooi%2BNEMO_3D_nobiofoul.py
+        """
 
+        # ------ Profiles from MEDUSA or Kooi theoretical profiles -----
+        z = particle.depth  # [m]
+        kin_visc = particle.kinematic_viscosity  # kinematic viscosity[m2 s-1]
+        rho_sw = particle.density  # seawater density[kg m-3]
+        rise = particle.rise_velocity  # vertical velocity[m s-1]
 
+        # ------ Constants -----
+        g = 7.32e10 / (86400. ** 2.)  # gravitational acceleration (m d-2), now [s-2]
+
+        # ------ Volumes -----
+        v_pl = (4. / 3.) * math.pi * particle.size ** 3.  # volume of plastic [m3]
+        theta_pl = 4. * math.pi * particle.size ** 2.  # surface area of plastic particle [m2]
+
+        # ------ Diffusivity -----
+        r_tot = particle.size                             # total radius [m]
+        rho_tot = (particle.size ** 3. * particle.rho_plastic) / (particle.size) ** 3.  # total density [kg m-3]
+
+        dn = 2. * (r_tot)  # equivalent spherical diameter [m]
+        delta_rho = (rho_tot - rho_sw) / rho_sw  # normalised difference in density between total plastic+bf and seawater[-]
+        dstar = ((rho_tot - rho_sw) * g * dn ** 3.) / (rho_sw * kin_visc ** 2.)  # dimensional diameter[-]
+
+        # Getting the dimensionless settling velocity
+        if dstar > 5e9:
+            w = 1000.
+        elif dstar < 0.05:
+            w = (dstar ** 2.) * 1.71E-4
+        else:
+            w = 10. ** (-3.76715 + (1.92944 * math.log10(dstar)) - (0.09815 * math.log10(dstar) ** 2.) - (
+                        0.00575 * math.log10(dstar) ** 3.) + (0.00056 * math.log10(dstar) ** 4.))
+        particle.rise_velocity = w
+        # # ------ Settling of particle -----
+        #
+        # if delta_rho > 0:  # sinks
+        #     vs = (g * kin_visc * w * delta_rho) ** (1. / 3.)
+        # else:  # rises
+        #     a_del_rho = delta_rho * -1.
+        #     vs = -1. * (g * kin_visc * w * a_del_rho) ** (1. / 3.)  # m s-1
+        #
+        # z0 = z + vs * particle.dt
+        # if z0 <= 0.6 or z0 >= 4000.:  # NEMO's 'surface depth'
+        #     vs = 0
+        #     particle.depth = 0.6
+        # else:
+        #     particle.depth += vs * particle.dt
+        #
+        # particle.rise_velocity = vs
 
     def _get_particle_behavior(self, pset: ParticleSet):
         os.system('echo "Setting the particle behavior"')
