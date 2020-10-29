@@ -99,7 +99,7 @@ class FragmentationCozar(base_scenario.BaseScenario):
         # Calculating the sea water kinematic viscosity
         particle.kinematic_viscosity = mu_wz * (1 + A * Sz + B * math.pow(Sz, 2)) / particle.density
 
-    def Kooi_no_biofouling(particle, fieldset, time):
+    def _get_rising_velocity(particle, fieldset, time):
         """
         Kernel to compute the vertical velocity (Vs) of particles due to their different sizes and densities
         This is very heavily based on the Kernel "Kooi_no_biofouling" written by Delphine Lobelle
@@ -158,6 +158,7 @@ class FragmentationCozar(base_scenario.BaseScenario):
         base_behavior = pset.Kernel(utils._initial_input) + pset.Kernel(PolyTEOS10_bsq) + \
                         pset.Kernel(self._get_kinematic_viscosity) + \
                         pset.Kernel(utils._floating_advection_rk4) + \
-                        pset.Kernel(utils._floating_2d_brownian_motion)
+                        pset.Kernel(utils._floating_2d_brownian_motion)+ \
+                        pset.Kernel(self._get_rising_velocity)
         total_behavior = base_behavior + pset.Kernel(utils._anti_beach_nudging) + pset.Kernel(self._beaching_kernel)
         return total_behavior

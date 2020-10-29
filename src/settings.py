@@ -199,3 +199,4 @@ elif SCENARIO_NAME == 'TurrellResuspension':
 elif SCENARIO_NAME == 'FragmentationCozar':
     os.system('echo "The beaching timescale is {} days "'.format(SHORE_TIME))
     os.system('echo "The resuspension timescale is {} days "'.format(RESUS_TIME))
+    os.system('echo "The initial particle size is {} m and a density of {} kg/m^3"'.format(INIT_SIZE, INIT_DENSITY))
