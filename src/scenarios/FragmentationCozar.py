@@ -135,23 +135,18 @@ class FragmentationCozar(base_scenario.BaseScenario):
         else:
             w = 10. ** (-3.76715 + (1.92944 * math.log10(dstar)) - (0.09815 * math.log10(dstar) ** 2.) - (
                         0.00575 * math.log10(dstar) ** 3.) + (0.00056 * math.log10(dstar) ** 4.))
-        particle.rise_velocity = w
-        # # ------ Settling of particle -----
-        #
-        # if delta_rho > 0:  # sinks
-        #     vs = (g * kin_visc * w * delta_rho) ** (1. / 3.)
-        # else:  # rises
-        #     a_del_rho = delta_rho * -1.
-        #     vs = -1. * (g * kin_visc * w * a_del_rho) ** (1. / 3.)  # m s-1
-        #
-        # z0 = z + vs * particle.dt
-        # if z0 <= 0.6 or z0 >= 4000.:  # NEMO's 'surface depth'
-        #     vs = 0
-        #     particle.depth = 0.6
-        # else:
-        #     particle.depth += vs * particle.dt
-        #
-        # particle.rise_velocity = vs
+        # ------ Settling of particle -----
+
+        if delta_rho > 0:  # sinks
+            vs = (g * kin_visc * w * delta_rho) ** (1. / 3.)
+        else:  # rises
+            a_del_rho = delta_rho * -1.
+            vs = -1. * (g * kin_visc * w * a_del_rho) ** (1. / 3.)  # m s-1
+
+        z0 = z + vs * particle.dt
+        if z0 <= 1.472102 or z0 >= fieldset.bathymetry[time, particle.depth, particle.lat, particle.lon]:
+            vs = 0
+        particle.rise_velocity = vs
 
     def _get_particle_behavior(self, pset: ParticleSet):
         os.system('echo "Setting the particle behavior"')
