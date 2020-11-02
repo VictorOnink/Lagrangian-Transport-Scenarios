@@ -159,7 +159,7 @@ class FragmentationCozar(base_scenario.BaseScenario):
         #     vs = 0
             # particle.depth = z0
 
-        particle.rise_velocity = fieldset.bathymetry[time, particle.depth, particle.lat, particle.lon]
+        particle.rise_velocity = math.floor(fieldset.landID[time, particle.depth, particle.lat, particle.lon])
 
     def _get_particle_behavior(self, pset: ParticleSet):
         os.system('echo "Setting the particle behavior"')
