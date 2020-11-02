@@ -20,12 +20,13 @@ class AdvectionFiles:
     We also check all the relevant files exist, and if it doesn't, we create it,
     """
 
-    def __init__(self, server, stokes, advection_scenario):
+    def __init__(self, server, stokes, advection_scenario, repeat_dt):
         self.server = server
         self.stokes = stokes
         self.data_dir = utils._get_data_directory(server=server)
         self.input_dir = utils._get_input_directory(server=server)
         self.advection_scenario = advection_scenario
+        self.repeat_dt = repeat_dt
         os.system('echo "The advection scenario is "' + self.advection_scenario)
 
     @property

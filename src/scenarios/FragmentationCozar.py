@@ -4,6 +4,7 @@ import numpy as np
 import settings as settings
 import scenarios.base_scenario as base_scenario
 import factories.fieldset_factory as fieldset_factory
+from advection_scenarios import advection_files
 import utils as utils
 from datetime import datetime, timedelta
 import os
@@ -21,6 +22,11 @@ class FragmentationCozar(base_scenario.BaseScenario):
         self.input_dir = utils._get_input_directory(server=self.server)
         self.output_dir = utils._get_output_directory(server=self.server)
         self.repeat_dt = None
+        if settings.SUBMISSION == 'simulation':
+            advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
+                                                                advection_scenario=settings.ADVECTION_DATA,
+                                                                repeat_dt=self.repeat_dt)
+            self.file_dict = advection_scenario.file_names
 
     var_list = ['lon', 'lat', 'beach', 'age', 'size', 'rho_plastic']
 
