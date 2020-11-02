@@ -163,7 +163,7 @@ if SUBMISSION == 'analysis':
 #                                                                                                                      #
 ########################################################################################################################
 # MODEL INTEGRATION TIMESTEP
-TIME_STEP = timedelta(minutes=10)  # integration timestep
+TIME_STEP = timedelta(minutes=1)  # integration timestep
 # MODEL OUTPUT TIMESTEP
 OUTPUT_TIME_STEP = timedelta(hours=24)
 # PARTICLE RELEASE TIMESTEP
