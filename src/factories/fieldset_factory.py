@@ -251,7 +251,9 @@ def _add_bathymetry_field(fieldset: FieldSet, file_dict: dict):
     _check_presence(variable='BATH_filenames', file_dict=file_dict)
     dataset = Dataset(file_dict['BATH_filenames'])
     bathymetry = np.array(dataset.variables['deptho'][:])
-    bathymetry[bathymetry > 1e10] = 0
+    bathymetry[dataset.variables['deptho'][:].mask] = 0
+
+    os.system('WAAAAAAAH')
     fieldset.add_field(Field('bathymetry', bathymetry, lon=dataset.variables['longitude'][:],
                              lat=dataset.variables['latitude'][:], mesh='spherical'))
 
