@@ -3,6 +3,7 @@ import numpy as np
 import settings as settings
 import scenarios.base_scenario as base_scenario
 import factories.fieldset_factory as fieldset_factory
+from advection_scenarios import advection_files
 import utils as utils
 from datetime import datetime, timedelta
 import os
@@ -23,6 +24,12 @@ class Stochastic(base_scenario.BaseScenario):
             self.repeat_dt = timedelta(days=31)
         else:
             self.repeat_dt = None
+        if settings.SUBMISSION == 'simulation':
+            advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
+                                                                advection_scenario=settings.ADVECTION_DATA,
+                                                                repeat_dt=self.repeat_dt)
+            self.file_dict = advection_scenario.file_names
+            self.field_set = self.create_fieldset()
 
     var_list = ['lon', 'lat', 'beach', 'age', 'weight']
 

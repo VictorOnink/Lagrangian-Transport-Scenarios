@@ -16,7 +16,7 @@ from shapely.geometry import shape
 import xarray
 import progressbar
 
-def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array):
+def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array, repeat_dt):
     # Create the output prefix and then check if any files with such prefixes exist
     if settings.INPUT in ['Jambeck', 'Lebreton']:
         output_prefix = settings.INPUT_DIREC + settings.INPUT + '_{}_{}_'.format(prefix, settings.START_YEAR)
@@ -73,7 +73,10 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
         # Getting the inputs onto the coastal cells
         inputs_coastal_grid = input_to_nearest_coastal(coastal=coastal, inputs_grid=inputs_grid, lon=lon, lat=lat)
         # The inputs so far are annual, how many particle releases will occur per year
-        releases = math.floor(timedelta(days=365) / settings.REPEAT_DT_R0) + 1
+        if repeat_dt is None:
+            releases = 1
+        else:
+            releases = math.floor(timedelta(days=365) / repeat_dt) + 1
         inputs_coastal_grid /= releases
         # How many particles will be released per cell, and what are the assigned weights
         particle_number, particle_weight, particle_remain_num, particle_remain = number_weights_releases(
