@@ -20,6 +20,9 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
     # Create the output prefix and then check if any files with such prefixes exist
     if settings.INPUT in ['Jambeck', 'Lebreton']:
         output_prefix = settings.INPUT_DIREC + settings.INPUT + '_{}_{}_'.format(prefix, settings.START_YEAR)
+    elif settings.INPUT == 'Point_Release':
+        str_format = (prefix, settings.START_YEAR, settings.INPUT_LAT, settings.INPUT_LON)
+        output_prefix = settings.INPUT_DIREC + settings.INPUT + '_{}_{}_{}_{}_'.format(*str_format)
     else:
         os.system('echo "Perhaps take another look at what input you are using?"')
 
@@ -53,6 +56,9 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
             lebData = pd.read_csv(settings.INPUT_DIREC + 'PlasticRiverInputs.csv')
             lon_inputs, lat_inputs = np.array(lebData['X']), np.array(lebData['Y'])
             plastic_inputs = np.array(lebData['i_low'])
+        elif settings.INPUT == 'Point Release':
+            lon_inputs, lat_inputs = np.ones((1, 1))*settings.INPUT_LON, np.ones((1, 1))*settings.INPUT_LAT
+            plastic_inputs = np.ones((1, 1))*settings.INPUT_MAX
         # Only keep the particles that are within the domain
         lon_inputs, lat_inputs, plastic_inputs = within_domain(lon=lon, lat=lat, lon_inputs=lon_inputs,
                                                                lat_inputs=lat_inputs, plastic_inputs=plastic_inputs)

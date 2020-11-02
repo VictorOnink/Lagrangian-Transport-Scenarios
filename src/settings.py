@@ -21,7 +21,8 @@ DATA_INPUT_DIR_SERVERS: dict = {0: "/alphadata04/onink/lagrangian_sim/BeachingSi
 DATA_OUTPUT_DIR_SERVERS: dict = {0: "/alphadata04/onink/lagrangian_sim/BeachingSim/Output/",
                                  1: "/home/ubelix/climate/shared/onink/Output/"}
 INPUT_DIREC_DICT = {0: DATA_INPUT_DIR_SERVERS[SERVER] + 'Jambeck_Inputs/',
-                    1: DATA_INPUT_DIR_SERVERS[SERVER] + 'Lebreton_Inputs/'}
+                    1: DATA_INPUT_DIR_SERVERS[SERVER] + 'Lebreton_Inputs/',
+                    2: DATA_INPUT_DIR_SERVERS[SERVER] + 'Point_Release/'}
 
 
 # STARTING YEAR OF THE SIMULATION
@@ -102,7 +103,7 @@ if SCENARIO_NAME == 'FragmentationCozar':
 #                                                                                                                      #
 ########################################################################################################################
 # THE INPUT SCENARIO
-INPUT_NAMES = {0: 'Jambeck', 1: 'Lebreton', 2: 'Point release'}
+INPUT_NAMES = {0: 'Jambeck', 1: 'Lebreton', 2: 'Point_Release'}
 INPUT = INPUT_NAMES[int(os.environ['INPUT'])]
 # DIRECTORY CONTAINING INITIAL INPUTS FOR RESTART == 0
 INPUT_DIREC = INPUT_DIREC_DICT[int(os.environ['INPUT'])]
@@ -115,11 +116,25 @@ if INPUT == 'Jambeck':
     # MAXIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
     INPUT_MAX = 10.0
     # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
-    INPUT_MIN = 0.08  # Minimum plastic mass input for a cell in order to be considered for the input
+    INPUT_MIN = 0.08
 elif INPUT == 'Lebreton':
+    # NUMBER OF RUNS
     RUN_RANGE: int = 4
-    INPUT_MAX = 10.0  # Maximum plastic mass input assigned to one particle in tons
+    # MAXIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
+    INPUT_MAX = 10.0
+    # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
     INPUT_MIN = 0.0  # Minimum plastic mass input for a cell in order to be considered for the input
+elif INPUT == 'Point_Release':
+    # NUMBER OF RUNS
+    RUN_RANGE: int = 1
+    # STARTING LONGITUDE FOR POINT RELEASE (DEGREES EAST)
+    INPUT_LON = 2.22
+    # STARTING LATITUDE FOR POINT RELEASE (DEGREES NORTH)
+    INPUT_LAT = 41.36
+    # MAXIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
+    INPUT_MAX = 1.0
+    # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
+    INPUT_MIN = 0.0
 
 
 ########################################################################################################################
