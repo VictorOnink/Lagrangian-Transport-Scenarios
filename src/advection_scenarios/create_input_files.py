@@ -56,7 +56,7 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
             lebData = pd.read_csv(settings.INPUT_DIREC + 'PlasticRiverInputs.csv')
             lon_inputs, lat_inputs = np.array(lebData['X']), np.array(lebData['Y'])
             plastic_inputs = np.array(lebData['i_low'])
-        elif settings.INPUT == 'Point Release':
+        elif settings.INPUT == 'Point_Release':
             lon_inputs, lat_inputs = np.ones((1, 1))*settings.INPUT_LON, np.ones((1, 1))*settings.INPUT_LAT
             plastic_inputs = np.ones((1, 1))*settings.INPUT_MAX
         # Only keep the particles that are within the domain
