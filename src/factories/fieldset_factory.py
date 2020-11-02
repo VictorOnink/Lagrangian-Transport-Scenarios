@@ -250,7 +250,9 @@ def _add_bathymetry_field(fieldset: FieldSet, file_dict: dict):
     os.system('echo "Adding ocean bathymetry"')
     _check_presence(variable='BATH_filenames', file_dict=file_dict)
     dataset = Dataset(file_dict['BATH_filenames'])
-    fieldset.add_field(Field('bathymetry', dataset.variables['deptho'][:], lon=dataset.variables['longitude'][:],
+    bathymetry = dataset.variables['deptho'][:]
+    bathymetry[bathymetry.mask] = 0
+    fieldset.add_field(Field('bathymetry', bathymetry, lon=dataset.variables['longitude'][:],
                              lat=dataset.variables['latitude'][:], mesh='spherical'))
 
 
