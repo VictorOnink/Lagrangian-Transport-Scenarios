@@ -115,8 +115,6 @@ class FragmentationCozar(base_scenario.BaseScenario):
 
         # ------ Profiles from MEDUSA or Kooi theoretical profiles -----
         z = particle.depth  # [m]
-        if particle.age == 0:
-            particle.depth = fieldset.bathymetry[time, particle.depth, particle.lat, particle.lon] - 1
         kin_visc = particle.kinematic_viscosity  # kinematic viscosity[m2 s-1]
         rho_sw = particle.density  # seawater density[kg m-3]
         rise = particle.rise_velocity  # vertical velocity[m s-1]
@@ -152,12 +150,12 @@ class FragmentationCozar(base_scenario.BaseScenario):
             a_del_rho = delta_rho * -1.
             vs = -1. * (g * kin_visc * w * a_del_rho) ** (1. / 3.)  # m s-1
 
-        z0 = z + vs * particle.dt
-        # # 1.472102
-        if z0 <= 1.472102 or z0 >= fieldset.bathymetry[time, particle.depth, particle.lat, particle.lon]:
-            vs = 0
-        else:
-            particle.depth = z0
+        # z0 = z + vs * particle.dt
+        # # # 1.472102
+        # if z0 <= 1.472102 or z0 >= fieldset.bathymetry[time, particle.depth, particle.lat, particle.lon]:
+        #     vs = 0
+        # else:
+        #     particle.depth = z0
 
         particle.rise_velocity = vs
 
