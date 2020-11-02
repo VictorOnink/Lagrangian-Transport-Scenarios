@@ -115,6 +115,8 @@ class FragmentationCozar(base_scenario.BaseScenario):
 
         # ------ Profiles from MEDUSA or Kooi theoretical profiles -----
         z = particle.depth  # [m]
+        if z == 1.472102:
+            particle.depth -= 10
         kin_visc = particle.kinematic_viscosity  # kinematic viscosity[m2 s-1]
         rho_sw = particle.density  # seawater density[kg m-3]
         rise = particle.rise_velocity  # vertical velocity[m s-1]
