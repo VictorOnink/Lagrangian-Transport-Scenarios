@@ -97,6 +97,8 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
         split_to_runs(particle_lat=particle_lat, particle_lon=particle_lon, particle_weight=particle_weight,
                       output_prefix=output_prefix)
         os.system('echo "The input files have been created"')
+    # Returning the output prefix
+    return output_prefix
 
 
 def get_mismanaged_fraction_Jambeck(dataset: Dataset):

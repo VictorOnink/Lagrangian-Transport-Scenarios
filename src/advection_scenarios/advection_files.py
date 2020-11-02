@@ -303,12 +303,12 @@ class AdvectionFiles:
                 os.system('echo "The grid spacing file still does not exist"')
 
         # Checking for the input files
-        create_input_files.create_input_files(prefix=prefix, grid=GRID, lon=LON, lat=LAT, repeat_dt=self.repeat_dt)
+        output_prefix = create_input_files.create_input_files(prefix=prefix, grid=GRID, lon=LON, lat=LAT,
+                                                              repeat_dt=self.repeat_dt)
         STARTFILES_filename = {}
         for variable in ['lon', 'lat', 'weight']:
-            str_format = (prefix, settings.START_YEAR, variable, settings.RUN)
-            STARTFILES_filename[variable] = settings.INPUT_DIREC + settings.INPUT + \
-                                            '_{}_{}_{}_run={}.npy'.format(*str_format)
+            str_format = (variable, settings.RUN)
+            STARTFILES_filename[variable] = output_prefix + '{}_run={}.npy'.format(*str_format)
         file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='STARTFILES_filename',
                                       variable=STARTFILES_filename)
 
