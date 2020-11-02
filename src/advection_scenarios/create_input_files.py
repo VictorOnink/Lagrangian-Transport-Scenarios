@@ -211,18 +211,17 @@ def input_to_nearest_coastal(coastal: np.array, inputs_grid: np.array, lon: np.a
                             coastal_lat.append((lat_point + lat_step) % coastal.shape[0])
                             coastal_lon.append((lon_point + lon_step) % coastal.shape[1])
                 step += 1
-        # Now find the coastal cell that is geographically the closest to the input
-        nearest_dist = geopy.distance.distance((lat[lat_point], lon[lon_point]),
-                                               (lat[coastal_lat[0]], lon[coastal_lon[0]]))
-        nearest_lat, nearest_lon = coastal_lat[0], coastal_lon[0]
-        if len(coastal_lon) > 0:
-            for candidate in range(len(coastal_lon)):
-                distance = geopy.distance.distance((lat[lat_point], lon[lon_point]),
-                                                   (lat[coastal_lat[candidate]], lon[coastal_lon[candidate]]))
-                if distance < nearest_dist:
-                    nearest_dist = distance
-                    nearest_lat, nearest_lon = coastal_lat[candidate], coastal_lon[candidate]
-        if nearest_dist < 51:
+            # Now find the coastal cell that is geographically the closest to the input
+            nearest_dist = geopy.distance.distance((lat[lat_point], lon[lon_point]),
+                                                   (lat[coastal_lat[0]], lon[coastal_lon[0]]))
+            nearest_lat, nearest_lon = coastal_lat[0], coastal_lon[0]
+            if len(coastal_lon) > 0:
+                for candidate in range(len(coastal_lon)):
+                    distance = geopy.distance.distance((lat[lat_point], lon[lon_point]),
+                                                       (lat[coastal_lat[candidate]], lon[coastal_lon[candidate]]))
+                    if distance < nearest_dist:
+                        nearest_dist = distance
+                        nearest_lat, nearest_lon = coastal_lat[candidate], coastal_lon[candidate]
             inputs_coastal_grid[nearest_lat, nearest_lon] += inputs_grid[lat_point, lon_point]
     return inputs_coastal_grid
 
