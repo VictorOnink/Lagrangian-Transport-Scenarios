@@ -165,7 +165,7 @@ if SUBMISSION == 'analysis':
 # MODEL INTEGRATION TIMESTEP
 TIME_STEP = timedelta(minutes=1)  # integration timestep
 # MODEL OUTPUT TIMESTEP
-OUTPUT_TIME_STEP = timedelta(hours=24)
+OUTPUT_TIME_STEP = TIME_STEP#timedelta(hours=24)
 # PARTICLE RELEASE TIMESTEP
 REPEAT_DT_R0 = timedelta(days=31) # timestep of releasing particles for restart == 0. Otherwise, REPEAT_DT = None
 REPEAT_DT_ELSE = None
