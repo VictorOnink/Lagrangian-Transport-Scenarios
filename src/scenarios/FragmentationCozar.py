@@ -115,8 +115,8 @@ class FragmentationCozar(base_scenario.BaseScenario):
 
         # ------ Profiles from MEDUSA or Kooi theoretical profiles -----
         z = particle.depth  # [m]
-        if particle.age == 0:
-            particle.depth = fieldset.bathymetry[time, particle.depth, particle.lat, particle.lon] - 1
+        # if particle.age == 0:
+        #     particle.depth = fieldset.bathymetry[time, particle.depth, particle.lat, particle.lon] - 1
         kin_visc = particle.kinematic_viscosity  # kinematic viscosity[m2 s-1]
         rho_sw = particle.density  # seawater density[kg m-3]
         rise = particle.rise_velocity  # vertical velocity[m s-1]
@@ -152,12 +152,12 @@ class FragmentationCozar(base_scenario.BaseScenario):
             a_del_rho = delta_rho * -1.
             vs = -1. * (g * kin_visc * w * a_del_rho) ** (1. / 3.)  # m s-1
 
-        # z0 = z + vs * particle.dt
+        z0 = z + vs * particle.dt
         # # 1.472102
         # if z0 <= 1.472102 or z0 >= fieldset.bathymetry[time, particle.depth, particle.lat, particle.lon]:
         #     # particle.depth = 1.472102
         #     vs = 0
-        #     # particle.depth = z0
+            # particle.depth = z0
 
         particle.rise_velocity = vs
 
@@ -166,7 +166,7 @@ class FragmentationCozar(base_scenario.BaseScenario):
         base_behavior = pset.Kernel(utils._initial_input) + pset.Kernel(PolyTEOS10_bsq) + \
                         pset.Kernel(self._get_kinematic_viscosity) + \
                         pset.Kernel(utils._floating_advection_rk4) + \
-                        pset.Kernel(utils._floating_2d_brownian_motion) #+ \
-                        #pset.Kernel(self._get_rising_velocity)
+                        pset.Kernel(utils._floating_2d_brownian_motion) + \
+                        pset.Kernel(self._get_rising_velocity)
         total_behavior = base_behavior + pset.Kernel(utils._anti_beach_nudging) + pset.Kernel(self._beaching_kernel)
         return total_behavior
