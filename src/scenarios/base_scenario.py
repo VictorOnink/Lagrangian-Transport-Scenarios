@@ -25,7 +25,8 @@ class BaseScenario(ABC):
         self.stokes = stokes
         if settings.SUBMISSION == 'simulation':
             advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
-                                                                advection_scenario=settings.ADVECTION_DATA)
+                                                                advection_scenario=settings.ADVECTION_DATA,
+                                                                repeat_dt=self.repeat_dt)
             self.file_dict = advection_scenario.file_names
             self.field_set = self.create_fieldset()
         self.particle = self._get_pclass()
