@@ -167,10 +167,7 @@ TIME_STEP = timedelta(minutes=10)  # integration timestep
 # MODEL OUTPUT TIMESTEP
 OUTPUT_TIME_STEP = timedelta(hours=24)
 # PARTICLE RELEASE TIMESTEP
-if SCENARIO_NAME != 'FragmentationCozar':
-    REPEAT_DT_R0 = timedelta(days=31) # timestep of releasing particles for restart == 0. Otherwise, REPEAT_DT = None
-else:
-    REPEAT_DT_R0 = None
+REPEAT_DT_R0 = timedelta(days=31) # timestep of releasing particles for restart == 0. Otherwise, REPEAT_DT = None
 REPEAT_DT_ELSE = None
 # RNG SEED VALUE
 SEED = 'Fixed'
