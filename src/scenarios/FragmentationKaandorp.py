@@ -159,7 +159,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         kin_visc = particle.kinematic_viscosity
         L = particle.size
         if particle.age == 0:
-            w_b = 0.01 # m s^-1
+            w_b = 0.1 # m s^-1
         else:
             w_b = particle.rise_velocity
         particle.reynolds = L * w_b / kin_visc
