@@ -153,7 +153,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         left = 240 / (math.pi * Re) * (1 + 0.138 * Re ** 0.792)
         right = 2. / 15. * L * (1. - rho_p/rho_sw) * g
         # Calculate the rise velocity
-        particle.rise_velocity = math.sqrt(right / left)
+        particle.rise_velocity = - 1 * math.sqrt(right / left)
 
     def _get_reynolds_number(particle, fieldset, time):
         kin_visc = particle.kinematic_viscosity
@@ -161,7 +161,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         if particle.age == 0:
             w_b = 0.01 # m s^-1
         else:
-            w_b = particle.rise_velocity
+            w_b = math.fabs(particle.rise_velocity)
         particle.reynolds = L * w_b / kin_visc
 
     def _get_particle_behavior(self, pset: ParticleSet):
