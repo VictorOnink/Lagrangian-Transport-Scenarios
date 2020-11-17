@@ -151,7 +151,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         g = 9.81  # gravitational acceleration (m s^-2)
         # Getting the equation according to Poulain et al (2019), equation 5 in the supplementary materials
         left = 240 / (math.pi * Re) * (1 + 0.138 * Re ** 0.792)
-        right = 2 / 15 * L * (1 - rho_p/rho_sw) * g
+        right = 2. / 15. * L * (1. - rho_p/rho_sw) * g
         # Calculate the rise velocity
         particle.rise_velocity = right
 
