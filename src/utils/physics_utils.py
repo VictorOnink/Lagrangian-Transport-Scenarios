@@ -123,6 +123,7 @@ def _floating_AdvectionRK4DiffusionEM_stokes_depth(particle, fieldset, time):
         k_p = w_p ** 2 / 9.81  # peak wave number
         z_correc = max(d - 1.472102, 0)  # correction since the surface in the CMEMS Mediterranean data is not at 0
         st_z = math.exp(-2 * k_p * z_correc) - math.sqrt(2 * math.pi * k_p * z_correc) * math.erfc(2 * k_p * z_correc)
+
         # RK4 terms
         (u1, v1) = fieldset.UV[t, d, la, lo]
         (uS1, vS1) = fieldset.Ust[t, d, la, lo], fieldset.Vst[t, d, la, lo]
