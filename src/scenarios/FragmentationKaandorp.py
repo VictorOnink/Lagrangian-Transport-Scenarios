@@ -62,6 +62,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         utils._add_var_particle(particle_type, 'kinematic_viscosity', dtype=np.float32, set_initial=False,
                                 to_write=False)
         utils._add_var_particle(particle_type, 'rise_velocity', dtype=np.float32, set_initial=False)
+        utils._add_var_particle(particle_type, 'reynolds', dtype=np.float32, set_initial=False)
         utils._add_var_particle(particle_type, 'rho_plastic', dtype=np.float32, set_initial=True, to_write=False)
         utils._add_var_particle(particle_type, 'size', dtype=np.float32)
         return particle_type
