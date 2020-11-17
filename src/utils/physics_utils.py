@@ -218,3 +218,54 @@ def _get_kinematic_viscosity(particle, fieldset, time):
     mu_wz = 4.2844 * 10 ** -5 + math.pow(0.156 * math.pow(Tz + 64.993, 2) - 91.296, -1)
     # Calculating the sea water kinematic viscosity
     particle.kinematic_viscosity = mu_wz * (1 + A * Sz + B * math.pow(Sz, 2)) / particle.density
+
+
+def kooi_rising_velocity(particle, fieldset, time):
+    """
+    Kernel to compute the vertical velocity (Vs) of particles due to their different sizes and densities
+    This is very heavily based on the Kernel "Kooi_no_biofouling" written by Delphine Lobelle
+    https://github.com/dlobelle/TOPIOS/blob/master/scripts/Kooi%2BNEMO_3D_nobiofoul.py
+    """
+
+    # ------ Profiles from MEDUSA or Kooi theoretical profiles -----
+    z = particle.depth  # [m]
+    kin_visc = particle.kinematic_viscosity  # kinematic viscosity[m2 s-1]
+    rho_sw = particle.density  # seawater density[kg m-3]
+    rise = particle.rise_velocity  # vertical velocity[m s-1]
+
+    # ------ Constants -----
+    g = 7.32e10 / (86400. ** 2.)  # gravitational acceleration (m d-2), now [s-2]
+
+    # ------ Diffusivity -----
+    r_tot = particle.size  # total radius [m]
+    rho_tot = (particle.size ** 3. * particle.rho_plastic) / (particle.size) ** 3.  # total density [kg m-3]
+
+    dn = 2. * r_tot  # equivalent spherical diameter [m]
+    delta_rho = (
+                            rho_tot - rho_sw) / rho_sw  # normalised difference in density between total plastic+bf and seawater[-]
+    dstar = ((rho_tot - rho_sw) * g * dn ** 3.) / (rho_sw * kin_visc ** 2.)  # dimensional diameter[-]
+
+    # Getting the dimensionless settling velocity
+    if dstar > 5e9:
+        w = 1000.
+    elif dstar < 0.05:
+        w = (dstar ** 2.) * 1.71E-4
+    else:
+        w = 10. ** (-3.76715 + (1.92944 * math.log10(dstar)) - (0.09815 * math.log10(dstar) ** 2.) - (
+                0.00575 * math.log10(dstar) ** 3.) + (0.00056 * math.log10(dstar) ** 4.))
+    # ------ Settling of particle -----
+
+    if delta_rho > 0:  # sinks
+        vs = (g * kin_visc * w * delta_rho) ** (1. / 3.)
+    else:  # rises
+        a_del_rho = delta_rho * -1.
+        vs = -1. * (g * kin_visc * w * a_del_rho) ** (1. / 3.)  # m s-1
+
+    # z0 = z + vs * particle.dt
+    # # # 1.472102
+    # if z0 <= 1.472102 or z0 >= fieldset.bathymetry[time, particle.depth, particle.lat, particle.lon]:
+    #     vs = 0
+    # else:
+    #     particle.depth = z0
+
+    particle.rise_velocity = vs
