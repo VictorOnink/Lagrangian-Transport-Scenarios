@@ -153,7 +153,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         left = 240 / (math.pi * Re) * (1 + 0.138 * Re ** 0.792)
         right = 2 / 15 * L * (1 - rho_p/rho_sw) * g
         # Calculate the rise velocity
-        particle.rise_velocity = left
+        particle.rise_velocity = right
 
     def _get_reynolds_number(particle, fieldset, time):
         kin_visc = particle.kinematic_viscosity
