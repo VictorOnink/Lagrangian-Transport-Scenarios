@@ -197,6 +197,20 @@ class AdvectionFiles:
             file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='STOKES_dimensions',
                                           variable=STOKES_dimensions)
 
+            # The peak wave period fields
+            PERIOD_filenames = glob.glob(self.data_dir + "WAVE_MED/WAVE-MED-{}*.nc".format(
+                settings.START_YEAR + settings.RESTART))
+            PERIOD_filenames.sort()
+            PERIOD_variables = {'WP': 'VTPK'}
+            PERIOD_dimensions = {'WP': {'time': 'time', 'lat': 'lat', 'lon': 'lon'},
+                                 }
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='PERIOD_filenames',
+                                          variable=PERIOD_filenames)
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='PERIOD_variables',
+                                          variable=PERIOD_variables)
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='PERIOD_dimensions',
+                                          variable=PERIOD_dimensions)
+
             # Ocean Temperature
             TEMP_filenames = glob.glob(self.data_dir + "CMEMS_MED/NEMO-MED-TEMP-{}*.nc".format(
                                settings.START_YEAR + settings.RESTART))

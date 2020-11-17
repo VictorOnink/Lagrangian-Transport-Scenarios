@@ -1,6 +1,7 @@
 import math
 from parcels import rng as random
 
+
 def _anti_beach_nudging(particle, fieldset, time):
     """
     If a particle is within 0.5km of the nearest coastline (determined by sampling
@@ -90,6 +91,75 @@ def _floating_2d_brownian_motion(particle, fieldset, time):
         particle.lon += bx * dWx
         particle.lat += by * dWy
 
+
+def _floating_AdvectionRK4DiffusionEM_stokes_depth(particle, fieldset, time):
+    """Kernel for 2D advection-diffusion,  with advection solved
+    using fourth order Runge-Kutta (RK4) and diffusion using the
+    Euler-Maruyama scheme (EM). Using the RK4 scheme for diffusion is
+    only advantageous in areas where the contribution from diffusion
+    is negligible.
+    Assumes that fieldset has fields `Kh_zonal` and `Kh_meridional`
+    and variable `fieldset.dres`, setting the resolution for the central difference
+    gradient approximation. This should be at least an order of magnitude
+    less than the typical grid resolution.
+    The Wiener increment `dW` should be normally distributed with zero
+    mean and a standard deviation of sqrt(dt). Instead, here a uniform
+    distribution with the same mean and std is used for efficiency and
+    to keep random increments bounded. This substitution is valid for
+    the convergence of particle distributions. If convergence of
+    individual particle paths is required, use normally distributed
+    random increments instead. See Gräwe et al (2012)
+    doi.org/10.1007/s10236-012-0523-y for more information.
+
+    Comment 16/11/2020: Changes I have made from the original parcels kernel is that the advection and diffusion only
+    occurs when a particle is afloat. We also add in stokes drift separately, and include depth dependence for the
+    magnitude of the Stokes drift.
+    depth dependence: Breivik et al. (2016) https://doi.org/10.1016/j.ocemod.2016.01.005
+    """
+    if particle.beach == 0:
+        t, d, la, lo, dt = time, particle.depth, particle.lat, particle.lon, particle.dt
+        # Stokes depth dependence term
+        w_p = 2 * math.pi / fieldset.WP[t, d, la, lo]  # Peak period
+        k_p = w_p ** 2 / 9.81  # peak wave number
+        z = d - 1.472102  # correction since the surface in the CMEMS Mediterranean data is not at 0
+        st_z = math.exp(-2 * k_p * z) - math.sqrt(2 * math.pi * k_p * z) * math.erfc(2 * k_p * z)
+        # RK4 terms
+        (u1, v1) = fieldset.UV[t, d, la, lo]
+        (uS1, vS1) = fieldset.Ust[t, d, la, lo], fieldset.Vst[t, d, la, lo]
+        lon1, lat1 = (lo + (u1 + uS1 * st_z) * .5 * particle.dt, la + (v1 + vS1 * st_z) * .5 * dt)
+
+        (u2, v2) = fieldset.UV[t + .5 * dt, d, lat1, lon1]
+        (uS2, vS2) = fieldset.Ust[t + .5 * dt, d, lat1, lon1], fieldset.Vst[t + .5 * dt, d, lat1, lon1]
+        lon2, lat2 = (lo + (u2 + uS2 * st_z) * .5 * dt, la + (v2 + vS2 * st_z) * .5 * dt)
+
+        (u3, v3) = fieldset.UV[t + .5 * dt, d, lat2, lon2]
+        (uS3, vS3) = fieldset.Ust[t + .5 * dt, d, lat2, lon2], fieldset.Vst[t + .5 * dt, d, lat2, lon2]
+        lon3, lat3 = (lo + (u3 + uS3 * st_z) * dt, la + (v3 + vS3 * st_z) * dt)
+
+        (u4, v4) = fieldset.UV[t + dt, d, lat3, lon3]
+        (uS4, vS4) = fieldset.Ust[t + dt, d, lat3, lon3], fieldset.Vst[t + dt, d, lat3, lon3]
+
+        # Wiener increment with zero mean and std of sqrt(dt)
+        dWx = random.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
+        dWy = random.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
+
+        Kxp1 = fieldset.Kh_zonal[t, d, la, lo + fieldset.dres]
+        Kxm1 = fieldset.Kh_zonal[t, d, la, lo - fieldset.dres]
+        dKdx = (Kxp1 - Kxm1) / (2 * fieldset.dres)
+        bx = math.sqrt(2 * fieldset.Kh_zonal[t, d, la, lo])
+
+        Kyp1 = fieldset.Kh_meridional[t, d, la + fieldset.dres, lo]
+        Kym1 = fieldset.Kh_meridional[t, d, la - fieldset.dres, lo]
+        dKdy = (Kyp1 - Kym1) / (2 * fieldset.dres)
+        by = math.sqrt(2 * fieldset.Kh_meridional[t, d, la, lo])
+
+        # Particle positions are updated only after evaluating all terms.
+        particle.lon += (((u1 + uS1 * st_z) + 2 * (u2 + uS2 * st_z) + 2 * (u3 + uS3 * st_z) + (u4 + uS4 * st_z))
+                         / 6. + dKdx) * particle.dt + bx * dWx
+        particle.lat += (((v1 + vS1 * st_z) + 2 * (v2 + vS2 * st_z) + 2 * (v3 + vS3 * st_z) + (v4 + vS4 * st_z))
+                         / 6. + dKdy) * particle.dt + by * dWy
+
+
 def _initial_input(particle, fieldset, time):
     """
     Since we have many instances that particles start at the very same position,
@@ -124,7 +194,26 @@ def _initial_input(particle, fieldset, time):
 
 
 def _delete_particle(particle, fieldset, time):
-    #This delete particle format from Philippe Delandmeter
-    #https://github.com/OceanParcels/Parcelsv2.0PaperNorthSeaScripts/blob/master/northsea_mp_kernels.py
-    print("Particle [%d] lost !! (%g %g %g %g)" % (particle.id, particle.lon, particle.lat, particle.depth, particle.time))
+    # This delete particle format from Philippe Delandmeter
+    # https://github.com/OceanParcels/Parcelsv2.0PaperNorthSeaScripts/blob/master/northsea_mp_kernels.py
+    print("Particle [%d] lost !! (%g %g %g %g)" % (
+    particle.id, particle.lon, particle.lat, particle.depth, particle.time))
     particle.delete()
+
+
+def _get_kinematic_viscosity(particle, fieldset, time):
+    # Using equations 25 - 29 from Kooi et al. 2017
+    # Assuming that the fieldset has a salinity field called abs_salinity and a temperature field called
+    # cons_temperature.
+    # Salinity units: PSU or g/kg
+    # Temperature units: temperature
+    # Salinity and Temperature at the particle position, where salinity is converted from g/kg -> kg/kg
+    Sz = fieldset.abs_salinity[time, particle.depth, particle.lat, particle.lon] / 1000
+    Tz = fieldset.cons_temperature[time, particle.depth, particle.lat, particle.lon]
+    # The constants A and B
+    A = 1.541 + 1.998 * 10 ** -2 * Tz - 9.52 * 10 ** -5 * math.pow(Tz, 2)
+    B = 7.974 - 7.561 * 10 ** -2 * Tz + 4.724 * 10 ** -4 * math.pow(Tz, 2)
+    # Calculating the water dynamic viscosity
+    mu_wz = 4.2844 * 10 ** -5 + math.pow(0.156 * math.pow(Tz + 64.993, 2) - 91.296, -1)
+    # Calculating the sea water kinematic viscosity
+    particle.kinematic_viscosity = mu_wz * (1 + A * Sz + B * math.pow(Sz, 2)) / particle.density

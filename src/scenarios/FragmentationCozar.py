@@ -34,6 +34,7 @@ class FragmentationCozar(base_scenario.BaseScenario):
     def create_fieldset(self) -> FieldSet:
         os.system('echo "Creating the fieldset"')
         fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict, stokes=self.stokes,
+                                                                      stokes_depth=True,
                                                                       border_current=True, diffusion=True, landID=True,
                                                                       distance=True, salinity=True, temperature=True,
                                                                       bathymetry=True, beach_timescale=True,
@@ -92,19 +93,6 @@ class FragmentationCozar(base_scenario.BaseScenario):
         # Update the age of the particle
         particle.age += particle.dt
 
-    def _get_kinematic_viscosity(particle, fieldset, time):
-        # Using equations 25 - 29 from Kooi et al. 2017
-        # We are assuming that
-        # Salinity and Temperature at the particle position, where salinity is converted from g/kg -> kg/kg
-        Sz = fieldset.abs_salinity[time, particle.depth, particle.lat, particle.lon] / 1000
-        Tz = fieldset.cons_temperature[time, particle.depth, particle.lat, particle.lon]
-        # The constants A and B
-        A = 1.541 + 1.998 * 10 ** -2 * Tz - 9.52 * 10 ** -5 * math.pow(Tz, 2)
-        B = 7.974 - 7.561 * 10 ** -2 * Tz + 4.724 * 10 ** -4 * math.pow(Tz, 2)
-        # Calculating the water dynamic viscosity
-        mu_wz = 4.2844 * 10 ** -5 + math.pow(0.156 * math.pow(Tz + 64.993, 2) - 91.296, -1)
-        # Calculating the sea water kinematic viscosity
-        particle.kinematic_viscosity = mu_wz * (1 + A * Sz + B * math.pow(Sz, 2)) / particle.density
 
     def _get_rising_velocity(particle, fieldset, time):
         """
@@ -122,15 +110,12 @@ class FragmentationCozar(base_scenario.BaseScenario):
         # ------ Constants -----
         g = 7.32e10 / (86400. ** 2.)  # gravitational acceleration (m d-2), now [s-2]
 
-        # ------ Volumes -----
-        v_pl = (4. / 3.) * math.pi * particle.size ** 3.  # volume of plastic [m3]
-        theta_pl = 4. * math.pi * particle.size ** 2.  # surface area of plastic particle [m2]
 
         # ------ Diffusivity -----
         r_tot = particle.size                             # total radius [m]
         rho_tot = (particle.size ** 3. * particle.rho_plastic) / (particle.size) ** 3.  # total density [kg m-3]
 
-        dn = 2. * (r_tot)  # equivalent spherical diameter [m]
+        dn = 2. * r_tot  # equivalent spherical diameter [m]
         delta_rho = (rho_tot - rho_sw) / rho_sw  # normalised difference in density between total plastic+bf and seawater[-]
         dstar = ((rho_tot - rho_sw) * g * dn ** 3.) / (rho_sw * kin_visc ** 2.)  # dimensional diameter[-]
 
@@ -162,9 +147,8 @@ class FragmentationCozar(base_scenario.BaseScenario):
     def _get_particle_behavior(self, pset: ParticleSet):
         os.system('echo "Setting the particle behavior"')
         base_behavior = pset.Kernel(utils._initial_input) + pset.Kernel(PolyTEOS10_bsq) + \
-                        pset.Kernel(self._get_kinematic_viscosity) + \
-                        pset.Kernel(utils._floating_advection_rk4) + \
-                        pset.Kernel(utils._floating_2d_brownian_motion) + \
+                        pset.Kernel(utils._get_kinematic_viscosity) + \
+                        pset.Kernel(utils._floating_AdvectionRK4DiffusionEM_stokes_depth) + \
                         pset.Kernel(self._get_rising_velocity)
         total_behavior = base_behavior + pset.Kernel(utils._anti_beach_nudging) + pset.Kernel(self._beaching_kernel)
         return total_behavior

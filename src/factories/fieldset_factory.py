@@ -11,6 +11,7 @@ class FieldSetFactory():
 
     @classmethod
     def create_fieldset(cls, file_dict: dict, stokes: int,
+                        stokes_depth: bool = False,
                         border_current: bool = False,
                         diffusion: bool = False,
                         landID: bool = False,
@@ -48,6 +49,8 @@ class FieldSetFactory():
         fieldset = _get_base_fieldset(file_dict=file_dict)
         if stokes == 0:
             fieldset = _add_stokes_drift(fieldset=fieldset, file_dict=file_dict)
+        if stokes_depth:
+            _add_stokes_depth_depen(fieldset=fieldset, file_dict=file_dict)
         if border_current:
             _add_border_current(fieldset=fieldset, file_dict=file_dict)
         if diffusion:
@@ -125,6 +128,16 @@ def _add_stokes_drift(fieldset: FieldSet, file_dict: dict):
     return fieldset
 
 
+def _add_stokes_depth_depen(fieldset: FieldSet, file_dict: dict):
+    os.system('echo "Adding Stokes drift depth dependence data"')
+    _check_presence(variable='PERIOD_filenames', file_dict=file_dict)
+    filenames = {'WP': file_dict['PERIOD_filenames']}
+    fieldset_period = FieldSet.from_netcdf(filenames, file_dict['PERIOD_variables'], file_dict['PERIOD_dimensions'],
+                                          allow_time_extrapolation=True)
+    fieldset.add_field(fieldset_period.WP)
+
+
+
 def _add_border_current(fieldset: FieldSet, file_dict: dict):
     """
 
@@ -163,6 +176,10 @@ def _add_diffusion(fieldset: FieldSet, file_dict: dict):
     kh_f[mask == True] = 0
     fieldset.add_field(Field('Kh_zonal', kh_f, lon=file_dict['LON'], lat=file_dict['LAT'], mesh='spherical'))
     fieldset.add_field(Field('Kh_meridional', kh_f, lon=file_dict['LON'], lat=file_dict['LAT'], mesh='spherical'))
+    # In case we use the Euler-Maruyama scheme for diffusion, we need a parameter `fieldset.dres`, to set the resolution
+    # for the central difference gradient approximation. The value I've taken from the parcels diffusion tutorial, and
+    # should be sufficiently smaller than the spatial resolution of any of the data I work with
+    fieldset.add_constant('dres', 0.00005)
 
 
 def _add_land_ID_field(fieldset: FieldSet, file_dict: dict):
