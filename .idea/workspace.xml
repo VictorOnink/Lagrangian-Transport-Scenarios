@@ -19,7 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="adding the rising velocity according to Poulain">
+    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="adding reynolds as a seperate particle value">
       <change beforePath="$PROJECT_DIR$/src/scenarios/FragmentationKaandorp.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/FragmentationKaandorp.py" afterDir="false" />
     </list>
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
@@ -91,13 +91,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-00217" summary="test">
-      <created>1604310833636</created>
-      <option name="number" value="00217" />
-      <option name="presentableId" value="LOCAL-00217" />
-      <option name="project" value="LOCAL" />
-      <updated>1604310833637</updated>
     </task>
     <task id="LOCAL-00218" summary="bug fix">
       <created>1604311020756</created>
@@ -435,7 +428,14 @@
       <option name="project" value="LOCAL" />
       <updated>1605623306845</updated>
     </task>
-    <option name="localTasksCounter" value="266" />
+    <task id="LOCAL-00266" summary="adding reynolds as a seperate particle value">
+      <created>1605623664489</created>
+      <option name="number" value="00266" />
+      <option name="presentableId" value="LOCAL-00266" />
+      <option name="project" value="LOCAL" />
+      <updated>1605623664489</updated>
+    </task>
+    <option name="localTasksCounter" value="267" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -451,7 +451,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="bug fix with the bathymetry field" />
     <MESSAGE value="seperate folder for hte cozar output files" />
     <MESSAGE value="for now I'll just keep it working with parcels 2.2.0 until the gcc bug is fixed" />
     <MESSAGE value="moving the release repeat timescale to the scenario" />
@@ -476,7 +475,8 @@
     <MESSAGE value="rename cozar to kaandorp fragmentation" />
     <MESSAGE value="bug fix" />
     <MESSAGE value="adding the rising velocity according to Poulain" />
-    <option name="LAST_COMMIT_MESSAGE" value="adding the rising velocity according to Poulain" />
+    <MESSAGE value="adding reynolds as a seperate particle value" />
+    <option name="LAST_COMMIT_MESSAGE" value="adding reynolds as a seperate particle value" />
   </component>
   <component name="WindowStateProjectService">
     <state x="456" y="252" key="#com.intellij.codeInsight.template.impl.EditVariableDialog" timestamp="1601911510421">
@@ -567,10 +567,10 @@
     <state x="72" y="-1021" key="SettingsEditor/0.0.1440.900/-223.-1080.1920.1080@-223.-1080.1920.1080" timestamp="1603186122963" />
     <state x="221" y="67" key="SettingsEditor/0.23.1440.811@0.23.1440.811" timestamp="1601544733848" />
     <state x="221" y="67" key="SettingsEditor/0.23.1440.812@0.23.1440.812" timestamp="1601911551870" />
-    <state x="204" y="-887" key="Vcs.Push.Dialog.v2" timestamp="1605623310250">
+    <state x="204" y="-887" key="Vcs.Push.Dialog.v2" timestamp="1605623841969">
       <screen x="-223" y="-1080" width="1920" height="1080" />
     </state>
-    <state x="204" y="-887" key="Vcs.Push.Dialog.v2/0.0.1440.900/-223.-1080.1920.1080@-223.-1080.1920.1080" timestamp="1605623310250" />
+    <state x="204" y="-887" key="Vcs.Push.Dialog.v2/0.0.1440.900/-223.-1080.1920.1080@-223.-1080.1920.1080" timestamp="1605623841969" />
     <state x="320" y="161" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1603270347635" />
     <state x="320" y="168" key="Vcs.Push.Dialog.v2/0.23.1440.812@0.23.1440.812" timestamp="1602584102515" />
     <state x="320" y="169" key="Vcs.Push.Dialog.v2/0.23.1440.816@0.23.1440.816" timestamp="1602170515320" />
