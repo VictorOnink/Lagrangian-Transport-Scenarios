@@ -66,7 +66,7 @@ STOKES: int = int(os.environ['STOKES'])
 ########################################################################################################################
 # MODEL SCENARIO SETTINGS
 SCENARIO_DICT: dict = {0: 'AdvectionDiffusionOnly', 1: 'CoastalProximity', 2: 'Stochastic',
-                       3: 'ShoreDependentResuspension', 4: 'TurrellResuspension', 5: 'FragmentationCozar'}
+                       3: 'ShoreDependentResuspension', 4: 'TurrellResuspension', 5: 'FragmentationKaandorp'}
 
 SCENARIO_NUM: int = int(os.environ["SCENARIO"])
 SCENARIO_NAME: str = SCENARIO_DICT[SCENARIO_NUM]
@@ -91,7 +91,7 @@ if SCENARIO_NAME == 'TurrellResuspension':
     # MINIMUM OFF-SHORE WIND SPEED FOR RESUSPENSION (x10 TO NOT GET DECIMAL IN OUTPUT FILES)
     WMIN: int = int(os.environ['WMIN'])
 
-if SCENARIO_NAME == 'FragmentationCozar':
+if SCENARIO_NAME == 'FragmentationKaandorp':
     # BEACHING TIMESCALE
     SHORE_TIME: int = int(os.environ['SHORETIME'])  # days
     # RESUSPENSION TIMESCALE
@@ -176,7 +176,7 @@ KH_HOR = 10
 # WIDTH OF THE BEACHING ZONE (KM) WITHIN WHICH BEACHING CAN OCCUR
 if SCENARIO_NAME != 'AdvectionDiffusionOnly':
     COAST_D = 10  # km, the distance from the nearest shoreline that falls under the coastal zone.
-if SCENARIO_NAME == 'FragmentationCozar':
+if SCENARIO_NAME == 'FragmentationKaandorp':
     # INITIAL PARTICLE SIZE (m)
     INIT_SIZE = 0.003 # m
     # INITIAL DENSITY (KG/M^3): 920 = polypropylene
@@ -208,7 +208,7 @@ elif SCENARIO_NAME == 'TurrellResuspension':
     os.system('echo "The beaching timescale is {} days "'.format(SHORE_TIME))
     os.system('echo "The minimum offshore wind for resuspension is {} m / s"'.format(WMIN/10.))
 
-elif SCENARIO_NAME == 'FragmentationCozar':
+elif SCENARIO_NAME == 'FragmentationKaandorp':
     os.system('echo "The beaching timescale is {} days "'.format(SHORE_TIME))
     os.system('echo "The resuspension timescale is {} days "'.format(RESUS_TIME))
     os.system('echo "The initial particle size is {} m and a density of {} kg/m^3"'.format(INIT_SIZE, INIT_DENSITY))

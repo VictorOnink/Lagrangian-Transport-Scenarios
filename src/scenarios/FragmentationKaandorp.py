@@ -12,13 +12,13 @@ from parcels import rng as random
 import math
 
 
-class FragmentationCozar(base_scenario.BaseScenario):
-    """Fragmentation scenario based on the Cozar fragmentation model. Beaching based on the stochastic scenario"""
+class FragmentationKaandorp(base_scenario.BaseScenario):
+    """Fragmentation scenario based on the Kaandorp fragmentation model. Beaching based on the stochastic scenario"""
 
     def __init__(self, server, stokes):
-        """Constructor for FragmentationCozar"""
+        """Constructor for FragmentationKaandorp"""
         super().__init__(server, stokes)
-        self.prefix = "Frag_cozar"
+        self.prefix = "Frag_Kaandorp"
         self.input_dir = utils._get_input_directory(server=self.server)
         self.output_dir = utils._get_output_directory(server=self.server)
         self.repeat_dt = None
@@ -67,7 +67,7 @@ class FragmentationCozar(base_scenario.BaseScenario):
         return particle_type
 
     def _file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART):
-        odirec = self.output_dir + "Cozar_Fragmentation/st_" + str(settings.SHORE_TIME) + "_rt_" + \
+        odirec = self.output_dir + "Kaandorp_Fragmentation/st_" + str(settings.SHORE_TIME) + "_rt_" + \
                  str(settings.RESUS_TIME) + "_e_" + str(settings.ENSEMBLE) + "/"
         if new == True:
             os.system('echo "Set the output file name"')

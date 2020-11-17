@@ -4,7 +4,7 @@ import scenarios.coastal_proximity as prox
 import scenarios.stochastic_scenario as stochastic
 import scenarios.shore_dependent_resuspension_scenario as SD_resuspension
 import scenarios.Turrel_Beaching_scenario as Turrell
-import scenarios.FragmentationCozar as FragmentationCozar
+import scenarios.FragmentationKaandorp as FragmentationKaandorp
 
 
 class ScenarioFactory:
@@ -20,8 +20,8 @@ class ScenarioFactory:
             return SD_resuspension.SD_Resuspension(server=server, stokes=stokes)
         elif scenario_name == 'TurrellResuspension':
             return Turrell.Turrell_Resuspension(server=server, stokes=stokes)
-        elif scenario_name == 'FragmentationCozar':
-            return FragmentationCozar.FragmentationCozar(server=server, stokes=stokes)
+        elif scenario_name == 'FragmentationKaandorp':
+            return FragmentationKaandorp.FragmentationKaandorp(server=server, stokes=stokes)
         else:
             raise ValueError("invalid model scenario")
 

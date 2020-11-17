@@ -19,13 +19,11 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="rise velocity tests">
+    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="adding in a new advection kernel, which combines both advection and diffusion and incorporates depth dependent stokes drift">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/advection_scenarios/advection_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/advection_scenarios/advection_files.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/factories/fieldset_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/factories/fieldset_factory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/FragmentationCozar.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/FragmentationCozar.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/physics_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/physics_utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/factories/scenario_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/factories/scenario_factory.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scenarios/FragmentationCozar.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/FragmentationKaandorp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/settings.py" afterDir="false" />
     </list>
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
     <list id="c5adc810-e024-4e30-b33b-a2709ed2c5b7" name="moving the release repeat timescale to the scenario" comment="" />
@@ -96,13 +94,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-00205" summary="increase initial size">
-      <created>1603982917643</created>
-      <option name="number" value="00205" />
-      <option name="presentableId" value="LOCAL-00205" />
-      <option name="project" value="LOCAL" />
-      <updated>1603982917643</updated>
     </task>
     <task id="LOCAL-00206" summary="getting the full rise velocity">
       <created>1603984037427</created>
@@ -440,7 +431,14 @@
       <option name="project" value="LOCAL" />
       <updated>1604329899833</updated>
     </task>
-    <option name="localTasksCounter" value="254" />
+    <task id="LOCAL-00254" summary="adding in a new advection kernel, which combines both advection and diffusion and incorporates depth dependent stokes drift">
+      <created>1605605188720</created>
+      <option name="number" value="00254" />
+      <option name="presentableId" value="LOCAL-00254" />
+      <option name="project" value="LOCAL" />
+      <updated>1605605188721</updated>
+    </task>
+    <option name="localTasksCounter" value="255" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -456,7 +454,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Started adding in the Cozar fragmentation scenario&#10;Change to how variables are added to file_dict in advection files" />
     <MESSAGE value="updated the submission file" />
     <MESSAGE value="bug fix with loading the salinity fields" />
     <MESSAGE value="bug fix with the bathymetry field" />
@@ -481,7 +478,8 @@
     <MESSAGE value="create startfiles function now outputs output_prefix" />
     <MESSAGE value="testing with rising velocity kernel" />
     <MESSAGE value="rise velocity tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="rise velocity tests" />
+    <MESSAGE value="adding in a new advection kernel, which combines both advection and diffusion and incorporates depth dependent stokes drift" />
+    <option name="LAST_COMMIT_MESSAGE" value="adding in a new advection kernel, which combines both advection and diffusion and incorporates depth dependent stokes drift" />
   </component>
   <component name="WindowStateProjectService">
     <state x="456" y="252" key="#com.intellij.codeInsight.template.impl.EditVariableDialog" timestamp="1601911510421">
@@ -501,6 +499,10 @@
     </state>
     <state x="533" y="151" key="#com.intellij.ide.util.MemberChooser/0.23.1440.811@0.23.1440.811" timestamp="1601551449097" />
     <state x="533" y="151" key="#com.intellij.ide.util.MemberChooser/0.23.1440.812@0.23.1440.812" timestamp="1601911601421" />
+    <state x="207" y="-1080" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1605605273285">
+      <screen x="-223" y="-1080" width="1920" height="1080" />
+    </state>
+    <state x="207" y="-1080" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1440.900/-223.-1080.1920.1080@-223.-1080.1920.1080" timestamp="1605605273285" />
     <state x="471" y="-643" key="#com.jetbrains.python.refactoring.move.PyMoveModuleMembersDialog" timestamp="1602857912121">
       <screen x="-223" y="-1080" width="1920" height="1080" />
     </state>
@@ -568,10 +570,10 @@
     <state x="72" y="-1021" key="SettingsEditor/0.0.1440.900/-223.-1080.1920.1080@-223.-1080.1920.1080" timestamp="1603186122963" />
     <state x="221" y="67" key="SettingsEditor/0.23.1440.811@0.23.1440.811" timestamp="1601544733848" />
     <state x="221" y="67" key="SettingsEditor/0.23.1440.812@0.23.1440.812" timestamp="1601911551870" />
-    <state x="204" y="-887" key="Vcs.Push.Dialog.v2" timestamp="1604329902557">
+    <state x="204" y="-887" key="Vcs.Push.Dialog.v2" timestamp="1605605192497">
       <screen x="-223" y="-1080" width="1920" height="1080" />
     </state>
-    <state x="204" y="-887" key="Vcs.Push.Dialog.v2/0.0.1440.900/-223.-1080.1920.1080@-223.-1080.1920.1080" timestamp="1604329902557" />
+    <state x="204" y="-887" key="Vcs.Push.Dialog.v2/0.0.1440.900/-223.-1080.1920.1080@-223.-1080.1920.1080" timestamp="1605605192497" />
     <state x="320" y="161" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1603270347635" />
     <state x="320" y="168" key="Vcs.Push.Dialog.v2/0.23.1440.812@0.23.1440.812" timestamp="1602584102515" />
     <state x="320" y="169" key="Vcs.Push.Dialog.v2/0.23.1440.816@0.23.1440.816" timestamp="1602170515320" />
