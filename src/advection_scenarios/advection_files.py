@@ -350,5 +350,6 @@ class AdvectionFiles:
         return file_dict
 
     def _add_to_file_dict(file_dict: dict, variable_name: str, variable):
+        print('error here')
         file_dict[variable_name] = variable
         return file_dict
