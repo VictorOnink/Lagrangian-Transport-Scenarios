@@ -32,6 +32,7 @@ def create_MLD_files(UV_filenames: list, UV_variables: dict, TEMP_filenames: lis
 
         print(np.nanmax(Ri))
         print(np.nanmean(Ri))
+        print(np.nanmin(Ri))
         a=DEPTH[0,0]
 
 
