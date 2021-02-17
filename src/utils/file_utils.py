@@ -1,7 +1,7 @@
 from operator import attrgetter
 
 import settings as settings
-from datetime import datetime, timedelta
+from datetime import datetime
 from netCDF4 import Dataset
 import numpy as np
 from parcels import JITParticle, Variable

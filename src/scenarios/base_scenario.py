@@ -8,7 +8,6 @@ from utils import _set_random_seed, _delete_particle, _nan_removal, _get_start_e
 import settings as settings
 import os
 from factories.pset_variable_factory import PsetVariableFactory as pvf
-from advection_scenarios import advection_files
 
 
 class BaseScenario(ABC):

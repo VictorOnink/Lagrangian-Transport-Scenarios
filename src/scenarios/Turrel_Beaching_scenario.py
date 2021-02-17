@@ -7,7 +7,7 @@ from advection_scenarios import advection_files
 import utils as utils
 from datetime import datetime, timedelta
 import os
-from parcels import rng as random
+from parcels import ParcelsRandom
 import math
 
 
@@ -89,7 +89,7 @@ class Turrell_Resuspension(base_scenario.BaseScenario):
         if particle.beach == 0:
             dist = fieldset.distance2shore[t, d, la, lo]
             if dist < fieldset.Coastal_Boundary:
-                if random.random() > fieldset.p_beach:
+                if ParcelsRandom.uniform(0, 1) > fieldset.p_beach:
                     particle.beach = 1
                     particle.depth = fieldset.eta[t, d, la, lo]
         # Resuspension

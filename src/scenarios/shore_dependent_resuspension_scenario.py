@@ -7,7 +7,7 @@ from advection_scenarios import advection_files
 import utils as utils
 from datetime import datetime, timedelta
 import os
-from parcels import rng as random
+from parcels import ParcelsRandom
 
 
 class SD_Resuspension(base_scenario.BaseScenario):
@@ -76,11 +76,11 @@ class SD_Resuspension(base_scenario.BaseScenario):
         if particle.beach == 0:
             dist = fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
             if dist < fieldset.Coastal_Boundary:
-                if random.random() > fieldset.p_beach:
+                if ParcelsRandom.uniform(0, 1) > fieldset.p_beach:
                     particle.beach = 1
         # Next the resuspension part
         elif particle.beach == 1:
-            if random.random() > fieldset.p_resus[time, particle.depth, particle.lat, particle.lon]:
+            if ParcelsRandom.uniform(0, 1) > fieldset.p_resus[time, particle.depth, particle.lat, particle.lon]:
                 particle.beach = 0
         # Update the age of the particle
         particle.age += particle.dt
