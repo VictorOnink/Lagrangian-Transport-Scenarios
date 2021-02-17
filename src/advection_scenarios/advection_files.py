@@ -189,7 +189,8 @@ class AdvectionFiles:
             UV_dimensions = {'U': {'time': 'time', 'depth': 'depth', 'lat': 'lat', 'lon': 'lon'},
                              'V': {'time': 'time', 'depth': 'depth', 'lat': 'lat', 'lon': 'lon'}}
             print(file_dict)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='UV_filenames', variable=UV_filenames)
+            # file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='UV_filenames', variable=UV_filenames)
+            file_dict = self._add_to_file_dict(file_dict, 'UV_filenames', UV_filenames)
             file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='UV_variables', variable=UV_variables)
             file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='UV_dimensions',
                                                variable=UV_dimensions)
@@ -350,6 +351,5 @@ class AdvectionFiles:
         return file_dict
 
     def _add_to_file_dict(file_dict: dict, variable_name: str, variable):
-        print('error here')
         file_dict[variable_name] = variable
         return file_dict
