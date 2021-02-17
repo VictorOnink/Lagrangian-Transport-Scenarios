@@ -29,7 +29,7 @@ def create_MLD_files(UV_filenames: list, UV_variables: dict, TEMP_filenames: lis
 
         # Getting the Richardson Number
         print(richardson_number(BUO, SHEAR, DEPTH).shape)
-        print(np.tile(DEPTH[np.newaxis, :, np.newaxis, np.newaxis], U.shape).shape)
+        print(np.tile(DEPTH[np.newaxis, :, np.newaxis, np.newaxis], (U.shape[0], 1, U.shape[2], U.shape[3])).shape)
 
         a=DEPTH[0,0]
 
