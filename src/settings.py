@@ -181,6 +181,15 @@ if SCENARIO_NAME == 'FragmentationKaandorp':
     INIT_SIZE = 0.00001 # m
     # INITIAL DENSITY (KG/M^3): 920 = polypropylene
     INIT_DENSITY = 1020
+# ACCELERATION DUE TO GRAVITY (M/S^2)
+G = 9.81
+# THERMAL EXPANSION COEFFICIENT (1/K) AND REFERENCE TEMPERATURE (K)
+A_T = 2e-4
+T_R = 25
+# HALINE CONTRACTION COEFFICIENT (1/PSU) AND REFERENCE SALINITY (PSU)
+B_S = 8e-4
+S_R = 35
+
 ########################################################################################################################
 #                                                                                                                      #
 #                                                     LOG                                                              #
@@ -212,11 +221,3 @@ elif SCENARIO_NAME == 'FragmentationKaandorp':
     os.system('echo "The beaching timescale is {} days "'.format(SHORE_TIME))
     os.system('echo "The resuspension timescale is {} days "'.format(RESUS_TIME))
     os.system('echo "The initial particle size is {} m and a density of {} kg/m^3"'.format(INIT_SIZE, INIT_DENSITY))
-
-import math
-def _kakulka_parameter(u10, Hs, Wb):
-    Cd=min(max(1.2e-3, (.49 + 0.065 * math.fabs(u10))*1e-3), 2.12e-3)
-    u_w = math.sqrt(1.22/1027 * Cd) * math.fabs(u10)
-    print(u_w)
-    A0 = 1.5 * u_w * 0.4 * Hs
-    return Wb/A0

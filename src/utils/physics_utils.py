@@ -269,3 +269,36 @@ def kooi_rising_velocity(particle, fieldset, time):
     #     particle.depth = z0
 
     particle.rise_velocity = vs
+
+
+def PZK_wind_mixing(particle, fieldset, time):
+    """
+    Markov-0 implementation of wind mixing based on the PZK wind mixing parametrization. For more exact details, look
+    at the full wind mixing code at https://github.com/VictorOnink/Wind-Mixing-Diffusion/
+    """
+    # All the parameters to compute the PZK diffusion parameters
+    # Density of sea water and air (kg/m^3)
+    rho_w, rho_a = particle.density, 1.22
+    
+
+
+    # According to Ross & Sharples (2004), first the deterministic part of equation 1
+    dK_z_p = fieldset.dK_z[time, particle.depth, particle.lat, particle.lon]
+    deterministic = dK_z_p * particle.dt
+
+    # The random walk component
+    R = random.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
+    bz = math.sqrt(fieldset.K_z[time, particle.depth + 0.5 * dK_z_p * particle.dt, particle.lat, particle.lon])
+
+    # Rise velocity component
+    rise = fieldset.wrise * particle.dt
+
+    # Total movement
+    w_total = deterministic + R * bz + rise
+
+    # The ocean surface acts as a lid off of which the plastic bounces if tries to cross the ocean surface
+    potential = particle.depth + w_total
+    if potential < 0:
+        particle.depth = -1 * potential
+    else:
+        particle.depth = potential
