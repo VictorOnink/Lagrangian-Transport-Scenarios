@@ -31,6 +31,8 @@ def create_MLD_files(UV_filenames: list, UV_variables: dict, TEMP_filenames: lis
         print(richardson_number(BUO, SHEAR, DEPTH).shape)
         print(DEPTH.reshape(U.shape).shape)
 
+        a=DEPTH[0,0]
+
 
 
 
