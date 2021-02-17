@@ -45,9 +45,9 @@ class AdvectionFiles:
             UV_variables = {'U': 'water_u', 'V': 'water_v'}
             UV_dimensions = {'U': {'time': 'time', 'depth': 'depth', 'lat': 'lat', 'lon': 'lon'},
                              'V': {'time': 'time', 'depth': 'depth', 'lat': 'lat', 'lon': 'lon'}}
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='UV_filenames', variable=UV_filenames)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='UV_variables', variable=UV_variables)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='UV_dimensions',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='UV_filenames', variable=UV_filenames)
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='UV_variables', variable=UV_variables)
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='UV_dimensions',
                                                variable=UV_dimensions)
 
             # The stokes drift fields
@@ -58,11 +58,11 @@ class AdvectionFiles:
             STOKES_dimensions = {'Ust': {'lat': 'latitude', 'lon': 'longitude', 'time': 'time'},
                                  'Vst': {'lat': 'latitude', 'lon': 'longitude', 'time': 'time'},
                                  }
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='STOKES_filenames',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='STOKES_filenames',
                                                variable=STOKES_filenames)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='STOKES_variables',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='STOKES_variables',
                                                variable=STOKES_variables)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='STOKES_dimensions',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='STOKES_dimensions',
                                                variable=STOKES_dimensions)
 
             # The sea surface elevation fields
@@ -71,11 +71,11 @@ class AdvectionFiles:
             ELEV_filenames.sort()
             ELEV_variables = {'eta': 'surf_el'}
             ELEV_dimensions = {'time': 'time', 'lat': 'lat', 'lon': 'lon'}
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='ELEV_filenames',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='ELEV_filenames',
                                                variable=ELEV_filenames)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='ELEV_variables',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='ELEV_variables',
                                                variable=ELEV_variables)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='ELEV_dimensions',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='ELEV_dimensions',
                                                variable=ELEV_dimensions)
 
             # The surface winds
@@ -83,16 +83,16 @@ class AdvectionFiles:
             WIND_filenames.sort()
             WIND_variables = {'u10': 'u10', 'v10': 'v10'}
             WIND_dimensions = {'time': 'time', 'lat': 'latitude', 'lon': 'longitude'}
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='WIND_filenames',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='WIND_filenames',
                                                variable=WIND_filenames)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='WIND_variables',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='WIND_variables',
                                                variable=WIND_variables)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='WIND_dimensions',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='WIND_dimensions',
                                                variable=WIND_dimensions)
 
             # The shore type
             COAST_TYPE_filename = self.input_dir + 'HYCOM_GLOBAL_Luijendijk_sandy.npy'
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='COAST_TYPE_filename',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='COAST_TYPE_filename',
                                                variable=COAST_TYPE_filename)
 
             # Basic grid data
@@ -100,9 +100,9 @@ class AdvectionFiles:
             GRID = dataset.variables['water_u'][0, 0, :, :]
             LON = dataset.variables['lon'][:]
             LAT = dataset.variables['lat'][:]
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='GRID', variable=GRID)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='LON', variable=LON)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='LAT', variable=LAT)
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='GRID', variable=GRID)
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='LON', variable=LON)
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='LAT', variable=LAT)
 
         if self.advection_scenario == 'HYCOM_CARIBBEAN':
             prefix = 'HYCOM_CARIBBEAN'
@@ -117,9 +117,9 @@ class AdvectionFiles:
             UV_dimensions = {'U': {'time': 'time', 'depth': 'depth', 'lat': 'lat', 'lon': 'lon'},
                              'V': {'time': 'time', 'depth': 'depth', 'lat': 'lat', 'lon': 'lon'},
                              }
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='UV_filenames', variable=UV_filenames)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='UV_variables', variable=UV_variables)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='UV_dimensions',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='UV_filenames', variable=UV_filenames)
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='UV_variables', variable=UV_variables)
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='UV_dimensions',
                                                variable=UV_dimensions)
 
             # The stokes drift fields
@@ -130,11 +130,11 @@ class AdvectionFiles:
             STOKES_dimensions = {'Ust': {'lat': 'latitude', 'lon': 'longitude', 'time': 'time'},
                                  'Vst': {'lat': 'latitude', 'lon': 'longitude', 'time': 'time'},
                                  }
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='STOKES_filenames',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='STOKES_filenames',
                                                variable=STOKES_filenames)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='STOKES_variables',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='STOKES_variables',
                                                variable=STOKES_variables)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='STOKES_dimensions',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='STOKES_dimensions',
                                                variable=STOKES_dimensions)
 
             # The sea surface elevation fields
@@ -143,11 +143,11 @@ class AdvectionFiles:
             ELEV_filenames.sort()
             ELEV_variables = {'eta': 'surf_el'}
             ELEV_dimensions = {'time': 'time', 'lat': 'lat', 'lon': 'lon'}
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='ELEV_filenames',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='ELEV_filenames',
                                                variable=ELEV_filenames)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='ELEV_variables',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='ELEV_variables',
                                                variable=ELEV_variables)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='ELEV_dimensions',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='ELEV_dimensions',
                                                variable=ELEV_dimensions)
 
             # The surface winds
@@ -155,16 +155,16 @@ class AdvectionFiles:
             WIND_filenames.sort()
             WIND_variables = {'u10': 'u10', 'v10': 'v10'}
             WIND_dimensions = {'time': 'time', 'lat': 'latitude', 'lon': 'longitude'}
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='WIND_filenames',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='WIND_filenames',
                                                variable=WIND_filenames)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='WIND_variables',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='WIND_variables',
                                                variable=WIND_variables)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='WIND_dimensions',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='WIND_dimensions',
                                                variable=WIND_dimensions)
 
             # The shore type
             COAST_TYPE_filename = self.input_dir + 'HYCOM_GLOBAL_Luijendijk_sandy.npy'
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='COAST_TYPE_filename',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='COAST_TYPE_filename',
                                                variable=COAST_TYPE_filename)
 
             # Basic grid data
@@ -172,9 +172,9 @@ class AdvectionFiles:
             GRID = dataset.variables['water_u'][0, 0, :, :]
             LON = dataset.variables['lon'][:]
             LAT = dataset.variables['lat'][:]
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='GRID', variable=GRID)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='LON', variable=LON)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='LAT', variable=LAT)
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='GRID', variable=GRID)
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='LON', variable=LON)
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='LAT', variable=LAT)
 
         if self.advection_scenario == 'CMEMS_MEDITERRANEAN':
             prefix = 'CMEMS_MEDITERRANEAN'
@@ -188,11 +188,9 @@ class AdvectionFiles:
             UV_variables = {'U': 'vozocrtx', 'V': 'vomecrty'}
             UV_dimensions = {'U': {'time': 'time', 'depth': 'depth', 'lat': 'lat', 'lon': 'lon'},
                              'V': {'time': 'time', 'depth': 'depth', 'lat': 'lat', 'lon': 'lon'}}
-            print(file_dict)
-            print(len(file_dict))
-            file_dict = _add_to_file_dict(file_dict={}, variable_name='UV_filenames', variable=UV_filenames)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='UV_variables', variable=UV_variables)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='UV_dimensions',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='UV_filenames', variable=UV_filenames)
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='UV_variables', variable=UV_variables)
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='UV_dimensions',
                                                variable=UV_dimensions)
 
             # The stokes drift fields
@@ -203,11 +201,11 @@ class AdvectionFiles:
             STOKES_dimensions = {'Ust': {'time': 'time', 'lat': 'lat', 'lon': 'lon'},
                                  'Vst': {'time': 'time', 'lat': 'lat', 'lon': 'lon'},
                                  }
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='STOKES_filenames',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='STOKES_filenames',
                                                variable=STOKES_filenames)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='STOKES_variables',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='STOKES_variables',
                                                variable=STOKES_variables)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='STOKES_dimensions',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='STOKES_dimensions',
                                                variable=STOKES_dimensions)
 
             # The peak wave period fields
@@ -217,11 +215,11 @@ class AdvectionFiles:
             PERIOD_variables = {'WP': 'VTPK'}
             PERIOD_dimensions = {'WP': {'time': 'time', 'lat': 'lat', 'lon': 'lon'},
                                  }
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='PERIOD_filenames',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='PERIOD_filenames',
                                                variable=PERIOD_filenames)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='PERIOD_variables',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='PERIOD_variables',
                                                variable=PERIOD_variables)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='PERIOD_dimensions',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='PERIOD_dimensions',
                                                variable=PERIOD_dimensions)
 
             # Ocean Temperature
@@ -229,11 +227,11 @@ class AdvectionFiles:
                 settings.START_YEAR + settings.RESTART))
             TEMP_variables = {'cons_temperature': 'votemper'}
             TEMP_dimensions = {'cons_temperature': {'time': 'time', 'depth': 'depth', 'lat': 'lat', 'lon': 'lon'}}
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='TEMP_filenames',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='TEMP_filenames',
                                                variable=TEMP_filenames)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='TEMP_variables',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='TEMP_variables',
                                                variable=TEMP_variables)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='TEMP_dimensions',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='TEMP_dimensions',
                                                variable=TEMP_dimensions)
 
             # Ocean Salinity
@@ -241,16 +239,16 @@ class AdvectionFiles:
                 settings.START_YEAR + settings.RESTART))
             SALINITY_variables = {'abs_salinity': 'vosaline'}
             SALINITY_dimensions = {'abs_salinity': {'time': 'time', 'depth': 'depth', 'lat': 'lat', 'lon': 'lon'}}
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='SALINITY_filenames',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='SALINITY_filenames',
                                                variable=SALINITY_filenames)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='SALINITY_variables',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='SALINITY_variables',
                                                variable=SALINITY_variables)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='SALINITY_dimensions',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='SALINITY_dimensions',
                                                variable=SALINITY_dimensions)
 
             # Ocean bathymetry
             BATH_filenames = self.data_dir + "CMEMS_MED/MED-MFC_006_004_mask_bathy.nc"
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='BATH_filenames',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='BATH_filenames',
                                                variable=BATH_filenames)
 
             # The surface winds
@@ -258,11 +256,11 @@ class AdvectionFiles:
             WIND_filenames.sort()
             WIND_variables = {'u10': 'u10', 'v10': 'v10'}
             WIND_dimensions = {'time': 'time', 'lat': 'latitude', 'lon': 'longitude'}
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='WIND_filenames',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='WIND_filenames',
                                                variable=WIND_filenames)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='WIND_variables',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='WIND_variables',
                                                variable=WIND_variables)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='WIND_dimensions',
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='WIND_dimensions',
                                                variable=WIND_dimensions)
 
             # Basic grid data
@@ -271,9 +269,9 @@ class AdvectionFiles:
             LON = dataset.variables['lon'][:]
             LAT = dataset.variables['lat'][:]
             DEPTH = dataset.variables['depth'][:]
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='GRID', variable=GRID)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='LON', variable=LON)
-            file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='LAT', variable=LAT)
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='GRID', variable=GRID)
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='LON', variable=LON)
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='LAT', variable=LAT)
 
             # The Mixed Layer Depth (MLD)
             create_MLD_files.create_MLD_files(UV_filenames, UV_variables, TEMP_filenames, TEMP_variables,
@@ -281,7 +279,7 @@ class AdvectionFiles:
 
         # The border current
         BORDER_filename = self.input_dir + prefix + '_boundary_velocities.nc'
-        file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='BORDER_filename',
+        file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='BORDER_filename',
                                            variable=BORDER_filename)
         if utils._check_file_exist(BORDER_filename):
             os.system('echo "border current file exists"')
@@ -297,7 +295,7 @@ class AdvectionFiles:
 
         # Distance to shore (from ocean cells to the nearest land cell)
         DISTANCE_filename = self.input_dir + prefix + '_distance2coast.nc'
-        file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='DISTANCE_filename',
+        file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='DISTANCE_filename',
                                            variable=DISTANCE_filename)
         if utils._check_file_exist(DISTANCE_filename):
             os.system('echo "distance to coast file exists"')
@@ -312,7 +310,7 @@ class AdvectionFiles:
 
         # Land ID
         LANDID_filename = self.input_dir + prefix + '_land_cell_identifier.nc'
-        file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='LANDID_filename',
+        file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='LANDID_filename',
                                            variable=LANDID_filename)
         if utils._check_file_exist(LANDID_filename):
             os.system('echo "LANDID file exists"')
@@ -326,7 +324,7 @@ class AdvectionFiles:
 
         # Grid size
         GRIDSPACING_filename = self.input_dir + prefix + '_grid_spacing.nc'
-        file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='GRIDSPACING_filename',
+        file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='GRIDSPACING_filename',
                                            variable=GRIDSPACING_filename)
         if utils._check_file_exist(GRIDSPACING_filename):
             os.system('echo "Grid spacing file exists"')
@@ -345,7 +343,7 @@ class AdvectionFiles:
         for variable in ['lon', 'lat', 'weight']:
             str_format = (variable, settings.RUN)
             STARTFILES_filename[variable] = output_prefix + '{}_run={}.npy'.format(*str_format)
-        file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='STARTFILES_filename',
+        file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='STARTFILES_filename',
                                            variable=STARTFILES_filename)
 
         return file_dict
