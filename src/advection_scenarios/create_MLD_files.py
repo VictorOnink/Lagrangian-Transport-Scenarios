@@ -52,12 +52,18 @@ def buoyancy_field(TEMP, SAL):
 
 
 def velocity_shear(U, V):
+    # Velocity shear relative to surface
     magnitude = np.sqrt(np.square(U) + np.square(V))
     shear = magnitude - magnitude[:, 0, :, :]
-    return shear
+    # We return the squared shear relative to the ocean surface, and add an added to term to prevent division by 0 at a
+    # later point
+    return np.square(shear) + 0.0001
 
 
 def richardson_number(BUO, SHEAR, DEPTH):
+    # Difference in buoyancy
     buo_diff = BUO[0, 0, :, :] - BUO
+    # Ratio of buoyancy and shear
+    ratio = np.divide(buo_diff, SHEAR)
 
-    return buo_diff
+    return ratio
