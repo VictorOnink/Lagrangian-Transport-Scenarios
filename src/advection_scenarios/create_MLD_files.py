@@ -37,13 +37,14 @@ def create_MLD_files(UV_filenames: list, UV_variables: dict, TEMP_filenames: lis
         Ri = richardson_number(BUO, SHEAR, DEPTH)
 
         # Determining which cells have Ri < Ri_c
-        criteria = Ri > Ri_c
+        criteria = Ri < Ri_c
 
         # Getting the last depth at which Ri < Ri_c, which would be the MLD
         MLD = deepcopy(DEPTH)
-        MLD[criteria is False] = np.nan
+        MLD[criteria] = np.nan
+        MLD = np.nanmax(MLD, axis=(0, 1), keepdims=True)
 
-        print(np.nanmean(MLD))
+        print(MLD.shape)
         a=DEPTH[0,0,0,0,0,0]
 
 def buoyancy_field(TEMP, SAL):
