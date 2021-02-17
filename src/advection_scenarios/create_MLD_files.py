@@ -37,7 +37,7 @@ def create_MLD_files(UV_filenames: list, UV_variables: dict, TEMP_filenames: lis
         Ri = richardson_number(BUO, SHEAR, DEPTH)
 
         # Determining which cells have Ri < Ri_c
-        criteria = Ri < Ri_c
+        criteria = Ri > Ri_c
 
         # Getting the last depth at which Ri < Ri_c, which would be the MLD
         MLD = deepcopy(DEPTH)
