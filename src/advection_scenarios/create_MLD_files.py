@@ -45,6 +45,8 @@ def create_MLD_files(UV_filenames: list, UV_variables: dict, TEMP_filenames: lis
         MLD = np.nanmax(MLD, axis=(0, 1), keepdims=True)
 
         print(np.nanmean(MLD))
+        print(np.nanmax(MLD))
+        print(np.nanmin(MLD))
         a=DEPTH[0,0,0,0,0,0]
 
 def buoyancy_field(TEMP, SAL):
