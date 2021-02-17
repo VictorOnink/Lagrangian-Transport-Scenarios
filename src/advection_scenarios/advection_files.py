@@ -275,7 +275,7 @@ class AdvectionFiles:
 
             # The Mixed Layer Depth (MLD)
             create_MLD_files.create_MLD_files(UV_filenames, UV_variables, TEMP_filenames, TEMP_variables,
-                                              SALINITY_filenames, SALINITY_variables, LON, LAT, DEPTH)
+                                              SALINITY_filenames, SALINITY_variables, LON, LAT, DEPTH, GRID)
 
         # The border current
         BORDER_filename = self.input_dir + prefix + '_boundary_velocities.nc'

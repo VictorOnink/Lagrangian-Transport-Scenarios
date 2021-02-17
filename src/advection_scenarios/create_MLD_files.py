@@ -9,15 +9,21 @@ import settings
 
 
 def create_MLD_files(UV_filenames: list, UV_variables: dict, TEMP_filenames: list, TEMP_variables: dict,
-                        SALINITY_filenames: list, SALINITY_variables: dict, LON: array, LAT: array, DEPTH: array):
+                     SALINITY_filenames: list, SALINITY_variables: dict, LON: array, LAT: array, DEPTH: array,
+                     GRID: array):
     """
     Computing the MLD based on the critical Richardson number approach adapted from van Roekel et al. (2018)
     """
+    # The critical Richardson Number that delineates the MLD
+    Ri_c = 0.3
+    # Expanding the depth so that the array size is the same as the salinity fields
+    DEPTH = np.tile(DEPTH[np.newaxis, :, np.newaxis, np.newaxis], (1, 1, LAT.shape[0], LON.shape[0]))
     for step in range(len(UV_filenames)):
         # Loading the relevant UV, temperature and salinity fields
         UV_file, TEMP_file, SAL_file = UV_filenames[step], TEMP_filenames[step], SALINITY_filenames[step]
         UV_var, TEMP_var, SAL_var = [*UV_variables.keys()], [*TEMP_variables.keys()][0], [*SALINITY_variables.keys()][0]
-        U, V = Dataset(UV_file).variables[UV_variables[UV_var[0]]][:], Dataset(UV_file).variables[UV_variables[UV_var[1]]][:]
+        U, V = Dataset(UV_file).variables[UV_variables[UV_var[0]]][:], Dataset(UV_file).variables[
+                                                                           UV_variables[UV_var[1]]][:]
         TEMP = Dataset(TEMP_file).variables[TEMP_variables[TEMP_var]][:]
         SAL = Dataset(SAL_file).variables[SALINITY_variables[SAL_var]][:]
 
@@ -30,15 +36,15 @@ def create_MLD_files(UV_filenames: list, UV_variables: dict, TEMP_filenames: lis
         # Getting the Richardson Number
         Ri = richardson_number(BUO, SHEAR, DEPTH)
 
-        print(np.nanmax(Ri[0,1,:,:]))
-        print(np.nanmean(Ri[0,1,:,:]))
-        print(np.nanmin(Ri[0,1,:,:]))
-        print(sum(Ri[0,1,:,:]<0.25))
-        a=DEPTH[0,0]
+        # Determining which cells have Ri < Ri_c
+        criteria = Ri > Ri_c
 
+        # Getting the last depth at which Ri < Ri_c, which would be the MLD
+        MLD = deepcopy(DEPTH)
+        MLD[criteria is False] = np.nan
 
-
-
+        print(np.nanmean(MLD))
+        a=DEPTH[0,0,0,0,0,0]
 
 def buoyancy_field(TEMP, SAL):
     """
@@ -70,8 +76,6 @@ def richardson_number(BUO, SHEAR, DEPTH):
     buo_diff = BUO[0, 0, :, :] - BUO
     # Ratio of buoyancy and shear
     ratio = np.divide(buo_diff, SHEAR)
-    # Multiplying by the depth
-    DEPTH = np.tile(DEPTH[np.newaxis, :, np.newaxis, np.newaxis], (ratio.shape[0], 1, ratio.shape[2], ratio.shape[3]))
     # Calculating the final richardson number
     Ri = np.multiply(ratio, DEPTH)
     return Ri
