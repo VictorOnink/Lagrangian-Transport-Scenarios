@@ -28,6 +28,9 @@ def create_MLD_files(UV_filenames: list, UV_variables: dict, TEMP_filenames: lis
         SHEAR = velocity_shear(U, V)
         print(depth)
 
+        a=depth[0,0,0,0,0]
+
+
 
 
 def buoyancy_field(TEMP, SAL):
