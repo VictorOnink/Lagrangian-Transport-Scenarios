@@ -28,9 +28,10 @@ def create_MLD_files(UV_filenames: list, UV_variables: dict, TEMP_filenames: lis
         SHEAR = velocity_shear(U, V)
 
         # Getting the Richardson Number
-        print(richardson_number(BUO, SHEAR, DEPTH).shape)
-        print(np.tile(DEPTH[np.newaxis, :, np.newaxis, np.newaxis], (U.shape[0], 1, U.shape[2], U.shape[3])).shape)
+        Ri = richardson_number(BUO, SHEAR, DEPTH)
 
+        print(np.nanmax(Ri))
+        print(np.nanmean(Ri))
         a=DEPTH[0,0]
 
 
@@ -67,5 +68,8 @@ def richardson_number(BUO, SHEAR, DEPTH):
     buo_diff = BUO[0, 0, :, :] - BUO
     # Ratio of buoyancy and shear
     ratio = np.divide(buo_diff, SHEAR)
-
-    return ratio
+    # Multiplying by the depth
+    DEPTH = np.tile(DEPTH[np.newaxis, :, np.newaxis, np.newaxis], (ratio.shape[0], 1, ratio.shape[2], ratio.shape[3]))
+    # Calculating the final richardson number
+    Ri = np.multiply(ratio, DEPTH)
+    return Ri
