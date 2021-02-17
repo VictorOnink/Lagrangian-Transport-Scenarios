@@ -85,11 +85,11 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         if particle.beach == 0:
             dist = fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
             if dist < fieldset.Coastal_Boundary:
-                if ParcelsRandom.random() > fieldset.p_beach:
+                if ParcelsRandom.uniform(0, 1) > fieldset.p_beach:
                     particle.beach = 1
         # Now the part where we build in the resuspension
         elif particle.beach == 1:
-            if ParcelsRandom.random() > fieldset.p_resus:
+            if ParcelsRandom.uniform(0, 1) > fieldset.p_resus:
                 particle.beach = 0
         # Update the age of the particle
         particle.age += particle.dt

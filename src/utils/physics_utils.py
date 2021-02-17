@@ -1,5 +1,5 @@
 import math
-from parcels import rng as random
+from parcels import ParcelsRandom
 
 
 def _anti_beach_nudging(particle, fieldset, time):
@@ -82,8 +82,8 @@ def _floating_2d_brownian_motion(particle, fieldset, time):
     we don't want particles to jump on land and thereby beach"""
     if particle.beach == 0:
         # Wiener increment with zero mean and std of sqrt(dt)
-        dWx = random.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
-        dWy = random.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
+        dWx = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
+        dWy = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
 
         bx = math.sqrt(2 * fieldset.Kh_zonal[time, particle.depth, particle.lat, particle.lon])
         by = math.sqrt(2 * fieldset.Kh_meridional[time, particle.depth, particle.lat, particle.lon])
@@ -141,8 +141,8 @@ def _floating_AdvectionRK4DiffusionEM_stokes_depth(particle, fieldset, time):
         (uS4, vS4) = fieldset.Ust[t + dt, d, lat3, lon3], fieldset.Vst[t + dt, d, lat3, lon3]
 
         # Wiener increment with zero mean and std of sqrt(dt)
-        dWx = random.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
-        dWy = random.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
+        dWx = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
+        dWy = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
 
         Kxp1 = fieldset.Kh_zonal[t, d, la, lo + fieldset.dres]
         Kxm1 = fieldset.Kh_zonal[t, d, la, lo - fieldset.dres]
@@ -183,8 +183,8 @@ def _initial_input(particle, fieldset, time):
         d_lon = fieldset.dlon[time, particle.depth, particle.lat, particle.lon]
         d_lat = fieldset.dlat[time, particle.depth, particle.lat, particle.lon]
         while check < 100000:
-            potential_lat = particle.lat + random.uniform(-d_lat, d_lat)
-            potential_lon = particle.lon + random.uniform(-d_lon, d_lon)
+            potential_lat = particle.lat + ParcelsRandom.uniform(-d_lat, d_lat)
+            potential_lon = particle.lon + ParcelsRandom.uniform(-d_lon, d_lon)
             potential_land = math.floor(fieldset.landID[time, particle.depth, particle.lat, particle.lon])
             potential_dist = fieldset.distance2shore[time, particle.depth, potential_lat, potential_lon]
             if potential_land == 0 and potential_dist <= distCur:
@@ -279,7 +279,7 @@ def PZK_wind_mixing(particle, fieldset, time):
     # All the parameters to compute the PZK diffusion parameters
     # Density of sea water and air (kg/m^3)
     rho_w, rho_a = particle.density, 1.22
-    
+
 
 
     # According to Ross & Sharples (2004), first the deterministic part of equation 1
@@ -287,7 +287,7 @@ def PZK_wind_mixing(particle, fieldset, time):
     deterministic = dK_z_p * particle.dt
 
     # The random walk component
-    R = random.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
+    R = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
     bz = math.sqrt(fieldset.K_z[time, particle.depth + 0.5 * dK_z_p * particle.dt, particle.lat, particle.lon])
 
     # Rise velocity component
