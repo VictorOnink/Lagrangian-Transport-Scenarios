@@ -190,7 +190,7 @@ class AdvectionFiles:
                              'V': {'time': 'time', 'depth': 'depth', 'lat': 'lat', 'lon': 'lon'}}
             print(file_dict)
             print(len(file_dict))
-            file_dict = self._add_to_file_dict(file_dict={}, variable_name='UV_filenames', variable=UV_filenames)
+            file_dict = _add_to_file_dict(file_dict={}, variable_name='UV_filenames', variable=UV_filenames)
             file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='UV_variables', variable=UV_variables)
             file_dict = self._add_to_file_dict(file_dict=file_dict, variable_name='UV_dimensions',
                                                variable=UV_dimensions)
