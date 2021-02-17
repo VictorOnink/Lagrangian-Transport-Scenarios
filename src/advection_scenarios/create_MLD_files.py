@@ -9,7 +9,7 @@ import settings
 
 
 def create_MLD_files(UV_filenames: list, UV_variables: dict, TEMP_filenames: list, TEMP_variables: dict,
-                        SALINITY_filenames: list, SALINITY_variables: dict, lon: array, lat: array, depth: array):
+                        SALINITY_filenames: list, SALINITY_variables: dict, LON: array, LAT: array, DEPTH: array):
     """
     Computing the MLD based on the critical Richardson number approach adapted from van Roekel et al. (2018)
     """
@@ -26,9 +26,11 @@ def create_MLD_files(UV_filenames: list, UV_variables: dict, TEMP_filenames: lis
 
         # Computing the velocity shear
         SHEAR = velocity_shear(U, V)
-        print(depth)
 
-        a=depth[0,0,0,0,0]
+        # Getting the Richardson Number
+        print(richardson_number(BUO, SHEAR, DEPTH).shape)
+
+        a=DEPTH[0,0,0,0,0]
 
 
 
@@ -53,3 +55,9 @@ def velocity_shear(U, V):
     magnitude = np.sqrt(np.square(U) + np.square(V))
     shear = magnitude - magnitude[:, 0, :, :]
     return shear
+
+
+def richardson_number(BUO, SHEAR, DEPTH):
+    buo_diff = BUO[0, 0, :, :] - BUO
+
+    return buo_diff
