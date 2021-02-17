@@ -30,9 +30,9 @@ def create_MLD_files(UV_filenames: list, UV_variables: dict, TEMP_filenames: lis
         # Getting the Richardson Number
         Ri = richardson_number(BUO, SHEAR, DEPTH)
 
-        print(np.nanmax(Ri))
-        print(np.nanmean(Ri))
-        print(np.nanmin(Ri))
+        print(np.nanmax(BUO))
+        print(np.nanmean(BUO))
+        print(np.nanmin(BUO))
         a=DEPTH[0,0]
 
 
