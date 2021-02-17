@@ -26,7 +26,7 @@ def create_MLD_files(UV_filenames: list, UV_variables: dict, TEMP_filenames: lis
 
         # Computing the velocity shear
         SHEAR = velocity_shear(U, V)
-        print(SHEAR.shape)
+        print(SHEAR)
 
 
 def buoyancy_field(TEMP, SAL):
