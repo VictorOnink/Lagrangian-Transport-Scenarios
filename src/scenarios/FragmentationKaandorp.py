@@ -123,7 +123,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                         pset.Kernel(utils._get_kinematic_viscosity) + \
                         pset.Kernel(self._get_reynolds_number) + \
                         pset.Kernel(self._get_rising_velocity) + \
-                        pset.Kernel(utils._floating_AdvectionRK4DiffusionEM_stokes_depth) + \
-                        pset.Kernel(utils.KPP_wind_mixing)
+                        pset.Kernel(utils._floating_AdvectionRK4DiffusionEM_stokes_depth) #+ \
+                        # pset.Kernel(utils.KPP_wind_mixing)
         total_behavior = base_behavior + pset.Kernel(utils._anti_beach_nudging) + pset.Kernel(self._beaching_kernel)
         return total_behavior
