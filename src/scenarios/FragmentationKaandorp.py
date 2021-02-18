@@ -119,7 +119,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
 
     def _get_particle_behavior(self, pset: ParticleSet):
         os.system('echo "Setting the particle behavior"')
-        base_behavior = pset.Kernel(utils.PolyTEOS10_bsq) + \
+        base_behavior = pset.Kernel(utils._initial_input) + \
                         pset.Kernel(utils._get_kinematic_viscosity) + \
                         pset.Kernel(self._get_reynolds_number) + \
                         pset.Kernel(self._get_rising_velocity) + \
