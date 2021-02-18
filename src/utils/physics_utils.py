@@ -290,8 +290,8 @@ def PolyTEOS10_bsq(particle, fieldset, time):
     Z = - particle.depth  # note: use negative depths!
     SA = fieldset.abs_salinity[time, particle.depth, particle.lat, particle.lon]
     CT = fieldset.cons_temperature[time, particle.depth, particle.lat, particle.lon]
-    SA_S = fieldset.abs_salinity[time, 0, particle.lat, particle.lon]
-    CT_S = fieldset.cons_temperature[time, 0, particle.lat, particle.lon]
+    # SA_S = fieldset.abs_salinity[time, 0, particle.lat, particle.lon]
+    # CT_S = fieldset.cons_temperature[time, 0, particle.lat, particle.lon]
 
     # All the parameters
     SAu = 40 * 35.16504 / 35
@@ -360,10 +360,10 @@ def PolyTEOS10_bsq(particle, fieldset, time):
     rz0 = (((((R060 * tt + R150 * ss + R050) * tt + (R240 * ss + R140) * ss + R040) * tt + ((R330 * ss + R230) * ss + R130) * ss + R030) * tt + (((R420 * ss + R320) * ss + R220) * ss + R120) * ss + R020) * tt + ((((R510 * ss + R410) * ss + R310) * ss + R210) * ss + R110) * ss + R010) * tt + (((((R600 * ss + R500) * ss + R400) * ss + R300) * ss + R200) * ss + R100) * ss + R000
     particle.density = ((rz3 * zz + rz2) * zz + rz1) * zz + rz0
     # Computing the density at the surface above the particle
-    ss = math.sqrt((SA_S + deltaS) / SAu)
-    tt = CT_S / CTu
-    rz0 = (((((R060 * tt + R150 * ss + R050) * tt + (R240 * ss + R140) * ss + R040) * tt + ((R330 * ss + R230) * ss + R130) * ss + R030) * tt + (((R420 * ss + R320) * ss + R220) * ss + R120) * ss + R020) * tt + ((((R510 * ss + R410) * ss + R310) * ss + R210) * ss + R110) * ss + R010) * tt + (((((R600 * ss + R500) * ss + R400) * ss + R300) * ss + R200) * ss + R100) * ss + R000
-    particle.surface_density = rz0
+    # ss = math.sqrt((SA_S + deltaS) / SAu)
+    # tt = CT_S / CTu
+    # rz0 = (((((R060 * tt + R150 * ss + R050) * tt + (R240 * ss + R140) * ss + R040) * tt + ((R330 * ss + R230) * ss + R130) * ss + R030) * tt + (((R420 * ss + R320) * ss + R220) * ss + R120) * ss + R020) * tt + ((((R510 * ss + R410) * ss + R310) * ss + R210) * ss + R110) * ss + R010) * tt + (((((R600 * ss + R500) * ss + R400) * ss + R300) * ss + R200) * ss + R100) * ss + R000
+    # particle.surface_density = rz0
 
 
 def KPP_wind_mixing(particle, fieldset, time):
