@@ -155,7 +155,7 @@ def _add_diffusion(fieldset: FieldSet, file_dict: dict):
     :param input_dir:
     """
     os.system('echo "Adding diffusion"')
-    kh = settings.KH_HOR  # m^2 s^-1
+    kh = settings.K_HOR  # m^2 s^-1
     _check_presence(variable='GRID', file_dict=file_dict)
     mask = file_dict['GRID'].mask
     kh_f = kh * np.ones(mask.shape)
@@ -339,6 +339,7 @@ def _add_KPP_wind_mixing(fieldset: FieldSet, file_dict: dict):
     fieldset.add_constant('PHI', settings.PHI)  # Stability function
     fieldset.add_constant('BETA', settings.BETA)  # Wave age based on 10m wind speed
     fieldset.add_constant('BETA_STAR', settings.BETA_STAR)  # Wave age based on frictional air velocity
+    fieldset.add_constant('K_Z_BULK', settings.K_Z_BULK)  # Vertical diffusion below the MLD
     fieldset.add_constant('SURF_Z',
                           np.nanmin(np.abs(file_dict['DEPTH'])))  # Correction in case the surface depth is not z=0
 

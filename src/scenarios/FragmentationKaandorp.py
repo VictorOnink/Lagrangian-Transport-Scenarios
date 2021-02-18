@@ -1,5 +1,4 @@
 from parcels import FieldSet, ParticleSet
-from parcels.kernels.TEOSseawaterdensity import PolyTEOS10_bsq
 import numpy as np
 import settings as settings
 import scenarios.base_scenario as base_scenario
@@ -59,6 +58,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         particle_type = utils.BaseParticle
         utils._add_var_particle(particle_type, 'distance', dtype=np.float32, set_initial=False)
         utils._add_var_particle(particle_type, 'density', dtype=np.float32, set_initial=False, to_write=False)
+        utils._add_var_particle(particle_type, 'surface_density', dtype=np.float32, set_initial=False, to_write=False)
         utils._add_var_particle(particle_type, 'kinematic_viscosity', dtype=np.float32, set_initial=False,
                                 to_write=False)
         utils._add_var_particle(particle_type, 'rise_velocity', dtype=np.float32, set_initial=False)
@@ -118,10 +118,11 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
 
     def _get_particle_behavior(self, pset: ParticleSet):
         os.system('echo "Setting the particle behavior"')
-        base_behavior = pset.Kernel(utils._initial_input) + pset.Kernel(PolyTEOS10_bsq) + \
+        base_behavior = pset.Kernel(utils._initial_input) + pset.Kernel(utils.PolyTEOS10_bsq) + \
                         pset.Kernel(utils._get_kinematic_viscosity) + \
                         pset.Kernel(self._get_reynolds_number) + \
                         pset.Kernel(self._get_rising_velocity) + \
-                        pset.Kernel(utils._floating_AdvectionRK4DiffusionEM_stokes_depth)
+                        pset.Kernel(utils._floating_AdvectionRK4DiffusionEM_stokes_depth) + \
+                        pset.Kernel(utils.KPP_wind_mixing)
         total_behavior = base_behavior + pset.Kernel(utils._anti_beach_nudging) + pset.Kernel(self._beaching_kernel)
         return total_behavior

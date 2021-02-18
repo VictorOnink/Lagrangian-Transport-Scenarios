@@ -172,7 +172,9 @@ REPEAT_DT_ELSE = None
 # RNG SEED VALUE
 SEED = 'Fixed'
 # HORIZONTAL DIFFUSIVITY M^2 / S, FOLLOWING LACERDA ET AL. (2019) AND LIUBERTSEVA ET AL. (2018)
-KH_HOR = 10
+K_HOR = 10
+# VERTICAL (DIAPYCNAL) DIFFUSION (M^2/S) BELOW THE MLD (Ganachaud, 2003)
+K_Z_BULK = 3.7e-4
 # WIDTH OF THE BEACHING ZONE (KM) WITHIN WHICH BEACHING CAN OCCUR
 if SCENARIO_NAME != 'AdvectionDiffusionOnly':
     COAST_D = 10  # km, the distance from the nearest shoreline that falls under the coastal zone.
