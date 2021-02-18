@@ -108,7 +108,7 @@ def create_netcdf(filename: str, to_netcdf: tuple):
     depth = root_grp.createVariable('depth', 'f8', ('depth',))
     mld = root_grp.createVariable('MLD', 'f8', ('time', 'depth', 'lat', 'lon'))
     # Now assigning values to the variables
-    lat[:], lon[:], time[:], mld[:], depth[:] = LAT, LON, TIME, MLD, DEPTH
+    lat[:], lon[:], time[:], mld[:], depth[:] = LAT, LON, TIME, MLD, DEPTH[0]
     # Finally, close the new field
     root_grp.close()
 
