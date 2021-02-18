@@ -52,7 +52,7 @@ def create_MLD_files(UV_filenames: list, UV_variables: dict, TEMP_filenames: lis
             MLD = np.nanmax(MLD, axis=(0, 1), keepdims=True)
 
             # Creating a NETCDF4 file containing the MLD field
-            to_netcdf = MLD, TIME, LON, LAT, np.array(np.nanmin(DEPTH))
+            to_netcdf = MLD, TIME, LON, LAT, np.nanmin(DEPTH)
             create_netcdf(filename=MLD_file, to_netcdf=to_netcdf)
     return MLD_filenames
 
@@ -98,7 +98,7 @@ def create_netcdf(filename: str, to_netcdf: tuple):
     root_grp.createDimension('time', TIME.size)
     root_grp.createDimension('lat', LAT.size)
     root_grp.createDimension('lon', LON.size)
-    root_grp.createDimension('depth', DEPTH.size)
+    root_grp.createDimension('depth', 1)
     # variables
     time = root_grp.createVariable('time', 'f8', ('time',))
     time.units = 'seconds since 1970-01-01 00:00:00'
@@ -108,7 +108,7 @@ def create_netcdf(filename: str, to_netcdf: tuple):
     depth = root_grp.createVariable('depth', 'f8', ('depth',))
     mld = root_grp.createVariable('MLD', 'f8', ('time', 'depth', 'lat', 'lon'))
     # Now assigning values to the variables
-    lat[:], lon[:], time[:], mld[:], depth[:] = LAT, LON, TIME, MLD, DEPTH[0]
+    lat[:], lon[:], time[:], mld[:], depth[:] = LAT, LON, TIME, MLD, DEPTH
     # Finally, close the new field
     root_grp.close()
 
