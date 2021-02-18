@@ -290,8 +290,8 @@ def PolyTEOS10_bsq(particle, fieldset, time):
     Z = - particle.depth  # note: use negative depths!
     SA = fieldset.abs_salinity[time, particle.depth, particle.lat, particle.lon]
     CT = fieldset.cons_temperature[time, particle.depth, particle.lat, particle.lon]
-    SA_SURF = fieldset.abs_salinity[time, 0, particle.lat, particle.lon]
-    CT_SURF = fieldset.cons_temperature[time, 0, particle.lat, particle.lon]
+    SA_SURF = fieldset.abs_salinity[time, fieldset.SURF_Z, particle.lat, particle.lon]
+    CT_SURF = fieldset.cons_temperature[time, fieldset.SURF_Z, particle.lat, particle.lon]
 
     SAu = 40 * 35.16504 / 35
     CTu = 40
@@ -376,7 +376,8 @@ def KPP_wind_mixing(particle, fieldset, time):
     # Within the MLD we compute the vertical diffusion according to Boufadel et al. (2020)
     else:
         # Wind speed
-        w_10 = math.sqrt(fieldset.u10[time, 0, particle.lat, particle.lon] ** 2 + fieldset.v10[time, 0, particle.lat, particle.lon] ** 2)
+        w_10 = math.sqrt(fieldset.u10[time, fieldset.SURF_Z, particle.lat, particle.lon] ** 2 + \
+                         fieldset.v10[time, fieldset.SURF_Z, particle.lat, particle.lon] ** 2)
         # Drag coefficient
         C_D = min(max(1.2E-3, 1.0E-3 * (0.49 + 0.065 * w_10)), 2.12E-3)
         # wind stress
