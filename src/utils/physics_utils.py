@@ -404,7 +404,7 @@ def KPP_wind_mixing(particle, fieldset, time):
         # bulk diffusivity
         z_correct = math.fabs(z_correct + 0.5 * dKz * particle.dt)
         alpha = (fieldset.VK * U_W) / fieldset.PHI
-        K_z = alpha * (z_correct + z0) * math.power(1 - z_correct / MLD, 2) + fieldset.K_Z_BULK
+        K_z = alpha * (z_correct + z0) * math.pow(1 - z_correct / MLD, 2) + fieldset.K_Z_BULK
 
     # The Markov-0 vertical transport following Ross & Sharples (2004)
     gradient = dKz * particle.dt
