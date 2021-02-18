@@ -184,11 +184,17 @@ if SCENARIO_NAME == 'FragmentationKaandorp':
 # ACCELERATION DUE TO GRAVITY (M/S^2)
 G = 9.81
 # THERMAL EXPANSION COEFFICIENT (1/K) AND REFERENCE TEMPERATURE (K)
-A_T = 2e-4
-T_R = 25
+A_T, T_R = 2e-4, 25
 # HALINE CONTRACTION COEFFICIENT (1/PSU) AND REFERENCE SALINITY (PSU)
-B_S = 8e-4
-S_R = 35
+B_S, S_R = 8e-4, 35
+# DENSITY OF AIR (KG/M^3)
+RHO_A = 1.22
+# VON KARMAN COEFFICIENT
+VK = 0.4
+# WAVE AGE FOR FULLY DEVELOPED SEA (KUKULKA ET AL., 2012), BASED ON EITHER WIND SPEED OR AIR FRICTIONAL VELOCITY
+BETA, BETA_STAR = 1.21, 35
+# STABILITY FUNCTION IN MONIN-OBUKOV BOUNDARY LAYER THEORY (BOUFADEL ET AL. 2020)
+PHI = 0.9
 
 ########################################################################################################################
 #                                                                                                                      #

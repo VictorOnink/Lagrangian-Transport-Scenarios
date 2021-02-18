@@ -26,27 +26,11 @@ class FieldSetFactory():
                         resus_timescale: bool = False,
                         wind_min: bool = False,
                         MLD: bool = False,
+                        KPP_mixing: bool = False,
                         coastal_zone: bool = True,
                         grid_spacing: bool = True,
                         halo: bool = True
                         ):
-        """
-
-        :param server:
-        :param stokes:
-        :param border_current:
-        :param diffusion:
-        :param landID:
-        :param distance:
-        :param wind:
-        :param sea_elev:
-        :param vicinity:
-        :param beach_timescale:
-        :param resus_timescale:
-        :param wind_min:
-        :param halo:
-        :return:
-        """
         fieldset = _get_base_fieldset(file_dict=file_dict)
         if stokes is 0:
             fieldset = _add_stokes_drift(fieldset=fieldset, file_dict=file_dict)
@@ -79,7 +63,9 @@ class FieldSetFactory():
         if wind_min:
             _add_min_resuspension_wind_constant(fieldset=fieldset)
         if MLD:
-            pass
+            _add_MLD_field(fieldset=fieldset, file_dict=file_dict)
+        if KPP_mixing:
+            _add_KPP_wind_mixing(fieldset=fieldset, file_dict=file_dict)
         if coastal_zone:
             _add_coastal_zone_boundary(fieldset=fieldset)
         if grid_spacing:
@@ -124,8 +110,6 @@ def _add_stokes_drift(fieldset: FieldSet, file_dict: dict):
     fieldset_stoke.Ust.units = GeographicPolar()
     fieldset_stoke.Vst.units = Geographic()
     # Adding the Stokes drift fields to the general fieldset
-    # fieldset = FieldSet(U=fieldset.U + fieldset_stoke.Ust,
-    #                     V=fieldset.V + fieldset_stoke.Vst)
     fieldset.add_field(fieldset_stoke.Ust)
     fieldset.add_field(fieldset_stoke.Vst)
     return fieldset
@@ -136,9 +120,8 @@ def _add_stokes_depth_depen(fieldset: FieldSet, file_dict: dict):
     _check_presence(variable='PERIOD_filenames', file_dict=file_dict)
     filenames = {'WP': file_dict['PERIOD_filenames']}
     fieldset_period = FieldSet.from_netcdf(filenames, file_dict['PERIOD_variables'], file_dict['PERIOD_dimensions'],
-                                          allow_time_extrapolation=True)
+                                           allow_time_extrapolation=True)
     fieldset.add_field(fieldset_period.WP)
-
 
 
 def _add_border_current(fieldset: FieldSet, file_dict: dict):
@@ -271,7 +254,7 @@ def _add_temperature_field(fieldset: FieldSet, file_dict: dict):
     filenames = {'cons_temperature': file_dict['TEMP_filenames']}
     # Creating a fieldset for the temperature data
     fieldset_temp = FieldSet.from_netcdf(filenames, file_dict['TEMP_variables'], file_dict['TEMP_dimensions'],
-                                        allow_time_extrapolation=True)
+                                         allow_time_extrapolation=True)
     # Adding the temperature field to the general fieldset
     fieldset.add_field(fieldset_temp.cons_temperature)
 
@@ -343,6 +326,21 @@ def _add_min_resuspension_wind_constant(fieldset: FieldSet):
 def _add_coastal_zone_boundary(fieldset: FieldSet):
     # The distance from the nearest coastline that is defines the coastal zone within which beaching occurs
     fieldset.add_constant('Coastal_Boundary', settings.COAST_D)
+
+
+def _add_KPP_wind_mixing(fieldset: FieldSet, file_dict: dict):
+    """
+    Adding a number of constants that are required for computing the wind-driven mixing according to the KPP scheme
+    """
+    os.system('echo "Adding KPP wind mixing parameters"')
+    fieldset.add_constant('G', settings.G)  # Acceleration due to gravity
+    fieldset.add_constant('VK', settings.VK)  # von Karman coefficient
+    fieldset.add_constant('RHO_A', settings.RHO_A)  # Density of air
+    fieldset.add_constant('PHI', settings.PHI)  # Stability function
+    fieldset.add_constant('BETA', settings.BETA)  # Wave age based on 10m wind speed
+    fieldset.add_constant('BETA_STAR', settings.BETA_STAR)  # Wave age based on frictional air velocity
+    fieldset.add_constant('SURF_Z',
+                          np.nanmin(np.abs(file_dict['DEPTH'])))  # Correction in case the surface depth is not z=0
 
 
 def _add_grid_spacing(fieldset: FieldSet, file_dict: dict):
