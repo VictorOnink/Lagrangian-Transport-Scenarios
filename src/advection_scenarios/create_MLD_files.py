@@ -30,7 +30,7 @@ def create_MLD_files(UV_filenames: list, UV_variables: dict, TEMP_filenames: lis
                                                                                UV_variables[UV_var[1]]][:]
             TEMP = Dataset(TEMP_file).variables[TEMP_variables[TEMP_var]][:]
             SAL = Dataset(SAL_file).variables[SALINITY_variables[SAL_var]][:]
-            TIME = Dataset(SAL_file).variables[SALINITY_variables['time']][:]
+            TIME = Dataset(SAL_file).variables['time'][:]
 
             # Computing the buoyancy fields
             BUO = buoyancy_field(TEMP, SAL)
