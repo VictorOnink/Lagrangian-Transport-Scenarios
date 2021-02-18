@@ -375,18 +375,17 @@ def KPP_wind_mixing(particle, fieldset, time):
     Markov-0 implementation of wind mixing based on the KPP wind mixing parametrization. For more exact details, look
     at the full wind mixing code at https://github.com/VictorOnink/Wind-Mixing-Diffusion/
     """
-    t, d, la, lo = time, particle.depth, particle.lat, particle.lon
     # All the parameters to compute the PKK diffusion parameters
-    mld = fieldset.MLD[t, 0, la, lo]
+    mld = fieldset.MLD[time, 0, particle.lat, particle.lon]
 
     # Below the MLD there is no wind-driven turbulent diffusion according to KPP theory
     if particle.depth > mld:
-        K_z = fieldset.K_Z_BULK
+        Kz = fieldset.K_Z_BULK
         dKz = 0
     # Within the MLD we compute the vertical diffusion according to Boufadel et al. (2020)
     else:
         # Wind speed
-        w_10 = math.sqrt(fieldset.u10[t, 0, la, lo] ** 2 + fieldset.v10[t, 0, la, lo] ** 2)
+        w_10 = math.sqrt(fieldset.u10[time, 0, particle.lat, particle.lon] ** 2 + fieldset.v10[time, 0, particle.lat, particle.lon] ** 2)
         # Drag coefficient
         C_D = min(max(1.2E-3, 1.0E-3 * (0.49 + 0.065 * w_10)), 2.12E-3)
         # wind stress
@@ -396,7 +395,7 @@ def KPP_wind_mixing(particle, fieldset, time):
         # Surface roughness z0 following Zhao & Li (2019)
         z0 = 3.5153e-5 * fieldset.BETA ** (-0.42) * w_10 ** 2 / fieldset.G
         # The corrected particle depth, since the depth is not always zero for the surface circulation data
-        z_correct = d - fieldset.SURF_Z
+        z_correct = particle.depth - fieldset.SURF_Z
         # The diffusion gradient at particle.depth
         alpha = (fieldset.VK * U_W) / (fieldset.PHI * mld ** 2)
         dKz = alpha * (mld - z_correct) * (mld - 3 * z_correct - 2 * z0)
@@ -404,11 +403,11 @@ def KPP_wind_mixing(particle, fieldset, time):
         # bulk diffusivity
         z_correct = math.fabs(z_correct + 0.5 * dKz * particle.dt)
         alpha = (fieldset.VK * U_W) / fieldset.PHI
-        K_z = alpha * (z_correct + z0) * math.pow(1 - z_correct / mld, 2) + fieldset.K_Z_BULK
+        Kz = alpha * (z_correct + z0) * math.pow(1 - z_correct / mld, 2) + fieldset.K_Z_BULK
 
     # The Markov-0 vertical transport following Ross & Sharples (2004)
     gradient = dKz * particle.dt
-    R = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3) * math.sqrt(2 * K_z)
+    R = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3) * math.sqrt(2 * Kz)
     rise = particle.rise_velocity * particle.dt
 
     # The ocean surface acts as a lid off of which the plastic bounces if tries to cross the ocean surface
