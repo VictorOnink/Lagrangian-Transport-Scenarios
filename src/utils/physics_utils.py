@@ -290,6 +290,8 @@ def PolyTEOS10_bsq(particle, fieldset, time):
     Z = - particle.depth  # note: use negative depths!
     SA = fieldset.abs_salinity[time, particle.depth, particle.lat, particle.lon]
     CT = fieldset.cons_temperature[time, particle.depth, particle.lat, particle.lon]
+    SA_SURF = fieldset.abs_salinity[time, 0, particle.lat, particle.lon]
+    CT_SURF = fieldset.cons_temperature[time, 0, particle.lat, particle.lon]
 
     SAu = 40 * 35.16504 / 35
     CTu = 40
