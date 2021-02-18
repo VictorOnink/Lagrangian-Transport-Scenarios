@@ -50,7 +50,7 @@ def create_MLD_files(UV_filenames: list, UV_variables: dict, TEMP_filenames: lis
             MLD = np.nanmax(MLD, axis=(0, 1), keepdims=True)
 
             # Creating a NETCDF4 file containing the MLD field
-            to_netcdf = MLD, TIME, LON, LAT, np.nanmin(DEPTH, keepdims=True)
+            to_netcdf = MLD, TIME, LON, LAT, np.array(np.nanmin(DEPTH))
             create_netcdf(filename=MLD_file, to_netcdf=to_netcdf)
         else:
             print('The MLD file already exists')
