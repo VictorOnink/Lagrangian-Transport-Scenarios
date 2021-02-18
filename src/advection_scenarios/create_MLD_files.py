@@ -98,6 +98,7 @@ def create_netcdf(filename: str, to_netcdf: tuple):
     root_grp.createDimension('time', TIME.size)
     root_grp.createDimension('lat', LAT.size)
     root_grp.createDimension('lon', LON.size)
+    root_grp.createDimension('depth', DEPTH.size)
     # variables
     time = root_grp.createVariable('time', 'f8', ('time',))
     time.units = 'seconds since 1970-01-01 00:00:00'
