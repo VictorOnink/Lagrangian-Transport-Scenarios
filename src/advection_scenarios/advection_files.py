@@ -272,6 +272,7 @@ class AdvectionFiles:
             file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='GRID', variable=GRID)
             file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='LON', variable=LON)
             file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='LAT', variable=LAT)
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='DEPTH', variable=DEPTH)
 
             # The Mixed Layer Depth (MLD)
             MLD_filenames = create_MLD_files.create_MLD_files(UV_filenames, UV_variables, TEMP_filenames,
