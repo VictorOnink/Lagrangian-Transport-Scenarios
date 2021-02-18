@@ -6,6 +6,7 @@ from copy import deepcopy
 import os
 from netCDF4 import Dataset
 import settings
+import utils
 
 
 def create_MLD_files(UV_filenames: list, UV_variables: dict, TEMP_filenames: list, TEMP_variables: dict,
@@ -22,32 +23,38 @@ def create_MLD_files(UV_filenames: list, UV_variables: dict, TEMP_filenames: lis
         # Loading the relevant UV, temperature and salinity fields
         UV_file, TEMP_file, SAL_file = UV_filenames[step], TEMP_filenames[step], SALINITY_filenames[step]
         MLD_file = TEMP_file.replace('TEMP', 'MLD')
-        print(MLD_file)
 
-        UV_var, TEMP_var, SAL_var = [*UV_variables.keys()], [*TEMP_variables.keys()][0], [*SALINITY_variables.keys()][0]
-        U, V = Dataset(UV_file).variables[UV_variables[UV_var[0]]][:], Dataset(UV_file).variables[
-                                                                           UV_variables[UV_var[1]]][:]
-        TEMP = Dataset(TEMP_file).variables[TEMP_variables[TEMP_var]][:]
-        SAL = Dataset(SAL_file).variables[SALINITY_variables[SAL_var]][:]
+        if not utils._check_file_exist(MLD_file):
+            UV_var, TEMP_var, SAL_var = [*UV_variables.keys()], [*TEMP_variables.keys()][0], [*SALINITY_variables.keys()][0]
+            U, V = Dataset(UV_file).variables[UV_variables[UV_var[0]]][:], Dataset(UV_file).variables[
+                                                                               UV_variables[UV_var[1]]][:]
+            TEMP = Dataset(TEMP_file).variables[TEMP_variables[TEMP_var]][:]
+            SAL = Dataset(SAL_file).variables[SALINITY_variables[SAL_var]][:]
+            TIME = Dataset(SAL_file).variables[SALINITY_variables['time']][:]
 
-        # Computing the buoyancy fields
-        BUO = buoyancy_field(TEMP, SAL)
+            # Computing the buoyancy fields
+            BUO = buoyancy_field(TEMP, SAL)
 
-        # Computing the velocity shear
-        SHEAR = velocity_shear(U, V)
+            # Computing the velocity shear
+            SHEAR = velocity_shear(U, V)
 
-        # Getting the Richardson Number
-        Ri = richardson_number(BUO, SHEAR, DEPTH)
+            # Getting the Richardson Number
+            Ri = richardson_number(BUO, SHEAR, DEPTH)
 
-        # Determining which cells have Ri < Ri_c
-        criteria = Ri > Ri_c
+            # Determining which cells have Ri < Ri_c
+            criteria = Ri > Ri_c
 
-        # Getting the last depth at which Ri < Ri_c, which would be the MLD
-        MLD = deepcopy(DEPTH)
-        MLD[criteria] = np.nan
-        MLD = np.nanmax(MLD, axis=(0, 1), keepdims=True)
+            # Getting the last depth at which Ri < Ri_c, which would be the MLD
+            MLD = deepcopy(DEPTH)
+            MLD[criteria] = np.nan
+            MLD = np.nanmax(MLD, axis=(0, 1), keepdims=True)
 
-        a=LON[11,1]
+            # Creating a NETCDF4 file containing the MLD field
+            to_netcdf = MLD, TIME, LON, LAT, np.nanmin(DEPTH, keepdims=True)
+            create_netcdf(filename=MLD_file, to_netcdf=to_netcdf)
+        else:
+            print('The MLD file already exists')
+
 
 def buoyancy_field(TEMP, SAL):
     """
@@ -82,3 +89,25 @@ def richardson_number(BUO, SHEAR, DEPTH):
     # Calculating the final richardson number
     Ri = np.multiply(ratio, DEPTH)
     return Ri
+
+
+def create_netcdf(filename: str, to_netcdf: tuple):
+    MLD, TIME, LON, LAT, DEPTH = to_netcdf
+    root_grp = Dataset(filename, 'w', format='NETCDF4')
+    # Create Dimensions
+    root_grp.createDimension('time', TIME.size)
+    root_grp.createDimension('lat', LAT.size)
+    root_grp.createDimension('lon', LON.size)
+    # variables
+    time = root_grp.createVariable('time', 'f8', ('time',))
+    time.units = 'seconds since 1970-01-01 00:00:00'
+    time.calender = 'standard'
+    lat = root_grp.createVariable('lat', 'f8', ('lat',))
+    lon = root_grp.createVariable('lon', 'f8', ('lon',))
+    depth = root_grp.createVariable('depth', 'f8', ('depth',))
+    mld = root_grp.createVariable('MLD', 'f8', ('time', 'depth', 'lat', 'lon'))
+    # Now assigning values to the variables
+    lat[:], lon[:], time[:], mld[:] = LAT, LON, TIME, MLD
+    # Finally, close the new field
+    root_grp.close()
+
