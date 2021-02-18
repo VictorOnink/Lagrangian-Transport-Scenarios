@@ -58,8 +58,8 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         os.system('echo "Creating the particle class"')
         particle_type = utils.BaseParticle
         utils._add_var_particle(particle_type, 'distance', dtype=np.float32, set_initial=False)
-        utils._add_var_particle(particle_type, 'density', dtype=np.float32, set_initial=False, to_write=False)
-        utils._add_var_particle(particle_type, 'surface_density', dtype=np.float32, set_initial=False, to_write=False)
+        utils._add_var_particle(particle_type, 'density', dtype=np.float32, set_initial=False, to_write=True)
+        utils._add_var_particle(particle_type, 'surface_density', dtype=np.float32, set_initial=False, to_write=True)
         utils._add_var_particle(particle_type, 'kinematic_viscosity', dtype=np.float32, set_initial=False,
                                 to_write=False)
         utils._add_var_particle(particle_type, 'rise_velocity', dtype=np.float32, set_initial=False)
