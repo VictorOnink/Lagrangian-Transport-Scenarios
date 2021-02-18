@@ -10,8 +10,7 @@ import utils
 
 
 def create_MLD_files(UV_filenames: list, UV_variables: dict, TEMP_filenames: list, TEMP_variables: dict,
-                     SALINITY_filenames: list, SALINITY_variables: dict, LON: array, LAT: array, DEPTH: array,
-                     GRID: array):
+                     SALINITY_filenames: list, SALINITY_variables: dict, LON: array, LAT: array, DEPTH: array):
     """
     Computing the MLD based on the critical Richardson number approach adapted from van Roekel et al. (2018)
     """
@@ -19,10 +18,13 @@ def create_MLD_files(UV_filenames: list, UV_variables: dict, TEMP_filenames: lis
     Ri_c = 0.3
     # Expanding the depth so that the array size is the same as the salinity fields
     DEPTH = np.tile(DEPTH[np.newaxis, :, np.newaxis, np.newaxis], (1, 1, LAT.shape[0], LON.shape[0]))
+    # Creating a list to which we save all MLD filenames
+    MLD_filenames = []
     for step in range(len(UV_filenames)):
         # Loading the relevant UV, temperature and salinity fields
         UV_file, TEMP_file, SAL_file = UV_filenames[step], TEMP_filenames[step], SALINITY_filenames[step]
         MLD_file = TEMP_file.replace('TEMP', 'MLD')
+        MLD_filenames.append(MLD_file)
 
         if not utils._check_file_exist(MLD_file):
             UV_var, TEMP_var, SAL_var = [*UV_variables.keys()], [*TEMP_variables.keys()][0], [*SALINITY_variables.keys()][0]
@@ -52,9 +54,7 @@ def create_MLD_files(UV_filenames: list, UV_variables: dict, TEMP_filenames: lis
             # Creating a NETCDF4 file containing the MLD field
             to_netcdf = MLD, TIME, LON, LAT, np.array(np.nanmin(DEPTH))
             create_netcdf(filename=MLD_file, to_netcdf=to_netcdf)
-        else:
-            print('The MLD file already exists')
-
+    return MLD_filenames
 
 def buoyancy_field(TEMP, SAL):
     """

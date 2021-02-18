@@ -25,6 +25,7 @@ class FieldSetFactory():
                         beach_timescale: bool = False,
                         resus_timescale: bool = False,
                         wind_min: bool = False,
+                        MLD: bool = False,
                         coastal_zone: bool = True,
                         grid_spacing: bool = True,
                         halo: bool = True
@@ -47,7 +48,7 @@ class FieldSetFactory():
         :return:
         """
         fieldset = _get_base_fieldset(file_dict=file_dict)
-        if stokes == 0:
+        if stokes is 0:
             fieldset = _add_stokes_drift(fieldset=fieldset, file_dict=file_dict)
         if stokes_depth:
             _add_stokes_depth_depen(fieldset=fieldset, file_dict=file_dict)
@@ -77,6 +78,8 @@ class FieldSetFactory():
             _add_resus_timescale_field(fieldset=fieldset, file_dict=file_dict)
         if wind_min:
             _add_min_resuspension_wind_constant(fieldset=fieldset)
+        if MLD:
+            pass
         if coastal_zone:
             _add_coastal_zone_boundary(fieldset=fieldset)
         if grid_spacing:
@@ -228,6 +231,16 @@ def _add_wind_field(fieldset: FieldSet, file_dict: dict):
     # Adding the wind fields to the general fieldset
     fieldset.add_field(fieldset_wind.u10)
     fieldset.add_field(fieldset_wind.v10)
+
+
+def _add_MLD_field(fieldset: FieldSet, file_dict: dict):
+    os.system('echo "Adding Mixed Layer Depth"')
+    _check_presence(variable='MLD_filenames', file_dict=file_dict)
+    filenames = {'MLD': file_dict['MLD_filenames']}
+    fieldset_MLD = FieldSet.from_netcdf(filenames, file_dict['MLD_variables'], file_dict['MLD_dimensions'],
+                                        allow_time_extrapolation=True)
+    # Adding the MLD field to the general fieldset
+    fieldset.add_field(fieldset_MLD.MLD)
 
 
 def _add_sea_elevation_field(fieldset: FieldSet, file_dict: dict):
