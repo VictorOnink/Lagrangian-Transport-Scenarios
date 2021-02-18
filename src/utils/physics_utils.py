@@ -377,10 +377,10 @@ def KPP_wind_mixing(particle, fieldset, time):
     """
     t, d, la, lo = time, particle.depth, particle.lat, particle.lon
     # All the parameters to compute the PKK diffusion parameters
-    MLD = fieldset.MLD[t, 0, la, lo]
+    mld = fieldset.MLD[t, 0, la, lo]
 
     # Below the MLD there is no wind-driven turbulent diffusion according to KPP theory
-    if particle.depth > MLD:
+    if particle.depth > mld:
         K_z = fieldset.K_Z_BULK
         dKz = 0
     # Within the MLD we compute the vertical diffusion according to Boufadel et al. (2020)
@@ -398,13 +398,13 @@ def KPP_wind_mixing(particle, fieldset, time):
         # The corrected particle depth, since the depth is not always zero for the surface circulation data
         z_correct = d - fieldset.SURF_Z
         # The diffusion gradient at particle.depth
-        alpha = (fieldset.VK * U_W) / (fieldset.PHI * MLD ** 2)
-        dKz = alpha * (MLD - z_correct) * (MLD - 3 * z_correct - 2 * z0)
+        alpha = (fieldset.VK * U_W) / (fieldset.PHI * mld ** 2)
+        dKz = alpha * (mld - z_correct) * (mld - 3 * z_correct - 2 * z0)
         # The KPP profile vertical diffusion, at a depth corrected for the vertical gradient in Kz, and including the
         # bulk diffusivity
         z_correct = math.fabs(z_correct + 0.5 * dKz * particle.dt)
         alpha = (fieldset.VK * U_W) / fieldset.PHI
-        K_z = alpha * (z_correct + z0) * math.pow(1 - z_correct / MLD, 2) + fieldset.K_Z_BULK
+        K_z = alpha * (z_correct + z0) * math.pow(1 - z_correct / mld, 2) + fieldset.K_Z_BULK
 
     # The Markov-0 vertical transport following Ross & Sharples (2004)
     gradient = dKz * particle.dt
