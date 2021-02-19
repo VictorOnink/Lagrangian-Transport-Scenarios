@@ -385,7 +385,6 @@ def KPP_wind_mixing(particle, fieldset, time):
         C_D = min(max(1.2E-3, 1.0E-3 * (0.49 + 0.065 * w_10)), 2.12E-3)
         # wind stress
         tau = C_D * fieldset.RHO_A * w_10 ** 2
-        particle.check = tau
         # Frictional velocity of water at the ocean surface
         U_W = tau / particle.surface_density
         # Surface roughness z0 following Zhao & Li (2019)
@@ -400,6 +399,7 @@ def KPP_wind_mixing(particle, fieldset, time):
         z_correct = math.fabs(z_correct + 0.5 * dKz * particle.dt)
         alpha = (fieldset.VK * U_W) / fieldset.PHI
         Kz = alpha * (z_correct + z0) * math.pow(1 - z_correct / mld, 2) + fieldset.K_Z_BULK
+        particle.check = Kz
 
     # The Markov-0 vertical transport following Ross & Sharples (2004)
     gradient = dKz * particle.dt
