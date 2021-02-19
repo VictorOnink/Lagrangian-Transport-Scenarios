@@ -371,7 +371,7 @@ def KPP_wind_mixing(particle, fieldset, time):
     """
     # All the parameters to compute the PKK diffusion parameters
     mld = fieldset.MLD[time, fieldset.SURF_Z, particle.lat, particle.lon]
-    particle.check = mld
+    particle.check = fieldset.bathymetry[time, fieldset.SURF_Z, particle.lat, particle.lon]
 
     # Below the MLD there is no wind-driven turbulent diffusion according to KPP theory
     if particle.depth > mld:
