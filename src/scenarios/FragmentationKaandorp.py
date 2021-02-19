@@ -67,7 +67,6 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         utils._add_var_particle(particle_type, 'reynolds', dtype=np.float32, set_initial=False)
         utils._add_var_particle(particle_type, 'rho_plastic', dtype=np.float32, set_initial=True, to_write=False)
         utils._add_var_particle(particle_type, 'size', dtype=np.float32)
-        utils._add_var_particle(particle_type, 'check', dtype=np.float32, set_initial=False, to_write=True)
         return particle_type
 
     def _file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART):
