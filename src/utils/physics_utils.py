@@ -381,6 +381,7 @@ def KPP_wind_mixing(particle, fieldset, time):
         # Wind speed
         w_10 = math.sqrt(fieldset.u10[time, fieldset.SURF_Z, particle.lat, particle.lon] ** 2 + \
                          fieldset.v10[time, fieldset.SURF_Z, particle.lat, particle.lon] ** 2)
+        particle.check = w_10
         # Drag coefficient
         C_D = min(max(1.2E-3, 1.0E-3 * (0.49 + 0.065 * w_10)), 2.12E-3)
         # wind stress
@@ -402,7 +403,6 @@ def KPP_wind_mixing(particle, fieldset, time):
 
     # The Markov-0 vertical transport following Ross & Sharples (2004)
     gradient = dKz * particle.dt
-    particle.check = gradient
     R = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3) * math.sqrt(2 * Kz)
     rise = particle.rise_velocity * particle.dt
 
