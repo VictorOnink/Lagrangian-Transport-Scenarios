@@ -408,8 +408,9 @@ def KPP_wind_mixing(particle, fieldset, time):
     rise = particle.rise_velocity * particle.dt
 
     # The ocean surface acts as a lid off of which the plastic bounces if tries to cross the ocean surface
-    # potential = particle.check + gradient + R + rise
-    # if potential < 0:
-    #     particle.check = -1 * potential
-    # else:
-    #     particle.check = potential
+    potential = particle.depth + gradient + R + rise
+    if potential < fieldset.SURF_Z:
+        overshoot = math.fabs(potential - fieldset.SURF_Z)
+        particle.depth = fieldset.SURF_Z + overshoot
+    else:
+        particle.depth = potential
