@@ -92,20 +92,6 @@
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
     </task>
-    <task id="LOCAL-00313" summary="to ubelix">
-      <created>1613576970276</created>
-      <option name="number" value="00313" />
-      <option name="presentableId" value="LOCAL-00313" />
-      <option name="project" value="LOCAL" />
-      <updated>1613576970277</updated>
-    </task>
-    <task id="LOCAL-00314" summary="to ubelix">
-      <created>1613577093825</created>
-      <option name="number" value="00314" />
-      <option name="presentableId" value="LOCAL-00314" />
-      <option name="project" value="LOCAL" />
-      <updated>1613577093825</updated>
-    </task>
     <task id="LOCAL-00315" summary="to ubelix">
       <created>1613578040922</created>
       <option name="number" value="00315" />
@@ -435,7 +421,21 @@
       <option name="project" value="LOCAL" />
       <updated>1613725142126</updated>
     </task>
-    <option name="localTasksCounter" value="362" />
+    <task id="LOCAL-00362" summary="bug fix">
+      <created>1613725308025</created>
+      <option name="number" value="00362" />
+      <option name="presentableId" value="LOCAL-00362" />
+      <option name="project" value="LOCAL" />
+      <updated>1613725308025</updated>
+    </task>
+    <task id="LOCAL-00363" summary="bug fix">
+      <created>1613725488084</created>
+      <option name="number" value="00363" />
+      <option name="presentableId" value="LOCAL-00363" />
+      <option name="project" value="LOCAL" />
+      <updated>1613725488085</updated>
+    </task>
+    <option name="localTasksCounter" value="364" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
