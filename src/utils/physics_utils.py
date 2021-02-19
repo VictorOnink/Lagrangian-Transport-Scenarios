@@ -403,12 +403,11 @@ def KPP_wind_mixing(particle, fieldset, time):
 
     # The Markov-0 vertical transport following Ross & Sharples (2004)
     gradient = dKz * particle.dt
-    particle.check = gradient
     R = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3) * math.sqrt(2 * Kz)
     rise = particle.rise_velocity * particle.dt
 
     # The ocean surface acts as a lid off of which the plastic bounces if tries to cross the ocean surface
-    #particle.depth = particle.depth + gradient + R + rise
+    particle.check = particle.depth + gradient + R + rise
     # potential = (particle.depth + gradient + R + rise) - fieldset.SURF_Z
     # if potential < 0:
     #     particle.depth = -1 * potential + fieldset.SURF_Z
