@@ -381,11 +381,11 @@ def KPP_wind_mixing(particle, fieldset, time):
         # Wind speed
         w_10 = math.sqrt(fieldset.u10[time, fieldset.SURF_Z, particle.lat, particle.lon] ** 2 + \
                          fieldset.v10[time, fieldset.SURF_Z, particle.lat, particle.lon] ** 2)
-        particle.check = w_10
         # Drag coefficient
         C_D = min(max(1.2E-3, 1.0E-3 * (0.49 + 0.065 * w_10)), 2.12E-3)
         # wind stress
         tau = C_D * fieldset.RHO_A * w_10 ** 2
+        particle.check = tau
         # Frictional velocity of water at the ocean surface
         U_W = tau / particle.surface_density
         # Surface roughness z0 following Zhao & Li (2019)
