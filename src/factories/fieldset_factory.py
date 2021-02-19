@@ -209,8 +209,6 @@ def _add_wind_field(fieldset: FieldSet, file_dict: dict):
     # Creating a fieldset for the wind data
     fieldset_wind = FieldSet.from_netcdf(filenames, file_dict['WIND_variables'], file_dict['WIND_dimensions'],
                                          allow_time_extrapolation=True)
-    fieldset_wind.u10.units = GeographicPolar()
-    fieldset_wind.v10.units = Geographic()
     # Adding the wind fields to the general fieldset
     fieldset.add_field(fieldset_wind.u10)
     fieldset.add_field(fieldset_wind.v10)
