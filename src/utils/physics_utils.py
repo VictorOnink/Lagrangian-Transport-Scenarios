@@ -370,7 +370,8 @@ def KPP_wind_mixing(particle, fieldset, time):
     at the full wind mixing code at https://github.com/VictorOnink/Wind-Mixing-Diffusion/
     """
     # All the parameters to compute the PKK diffusion parameters
-    mld = fieldset.MLD[time, 0, particle.lat, particle.lon]
+    mld = fieldset.MLD[time, fieldset.SURF_Z, particle.lat, particle.lon]
+    particle.check = mld
 
     # Below the MLD there is no wind-driven turbulent diffusion according to KPP theory
     if particle.depth > mld:
@@ -407,8 +408,8 @@ def KPP_wind_mixing(particle, fieldset, time):
     rise = particle.rise_velocity * particle.dt
 
     # The ocean surface acts as a lid off of which the plastic bounces if tries to cross the ocean surface
-    potential = particle.check + gradient + R + rise
-    if potential < 0:
-        particle.check = -1 * potential
-    else:
-        particle.check = potential
+    # potential = particle.check + gradient + R + rise
+    # if potential < 0:
+    #     particle.check = -1 * potential
+    # else:
+    #     particle.check = potential
