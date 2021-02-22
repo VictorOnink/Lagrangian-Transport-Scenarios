@@ -19,10 +19,11 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="bug fix">
+    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="Wind mixing now works :)">
+      <change afterPath="$PROJECT_DIR$/src/advection_scenarios/create_tidal_Kz_files.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/FragmentationKaandorp.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/FragmentationKaandorp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/physics_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/physics_utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/advection_scenarios/advection_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/advection_scenarios/advection_files.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/factories/fieldset_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/factories/fieldset_factory.py" afterDir="false" />
     </list>
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
     <list id="c5adc810-e024-4e30-b33b-a2709ed2c5b7" name="moving the release repeat timescale to the scenario" comment="" />
@@ -93,13 +94,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-00323" summary="to ubelix">
-      <created>1613641642217</created>
-      <option name="number" value="00323" />
-      <option name="presentableId" value="LOCAL-00323" />
-      <option name="project" value="LOCAL" />
-      <updated>1613641642217</updated>
     </task>
     <task id="LOCAL-00324" summary="to ubelix">
       <created>1613641787886</created>
@@ -437,7 +431,14 @@
       <option name="project" value="LOCAL" />
       <updated>1613728008022</updated>
     </task>
-    <option name="localTasksCounter" value="372" />
+    <task id="LOCAL-00372" summary="Wind mixing now works :)">
+      <created>1613728613902</created>
+      <option name="number" value="00372" />
+      <option name="presentableId" value="LOCAL-00372" />
+      <option name="project" value="LOCAL" />
+      <updated>1613728613902</updated>
+    </task>
+    <option name="localTasksCounter" value="373" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -453,7 +454,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="reduced the initial particle size significantly" />
     <MESSAGE value="increase initial size" />
     <MESSAGE value="getting the full rise velocity" />
     <MESSAGE value="adding the point release scenario" />
@@ -478,7 +478,8 @@
     <MESSAGE value="to ubelix" />
     <MESSAGE value="Adding in KPP turbulent wind mixing" />
     <MESSAGE value="bug fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="bug fix" />
+    <MESSAGE value="Wind mixing now works :)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Wind mixing now works :)" />
   </component>
   <component name="WindowStateProjectService">
     <state x="207" y="-1080" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1605605273285">
@@ -505,10 +506,10 @@
       <screen x="-223" y="-1080" width="1920" height="1080" />
     </state>
     <state width="523" height="445" key="SwitcherDM/-223.-1080.1920.1080/0.0.1440.900@-223.-1080.1920.1080" timestamp="1613575972681" />
-    <state x="204" y="-866" key="Vcs.Push.Dialog.v2" timestamp="1613728009908">
+    <state x="204" y="-866" key="Vcs.Push.Dialog.v2" timestamp="1613728616729">
       <screen x="-223" y="-1055" width="1920" height="1055" />
     </state>
-    <state x="204" y="-866" key="Vcs.Push.Dialog.v2/-223.-1055.1920.1055/0.25.1440.813@-223.-1055.1920.1055" timestamp="1613728009908" />
+    <state x="204" y="-866" key="Vcs.Push.Dialog.v2/-223.-1055.1920.1055/0.25.1440.813@-223.-1055.1920.1055" timestamp="1613728616729" />
     <state x="204" y="-887" key="Vcs.Push.Dialog.v2/-223.-1080.1920.1080/0.0.1440.900@-223.-1080.1920.1080" timestamp="1613663277459" />
     <state x="204" y="-887" key="Vcs.Push.Dialog.v2/0.0.1440.900/-223.-1080.1920.1080@-223.-1080.1920.1080" timestamp="1605627560722" />
     <state x="204" y="-868" key="Vcs.Push.Dialog.v2/0.23.1440.812/-223.-1057.1920.1057@-223.-1057.1920.1057" timestamp="1605713865768" />

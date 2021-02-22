@@ -261,10 +261,10 @@ def _add_bathymetry_field(fieldset: FieldSet, file_dict: dict):
     os.system('echo "Adding ocean bathymetry"')
     _check_presence(variable='BATH_filenames', file_dict=file_dict)
     dataset = Dataset(file_dict['BATH_filenames'])
-    bathymetry = np.array(dataset.variables['deptho'][:])
-    bathymetry[dataset.variables['deptho'][:].mask] = 0
-    fieldset.add_field(Field('bathymetry', bathymetry, lon=dataset.variables['longitude'][:],
-                             lat=dataset.variables['latitude'][:], mesh='spherical'))
+    bathymetry = np.array(dataset.variables[file_dict['BATH_variables']['DEPTH']][:])
+    bathymetry[dataset.variables[file_dict['BATH_variables']['DEPTH']][:].mask] = 0
+    fieldset.add_field(Field('bathymetry', bathymetry, lon=dataset.variables[file_dict['BATH_variables']['LON']][:],
+                             lat=dataset.variables[file_dict['BATH_variables']['LAT']][:], mesh='spherical'))
 
 
 def _add_vicinity_constant(fieldset: FieldSet):

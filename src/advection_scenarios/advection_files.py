@@ -11,6 +11,7 @@ import advection_scenarios.create_land_ID as create_land_ID
 import advection_scenarios.create_grid_spacing as create_grid_spacing
 import advection_scenarios.create_input_files as create_input_files
 import advection_scenarios.create_MLD_files as create_MLD_files
+import advection_scenarios.create_tidal_Kz_files as create_tidal_Kz_files
 
 
 class AdvectionFiles:
@@ -248,8 +249,11 @@ class AdvectionFiles:
 
             # Ocean bathymetry
             BATH_filenames = self.data_dir + "CMEMS_MED/MED-MFC_006_004_mask_bathy.nc"
+            BATH_variables = {'DEPTH': 'deptho', 'LON': 'longitude', 'LAT': 'latitude'}
             file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='BATH_filenames',
                                           variable=BATH_filenames)
+            file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='BATH_variables',
+                                          variable=BATH_variables)
 
             # The surface winds
             WIND_filenames = glob.glob(self.data_dir + "Wind/ERA5-wind10m*.nc")
@@ -283,6 +287,8 @@ class AdvectionFiles:
             file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='MLD_filenames', variable=MLD_filenames)
             file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='MLD_variables', variable=MLD_variables)
             file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='MLD_dimensions', variable=MLD_dimensions)
+
+            # Vertical Kz due to internal tides (TKZ)
 
 
 
