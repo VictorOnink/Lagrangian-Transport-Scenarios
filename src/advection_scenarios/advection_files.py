@@ -289,6 +289,7 @@ class AdvectionFiles:
             file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='MLD_dimensions', variable=MLD_dimensions)
 
             # Vertical Kz due to internal tides (TKZ)
+            create_tidal_Kz_files.create_tidal_Kz_files(LON, LAT, DEPTH, BATH_filenames, BATH_variables)
 
 
 
