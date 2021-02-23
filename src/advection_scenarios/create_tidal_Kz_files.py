@@ -53,6 +53,7 @@ def interpolate_to_DEPTH(TIDAL_Kz: array, TIDAL_data: dict, DEPTH: array):
     for z, z_level in enumerate(DEPTH):
         if z_level < TIDAL_min_depth:
             TIDAL_Kz_inter[z, :, :] = TIDAL_Kz[0, :, :]
+    print(np.nanmax(TIDAL_Kz_inter[0,:,:]))
     return TIDAL_Kz_inter
 
 
@@ -64,7 +65,6 @@ def interpolate_to_GRID(TIDAL_Kz_inter: array, DEPTH: array, LON: array, LAT: ar
         T_LAT, T_LON = np.meshgrid(TIDAL_data['lat'], TIDAL_data['lon'], sparse=True)
         # For some reason the interpolation function requires the transpose of the 2D array, but I'm not 100% sure why
         print(TIDAL_Kz_inter[z_level, :, :])
-        print(np.nanmax(TIDAL_Kz_inter[z_level, :, :]))
         inter_2D = interpolate.interp2d(T_LAT, T_LON, TIDAL_Kz_inter[z_level, :, :].T)
         print(inter_2D(LON, LAT))
         # GRID_Kz[z_level, :, :] = inter_2D(LON, LAT)
