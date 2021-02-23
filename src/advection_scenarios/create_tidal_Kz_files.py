@@ -24,12 +24,13 @@ def create_tidal_Kz_files(LON: array, LAT: array, DEPTH: array, BATH_filenames: 
     bathymetry = Dataset(BATH_filenames).variables[BATH_variables['DEPTH']][:]
     bathymetry[bathymetry.mask] = 0
 
-    # A number of physical parameters
+    # Computing Kz on the TIDAL_data grid according to Kv = gamma * epsilon / N^2
     gamma = 0.2  # Mixing efficiency
+    TIDAL_Kz = np.divide(gamma * TIDAL_data['epsilon_tid'], TIDAL_data['buoyancy_frequency_squared'])
 
-    # The TIDAL_data gridding isn't regular in the z-direction. We will first interpolate the epsilon_tid and
-    # buoyancy_frequency_squared fields onto the DEPTH levels
-    TIDAL_inter = interpolate_to_DEPTH(TIDAL_data, DEPTH)
+    # The TIDAL_data gridding isn't regular in the z-direction. We will first interpolate the TIDAL_Kz fields onto the
+    # DEPTH levels
+    TIDAL_inter = interpolate_to_DEPTH(TIDAL_Kz, DEPTH)
 
     TIDAL_data[10000]
 
