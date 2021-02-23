@@ -39,6 +39,7 @@ def interpolate_to_DEPTH(TIDAL_data, DEPTH):
     TIDAL_inter = {}
     for key in ['buoyancy_frequency_squared', 'epsilon_tid']:
         field = TIDAL_data[key]
+        field[field.mask] = 0
         field_inter = np.zeros(field.shape)
         for lat in range(field.shape[1]):
             for lon in range(field.shape[2]):
