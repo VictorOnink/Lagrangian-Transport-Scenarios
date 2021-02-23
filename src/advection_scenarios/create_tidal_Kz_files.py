@@ -14,7 +14,8 @@ def create_tidal_Kz_files(file_name: str, LON: array, LAT: array, DEPTH: array, 
                           BATH_variables: dict):
     """
     Determining Kz from the estimates of production of turbulent kinetic energy, as outlined in
-    de Lavergne et al. (2020) and based on code shared by Clement Vic
+    de Lavergne et al. (2020) and based on code shared by Clement Vic. The input file for TIDAL_filename can be
+    downloaded at https://www.seanoe.org/data/00619/73082/
     """
     # Loading the global data from de Lavergne et al. (2020)
     TIDAL_filename = utils._get_input_directory(server=settings.SERVER) + 'global_tidal_energy_dissipation.nc'
