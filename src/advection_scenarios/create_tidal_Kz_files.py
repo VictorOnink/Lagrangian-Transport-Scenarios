@@ -31,7 +31,10 @@ def create_tidal_Kz_files(LON: array, LAT: array, DEPTH: array, BATH_filenames: 
     # The TIDAL_data gridding isn't regular in the z-direction. We will first interpolate the TIDAL_Kz fields onto the
     # DEPTH levels
     TIDAL_Kz_inter = interpolate_to_DEPTH(TIDAL_Kz, TIDAL_data, DEPTH)
-    print('max Kz={}, mean Kz={}'.format(np.nanmax(TIDAL_Kz_inter), np.nanmean(TIDAL_Kz_inter)))
+
+    # Now we interpolate the Kz values onto the model grid defined by LON, LAT and DEPTH
+    GRID_Kz = interpolate_to_GRID(TIDAL_Kz_inter, DEPTH, LON, LAT, TIDAL_data)
+    print('max Kz={}, mean Kz={}'.format(np.nanmax(GRID_Kz), np.nanmean(GRID_Kz)))
     TIDAL_data[10000]
 
 
@@ -45,3 +48,11 @@ def interpolate_to_DEPTH(TIDAL_Kz: array, TIDAL_data: dict, DEPTH: array):
             inter_f = interpolate.interp1d(TIDAL_depth[:, lat, lon], TIDAL_Kz[:, lat, lon], bounds_error=False)
             TIDAL_Kz_inter[:, lat, lon] = inter_f(np.array(DEPTH))
     return TIDAL_Kz_inter
+
+
+def interpolate_to_GRID(TIDAL_Kz_inter: array, DEPTH: array, LON: array, LAT: array, TIDAL_data: dict):
+    GRID_Kz = np.zeros((DEPTH.shape[0], LAT.shape[0], LON.shape[0]))
+    for z_level in range(DEPTH.shape[0]):
+        inter_f = interpolate.interp2d(TIDAL_data['lat'], TIDAL_data['lon'], TIDAL_Kz_inter[z_level, :, :])
+        GRID_Kz[z_level, :, :] = inter_f(LAT, LON)
+    return GRID_Kz
