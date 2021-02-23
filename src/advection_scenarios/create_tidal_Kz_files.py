@@ -52,6 +52,7 @@ def interpolate_to_DEPTH(TIDAL_Kz: array, TIDAL_data: dict, DEPTH: array):
 
 def interpolate_to_GRID(TIDAL_Kz_inter: array, DEPTH: array, LON: array, LAT: array, TIDAL_data: dict):
     GRID_Kz = np.zeros((DEPTH.shape[0], LAT.shape[0], LON.shape[0]))
+    print(TIDAL_Kz_inter)
     for z_level in range(DEPTH.shape[0]):
         T_LAT, T_LON = np.meshgrid(TIDAL_data['lat'], TIDAL_data['lon'], sparse=True)
         # For some reason the interpolation function requires the transpose of the 2D array, but I'm not 100% sure why
