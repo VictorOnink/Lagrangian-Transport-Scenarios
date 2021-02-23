@@ -31,6 +31,7 @@ def create_tidal_Kz_files(LON: array, LAT: array, DEPTH: array, BATH_filenames: 
     # The TIDAL_data gridding isn't regular in the z-direction. We will first interpolate the TIDAL_Kz fields onto the
     # DEPTH levels
     TIDAL_Kz_inter = interpolate_to_DEPTH(TIDAL_Kz, TIDAL_data, DEPTH)
+    print(np.nanmax(TIDAL_Kz_inter[0, :, :]))
 
     # Now we interpolate the Kz values onto the model grid defined by LON, LAT and DEPTH
     GRID_Kz = interpolate_to_GRID(TIDAL_Kz_inter, DEPTH, LON, LAT, TIDAL_data)
@@ -53,7 +54,7 @@ def interpolate_to_DEPTH(TIDAL_Kz: array, TIDAL_data: dict, DEPTH: array):
     for z, z_level in enumerate(DEPTH):
         if z_level < TIDAL_min_depth:
             TIDAL_Kz_inter[z, :, :] = TIDAL_Kz[0, :, :]
-    print(np.nanmax(TIDAL_Kz_inter[0,:,:]))
+
     return TIDAL_Kz_inter
 
 
