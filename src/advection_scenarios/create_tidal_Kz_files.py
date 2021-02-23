@@ -55,6 +55,6 @@ def interpolate_to_GRID(TIDAL_Kz_inter: array, DEPTH: array, LON: array, LAT: ar
     for z_level in range(DEPTH.shape[0]):
         T_LAT, T_LON = np.meshgrid(TIDAL_data['lat'], TIDAL_data['lon'], sparse=True)
         print('lat size = {}, lon size = {}, array size = {}'.format(TIDAL_data['lat'].shape, TIDAL_data['lon'].shape, TIDAL_Kz_inter[z_level, :, :].shape))
-        inter_2D = interpolate.interp2d(T_LAT, T_LON, TIDAL_Kz_inter[z_level, :, :])
+        inter_2D = interpolate.interp2d(T_LAT, T_LON, TIDAL_Kz_inter[z_level, :, :].T)
         GRID_Kz[z_level, :, :] = inter_2D(LAT, LON)
     return GRID_Kz
