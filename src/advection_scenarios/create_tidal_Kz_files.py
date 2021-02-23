@@ -30,22 +30,18 @@ def create_tidal_Kz_files(LON: array, LAT: array, DEPTH: array, BATH_filenames: 
 
     # The TIDAL_data gridding isn't regular in the z-direction. We will first interpolate the TIDAL_Kz fields onto the
     # DEPTH levels
-    TIDAL_inter = interpolate_to_DEPTH(TIDAL_Kz, DEPTH)
+    TIDAL_Kz_inter = interpolate_to_DEPTH(TIDAL_Kz, TIDAL_data, DEPTH)
 
     TIDAL_data[10000]
 
 
-def interpolate_to_DEPTH(TIDAL_data, DEPTH):
-    depth_midpoint = TIDAL_data['depth_midpoint']
-    depth_midpoint[depth_midpoint.mask] = np.nanmax(depth_midpoint)
-    TIDAL_inter = {}
-    for key in ['buoyancy_frequency_squared', 'epsilon_tid']:
-        field = TIDAL_data[key]
-        field[field.mask] = 0
-        field_inter = np.zeros((DEPTH.shape[0], field.shape[1], field.shape[2]))
-        for lat in range(field.shape[1]):
-            for lon in range(field.shape[2]):
-                inter_f = interpolate.interp1d(depth_midpoint[:, lat, lon], field[:, lat, lon], bounds_error=False)
-                field_inter[:, lat, lon] = inter_f(np.array(DEPTH))
-        TIDAL_inter[key] = field_inter
-    return TIDAL_inter
+def interpolate_to_DEPTH(TIDAL_Kz: array, TIDAL_data: dict, DEPTH: array):
+    TIDAL_depth = TIDAL_data['depth_midpoint']
+    TIDAL_depth[TIDAL_depth.mask] = np.nanmax(TIDAL_depth)
+    TIDAL_Kz[TIDAL_Kz.mask] = 0
+    TIDAL_Kz_inter = np.zeros((DEPTH.shape[0], TIDAL_Kz.shape[1], TIDAL_Kz.shape[2]))
+    for lat in range(TIDAL_Kz.shape[1]):
+        for lon in range(TIDAL_Kz.shape[2]):
+            inter_f = interpolate.interp1d(TIDAL_depth[:, lat, lon], TIDAL_Kz[:, lat, lon], bounds_error=False)
+            TIDAL_Kz_inter[:, lat, lon] = inter_f(np.array(DEPTH))
+    return TIDAL_Kz_inter
