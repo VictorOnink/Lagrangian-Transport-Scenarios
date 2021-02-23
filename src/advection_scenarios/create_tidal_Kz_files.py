@@ -27,6 +27,7 @@ def create_tidal_Kz_files(LON: array, LAT: array, DEPTH: array, BATH_filenames: 
     # Computing Kz on the TIDAL_data grid according to Kv = gamma * epsilon / N^2
     gamma = 0.2  # Mixing efficiency
     TIDAL_Kz = np.divide(gamma * TIDAL_data['epsilon_tid'], TIDAL_data['buoyancy_frequency_squared'])
+    print('max Kz={}, mean Kz={}'.format(np.nanmax(TIDAL_Kz), np.nanmean(TIDAL_Kz)))
 
     # The TIDAL_data gridding isn't regular in the z-direction. We will first interpolate the TIDAL_Kz fields onto the
     # DEPTH levels
