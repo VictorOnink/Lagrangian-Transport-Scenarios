@@ -58,6 +58,6 @@ def interpolate_to_GRID(TIDAL_Kz_inter: array, DEPTH: array, LON: array, LAT: ar
         T_LAT, T_LON = np.meshgrid(TIDAL_data['lat'], TIDAL_data['lon'], sparse=True)
         # For some reason the interpolation function requires the transpose of the 2D array, but I'm not 100% sure why
         inter_2D = interpolate.interp2d(T_LAT, T_LON, TIDAL_Kz_inter[z_level, :, :].T)
-        GRID_Kz[z_level, :, :] = inter_2D(LAT, LON).T
+        GRID_Kz[z_level, :, :] = inter_2D(LON, LAT)
     print('shape {} max {} min {} mean {}'.format(GRID_Kz.shape, np.max(GRID_Kz), np.min(GRID_Kz), np.mean(GRID_Kz)))
     return GRID_Kz
