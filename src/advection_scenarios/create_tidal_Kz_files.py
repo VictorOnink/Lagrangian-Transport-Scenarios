@@ -49,6 +49,9 @@ def interpolate_to_DEPTH(TIDAL_Kz: array, TIDAL_data: dict, DEPTH: array):
         for lon in range(TIDAL_Kz.shape[2]):
             inter_1D = interpolate.interp1d(TIDAL_depth[:, lat, lon], TIDAL_Kz[:, lat, lon], bounds_error=False)
             TIDAL_Kz_inter[:, lat, lon] = inter_1D(np.array(DEPTH))
+    # TIDAL_data only starts at z=5m, so we will assume homogenous mixing there for now to prevent issues coming up
+    # later. This affects the first two rows of the array
+    TIDAL_Kz_inter[:2, :, :] = TIDAL_Kz[0, :, :]
     return TIDAL_Kz_inter
 
 
