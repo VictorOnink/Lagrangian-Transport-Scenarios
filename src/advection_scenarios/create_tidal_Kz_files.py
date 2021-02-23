@@ -14,7 +14,7 @@ def create_tidal_Kz_files(LON: array, LAT: array, DEPTH: array, BATH_filenames: 
     de Lavergne et al. (2020) and based on code shared by Clement Vic
     """
     # Loading the global data from de Lavergne et al. (2020)
-    TIDAL_filename = settings.DATA_INPUT_DIR_SERVERS + 'global_tidal_energy_dissipation.nc'
+    TIDAL_filename = utils._get_data_directory(server=settings.SERVER) + 'global_tidal_energy_dissipation.nc'
     TIDAL_data = {}
     for key in Dataset(TIDAL_filename).variables.keys:
         TIDAL_data[key] = Dataset(TIDAL_filename).variables[key][:]
