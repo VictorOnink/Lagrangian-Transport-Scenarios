@@ -30,7 +30,7 @@ def create_tidal_Kz_files(LON: array, LAT: array, DEPTH: array, BATH_filenames: 
 
     # The TIDAL_data gridding isn't regular in the z-direction. We will first interpolate the TIDAL_Kz fields onto the
     # DEPTH levels
-    TIDAL_Kz_inter = interpolate_to_DEPTH(TIDAL_Kz, TIDAL_data, DEPTH, LAT, LON)
+    TIDAL_Kz_inter = interpolate_to_DEPTH(TIDAL_Kz, TIDAL_data, DEPTH)
     for z in range(TIDAL_Kz_inter.shape[0]):
         print('z={},Kz_max={}'.format(DEPTH[z], np.nanmax(TIDAL_Kz_inter[z,:,:])))
 
@@ -40,7 +40,7 @@ def create_tidal_Kz_files(LON: array, LAT: array, DEPTH: array, BATH_filenames: 
     TIDAL_data[10000]
 
 
-def interpolate_to_DEPTH(TIDAL_Kz: array, TIDAL_data: dict, DEPTH: array, LAT: array, LON: array):
+def interpolate_to_DEPTH(TIDAL_Kz: array, TIDAL_data: dict, DEPTH: array):
     TIDAL_depth = TIDAL_data['depth_midpoint']
     TIDAL_depth[TIDAL_depth.mask] = np.nanmax(TIDAL_depth)
     TIDAL_Kz[TIDAL_Kz.mask] = 0
@@ -51,7 +51,7 @@ def interpolate_to_DEPTH(TIDAL_Kz: array, TIDAL_data: dict, DEPTH: array, LAT: a
             TIDAL_Kz_inter[:, lat, lon] = inter_1D(np.array(DEPTH))
     # TIDAL_data only starts at z=5m, so we will assume homogenous mixing there for now to prevent issues coming up
     # later. This affects the first two rows of the array
-    DEPTH_3D = np.tile(DEPTH[:, np.newaxis, np.newaxis], (1, LAT.shape[0], LON.shape[0]))
+    DEPTH_3D = np.tile(DEPTH[:, np.newaxis, np.newaxis], (1, TIDAL_data['lat'].shape[0], TIDAL_data['lon'].shape[0]))
     TIDAL_Kz_inter[DEPTH_3D < np.nanmax(TIDAL_depth)] = TIDAL_Kz[0, :, :]
     return TIDAL_Kz_inter
 
