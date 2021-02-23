@@ -44,6 +44,6 @@ def interpolate_to_DEPTH(TIDAL_data, DEPTH):
         for lat in range(field.shape[1]):
             for lon in range(field.shape[2]):
                 inter_f = interpolate.interp1d(depth_midpoint[:, lat, lon], field[:, lat, lon], bounds_error=False)
-                field_inter[:, lat, lon] = inter_f(DEPTH)
+                field_inter[:, lat, lon] = inter_f(np.array(DEPTH))
         TIDAL_inter[key] = field_inter
     return TIDAL_inter
