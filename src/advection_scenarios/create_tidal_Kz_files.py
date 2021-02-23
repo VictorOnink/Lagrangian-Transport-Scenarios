@@ -52,6 +52,7 @@ def interpolate_to_DEPTH(TIDAL_Kz: array, TIDAL_data: dict, DEPTH: array):
 
 def interpolate_to_GRID(TIDAL_Kz_inter: array, DEPTH: array, LON: array, LAT: array, TIDAL_data: dict):
     GRID_Kz = np.zeros((DEPTH.shape[0], LAT.shape[0], LON.shape[0]))
+    print(GRID_Kz.shape)
     for z_level in range(DEPTH.shape[0]):
         print(TIDAL_Kz_inter[z_level, :, :].shape)
         print(TIDAL_data['lat'].shape)
