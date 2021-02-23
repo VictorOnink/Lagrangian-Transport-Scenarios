@@ -45,8 +45,8 @@ def interpolate_to_DEPTH(TIDAL_Kz: array, TIDAL_data: dict, DEPTH: array):
     TIDAL_Kz_inter = np.zeros((DEPTH.shape[0], TIDAL_Kz.shape[1], TIDAL_Kz.shape[2]))
     for lat in range(TIDAL_Kz.shape[1]):
         for lon in range(TIDAL_Kz.shape[2]):
-            inter_f = interpolate.interp1d(TIDAL_depth[:, lat, lon], TIDAL_Kz[:, lat, lon], bounds_error=False)
-            TIDAL_Kz_inter[:, lat, lon] = inter_f(np.array(DEPTH))
+            inter_1D = interpolate.interp1d(TIDAL_depth[:, lat, lon], TIDAL_Kz[:, lat, lon], bounds_error=False)
+            TIDAL_Kz_inter[:, lat, lon] = inter_1D(np.array(DEPTH))
     return TIDAL_Kz_inter
 
 
@@ -54,9 +54,7 @@ def interpolate_to_GRID(TIDAL_Kz_inter: array, DEPTH: array, LON: array, LAT: ar
     GRID_Kz = np.zeros((DEPTH.shape[0], LAT.shape[0], LON.shape[0]))
     print(GRID_Kz.shape)
     for z_level in range(DEPTH.shape[0]):
-        print(TIDAL_Kz_inter[z_level, :, :].shape)
-        print(TIDAL_data['lat'].shape)
-        print(TIDAL_data['lon'].shape)
-        inter_f = interpolate.interp2d(TIDAL_data['lat'], TIDAL_data['lon'], TIDAL_Kz_inter[z_level, :, :])
-        GRID_Kz[z_level, :, :] = inter_f(LAT, LON)
+        T_LAT, T_LON = np.meshgrid(TIDAL_data['lat'], TIDAL_data['lon'])
+        inter_2D = interpolate.interp2d(T_LAT, T_LON, TIDAL_Kz_inter[z_level, :, :])
+        GRID_Kz[z_level, :, :] = inter_2D(LAT, LON)
     return GRID_Kz

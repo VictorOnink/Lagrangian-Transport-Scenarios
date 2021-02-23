@@ -92,13 +92,6 @@
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
     </task>
-    <task id="LOCAL-00343" summary="bug fix">
-      <created>1613659853588</created>
-      <option name="number" value="00343" />
-      <option name="presentableId" value="LOCAL-00343" />
-      <option name="project" value="LOCAL" />
-      <updated>1613659853588</updated>
-    </task>
     <task id="LOCAL-00344" summary="bug fix">
       <created>1613660091660</created>
       <option name="number" value="00344" />
@@ -435,7 +428,14 @@
       <option name="project" value="LOCAL" />
       <updated>1614076679472</updated>
     </task>
-    <option name="localTasksCounter" value="392" />
+    <task id="LOCAL-00392" summary="To ubelix">
+      <created>1614076915614</created>
+      <option name="number" value="00392" />
+      <option name="presentableId" value="LOCAL-00392" />
+      <option name="project" value="LOCAL" />
+      <updated>1614076915614</updated>
+    </task>
+    <option name="localTasksCounter" value="393" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -503,11 +503,11 @@
       <screen x="-223" y="-1080" width="1920" height="1080" />
     </state>
     <state width="523" height="445" key="SwitcherDM/-223.-1080.1920.1080/0.0.1440.900@-223.-1080.1920.1080" timestamp="1613575972681" />
-    <state x="204" y="-887" key="Vcs.Push.Dialog.v2" timestamp="1614076682495">
+    <state x="204" y="-887" key="Vcs.Push.Dialog.v2" timestamp="1614076918458">
       <screen x="-223" y="-1080" width="1920" height="1080" />
     </state>
     <state x="204" y="-866" key="Vcs.Push.Dialog.v2/-223.-1055.1920.1055/0.25.1440.813@-223.-1055.1920.1055" timestamp="1613728616729" />
-    <state x="204" y="-887" key="Vcs.Push.Dialog.v2/-223.-1080.1920.1080/0.0.1440.900@-223.-1080.1920.1080" timestamp="1614076682495" />
+    <state x="204" y="-887" key="Vcs.Push.Dialog.v2/-223.-1080.1920.1080/0.0.1440.900@-223.-1080.1920.1080" timestamp="1614076918458" />
     <state x="204" y="-887" key="Vcs.Push.Dialog.v2/0.0.1440.900/-223.-1080.1920.1080@-223.-1080.1920.1080" timestamp="1605627560722" />
     <state x="204" y="-868" key="Vcs.Push.Dialog.v2/0.23.1440.812/-223.-1057.1920.1057@-223.-1057.1920.1057" timestamp="1605713865768" />
     <state x="204" y="-882" key="Vcs.Push.Dialog.v2/0.25.1440.875/-223.-1055.1920.970@-223.-1055.1920.970" timestamp="1605778463607" />
