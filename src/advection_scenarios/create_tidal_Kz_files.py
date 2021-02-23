@@ -36,6 +36,7 @@ def create_tidal_Kz_files(LON: array, LAT: array, DEPTH: array, BATH_filenames: 
 
 def interpolate_to_DEPTH(TIDAL_data, DEPTH):
     depth_midpoint = TIDAL_data['depth_midpoint']
+    depth_midpoint[depth_midpoint.mask] = np.nanmax(depth_midpoint)
     TIDAL_inter = {}
     for key in ['buoyancy_frequency_squared', 'epsilon_tid']:
         field = TIDAL_data[key]
