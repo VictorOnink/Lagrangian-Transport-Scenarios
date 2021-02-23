@@ -51,7 +51,7 @@ def interpolate_to_DEPTH(TIDAL_Kz: array, TIDAL_data: dict, DEPTH: array):
             TIDAL_Kz_inter[:, lat, lon] = inter_1D(np.array(DEPTH))
     # TIDAL_data only starts at z=5m, so we will assume homogenous mixing there for now to prevent issues coming up
     # later. This affects the first two rows of the array
-    TIDAL_min_depth = np.nanmax(TIDAL_depth, axis=(0, 1, 2))
+    TIDAL_min_depth = np.nanmin(TIDAL_depth, axis=(0, 1, 2))
     for z, z_level in enumerate(DEPTH):
         if z_level < TIDAL_min_depth:
             TIDAL_Kz_inter[z, :, :] = TIDAL_Kz[0, :, :]
