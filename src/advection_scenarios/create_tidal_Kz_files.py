@@ -2,9 +2,6 @@ import numpy as np
 from numpy import array
 import scipy.interpolate as interpolate
 import xarray
-import progressbar
-from copy import deepcopy
-import os
 from netCDF4 import Dataset
 import settings
 import utils
@@ -38,13 +35,16 @@ def create_tidal_Kz_files(file_name: str, LON: array, LAT: array, DEPTH: array, 
     # Now we interpolate the Kz values onto the model grid defined by LON, LAT and DEPTH
     GRID_Kz = interpolate_to_GRID(TIDAL_Kz_inter, DEPTH, LON, LAT, TIDAL_data)
 
+    # Due to very low N^2 values (corresponding to very weak stratification), there are some regions where Kz is
+    # unfeasibly high (Kz > 100 m^2/s). Therefore, I cap GRID_Kz at 0.1 m^2/s. This only affects 0.08% of all the cells
+    # in the TIDAL_data, and prevents numerical issues later on.
+    GRID_Kz[GRID_Kz > 1e-1] = 1e-1
+
     # Saving the field to a .nc file
     coords = [('depth', DEPTH), ('lat', LAT), ('lon', LON)]
     dcoo = {'depth': DEPTH, 'lat': LAT, 'lon': LON}
     dset = xarray.Dataset({'TIDAL_Kz': xarray.DataArray(GRID_Kz, coords=coords)}, coords=dcoo)
     dset.to_netcdf(file_name)
-
-
 
 
 def interpolate_to_DEPTH(TIDAL_Kz: array, TIDAL_data: dict, DEPTH: array):
