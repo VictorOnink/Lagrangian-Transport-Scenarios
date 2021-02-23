@@ -289,7 +289,14 @@ class AdvectionFiles:
             file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='MLD_dimensions', variable=MLD_dimensions)
 
             # Vertical Kz due to internal tides (TKZ)
-            create_tidal_Kz_files.create_tidal_Kz_files(LON, LAT, DEPTH, BATH_filenames, BATH_variables)
+            TIDE_Kz_filenames = self.input_dir + prefix + "_Kz_TIDAL.nc"
+            if not utils._check_file_exist(TIDE_Kz_filenames):
+                os.system('echo "The tidal Kz file does not yet exist"')
+                create_tidal_Kz_files.create_tidal_Kz_files(file_name=TIDE_Kz_filenames, LON=LON, LAT=LAT, DEPTH=DEPTH,
+                                                            BATH_filenames=BATH_filenames,
+                                                            BATH_variables=BATH_variables)
+            else:
+                os.system('echo "The tidal Kz file already exists"')
 
 
 

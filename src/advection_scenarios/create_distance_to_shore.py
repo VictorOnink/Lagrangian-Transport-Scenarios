@@ -106,6 +106,7 @@ def create_distance_to_shore_land(output_name: str, grid: np.array, lon: np.arra
     dset = xarray.Dataset({'distance': dist}, coords=dcoo)
     dset.to_netcdf(output_name)
 
+
 def boundary_conditions(n_lat: int, n_lon: int, lat_index: int, k: int, lon_index: int, m: int):
     if settings.ADVECTION_DATA == 'HYCOM_GLOBAL':
         return (lat_index + k) < n_lat

@@ -9,7 +9,9 @@ from netCDF4 import Dataset
 import settings
 import utils
 
-def create_tidal_Kz_files(LON: array, LAT: array, DEPTH: array, BATH_filenames: str, BATH_variables: dict):
+
+def create_tidal_Kz_files(file_name: str, LON: array, LAT: array, DEPTH: array, BATH_filenames: str,
+                          BATH_variables: dict):
     """
     Determining Kz from the estimates of production of turbulent kinetic energy, as outlined in
     de Lavergne et al. (2020) and based on code shared by Clement Vic
@@ -34,8 +36,14 @@ def create_tidal_Kz_files(LON: array, LAT: array, DEPTH: array, BATH_filenames: 
 
     # Now we interpolate the Kz values onto the model grid defined by LON, LAT and DEPTH
     GRID_Kz = interpolate_to_GRID(TIDAL_Kz_inter, DEPTH, LON, LAT, TIDAL_data)
-    print('max Kz={}, mean Kz={}'.format(np.nanmax(GRID_Kz), np.nanmean(GRID_Kz)))
-    TIDAL_data[10000]
+
+    # Saving the field to a .nc file
+    coords = [('depth', DEPTH), ('lat', LAT), ('lon', LON)]
+    dcoo = {'depth': DEPTH, 'lat': LAT, 'lon': LON}
+    dset = xarray.Dataset({'TIDAL_Kz': xarray.DataArray(GRID_Kz, coords=coords)}, coords=dcoo)
+    dset.to_netcdf(file_name)
+
+
 
 
 def interpolate_to_DEPTH(TIDAL_Kz: array, TIDAL_data: dict, DEPTH: array):
@@ -66,5 +74,4 @@ def interpolate_to_GRID(TIDAL_Kz_inter: array, DEPTH: array, LON: array, LAT: ar
         # For some reason the interpolation function requires the transpose of the 2D array, but I'm not 100% sure why
         inter_2D = interpolate.interp2d(T_LAT, T_LON, TIDAL_Kz_inter[z_level, :, :].T)
         GRID_Kz[z_level, :, :] = inter_2D(LON, LAT)
-    print('shape {} max {} min {} mean {}'.format(GRID_Kz.shape, np.max(GRID_Kz[GRID_Kz>0]), np.min(GRID_Kz[GRID_Kz>0]), np.mean(GRID_Kz[GRID_Kz>0])))
     return GRID_Kz

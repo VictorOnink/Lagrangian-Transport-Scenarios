@@ -20,7 +20,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="To ubelix">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/advection_scenarios/advection_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/advection_scenarios/advection_files.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/advection_scenarios/create_distance_to_shore.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/advection_scenarios/create_distance_to_shore.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/advection_scenarios/create_tidal_Kz_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/advection_scenarios/create_tidal_Kz_files.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/factories/fieldset_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/factories/fieldset_factory.py" afterDir="false" />
     </list>
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
     <list id="c5adc810-e024-4e30-b33b-a2709ed2c5b7" name="moving the release repeat timescale to the scenario" comment="" />
@@ -91,20 +95,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-00372" summary="Wind mixing now works :)">
-      <created>1613728613902</created>
-      <option name="number" value="00372" />
-      <option name="presentableId" value="LOCAL-00372" />
-      <option name="project" value="LOCAL" />
-      <updated>1613728613902</updated>
-    </task>
-    <task id="LOCAL-00373" summary="Starting to add computation of 3D internal tide vertical diffusion fields">
-      <created>1614017006373</created>
-      <option name="number" value="00373" />
-      <option name="presentableId" value="LOCAL-00373" />
-      <option name="project" value="LOCAL" />
-      <updated>1614017006374</updated>
     </task>
     <task id="LOCAL-00374" summary="To ubelix">
       <created>1614070058540</created>
@@ -435,7 +425,21 @@
       <option name="project" value="LOCAL" />
       <updated>1614084985041</updated>
     </task>
-    <option name="localTasksCounter" value="421" />
+    <task id="LOCAL-00421" summary="To ubelix">
+      <created>1614085105024</created>
+      <option name="number" value="00421" />
+      <option name="presentableId" value="LOCAL-00421" />
+      <option name="project" value="LOCAL" />
+      <updated>1614085105024</updated>
+    </task>
+    <task id="LOCAL-00422" summary="To ubelix">
+      <created>1614085254409</created>
+      <option name="number" value="00422" />
+      <option name="presentableId" value="LOCAL-00422" />
+      <option name="project" value="LOCAL" />
+      <updated>1614085254409</updated>
+    </task>
+    <option name="localTasksCounter" value="423" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -503,11 +507,11 @@
       <screen x="-223" y="-1080" width="1920" height="1080" />
     </state>
     <state width="523" height="445" key="SwitcherDM/-223.-1080.1920.1080/0.0.1440.900@-223.-1080.1920.1080" timestamp="1613575972681" />
-    <state x="204" y="-887" key="Vcs.Push.Dialog.v2" timestamp="1614084987194">
+    <state x="204" y="-887" key="Vcs.Push.Dialog.v2" timestamp="1614085256571">
       <screen x="-223" y="-1080" width="1920" height="1080" />
     </state>
     <state x="204" y="-866" key="Vcs.Push.Dialog.v2/-223.-1055.1920.1055/0.25.1440.813@-223.-1055.1920.1055" timestamp="1613728616729" />
-    <state x="204" y="-887" key="Vcs.Push.Dialog.v2/-223.-1080.1920.1080/0.0.1440.900@-223.-1080.1920.1080" timestamp="1614084987194" />
+    <state x="204" y="-887" key="Vcs.Push.Dialog.v2/-223.-1080.1920.1080/0.0.1440.900@-223.-1080.1920.1080" timestamp="1614085256571" />
     <state x="204" y="-887" key="Vcs.Push.Dialog.v2/0.0.1440.900/-223.-1080.1920.1080@-223.-1080.1920.1080" timestamp="1605627560722" />
     <state x="204" y="-868" key="Vcs.Push.Dialog.v2/0.23.1440.812/-223.-1057.1920.1057@-223.-1057.1920.1057" timestamp="1605713865768" />
     <state x="204" y="-882" key="Vcs.Push.Dialog.v2/0.25.1440.875/-223.-1055.1920.970@-223.-1055.1920.970" timestamp="1605778463607" />
