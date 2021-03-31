@@ -101,7 +101,7 @@ elif [ "$INPUT" -eq "2" ]; then
 fi
 
 #Create a loop to run over all 
-for ((RUN=0; RUN<=$runlength;RUN++))
+for ((RUN=0; RUN<=$runlength; RUN++))
 do
 	export RUN           
 	for ((RESTARTNUM=$START; RESTARTNUM<$SIMLEN; RESTARTNUM++))
