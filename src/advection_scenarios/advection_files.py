@@ -186,6 +186,8 @@ class AdvectionFiles:
             # Remove duplicates
             UV_filenames = list(dict.fromkeys(UV_filenames))
             UV_filenames.sort()
+            print(len(UV_filenames))
+            print(UV_filenames)
             UV_variables = {'U': 'vozocrtx', 'V': 'vomecrty'}
             UV_dimensions = {'U': {'time': 'time', 'depth': 'depth', 'lat': 'lat', 'lon': 'lon'},
                              'V': {'time': 'time', 'depth': 'depth', 'lat': 'lat', 'lon': 'lon'}}
