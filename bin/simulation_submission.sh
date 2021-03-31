@@ -98,6 +98,8 @@ elif [ "$INPUT" -eq "1" ]; then
     runlength=0 #3
 elif [ "$INPUT" -eq "2" ]; then
     runlength=0
+elif [ "$INPUT" -eq "3" ]; then
+    runlength=0
 fi
 
 #Create a loop to run over all 
