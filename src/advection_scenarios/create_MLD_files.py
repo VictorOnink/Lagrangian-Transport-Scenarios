@@ -24,6 +24,7 @@ def create_MLD_files(UV_filenames: list, UV_variables: dict, TEMP_filenames: lis
     for step in range(len(UV_filenames)):
         # Loading the relevant UV, temperature and salinity fields
         UV_file, TEMP_file, SAL_file = UV_filenames[step], TEMP_filenames[step], SALINITY_filenames[step]
+        print(UV_file)
         MLD_file = TEMP_file.replace('TEMP', 'MLD')
         MLD_filenames.append(MLD_file)
 
