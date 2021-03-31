@@ -82,6 +82,11 @@ elif [ "$SCENARIO" -eq "5" ]; then
         if [ "$STOKES" -eq "1" ]; then
 	    RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
         fi
+elif [ "$SCENARIO" -eq "6" ]; then
+        RUNNAMEPREFIX="SizeTransport_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTYEAR}"_"
+        if [ "$STOKES" -eq "1" ]; then
+	    RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
+        fi
 fi
 
 
