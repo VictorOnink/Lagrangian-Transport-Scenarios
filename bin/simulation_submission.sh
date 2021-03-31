@@ -18,7 +18,7 @@ SHOREDEPEN=0
 #for scenario 4, the minimum wind speed for resusplension. Divide by 10 for actual value
 WMIN=3
 #the starting year of the simulation, and how many years the simulation will take
-STARTYEAR=2011
+STARTYEAR=2010
 #Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=point release, 3=uniform release
 INPUT=3
 #Which advection data do we want to use?
