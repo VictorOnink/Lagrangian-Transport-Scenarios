@@ -4,6 +4,7 @@ import xarray
 import progressbar
 from copy import deepcopy
 import os
+import sys
 from netCDF4 import Dataset
 import settings
 import utils
@@ -37,8 +38,15 @@ def create_MLD_files(UV_filenames: list, UV_variables: dict, TEMP_filenames: lis
             UV_var, TEMP_var, SAL_var = [*UV_variables.keys()], [*TEMP_variables.keys()][0], [*SALINITY_variables.keys()][0]
             U, V = Dataset(UV_file).variables[UV_variables[UV_var[0]]][:], Dataset(UV_file).variables[
                                                                                UV_variables[UV_var[1]]][:]
-            TEMP = Dataset(TEMP_file).variables[TEMP_variables[TEMP_var]][:]
-            SAL = Dataset(SAL_file).variables[SALINITY_variables[SAL_var]][:]
+            try:
+                TEMP = Dataset(TEMP_file).variables[TEMP_variables[TEMP_var]][:]
+            except:
+                print('{} {}'.format(TEMP_file, TEMP_variables[TEMP_var]))
+            try:
+                SAL = Dataset(SAL_file).variables[SALINITY_variables[SAL_var]][:]
+            except:
+                print('{} {}'.format(SAL_file, SALINITY_variables[SAL_var]))
+                sys.exit()
             TIME = Dataset(SAL_file).variables['time'][:]
 
             # Computing the buoyancy fields
