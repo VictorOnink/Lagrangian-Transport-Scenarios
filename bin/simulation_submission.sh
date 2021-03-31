@@ -4,11 +4,10 @@
 # General run parameters                                                            #
 #####################################################################################
 SUBMISSION='simulation'
-export SUBMISSION
 DEBUG=1 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
-#5 = Cozar based fragmentation
-SCENARIO=5
+#5 = Cozar based fragmentation, 6 = Size dependent transport
+SCENARIO=6
 #for scenario 1, the time a particle must be near the coast to beach (in days)
 VICINITY=2
 #for scenario 2, the beaching and resuspension timescales (in days)
@@ -20,8 +19,8 @@ SHOREDEPEN=0
 WMIN=3
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010
-#Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=point release
-INPUT=2
+#Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=point release, 3=uniform release
+INPUT=3
 #Which advection data do we want to use?
 # 0 = Global HYCOM, 1 = Caribbean HYCOM, 2 = Mediterranean CMEMS
 ADVECTION_DATA=2
@@ -36,6 +35,7 @@ ENSEMBLE=1
 #Ubelix server, so server==1
 SERVER=1
 
+export SUBMISSION
 export SCENARIO
 export VICINITY
 export SHORETIME

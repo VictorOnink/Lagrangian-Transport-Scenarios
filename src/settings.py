@@ -22,7 +22,8 @@ DATA_OUTPUT_DIR_SERVERS: dict = {0: "/alphadata04/onink/lagrangian_sim/BeachingS
                                  1: "/home/ubelix/climate/shared/onink/Output/"}
 INPUT_DIREC_DICT = {0: DATA_INPUT_DIR_SERVERS[SERVER] + 'Jambeck_Inputs/',
                     1: DATA_INPUT_DIR_SERVERS[SERVER] + 'Lebreton_Inputs/',
-                    2: DATA_INPUT_DIR_SERVERS[SERVER] + 'Point_Release/'}
+                    2: DATA_INPUT_DIR_SERVERS[SERVER] + 'Point_Release/',
+                    3: DATA_INPUT_DIR_SERVERS[SERVER] + 'Uniform/'}
 
 
 # STARTING YEAR OF THE SIMULATION
@@ -37,7 +38,7 @@ SIM_LENGTH: int = int(os.environ['SIMLEN'])
 #                                                                                                                      #
 ########################################################################################################################
 if SUBMISSION == 'simulation':
-    # WHICH OF THE SUBRUNS (DIVISION OF PARTICLE INPUTS
+    # WHICH OF THE SUBRUNS (DIVISION OF PARTICLE INPUTS)
     RUN: int = int(os.environ['RUN'])
 
     # RESTART NUMBER OF THE RUN
@@ -66,7 +67,8 @@ STOKES: int = int(os.environ['STOKES'])
 ########################################################################################################################
 # MODEL SCENARIO SETTINGS
 SCENARIO_DICT: dict = {0: 'AdvectionDiffusionOnly', 1: 'CoastalProximity', 2: 'Stochastic',
-                       3: 'ShoreDependentResuspension', 4: 'TurrellResuspension', 5: 'FragmentationKaandorp'}
+                       3: 'ShoreDependentResuspension', 4: 'TurrellResuspension', 5: 'FragmentationKaandorp',
+                       6: 'SizeTransport'}
 
 SCENARIO_NUM: int = int(os.environ["SCENARIO"])
 SCENARIO_NAME: str = SCENARIO_DICT[SCENARIO_NUM]
@@ -97,18 +99,25 @@ if SCENARIO_NAME == 'FragmentationKaandorp':
     # RESUSPENSION TIMESCALE
     RESUS_TIME: int = int(os.environ['RESUSTIME'])  # days
 
+if SCENARIO_NAME == 'SizeTransport':
+    # BEACHING TIMESCALE
+    SHORE_TIME: int = int(os.environ['SHORETIME'])  # days
+    # RESUSPENSION TIMESCALE
+    RESUS_TIME: int = int(os.environ['RESUSTIME'])  # days
+
+
 ########################################################################################################################
 #                                                                                                                      #
 #                                       Input scenario specific parameters                                             #
 #                                                                                                                      #
 ########################################################################################################################
 # THE INPUT SCENARIO
-INPUT_NAMES = {0: 'Jambeck', 1: 'Lebreton', 2: 'Point_Release'}
+INPUT_NAMES = {0: 'Jambeck', 1: 'Lebreton', 2: 'Point_Release', 3: 'Uniform'}
 INPUT = INPUT_NAMES[int(os.environ['INPUT'])]
 # DIRECTORY CONTAINING INITIAL INPUTS FOR RESTART == 0
 INPUT_DIREC = INPUT_DIREC_DICT[int(os.environ['INPUT'])]
 # THE NUMBER OF PARTICLES PER RELEASE STEP PER RUN
-INPUT_DIV = 5000 # The number of particles per release step per run
+INPUT_DIV = 5000
 
 if INPUT == 'Jambeck':
     # NUMBER OF RUNS
@@ -135,6 +144,16 @@ elif INPUT == 'Point_Release':
     INPUT_MAX = 1.0
     # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
     INPUT_MIN = 0.0
+elif INPUT == 'Uniform':
+    # Number of runs
+    RUN_RANGE: int = 1
+    # GRID RESOlUTION ON WHICH PARTICLES ARE RELEASED
+    RELEASE_GRID = 0.1
+    # MAXIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
+    INPUT_MAX = 1.0
+    # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
+    INPUT_MIN = 0.0
+
 
 
 ########################################################################################################################
@@ -165,9 +184,9 @@ if SUBMISSION == 'analysis':
 # MODEL INTEGRATION TIMESTEP
 TIME_STEP = timedelta(minutes=0.5)  # integration timestep
 # MODEL OUTPUT TIMESTEP
-OUTPUT_TIME_STEP = TIME_STEP#timedelta(hours=24)
+OUTPUT_TIME_STEP = timedelta(hours=12)
 # PARTICLE RELEASE TIMESTEP
-REPEAT_DT_R0 = timedelta(days=31) # timestep of releasing particles for restart == 0. Otherwise, REPEAT_DT = None
+REPEAT_DT_R0 = timedelta(days=31)
 REPEAT_DT_ELSE = None
 # RNG SEED VALUE
 SEED = 'Fixed'
@@ -183,6 +202,11 @@ if SCENARIO_NAME == 'FragmentationKaandorp':
     INIT_SIZE = 0.00001 # m
     # INITIAL DENSITY (KG/M^3): 920 = polypropylene
     INIT_DENSITY = 1020
+if SCENARIO_NAME == 'SizeTransport':
+    # INITIAL PARTICLE SIZE (m)
+    INIT_SIZE = 0.005  # m
+    # INITIAL DENSITY (KG/M^3): 920 = POLYPROPYLENE, 980 = HIGH DENSITY POLYETHYLENE (BRIGNAC ET AL. 2017)
+    INIT_DENSITY = 920
 # ACCELERATION DUE TO GRAVITY (M/S^2)
 G = 9.81
 # THERMAL EXPANSION COEFFICIENT (1/K) AND REFERENCE TEMPERATURE (K)

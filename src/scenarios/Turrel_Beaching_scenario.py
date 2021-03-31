@@ -31,13 +31,13 @@ class Turrell_Resuspension(base_scenario.BaseScenario):
             self.file_dict = advection_scenario.file_names
             self.field_set = self.create_fieldset()
 
-    var_list = ['lon', 'lat', 'beach', 'age', 'weight']
+    var_list = ['lon', 'lat', 'weights', 'beach', 'age', 'weight']
 
     def create_fieldset(self) -> FieldSet:
         os.system('echo "Creating the fieldset"')
         fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict, stokes=self.stokes,
                                                                       border_current=True, diffusion=True, landID=True,
-                                                                      distance=True,beach_timescale=True,wind=True,
+                                                                      distance=True, beach_timescale=True, wind=True,
                                                                       sea_elev=True, wind_min=True
                                                                       )
         return fieldset
@@ -58,6 +58,7 @@ class Turrell_Resuspension(base_scenario.BaseScenario):
         os.system('echo "Creating the particle class"')
         particle_type = utils.BaseParticle
         utils._add_var_particle(particle_type, 'distance', dtype=np.float32, set_initial=False)
+        utils._add_var_particle(particle_type, 'weights', dtype=np.float32, set_initial=True)
         return particle_type
 
     def _file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART):

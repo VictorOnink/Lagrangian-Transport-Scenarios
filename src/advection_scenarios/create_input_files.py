@@ -15,6 +15,8 @@ from shapely import vectorized
 from shapely.geometry import shape
 import xarray
 import progressbar
+from parcels import Field
+
 
 def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array, repeat_dt):
     # Create the output prefix and then check if any files with such prefixes exist
@@ -23,6 +25,9 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
     elif settings.INPUT == 'Point_Release':
         str_format = (prefix, settings.START_YEAR, settings.INPUT_LAT, settings.INPUT_LON)
         output_prefix = settings.INPUT_DIREC + settings.INPUT + '_{}_{}_{}_{}_'.format(*str_format)
+    elif settings.INPUT == 'Uniform':
+        str_format = (prefix, settings.START_YEAR)
+        output_prefix = settings.INPUT_DIREC + settings.INPUT + '_{}_{}_'.format(*str_format)
     else:
         os.system('echo "Perhaps take another look at what input you are using?"')
 
@@ -31,6 +36,8 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
         os.system('echo "The input files {} are already present"'.format(output_prefix))
     else:
         os.system('echo "We need to create the input files {}"'.format(output_prefix))
+        # Calculating the number of particle releases per year
+        releases = number_of_releases(repeat_dt)
         if settings.INPUT == 'Jambeck':
             # Get the population data
             dataset = Dataset(settings.INPUT_DIREC + 'gpw_v4_population_count_adjusted_rev11_2pt5_min.nc')
@@ -45,7 +52,7 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
             distance_file = settings.INPUT_DIREC + prefix + '_distance_to_coast_land.nc'
             distance = get_distance_to_shore(filename=distance_file, grid=grid, lon=lon, lat=lat)
             # The yearly mismanaged plastic
-            transport_to_ocean = 0.15 # percentage of mismanaged plastic that reaches the ocean
+            transport_to_ocean = 0.15  # percentage of mismanaged plastic that reaches the ocean
             kg_to_tons = 1000
             mismanaged_total = np.multiply(mismanaged, population) * 365 * transport_to_ocean / kg_to_tons
             # Get everything in column arrays to load
@@ -57,8 +64,24 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
             lon_inputs, lat_inputs = np.array(lebData['X']), np.array(lebData['Y'])
             plastic_inputs = np.array(lebData['i_low'])
         elif settings.INPUT == 'Point_Release':
-            lon_inputs, lat_inputs = np.ones((1, 1))*settings.INPUT_LON, np.ones((1, 1))*settings.INPUT_LAT
-            plastic_inputs = np.ones((1, 1))*settings.INPUT_MAX
+            lon_inputs, lat_inputs = np.ones((1, 1)) * settings.INPUT_LON, np.ones((1, 1)) * settings.INPUT_LAT
+            plastic_inputs = np.ones((1, 1)) * settings.INPUT_MAX
+        elif settings.INPUT == 'Uniform':
+            lon_min, lon_max, lat_min, lat_max = np.min(lon), np.max(lon), np.min(lat), np.max(lat)
+            release_grid = np.mgrid[lon_min:lon_max:settings.RELEASE_GRID, lat_min:lat_max:settings.RELEASE_GRID]
+            n = release_grid[0].size
+            lon_inputs, lat_inputs = np.reshape(release_grid[0], n), np.reshape(release_grid[1], n)
+            # Remove cells on land
+            Land = land_mark_checker(grid, lon, lat)
+            [lon_inputs, lat_inputs] = [
+                np.array([lo for lo, la in zip(lon_inputs, lat_inputs) if Land[0, 0, la, lo] == 0.0]),
+                np.array([la for lo, la in zip(lon_inputs, lat_inputs) if Land[0, 0, la, lo] == 0.0])]
+            # If we are dealing with a uniform release, we are going to assume that weight doesn't really matter, and
+            # we only care about the release positions.
+            print('The number of particles released per year is {} particles'.format(len(lon_inputs) * releases))
+            split_to_runs(particle_lat=lat_inputs, particle_lon=lon_inputs, particle_weight=None,
+                          output_prefix=output_prefix)
+            return output_prefix
         # Only keep the particles that are within the domain
         lon_inputs, lat_inputs, plastic_inputs = within_domain(lon=lon, lat=lat, lon_inputs=lon_inputs,
                                                                lat_inputs=lat_inputs, plastic_inputs=plastic_inputs)
@@ -70,13 +93,8 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
         # Get the ocean cells adjacent to coastal ocean cells, as these are the ones in which the particles will
         # be placed. For brevity, we will refer to these cells as coastal in the code here
         coastal = get_coastal_extended(grid=grid, coastal=get_coastal_cells(grid=grid))
-        # Getting the inputs onto the coastal cells
+        # Getting the inputs onto the coastal cells, and then computing the inputs per release_dt
         inputs_coastal_grid = input_to_nearest_coastal(coastal=coastal, inputs_grid=inputs_grid, lon=lon, lat=lat)
-        # The inputs so far are annual, how many particle releases will occur per year
-        if repeat_dt is None:
-            releases = 1
-        else:
-            releases = math.floor(timedelta(days=365) / repeat_dt) + 1
         inputs_coastal_grid /= releases
         # How many particles will be released per cell, and what are the assigned weights
         particle_number, particle_weight, particle_remain_num, particle_remain = number_weights_releases(
@@ -129,7 +147,8 @@ def get_mismanaged_fraction_Jambeck(dataset: Dataset):
                     # 122 is the Netherlands Antilles value
                     mismanaged_grid[country_mask] = jambeck_data[122]
                 else:
-                    mismanaged_grid[country_mask] = jambeck_data[jambeck_country.index(countries[country_index]['properties']['NAME0'])]
+                    mismanaged_grid[country_mask] = jambeck_data[
+                        jambeck_country.index(countries[country_index]['properties']['NAME0'])]
         # Saving the entire distance field
         os.system('echo "Starting to save the mismanaged grid"')
         coords = [('lat', lat_pop), ('lon', lon_pop)]
@@ -270,12 +289,28 @@ def particle_grid_to_list(particle_number: np.array, particle_weight: np.array, 
     return particle_lat[non_zero], particle_lon[non_zero], particle_mass[non_zero]
 
 
-def split_to_runs(particle_lat: np.array, particle_lon: np.array, particle_weight: np.array,
+def split_to_runs(particle_lat: np.array, particle_lon: np.array, particle_weight,
                   output_prefix: str, sub_division: int = settings.INPUT_DIV):
     run_number = len(particle_lat) // sub_division + 1
-    var_dict = {'lon': particle_lon, 'lat': particle_lat, 'weight': particle_weight}
+    if particle_weight is not None:
+        var_dict = {'lon': particle_lon, 'lat': particle_lat, 'weight': particle_weight}
+    else:
+        var_dict = {'lon': particle_lon, 'lat': particle_lat}
     for run in range(run_number):
         for variables in var_dict:
             var_run = var_dict[variables][run * sub_division:(run + 1) * sub_division]
             np.save(output_prefix + '{}_run={}.npy'.format(variables, run), var_run)
 
+
+def land_mark_checker(grid: np.array, lon: np.array, lat: np.array):
+    mask = np.ma.getmask(grid)
+    land = Field('Land', mask, lon=lon, lat=lat, transpose=False, grid='spherical')
+    return land
+
+
+def number_of_releases(repeat_dt):
+    if repeat_dt is None:
+        releases = 1
+    else:
+        releases = math.floor(timedelta(days=365) / repeat_dt) + 1
+    return releases

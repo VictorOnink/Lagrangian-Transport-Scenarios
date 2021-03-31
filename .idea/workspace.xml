@@ -19,9 +19,24 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="Computing the tidal Kz field">
+    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="Adding cap value for Kz Tidal, due to division by nearly 0 issues">
+      <change afterPath="$PROJECT_DIR$/src/scenarios/SizeTransport.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/advection_scenarios/create_tidal_Kz_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/advection_scenarios/create_tidal_Kz_files.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/simulation_submission.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/simulation_submission.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/advection_scenarios/advection_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/advection_scenarios/advection_files.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/advection_scenarios/create_input_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/advection_scenarios/create_input_files.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/factories/pset_variable_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/factories/pset_variable_factory.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/factories/scenario_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/factories/scenario_factory.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scenarios/FragmentationKaandorp.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/FragmentationKaandorp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scenarios/Turrel_Beaching_scenario.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/Turrel_Beaching_scenario.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scenarios/advection_diffusion_only_scenario.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/advection_diffusion_only_scenario.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scenarios/base_scenario.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/base_scenario.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scenarios/coastal_proximity.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/coastal_proximity.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scenarios/shore_dependent_resuspension_scenario.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/shore_dependent_resuspension_scenario.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scenarios/stochastic_scenario.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/stochastic_scenario.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/BaseParticle.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/BaseParticle.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/physics_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/physics_utils.py" afterDir="false" />
     </list>
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
     <list id="c5adc810-e024-4e30-b33b-a2709ed2c5b7" name="moving the release repeat timescale to the scenario" comment="" />
@@ -41,6 +56,14 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
   <component name="ProjectId" id="1iGpdZM9XhuUwK1AL3zJCOxjwQH" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -48,10 +71,13 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/scenarios" />
     <property name="settings.editor.selected.configurable" value="editing.templates" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/scenarios" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/utils" />
     </key>
@@ -92,13 +118,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-00376" summary="To ubelix">
-      <created>1614070238992</created>
-      <option name="number" value="00376" />
-      <option name="presentableId" value="LOCAL-00376" />
-      <option name="project" value="LOCAL" />
-      <updated>1614070238992</updated>
     </task>
     <task id="LOCAL-00377" summary="To ubelix">
       <created>1614070275424</created>
@@ -436,7 +455,14 @@
       <option name="project" value="LOCAL" />
       <updated>1614088975592</updated>
     </task>
-    <option name="localTasksCounter" value="425" />
+    <task id="LOCAL-00425" summary="Adding cap value for Kz Tidal, due to division by nearly 0 issues">
+      <created>1614091627956</created>
+      <option name="number" value="00425" />
+      <option name="presentableId" value="LOCAL-00425" />
+      <option name="project" value="LOCAL" />
+      <updated>1614091627956</updated>
+    </task>
+    <option name="localTasksCounter" value="426" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -452,7 +478,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="test to load repeat dt" />
     <MESSAGE value="test" />
     <MESSAGE value="using the repeat_dt defined in the scenario to get the number of releases in the input file creation code" />
     <MESSAGE value="create startfiles function now outputs output_prefix" />
@@ -477,48 +502,7 @@
     <MESSAGE value="Starting to add computation of 3D internal tide vertical diffusion fields" />
     <MESSAGE value="To ubelix" />
     <MESSAGE value="Computing the tidal Kz field" />
-    <option name="LAST_COMMIT_MESSAGE" value="Computing the tidal Kz field" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="425" y="-800" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1614089227723">
-      <screen x="-223" y="-1080" width="1920" height="1080" />
-    </state>
-    <state x="425" y="-800" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/-223.-1080.1920.1080/0.0.1440.900@-223.-1080.1920.1080" timestamp="1614089227723" />
-    <state x="207" y="-1080" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1605605273285">
-      <screen x="-223" y="-1080" width="1920" height="1080" />
-    </state>
-    <state x="207" y="-1080" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1440.900/-223.-1080.1920.1080@-223.-1080.1920.1080" timestamp="1605605273285" />
-    <state width="1899" height="220" key="GridCell.Tab.0.bottom" timestamp="1613644254305">
-      <screen x="-223" y="-1080" width="1920" height="1080" />
-    </state>
-    <state width="1899" height="220" key="GridCell.Tab.0.bottom/-223.-1080.1920.1080/0.0.1440.900@-223.-1080.1920.1080" timestamp="1613644254305" />
-    <state width="1899" height="220" key="GridCell.Tab.0.center" timestamp="1613644254304">
-      <screen x="-223" y="-1080" width="1920" height="1080" />
-    </state>
-    <state width="1899" height="220" key="GridCell.Tab.0.center/-223.-1080.1920.1080/0.0.1440.900@-223.-1080.1920.1080" timestamp="1613644254304" />
-    <state width="1899" height="220" key="GridCell.Tab.0.left" timestamp="1613644254303">
-      <screen x="-223" y="-1080" width="1920" height="1080" />
-    </state>
-    <state width="1899" height="220" key="GridCell.Tab.0.left/-223.-1080.1920.1080/0.0.1440.900@-223.-1080.1920.1080" timestamp="1613644254303" />
-    <state width="1899" height="220" key="GridCell.Tab.0.right" timestamp="1613644254305">
-      <screen x="-223" y="-1080" width="1920" height="1080" />
-    </state>
-    <state width="1899" height="220" key="GridCell.Tab.0.right/-223.-1080.1920.1080/0.0.1440.900@-223.-1080.1920.1080" timestamp="1613644254305" />
-    <state width="523" height="445" key="SwitcherDM" timestamp="1613575972681">
-      <screen x="-223" y="-1080" width="1920" height="1080" />
-    </state>
-    <state width="523" height="445" key="SwitcherDM/-223.-1080.1920.1080/0.0.1440.900@-223.-1080.1920.1080" timestamp="1613575972681" />
-    <state x="204" y="-887" key="Vcs.Push.Dialog.v2" timestamp="1614088978707">
-      <screen x="-223" y="-1080" width="1920" height="1080" />
-    </state>
-    <state x="204" y="-866" key="Vcs.Push.Dialog.v2/-223.-1055.1920.1055/0.25.1440.813@-223.-1055.1920.1055" timestamp="1613728616729" />
-    <state x="204" y="-887" key="Vcs.Push.Dialog.v2/-223.-1080.1920.1080/0.0.1440.900@-223.-1080.1920.1080" timestamp="1614088978707" />
-    <state x="204" y="-887" key="Vcs.Push.Dialog.v2/0.0.1440.900/-223.-1080.1920.1080@-223.-1080.1920.1080" timestamp="1605627560722" />
-    <state x="204" y="-868" key="Vcs.Push.Dialog.v2/0.23.1440.812/-223.-1057.1920.1057@-223.-1057.1920.1057" timestamp="1605713865768" />
-    <state x="204" y="-882" key="Vcs.Push.Dialog.v2/0.25.1440.875/-223.-1055.1920.970@-223.-1055.1920.970" timestamp="1605778463607" />
-    <state x="402" y="-839" width="670" height="676" key="search.everywhere.popup" timestamp="1614091421106">
-      <screen x="-223" y="-1080" width="1920" height="1080" />
-    </state>
-    <state x="402" y="-839" width="670" height="676" key="search.everywhere.popup/-223.-1080.1920.1080/0.0.1440.900@-223.-1080.1920.1080" timestamp="1614091421106" />
+    <MESSAGE value="Adding cap value for Kz Tidal, due to division by nearly 0 issues" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding cap value for Kz Tidal, due to division by nearly 0 issues" />
   </component>
 </project>

@@ -396,7 +396,6 @@ def KPP_wind_mixing(particle, fieldset, time):
         dKz = alpha * (mld - z_correct) * (mld - 3 * z_correct - 2 * z0)
         # The KPP profile vertical diffusion, at a depth corrected for the vertical gradient in Kz, and including the
         # bulk diffusivity
-        z_correct = math.fabs(z_correct + 0.5 * dKz * particle.dt)
         alpha = (fieldset.VK * U_W) / fieldset.PHI
         Kz = alpha * (z_correct + z0) * math.pow(1 - z_correct / mld, 2) + fieldset.K_Z_BULK
 

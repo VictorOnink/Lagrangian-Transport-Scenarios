@@ -12,13 +12,13 @@ from parcels import ParcelsRandom
 import math
 
 
-class FragmentationKaandorp(base_scenario.BaseScenario):
+class SizeTransport(base_scenario.BaseScenario):
     """Fragmentation scenario based on the Kaandorp fragmentation model. Beaching based on the stochastic scenario"""
 
     def __init__(self, server, stokes):
         """Constructor for FragmentationKaandorp"""
         super().__init__(server, stokes)
-        self.prefix = "Frag_Kaandorp"
+        self.prefix = "Size_Transport"
         self.input_dir = utils._get_input_directory(server=self.server)
         self.output_dir = utils._get_output_directory(server=self.server)
         self.repeat_dt = None
@@ -29,7 +29,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
             self.file_dict = advection_scenario.file_names
             self.field_set = self.create_fieldset()
 
-    var_list = ['lon', 'lat', 'weights', 'beach', 'age', 'size', 'rho_plastic']
+    var_list = ['lon', 'lat', 'beach', 'age', 'size', 'rho_plastic']
 
     def create_fieldset(self) -> FieldSet:
         os.system('echo "Creating the fieldset"')
@@ -39,8 +39,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                                                                       distance=True, salinity=True, temperature=True,
                                                                       bathymetry=True, beach_timescale=True,
                                                                       resus_timescale=True, MLD=True, KPP_mixing=True,
-                                                                      wind=True
-                                                                      )
+                                                                      wind=True)
         return fieldset
 
     def _get_pset(self, fieldset: FieldSet, particle_type: utils.BaseParticle, var_dict: dict,
@@ -51,7 +50,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         os.system('echo "Creating the particle set"')
         pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
                            lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
-                           age=var_dict['age'], weights=var_dict['weight'], size=var_dict['size'],
+                           age=var_dict['age'], size=var_dict['size'],
                            rho_plastic=var_dict['rho_plastic'], time=start_time, repeatdt=repeat_dt)
         return pset
 
@@ -59,7 +58,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         os.system('echo "Creating the particle class"')
         particle_type = utils.BaseParticle
         utils._add_var_particle(particle_type, 'distance', dtype=np.float32, set_initial=False)
-        utils._add_var_particle(particle_type, 'density', dtype=np.float32, set_initial=False, to_write=True)
+        utils._add_var_particle(particle_type, 'density', dtype=np.float32, set_initial=False, to_write=False)
         utils._add_var_particle(particle_type, 'surface_density', dtype=np.float32, set_initial=False, to_write=True)
         utils._add_var_particle(particle_type, 'kinematic_viscosity', dtype=np.float32, set_initial=False,
                                 to_write=False)
@@ -67,22 +66,21 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         utils._add_var_particle(particle_type, 'reynolds', dtype=np.float32, set_initial=False)
         utils._add_var_particle(particle_type, 'rho_plastic', dtype=np.float32, set_initial=True, to_write=False)
         utils._add_var_particle(particle_type, 'size', dtype=np.float32)
-        utils._add_var_particle(particle_type, 'weights', dtype=np.float32, set_initial=True)
         return particle_type
 
     def _file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART):
-        odirec = self.output_dir + "Kaandorp_Fragmentation/st_" + str(settings.SHORE_TIME) + "_rt_" + \
-                 str(settings.RESUS_TIME) + "_e_" + str(settings.ENSEMBLE) + "/"
-        if new == True:
+        odirec = self.output_dir + "SizeTransport/size_{}/".format(settings.INIT_SIZE)
+        if new:
             os.system('echo "Set the output file name"')
-            return odirec + self.prefix + '_{}'.format(settings.ADVECTION_DATA) + "_st=" + str(settings.SHORE_TIME) + \
-                   "_rt=" + str(settings.RESUS_TIME) + "_y=" + str(settings.START_YEAR) + "_I=" + str(settings.INPUT) \
-                   + "_r=" + str(restart) + "_run=" + str(run) + ".nc"
+            str_format = (
+                settings.ADVECTION_DATA, settings.INIT_SIZE, settings.INIT_DENSITY, settings.START_YEAR, settings.INPUT,
+                restart, run)
         else:
             os.system('echo "Set the restart file name"')
-            return odirec + self.prefix + '_{}'.format(settings.ADVECTION_DATA) + "_st=" + str(settings.SHORE_TIME) + \
-                   "_rt=" + str(settings.RESUS_TIME) + "_y=" + str(settings.START_YEAR) + "_I=" + str(settings.INPUT) \
-                   + "_r=" + str(restart - 1) + "_run=" + str(run) + ".nc"
+            str_format = (
+                settings.ADVECTION_DATA, settings.INIT_SIZE, settings.INIT_DENSITY, settings.START_YEAR, settings.INPUT,
+                restart - 1, run)
+        return odirec + self.prefix + '_{}_size={}_rho={}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
 
     def _beaching_kernel(particle, fieldset, time):
         if particle.beach == 0:
@@ -105,7 +103,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         g = 9.81  # gravitational acceleration (m s^-2)
         # Getting the equation according to Poulain et al (2019), equation 5 in the supplementary materials
         left = 240 / (math.pi * Re) * (1 + 0.138 * Re ** 0.792)
-        right = 2. / 15. * L * (1. - rho_p/rho_sw) * g
+        right = 2. / 15. * L * (1. - rho_p / rho_sw) * g
         # Calculate the rise velocity
         particle.rise_velocity = - 1 * math.sqrt(right / left)
 
@@ -114,15 +112,15 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         L = particle.size
         if particle.age == 0:
             # An initial starting value for the Reynolds number, used to calculate the first rising velocity
-            particle.reynolds = 2.0
+            w_b = math.fabs(0.0003)
+            particle.reynolds = L * w_b / kin_visc
         else:
             w_b = math.fabs(particle.rise_velocity)
             particle.reynolds = L * w_b / kin_visc
 
     def _get_particle_behavior(self, pset: ParticleSet):
         os.system('echo "Setting the particle behavior"')
-        base_behavior = pset.Kernel(utils._initial_input) + \
-                        pset.Kernel(utils.PolyTEOS10_bsq) + \
+        base_behavior = pset.Kernel(utils.PolyTEOS10_bsq) + \
                         pset.Kernel(utils._get_kinematic_viscosity) + \
                         pset.Kernel(self._get_reynolds_number) + \
                         pset.Kernel(self._get_rising_velocity) + \

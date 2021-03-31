@@ -298,9 +298,6 @@ class AdvectionFiles:
             else:
                 os.system('echo "The tidal Kz file already exists"')
 
-
-
-
         # The border current
         BORDER_filename = self.input_dir + prefix + '_boundary_velocities.nc'
         file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='BORDER_filename',
@@ -365,8 +362,9 @@ class AdvectionFiles:
                                                               repeat_dt=self.repeat_dt)
         STARTFILES_filename = {}
         for variable in ['lon', 'lat', 'weight']:
-            str_format = (variable, settings.RUN)
-            STARTFILES_filename[variable] = output_prefix + '{}_run={}.npy'.format(*str_format)
+            file_name = output_prefix + '{}_run={}.npy'.format(variable, settings.RUN)
+            if utils._check_file_exist(file_name):
+                STARTFILES_filename[variable] = file_name
         file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='STARTFILES_filename',
                                       variable=STARTFILES_filename)
 
