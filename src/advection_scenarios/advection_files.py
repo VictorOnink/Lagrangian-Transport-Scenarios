@@ -281,12 +281,10 @@ class AdvectionFiles:
             file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='DEPTH', variable=DEPTH)
 
             # The Mixed Layer Depth (MLD)
-            print('Here we now create MLD files')
-            MLD_filenames = create_MLD_files.create_MLD_files(UV_filenames, UV_variables, TEMP_filenames,
-                                                              TEMP_variables, SALINITY_filenames, SALINITY_variables,
-                                                              LON, LAT, DEPTH)
-            MLD_variables = {'MLD': 'MLD'}
-            MLD_dimensions = {'MLD': {'time': 'time', 'depth': 'depth', 'lat': 'lat', 'lon': 'lon'}}
+            MLD_filenames = glob.glob(self.data_dir + "CMEMS_MED/{}*--AMXL*.nc".format(
+                settings.START_YEAR + settings.RESTART))
+            MLD_variables = {'MLD': 'mlotst'}
+            MLD_dimensions = {'MLD': {'time': 'time', 'lat': 'lat', 'lon': 'lon'}}
             file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='MLD_filenames', variable=MLD_filenames)
             file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='MLD_variables', variable=MLD_variables)
             file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='MLD_dimensions', variable=MLD_dimensions)
