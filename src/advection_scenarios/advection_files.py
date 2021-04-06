@@ -281,6 +281,7 @@ class AdvectionFiles:
             file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='DEPTH', variable=DEPTH)
 
             # The Mixed Layer Depth (MLD)
+            print('Here we now create MLD files')
             MLD_filenames = create_MLD_files.create_MLD_files(UV_filenames, UV_variables, TEMP_filenames,
                                                               TEMP_variables, SALINITY_filenames, SALINITY_variables,
                                                               LON, LAT, DEPTH)
