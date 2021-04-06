@@ -54,7 +54,7 @@ def create_MLD_files(UV_filenames: list, UV_variables: dict, TEMP_filenames: lis
             MLD = deepcopy(DEPTH)
             MLD[criteria] = np.nan
             MLD = np.nanmax(MLD, axis=(0, 1), keepdims=True)
-            print(MLD.shape)
+            os.system('echo {}'.format(MLD.shape))
 
             # Creating a NETCDF4 file containing the MLD field
             to_netcdf = MLD, TIME, LON, LAT, np.nanmin(DEPTH)
