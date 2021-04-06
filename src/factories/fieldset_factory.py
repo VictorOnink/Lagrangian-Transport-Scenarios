@@ -133,8 +133,8 @@ def _add_border_current(fieldset: FieldSet, file_dict: dict):
     os.system('echo "Adding the border current"')
     _check_presence(variable='BORDER_filename', file_dict=file_dict)
     datasetBor = Dataset(file_dict['BORDER_filename'])
-    borU = datasetBor.variables['border_u'][:]
-    borV = datasetBor.variables['border_v'][:]
+    borU = datasetBor.variables['border_u'][:].T
+    borV = datasetBor.variables['border_v'][:].T
     borU, borV = borU.reshape((1, borU.shape[0], borU.shape[1])), borV.reshape((1, borV.shape[0], borV.shape[1]))
     print(borU.shape)
     print(borV.shape)
