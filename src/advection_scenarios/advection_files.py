@@ -180,13 +180,13 @@ class AdvectionFiles:
         if self.advection_scenario == 'CMEMS_MEDITERRANEAN':
             prefix = 'CMEMS_MEDITERRANEAN'
             # The core UV velocity fields
-            UV_filenames = glob.glob(self.data_dir + "CMEMS_MED/NEMO-MED-2010-01-01_00:00:00.nc") + \
-                           glob.glob(self.data_dir + "CMEMS_MED/NEMO-MED-{}*.nc".format(
+            UV_filenames = glob.glob(self.data_dir + "CMEMS_MED/20100101_d-CMCC--RFVL-MFSe3r1-MED-b20200901_re-sv01.00.nc") + \
+                           glob.glob(self.data_dir + "CMEMS_MED/{}*--RFVL*.nc".format(
                                settings.START_YEAR + settings.RESTART))
             # Remove duplicates
             UV_filenames = list(dict.fromkeys(UV_filenames))
             UV_filenames.sort()
-            UV_variables = {'U': 'vozocrtx', 'V': 'vomecrty'}
+            UV_variables = {'U': 'uo', 'V': 'vo'}
             UV_dimensions = {'U': {'time': 'time', 'depth': 'depth', 'lat': 'lat', 'lon': 'lon'},
                              'V': {'time': 'time', 'depth': 'depth', 'lat': 'lat', 'lon': 'lon'}}
             file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='UV_filenames', variable=UV_filenames)
@@ -224,10 +224,10 @@ class AdvectionFiles:
                                           variable=PERIOD_dimensions)
 
             # Ocean Temperature
-            TEMP_filenames = glob.glob(self.data_dir + "CMEMS_MED/NEMO-MED-TEMP-{}*.nc".format(
+            TEMP_filenames = glob.glob(self.data_dir + "CMEMS_MED/{}*--TEMP*.nc".format(
                 settings.START_YEAR + settings.RESTART))
             TEMP_filenames.sort()
-            TEMP_variables = {'cons_temperature': 'votemper'}
+            TEMP_variables = {'cons_temperature': 'thetao'}
             TEMP_dimensions = {'cons_temperature': {'time': 'time', 'depth': 'depth', 'lat': 'lat', 'lon': 'lon'}}
             file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='TEMP_filenames',
                                           variable=TEMP_filenames)
@@ -237,10 +237,10 @@ class AdvectionFiles:
                                           variable=TEMP_dimensions)
 
             # Ocean Salinity
-            SALINITY_filenames = glob.glob(self.data_dir + "CMEMS_MED/NEMO-MED-SALINITY-{}*.nc".format(
+            SALINITY_filenames = glob.glob(self.data_dir + "CMEMS_MED/{}*--PSAL*.nc".format(
                 settings.START_YEAR + settings.RESTART))
             SALINITY_filenames.sort()
-            SALINITY_variables = {'abs_salinity': 'vosaline'}
+            SALINITY_variables = {'abs_salinity': 'so'}
             SALINITY_dimensions = {'abs_salinity': {'time': 'time', 'depth': 'depth', 'lat': 'lat', 'lon': 'lon'}}
             file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='SALINITY_filenames',
                                           variable=SALINITY_filenames)
