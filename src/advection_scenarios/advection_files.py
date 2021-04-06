@@ -271,7 +271,7 @@ class AdvectionFiles:
 
             # Basic grid data
             dataset = Dataset(UV_filenames[0])
-            GRID = dataset.variables['vozocrtx'][0, 0, :, :]
+            GRID = dataset.variables[UV_variables['U']][0, 0, :, :]
             LON = dataset.variables['lon'][:]
             LAT = dataset.variables['lat'][:]
             DEPTH = dataset.variables['depth'][:]

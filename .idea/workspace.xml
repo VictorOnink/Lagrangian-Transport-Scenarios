@@ -20,8 +20,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="updated for the new CMEMS data">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/simulation_submission.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/simulation_submission.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/advection_scenarios/advection_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/advection_scenarios/advection_files.py" afterDir="false" />
     </list>
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
     <list id="c5adc810-e024-4e30-b33b-a2709ed2c5b7" name="moving the release repeat timescale to the scenario" comment="" />
@@ -103,20 +102,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-00392" summary="To ubelix">
-      <created>1614076915614</created>
-      <option name="number" value="00392" />
-      <option name="presentableId" value="LOCAL-00392" />
-      <option name="project" value="LOCAL" />
-      <updated>1614076915614</updated>
-    </task>
-    <task id="LOCAL-00393" summary="To ubelix">
-      <created>1614077232302</created>
-      <option name="number" value="00393" />
-      <option name="presentableId" value="LOCAL-00393" />
-      <option name="project" value="LOCAL" />
-      <updated>1614077232302</updated>
     </task>
     <task id="LOCAL-00394" summary="To ubelix">
       <created>1614077378843</created>
@@ -447,7 +432,21 @@
       <option name="project" value="LOCAL" />
       <updated>1617698054922</updated>
     </task>
-    <option name="localTasksCounter" value="441" />
+    <task id="LOCAL-00441" summary="updated for the new CMEMS data">
+      <created>1617701681606</created>
+      <option name="number" value="00441" />
+      <option name="presentableId" value="LOCAL-00441" />
+      <option name="project" value="LOCAL" />
+      <updated>1617701681606</updated>
+    </task>
+    <task id="LOCAL-00442" summary="updated for the new CMEMS data">
+      <created>1617701771157</created>
+      <option name="number" value="00442" />
+      <option name="presentableId" value="LOCAL-00442" />
+      <option name="project" value="LOCAL" />
+      <updated>1617701771157</updated>
+    </task>
+    <option name="localTasksCounter" value="443" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
