@@ -188,7 +188,7 @@ def _add_distance2shore_field(fieldset: FieldSet, file_dict: dict):
     datasetCoast = Dataset(file_dict['DISTANCE_filename'])
     distance = datasetCoast.variables['distance'][:]
     fieldset.add_field(Field('distance2shore', distance[np.newaxis, :, :], lon=file_dict['LON'], lat=file_dict['LAT'],
-                             mesh='spherical', transpose=True))
+                             mesh='spherical'))
 
 
 def _add_wind_field(fieldset: FieldSet, file_dict: dict):
