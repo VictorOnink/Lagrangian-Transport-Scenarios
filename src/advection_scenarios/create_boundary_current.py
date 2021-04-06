@@ -49,10 +49,10 @@ def create_border_current(output_name: str, filenames: list, variables: dict, di
     u_vel_all, v_vel_all = normalisation(u_vel_all, v_vel_all)
 
     # Creating the netCDF file
-    coords = [('lat', fieldset.U.lat), ('lon', fieldset.U.lon)]
-    u_vel_xarray = xarray.DataArray(u_vel_all, coords=coords)
-    v_vel_xarray = xarray.DataArray(v_vel_all, coords=coords)
-    coord_dict = {'lon': fieldset.U.lon, 'lat': fieldset.U.lat}
+    coords = [('time', np.array([0])), ('lat', fieldset.U.lat), ('lon', fieldset.U.lon)]
+    u_vel_xarray = xarray.DataArray(u_vel_all[np.newaxis, :, :], coords=coords)
+    v_vel_xarray = xarray.DataArray(v_vel_all[np.newaxis, :, :], coords=coords)
+    coord_dict = {'time': np.array([0]), 'lon': fieldset.U.lon, 'lat': fieldset.U.lat}
     dset = xarray.Dataset({'border_u': u_vel_xarray, 'border_v': v_vel_xarray}, coords=coord_dict)
     dset.to_netcdf(output_name)
 
@@ -77,7 +77,7 @@ def set_fieldset(filenames: list, variables: dict, dimensions: dict):
 
 def reduce_array(data: array):
     if len(data.shape) == 4:
-        data = data[0, 0, :, :]
+        data = data[:, 0, :, :]
     elif len(data.shape) == 3:
         data = data[0, :, :]
     else:
