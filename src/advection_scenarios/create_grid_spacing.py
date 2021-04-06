@@ -18,10 +18,10 @@ def create_grid_spacing(output_name: str, grid: np.array, lon: np.array, lat: np
     grid_lat_spacing = fill_last(grid_lat_spacing)
 
     # Saving the entire grid spacing fields
-    coords = [('lat', lat), ('lon', lon)]
-    lon_space = xarray.DataArray(grid_lon_spacing, coords=coords)
-    lat_space = xarray.DataArray(grid_lat_spacing, coords=coords)
-    dcoo = {'lat': lat, 'lon': lon}
+    coords = [('time', np.array([0])), ('lat', lat), ('lon', lon)]
+    lon_space = xarray.DataArray(grid_lon_spacing[np.newaxis, :, :], coords=coords)
+    lat_space = xarray.DataArray(grid_lat_spacing[np.newaxis, :, :], coords=coords)
+    dcoo = {'time': np.array([0]), 'lat': lat, 'lon': lon}
     dset = xarray.Dataset({'lon_spacing': lon_space, 'lat_spacing': lat_space}, coords=dcoo)
     dset.to_netcdf(output_name)
 
