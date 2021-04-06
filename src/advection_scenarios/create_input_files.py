@@ -304,7 +304,7 @@ def split_to_runs(particle_lat: np.array, particle_lon: np.array, particle_weigh
 
 def land_mark_checker(grid: np.array, lon: np.array, lat: np.array):
     mask = np.ma.getmask(grid)
-    land = Field('Land', mask, lon=lon, lat=lat, transpose=False, grid='spherical')
+    land = Field('Land', mask, lon=lon, lat=lat, transpose=False, mesh='spherical')
     return land
 
 
