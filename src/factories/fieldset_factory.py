@@ -135,7 +135,6 @@ def _add_border_current(fieldset: FieldSet, file_dict: dict):
     datasetBor = Dataset(file_dict['BORDER_filename'])
     borU = datasetBor.variables['border_u'][:]
     borV = datasetBor.variables['border_v'][:]
-    print(borU.shape)
     # # Adding the actual field
     fieldset.add_field(Field('borU', borU, lon=file_dict['LON'], lat=file_dict['LAT'], mesh='spherical'))
     fieldset.add_field(Field('borV', borV, lon=file_dict['LON'], lat=file_dict['LAT'], mesh='spherical'))
@@ -188,7 +187,8 @@ def _add_distance2shore_field(fieldset: FieldSet, file_dict: dict):
     _check_presence(variable='DISTANCE_filename', file_dict=file_dict)
     datasetCoast = Dataset(file_dict['DISTANCE_filename'])
     distance = datasetCoast.variables['distance'][:]
-    fieldset.add_field(Field('distance2shore', distance, lon=file_dict['LON'], lat=file_dict['LAT'], mesh='spherical'))
+    fieldset.add_field(Field('distance2shore', distance[np.newaxis, :, :], lon=file_dict['LON'], lat=file_dict['LAT'],
+                             mesh='spherical'))
 
 
 def _add_wind_field(fieldset: FieldSet, file_dict: dict):
