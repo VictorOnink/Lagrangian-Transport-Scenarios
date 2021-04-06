@@ -137,8 +137,8 @@ def _add_border_current(fieldset: FieldSet, file_dict: dict):
     borV = datasetBor.variables['border_v'][:]
     print(borU.shape)
     # # Adding the actual field
-    fieldset.add_field(Field('borU', borU, lon=file_dict['LON'], lat=file_dict['LAT'], mesh='spherical', transpose=True))
-    fieldset.add_field(Field('borV', borV, lon=file_dict['LON'], lat=file_dict['LAT'], mesh='spherical', transpose=True))
+    fieldset.add_field(Field('borU', borU, lon=file_dict['LON'], lat=file_dict['LAT'], mesh='spherical'))
+    fieldset.add_field(Field('borV', borV, lon=file_dict['LON'], lat=file_dict['LAT'], mesh='spherical'))
     # making sure the units are interpreted as m s^-1
     fieldset.borU.units = GeographicPolar()
     fieldset.borV.units = Geographic()
