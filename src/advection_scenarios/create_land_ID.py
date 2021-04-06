@@ -16,8 +16,8 @@ def create_land_ID(output_name: str, grid: np.array, lon: np.array, lat: np.arra
                             if mask[(lat_index + lat_step) % grid.shape[0], (lon_index + lon_step) % grid.shape[1]]:
                                 land_ID[lat_index, lon_index] = 1
     # Saving the entire land ID field
-    coords = [('lat', lat), ('lon', lon)]
-    id = xarray.DataArray(land_ID, coords=coords)
-    dcoo = {'lat': lat, 'lon': lon}
+    coords = [('time', np.array([0])), ('lat', lat), ('lon', lon)]
+    id = xarray.DataArray(land_ID[np.newaxis, :, :], coords=coords)
+    dcoo = {'time': np.array([0]), 'lat': lat, 'lon': lon}
     dset = xarray.Dataset({'land_ID': id}, coords=dcoo)
     dset.to_netcdf(output_name)
