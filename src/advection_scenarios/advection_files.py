@@ -283,6 +283,7 @@ class AdvectionFiles:
             # The Mixed Layer Depth (MLD)
             MLD_filenames = glob.glob(self.data_dir + "CMEMS_MED/{}*--AMXL*.nc".format(
                 settings.START_YEAR + settings.RESTART))
+            MLD_filenames.sort()
             MLD_variables = {'MLD': 'mlotst'}
             MLD_dimensions = {'MLD': {'time': 'time', 'lat': 'lat', 'lon': 'lon'}}
             file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='MLD_filenames', variable=MLD_filenames)
