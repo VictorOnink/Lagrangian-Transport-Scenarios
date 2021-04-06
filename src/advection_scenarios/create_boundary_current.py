@@ -15,9 +15,9 @@ def create_border_current(output_name: str, filenames: list, variables: dict, di
     ny = fieldset.U.lat.size
 
     # U and V data
-    print(fieldset.U.data.shape)
     u_data = reduce_array(fieldset.U.data)
     v_data = reduce_array(fieldset.V.data)
+    print(u_data.shape)
 
     # Creating the arrays that we will use for the first round of getting the border currents
     u_vel = np.zeros(u_data.shape)
