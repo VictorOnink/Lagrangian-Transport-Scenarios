@@ -136,6 +136,8 @@ def _add_border_current(fieldset: FieldSet, file_dict: dict):
     borU = datasetBor.variables['border_u'][:]
     borV = datasetBor.variables['border_v'][:]
     borU, borV = borU.reshape((1, borU.shape[0], borU.shape[1])), borV.reshape((1, borV.shape[0], borV.shape[1]))
+    print(borU.shape)
+    print(borV.shape)
     # # Adding the actual field
     fieldset.add_field(Field('borU', borU, lon=file_dict['LON'], lat=file_dict['LAT'], time=np.array([0]), mesh='spherical'))
     fieldset.add_field(Field('borV', borV, lon=file_dict['LON'], lat=file_dict['LAT'], time=np.array([0]), mesh='spherical'))
