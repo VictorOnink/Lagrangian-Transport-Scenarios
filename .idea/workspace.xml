@@ -19,9 +19,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="to ubelix">
+    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="updated for the new CMEMS data">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/advection_scenarios/advection_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/advection_scenarios/advection_files.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/simulation_submission.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/simulation_submission.sh" afterDir="false" />
     </list>
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
     <list id="c5adc810-e024-4e30-b33b-a2709ed2c5b7" name="moving the release repeat timescale to the scenario" comment="" />
@@ -103,13 +103,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-00391" summary="To ubelix">
-      <created>1614076679471</created>
-      <option name="number" value="00391" />
-      <option name="presentableId" value="LOCAL-00391" />
-      <option name="project" value="LOCAL" />
-      <updated>1614076679472</updated>
     </task>
     <task id="LOCAL-00392" summary="To ubelix">
       <created>1614076915614</created>
@@ -447,7 +440,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617201342887</updated>
     </task>
-    <option name="localTasksCounter" value="440" />
+    <task id="LOCAL-00440" summary="updated for the new CMEMS data">
+      <created>1617698054922</created>
+      <option name="number" value="00440" />
+      <option name="presentableId" value="LOCAL-00440" />
+      <option name="project" value="LOCAL" />
+      <updated>1617698054922</updated>
+    </task>
+    <option name="localTasksCounter" value="441" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -463,7 +463,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="using the repeat_dt defined in the scenario to get the number of releases in the input file creation code" />
     <MESSAGE value="create startfiles function now outputs output_prefix" />
     <MESSAGE value="testing with rising velocity kernel" />
     <MESSAGE value="rise velocity tests" />
@@ -488,6 +487,7 @@
     <MESSAGE value="Adding cap value for Kz Tidal, due to division by nearly 0 issues" />
     <MESSAGE value="A lot of changes in terms of the basic scenario setup" />
     <MESSAGE value="to ubelix" />
-    <option name="LAST_COMMIT_MESSAGE" value="to ubelix" />
+    <MESSAGE value="updated for the new CMEMS data" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated for the new CMEMS data" />
   </component>
 </project>

@@ -130,7 +130,7 @@ do
      fi
 	   #loading the bash and setting the environment
 	   part9="source /home/ubelix/climate/vo18e689/.bash_profile"
-	   part10="source /home/ubelix/climate/vo18e689/anaconda3/bin/activate py3_parcels_v2_2"
+	   part10="source /home/ubelix/climate/vo18e689/anaconda3/bin/activate py3_parcels"
 	   part11='cd "/home/ubelix/climate/vo18e689/codes/Next-Stage-Plastic-Beaching/"'
 	   #And now the actual running of the code
 	   part12="python src/main.py -p 10 -v"
