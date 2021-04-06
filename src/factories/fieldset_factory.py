@@ -186,8 +186,9 @@ def _add_distance2shore_field(fieldset: FieldSet, file_dict: dict):
     os.system('echo "Adding distance to shore"')
     _check_presence(variable='DISTANCE_filename', file_dict=file_dict)
     datasetCoast = Dataset(file_dict['DISTANCE_filename'])
-    distance = datasetCoast.variables['distance'][:]
-    fieldset.add_field(Field('distance2shore', distance[np.newaxis, :, :], lon=file_dict['LON'], lat=file_dict['LAT'],
+    distance = datasetCoast.variables['distance'][:][np.newaxis, :, :]
+    print(distance.shape)
+    fieldset.add_field(Field('distance2shore', distance, lon=file_dict['LON'], lat=file_dict['LAT'],
                              mesh='spherical'))
 
 
