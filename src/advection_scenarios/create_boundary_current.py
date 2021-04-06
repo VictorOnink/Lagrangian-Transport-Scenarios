@@ -17,7 +17,6 @@ def create_border_current(output_name: str, filenames: list, variables: dict, di
     # U and V data
     u_data = reduce_array(fieldset.U.data)
     v_data = reduce_array(fieldset.V.data)
-    print(u_data.shape)
 
     # Creating the arrays that we will use for the first round of getting the border currents
     u_vel = np.zeros(u_data.shape)
@@ -78,7 +77,7 @@ def set_fieldset(filenames: list, variables: dict, dimensions: dict):
 
 def reduce_array(data: array):
     if len(data.shape) == 4:
-        data = data[:, 0, :, :]
+        data = data[0, 0, :, :]
     elif len(data.shape) == 3:
         data = data[0, :, :]
     else:
