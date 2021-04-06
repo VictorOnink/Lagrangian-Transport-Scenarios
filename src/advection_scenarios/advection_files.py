@@ -181,7 +181,7 @@ class AdvectionFiles:
             prefix = 'CMEMS_MEDITERRANEAN'
             # The core UV velocity fields
             UV_filenames = glob.glob(self.data_dir + "CMEMS_MED/20100101_d-CMCC--RFVL-MFSe3r1-MED-b20200901_re-sv01.00.nc") + \
-                           glob.glob(self.data_dir + "CMEMS_MED/{}01*--RFVL*.nc".format(
+                           glob.glob(self.data_dir + "CMEMS_MED/{}*--RFVL*.nc".format(
                                settings.START_YEAR + settings.RESTART))
             # Remove duplicates
             UV_filenames = list(dict.fromkeys(UV_filenames))
@@ -195,7 +195,7 @@ class AdvectionFiles:
                                           variable=UV_dimensions)
 
             # The stokes drift fields
-            STOKES_filenames = glob.glob(self.data_dir + "WAVE_MED/{}01*--WAVE*.nc".format(
+            STOKES_filenames = glob.glob(self.data_dir + "WAVE_MED/{}*--WAVE*.nc".format(
                 settings.START_YEAR + settings.RESTART))
             STOKES_filenames.sort()
             STOKES_variables = {'Ust': 'VSDX', 'Vst': 'VSDY'}
@@ -210,7 +210,7 @@ class AdvectionFiles:
                                           variable=STOKES_dimensions)
 
             # The peak wave period fields
-            PERIOD_filenames = glob.glob(self.data_dir + "WAVE_MED/{}01*--WAVE*.nc".format(
+            PERIOD_filenames = glob.glob(self.data_dir + "WAVE_MED/{}*--WAVE*.nc".format(
                 settings.START_YEAR + settings.RESTART))
             PERIOD_filenames.sort()
             PERIOD_variables = {'WP': 'VTPK'}
