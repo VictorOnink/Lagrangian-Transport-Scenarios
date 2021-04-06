@@ -128,9 +128,9 @@ if INPUT == 'Jambeck':
     INPUT_MIN = 0.08
 elif INPUT == 'Lebreton':
     # NUMBER OF RUNS
-    RUN_RANGE: int = 4
+    RUN_RANGE: int = 1
     # MAXIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
-    INPUT_MAX = 10.0
+    INPUT_MAX = 5.0
     # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
     INPUT_MIN = 0.0  # Minimum plastic mass input for a cell in order to be considered for the input
 elif INPUT == 'Point_Release':
