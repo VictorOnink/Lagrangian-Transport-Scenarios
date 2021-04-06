@@ -100,9 +100,9 @@ def create_distance_to_shore_land(output_name: str, grid: np.array, lon: np.arra
                 memory_var = 1
     distance[mask == False] = 0
     # Saving the entire distance field
-    coords = [('lat', lat), ('lon', lon)]
-    dist = xarray.DataArray(distance, coords=coords)
-    dcoo = {'lat': lat, 'lon': lon}
+    coords = [('time', np.array([0])), ('lat', lat), ('lon', lon)]
+    dist = xarray.DataArray(distance[np.newaxis, :, :], coords=coords)
+    dcoo = {'time': np.array([0]), 'lat': lat, 'lon': lon}
     dset = xarray.Dataset({'distance': dist}, coords=dcoo)
     dset.to_netcdf(output_name)
 
