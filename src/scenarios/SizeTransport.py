@@ -126,4 +126,4 @@ class SizeTransport(base_scenario.BaseScenario):
                         pset.Kernel(utils._floating_AdvectionRK4DiffusionEM_stokes_depth) + \
                         pset.Kernel(utils.KPP_wind_mixing)
         total_behavior = base_behavior + pset.Kernel(utils._anti_beach_nudging) + pset.Kernel(self._beaching_kernel)
-        return pset.Kernel(self._beaching_kernel)
+        return total_behavior

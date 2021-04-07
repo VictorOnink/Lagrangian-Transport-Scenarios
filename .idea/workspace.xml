@@ -104,13 +104,6 @@
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
     </task>
-    <task id="LOCAL-00439" summary="to ubelix">
-      <created>1617201342887</created>
-      <option name="number" value="00439" />
-      <option name="presentableId" value="LOCAL-00439" />
-      <option name="project" value="LOCAL" />
-      <updated>1617201342887</updated>
-    </task>
     <task id="LOCAL-00440" summary="updated for the new CMEMS data">
       <created>1617698054922</created>
       <option name="number" value="00440" />
@@ -447,7 +440,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617783302306</updated>
     </task>
-    <option name="localTasksCounter" value="488" />
+    <task id="LOCAL-00488" summary="update">
+      <created>1617784599694</created>
+      <option name="number" value="00488" />
+      <option name="presentableId" value="LOCAL-00488" />
+      <option name="project" value="LOCAL" />
+      <updated>1617784599694</updated>
+    </task>
+    <option name="localTasksCounter" value="489" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
