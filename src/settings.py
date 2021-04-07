@@ -205,7 +205,7 @@ if SCENARIO_NAME != 'AdvectionDiffusionOnly':
     COAST_D = 10  # km, the distance from the nearest shoreline that falls under the coastal zone.
 if SCENARIO_NAME == 'FragmentationKaandorp':
     # INITIAL PARTICLE SIZE (m)
-    INIT_SIZE = 0.00001 # m
+    INIT_SIZE = 0.005 # m
     # INITIAL DENSITY (KG/M^3): 920 = polypropylene
     INIT_DENSITY = 1020
 if SCENARIO_NAME == 'SizeTransport':
