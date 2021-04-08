@@ -27,6 +27,7 @@ class FieldSetFactory():
                         wind_min: bool = False,
                         MLD: bool = False,
                         KPP_mixing: bool = False,
+                        TIDAL_mixing: bool = False,
                         coastal_zone: bool = True,
                         grid_spacing: bool = True,
                         halo: bool = True
@@ -66,6 +67,8 @@ class FieldSetFactory():
             _add_MLD_field(fieldset=fieldset, file_dict=file_dict)
         if KPP_mixing:
             _add_KPP_wind_mixing(fieldset=fieldset, file_dict=file_dict)
+        if TIDAL_mixing:
+            _add_TIDAL_mixing(fieldset=fieldset, file_dict=file_dict)
         if coastal_zone:
             _add_coastal_zone_boundary(fieldset=fieldset)
         if grid_spacing:
@@ -336,6 +339,18 @@ def _add_KPP_wind_mixing(fieldset: FieldSet, file_dict: dict):
     fieldset.add_constant('K_Z_BULK', settings.K_Z_BULK)  # Vertical diffusion below the MLD
     fieldset.add_constant('SURF_Z',
                           np.nanmin(np.abs(file_dict['DEPTH'])))  # Correction in case the surface depth is not z=0
+
+
+def _add_TIDAL_mixing(fieldset: FieldSet, file_dict: dict):
+    os.system('echo "Adding TIDAL Kz mixing"')
+    _check_presence(variable='TIDE_Kz_filenames', file_dict=file_dict)
+    dataset = Dataset(file_dict['TIDE_Kz_filenames'])
+    TIDAL_Kz = dataset.variables['TIDAL_Kz'][:]
+    TIDAL_dKz = dataset.variables['TIDAL_dKz'][:]
+    fieldset.add_field(Field('TIDAL_Kz', TIDAL_Kz, lon=file_dict['LON'], lat=file_dict['LAT'], depth=file_dict['DEPTH'],
+                             mesh='spherical'))
+    fieldset.add_field(Field('TIDAL_dKz', TIDAL_dKz, lon=file_dict['LON'], lat=file_dict['LAT'],
+                             depth=file_dict['DEPTH'], mesh='spherical'))
 
 
 def _add_grid_spacing(fieldset: FieldSet, file_dict: dict):

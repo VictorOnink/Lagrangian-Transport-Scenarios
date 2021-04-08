@@ -42,7 +42,6 @@ def create_tidal_Kz_files(file_name: str, LON: array, LAT: array, DEPTH: array, 
 
     # Computing the TIDAL_Kz gradient
     GRID_dKz = np.gradient(GRID_Kz, DEPTH, axis=0)
-    print('max {}, min {}, mean {}'.format(np.nanmax(GRID_dKz), np.nanmin(GRID_dKz), np.nanmean(np.abs(GRID_dKz))))
 
     # Saving the field to a .nc file
     coords = [('time', np.array([0])), ('depth', DEPTH), ('lat', LAT), ('lon', LON)]
