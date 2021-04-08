@@ -42,12 +42,12 @@ def create_tidal_Kz_files(file_name: str, LON: array, LAT: array, DEPTH: array, 
 
     # Computing the TIDAL_Kz gradient
     TIDAL_dKz = np.gradient(TIDAL_Kz_inter, DEPTH, axis=0)
-    print('max {}, min {}, mean {}'.format(np.nanmax(TIDAL_dKz), np.nanmin(TIDAL_dKz), np.nanmean(TIDAL_dKz)))
+    print('max {}, min {}, mean {}'.format(np.nanmax(TIDAL_dKz), np.nanmin(TIDAL_dKz), np.nanmean(np.abs(TIDAL_dKz))))
 
     # Saving the field to a .nc file
     coords = [('time', np.array([0])), ('depth', DEPTH), ('lat', LAT), ('lon', LON)]
     dcoo = {'time': np.array([0]), 'depth': DEPTH, 'lat': LAT, 'lon': LON}
-    dset = xarray.Dataset({'TIDAL_Kz': xarray.DataArray(TIDAL_Kz[np.newaxis, ...], coords=coords)}, coords=dcoo)
+    dset = xarray.Dataset({'TIDAL_Kz': xarray.DataArray(TIDAL_Kz_inter[np.newaxis, ...], coords=coords)}, coords=dcoo)
     dset.to_netcdf(file_name)
 
 
