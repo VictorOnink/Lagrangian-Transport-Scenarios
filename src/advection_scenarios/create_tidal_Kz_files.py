@@ -42,6 +42,7 @@ def create_tidal_Kz_files(file_name: str, LON: array, LAT: array, DEPTH: array, 
 
     # Computing the TIDAL_Kz gradient
     print(TIDAL_Kz.shape)
+    print(DEPTH.shape)
     TIDAL_dKz = np.gradient(TIDAL_Kz, DEPTH, axis=0)
     print('max {}, min {}, mean {}'.format(np.nanmax(TIDAL_dKz), np.nanmin(TIDAL_dKz), np.nanmean(TIDAL_dKz)))
 
