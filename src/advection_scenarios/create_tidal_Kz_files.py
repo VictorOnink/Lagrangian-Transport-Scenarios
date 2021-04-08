@@ -38,12 +38,10 @@ def create_tidal_Kz_files(file_name: str, LON: array, LAT: array, DEPTH: array, 
     # Due to very low N^2 values (corresponding to very weak stratification), there are some regions where Kz is
     # unfeasibly high (Kz > 100 m^2/s). Therefore, I cap GRID_Kz at 0.1 m^2/s. This only affects 0.08% of all the cells
     # in the TIDAL_data, and prevents numerical issues later on.
-    TIDAL_Kz[TIDAL_Kz > 1e-1] = 1e-1
+    TIDAL_Kz_inter[TIDAL_Kz_inter > 1e-1] = 1e-1
 
     # Computing the TIDAL_Kz gradient
-    print(TIDAL_Kz.shape)
-    print(DEPTH.shape)
-    TIDAL_dKz = np.gradient(TIDAL_Kz, DEPTH, axis=0)
+    TIDAL_dKz = np.gradient(TIDAL_Kz_inter, DEPTH, axis=0)
     print('max {}, min {}, mean {}'.format(np.nanmax(TIDAL_dKz), np.nanmin(TIDAL_dKz), np.nanmean(TIDAL_dKz)))
 
     # Saving the field to a .nc file
