@@ -336,7 +336,6 @@ def _add_KPP_wind_mixing(fieldset: FieldSet, file_dict: dict):
     fieldset.add_constant('PHI', settings.PHI)  # Stability function
     fieldset.add_constant('BETA', settings.BETA)  # Wave age based on 10m wind speed
     fieldset.add_constant('BETA_STAR', settings.BETA_STAR)  # Wave age based on frictional air velocity
-    fieldset.add_constant('K_Z_BULK', settings.K_Z_BULK)  # Vertical diffusion below the MLD
     fieldset.add_constant('SURF_Z',
                           np.nanmin(np.abs(file_dict['DEPTH'])))  # Correction in case the surface depth is not z=0
 
@@ -351,6 +350,8 @@ def _add_TIDAL_mixing(fieldset: FieldSet, file_dict: dict):
                              mesh='spherical'))
     fieldset.add_field(Field('TIDAL_dKz', TIDAL_dKz, lon=file_dict['LON'], lat=file_dict['LAT'],
                              depth=file_dict['DEPTH'], mesh='spherical'))
+    fieldset.add_constant('K_Z_BULK', settings.K_Z_BULK)
+
 
 
 def _add_grid_spacing(fieldset: FieldSet, file_dict: dict):

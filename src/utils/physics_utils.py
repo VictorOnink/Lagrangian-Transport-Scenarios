@@ -363,7 +363,6 @@ def PolyTEOS10_bsq(particle, fieldset, time):
     particle.surface_density = rz0
 
 
-
 def KPP_wind_mixing(particle, fieldset, time):
     """
     Markov-0 implementation of wind mixing based on the KPP wind mixing parametrization. For more exact details, look
@@ -374,7 +373,7 @@ def KPP_wind_mixing(particle, fieldset, time):
 
     # Below the MLD there is no wind-driven turbulent diffusion according to KPP theory
     if particle.depth > mld:
-        Kz = fieldset.K_Z_BULK
+        Kz = 0
         dKz = 0
     # Within the MLD we compute the vertical diffusion according to Boufadel et al. (2020)
     else:
@@ -397,7 +396,7 @@ def KPP_wind_mixing(particle, fieldset, time):
         # The KPP profile vertical diffusion, at a depth corrected for the vertical gradient in Kz, and including the
         # bulk diffusivity
         alpha = (fieldset.VK * U_W) / fieldset.PHI
-        Kz = alpha * (z_correct + z0) * math.pow(1 - z_correct / mld, 2) + fieldset.K_Z_BULK
+        Kz = alpha * (z_correct + z0) * math.pow(1 - z_correct / mld, 2)
 
 
     # The Markov-0 vertical transport following Ross & Sharples (2004)
@@ -416,3 +415,29 @@ def KPP_wind_mixing(particle, fieldset, time):
         particle.beach = 3
     else:
         particle.depth = potential
+
+
+def internal_tide_mixing(particle, fieldset, time):
+    # The grid of the tidal mixing isn't an exact match with the CMEMS data, so in regions where Kz_tidal is either 0
+    # or very very small, we take the Waterhouse et al. (2014) estimate of the diapycnal diffusion below the MLD
+    Kz_tidal = fieldset.TIDAL_Kz[time, fieldset.SURF_Z, particle.lat, particle.lon]
+    dKz_tidal = fieldset.TIDAL_dKz[time, fieldset.SURF_Z, particle.lat, particle.lon]
+    if Kz_tidal < fieldset.K_Z_BULK:
+        Kz_tidal = fieldset.K_Z_BULK
+        dKz_tidal = 0.0
+
+    # Implementing Markov-0 style random walk
+    tidal_gradient = dKz_tidal * particle.dt
+    tidal_random = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3) * math.sqrt(2 * Kz_tidal)
+
+    tidal_potential = particle.depth + tidal_gradient + tidal_random
+
+    if tidal_potential < fieldset.SURF_Z:
+        overshoot = math.fabs(tidal_potential - fieldset.SURF_Z)
+        particle.depth = fieldset.SURF_Z + overshoot
+    elif tidal_potential > fieldset.bathymetry[time, fieldset.SURF_Z, particle.lat, particle.lon]:
+        # If the particle has gone through the sea floor, consider the particle 'beached', with currently no
+        # resuspension
+        particle.beach = 3
+    else:
+        particle.depth = tidal_potential
