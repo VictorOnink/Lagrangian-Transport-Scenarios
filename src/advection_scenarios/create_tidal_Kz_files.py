@@ -33,21 +33,22 @@ def create_tidal_Kz_files(file_name: str, LON: array, LAT: array, DEPTH: array, 
     TIDAL_Kz_inter = interpolate_to_DEPTH(TIDAL_Kz, TIDAL_data, DEPTH)
 
     # # Now we interpolate the Kz values onto the model grid defined by LON, LAT and DEPTH
-    # GRID_Kz = interpolate_to_GRID(TIDAL_Kz_inter, DEPTH, LON, LAT, TIDAL_data)
+    GRID_Kz = interpolate_to_GRID(TIDAL_Kz_inter, DEPTH, LON, LAT, TIDAL_data)
 
     # Due to very low N^2 values (corresponding to very weak stratification), there are some regions where Kz is
     # unfeasibly high (Kz > 100 m^2/s). Therefore, I cap GRID_Kz at 0.1 m^2/s. This only affects 0.08% of all the cells
     # in the TIDAL_data, and prevents numerical issues later on.
-    TIDAL_Kz_inter[TIDAL_Kz_inter > 1e-1] = 1e-1
+    GRID_Kz[GRID_Kz > 1e-1] = 1e-1
 
     # Computing the TIDAL_Kz gradient
-    TIDAL_dKz = np.gradient(TIDAL_Kz_inter, DEPTH, axis=0)
-    print('max {}, min {}, mean {}'.format(np.nanmax(TIDAL_dKz), np.nanmin(TIDAL_dKz), np.nanmean(np.abs(TIDAL_dKz))))
+    GRID_dKz = np.gradient(GRID_Kz, DEPTH, axis=0)
+    print('max {}, min {}, mean {}'.format(np.nanmax(GRID_dKz), np.nanmin(GRID_dKz), np.nanmean(np.abs(GRID_dKz))))
 
     # Saving the field to a .nc file
     coords = [('time', np.array([0])), ('depth', DEPTH), ('lat', LAT), ('lon', LON)]
     dcoo = {'time': np.array([0]), 'depth': DEPTH, 'lat': LAT, 'lon': LON}
-    dset = xarray.Dataset({'TIDAL_Kz': xarray.DataArray(TIDAL_Kz_inter[np.newaxis, ...], coords=coords)}, coords=dcoo)
+    dset = xarray.Dataset({'TIDAL_Kz': xarray.DataArray(GRID_Kz[np.newaxis, ...], coords=coords),
+                           'TIDAL_dKz': xarray.DataArray(GRID_dKz[np.newaxis, ...], coords=coords)}, coords=dcoo)
     dset.to_netcdf(file_name)
 
 
