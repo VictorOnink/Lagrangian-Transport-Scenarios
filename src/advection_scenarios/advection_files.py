@@ -25,8 +25,8 @@ class AdvectionFiles:
     def __init__(self, server, stokes, advection_scenario, repeat_dt):
         self.server = server
         self.stokes = stokes
-        self.data_dir = utils._get_data_directory(server=server)
-        self.input_dir = utils._get_input_directory(server=server)
+        self.data_dir = utils.get_data_directory(server=server)
+        self.input_dir = utils.get_input_directory(server=server)
         self.advection_scenario = advection_scenario
         self.repeat_dt = repeat_dt
         os.system('echo "The advection scenario is "' + self.advection_scenario)
@@ -292,7 +292,7 @@ class AdvectionFiles:
 
             # Vertical Kz due to internal tides (TKZ)
             TIDE_Kz_filenames = self.input_dir + prefix + "_Kz_TIDAL.nc"
-            if not utils._check_file_exist(TIDE_Kz_filenames):
+            if utils.check_file_exist(TIDE_Kz_filenames):
                 os.system('echo "The tidal Kz file does not yet exist"')
                 create_tidal_Kz_files.create_tidal_Kz_files(file_name=TIDE_Kz_filenames, LON=LON, LAT=LAT, DEPTH=DEPTH,
                                                             BATH_filenames=BATH_filenames,
@@ -304,14 +304,14 @@ class AdvectionFiles:
         BORDER_filename = self.input_dir + prefix + '_boundary_velocities.nc'
         file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='BORDER_filename',
                                       variable=BORDER_filename)
-        if utils._check_file_exist(BORDER_filename):
+        if utils.check_file_exist(BORDER_filename):
             os.system('echo "border current file exists"')
         else:
             os.system('echo "The border current file does not yet exist"')
             create_boundary_current.create_border_current(output_name=BORDER_filename, filenames=UV_filenames,
                                                           variables=UV_variables, dimensions=UV_dimensions,
                                                           grid=GRID)
-            if utils._check_file_exist(BORDER_filename):
+            if utils.check_file_exist(BORDER_filename):
                 os.system('echo "The border current for "' + str(prefix) + ' has been created')
             else:
                 os.system('echo "The border current file still does not exist"')
@@ -320,13 +320,13 @@ class AdvectionFiles:
         DISTANCE_filename = self.input_dir + prefix + '_distance2coast.nc'
         file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='DISTANCE_filename',
                                       variable=DISTANCE_filename)
-        if utils._check_file_exist(DISTANCE_filename):
+        if utils.check_file_exist(DISTANCE_filename):
             os.system('echo "distance to coast file exists"')
         else:
             os.system('echo "The distance to coast file does not yet exist"')
             create_distance_to_shore.create_distance_to_shore(output_name=DISTANCE_filename, grid=GRID, lon=LON,
                                                               lat=LAT)
-            if utils._check_file_exist(BORDER_filename):
+            if utils.check_file_exist(BORDER_filename):
                 os.system('echo "The border current for "' + str(prefix) + ' has been created')
             else:
                 os.system('echo "The border current file still does not exist"')
@@ -335,12 +335,12 @@ class AdvectionFiles:
         LANDID_filename = self.input_dir + prefix + '_land_cell_identifier.nc'
         file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='LANDID_filename',
                                       variable=LANDID_filename)
-        if utils._check_file_exist(LANDID_filename):
+        if utils.check_file_exist(LANDID_filename):
             os.system('echo "LANDID file exists"')
         else:
             os.system('echo "The LANDID file does not yet exist"')
             create_land_ID.create_land_ID(output_name=LANDID_filename, grid=GRID, lon=LON, lat=LAT)
-            if utils._check_file_exist(BORDER_filename):
+            if utils.check_file_exist(BORDER_filename):
                 os.system('echo "The LANDID file for "' + str(prefix) + ' has been created')
             else:
                 os.system('echo "The LANDID file still does not exist"')
@@ -349,12 +349,12 @@ class AdvectionFiles:
         GRIDSPACING_filename = self.input_dir + prefix + '_grid_spacing.nc'
         file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='GRIDSPACING_filename',
                                       variable=GRIDSPACING_filename)
-        if utils._check_file_exist(GRIDSPACING_filename):
+        if utils.check_file_exist(GRIDSPACING_filename):
             os.system('echo "Grid spacing file exists"')
         else:
             os.system('echo "The grid spacing file does not yet exist"')
             create_grid_spacing.create_grid_spacing(output_name=GRIDSPACING_filename, grid=GRID, lon=LON, lat=LAT)
-            if utils._check_file_exist(GRIDSPACING_filename):
+            if utils.check_file_exist(GRIDSPACING_filename):
                 os.system('echo "The grid spacing file for "' + str(prefix) + ' has been created')
             else:
                 os.system('echo "The grid spacing file still does not exist"')
@@ -365,7 +365,7 @@ class AdvectionFiles:
         STARTFILES_filename = {}
         for variable in ['lon', 'lat', 'weight']:
             file_name = output_prefix + '{}_run={}.npy'.format(variable, settings.RUN)
-            if utils._check_file_exist(file_name):
+            if utils.check_file_exist(file_name):
                 STARTFILES_filename[variable] = file_name
         file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='STARTFILES_filename',
                                       variable=STARTFILES_filename)

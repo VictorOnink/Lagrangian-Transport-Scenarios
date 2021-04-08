@@ -8,7 +8,7 @@ from parcels import JITParticle, Variable
 import os
 
 
-def _get_data_directory(server: int) -> str:
+def get_data_directory(server: int) -> str:
     """
 
     :param server:
@@ -17,7 +17,7 @@ def _get_data_directory(server: int) -> str:
     return settings.DATA_DIR_SERVERS[server]
 
 
-def _get_input_directory(server: int) -> str:
+def get_input_directory(server: int) -> str:
     """
 
     :param server:
@@ -26,7 +26,7 @@ def _get_input_directory(server: int) -> str:
     return settings.DATA_INPUT_DIR_SERVERS[server]
 
 
-def _get_output_directory(server: int) -> str:
+def get_output_directory(server: int) -> str:
     """
 
     :param server:
@@ -35,7 +35,7 @@ def _get_output_directory(server: int) -> str:
     return settings.DATA_OUTPUT_DIR_SERVERS[server]
 
 
-def _get_start_end_time(time: str):
+def get_start_end_time(time: str):
     start_time = datetime(settings.START_YEAR + settings.RESTART, 1, 1, 0, 0)
     end_time = datetime(settings.START_YEAR + settings.RESTART + 1, 1, 1, 0, 0)
     simulation_length = (end_time - start_time).days
@@ -47,8 +47,8 @@ def _get_start_end_time(time: str):
         return simulation_length
 
 
-def _nan_removal(dataset: Dataset, variable: str, last_selec: np.array,
-                 final_time: datetime, last_time_selec: datetime):
+def restart_nan_removal(dataset: Dataset, variable: str, last_selec: np.array,
+                        final_time: datetime, last_time_selec: datetime):
     """
     This function inputs a dataset object for the rfile. We then take the last
     non-masked value for each row, which we then use to initialise the new ofile
@@ -85,7 +85,7 @@ def _nan_removal(dataset: Dataset, variable: str, last_selec: np.array,
     return var_selec
 
 
-def _get_repeat_dt():
+def get_repeat_dt():
     if settings.RESTART == 0:
         repeat_dt = settings.REPEAT_DT_R0
     else:
@@ -93,9 +93,9 @@ def _get_repeat_dt():
     return repeat_dt
 
 
-def _add_var_particle(particleType: JITParticle, name: str, dtype=np.int32,
-                      set_initial: bool = True, to_write: bool = True):
-    if set_initial == True:
+def add_particle_variable(particleType: JITParticle, name: str, dtype=np.int32,
+                          set_initial: bool = True, to_write: bool = True):
+    if set_initial:
         init = attrgetter(name)
     else:
         init = 0
@@ -103,10 +103,10 @@ def _add_var_particle(particleType: JITParticle, name: str, dtype=np.int32,
     setattr(particleType, name, var)
 
 
-def _check_direc_exist(direc: str):
-    if os.path.isdir(direc) == False:
+def check_direc_exist(direc: str):
+    if not os.path.isdir(direc):
         os.mkdir(direc)
 
 
-def _check_file_exist(File: str):
+def check_file_exist(File: str):
     return os.path.isfile(File)

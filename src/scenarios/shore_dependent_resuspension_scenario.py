@@ -17,8 +17,8 @@ class SD_Resuspension(base_scenario.BaseScenario):
         """Constructor for coastal_proximity"""
         super().__init__(server, stokes)
         self.prefix = "SDResus"
-        self.input_dir = utils._get_input_directory(server=self.server)
-        self.output_dir = utils._get_output_directory(server=self.server)
+        self.input_dir = utils.get_input_directory(server=self.server)
+        self.output_dir = utils.get_output_directory(server=self.server)
         if settings.RESTART == 0:
             self.repeat_dt = timedelta(days=31)
         else:
@@ -55,8 +55,8 @@ class SD_Resuspension(base_scenario.BaseScenario):
     def _get_pclass(self):
         os.system('echo "Creating the particle class"')
         particle_type = utils.BaseParticle
-        utils._add_var_particle(particle_type, 'distance', dtype=np.float32, set_initial=False)
-        utils._add_var_particle(particle_type, 'weights', dtype=np.float32, set_initial=True)
+        utils.add_particle_variable(particle_type, 'distance', dtype=np.float32, set_initial=False)
+        utils.add_particle_variable(particle_type, 'weights', dtype=np.float32, set_initial=True)
         return particle_type
 
     def _file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART):

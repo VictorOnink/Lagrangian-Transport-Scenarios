@@ -121,7 +121,7 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
 
 def get_mismanaged_fraction_Jambeck(dataset: Dataset):
     mismanaged_file = settings.INPUT_DIREC + 'Jambeck_mismanaged_grid.nc'
-    if utils._check_file_exist(mismanaged_file):
+    if utils.check_file_exist(mismanaged_file):
         os.system('echo "The mismanaged grid already exists"')
         return Dataset(mismanaged_file).variables['mismanaged_plastic'][:]
     else:
@@ -161,7 +161,7 @@ def get_mismanaged_fraction_Jambeck(dataset: Dataset):
 
 
 def get_distance_to_shore(filename: str, grid: np.array, lon: np.array, lat: np.array):
-    if utils._check_file_exist(filename):
+    if utils.check_file_exist(filename):
         os.system('echo "The mismanaged grid already exists"')
     else:
         create_distance_to_shore_land(output_name=filename, grid=grid, lon=lon, lat=lat)
