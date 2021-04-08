@@ -1,10 +1,8 @@
-#This will be a general code that will allow easy submission of large beaching simulation jobs. It is supposed to work in unison with generalBeachingScenarios.py, which is the python code that contains the actually parcels to run the different simulations
-
 #####################################################################################
 # General run parameters                                                            #
 #####################################################################################
 SUBMISSION='simulation'
-DEBUG=1 # 0 = Not a debug run, 1 = a debug run
+DEBUG=0 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Cozar based fragmentation, 6 = Size dependent transport
 SCENARIO=6
