@@ -188,7 +188,7 @@ if SUBMISSION == 'analysis':
 #                                                                                                                      #
 ########################################################################################################################
 # MODEL INTEGRATION TIMESTEP
-TIME_STEP = timedelta(minutes=0.5)  # integration timestep
+TIME_STEP = timedelta(minutes=0.5)
 # MODEL OUTPUT TIMESTEP
 OUTPUT_TIME_STEP = timedelta(hours=12)
 # PARTICLE RELEASE TIMESTEP
@@ -205,12 +205,12 @@ if SCENARIO_NAME != 'AdvectionDiffusionOnly':
     COAST_D = 10  # km, the distance from the nearest shoreline that falls under the coastal zone.
 if SCENARIO_NAME == 'FragmentationKaandorp':
     # INITIAL PARTICLE SIZE (m)
-    INIT_SIZE = 0.005 # m
+    INIT_SIZE = float(os.environ['CONCENTRATION']) * 1e-5
     # INITIAL DENSITY (KG/M^3): 920 = polypropylene
     INIT_DENSITY = 1020
 if SCENARIO_NAME == 'SizeTransport':
     # INITIAL PARTICLE SIZE (m)
-    INIT_SIZE = 0.00001  # m
+    INIT_SIZE = float(os.environ['CONCENTRATION']) * 1e-5
     # INITIAL DENSITY (KG/M^3): 920 = POLYPROPYLENE, 980 = HIGH DENSITY POLYETHYLENE (BRIGNAC ET AL. 2017)
     INIT_DENSITY = 920
 # ACCELERATION DUE TO GRAVITY (M/S^2)

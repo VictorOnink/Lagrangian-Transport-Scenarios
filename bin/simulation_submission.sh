@@ -15,6 +15,8 @@ RESUSTIME=69
 SHOREDEPEN=0
 #for scenario 4, the minimum wind speed for resusplension. Divide by 10 for actual value
 WMIN=3
+#for scenario 6, the initial size of the particle in 1e-5 m
+SIZE=500
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010
 #Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=point release, 3=uniform release
@@ -40,6 +42,7 @@ export SHORETIME
 export RESUSTIME
 export SHOREDEPEN
 export WMIN
+export SIZE
 export STARTYEAR
 export INPUT
 export ADVECTION_DATA
@@ -81,7 +84,7 @@ elif [ "$SCENARIO" -eq "5" ]; then
 	    RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
         fi
 elif [ "$SCENARIO" -eq "6" ]; then
-        RUNNAMEPREFIX="SizeTransport_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTYEAR}"_"
+        RUNNAMEPREFIX="SizeTransport_SIZE="${SIZE}"_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTYEAR}"_"
         if [ "$STOKES" -eq "1" ]; then
 	    RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
         fi
@@ -118,7 +121,7 @@ do
 	   part3="#SBATCH --mail-user=victor.onink@climate.unibe.ch"
 	   part4="#SBATCH --job-name="$runname
 	   part5="#SBATCH --output="runOutput/$runname".o%j"
-	   part6="#SBATCH --mem-per-cpu=6G"
+	   part6="#SBATCH --mem-per-cpu=10G"
 	   if [ "$DEBUG" -eq "0" ]; then
 	          part7="#SBATCH --time=95:59:00"
             part8="#SBATCH --partition=all"
