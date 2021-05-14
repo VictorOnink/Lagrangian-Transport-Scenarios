@@ -3,7 +3,8 @@ from utils.file_utils import get_input_directory, get_start_end_time, add_partic
     get_repeat_dt, restart_nan_removal, add_particle_variable,get_output_directory
 from utils.physics_utils import _initial_input, _floating_advection_rk4, _floating_2d_brownian_motion, \
     _anti_beach_nudging, _delete_particle, _floating_AdvectionRK4DiffusionEM_stokes_depth, _get_kinematic_viscosity, \
-    KPP_wind_mixing, PolyTEOS10_bsq, internal_tide_mixing, initial_estimate_particle_rise_velocity
+    KPP_wind_mixing, PolyTEOS10_bsq, internal_tide_mixing, initial_estimate_particle_rise_velocity, \
+    get_resuspension_timescale
 from utils.run_utils import _set_random_seed
 from utils.BaseParticle import BaseParticle
 

@@ -4,7 +4,7 @@ import settings as settings
 import scenarios.base_scenario as base_scenario
 import factories.fieldset_factory as fieldset_factory
 from advection_scenarios import advection_files
-import utils as utils
+import utils
 from datetime import datetime, timedelta
 import os
 from parcels import ParcelsRandom
@@ -82,14 +82,14 @@ class SizeTransport(base_scenario.BaseScenario):
         if new:
             os.system('echo "Set the output file name"')
             str_format = (
-                settings.ADVECTION_DATA, settings.INIT_SIZE, settings.INIT_DENSITY, settings.START_YEAR, settings.INPUT,
-                restart, run)
+                settings.ADVECTION_DATA, settings.SHORE_TIME, utils.get_resuspension_timescale(), settings.INIT_SIZE,
+                settings.INIT_DENSITY, settings.START_YEAR, settings.INPUT, restart, run)
         else:
             os.system('echo "Set the restart file name"')
             str_format = (
-                settings.ADVECTION_DATA, settings.INIT_SIZE, settings.INIT_DENSITY, settings.START_YEAR, settings.INPUT,
-                restart - 1, run)
-        return odirec + self.prefix + '_{}_size={}_rho={}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
+                settings.ADVECTION_DATA, settings.SHORE_TIME, utils.get_resuspension_timescale(), settings.INIT_SIZE,
+                settings.INIT_DENSITY, settings.START_YEAR, settings.INPUT, restart - 1, run)
+        return odirec + self.prefix + '_{}_st={}_rt={:.6f}_size={}_rho={}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
 
     def _beaching_kernel(particle, fieldset, time):
         if particle.beach == 0:

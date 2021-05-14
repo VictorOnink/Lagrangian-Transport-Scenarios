@@ -4,6 +4,7 @@ from netCDF4 import Dataset
 import numpy as np
 from parcels import GeographicPolar, Geographic, FieldSet, Field
 import math
+import utils
 
 
 class FieldSetFactory():
@@ -309,7 +310,10 @@ def _add_resus_timescale_field(fieldset: FieldSet, file_dict: dict):
     if settings.SCENARIO_NAME == 'ShoreDependentResuspension':
         p_r = np.exp(-settings.TIME_STEP.total_seconds() / (_compute_shore_resus_Field(file_dict) * 86400.))
         fieldset.add_field(Field('p_resus', p_r, lon=file_dict['LON'], lat=file_dict['LAT'], mesh='spherical'))
-
+    if settings.SCENARIO_NAME == 'SizeTransport':
+        lambda_R = utils.get_resuspension_timescale()
+        p_r = math.exp(-settings.TIME_STEP.total_seconds() / (lambda_R * 86400.))
+        fieldset.add_constant('p_resus', p_r)
     else:
         p_r = math.exp(-settings.TIME_STEP.total_seconds() / (settings.RESUS_TIME * 86400.))
         fieldset.add_constant('p_resus', p_r)
