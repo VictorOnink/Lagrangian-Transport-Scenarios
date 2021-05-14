@@ -471,6 +471,6 @@ def initial_estimate_particle_rise_velocity(L=settings.INIT_SIZE):
         return np.abs(left - right)
 
     w_rise = scipy.optimize.minimize_scalar(to_optimize, bounds=[-100, 0], method='bounded').x
-    os.system('echo "The rise velocity is {}"'.format(w_rise))
+    os.system('echo "The rise velocity is for a particle with size {} is {}"'.format(L, w_rise))
     return w_rise
 
