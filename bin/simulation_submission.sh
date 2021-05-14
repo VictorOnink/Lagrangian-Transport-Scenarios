@@ -2,7 +2,7 @@
 # General run parameters                                                            #
 #####################################################################################
 SUBMISSION='simulation'
-DEBUG=0 # 0 = Not a debug run, 1 = a debug run
+DEBUG=1 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Cozar based fragmentation, 6 = Size dependent transport
 SCENARIO=6
@@ -16,7 +16,7 @@ SHOREDEPEN=0
 #for scenario 4, the minimum wind speed for resusplension. Divide by 10 for actual value
 WMIN=3
 #for scenario 6, the initial size of the particle in 1e-5 m
-SIZE=1
+SIZE=500
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010
 #Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=point release, 3=uniform release
@@ -124,19 +124,21 @@ do
 	   part6="#SBATCH --mem-per-cpu=10G"
 	   if [ "$DEBUG" -eq "0" ]; then
 	          part7="#SBATCH --time=95:59:00"
-            part8="#SBATCH --partition=all"
+            part8="#SBATCH --partition=epyc2"
+            part9='#SBATCH --qos=job_epyc2'
      else
-            part7="#SBATCH --time=00:10:00"
-            part8="#SBATCH --partition=debug"
+            part7="#SBATCH --time=00:19:00"
+            part8="#SBATCH --partition=epyc2"
+            part9='#SBATCH --qos=job_epyc2_debug'
      fi
 	   #loading the bash and setting the environment
-	   part9="source /storage/homefs/vo18e689/.bash_profile"
-	   part10="source /storage/homefs/vo18e689/anaconda3/bin/activate py3_parcels"
-	   part11='cd "/storage/homefs/vo18e689/codes/Next-Stage-Plastic-Beaching/"'
+	   part10="source /storage/homefs/vo18e689/.bash_profile"
+	   part11="source /storage/homefs/vo18e689/anaconda3/bin/activate py3_parcels"
+	   part12='cd "/storage/homefs/vo18e689/codes/Next-Stage-Plastic-Beaching/"'
 	   #And now the actual running of the code
-	   part12="python src/main.py -p 10 -v"
+	   part13="python src/main.py -p 10 -v"
 	   #and now the creation of the submission file
-	   for i in {1..12} 
+	   for i in {1..13}
 	   do
 		partGrab="part"$i
 		echo ${!partGrab} >> jobsubmissionFile_${RUN}_${RESTARTNUM}.sh

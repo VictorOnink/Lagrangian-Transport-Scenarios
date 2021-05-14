@@ -56,12 +56,22 @@ class SizeTransport(base_scenario.BaseScenario):
     def _get_pclass(self):
         os.system('echo "Creating the particle class"')
         particle_type = utils.BaseParticle
-        utils.add_particle_variable(particle_type, 'distance', dtype=np.float32, set_initial=False)
+        utils.add_particle_variable(particle_type, 'distance_horizontal', dtype=np.float32, set_initial=False,
+                                    to_write=True)
+        utils.add_particle_variable(particle_type, 'distance_vertical', dtype=np.float32, set_initial=False,
+                                    to_write=True)
+        utils.add_particle_variable(particle_type, 'prev_lon', dtype=np.float32, set_initial=True, to_write=False,
+                                    other_name='lon')
+        utils.add_particle_variable(particle_type, 'prev_lat', dtype=np.float32, set_initial=True, to_write=False,
+                                    other_name='lat')
+        utils.add_particle_variable(particle_type, 'prev_depth', dtype=np.float32, set_initial=True, to_write=False,
+                                    other_name='depth')
         utils.add_particle_variable(particle_type, 'density', dtype=np.float32, set_initial=False, to_write=False)
         utils.add_particle_variable(particle_type, 'surface_density', dtype=np.float32, set_initial=False, to_write=True)
         utils.add_particle_variable(particle_type, 'kinematic_viscosity', dtype=np.float32, set_initial=False,
                                     to_write=False)
-        utils.add_particle_variable(particle_type, 'rise_velocity', dtype=np.float32, set_initial=False)
+        utils.add_particle_variable(particle_type, 'rise_velocity', dtype=np.float32, set_initial=True,
+                                    other_value=utils.initial_estimate_particle_rise_velocity())
         utils.add_particle_variable(particle_type, 'reynolds', dtype=np.float32, set_initial=False)
         utils.add_particle_variable(particle_type, 'rho_plastic', dtype=np.float32, set_initial=True, to_write=False)
         utils.add_particle_variable(particle_type, 'size', dtype=np.float32)
@@ -95,36 +105,42 @@ class SizeTransport(base_scenario.BaseScenario):
         particle.age += particle.dt
 
     def _get_rising_velocity(particle, fieldset, time):
-        Re = particle.reynolds  # Reynolds number
         rho_sw = particle.density  # sea water density (kg m^-3)
         rho_p = particle.rho_plastic  # plastic particle density (kg m^-3)
-        L = particle.size  # particle size (m)
-        g = 9.81  # gravitational acceleration (m s^-2)
-        # Getting the equation according to Poulain et al (2019), equation 5 in the supplementary materials
-        left = 240 / (math.pi * Re) * (1 + 0.138 * Re ** 0.792)
-        right = 2. / 15. * L * (1. - rho_p / rho_sw) * g
-        # Calculate the rise velocity
-        particle.rise_velocity = - 1 * math.sqrt(right / left)
+        left = (1. - rho_p / rho_sw) * 8. / 3. * particle.size * fieldset.G
+        right = 24. / particle.reynolds + 5. / math.sqrt(particle.reynolds) + 2. / 5.
+        particle.rise_velocity = - 1 * math.sqrt(left / right)
 
     def _get_reynolds_number(particle, fieldset, time):
-        kin_visc = particle.kinematic_viscosity
-        L = particle.size
-        if particle.age == 0:
-            # An initial starting value for the Reynolds number, used to calculate the first rising velocity
-            w_b = math.fabs(0.0003)
-            particle.reynolds = L * w_b / kin_visc
-        else:
-            w_b = math.fabs(particle.rise_velocity)
-            particle.reynolds = L * w_b / kin_visc
+        w_b = math.fabs(particle.rise_velocity)
+        particle.reynolds = particle.size * w_b / particle.kinematic_viscosity
+
+    def _TotalDistance(particle, fieldset, time):
+        """
+        Calculating the cumulative distance travelled by the particle in vertical and horizontal directions
+        """
+        # Calculate the distance in latitudinal direction (using 1.11e2 kilometer per degree latitude)
+        lat_dist = (particle.lat - particle.prev_lat) * 1.11e2
+        # Calculate the distance in longitudinal direction, using cosine(latitude) - spherical earth
+        lon_dist = (particle.lon - particle.prev_lon) * 1.11e2 * math.cos(particle.lat * math.pi / 180)
+        # Calculate the total Euclidean distance travelled by the particle
+        particle.distance_horizontal += math.sqrt(math.pow(lon_dist, 2) + math.pow(lat_dist, 2))
+        particle.distance_vertical += math.fabs(particle.depth - particle.prev_depth)
+
+        particle.prev_lon = particle.lon  # Set the stored values for next iteration.
+        particle.prev_lat = particle.lat
+        particle.prev_depth = particle.depth
 
     def _get_particle_behavior(self, pset: ParticleSet):
         os.system('echo "Setting the particle behavior"')
         base_behavior = pset.Kernel(utils.PolyTEOS10_bsq) + \
                         pset.Kernel(utils._get_kinematic_viscosity) + \
                         pset.Kernel(self._get_reynolds_number) + \
-                        pset.Kernel(self._get_rising_velocity) + \
                         pset.Kernel(utils._floating_AdvectionRK4DiffusionEM_stokes_depth) + \
+                        pset.Kernel(utils._anti_beach_nudging) + \
+                        pset.Kernel(self._get_rising_velocity) + \
                         pset.Kernel(utils.KPP_wind_mixing) + \
-                        pset.Kernel(utils.internal_tide_mixing)
-        total_behavior = base_behavior + pset.Kernel(utils._anti_beach_nudging) + pset.Kernel(self._beaching_kernel)
-        return total_behavior
+                        pset.Kernel(self._TotalDistance) + \
+                        pset.Kernel(utils.internal_tide_mixing) + \
+                        pset.Kernel(self._beaching_kernel)
+        return base_behavior

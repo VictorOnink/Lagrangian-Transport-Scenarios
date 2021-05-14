@@ -1,5 +1,8 @@
 import math
 from parcels import ParcelsRandom
+import settings
+import scipy.optimize
+import numpy as np
 
 
 def _anti_beach_nudging(particle, fieldset, time):
@@ -121,7 +124,7 @@ def _floating_AdvectionRK4DiffusionEM_stokes_depth(particle, fieldset, time):
         # Stokes depth dependence term
         w_p = 2 * math.pi / fieldset.WP[t, d, la, lo]  # Peak period
         k_p = w_p ** 2 / 9.81  # peak wave number
-        z_correc = max(d - 1.472102, 0)  # correction since the surface in the CMEMS Mediterranean data is not at 0
+        z_correc = max(d - fieldset.SURF_Z, 0)  # correction since the surface in the CMEMS Mediterranean data is not at 0
         st_z = math.exp(-2 * k_p * z_correc) - math.sqrt(2 * math.pi * k_p * z_correc) * math.erfc(2 * k_p * z_correc)
 
         # RK4 terms
@@ -366,78 +369,106 @@ def PolyTEOS10_bsq(particle, fieldset, time):
 def KPP_wind_mixing(particle, fieldset, time):
     """
     Markov-0 implementation of wind mixing based on the KPP wind mixing parametrization. For more exact details, look
-    at the full wind mixing code at https://github.com/VictorOnink/Wind-Mixing-Diffusion/
+    at the full wind mixing code at https://github.com/VictorOnink/Wind-Mixing-Diffusion/ or at the paper draft
     """
-    # All the parameters to compute the PKK diffusion parameters
-    mld = fieldset.MLD[time, fieldset.SURF_Z, particle.lat, particle.lon]
+    # This of course should only be affecting particles that aren't beached
+    if particle.beach == 0:
+        # Loading the mixed layer depth
+        mld = fieldset.MLD[time, particle.depth, particle.lat, particle.lon]
 
-    # Below the MLD there is no wind-driven turbulent diffusion according to KPP theory
-    if particle.depth > mld:
-        Kz = 0
-        dKz = 0
-    # Within the MLD we compute the vertical diffusion according to Boufadel et al. (2020)
-    else:
-        # Wind speed
-        w_10 = math.sqrt(fieldset.u10[time, fieldset.SURF_Z, particle.lat, particle.lon] ** 2 + \
-                         fieldset.v10[time, fieldset.SURF_Z, particle.lat, particle.lon] ** 2)
-        # Drag coefficient
-        C_D = min(max(1.2E-3, 1.0E-3 * (0.49 + 0.065 * w_10)), 2.12E-3)
-        # wind stress
-        tau = C_D * fieldset.RHO_A * w_10 ** 2
-        # Frictional velocity of water at the ocean surface
-        U_W = tau / particle.surface_density
-        # Surface roughness z0 following Zhao & Li (2019)
-        z0 = 3.5153e-5 * fieldset.BETA ** (-0.42) * w_10 ** 2 / fieldset.G
-        # The corrected particle depth, since the depth is not always zero for the surface circulation data
-        z_correct = particle.depth - fieldset.SURF_Z
-        # The diffusion gradient at particle.depth
-        alpha = (fieldset.VK * U_W) / (fieldset.PHI * mld ** 2)
-        dKz = alpha * (mld - z_correct) * (mld - 3 * z_correct - 2 * z0)
-        # The KPP profile vertical diffusion, at a depth corrected for the vertical gradient in Kz, and including the
-        # bulk diffusivity
-        alpha = (fieldset.VK * U_W) / fieldset.PHI
-        Kz = alpha * (z_correct + z0) * math.pow(1 - z_correct / mld, 2)
+        # Below the MLD there is no wind-driven turbulent diffusion according to KPP theory
+        if particle.depth > mld:
+            Kz = 0
+            dKz = 0
+        # Within the MLD we compute the vertical diffusion according to Boufadel et al. (2020)
+        else:
+            # Wind speed
+            if particle.lon < 0:
+                temp_lon = particle.lon + 360.
+            else:
+                temp_lon = particle.lon
+            w_10 = math.sqrt(fieldset.u10[time, fieldset.SURF_Z, particle.lat, temp_lon] ** 2 + \
+                             fieldset.v10[time, fieldset.SURF_Z, particle.lat, temp_lon] ** 2)
+            # Drag coefficient
+            C_D = min(max(1.2E-3, 1.0E-3 * (0.49 + 0.065 * w_10)), 2.12E-3)
+            # wind stress
+            tau = C_D * fieldset.RHO_A * w_10 ** 2
+            # Frictional velocity of water at the ocean surface
+            U_W = tau / particle.surface_density
+            # Surface roughness z0 following Zhao & Li (2019)
+            z0 = 3.5153e-5 * fieldset.BETA ** (-0.42) * w_10 ** 2 / fieldset.G
+            # The corrected particle depth, since the depth is not always zero for the surface circulation data
+            z_correct = particle.depth - fieldset.SURF_Z
+            # The diffusion gradient at particle.depth
+            alpha = (fieldset.VK * U_W) / (fieldset.PHI * mld ** 2)
+            dKz = alpha * (mld - z_correct) * (mld - 3 * z_correct - 2 * z0)
+            # The KPP profile vertical diffusion, at a depth corrected for the vertical gradient in Kz, and including the
+            # bulk diffusivity
+            alpha = (fieldset.VK * U_W) / fieldset.PHI
+            Kz = alpha * (z_correct + z0) * math.pow(1 - z_correct / mld, 2)
 
+        # The Markov-0 vertical transport from Grawe et al. (2012)
+        gradient = dKz * particle.dt
+        R = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3) * math.sqrt(2 * Kz)
+        rise = particle.rise_velocity * particle.dt
 
-    # The Markov-0 vertical transport following Ross & Sharples (2004)
-    gradient = dKz * particle.dt
-    R = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3) * math.sqrt(2 * Kz)
-    rise = particle.rise_velocity * particle.dt
-
-    # The ocean surface acts as a lid off of which the plastic bounces if tries to cross the ocean surface
-    potential = particle.depth + gradient + R + rise
-    if potential < fieldset.SURF_Z:
-        overshoot = math.fabs(potential - fieldset.SURF_Z)
-        particle.depth = fieldset.SURF_Z + overshoot
-    elif potential > fieldset.bathymetry[time, fieldset.SURF_Z, particle.lat, particle.lon]:
-        # If the particle has gone through the sea floor, consider the particle 'beached', with currently no
-        # resuspension
-        particle.beach = 3
-    else:
-        particle.depth = potential
+        # The ocean surface acts as a lid off, and if a particle goes above the ocean surface it is placed back at the
+        # ocean surface (so at fieldset.SURF_Z)
+        potential = particle.depth + gradient + R + rise
+        if potential < fieldset.SURF_Z:
+            particle.depth = fieldset.SURF_Z
+        elif potential > fieldset.bathymetry[time, particle.depth, particle.lat, particle.lon]:
+            # If the particle has gone through the sea floor, consider the particle 'beached', with currently no
+            # resuspension
+            particle.beach = 3
+        else:
+            particle.depth = potential
 
 
 def internal_tide_mixing(particle, fieldset, time):
-    # The grid of the tidal mixing isn't an exact match with the CMEMS data, so in regions where Kz_tidal is either 0
-    # or very very small, we take the Waterhouse et al. (2014) estimate of the diapycnal diffusion below the MLD
-    Kz_tidal = fieldset.TIDAL_Kz[time, fieldset.SURF_Z, particle.lat, particle.lon]
-    dKz_tidal = fieldset.TIDAL_dKz[time, fieldset.SURF_Z, particle.lat, particle.lon]
-    if Kz_tidal < fieldset.K_Z_BULK:
-        Kz_tidal = fieldset.K_Z_BULK
-        dKz_tidal = 0.0
+    """
+    Here we add vertical stochastic transport according to the internal tide mixing
+    """
+    if particle.beach == 0:
+        # The grid of the tidal mixing isn't an exact match with the CMEMS data, so in regions where Kz_tidal is either 0
+        # or very very small, we take the Waterhouse et al. (2014) estimate of the diapycnal diffusion below the MLD
+        Kz_tidal = fieldset.TIDAL_Kz[time, particle.depth, particle.lat, particle.lon]
+        dKz_tidal = fieldset.TIDAL_dKz[time, particle.depth, particle.lat, particle.lon]
+        if Kz_tidal < fieldset.K_Z_BULK:
+            Kz_tidal = fieldset.K_Z_BULK
+            dKz_tidal = 0.0
 
-    # Implementing Markov-0 style random walk
-    tidal_gradient = dKz_tidal * particle.dt
-    tidal_random = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3) * math.sqrt(2 * Kz_tidal)
+        # Implementing Markov-0 style random walk
+        tidal_gradient = dKz_tidal * particle.dt
+        tidal_random = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3) * math.sqrt(2 * Kz_tidal)
 
-    tidal_potential = particle.depth + tidal_gradient + tidal_random
+        tidal_potential = particle.depth + tidal_gradient + tidal_random
+        if tidal_potential < fieldset.SURF_Z:
+            particle.depth = fieldset.SURF_Z
+        elif tidal_potential > fieldset.bathymetry[time, fieldset.SURF_Z, particle.lat, particle.lon]:
+            # If the particle has gone through the sea floor, consider the particle 'beached', with currently no
+            # resuspension
+            particle.beach = 3
+        else:
+            particle.depth = tidal_potential
 
-    if tidal_potential < fieldset.SURF_Z:
-        overshoot = math.fabs(tidal_potential - fieldset.SURF_Z)
-        particle.depth = fieldset.SURF_Z + overshoot
-    elif tidal_potential > fieldset.bathymetry[time, fieldset.SURF_Z, particle.lat, particle.lon]:
-        # If the particle has gone through the sea floor, consider the particle 'beached', with currently no
-        # resuspension
-        particle.beach = 3
-    else:
-        particle.depth = tidal_potential
+
+def initial_estimate_particle_rise_velocity(L=settings.INIT_SIZE):
+    """
+    Here we make an initial estimate of what the particle rise velocity is based on Enders et al. (2015)
+    https://doi.org/10.1016/j.marpolbul.2015.09.027
+    :param L: the particle size in meters
+    :return:
+    """
+    def to_optimize(w_rise):
+        rho_p = settings.INIT_DENSITY  # Density of plastic particle
+        rho_w = 1027  # density sea water (kg/m^3)
+        nu = 1.1e-6  # kinematic viscosity of sea water (Enders et al., 2015)
+        left = (1. - rho_p / rho_w) * 8. / 3. * L * settings.G
+        Re = 2. * L * np.abs(w_rise) / nu
+        right = np.square(w_rise) * (24. / Re + 5. / np.sqrt(Re) + 2. / 5.)
+        return np.abs(left - right)
+
+    w_rise = scipy.optimize.minimize_scalar(to_optimize, bounds=[-100, 0], method='bounded').x
+    return w_rise
+

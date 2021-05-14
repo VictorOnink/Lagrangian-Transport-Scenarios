@@ -15,10 +15,10 @@ os.system('echo "run="' + SUBMISSION)
 
 # DIRECTORIES FOR DATA, INPUTS & OUTPUTS
 SERVER: int = int(os.environ["SERVER"])
-DATA_DIR_SERVERS: dict = {0: "/alphadata04/onink/lagrangian_sim/", 1: "/home/ubelix/climate/shared/onink/"}
+DATA_DIR_SERVERS: dict = {0: "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/", 1: "/home/ubelix/climate/shared/onink/"}
 DATA_INPUT_DIR_SERVERS: dict = {0: "/alphadata04/onink/lagrangian_sim/BeachingSim/Input/",
-                                1: "/home/ubelix/climate/shared/onink/Input/"}
-DATA_OUTPUT_DIR_SERVERS: dict = {0: "/alphadata04/onink/lagrangian_sim/BeachingSim/Output/",
+                                1: "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/BeachingSim/Input/"}
+DATA_OUTPUT_DIR_SERVERS: dict = {0: "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/BeachingSim/Output/",
                                  1: "/home/ubelix/climate/shared/onink/Output/"}
 INPUT_DIREC_DICT = {0: DATA_INPUT_DIR_SERVERS[SERVER] + 'Jambeck_Inputs/',
                     1: DATA_INPUT_DIR_SERVERS[SERVER] + 'Lebreton_Inputs/',
@@ -205,12 +205,12 @@ if SCENARIO_NAME != 'AdvectionDiffusionOnly':
     COAST_D = 10  # km, the distance from the nearest shoreline that falls under the coastal zone.
 if SCENARIO_NAME == 'FragmentationKaandorp':
     # INITIAL PARTICLE SIZE (m)
-    INIT_SIZE = float(os.environ['CONCENTRATION']) * 1e-5
+    INIT_SIZE = int(os.environ['CONCENTRATION']) * 1e-5
     # INITIAL DENSITY (KG/M^3): 920 = polypropylene
     INIT_DENSITY = 1020
 if SCENARIO_NAME == 'SizeTransport':
     # INITIAL PARTICLE SIZE (m)
-    INIT_SIZE = float(os.environ['CONCENTRATION']) * 1e-5
+    INIT_SIZE = int(os.environ['CONCENTRATION']) * 1e-5
     # INITIAL DENSITY (KG/M^3): 920 = POLYPROPYLENE, 980 = HIGH DENSITY POLYETHYLENE (BRIGNAC ET AL. 2017)
     INIT_DENSITY = 920
 # ACCELERATION DUE TO GRAVITY (M/S^2)
