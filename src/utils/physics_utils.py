@@ -3,6 +3,7 @@ from parcels import ParcelsRandom
 import settings
 import scipy.optimize
 import numpy as np
+import os
 
 
 def _anti_beach_nudging(particle, fieldset, time):
@@ -470,5 +471,6 @@ def initial_estimate_particle_rise_velocity(L=settings.INIT_SIZE):
         return np.abs(left - right)
 
     w_rise = scipy.optimize.minimize_scalar(to_optimize, bounds=[-100, 0], method='bounded').x
+    os.system('echo "The rise velocity is {}"'.format(w_rise))
     return w_rise
 
