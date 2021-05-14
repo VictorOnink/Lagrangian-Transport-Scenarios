@@ -93,12 +93,12 @@ def get_repeat_dt():
     return repeat_dt
 
 
-def add_particle_variable(particleType: JITParticle, name: str, other_name: str = None, other_value: str = None,
+def add_particle_variable(particleType: JITParticle, name: str, other_name = None, other_value: str = None,
                           dtype=np.int32, set_initial: bool = True, to_write: bool = True):
     if set_initial:
         if other_name is None and other_value is None:
             init = attrgetter(name)
-        if other_value is not None:
+        elif other_name is None and other_value is not None:
             init = other_value
         else:
             init = attrgetter(other_name)
