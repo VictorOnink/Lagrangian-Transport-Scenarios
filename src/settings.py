@@ -205,12 +205,12 @@ if SCENARIO_NAME != 'AdvectionDiffusionOnly':
     COAST_D = 10  # km, the distance from the nearest shoreline that falls under the coastal zone.
 if SCENARIO_NAME == 'FragmentationKaandorp':
     # INITIAL PARTICLE SIZE (m)
-    INIT_SIZE = int(os.environ['CONCENTRATION']) * 1e-5
+    INIT_SIZE = int(os.environ['PARTICLE_SIZE']) * 1e-5
     # INITIAL DENSITY (KG/M^3): 920 = polypropylene
     INIT_DENSITY = 1020
 if SCENARIO_NAME == 'SizeTransport':
     # INITIAL PARTICLE SIZE (m)
-    INIT_SIZE = int(os.environ['CONCENTRATION']) * 1e-5
+    INIT_SIZE = int(os.environ['PARTICLE_SIZE']) * 1e-5
     # INITIAL DENSITY (KG/M^3): 920 = POLYPROPYLENE, 980 = HIGH DENSITY POLYETHYLENE (BRIGNAC ET AL. 2017)
     INIT_DENSITY = 920
 # ACCELERATION DUE TO GRAVITY (M/S^2)
