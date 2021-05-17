@@ -84,7 +84,7 @@ class SizeTransport(base_scenario.BaseScenario):
                                     to_write=False)
         utils.add_particle_variable(particle_type, 'rise_velocity', dtype=np.float32, set_initial=True,
                                     other_value=utils.initial_estimate_particle_rise_velocity())
-        utils.add_particle_variable(particle_type, 'reynolds', dtype=np.float32, set_initial=False)
+        utils.add_particle_variable(particle_type, 'reynolds', dtype=np.float32, set_initial=False, to_write=False)
         utils.add_particle_variable(particle_type, 'rho_plastic', dtype=np.float32, set_initial=True, to_write=False,
                                     other_value=settings.INIT_DENSITY)
         utils.add_particle_variable(particle_type, 'size', dtype=np.float32, to_write=False,
