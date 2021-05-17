@@ -95,6 +95,7 @@ class SizeTransport(base_scenario.BaseScenario):
             str_format = (
                 settings.ADVECTION_DATA, settings.SHORE_TIME, utils.get_resuspension_timescale(), settings.INIT_SIZE,
                 settings.INIT_DENSITY, settings.START_YEAR, settings.INPUT, restart - 1, run)
+        os.system('echo "the file is {}"'.format(odirec + self.prefix + '_{}_st={}_rt={:.6f}_size={}_rho={}_y={}_I={}_r={}_run={}.nc'.format(*str_format)))
         return odirec + self.prefix + '_{}_st={}_rt={:.6f}_size={}_rho={}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
 
     def _beaching_kernel(particle, fieldset, time):
