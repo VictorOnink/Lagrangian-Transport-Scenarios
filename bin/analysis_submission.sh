@@ -110,7 +110,7 @@ part1="#!/bin/sh"
 part2="#SBATCH --mail-type=begin,end,fail"
 part3="#SBATCH --mail-user=victor.onink@climate.unibe.ch"
 part4="#SBATCH --job-name="$runname
-part5="#SBATCH --output="runOutput/$runname".o%j"m
+part5="#SBATCH --output="runOutput/$runname".o%j"
 part6="#SBATCH --mem-per-cpu=6G"
 if [ "$DEBUG" -eq "0" ]; then
       part7="#SBATCH --time=95:59:00"
