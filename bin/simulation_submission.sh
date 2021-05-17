@@ -27,7 +27,7 @@ ADVECTION_DATA=2
 #Start year of the simulation. 0 = new simulation, otherwise it picks up from a previous simulation
 START=1
 #Number of years the simulation runs
-SIMLEN=3
+SIMLEN=2
 #Inclusion of Stokes drift. 0 = include stokes, 1 = do not include stokes
 STOKES=0 
 #Ensemble member
