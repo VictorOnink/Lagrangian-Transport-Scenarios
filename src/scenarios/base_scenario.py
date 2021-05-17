@@ -53,7 +53,7 @@ class BaseScenario(ABC):
         pass
 
     def _get_restart_variables(self):
-        dataset = Dataset(self._file_names(new=self._file_names(new=False)))
+        dataset = Dataset(self._file_names(new=False))
         time = dataset.variables['time'][:]
         final_time = time[0, -1]
         last_selec = np.ma.notmasked_edges(time, axis=1)[1]
