@@ -22,7 +22,7 @@ def parcels_to_concentration(file_dict: dict):
     hex_grid = Hexagonal2DGrid((bin_number, bin_number), [lon_min, lon_max, lat_min, lat_max])
     # Getting the grid for the final concentrations
 
-    output_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/'
+    output_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/{}'.format(settings.SCENARIO_NAME)
     # Counter for the number of files
     counter = 0
     # Create the output dictionary
