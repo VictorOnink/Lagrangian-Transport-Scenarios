@@ -127,7 +127,7 @@ do
             part8="#SBATCH --partition=epyc2"
             part9='#SBATCH --qos=job_epyc2'
      else
-            part7="#SBATCH --time=00:19:00"
+            part7="#SBATCH --time=00:10:00"
             part8="#SBATCH --partition=epyc2"
             part9='#SBATCH --qos=job_epyc2_debug'
      fi
