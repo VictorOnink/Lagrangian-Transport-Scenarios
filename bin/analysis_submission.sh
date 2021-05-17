@@ -2,8 +2,6 @@
 # First we define the general parameters of the run                                 #
 #####################################################################################
 SUBMISSION='analysis'
-export SUBMISSION
-echo $SUBMISSION
 DEBUG=1 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Cozar based fragmentation, 6 = Size dependent transport
@@ -35,6 +33,8 @@ ENSEMBLE=1
 #Ubelix server, so server==1
 SERVER=1
 
+export SUBMISSION
+echo $SUBMISSION
 export SCENARIO
 export VICINITY
 export SHORETIME
