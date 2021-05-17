@@ -28,8 +28,7 @@ class SizeTransport(base_scenario.BaseScenario):
             self.file_dict = advection_scenario.file_names
             self.field_set = self.create_fieldset()
 
-    var_list = ['lon', 'lat', 'beach', 'age', 'size', 'rho_plastic', 'distance_horizontal', 'distance_vertical',
-                ]
+    var_list = ['lon', 'lat', 'beach', 'age', 'distance_horizontal', 'distance_vertical']
 
     def create_fieldset(self) -> FieldSet:
         os.system('echo "Creating the fieldset"')
