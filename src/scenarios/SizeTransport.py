@@ -28,7 +28,8 @@ class SizeTransport(base_scenario.BaseScenario):
             self.file_dict = advection_scenario.file_names
             self.field_set = self.create_fieldset()
 
-    var_list = ['lon', 'lat', 'beach', 'age', 'size', 'rho_plastic']
+    var_list = ['lon', 'lat', 'beach', 'age', 'size', 'rho_plastic', 'distance_horizontal', 'distance_vertical',
+                ]
 
     def create_fieldset(self) -> FieldSet:
         os.system('echo "Creating the fieldset"')
@@ -56,10 +57,14 @@ class SizeTransport(base_scenario.BaseScenario):
     def _get_pclass(self):
         os.system('echo "Creating the particle class"')
         particle_type = utils.BaseParticle
-        utils.add_particle_variable(particle_type, 'distance_horizontal', dtype=np.float32, set_initial=False,
-                                    to_write=True)
-        utils.add_particle_variable(particle_type, 'distance_vertical', dtype=np.float32, set_initial=False,
-                                    to_write=True)
+        if settings.RESTART == 0:
+            utils.add_particle_variable(particle_type, 'distance_horizontal', dtype=np.float32, set_initial=False,
+                                        to_write=True)
+            utils.add_particle_variable(particle_type, 'distance_vertical', dtype=np.float32, set_initial=False,
+                                        to_write=True)
+        else:
+            utils.add_particle_variable(particle_type, 'distance_horizontal', dtype=np.float32, set_initial=True)
+            utils.add_particle_variable(particle_type, 'distance_vertical', dtype=np.float32, set_initial=True)
         utils.add_particle_variable(particle_type, 'prev_lon', dtype=np.float32, set_initial=True, to_write=False,
                                     other_name='lon')
         utils.add_particle_variable(particle_type, 'prev_lat', dtype=np.float32, set_initial=True, to_write=False,
@@ -74,8 +79,8 @@ class SizeTransport(base_scenario.BaseScenario):
         utils.add_particle_variable(particle_type, 'rise_velocity', dtype=np.float32, set_initial=True,
                                     other_value=utils.initial_estimate_particle_rise_velocity())
         utils.add_particle_variable(particle_type, 'reynolds', dtype=np.float32, set_initial=False)
-        utils.add_particle_variable(particle_type, 'rho_plastic', dtype=np.float32, set_initial=True, to_write=False)
-        utils.add_particle_variable(particle_type, 'size', dtype=np.float32)
+        utils.add_particle_variable(particle_type, 'rho_plastic', dtype=np.float32, set_initial=True, to_write=True)
+        utils.add_particle_variable(particle_type, 'size', dtype=np.float32, to_write=True)
         return particle_type
 
     def _file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART):
