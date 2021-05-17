@@ -52,14 +52,6 @@ class BaseScenario(ABC):
     def _get_particle_behavior(self):
         pass
 
-    def _get_var_dict(self) -> dict:
-        if settings.RESTART == 0:
-            return pvf.initialize_variable_dict_from_varlist(var_list=self.var_list,
-                                                             start_files=self.file_dict['STARTFILES_filename'])
-        else:
-            return self._get_restart_variables(rfile=self.self._file_names(new=False),
-                                               var_list=self.var_list)
-
     def _get_restart_variables(self):
         dataset = Dataset(self._file_names(new=self._file_names(new=False)))
         time = dataset.variables['time'][:]
@@ -70,6 +62,14 @@ class BaseScenario(ABC):
         for var in self.var_list:
             var_dict[var] = restart_nan_removal(dataset, var, last_selec, final_time, last_time_selec)
         return var_dict
+
+    def _get_var_dict(self) -> dict:
+        if settings.RESTART == 0:
+            return pvf.initialize_variable_dict_from_varlist(var_list=self.var_list,
+                                                             start_files=self.file_dict['STARTFILES_filename'])
+        else:
+            return self._get_restart_variables(rfile=self.self._file_names(new=False),
+                                               var_list=self.var_list)
 
     def run(self) -> object:
         os.system('echo "Creating the particle set"')
