@@ -55,9 +55,9 @@ def histogram(lon_data, lat_data, bins_Lon, bins_Lat, weight_data=0,
         return counts  # counts / km^2
 
 
-def _analysis_save_file_name(input_file: str, prefix: str, out_type: str = '.mat'):
+def _analysis_save_file_name(input_file: str, prefix: str):
     _, file_name = os.path.split(input_file)
-    return prefix + '_' + file_name.split('_r=')[0] + out_type
+    return prefix + '_' + file_name.split('_r=')[0]
 
 
 def _particles_in_domain(domain, lon, lat, weight=0, beach=0, time=0, distance=0,

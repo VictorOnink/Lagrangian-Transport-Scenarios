@@ -1,5 +1,5 @@
 from operator import attrgetter
-
+import pickle
 import settings as settings
 from datetime import datetime
 from netCDF4 import Dataset
@@ -115,3 +115,13 @@ def check_direc_exist(direc: str):
 
 def check_file_exist(File: str):
     return os.path.isfile(File)
+
+
+def save_obj(filename, item):
+    with open(filename + '.pkl', 'wb') as f:
+        pickle.dump(item, f, pickle.HIGHEST_PROTOCOL)
+
+
+def load_obj(filename):
+    with open(filename + '.pkl', 'rb') as f:
+        return pickle.load(f)
