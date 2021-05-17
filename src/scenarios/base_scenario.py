@@ -68,8 +68,7 @@ class BaseScenario(ABC):
             return pvf.initialize_variable_dict_from_varlist(var_list=self.var_list,
                                                              start_files=self.file_dict['STARTFILES_filename'])
         else:
-            return self._get_restart_variables(rfile=self._file_names(new=False),
-                                               var_list=self.var_list)
+            return self._get_restart_variables()
 
     def run(self) -> object:
         os.system('echo "Creating the particle set"')
