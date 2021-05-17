@@ -2,17 +2,69 @@ import numpy as np
 import os
 
 
-def AreaCalc(size_Lat, size_Lon):  # Calculate surface area of grid cells
-    deg2rd = np.pi / 180.
-    r = 6378.1
-    lon_bins = np.linspace(-180, 180, size_Lon + 1)
-    lat_bins = np.linspace(-80, 80, size_Lat + 1)
-    Area = np.array([[deg2rd * (lon_bins[i + 1] - lon_bins[i]) * (np.sin(deg2rd * lat_bins[j + 1])
-                                                                  - np.sin(deg2rd * lat_bins[j])) for i in
-                      range(len(lon_bins) - 1)]
-                     for j in range(len(lat_bins) - 1)])
-    Area = r * r * Area
-    return Area  # km^2
+def surface_area_grid(lat, lon):
+    """
+    Calculate the area of each grid cell
+    Area is in square kilometers
+    Input
+    -----------
+    lat: vector of latitude in degrees
+    lon: vector of longitude in degrees
+    Output
+    -----------
+    area: grid-cell area in square-kilometers with dimensions, [lat,lon]
+    Notes
+    -----------
+    Based on the function in
+    https://github.com/chadagreene/CDT/blob/master/cdt/cdtarea.m
+    This particular function was copied from
+    https://towardsdatascience.com/the-correct-way-to-average-the-globe-92ceecd172b7
+    """
+    xlon, ylat = np.meshgrid(lon, lat)
+    R = earth_radius(ylat)
+
+    dlat = np.deg2rad(np.gradient(ylat, axis=0))
+    dlon = np.deg2rad(np.gradient(xlon, axis=1))
+
+    dy = dlat * R
+    dx = dlon * R * np.cos(np.deg2rad(ylat))
+
+    area = dy * dx
+
+    return area
+
+
+def earth_radius(lat):
+    '''
+    calculate radius of Earth assuming oblate spheroid
+    defined by WGS84
+    Input
+    ---------
+    lat: vector or latitudes in degrees
+    Output
+    ----------
+    r: vector of radius in kilometers
+    Notes
+    -----------
+    WGS84: https://earth-info.nga.mil/GandG/publications/tr8350.2/tr8350.2-a/Chapter%203.pdf
+    This particular function was copied from
+    https://towardsdatascience.com/the-correct-way-to-average-the-globe-92ceecd172b7
+    '''
+    # define oblate spheroid from WGS84
+    a = 6378137
+    b = 6356752.3142
+    e2 = 1 - (b ** 2 / a ** 2)
+    # convert from geodecic to geocentric
+    # see equation 3-110 in WGS84
+    lat = np.deg2rad(lat)
+    lat_gc = np.arctan((1 - e2) * np.tan(lat))
+    # radius equation
+    # see equation 3-107 in WGS84
+    r = (
+            (a * (1 - e2) ** 0.5)
+            / (1 - (e2 * np.cos(lat_gc) ** 2)) ** 0.5
+    )
+    return r / 1000.
 
 
 def histogram(lon_data, lat_data, bins_Lon, bins_Lat, weight_data=0,
@@ -42,7 +94,7 @@ def histogram(lon_data, lat_data, bins_Lon, bins_Lat, weight_data=0,
         if operation == 'mean':
             masses[counts > 0] = np.divide(masses[counts > 0], counts[counts > 0])
         if area_correc == True:
-            masses = np.divide(masses, AreaCalc(size_Lat=len(bins_Lat), size_Lon=len(bins_Lon)))
+            masses = np.divide(masses, surface_area_grid(bins_Lat, bins_Lon))
         return masses  # weight / km^2
     elif operation == 'count':
         for i in range(np.array(lon_data).shape[0]):
@@ -51,7 +103,7 @@ def histogram(lon_data, lat_data, bins_Lon, bins_Lat, weight_data=0,
                     np.abs(lon_data[i] - bins_Lon))
                 counts[lat_selec, lon_selec] += 1
         if area_correc == True:
-            counts = np.divide(counts, AreaCalc(size_Lat=len(bins_Lat), size_Lon=len(bins_Lon)))
+            counts = np.divide(counts, surface_area_grid(bins_Lat, bins_Lon))
         return counts  # counts / km^2
 
 
