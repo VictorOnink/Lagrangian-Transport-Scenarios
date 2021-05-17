@@ -2,7 +2,7 @@
 # First we define the general parameters of the run                                 #
 #####################################################################################
 SUBMISSION='analysis'
-DEBUG=0 # 0 = Not a debug run, 1 = a debug run
+DEBUG=1 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Cozar based fragmentation, 6 = Size dependent transport
 SCENARIO=6
@@ -127,7 +127,7 @@ part12='cd "/storage/homefs/vo18e689/codes/Next-Stage-Plastic-Beaching/"'
 #And now the actual running of the code
 part13="python src/main.py -p 10 -v"
 #and now the creation of the submission file
-for i in {1..12} 
+for i in {1..13}
 do
 partGrab="part"$i
 echo ${!partGrab} >> jobsubmissionFile_${run}_${restartnum}.sh
