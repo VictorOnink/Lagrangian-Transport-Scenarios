@@ -47,9 +47,17 @@ class SizeTransport(base_scenario.BaseScenario):
         :return:
         """
         os.system('echo "Creating the particle set"')
-        pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
-                           lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
-                           age=var_dict['age'], time=start_time, repeatdt=repeat_dt)
+        if settings.RESTART == 0:
+            pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
+                               lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
+                               age=var_dict['age'], time=start_time, repeatdt=repeat_dt)
+        else:
+            pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
+                               lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
+                               age=var_dict['age'], time=start_time,
+                               distance_horizontal=var_dict['distance_horizontal'],
+                               distance_vertical=var_dict['distance_vertical'],
+                               repeatdt=repeat_dt)
         return pset
 
     def _get_pclass(self):
