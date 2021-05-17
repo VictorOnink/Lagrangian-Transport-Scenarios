@@ -1,5 +1,3 @@
-#This will be a general code that will allow easy submission of large beaching simulation jobs. It is supposed to work in unison with generalBeachingScenarios.py, which is the python code that contains the actually parcels to run the different simulations
-
 #####################################################################################
 # First we define the general parameters of the run                                 #
 #####################################################################################
