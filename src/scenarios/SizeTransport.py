@@ -50,8 +50,7 @@ class SizeTransport(base_scenario.BaseScenario):
         os.system('echo "Creating the particle set"')
         pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
                            lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
-                           age=var_dict['age'], size=var_dict['size'],
-                           rho_plastic=var_dict['rho_plastic'], time=start_time, repeatdt=repeat_dt)
+                           age=var_dict['age'], time=start_time, repeatdt=repeat_dt)
         return pset
 
     def _get_pclass(self):
@@ -79,8 +78,10 @@ class SizeTransport(base_scenario.BaseScenario):
         utils.add_particle_variable(particle_type, 'rise_velocity', dtype=np.float32, set_initial=True,
                                     other_value=utils.initial_estimate_particle_rise_velocity())
         utils.add_particle_variable(particle_type, 'reynolds', dtype=np.float32, set_initial=False)
-        utils.add_particle_variable(particle_type, 'rho_plastic', dtype=np.float32, set_initial=True, to_write=True)
-        utils.add_particle_variable(particle_type, 'size', dtype=np.float32, to_write=True)
+        utils.add_particle_variable(particle_type, 'rho_plastic', dtype=np.float32, set_initial=True, to_write=False,
+                                    other_value=settings.INIT_DENSITY)
+        utils.add_particle_variable(particle_type, 'size', dtype=np.float32, to_write=False,
+                                    other_value=settings.INIT_SIZE)
         return particle_type
 
     def _file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART):
