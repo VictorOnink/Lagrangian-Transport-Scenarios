@@ -118,14 +118,14 @@ def check_file_exist(File: str):
 
 
 def save_obj(filename, item):
-    if filename[-4:] == '.pkl':
+    if filename[-4:] != '.pkl':
         filename += '.pkl'
     with open(filename, 'wb') as f:
         pickle.dump(item, f, pickle.HIGHEST_PROTOCOL)
 
 
 def load_obj(filename):
-    if filename[-4:] == '.pkl':
+    if filename[-4:] != '.pkl':
         filename += '.pkl'
     with open(filename, 'rb') as f:
         return pickle.load(f)
