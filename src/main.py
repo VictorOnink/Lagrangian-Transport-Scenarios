@@ -25,7 +25,8 @@ def run():
                                                           concentration=settings.CONCENTRATION,
                                                           vertical_concentration=settings.VERTICAL_CONCENTRATION,
                                                           timeseries=settings.TIMESERIES,
-                                                          max_distance=settings.MAX_DISTANCE)
+                                                          max_distance=settings.MAX_DISTANCE,
+                                                          timeslicing=settings.TIMESLICING)
 
 
 if __name__ == "__main__":

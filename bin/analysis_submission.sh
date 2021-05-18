@@ -51,15 +51,17 @@ export SERVER
 
 #A number of switches to indicate which analysis steps we want to run.
 #0 = off, 1 = on
-CONCENTRATION=1
-VERTICAL_CONCENTRATION=1
+CONCENTRATION=0
+VERTICAL_CONCENTRATION=0
 TIMESERIES=0
 MAX_DISTANCE=0
+TIMESLICING=1
 
 export CONCENTRATION
 export VERTICAL_CONCENTRATION
 export TIMESERIES
 export MAX_DISTANCE
+export TIMESLICING
 
 #Now, we can set the job name prefix
 if [ "$SCENARIO" -eq "0" ]; then
