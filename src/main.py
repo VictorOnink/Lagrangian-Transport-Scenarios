@@ -1,5 +1,4 @@
 import os
-os.system('echo "is this working"')
 import settings
 import factories.scenario_factory as scenario_factory
 import factories.analysis_factory as analysis_factory
