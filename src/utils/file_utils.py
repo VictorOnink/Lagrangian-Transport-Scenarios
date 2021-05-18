@@ -110,7 +110,7 @@ def add_particle_variable(particleType: JITParticle, name: str, other_name = Non
 
 def check_direc_exist(direc: str):
     if not os.path.isdir(direc):
-        os.mkdir(direc)
+        os.makedirs(direc)
 
 
 def check_file_exist(File: str):
