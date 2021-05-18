@@ -4,7 +4,6 @@ from advection_scenarios import advection_files
 import matplotlib.pyplot as plt
 from netCDF4 import Dataset
 import numpy as np
-from scipy import io
 import progressbar
 import os
 
@@ -20,12 +19,14 @@ def parcels_to_concentration(file_dict: dict):
     lon_min, lon_max = np.nanmin(LON), np.nanmax(LON)
     lat_min, lat_max = np.nanmin(LAT), np.nanmax(LAT)
     hex_grid = Hexagonal2DGrid((bin_number, bin_number), [lon_min, lon_max, lat_min, lat_max])
-    # Getting the grid for the final concentrations
 
+    # Getting the directory saving the output files
     output_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/{}/'.format(settings.SCENARIO_NAME)
     utils.check_direc_exist(output_direc)
+
     # Counter for the number of files
     counter = 0
+
     # Create the output dictionary
     output_dict = {'overall_concentration': np.zeros(GRID.shape), 'lon': LON, 'lat': LAT}
     for simulation_years in range(settings.SIM_LENGTH):
@@ -69,7 +70,7 @@ def parcels_to_concentration(file_dict: dict):
         output_dict[restart] /= settings.RUN_RANGE
 
     # Saving the computed concentration
-    prefix = 'concentration'
+    prefix = 'horizontal_concentration'
     output_name = output_direc + utils._analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
     utils.save_obj(output_name, output_dict)
     os.system('echo "The concentration has been saved"')

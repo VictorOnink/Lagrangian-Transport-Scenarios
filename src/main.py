@@ -22,8 +22,11 @@ def run():
         scenario = scenario_factory.ScenarioFactory.create_scenario(scenario_name=scenario_name, stokes=stokes,
                                                                     server=server)
         file_dict = scenario.return_full_run_directory()
-        analysis_factory.AnalysisFactory.create_procedure(file_dict=file_dict, concentration=settings.CONCENTRATION,
-                                                          timeseries=settings.TIMESERIES, max_distance=settings.MAX_DISTANCE)
+        analysis_factory.AnalysisFactory.create_procedure(file_dict=file_dict,
+                                                          concentration=settings.CONCENTRATION,
+                                                          vertical_concentration=settings.VERTICAL_CONCENTRATION,
+                                                          timeseries=settings.TIMESERIES,
+                                                          max_distance=settings.MAX_DISTANCE)
 
 
 if __name__ == "__main__":

@@ -123,3 +123,7 @@ def _particles_in_domain(domain, lon, lat, weight=0, beach=0, time=0, distance=0
         return weight[select], beach[select], distance[select], time[select]
     else:
         return select
+
+
+def dict_key_vertical_concentration(restart, month):
+    return 'year_{}_month_{}'.format(restart, month)
