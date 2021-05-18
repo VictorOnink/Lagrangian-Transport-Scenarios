@@ -11,7 +11,9 @@ import os
 def parcels_to_timeseries(file_dict: dict, lon_min: float = -180, lon_max: float = 180, lat_min: float = -90,
                           lat_max: float = 90):
     domain = [lon_min, lon_max, lat_min, lat_max]
-    output_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/'
+    output_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/{}/'.format(
+        settings.SCENARIO_NAME)
+    utils.check_direc_exist(output_direc)
     # Get the time axis
     for restart in range(settings.SIM_LENGTH):
         if restart == 0:

@@ -20,8 +20,7 @@ def parcels_to_timeslicing(file_dict: dict):
     # Setting the datatime object to which all times are set
     reference_time = datetime(settings.START_YEAR, 1, 1, 12)
     # loop through the runs
-    pbar = ProgressBar
-    for run in pbar(range(settings.RUN_RANGE)):
+    for run in range(settings.RUN_RANGE):
         # Loop through the restart files
         for restart in range(settings.SIM_LENGTH):
             # Getting the parcels output file
