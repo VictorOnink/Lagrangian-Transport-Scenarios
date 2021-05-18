@@ -14,7 +14,7 @@ def parcels_to_concentration(file_dict: dict):
                                                         advection_scenario=settings.ADVECTION_DATA,
                                                         repeat_dt=None)
     adv_file_dict = advection_scenario.file_names
-    bin_number = 1000
+    bin_number = 5000
     LON, LAT, GRID = adv_file_dict['LON'], adv_file_dict['LAT'], adv_file_dict['GRID']
     lon_min, lon_max = np.nanmin(LON), np.nanmax(LON)
     lat_min, lat_max = np.nanmin(LAT), np.nanmax(LAT)

@@ -2,7 +2,7 @@
 # First we define the general parameters of the run                                 #
 #####################################################################################
 SUBMISSION='analysis'
-DEBUG=1 # 0 = Not a debug run, 1 = a debug run
+DEBUG=0 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Cozar based fragmentation, 6 = Size dependent transport
 SCENARIO=6
@@ -25,7 +25,7 @@ INPUT=1
 # 0 = Global HYCOM, 1 = Caribbean HYCOM, 2 = Mediterranean CMEMS
 ADVECTION_DATA=2
 #Number of years the simulation runs
-SIMLEN=1
+SIMLEN=2
 #Inclusion of Stokes drift. 0 = include stokes, 1 = do not include stokes
 STOKES=0
 #Ensemble member
@@ -51,7 +51,7 @@ export SERVER
 
 #A number of switches to indicate which analysis steps we want to run.
 #0 = off, 1 = on
-CONCENTRATION=0
+CONCENTRATION=1
 VERTICAL_CONCENTRATION=1
 TIMESERIES=0
 MAX_DISTANCE=0
@@ -113,7 +113,8 @@ part4="#SBATCH --job-name="$runname
 part5="#SBATCH --output="runOutput/$runname".o%j"
 part6="#SBATCH --mem-per-cpu=20G"
 if [ "$DEBUG" -eq "0" ]; then
-      part7="#SBATCH --time=95:59:00"
+#      part7="#SBATCH --time=95:59:00"
+      part7="#SBATCH --time=02:00:00"
       part8="#SBATCH --partition=epyc2"
       part9='#SBATCH --qos=job_epyc2'
 else
