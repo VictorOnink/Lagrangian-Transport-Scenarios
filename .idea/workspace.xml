@@ -19,10 +19,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="Adding in analysis of vertical concentrations">
-      <change afterPath="$PROJECT_DIR$/src/Analysis/parcels_to_timeslices.py" afterDir="false" />
+    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="running analysis">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Analysis/parcels_to_concentration.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analysis/parcels_to_concentration.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Analysis/parcels_to_timeslices.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analysis/parcels_to_timeslices.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/analysis_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/analysis_utils.py" afterDir="false" />
     </list>
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
     <list id="c5adc810-e024-4e30-b33b-a2709ed2c5b7" name="moving the release repeat timescale to the scenario" comment="" />
@@ -104,48 +104,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-00531" summary="bug fix">
-      <created>1620998727546</created>
-      <option name="number" value="00531" />
-      <option name="presentableId" value="LOCAL-00531" />
-      <option name="project" value="LOCAL" />
-      <updated>1620998727546</updated>
-    </task>
-    <task id="LOCAL-00532" summary="bug fix">
-      <created>1620998871519</created>
-      <option name="number" value="00532" />
-      <option name="presentableId" value="LOCAL-00532" />
-      <option name="project" value="LOCAL" />
-      <updated>1620998871519</updated>
-    </task>
-    <task id="LOCAL-00533" summary="adding size_dependent resuspension">
-      <created>1621000514801</created>
-      <option name="number" value="00533" />
-      <option name="presentableId" value="LOCAL-00533" />
-      <option name="project" value="LOCAL" />
-      <updated>1621000514801</updated>
-    </task>
-    <task id="LOCAL-00534" summary="update">
-      <created>1621000535356</created>
-      <option name="number" value="00534" />
-      <option name="presentableId" value="LOCAL-00534" />
-      <option name="project" value="LOCAL" />
-      <updated>1621000535356</updated>
-    </task>
-    <task id="LOCAL-00535" summary="update">
-      <created>1621000840946</created>
-      <option name="number" value="00535" />
-      <option name="presentableId" value="LOCAL-00535" />
-      <option name="project" value="LOCAL" />
-      <updated>1621000840946</updated>
-    </task>
-    <task id="LOCAL-00536" summary="update">
-      <created>1621000971107</created>
-      <option name="number" value="00536" />
-      <option name="presentableId" value="LOCAL-00536" />
-      <option name="project" value="LOCAL" />
-      <updated>1621000971107</updated>
     </task>
     <task id="LOCAL-00537" summary="update">
       <created>1621002219270</created>
@@ -448,7 +406,49 @@
       <option name="project" value="LOCAL" />
       <updated>1621331369543</updated>
     </task>
-    <option name="localTasksCounter" value="580" />
+    <task id="LOCAL-00580" summary="running analysis">
+      <created>1621347280236</created>
+      <option name="number" value="00580" />
+      <option name="presentableId" value="LOCAL-00580" />
+      <option name="project" value="LOCAL" />
+      <updated>1621347280236</updated>
+    </task>
+    <task id="LOCAL-00581" summary="running analysis">
+      <created>1621347310126</created>
+      <option name="number" value="00581" />
+      <option name="presentableId" value="LOCAL-00581" />
+      <option name="project" value="LOCAL" />
+      <updated>1621347310126</updated>
+    </task>
+    <task id="LOCAL-00582" summary="running analysis">
+      <created>1621347329563</created>
+      <option name="number" value="00582" />
+      <option name="presentableId" value="LOCAL-00582" />
+      <option name="project" value="LOCAL" />
+      <updated>1621347329563</updated>
+    </task>
+    <task id="LOCAL-00583" summary="running analysis">
+      <created>1621347350387</created>
+      <option name="number" value="00583" />
+      <option name="presentableId" value="LOCAL-00583" />
+      <option name="project" value="LOCAL" />
+      <updated>1621347350387</updated>
+    </task>
+    <task id="LOCAL-00584" summary="running analysis">
+      <created>1621347365122</created>
+      <option name="number" value="00584" />
+      <option name="presentableId" value="LOCAL-00584" />
+      <option name="project" value="LOCAL" />
+      <updated>1621347365122</updated>
+    </task>
+    <task id="LOCAL-00585" summary="running analysis">
+      <created>1621347376903</created>
+      <option name="number" value="00585" />
+      <option name="presentableId" value="LOCAL-00585" />
+      <option name="project" value="LOCAL" />
+      <updated>1621347376903</updated>
+    </task>
+    <option name="localTasksCounter" value="586" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -464,7 +464,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="adding the rising velocity according to Poulain" />
     <MESSAGE value="adding reynolds as a seperate particle value" />
     <MESSAGE value="corrected the rising velocity such that it fits with the z axis of parcels" />
     <MESSAGE value="trying particle size of 20 cm" />
@@ -489,6 +488,7 @@
     <MESSAGE value="adding size_dependent resuspension" />
     <MESSAGE value="update" />
     <MESSAGE value="Adding in analysis of vertical concentrations" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding in analysis of vertical concentrations" />
+    <MESSAGE value="running analysis" />
+    <option name="LAST_COMMIT_MESSAGE" value="running analysis" />
   </component>
 </project>
