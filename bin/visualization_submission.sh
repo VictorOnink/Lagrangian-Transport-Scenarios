@@ -6,15 +6,19 @@ DEBUG=0 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Cozar based fragmentation, 6 = Size dependent transport
 SCENARIO=6
+#Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=point release, 3=uniform release
+INPUT=1
 #Inclusion of Stokes drift. 0 = include stokes, 1 = do not include stokes
 STOKES=0
 #Ubelix server, so server==1
 SERVER=1
 
+
 export SUBMISSION
 export SCENARIO
 export STOKES
 export SERVER
+export INPUT
 
 #Now, we can set the job name prefix
 if [ "$SCENARIO" -eq "0" ]; then

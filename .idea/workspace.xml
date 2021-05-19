@@ -19,7 +19,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="Starting to add in a structure for figure and animation making">
+    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="update">
+      <change beforePath="$PROJECT_DIR$/bin/visualization_submission.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/visualization_submission.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/settings.py" afterDir="false" />
     </list>
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
@@ -102,13 +103,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-00554" summary="update">
-      <created>1621244217371</created>
-      <option name="number" value="00554" />
-      <option name="presentableId" value="LOCAL-00554" />
-      <option name="project" value="LOCAL" />
-      <updated>1621244217371</updated>
     </task>
     <task id="LOCAL-00555" summary="update">
       <created>1621244265146</created>
@@ -446,7 +440,14 @@
       <option name="project" value="LOCAL" />
       <updated>1621430600430</updated>
     </task>
-    <option name="localTasksCounter" value="603" />
+    <task id="LOCAL-00603" summary="update">
+      <created>1621430989970</created>
+      <option name="number" value="00603" />
+      <option name="presentableId" value="LOCAL-00603" />
+      <option name="project" value="LOCAL" />
+      <updated>1621430989970</updated>
+    </task>
+    <option name="localTasksCounter" value="604" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -481,12 +482,12 @@
     <MESSAGE value="initial particle size is now added as a new variable in the submission bash script" />
     <MESSAGE value="bug fix" />
     <MESSAGE value="adding size_dependent resuspension" />
-    <MESSAGE value="update" />
     <MESSAGE value="Adding in analysis of vertical concentrations" />
     <MESSAGE value="running analysis" />
     <MESSAGE value="adding in time slicing" />
     <MESSAGE value="submitting analysis" />
     <MESSAGE value="Starting to add in a structure for figure and animation making" />
-    <option name="LAST_COMMIT_MESSAGE" value="Starting to add in a structure for figure and animation making" />
+    <MESSAGE value="update" />
+    <option name="LAST_COMMIT_MESSAGE" value="update" />
   </component>
 </project>
