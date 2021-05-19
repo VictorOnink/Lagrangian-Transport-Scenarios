@@ -45,7 +45,7 @@ def cartopy_standard_map(fig, gridspec, domain, resolution='50m', add_gridlines=
     # Adding coastlines, borders, land and ocean shapefiles
     axis.coastlines(resolution=resolution)
     axis.add_feature(cpf.BORDERS.with_scale(resolution), edgecolor='black', zorder=100)
-    axis.add_feature(cpf.LAND.with_scale(resolution), facecolor='grey')
+    axis.add_feature(cpf.LAND.with_scale(resolution), facecolor='gray')
     axis.add_feature(cpf.OCEAN.with_scale(resolution), facecolor='white')
 
     # Adding gridlines and axis labels
@@ -53,6 +53,7 @@ def cartopy_standard_map(fig, gridspec, domain, resolution='50m', add_gridlines=
         grid = axis.gridlines(crs=ccrs.PlateCarree(),  # specify the projection being used
                               draw_labels=add_gridlabels,  # Add labels
                               linestyle='-',  # style
+                              linecolor='black'
                               )
         # Here we can choose along which axes we want to have the labels included
         # grid.xlabels_top = False

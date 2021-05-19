@@ -27,7 +27,8 @@ def SizeTransport_Animation(figure_direc, figsize=(14, 10)):
     fig = plt.figure(figsize=figsize)
     gs = fig.add_gridspec(1, 1)
 
-    ax = vUtils.cartopy_standard_map(fig=fig, gridspec=gs[0, 0], domain=spatial_domain)
+    ax = vUtils.cartopy_standard_map(fig=fig, gridspec=gs[0, 0], domain=spatial_domain, lat_grid_step=10,
+                                     lon_grid_step=10, resolution='10m')
 
     # Setting the output name of the animation, and saving the output
     output_name = output_direc + 'test.jpg'
