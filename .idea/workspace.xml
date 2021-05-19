@@ -19,16 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="submitting analysis">
-      <change afterPath="$PROJECT_DIR$/bin/visualization_submission.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/factories/visualization_factory.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_Figures.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/visualization/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/visualization/main_visuals.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/SizeTransport.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/SizeTransport.py" afterDir="false" />
+    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="Starting to add in a structure for figure and animation making">
       <change beforePath="$PROJECT_DIR$/src/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/settings.py" afterDir="false" />
     </list>
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
@@ -111,20 +102,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-00552" summary="update">
-      <created>1621242128990</created>
-      <option name="number" value="00552" />
-      <option name="presentableId" value="LOCAL-00552" />
-      <option name="project" value="LOCAL" />
-      <updated>1621242128990</updated>
-    </task>
-    <task id="LOCAL-00553" summary="update">
-      <created>1621243333148</created>
-      <option name="number" value="00553" />
-      <option name="presentableId" value="LOCAL-00553" />
-      <option name="project" value="LOCAL" />
-      <updated>1621243333148</updated>
     </task>
     <task id="LOCAL-00554" summary="update">
       <created>1621244217371</created>
@@ -455,7 +432,21 @@
       <option name="project" value="LOCAL" />
       <updated>1621414927962</updated>
     </task>
-    <option name="localTasksCounter" value="601" />
+    <task id="LOCAL-00601" summary="Starting to add in a structure for figure and animation making">
+      <created>1621430579036</created>
+      <option name="number" value="00601" />
+      <option name="presentableId" value="LOCAL-00601" />
+      <option name="project" value="LOCAL" />
+      <updated>1621430579036</updated>
+    </task>
+    <task id="LOCAL-00602" summary="Starting to add in a structure for figure and animation making">
+      <created>1621430600430</created>
+      <option name="number" value="00602" />
+      <option name="presentableId" value="LOCAL-00602" />
+      <option name="project" value="LOCAL" />
+      <updated>1621430600430</updated>
+    </task>
+    <option name="localTasksCounter" value="603" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -471,7 +462,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="trying particle size of 20 cm" />
     <MESSAGE value="now a much smaller particle size" />
     <MESSAGE value="some changes" />
     <MESSAGE value="computing fields for the MLD" />
@@ -496,6 +486,7 @@
     <MESSAGE value="running analysis" />
     <MESSAGE value="adding in time slicing" />
     <MESSAGE value="submitting analysis" />
-    <option name="LAST_COMMIT_MESSAGE" value="submitting analysis" />
+    <MESSAGE value="Starting to add in a structure for figure and animation making" />
+    <option name="LAST_COMMIT_MESSAGE" value="Starting to add in a structure for figure and animation making" />
   </component>
 </project>
