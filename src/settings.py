@@ -15,22 +15,25 @@ os.system('echo "run="' + SUBMISSION)
 
 # DIRECTORIES FOR DATA, INPUTS & OUTPUTS
 SERVER: int = int(os.environ["SERVER"])
-DATA_DIR_SERVERS: dict = {0: "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/", 1: "/home/ubelix/climate/shared/onink/"}
+DATA_DIR_SERVERS: dict = {0: "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/",
+                          1: "/home/ubelix/climate/shared/onink/"}
 DATA_INPUT_DIR_SERVERS: dict = {0: "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/BeachingSim/Input/",
                                 1: "/home/ubelix/climate/shared/onink/Input/"}
 DATA_OUTPUT_DIR_SERVERS: dict = {0: "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/BeachingSim/Output/",
                                  1: "/home/ubelix/climate/shared/onink/Output/"}
+FIGURE_OUTPUT_SERVER: dict = {0: "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/BeachingSim/Output/Figures/",
+                              1: "/home/ubelix/climate/shared/onink/Output/Figures/"}
 INPUT_DIREC_DICT = {0: DATA_INPUT_DIR_SERVERS[SERVER] + 'Jambeck_Inputs/',
                     1: DATA_INPUT_DIR_SERVERS[SERVER] + 'Lebreton_Inputs/',
                     2: DATA_INPUT_DIR_SERVERS[SERVER] + 'Point_Release/',
                     3: DATA_INPUT_DIR_SERVERS[SERVER] + 'Uniform/'}
 
+if SUBMISSION in ['simulation', 'analysis']:
+    # STARTING YEAR OF THE SIMULATION
+    START_YEAR: int = int(os.environ['STARTYEAR'])
 
-# STARTING YEAR OF THE SIMULATION
-START_YEAR: int = int(os.environ['STARTYEAR'])
-
-# LENGTH IN YEARS OF THE SIMULATION
-SIM_LENGTH: int = int(os.environ['SIMLEN'])
+    # LENGTH IN YEARS OF THE SIMULATION
+    SIM_LENGTH: int = int(os.environ['SIMLEN'])
 
 ########################################################################################################################
 #                                                                                                                      #
@@ -45,8 +48,9 @@ if SUBMISSION == 'simulation':
     # 0 = NEW RUN, N>0 INDICATES NTH YEAR FROM SIMULATION START
     RESTART: int = int(os.environ['RESTARTNUM'])
 
-# ENSEMBLE NUMBER
-ENSEMBLE = int(os.environ['ENSEMBLE'])
+if SUBMISSION in ['simulation', 'analysis']:
+    # ENSEMBLE NUMBER
+    ENSEMBLE = int(os.environ['ENSEMBLE'])
 
 ########################################################################################################################
 #                                                                                                                      #
@@ -56,7 +60,8 @@ ENSEMBLE = int(os.environ['ENSEMBLE'])
 
 # UV ADVECTION DATA
 ADVECTION_DICT: dict = {0: 'HYCOM_GLOBAL', 1: 'HYCOM_CARIBBEAN', 2: 'CMEMS_MEDITERRANEAN'}
-ADVECTION_DATA: str = ADVECTION_DICT[int(os.environ['ADVECTION_DATA'])]
+if SUBMISSION in ['simulation', 'analysis']:
+    ADVECTION_DATA: str = ADVECTION_DICT[int(os.environ['ADVECTION_DATA'])]
 # STOKES DRIFT: 0 -> STOKES, 1 -> NO STOKES
 STOKES: int = int(os.environ['STOKES'])
 
@@ -73,33 +78,33 @@ SCENARIO_DICT: dict = {0: 'AdvectionDiffusionOnly', 1: 'CoastalProximity', 2: 'S
 SCENARIO_NUM: int = int(os.environ["SCENARIO"])
 SCENARIO_NAME: str = SCENARIO_DICT[SCENARIO_NUM]
 
-if SCENARIO_NAME == 'CoastalProximity':
+if SCENARIO_NAME == 'CoastalProximity' and SUBMISSION in ['simulation', 'analysis']:
     # TIME IN BEACHING ZONE PRIOR TO BEACHING (DAYS)
     VICINITY: int = int(os.environ['VICINITY'])
 
-if SCENARIO_NAME == 'Stochastic' or SCENARIO_NAME == 'ShoreDependentResuspension':
+if SCENARIO_NAME == 'Stochastic' or SCENARIO_NAME == 'ShoreDependentResuspension' and SUBMISSION in ['simulation', 'analysis']:
     # BEACHING TIMESCALE
     SHORE_TIME: int = int(os.environ['SHORETIME'])  # days
     # RESUSPENSION TIMESCALE
     RESUS_TIME: int = int(os.environ['RESUSTIME'])  # days
 
-if SCENARIO_NAME == 'ShoreDependentResuspension':
+if SCENARIO_NAME == 'ShoreDependentResuspension' and SUBMISSION in ['simulation', 'analysis']:
     # 0 -> SAMARAS ET AL (2015) RESUSPENSION DEPENDENCE, 1 -> 1:4 RESUSPENSION DEPENDENCE
     SHORE_DEP: int = int(os.environ['SHOREDEPEN'])
 
-if SCENARIO_NAME == 'TurrellResuspension':
+if SCENARIO_NAME == 'TurrellResuspension' and SUBMISSION in ['simulation', 'analysis']:
     # BEACHING TIMESCALE
     SHORE_TIME: int = int(os.environ['SHORETIME'])  # days
     # MINIMUM OFF-SHORE WIND SPEED FOR RESUSPENSION (x10 TO NOT GET DECIMAL IN OUTPUT FILES)
     WMIN: int = int(os.environ['WMIN'])
 
-if SCENARIO_NAME == 'FragmentationKaandorp':
+if SCENARIO_NAME == 'FragmentationKaandorp' and SUBMISSION in ['simulation', 'analysis']:
     # BEACHING TIMESCALE
     SHORE_TIME: int = int(os.environ['SHORETIME'])  # days
     # RESUSPENSION TIMESCALE
     RESUS_TIME: int = int(os.environ['RESUSTIME'])  # days
 
-if SCENARIO_NAME == 'SizeTransport':
+if SCENARIO_NAME == 'SizeTransport' and SUBMISSION in ['simulation', 'analysis']:
     # BEACHING TIMESCALE
     SHORE_TIME: int = int(os.environ['SHORETIME'])  # days
     # RESUSPENSION TIMESCALE
@@ -113,11 +118,12 @@ if SCENARIO_NAME == 'SizeTransport':
 ########################################################################################################################
 # THE INPUT SCENARIO
 INPUT_NAMES = {0: 'Jambeck', 1: 'Lebreton', 2: 'Point_Release', 3: 'Uniform'}
-INPUT = INPUT_NAMES[int(os.environ['INPUT'])]
-# DIRECTORY CONTAINING INITIAL INPUTS FOR RESTART == 0
-INPUT_DIREC = INPUT_DIREC_DICT[int(os.environ['INPUT'])]
+if SUBMISSION in ['simulation', 'analysis']:
+    INPUT = INPUT_NAMES[int(os.environ['INPUT'])]
+    # DIRECTORY CONTAINING INITIAL INPUTS FOR RESTART == 0
+    INPUT_DIREC = INPUT_DIREC_DICT[int(os.environ['INPUT'])]
 
-if INPUT == 'Jambeck':
+if INPUT == 'Jambeck' and SUBMISSION in ['simulation', 'analysis']:
     # THE NUMBER OF PARTICLES PER RELEASE STEP PER RUN
     INPUT_DIV = 5000
     # NUMBER OF RUNS
@@ -126,7 +132,7 @@ if INPUT == 'Jambeck':
     INPUT_MAX = 10.0
     # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
     INPUT_MIN = 0.08
-elif INPUT == 'Lebreton':
+elif INPUT == 'Lebreton' and SUBMISSION in ['simulation', 'analysis']:
     # THE NUMBER OF PARTICLES PER RELEASE STEP PER RUN
     INPUT_DIV = 200000
     # NUMBER OF RUNS
@@ -135,7 +141,7 @@ elif INPUT == 'Lebreton':
     INPUT_MAX = 1.0
     # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
     INPUT_MIN = 0.0  # Minimum plastic mass input for a cell in order to be considered for the input
-elif INPUT == 'Point_Release':
+elif INPUT == 'Point_Release' and SUBMISSION in ['simulation', 'analysis']:
     # THE NUMBER OF PARTICLES PER RELEASE STEP PER RUN
     INPUT_DIV = 5000
     # NUMBER OF RUNS
@@ -148,7 +154,7 @@ elif INPUT == 'Point_Release':
     INPUT_MAX = 1.0
     # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
     INPUT_MIN = 0.0
-elif INPUT == 'Uniform':
+elif INPUT == 'Uniform' and SUBMISSION in ['simulation', 'analysis']:
     # THE NUMBER OF PARTICLES PER RELEASE STEP PER RUN
     INPUT_DIV = 5000
     # Number of runs
@@ -186,6 +192,29 @@ if SUBMISSION == 'analysis':
     # FRACTION OF PLASTIC ENTERING THE OCEAN IN 2010 THAT IS CONSIDERED BUOYANT (BASED ON GEYERS ET AL., 2017)
     BUOYANT = 0.54
 
+
+########################################################################################################################
+#                                                                                                                      #
+#                                       Plotting specific parameters                                                   #
+#                                                                                                                      #
+########################################################################################################################
+if SUBMISSION == 'visualization':
+    # DEFAULTS TO PREVENT ERRORS
+    RUN: int = 0
+    RESTART: int = 0
+    SHORE_TIME: int = 20
+    RESUS_TIME: int = 69
+    VICINITY: int = 0
+    SHORE_DEP: int = 0
+    WMIN: int = 0
+    ADVECTION_DATA: str = ADVECTION_DICT[0]
+    INPUT = INPUT_NAMES[0]
+    INIT_SIZE: float = 500 * 1e-5
+    INIT_DENSITY: int = 920
+    START_YEAR: int = 2010
+
+
+
 ########################################################################################################################
 #                                                                                                                      #
 #                                       Model and physical parameters                                                  #
@@ -205,14 +234,14 @@ K_HOR = 10
 # VERTICAL (DIAPYCNAL) DIFFUSION (M^2/S) BELOW THE MLD (WATERHOUSE ET AL, 2014)
 K_Z_BULK = 3e-5
 # WIDTH OF THE BEACHING ZONE (KM) WITHIN WHICH BEACHING CAN OCCUR
-if SCENARIO_NAME != 'AdvectionDiffusionOnly':
+if SCENARIO_NAME != 'AdvectionDiffusionOnly' and SUBMISSION in ['simulation', 'analysis']:
     COAST_D = 10  # km, the distance from the nearest shoreline that falls under the coastal zone.
-if SCENARIO_NAME == 'FragmentationKaandorp':
+if SCENARIO_NAME == 'FragmentationKaandorp' and SUBMISSION in ['simulation', 'analysis']:
     # INITIAL PARTICLE SIZE (m)
     INIT_SIZE = int(os.environ['PARTICLE_SIZE']) * 1e-5
     # INITIAL DENSITY (KG/M^3): 920 = polypropylene
     INIT_DENSITY = 1020
-if SCENARIO_NAME == 'SizeTransport':
+if SCENARIO_NAME == 'SizeTransport' and SUBMISSION in ['simulation', 'analysis']:
     # INITIAL PARTICLE SIZE (m)
     INIT_SIZE = int(os.environ['PARTICLE_SIZE']) * 1e-5
     # INITIAL DENSITY (KG/M^3): 920 = POLYPROPYLENE, 980 = HIGH DENSITY POLYETHYLENE (BRIGNAC ET AL. 2017)

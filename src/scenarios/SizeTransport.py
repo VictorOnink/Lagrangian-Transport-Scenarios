@@ -91,18 +91,21 @@ class SizeTransport(base_scenario.BaseScenario):
                                     other_value=settings.INIT_SIZE)
         return particle_type
 
-    def _file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART):
+    def _file_names(self, new: bool = False, advection_data: str = settings.ADVECTION_DATA,
+                    shore_time: int = settings.SHORE_TIME, init_size: float = settings.INIT_SIZE,
+                    init_density: int = settings.INIT_DENSITY, start_year: int = settings.START_YEAR,
+                    input: str = settings.INPUT, run: int = settings.RUN, restart: int = settings.RESTART):
         odirec = self.output_dir + "SizeTransport/size_{}/".format(settings.INIT_SIZE)
         if new:
             os.system('echo "Set the output file name"')
             str_format = (
-                settings.ADVECTION_DATA, settings.SHORE_TIME, utils.get_resuspension_timescale(), settings.INIT_SIZE,
-                settings.INIT_DENSITY, settings.START_YEAR, settings.INPUT, restart, run)
+                advection_data, shore_time, utils.get_resuspension_timescale(L=init_size), init_size,
+                init_density, start_year, input, restart, run)
         else:
             os.system('echo "Set the restart file name"')
             str_format = (
-                settings.ADVECTION_DATA, settings.SHORE_TIME, utils.get_resuspension_timescale(), settings.INIT_SIZE,
-                settings.INIT_DENSITY, settings.START_YEAR, settings.INPUT, restart - 1, run)
+                advection_data, shore_time, utils.get_resuspension_timescale(L=init_size), init_size,
+                init_density, start_year, input, restart - 1, run)
         return odirec + self.prefix + '_{}_st={}_rt={:.6f}_size={}_rho={}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
 
     def _beaching_kernel(particle, fieldset, time):

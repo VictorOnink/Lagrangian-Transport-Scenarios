@@ -2,7 +2,7 @@ import os
 import settings
 import factories.scenario_factory as scenario_factory
 import factories.analysis_factory as analysis_factory
-
+import factories.visualization_factory as visualization_factory
 
 def run():
     if settings.SUBMISSION == 'simulation':
@@ -27,6 +27,9 @@ def run():
                                                           timeseries=settings.TIMESERIES,
                                                           max_distance=settings.MAX_DISTANCE,
                                                           timeslicing=settings.TIMESLICING)
+    elif settings.SUBMISSION == 'visualization':
+        os.system('echo "Generating all visualizations"')
+        visualization_factory.VisualizationFactory.run()
 
 
 if __name__ == "__main__":
