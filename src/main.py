@@ -29,7 +29,10 @@ def run():
                                                           timeslicing=settings.TIMESLICING)
     elif settings.SUBMISSION == 'visualization':
         os.system('echo "Generating all visualizations"')
-        visualization_factory.VisualizationFactory.run()
+        scenario_name = settings.SCENARIO_NAME
+        stokes = settings.STOKES
+        server = settings.SERVER
+        visualization_factory.VisualizationFactory.run(scenario_name=scenario_name, stokes=stokes, server=server)
 
 
 if __name__ == "__main__":
