@@ -63,8 +63,8 @@ def cartopy_standard_map(fig, gridspec, domain, resolution='50m', add_gridlines=
         grid.yformatter = LATITUDE_FORMATTER
 
         # Determine where we want labels
-        grid.xlocator = mticker.FixedLocator(np.arange(lon_min, lon_max + lon_grid_step, lon_grid_step))
-        grid.ylocator = mticker.FixedLocator(np.arange(lat_min, lat_max + lat_grid_step, lat_grid_step))
+        grid.xlocator = mticker.FixedLocator(np.arange(int(lon_min), int(lon_max) + lon_grid_step, lon_grid_step))
+        grid.ylocator = mticker.FixedLocator(np.arange(int(lat_min), int(lat_max) + lat_grid_step, lat_grid_step))
         # Here we can change the appearances of the labels
         grid.xlabel_style = {'size': label_size, 'color': 'black', 'weight': 'normal'}
         grid.ylabel_style = {'size': label_size, 'color': 'black', 'weight': 'normal'}
