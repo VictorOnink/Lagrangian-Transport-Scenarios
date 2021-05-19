@@ -32,7 +32,7 @@ def run():
         scenario_name = settings.SCENARIO_NAME
         stokes = settings.STOKES
         server = settings.SERVER
-        visualization_factory.VisualizationFactory(scenario_name=scenario_name, stokes=stokes, server=server).run()
+        visualization_factory.VisualizationFactory(scenario=scenario_name, stokes=stokes, server=server).run()
 
 
 if __name__ == "__main__":
