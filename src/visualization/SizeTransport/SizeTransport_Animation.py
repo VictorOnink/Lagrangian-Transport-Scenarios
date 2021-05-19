@@ -31,7 +31,7 @@ def SizeTransport_Animation(figure_direc, figsize=(14, 10)):
     ax_list = []
     for rows in range(gridspec_shape[0]):
         for columns in range(gridspec_shape[1]):
-            ax_list.append(vUtils.cartopy_standard_map(fig=fig, gridspec=gs[0, 0], domain=spatial_domain,
+            ax_list.append(vUtils.cartopy_standard_map(fig=fig, gridspec=gs[rows, columns], domain=spatial_domain,
                                                        lat_grid_step=5, lon_grid_step=10, resolution='10m'))
 
     # Setting the output name of the animation, and saving the output
