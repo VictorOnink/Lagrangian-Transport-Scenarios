@@ -101,13 +101,15 @@ class SizeTransport(base_scenario.BaseScenario):
             str_format = (
                 advection_data, shore_time, utils.get_resuspension_timescale(L=init_size), init_size,
                 init_density, start_year, input, restart, run)
-            for items in str_format:
-                os.system('echo "{}"'.format(items))
         else:
             os.system('echo "Set the restart file name"')
             str_format = (
                 advection_data, shore_time, utils.get_resuspension_timescale(L=init_size), init_size,
                 init_density, start_year, input, restart - 1, run)
+        os.system('echo "{}"'.format(odirec))
+        os.system('echo "{}"'.format(self.prefix))
+        os.system('echo "{}"'.format('_{}_st={}_rt={:.6f}_size={}_rho={}_y={}_I={}_r={}_run={}.nc'.format(*str_format)))
+
         return odirec + self.prefix + '_{}_st={}_rt={:.6f}_size={}_rho={}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
 
     def _beaching_kernel(particle, fieldset, time):
