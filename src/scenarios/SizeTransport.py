@@ -101,6 +101,8 @@ class SizeTransport(base_scenario.BaseScenario):
             str_format = (
                 advection_data, shore_time, utils.get_resuspension_timescale(L=init_size), init_size,
                 init_density, start_year, input, restart, run)
+            for items in str_format:
+                os.system('echo "{}"'.format(items))
         else:
             os.system('echo "Set the restart file name"')
             str_format = (
