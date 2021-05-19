@@ -57,9 +57,15 @@ def cartopy_standard_map(fig, gridspec, row, column, domain, resolution='50m', a
                               )
         # Here we can choose along which axes we want to have the labels included
         grid.top_labels = False
-        grid.bottom_labels = True
-        grid.left_labels = True
         grid.right_labels = False
+        if column == 0:
+            grid.left_labels = True
+        else:
+            grid.left_labels = False
+        if row == (gridspec.nrows - 1):
+            grid.bottom_labels = True
+        else:
+            grid.bottom_labels = False
         # Formatting of the labels, since that they include N/S or E/W
         grid.xformatter = LONGITUDE_FORMATTER
         grid.yformatter = LATITUDE_FORMATTER
