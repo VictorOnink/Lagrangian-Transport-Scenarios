@@ -207,7 +207,6 @@ if SUBMISSION == 'visualization':
     SHORE_DEP: int = 0
     WMIN: int = 0
     ADVECTION_DATA: str = ADVECTION_DICT[0]
-    INPUT = INPUT_NAMES[0]
     INIT_SIZE: float = 500 * 1e-5
     INIT_DENSITY: int = 920
     START_YEAR: int = 2010
