@@ -475,10 +475,11 @@ def initial_estimate_particle_rise_velocity(L=settings.INIT_SIZE):
     return w_rise
 
 
-def get_resuspension_timescale(L=settings.INIT_SIZE):
+def get_resuspension_timescale(L=settings.INIT_SIZE, print_size=False):
     w_rise = initial_estimate_particle_rise_velocity(L=L)
     lambda_R = 2.6e2 * np.abs(w_rise) + 7.1
-    os.system(
-        'echo "The resuspension timescale for a particle of size {} is {:.6f} days"'.format(settings.INIT_SIZE,
-                                                                                            lambda_R))
+    if print_size:
+        os.system(
+            'echo "The resuspension timescale for a particle of size {} is {:.6f} days"'.format(settings.INIT_SIZE,
+                                                                                                lambda_R))
     return lambda_R
