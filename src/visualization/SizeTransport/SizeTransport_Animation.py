@@ -37,4 +37,4 @@ def SizeTransport_Animation(figure_direc, figsize=(20, 10)):
 
     # Setting the output name of the animation, and saving the output
     output_name = output_direc + 'test.jpg'
-    plt.savefig(output_name)
+    plt.savefig(output_name, bbox_inches='tight')
