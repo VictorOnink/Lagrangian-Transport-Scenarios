@@ -9,7 +9,7 @@ def run(scenario, figure_direc: str):
     :param scenario:
     :return:
     """
-
+    os.system('echo "start to get the output name"')
     file_name = scenario._file_names(new=True, advection_data='CMEMS_MEDITERRANEAN', shore_time=20, init_size=500e-5,
                                      init_density=920, start_year=2010, input='Lebreton', run=settings.RUN,
                                      restart=settings.RESTART)

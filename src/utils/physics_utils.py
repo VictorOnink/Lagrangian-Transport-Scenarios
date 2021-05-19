@@ -454,7 +454,7 @@ def internal_tide_mixing(particle, fieldset, time):
             particle.depth = tidal_potential
 
 
-def initial_estimate_particle_rise_velocity(L=settings.INIT_SIZE):
+def initial_estimate_particle_rise_velocity(L=settings.INIT_SIZE, print_rise=False):
     """
     Here we make an initial estimate of what the particle rise velocity is based on Enders et al. (2015)
     https://doi.org/10.1016/j.marpolbul.2015.09.027
@@ -471,7 +471,8 @@ def initial_estimate_particle_rise_velocity(L=settings.INIT_SIZE):
         return np.abs(left - right)
 
     w_rise = scipy.optimize.minimize_scalar(to_optimize, bounds=[-100, 0], method='bounded').x
-    os.system('echo "The rise velocity is for a particle with size {} is {}"'.format(L, w_rise))
+    if print_rise:
+        os.system('echo "The rise velocity is for a particle with size {} is {}"'.format(L, w_rise))
     return w_rise
 
 
