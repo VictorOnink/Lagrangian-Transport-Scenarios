@@ -56,10 +56,10 @@ def cartopy_standard_map(fig, gridspec, domain, resolution='50m', add_gridlines=
                               color='black'
                               )
         # Here we can choose along which axes we want to have the labels included
-        grid.xlabels_top = False
-        grid.xlabels_bottom = True
-        grid.ylabels_left = True
-        grid.ylabels_right = False
+        grid.top_labels = False
+        grid.bottom_labels = True
+        grid.left_labels = True
+        grid.right_labels = False
         # Formatting of the labels, since that they include N/S or E/W
         grid.xformatter = LONGITUDE_FORMATTER
         grid.yformatter = LATITUDE_FORMATTER
