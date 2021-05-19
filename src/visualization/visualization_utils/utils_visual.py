@@ -30,14 +30,14 @@ def SizeTransport_load_data(scenario, prefix, data_direc, size,  rho, advection_
     return data_direc + utils._analysis_save_file_name(input_file=file_name, prefix=prefix)
 
 
-def cartopy_standard_map(fig, gridspec, domain, resolution='50m', add_gridlines=True, add_gridlabels=True,
+def cartopy_standard_map(fig, gridspec, row, column, domain, resolution='50m', add_gridlines=True, add_gridlabels=True,
                          lat_grid_step=20, lon_grid_step=30, label_size=14):
     """
     A nice basic function that can be used to create standardized maps
     :param axis:
     :return:
     """
-    axis = fig.add_subplot(gridspec, projection=ccrs.PlateCarree())
+    axis = fig.add_subplot(gridspec[row, column], projection=ccrs.PlateCarree())
     # Setting the domain of the map
     lon_min, lon_max, lat_min, lat_max = domain
     axis.set_extent([lon_min, lon_max, lat_min, lat_max], crs=ccrs.PlateCarree())
