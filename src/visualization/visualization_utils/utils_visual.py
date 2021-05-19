@@ -53,7 +53,7 @@ def cartopy_standard_map(fig, gridspec, domain, resolution='50m', add_gridlines=
         grid = axis.gridlines(crs=ccrs.PlateCarree(),  # specify the projection being used
                               draw_labels=add_gridlabels,  # Add labels
                               linestyle='-',  # style
-                              linecolor='black'
+                              color='black'
                               )
         # Here we can choose along which axes we want to have the labels included
         # grid.xlabels_top = False
