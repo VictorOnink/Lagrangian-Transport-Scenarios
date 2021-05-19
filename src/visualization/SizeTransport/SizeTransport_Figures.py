@@ -1,5 +1,5 @@
 import settings
-import visualization.SizeTransport as SizeTransport
+import visualization.SizeTransport.SizeTransport_Animation as SizeTransport_Animation
 import os
 
 def run(scenario, figure_direc: str):
@@ -9,9 +9,5 @@ def run(scenario, figure_direc: str):
     :param scenario:
     :return:
     """
-    os.system('echo "start to get the output name"')
-    file_name = scenario._file_names(new=True, advection_data='CMEMS_MEDITERRANEAN', shore_time=20, init_size=settings.INIT_SIZE,
-                                     init_density=920, start_year=2010, input='Lebreton', run=settings.RUN,
-                                     restart=settings.RESTART)
-    os.system('echo "everything seems to be working, file is {}"'.format(file_name))
-
+    # Creating an animation showing how the six different size classes I have simulations for at the moment look like
+    SizeTransport_Animation.SizeTransport_Animation()
