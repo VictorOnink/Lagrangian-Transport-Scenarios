@@ -71,7 +71,7 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
     # Setting a text box to give the date
     ax = ax_list[3]
     props = dict(boxstyle='round', facecolor='white', alpha=1)
-    text = ax_list[3].text(0.0, 0.0, 'initial', horizontalalignment='left', verticalalignment='bottom',
+    text = ax_list[3].text(0.01, 0.01, 'initial', horizontalalignment='left', verticalalignment='bottom',
                    transform=ax.transAxes, bbox=props, fontsize=fontsize, zorder=200)
 
     # Now, the actual animation part
@@ -89,16 +89,17 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
 
     def animate(frame_index):
         os.system('echo "we are at index {} of {}"'.format(frame_index, frame_number))
+        date = time_list[frame_index].strftime("%Y-%m-%d")
         for index, size in enumerate(size_list):
             # Loading the dictionary with the data
-            prefix = 'timeslices_{}'.format(time_list[frame_index].strftime("%Y-%m-%d-%H-%M-%S"))
+            prefix = 'timeslices_{}'.format(date)
             data_dict = vUtils.SizeTransport_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
                                                        size=size, rho=rho_list[index])
             lon, lat, depth = data_dict['lon'], data_dict['lat'], data_dict['z'].astype(int)
             # Updating the plot on each axis with the data
             plot_list[index].set_offsets(np.c_[lon, lat])
             plot_list[index].set_array(depth)
-        # text.set_text(time_list[frame_index].strftime("%Y-%m-%d"))
+        text.set_text(date)
         return plot_list
 
     # Calling the animator
