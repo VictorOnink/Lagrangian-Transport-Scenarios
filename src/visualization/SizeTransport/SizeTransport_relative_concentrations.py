@@ -87,7 +87,7 @@ def SizeTransport_relative_concentrations(scenario, figure_direc, size_list, rho
         cmap_name = 'inferno_r'
         cbar_label, extend = r"Relative Concentration ($C/C_{min}$)", 'max'
     elif difference:
-        norm = colors.SymLogNorm(linthresh=1e1, linscale=0.5, vmin=-1e3, vmax=1e3)
+        norm = colors.SymLogNorm(linthresh=1e1, linscale=0.5, vmin=-1e4, vmax=1e4)
         cmap_name = 'bwr'
         cbar_label, extend = r"Relative Concentration Difference", 'both'
     cmap = plt.cm.ScalarMappable(cmap=cmap_name, norm=norm)
