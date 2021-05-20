@@ -75,7 +75,7 @@ def SizeTransport_relative_concentrations(scenario, figure_direc, size_list, rho
 
     # The actual plotting of the figures
     for index, size in enumerate(size_list):
-        ax_list[index].pcolormesh(Lon, Lat, concentration[size], norm=norm, cmap=cmap_name)
+        ax_list[index].pcolormesh(Lon, Lat, concentration_dict[size], norm=norm, cmap=cmap_name)
 
     # Saving the figure
     file_name = animation_save_name(output_direc, np.nanmean(rho_list), selection)
