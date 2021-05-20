@@ -43,8 +43,8 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
 
     # Setting the colormap, that we will use for coloring the scatter plot according to the particle depth. Then, adding
     # a colorbar.
-    cmap_base = plt.cm.ScalarMappable(cmap='inferno_r', norm=colors.Normalize(vmin=0,
-                                                                              vmax=np.nanmax(adv_file_dict['DEPTH'])))
+    cmap_base = plt.cm.ScalarMappable(cmap='inferno_r', norm=colors.Normalize(vmin=-1, vmax=20))
+                                                                               # vmax=np.nanmax(adv_file_dict['DEPTH'])))
     cmap = cmap_base.get_cmap()
     cax = fig.add_subplot(gs[:, -1])
     cbar = plt.colorbar(cmap_base, cax=cax, orientation='vertical', extend='max')
@@ -61,7 +61,7 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
 
     # Setting the time range for which we want to create the simulation
     current_time = datetime(2010, 1, 1, 0)
-    end_time = datetime(2013, 1, 1, 0)
+    end_time = datetime(2010, 1, 3, 0)
     time_step = timedelta(hours=12)
     time_list = []
     while current_time < end_time:
@@ -91,13 +91,12 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
             lon, lat, depth = data_dict['lon'], data_dict['lat'], data_dict['z']
             # Updating the plot on each axis with the data
             plot_list[index].set_offsets(np.c_[lon, lat])
-            # plot_list[index].set_color(cmap(depth))
-            plot_list[index].set_color(cmap(frame_index * 1000))
+            plot_list[index].set_color(cmap(depth))
         return plot_list
 
     # Calling the animator
     animator = animation.FuncAnimation(plt.gcf(), animate, init_func=init,
-                                       frames=2, interval=100, blit=True)
+                                       frames=frame_number, interval=100, blit=True)
 
     # Saving the animation
     animator.save(filename=animation_save_name(output_direc=output_direc, rho=np.mean(rho_list)), fps=2,
