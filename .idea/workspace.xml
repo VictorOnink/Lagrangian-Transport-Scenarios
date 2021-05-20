@@ -19,9 +19,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="update">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Analysis/parcels_to_concentration.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analysis/parcels_to_concentration.py" afterDir="false" />
+    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="rewriting the horizontal concentration code to distinguish between particle beaching states">
+      <change beforePath="$PROJECT_DIR$/bin/analysis_submission.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/analysis_submission.sh" afterDir="false" />
     </list>
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
     <list id="c5adc810-e024-4e30-b33b-a2709ed2c5b7" name="moving the release repeat timescale to the scenario" comment="" />
@@ -104,20 +103,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-00641" summary="update">
-      <created>1621506239037</created>
-      <option name="number" value="00641" />
-      <option name="presentableId" value="LOCAL-00641" />
-      <option name="project" value="LOCAL" />
-      <updated>1621506239037</updated>
-    </task>
-    <task id="LOCAL-00642" summary="update">
-      <created>1621506485502</created>
-      <option name="number" value="00642" />
-      <option name="presentableId" value="LOCAL-00642" />
-      <option name="project" value="LOCAL" />
-      <updated>1621506485502</updated>
     </task>
     <task id="LOCAL-00643" summary="update">
       <created>1621507236552</created>
@@ -448,7 +433,21 @@
       <option name="project" value="LOCAL" />
       <updated>1621524167320</updated>
     </task>
-    <option name="localTasksCounter" value="690" />
+    <task id="LOCAL-00690" summary="rewriting the horizontal concentration code to distinguish between particle beaching states">
+      <created>1621526902294</created>
+      <option name="number" value="00690" />
+      <option name="presentableId" value="LOCAL-00690" />
+      <option name="project" value="LOCAL" />
+      <updated>1621526902294</updated>
+    </task>
+    <task id="LOCAL-00691" summary="rewriting the horizontal concentration code to distinguish between particle beaching states">
+      <created>1621526996484</created>
+      <option name="number" value="00691" />
+      <option name="presentableId" value="LOCAL-00691" />
+      <option name="project" value="LOCAL" />
+      <updated>1621526996484</updated>
+    </task>
+    <option name="localTasksCounter" value="692" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -464,7 +463,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="some changes" />
     <MESSAGE value="computing fields for the MLD" />
     <MESSAGE value="updated random -&gt; ParcelsRandom, and all ParcelsRandom.random() has been changed to ParcelsRandom.uniform(0,1)" />
     <MESSAGE value="The MLD fields are now automatically calculated and saved to a .nc file. The fieldset then loads the MLD if called upon" />
@@ -489,6 +487,7 @@
     <MESSAGE value="Starting to add in a structure for figure and animation making" />
     <MESSAGE value="starting to build in some basic visualization functions, and getting started on the animation function for size dependent transport" />
     <MESSAGE value="update" />
-    <option name="LAST_COMMIT_MESSAGE" value="update" />
+    <MESSAGE value="rewriting the horizontal concentration code to distinguish between particle beaching states" />
+    <option name="LAST_COMMIT_MESSAGE" value="rewriting the horizontal concentration code to distinguish between particle beaching states" />
   </component>
 </project>
