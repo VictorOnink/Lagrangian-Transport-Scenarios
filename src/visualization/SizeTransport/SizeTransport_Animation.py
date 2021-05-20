@@ -71,7 +71,7 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
     # Setting a text box to give the date
     ax = ax_list[3]
     props = dict(boxstyle='round', facecolor='white', alpha=1)
-    text = ax_list[3].text(0.05, 0.05, 'initial', horizontalalignment='left', verticalalignment='bottom',
+    text = ax_list[3].text(0.0, 0.0, 'initial', horizontalalignment='left', verticalalignment='bottom',
                    transform=ax.transAxes, bbox=props, fontsize=fontsize, zorder=200)
 
     # Now, the actual animation part
@@ -84,7 +84,7 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
     def init():
         for plot in plot_list:
             plot.set_offsets(np.c_[[], []])
-        # text.set_text('initial')
+        text.set_text('initial 2')
         return plot_list
 
     def animate(frame_index):
