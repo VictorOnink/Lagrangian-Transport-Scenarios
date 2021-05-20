@@ -89,7 +89,7 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
 
     def animate(frame_index):
         os.system('echo "we are at index {} of {}"'.format(frame_index, frame_number))
-        date = time_list[frame_index].strftime("%Y-%m-%d")
+        date = time_list[frame_index].strftime("%Y-%m-%d-%H-%M-%S")
         for index, size in enumerate(size_list):
             # Loading the dictionary with the data
             prefix = 'timeslices_{}'.format(date)
@@ -99,7 +99,7 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
             # Updating the plot on each axis with the data
             plot_list[index].set_offsets(np.c_[lon, lat])
             plot_list[index].set_array(depth)
-        text.set_text(date)
+        text.set_text(time_list[frame_index].strftime("%Y-%m-%d"))
         return plot_list
 
     # Calling the animator
