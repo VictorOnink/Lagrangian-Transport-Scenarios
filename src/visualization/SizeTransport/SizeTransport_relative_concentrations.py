@@ -22,7 +22,7 @@ def SizeTransport_relative_concentrations(scenario, figure_direc, size_list, rho
         data_dict = vUtils.SizeTransport_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
                                                    size=size, rho=rho_list[index])
         concentration_dict[size] = data_dict[selection_dict[selection]]
-    lon, lat = data_dict['LON'], data_dict['LAT']
+    lon, lat = data_dict['lon'], data_dict['lat']
     Lon, Lat = np.meshgrid(lon, lat)
 
     # Normalizing the concentration by the lowest non-zero concentration over all the sizes
