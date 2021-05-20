@@ -22,14 +22,14 @@ def run(scenario, figure_direc: str):
     # end of each simulation year
     SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
                                                                                 scenario=scenario, size_list=size_list,
-                                                                                rho_list=rho_list, selection='average')
+                                                                                rho_list=rho_list,
+                                                                                time_selection='average')
     SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
                                                                                 scenario=scenario, size_list=size_list,
-                                                                                rho_list=rho_list, selection=0)
-    SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
-                                                                                scenario=scenario, size_list=size_list,
-                                                                                rho_list=rho_list, selection=1)
-    SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
-                                                                                scenario=scenario, size_list=size_list,
-                                                                                rho_list=rho_list, selection=2)
+                                                                                rho_list=rho_list,
+                                                                                time_selection='average',
+                                                                                difference=True)
+    # SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
+    #                                                                             scenario=scenario, size_list=size_list,
+    #                                                                             rho_list=rho_list, selection=0)
     pass
