@@ -6,9 +6,10 @@ from advection_scenarios import advection_files
 import numpy as np
 from datetime import datetime, timedelta
 import string
+import matplotlib.animation as animation
 
 
-def SizeTransport_Animation(figure_direc, figsize=(20, 10), fontsize=14):
+def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=14):
     """
     Here we want to make an animation of the
     :return:
@@ -22,8 +23,9 @@ def SizeTransport_Animation(figure_direc, figsize=(20, 10), fontsize=14):
     spatial_domain = np.nanmin(adv_file_dict['LON']),  np.nanmax(adv_file_dict['LON']), \
                      np.nanmin(adv_file_dict['LAT']), np.nanmax(adv_file_dict['LAT'])
 
-    # Setting the folder within which we have the output
+    # Setting the folder within which we have the output, and where we have the saved timeslices
     output_direc = figure_direc + 'animations/'
+    data_direc = utils.get_output_directory(server=settings.SERVER) + 'timeslices/{}/'.format('SizeTransport')
 
     # Creating the base figure
     gridspec_shape = (2, 3)
@@ -44,13 +46,44 @@ def SizeTransport_Animation(figure_direc, figsize=(20, 10), fontsize=14):
         ax.set_title(subfigure_title(index, size_list[index], rho_list[index]), weight='bold', fontsize=fontsize)
 
     # Setting the time range for which we want to create the simulation
-    start_time = datetime(2010, 1, 1, 0)
+    current_time = datetime(2010, 1, 1, 0)
     end_time = datetime(2013, 1, 1, 0)
     time_step = timedelta(hours=12)
+    time_list = []
+    while current_time < end_time:
+        time_list.append(current_time)
+        current_time += time_step
+    frame_number = len(time_list)
 
-    # Setting the output name of the animation, and saving the output
-    output_name = output_direc + 'test.jpg'
-    plt.savefig(output_name, bbox_inches='tight')
+    # Now, the actual animation part
+    # Setting the initial values of the x and y, which will later be filled by lon and lat
+    plot_list = []
+    for ax in ax_list:
+        plot_list.append(ax.plot(0, 0, 'r.', markersize=4, alpha=1, zorder=1000)[0])
+
+    # Initializing the plots on each axis
+    def init():
+        for plot in plot_list:
+            plot.set_data([], [])
+        return plot_list
+
+    def animate(frame_index):
+        for index, size in enumerate(size_list):
+            # Loading the dictionary with the data
+            prefix = 'timeslices_{}'.format(time_list[frame_index].strftime("%Y-%m-%d-%H-%M-%S"))
+            data_dict = vUtils.SizeTransport_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
+                                                       size=size, rho=rho_list[index])
+            lon, lat = data_dict['lon'], data_dict['lat']
+            # Updating the plot on each axis with the data
+            plot_list[index].set_data(lon, lat)
+        return plot_list
+
+    # Calling the animator
+    animator = animation.FuncAnimation(plt.gcf(), animate, init_func=init,
+                                       frames=2, interval=100, blit=True)
+
+    # Saving the animation
+    animator.save(filename=output_direc + 'blah.mov', fps=2, extra_args=['-vcodec', 'libx264'])
 
 
 def subfigure_title(index, size, rho):

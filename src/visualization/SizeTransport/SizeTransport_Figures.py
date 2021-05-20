@@ -10,4 +10,4 @@ def run(scenario, figure_direc: str):
     :return:
     """
     # Creating an animation showing how the six different size classes I have simulations for at the moment look like
-    SizeTransport_Animation.SizeTransport_Animation(figure_direc=figure_direc)
+    SizeTransport_Animation.SizeTransport_Animation(figure_direc=figure_direc, scenario=scenario)

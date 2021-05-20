@@ -27,7 +27,8 @@ def SizeTransport_load_data(scenario, prefix, data_direc, size,  rho, advection_
     file_name = scenario._file_names(new=True, advection_data=advection_data, shore_time=shore_time, init_size=size,
                                      init_density=rho, start_year=start_year, input=input, run=settings.RUN,
                                      restart=settings.RESTART)
-    return data_direc + utils._analysis_save_file_name(input_file=file_name, prefix=prefix)
+    full_path = data_direc + utils._analysis_save_file_name(input_file=file_name, prefix=prefix)
+    return utils.load_obj(full_path)
 
 
 def cartopy_standard_map(fig, gridspec, row, column, domain, resolution='50m', add_gridlines=True, add_gridlabels=True,
