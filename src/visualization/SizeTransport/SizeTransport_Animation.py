@@ -43,7 +43,7 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
 
     # Setting the colormap, that we will use for coloring the scatter plot according to the particle depth. Then, adding
     # a colorbar.
-    norm = colors.Normalize(vmin=0.0, vmax=200.0)
+    norm = colors.Normalize(vmin=0.0, vmax=100.0)
     cmap = plt.cm.ScalarMappable(cmap='inferno_r', norm=norm)
     cax = fig.add_subplot(gs[:, -1])
     cbar = plt.colorbar(cmap, cax=cax, orientation='vertical', extend='max')
