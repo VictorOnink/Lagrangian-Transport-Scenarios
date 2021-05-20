@@ -43,7 +43,8 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
 
     # Setting the colormap, that we will use for coloring the scatter plot according to the particle depth. Then, adding
     # a colorbar.
-    cmap_base = plt.cm.ScalarMappable(cmap='inferno_r', norm=colors.Normalize(vmin=0.0, vmax=5.0))
+    norm = colors.Normalize(vmin=0.0, vmax=5.0)
+    cmap_base = plt.cm.ScalarMappable(cmap='inferno_r', norm=norm)
                                                                                # vmax=np.nanmax(adv_file_dict['DEPTH'])))
     cmap = cmap_base.get_cmap()
     cax = fig.add_subplot(gs[:, -1])
@@ -61,7 +62,7 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
 
     # Setting the time range for which we want to create the simulation
     current_time = datetime(2010, 1, 1, 0)
-    end_time = datetime(2010, 1, 10, 0)
+    end_time = datetime(2010, 1, 2, 0)
     time_step = timedelta(hours=12)
     time_list = []
     while current_time < end_time:
@@ -73,7 +74,7 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
     # Setting the initial values of the x and y, which will later be filled by lon and lat
     plot_list = []
     for ax in ax_list:
-        plot_list.append(ax.scatter(0, 0, s=4, alpha=1, zorder=1000))
+        plot_list.append(ax.scatter(0, 0, c=0, s=4, alpha=1, zorder=1000, cmap=cmap_base))
 
     # Initializing the plots on each axis
     def init():
@@ -92,7 +93,8 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
             os.system('echo "mean depth{}"'.format(np.nanmean(depth)))
             # Updating the plot on each axis with the data
             plot_list[index].set_offsets(np.c_[lon, lat])
-            plot_list[index].set_color(cmap(depth))
+            # plot_list[index].set_color(cmap(depth))
+            plot_list[index].set_array(depth)
         return plot_list
 
     # Calling the animator
