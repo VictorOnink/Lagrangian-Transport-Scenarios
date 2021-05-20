@@ -74,7 +74,7 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
     # Setting the initial values of the x and y, which will later be filled by lon and lat
     plot_list = []
     for ax in ax_list:
-        plot_list.append(ax.scatter(0, 0, c=0, s=4, alpha=1, zorder=1000, cmap=cmap_base))
+        plot_list.append(ax.scatter(0, 0, c=0, s=4, alpha=1, zorder=1000, cmap='inferno_r', norm=norm))
 
     # Initializing the plots on each axis
     def init():
