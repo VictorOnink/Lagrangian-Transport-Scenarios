@@ -40,6 +40,13 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
             ax_list.append(vUtils.cartopy_standard_map(fig=fig, gridspec=gs, row=rows, column=columns,
                                                        domain=spatial_domain,
                                                        lat_grid_step=5, lon_grid_step=10, resolution='10m'))
+
+    # Setting the colormap, that we will use for coloring the scatter plot according to the particle depth. Then, adding
+    # a colorbar.
+    cmap = plt.cm.ScalarMappable(cmap='inferno_r', norm=colors.Normalize(vmin=0, vmax=np.nanmax(adv_file_dict['DEPTH']))).get_cmap()
+    cbar = fig.colorbar(cmap, cax=gs[:, -1], orientation='vertical')
+    cbar.set_label(label='Depth (m)', weight='bold', size=fontsize)
+
     # Defining the particle sizes and densities that we want to plot, and adding subfigure titles to the corresponding
     # subfigures
     size_list = np.array([500, 100, 50, 10, 5, 1]) * 1e-5
@@ -62,10 +69,6 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
     plot_list = []
     for ax in ax_list:
         plot_list.append(ax.scatter(0, 0, c=0, s=4, alpha=1, zorder=1000))
-
-    # Setting the colormap, that we will use for coloring the scatter plot according to the particle depth
-    cmap = plt.cm.ScalarMappable(cmap='inferno_r', norm=colors.Normalize(vmin=0, vmax=np.nanmax(adv_file_dict['DEPTH']))).get_cmap()
-
 
     # Initializing the plots on each axis
     def init():
