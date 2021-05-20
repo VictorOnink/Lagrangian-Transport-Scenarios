@@ -34,6 +34,7 @@ def SizeTransport_relative_concentrations(scenario, figure_direc, size_list, rho
             normalization_factor = min_non_zero
     for size in concentration_dict.keys():
         concentration_dict[size] /= normalization_factor
+        concentration_dict[size][concentration_dict[size] == 0] = np.nan
 
     # Getting the size of the domain that we want to plot for
     advection_scenario = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
