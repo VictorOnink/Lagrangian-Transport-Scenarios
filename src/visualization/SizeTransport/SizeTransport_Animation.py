@@ -2,6 +2,7 @@ import settings
 import utils
 import visualization.visualization_utils as vUtils
 import matplotlib.pyplot as plt
+import matplotlib.colors as colors
 from advection_scenarios import advection_files
 import numpy as np
 from datetime import datetime, timedelta
@@ -59,7 +60,11 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
     # Setting the initial values of the x and y, which will later be filled by lon and lat
     plot_list = []
     for ax in ax_list:
-        plot_list.append(ax.scatter(0, 0, s=4, alpha=1, zorder=1000))
+        plot_list.append(ax.scatter(0, 0, c=0, s=4, alpha=1, zorder=1000))
+
+    # Setting the colormap, that we will use for coloring the scatter plot according to the particle depth
+    cmap = plt.cm.ScalarMappable(cmap='inferno_r', norm=colors.Normalize(vmin=0, vmax=np.nanmax(adv_file_dict['DEPTH']))).get_cmap()
+
 
     # Initializing the plots on each axis
     def init():
@@ -73,9 +78,10 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
             prefix = 'timeslices_{}'.format(time_list[frame_index].strftime("%Y-%m-%d-%H-%M-%S"))
             data_dict = vUtils.SizeTransport_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
                                                        size=size, rho=rho_list[index])
-            lon, lat = data_dict['lon'], data_dict['lat']
+            lon, lat, depth = data_dict['lon'], data_dict['lat'], data_dict['depth']
             # Updating the plot on each axis with the data
             plot_list[index].set_offsets(np.c_[lon, lat])
+            plot_list[index].set_color(cmap(depth))
         return plot_list
 
     # Calling the animator
