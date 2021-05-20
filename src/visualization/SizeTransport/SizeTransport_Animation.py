@@ -85,7 +85,7 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
         for plot in plot_list:
             plot.set_offsets(np.c_[[], []])
         text.set_text('')
-        return plot_list
+        return plot_list, text
 
     def animate(frame_index):
         os.system('echo "we are at index {} of {}"'.format(frame_index, frame_number))
