@@ -89,7 +89,7 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
                                        frames=20, interval=100, blit=True)
 
     # Saving the animation
-    animator.save(filename=output_direc + 'blah.mov', fps=2, extra_args=['-vcodec', 'libx264'])
+    animator.save(filename=output_direc + '.mov', fps=2, extra_args=['-vcodec', 'libx264'])
 
 
 def subfigure_title(index, size, rho):
@@ -102,3 +102,7 @@ def subfigure_title(index, size, rho):
     """
     alphabet = string.ascii_lowercase
     return '({}) r = {} mm, '.format(alphabet[index], size * 1e3) + r'$\rho$ = ' + '{} kg m'.format(rho) + r'$^{-3}$'
+
+
+def animation_save_name(rho, flowdata='CMEMS_MEDITERRANEAN', startyear=2010):
+    return 'SizeTransport_{}_rho_{}_y_{}.mov'.format(flowdata,rho, startyear)
