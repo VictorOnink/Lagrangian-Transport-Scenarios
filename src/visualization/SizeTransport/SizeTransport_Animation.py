@@ -60,13 +60,19 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
 
     # Setting the time range for which we want to create the simulation
     current_time = datetime(2010, 1, 1, 0)
-    end_time = datetime(2010, 1, 10, 0)
+    end_time = datetime(2010, 1, 1, 12)
     time_step = timedelta(hours=12)
     time_list = []
     while current_time < end_time:
         time_list.append(current_time)
         current_time += time_step
     frame_number = len(time_list)
+
+    # Setting a text box to give the date
+    ax = ax_list[3]
+    props = dict(boxstyle='round', facecolor='white', alpha=1)
+    text = ax.text(0.05, 0.05, '', horizontalalignment='left', verticalalignment='bottom',
+                   transform=ax.transAxes, bbox=props, fontsize=fontsize)
 
     # Now, the actual animation part
     # Setting the initial values of the x and y, which will later be filled by lon and lat
@@ -78,6 +84,7 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
     def init():
         for plot in plot_list:
             plot.set_offsets(np.c_[[], []])
+        text.set_text('')
         return plot_list
 
     def animate(frame_index):
@@ -91,7 +98,8 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
             # Updating the plot on each axis with the data
             plot_list[index].set_offsets(np.c_[lon, lat])
             plot_list[index].set_array(depth)
-        return plot_list
+        text.set_text(time_list[frame_index].strftime("%Y-%m-%d"))
+        return plot_list, text
 
     # Calling the animator
     animator = animation.FuncAnimation(plt.gcf(), animate, init_func=init,
