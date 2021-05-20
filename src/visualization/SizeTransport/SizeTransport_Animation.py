@@ -60,7 +60,7 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
 
     # Setting the time range for which we want to create the simulation
     current_time = datetime(2010, 1, 1, 0)
-    end_time = datetime(2010, 1, 10, 0)
+    end_time = datetime(2013, 1, 1, 0)
     time_step = timedelta(hours=12)
     time_list = []
     while current_time < end_time:
