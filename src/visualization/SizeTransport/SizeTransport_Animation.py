@@ -8,6 +8,7 @@ import numpy as np
 from datetime import datetime, timedelta
 import string
 import matplotlib.animation as animation
+import os
 
 
 def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=14):
@@ -73,6 +74,7 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
         return plot_list
 
     def animate(frame_index):
+        os.system('echo "we are at index {} of {}"'.format(frame_index, frame_number))
         for index, size in enumerate(size_list):
             # Loading the dictionary with the data
             prefix = 'timeslices_{}'.format(time_list[frame_index].strftime("%Y-%m-%d-%H-%M-%S"))
