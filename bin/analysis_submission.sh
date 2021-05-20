@@ -116,7 +116,7 @@ part5="#SBATCH --output="runOutput/$runname".o%j"
 part6="#SBATCH --mem-per-cpu=20G"
 if [ "$DEBUG" -eq "0" ]; then
 #      part7="#SBATCH --time=95:59:00"
-      part7="#SBATCH --time=02:00:00"
+      part7="#SBATCH --time=04:00:00"
       part8="#SBATCH --partition=epyc2"
       part9='#SBATCH --qos=job_epyc2'
 else
