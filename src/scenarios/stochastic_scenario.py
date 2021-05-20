@@ -37,7 +37,8 @@ class Stochastic(base_scenario.BaseScenario):
         os.system('echo "Creating the fieldset"')
         fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict, stokes=self.stokes,
                                                                       border_current=True, diffusion=True, landID=True,
-                                                                      distance=True,beach_timescale=True,resus_timescale=True
+                                                                      distance=True, beach_timescale=True,
+                                                                      resus_timescale=True
                                                                       )
         return fieldset
 
