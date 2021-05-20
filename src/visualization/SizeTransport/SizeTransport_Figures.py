@@ -1,6 +1,8 @@
 import settings
 import visualization.SizeTransport.SizeTransport_Animation as SizeTransport_Animation
+import visualization.SizeTransport.SizeTransport_relative_concentrations as SizeTransport_relative_concentrations
 import os
+import numpy as np
 
 def run(scenario, figure_direc: str):
     """
@@ -9,5 +11,25 @@ def run(scenario, figure_direc: str):
     :param scenario:
     :return:
     """
+    size_list = np.array([500, 100, 50, 10, 5, 1]) * 1e-5
+    rho_list = np.ones(size_list.shape, dtype=int) * 920
+
     # Creating an animation showing how the six different size classes I have simulations for at the moment look like
-    SizeTransport_Animation.SizeTransport_Animation(figure_direc=figure_direc, scenario=scenario)
+    # SizeTransport_Animation.SizeTransport_Animation(figure_direc=figure_direc, scenario=scenario, size_list=size_list,
+    #                                                 rho_list=rho_list)
+
+    # Creating figures showing the relative distribution, averaged over the entire simulation and time-snapshots at the
+    # end of each simulation year
+    SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
+                                                                                scenario=scenario, size_list=size_list,
+                                                                                rho_list=rho_list, selection='average')
+    SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
+                                                                                scenario=scenario, size_list=size_list,
+                                                                                rho_list=rho_list, selection=0)
+    SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
+                                                                                scenario=scenario, size_list=size_list,
+                                                                                rho_list=rho_list, selection=1)
+    SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
+                                                                                scenario=scenario, size_list=size_list,
+                                                                                rho_list=rho_list, selection=2)
+    pass

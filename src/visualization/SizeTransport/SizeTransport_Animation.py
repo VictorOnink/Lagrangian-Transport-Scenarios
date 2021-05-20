@@ -11,7 +11,7 @@ import matplotlib.animation as animation
 import os
 
 
-def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=14):
+def SizeTransport_Animation(scenario, figure_direc, size_list, rho_list, figsize=(20, 10), fontsize=14):
     """
     Here we want to make an animation of the
     :return:
@@ -53,8 +53,6 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
 
     # Defining the particle sizes and densities that we want to plot, and adding subfigure titles to the corresponding
     # subfigures
-    size_list = np.array([500, 100, 50, 10, 5, 1]) * 1e-5
-    rho_list = np.ones(size_list.shape, dtype=int) * 920
     for index, ax in enumerate(ax_list):
         ax.set_title(subfigure_title(index, size_list[index], rho_list[index]), weight='bold', fontsize=fontsize)
 
