@@ -4,6 +4,7 @@ import visualization.SizeTransport.SizeTransport_relative_concentrations as Size
 import os
 import numpy as np
 
+
 def run(scenario, figure_direc: str):
     """
     So, this is the function where I call all the functions for creating the figures. The figures that I don't want to
