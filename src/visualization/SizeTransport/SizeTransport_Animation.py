@@ -73,7 +73,7 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
     # Setting the initial values of the x and y, which will later be filled by lon and lat
     plot_list = []
     for ax in ax_list:
-        plot_list.append(ax.scatter(0, 0, c=0, s=4, alpha=1, zorder=1000))
+        plot_list.append(ax.scatter(0, 0, s=4, alpha=1, zorder=1000))
 
     # Initializing the plots on each axis
     def init():
@@ -89,6 +89,7 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
             data_dict = vUtils.SizeTransport_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
                                                        size=size, rho=rho_list[index])
             lon, lat, depth = data_dict['lon'], data_dict['lat'], data_dict['z']
+            os.system('echo "mean depth{}"'.format(np.nanmean(depth)))
             # Updating the plot on each axis with the data
             plot_list[index].set_offsets(np.c_[lon, lat])
             plot_list[index].set_color(cmap(depth))
