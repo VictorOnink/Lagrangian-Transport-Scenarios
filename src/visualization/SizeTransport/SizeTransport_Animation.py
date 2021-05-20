@@ -88,11 +88,11 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
             prefix = 'timeslices_{}'.format(time_list[frame_index].strftime("%Y-%m-%d-%H-%M-%S"))
             data_dict = vUtils.SizeTransport_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
                                                        size=size, rho=rho_list[index])
-            lon, lat, depth = data_dict['lon'], data_dict['lat'], data_dict['z']
+            lon, lat, depth = data_dict['lon'], data_dict['lat'], data_dict['z'].astype(int)
             os.system('echo "mean depth{}"'.format(np.nanmean(depth)))
             # Updating the plot on each axis with the data
             plot_list[index].set_offsets(np.c_[lon, lat])
-            plot_list[index].set_color(cmap(2))
+            plot_list[index].set_color(cmap(depth))
         return plot_list
 
     # Calling the animator
