@@ -89,7 +89,7 @@ def SizeTransport_relative_concentrations(scenario, figure_direc, size_list, rho
     elif difference:
         norm = colors.SymLogNorm(linthresh=1e1, linscale=0.5, vmin=-1e4, vmax=1e4)
         cmap_name = 'bwr'
-        cbar_label, extend = r"Relative Concentration Difference", 'both'
+        cbar_label, extend = r"Concentration Difference relative to {} mm".format(reference_size), 'both'
     cmap = plt.cm.ScalarMappable(cmap=cmap_name, norm=norm)
     cax = fig.add_subplot(gs[:, -1])
     cbar = plt.colorbar(cmap, cax=cax, orientation='vertical', extend=extend)
