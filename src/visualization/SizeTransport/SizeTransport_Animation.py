@@ -98,7 +98,7 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
                                        frames=frame_number, interval=100, blit=True)
 
     # Saving the animation
-    animator.save(filename=animation_save_name(output_direc=output_direc, rho=np.mean(rho_list)), fps=2,
+    animator.save(filename=animation_save_name(output_direc=output_direc, rho=np.mean(rho_list)), fps=10,
                   extra_args=['-vcodec', 'libx264'])
 
 
