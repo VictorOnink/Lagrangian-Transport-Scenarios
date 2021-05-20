@@ -86,7 +86,7 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
 
     # Calling the animator
     animator = animation.FuncAnimation(plt.gcf(), animate, init_func=init,
-                                       frames=2, interval=100, blit=True)
+                                       frames=20, interval=100, blit=True)
 
     # Saving the animation
     animator.save(filename=output_direc + 'blah.mov', fps=2, extra_args=['-vcodec', 'libx264'])
