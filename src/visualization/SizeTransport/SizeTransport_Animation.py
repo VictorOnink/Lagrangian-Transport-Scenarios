@@ -46,7 +46,10 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
     cmap_base = plt.cm.ScalarMappable(cmap='inferno_r', norm=colors.Normalize(vmin=0,
                                                                               vmax=np.nanmax(adv_file_dict['DEPTH'])))
     cmap = cmap_base.get_cmap()
-    cbar = fig.colorbar(cmap_base, cax=gs[:, -1], orientation='vertical', label='Depth (m)', size=fontsize)
+    cbar = plt.colorbar(cmap_base, cax=gs[:, -1], orientation='vertical')
+    cbar.set_label(r"Depth (m)", fontsize=fontsize)
+    cbar.ax.tick_params(which='major', labelsize=fontsize - 2, length=14, width=2)
+    cbar.ax.tick_params(which='minor', labelsize=fontsize - 2, length=7, width=2)
 
     # Defining the particle sizes and densities that we want to plot, and adding subfigure titles to the corresponding
     # subfigures
