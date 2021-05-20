@@ -92,7 +92,8 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
             os.system('echo {}'.format(depth))
             # Updating the plot on each axis with the data
             plot_list[index].set_offsets(np.c_[lon, lat])
-            plot_list[index].set_color(cmap(depth))
+            # plot_list[index].set_color(cmap(depth))
+            plot_list[index].set_color(cmap(frame_index * 1000))
         return plot_list
 
     # Calling the animator
