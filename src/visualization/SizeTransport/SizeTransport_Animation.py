@@ -32,7 +32,7 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
     # Creating the base figure
     gridspec_shape = (2, 3)
     fig = plt.figure(figsize=figsize)
-    gs = fig.add_gridspec(nrows=gridspec_shape[0], ncols=gridspec_shape[1])
+    gs = fig.add_gridspec(nrows=gridspec_shape[0], ncols=gridspec_shape[1] + 1, width_ratios=[1, 1, 1, 0.1])
 
     ax_list = []
     for rows in range(gridspec_shape[0]):
@@ -88,10 +88,11 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
 
     # Calling the animator
     animator = animation.FuncAnimation(plt.gcf(), animate, init_func=init,
-                                       frames=20, interval=100, blit=True)
+                                       frames=1, interval=100, blit=True)
 
     # Saving the animation
-    animator.save(filename=output_direc + '.mov', fps=2, extra_args=['-vcodec', 'libx264'])
+    animator.save(filename=animation_save_name(output_direc=output_direc, rho=np.mean(rho_list)), fps=2,
+                  extra_args=['-vcodec', 'libx264'])
 
 
 def subfigure_title(index, size, rho):
@@ -106,5 +107,5 @@ def subfigure_title(index, size, rho):
     return '({}) r = {} mm, '.format(alphabet[index], size * 1e3) + r'$\rho$ = ' + '{} kg m'.format(rho) + r'$^{-3}$'
 
 
-def animation_save_name(rho, flowdata='CMEMS_MEDITERRANEAN', startyear=2010):
-    return 'SizeTransport_{}_rho_{}_y_{}.mov'.format(flowdata,rho, startyear)
+def animation_save_name(output_direc, rho, flowdata='CMEMS_MEDITERRANEAN', startyear=2010):
+    return output_direc + 'SizeTransport_{}_rho_{}_y_{}.mov'.format(flowdata, rho, startyear)
