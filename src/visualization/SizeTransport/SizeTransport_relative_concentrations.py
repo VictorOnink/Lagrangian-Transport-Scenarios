@@ -96,5 +96,5 @@ def subfigure_title(index, size, rho):
 
 def animation_save_name(output_direc, rho, selection, flowdata='CMEMS_MEDITERRANEAN', startyear=2010):
     selection_dict = {'average': 'TotalAverage', 0: 'year_0', 1: 'year_1', 2: 'year_2'}
-    return output_direc + 'SizeTransport_{}_{}_rho_{}_y_{}.mov'.format(flowdata, selection_dict[selection],
+    return output_direc + 'SizeTransport_{}_{}_rho_{}_y_{}.png'.format(flowdata, selection_dict[selection],
                                                                        rho, startyear)
