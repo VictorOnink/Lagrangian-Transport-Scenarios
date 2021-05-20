@@ -89,7 +89,6 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
             data_dict = vUtils.SizeTransport_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
                                                        size=size, rho=rho_list[index])
             lon, lat, depth = data_dict['lon'], data_dict['lat'], data_dict['z']
-            os.system('echo {}'.format(depth))
             # Updating the plot on each axis with the data
             plot_list[index].set_offsets(np.c_[lon, lat])
             # plot_list[index].set_color(cmap(depth))
