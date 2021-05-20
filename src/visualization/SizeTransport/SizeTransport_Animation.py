@@ -59,12 +59,12 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
     # Setting the initial values of the x and y, which will later be filled by lon and lat
     plot_list = []
     for ax in ax_list:
-        plot_list.append(ax.scatter(0, 0, s=4, alpha=1, zorder=1000)[0])
+        plot_list.append(ax.scatter(0, 0, s=4, alpha=1, zorder=1000))
 
     # Initializing the plots on each axis
     def init():
         for plot in plot_list:
-            plot.set_data([], [])
+            plot.set_offsets(np.c_[[], []])
         return plot_list
 
     def animate(frame_index):
@@ -75,7 +75,7 @@ def SizeTransport_Animation(scenario, figure_direc, figsize=(20, 10), fontsize=1
                                                        size=size, rho=rho_list[index])
             lon, lat = data_dict['lon'], data_dict['lat']
             # Updating the plot on each axis with the data
-            plot_list[index].set_data(lon, lat)
+            plot_list[index].set_offsets(np.c_[lon, lat])
         return plot_list
 
     # Calling the animator
