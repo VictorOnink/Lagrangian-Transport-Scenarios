@@ -9,6 +9,13 @@ import os
 
 
 def parcels_to_concentration(file_dict: dict):
+    """
+    We calculate the horizontal concentrations on the grid of the circulation data. The concentration is calculated
+    either as an average over the entire simulation, or over each given year. We also distinguish between whether
+    particles are beached, afloat, or stuck at the sea floor
+    :param file_dict:
+    :return:
+    """
     # Generate the grid for the hexbin operation
     advection_scenario = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
                                                         advection_scenario=settings.ADVECTION_DATA,
@@ -27,10 +34,12 @@ def parcels_to_concentration(file_dict: dict):
     # Counter for the number of files
     counter = 0
 
-    # Create the output dictionary
-    output_dict = {'overall_concentration': np.zeros(GRID.shape), 'lon': LON, 'lat': LAT}
+    # Create the output dictionarynp.zeros(GRID.shape)
+    beach_state_dict = {'beach': np.zeros(GRID.shape), 'afloat': np.zeros(GRID.shape), 'seabed': np.zeros(GRID.shape)}
+    beach_label_dict = {'beach': 1, 'afloat': 0, 'seabed': 3}
+    output_dict = {'overall_concentration': beach_state_dict, 'lon': LON, 'lat': LAT}
     for simulation_years in range(settings.SIM_LENGTH):
-        output_dict[simulation_years] = np.zeros(GRID.shape)
+        output_dict[concentration_year_key(simulation_years)] = beach_state_dict
 
     # loop through the runs
     for run in progressbar.progressbar(range(settings.RUN_RANGE)):
@@ -39,35 +48,49 @@ def parcels_to_concentration(file_dict: dict):
             # Load the lon, lat, weight data
             parcels_file = file_dict[run][restart]
             dataset = Dataset(parcels_file)
-            lon, lat = dataset.variables['lon'][:, :-1], dataset.variables['lat'][:, :-1]
+            full_data_dict = {}
+            for variable in ['lon', 'lat', 'beach']:
+                full_data_dict[variable] = dataset.variables[variable][:, :-1]
             if 'weights' in dataset.variables.keys():
-                weight = dataset.variables['weights'][:, :-1] * settings.BUOYANT
+                full_data_dict['weights'] = dataset.variables['weights'][:, :-1] * settings.BUOYANT
             else:
-                weight = np.ones(lon.shape,dtype=np.float32)
+                full_data_dict['weights'] = np.ones(full_data_dict['lon'].shape, dtype=np.float32)
+            # Saving the number of time steps saved in the data file
+            time_steps = full_data_dict['lon'].shape[1]
             # Flatten the arrays
-            lon_f, lat_f, weight_f = lon.flatten(), lat.flatten(), weight.flatten()
-            # Carry out the hex bin operation
-            hexagon_cumulative_sum, hexagon_coord = hexbin(lon_f, lat_f, weight_f, hex_grid)
-            # Get the average per day, so divide by the number of days in the year
-            hexagon_cumulative_sum /= lon.shape[1]
-            # Get the concentration onto the advection grid
-            output_dict['overall_concentration'] += utils.histogram(lon_data=hexagon_coord[:, 0],
-                                                                    lat_data=hexagon_coord[:, 1],
-                                                                    bins_Lon=LON, bins_Lat=LAT,
-                                                                    weight_data=hexagon_cumulative_sum
-                                                                    )
-            counter += 1
-            # Getting the concentration for the last particle positions with a simulation year
-            hexagon_last, hexagon_coord = hexbin(lon[:, -1], lat[:, -1], weight[:, -1], hex_grid)
-            output_dict[restart] += utils.histogram(lon_data=hexagon_coord[:, 0], lat_data=hexagon_coord[:, 1],
-                                                    bins_Lon=LON, bins_Lat=LAT, weight_data=hexagon_last)
-
-    # Divide by the number of files we are averaging over
-    output_dict['overall_concentration'] /= counter
+            for variable in full_data_dict.keys():
+                full_data_dict[variable] = full_data_dict[variable].flatten()
+            # Now, we sort through the various particle states
+            for beach_state in beach_state_dict.keys():
+                state_data = {}
+                for variable in ['lon', 'lat', 'weights']:
+                    state_data[variable] = full_data_dict[variable][full_data_dict['beach'] == beach_label_dict[beach_state]]
+                # Carry out the hex bin operation
+                hexagon_cumulative_sum, hexagon_coord = hexbin(state_data['lon'], state_data['lat'],
+                                                               state_data['weights'], hex_grid)
+                # Get the average per day, so divide by the number of days in the year
+                hexagon_cumulative_sum /= time_steps
+                # Get the concentration onto the advection grid
+                key_year = concentration_year_key(restart)
+                output_dict[key_year][beach_state] += utils.histogram(lon_data=hexagon_coord[:, 0],
+                                                                      lat_data=hexagon_coord[:, 1],
+                                                                      bins_Lon=LON, bins_Lat=LAT,
+                                                                      weight_data=hexagon_cumulative_sum
+                                                                      )
 
     # Dividing the end of year concentrations by the number of runs
-    for restart in range(settings.SIM_LENGTH):
-        output_dict[restart] /= settings.RUN_RANGE
+    for simulation_years in range(settings.SIM_LENGTH):
+        key_year = concentration_year_key(restart)
+        for beach_state in output_dict[key_year].keys():
+            output_dict[key_year][beach_state] /= settings.RUN_RANGE
+
+    # Calculating the average concentrations over the entire length of the simulation from the individual years
+    for beach_state in beach_state_dict.keys():
+        for simulation_years in range(settings.SIM_LENGTH):
+            key_year = concentration_year_key(restart)
+            output_dict['overall_concentration'][beach_state] += output_dict[key_year][beach_state]
+    for beach_state in beach_state_dict.keys():
+        output_dict['overall_concentration'][beach_state] /= settings.SIM_LENGTH
 
     # Saving the computed concentration
     prefix = 'horizontal_concentration'
@@ -104,3 +127,6 @@ def hexbin(x, y, c, hexgrid):
     center = hexbin.get_offsets()
     return counts, center
 
+
+def concentration_year_key(simulation_years):
+    return 'year_{}'.format(simulation_years)
