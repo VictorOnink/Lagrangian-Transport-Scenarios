@@ -1,7 +1,6 @@
 import settings
 import utils
 import visualization.visualization_utils as vUtils
-import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
 from advection_scenarios import advection_files
 import numpy as np
