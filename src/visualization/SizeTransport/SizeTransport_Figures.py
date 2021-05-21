@@ -24,13 +24,12 @@ def run(scenario, figure_direc: str):
     SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
                                                                                 scenario=scenario, size_list=size_list,
                                                                                 rho_list=rho_list,
-                                                                                time_selection='average')
-    SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
-                                                                                scenario=scenario, size_list=size_list,
-                                                                                rho_list=rho_list,
                                                                                 time_selection='average',
-                                                                                difference=True)
+                                                                                beach_state='afloat')
     # SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
     #                                                                             scenario=scenario, size_list=size_list,
-    #                                                                             rho_list=rho_list, selection=0)
+    #                                                                             rho_list=rho_list,
+    #                                                                             time_selection='average',
+    #                                                                             difference=True,
+    #                                                                             beach_state='afloat')
     pass

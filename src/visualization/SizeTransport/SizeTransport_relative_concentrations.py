@@ -8,14 +8,15 @@ import numpy as np
 import string
 
 
-def SizeTransport_relative_concentrations(scenario, figure_direc, size_list, rho_list, time_selection, difference=False,
-                                          reference_size=None, figsize=(20, 10), fontsize=14):
+def SizeTransport_relative_concentrations(scenario, figure_direc, size_list, rho_list, beach_state, time_selection,
+                                          difference=False, reference_size=None, figsize=(20, 10), fontsize=14):
     """
 
     :param scenario: loading the scenario class to get the grid data
     :param figure_direc: which directory to save the figure in
     :param size_list: the particle sizes that we are plotting
     :param rho_list: the particle densities we are plotting
+    :param beach_state: which particles do we want to consider for figures: 'beach', 'afloat' or 'seabed'
     :param time_selection: if 'average', then it uses the average concentration calculated over the entire simulation,
                            otherwise it takes the year of the simulation given as input
     :param difference: if false, we plot just the normalized concentrations, otherwise we plot the difference relative
@@ -33,11 +34,14 @@ def SizeTransport_relative_concentrations(scenario, figure_direc, size_list, rho
     # Loading in the data
     prefix = 'horizontal_concentration'
     concentration_dict = {}
-    selection_dict = {'average': "overall_concentration", 0: 0, 1: 1, 2: 2}
+    if time_selection == 'average':
+        key_concentration = "overall_concentration"
+    else:
+        key_concentration = utils.analysis_simulation_year_key(time_selection)
     for index, size in enumerate(size_list):
         data_dict = vUtils.SizeTransport_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
                                                    size=size, rho=rho_list[index])
-        concentration_dict[size] = data_dict[selection_dict[time_selection]]
+        concentration_dict[size] = data_dict[key_concentration][beach_state]
     lon, lat = data_dict['lon'], data_dict['lat']
     Lon, Lat = np.meshgrid(lon, lat)
 
@@ -50,7 +54,6 @@ def SizeTransport_relative_concentrations(scenario, figure_direc, size_list, rho
             normalization_factor = min_non_zero
     for size in concentration_dict.keys():
         concentration_dict[size] /= normalization_factor
-        concentration_dict[size][concentration_dict[size] == 0] = np.nan
 
     # Calculating differences relative to the reference particle size
     if difference:
@@ -58,6 +61,10 @@ def SizeTransport_relative_concentrations(scenario, figure_direc, size_list, rho
             reference_size = np.nanmin(size_list)
         for keys in concentration_dict.keys():
             concentration_dict[keys] -= concentration_dict[reference_size]
+
+    # Setting zero values to nan
+    for size in concentration_dict.keys():
+        concentration_dict[size][concentration_dict[size] == 0] = np.nan
 
     # Getting the size of the domain that we want to plot for
     advection_scenario = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
@@ -82,13 +89,11 @@ def SizeTransport_relative_concentrations(scenario, figure_direc, size_list, rho
 
     # Setting the colormap, that we will use for coloring the scatter plot according to the particle depth. Then, adding
     # a colorbar.
+    norm = set_normalization(beach_state, difference)
+    cmap_name = {False: 'inferno_r', True: 'bwr'}[difference]
     if not difference:
-        norm = colors.LogNorm(vmin=1, vmax=1e4)
-        cmap_name = 'inferno_r'
         cbar_label, extend = r"Relative Concentration ($C/C_{min}$)", 'max'
     elif difference:
-        norm = colors.SymLogNorm(linthresh=1e2, linscale=1, vmin=-1e4, vmax=1e4)
-        cmap_name = 'bwr'
         cbar_label, extend = r"Concentration Difference relative to {} mm".format(reference_size * 1e3), 'both'
     cmap = plt.cm.ScalarMappable(cmap=cmap_name, norm=norm)
     cax = fig.add_subplot(gs[:, -1])
@@ -104,10 +109,13 @@ def SizeTransport_relative_concentrations(scenario, figure_direc, size_list, rho
 
     # The actual plotting of the figures
     for index, size in enumerate(size_list):
-        ax_list[index].pcolormesh(Lon, Lat, concentration_dict[size], norm=norm, cmap=cmap_name)
+        if beach_state in ['afloat']:
+            ax_list[index].pcolormesh(Lon, Lat, concentration_dict[size], norm=norm, cmap=cmap_name)
+        else:
+            ax_list[index].scatter(Lon.flatten(), Lat.flatten(), concentration_dict[size], norm=norm, cmap=cmap_name)
 
     # Saving the figure
-    file_name = animation_save_name(output_direc, np.nanmean(rho_list), time_selection, difference)
+    file_name = animation_save_name(output_direc, np.nanmean(rho_list), time_selection, difference, beach_state)
     plt.savefig(file_name, bbox_inches='tight')
 
 
@@ -123,9 +131,26 @@ def subfigure_title(index, size, rho):
     return '({}) r = {} mm, '.format(alphabet[index], size * 1e3) + r'$\rho$ = ' + '{} kg m'.format(rho) + r'$^{-3}$'
 
 
-def animation_save_name(output_direc, rho, time_selection, difference, flowdata='CMEMS_MEDITERRANEAN', startyear=2010):
+def animation_save_name(output_direc, rho, time_selection, difference, beach_state,
+                        flowdata='CMEMS_MEDITERRANEAN', startyear=2010):
     selection_dict = {'average': 'TotalAverage', 0: 'year_0', 1: 'year_1', 2: 'year_2'}
     difference_dict = {True: 'Difference', False: 'absolute'}
-    return output_direc + 'SizeTransport_{}_{}_{}_rho_{}_y_{}.png'.format(flowdata, difference_dict[difference],
-                                                                          selection_dict[time_selection], rho,
-                                                                          startyear)
+    return output_direc + 'SizeTransport_{}_{}_{}_{}_rho_{}_y_{}.png'.format(flowdata, beach_state,
+                                                                              difference_dict[difference],
+                                                                              selection_dict[time_selection], rho,
+                                                                              startyear)
+
+
+def set_normalization(beach_state, difference):
+    """
+    Setting the normalization that we use for the colormap
+    :param beach_state: afloat, beach or seabed
+    :param difference: is it absolute concentrations or the difference relative to reference size
+    :return:
+    """
+    if not difference:
+        vmin, vmax = 1, 1e4
+        return colors.LogNorm(vmin=vmin, vmax=vmax)
+    else:
+        linthresh,linscale, vmin, vmax = 1e2, 1, -1e4, 1e4
+        return colors.SymLogNorm(linthresh=linthresh, linscale=linscale, vmin=vmin, vmax=vmax)

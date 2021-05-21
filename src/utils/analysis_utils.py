@@ -130,3 +130,7 @@ def _particles_in_domain(domain, lon, lat, weight=0, beach=0, time=0, distance=0
 
 def dict_key_vertical_concentration(restart, month):
     return 'year_{}_month_{}'.format(restart, month)
+
+
+def analysis_simulation_year_key(simulation_years):
+    return 'year_{}'.format(simulation_years)

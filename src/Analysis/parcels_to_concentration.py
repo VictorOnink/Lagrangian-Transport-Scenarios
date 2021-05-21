@@ -39,7 +39,7 @@ def parcels_to_concentration(file_dict: dict):
     beach_label_dict = {'beach': 1, 'afloat': 0, 'seabed': 3}
     output_dict = {'overall_concentration': beach_state_dict, 'lon': LON, 'lat': LAT}
     for simulation_years in range(settings.SIM_LENGTH):
-        output_dict[concentration_year_key(simulation_years)] = beach_state_dict
+        output_dict[utils.analysis_simulation_year_key(simulation_years)] = beach_state_dict
 
     # loop through the runs
     for run in progressbar.progressbar(range(settings.RUN_RANGE)):
@@ -71,7 +71,7 @@ def parcels_to_concentration(file_dict: dict):
                 # Get the average per day, so divide by the number of days in the year
                 hexagon_cumulative_sum /= time_steps
                 # Get the concentration onto the advection grid
-                key_year = concentration_year_key(restart)
+                key_year = utils.analysis_simulation_year_key(restart)
                 output_dict[key_year][beach_state] += utils.histogram(lon_data=hexagon_coord[:, 0],
                                                                       lat_data=hexagon_coord[:, 1],
                                                                       bins_Lon=LON, bins_Lat=LAT,
@@ -80,14 +80,14 @@ def parcels_to_concentration(file_dict: dict):
 
     # Dividing the end of year concentrations by the number of runs
     for simulation_years in range(settings.SIM_LENGTH):
-        key_year = concentration_year_key(restart)
+        key_year = utils.analysis_simulation_year_key(restart)
         for beach_state in output_dict[key_year].keys():
             output_dict[key_year][beach_state] /= settings.RUN_RANGE
 
     # Calculating the average concentrations over the entire length of the simulation from the individual years
     for beach_state in beach_state_dict.keys():
         for simulation_years in range(settings.SIM_LENGTH):
-            key_year = concentration_year_key(restart)
+            key_year = utils.analysis_simulation_year_key(restart)
             output_dict['overall_concentration'][beach_state] += output_dict[key_year][beach_state]
     for beach_state in beach_state_dict.keys():
         output_dict['overall_concentration'][beach_state] /= settings.SIM_LENGTH
@@ -128,5 +128,3 @@ def hexbin(x, y, c, hexgrid):
     return counts, center
 
 
-def concentration_year_key(simulation_years):
-    return 'year_{}'.format(simulation_years)

@@ -25,15 +25,18 @@ def parcels_to_vertical_concentration(file_dict: dict):
     output_dict = {'depth': depth_bins}
     counts_dict = {}
     for simulation_year in range(settings.SIM_LENGTH):
+        key_year = utils.analysis_simulation_year_key(simulation_year)
+        output_dict[key_year] = {}
+        counts_dict[key_year] = {}
         for month in range(12):
-            output_dict[utils.dict_key_vertical_concentration(simulation_year, month)] = np.zeros(len(depth_bins) - 1,
-                                                                                                  dtype=np.float32)
-            counts_dict[utils.dict_key_vertical_concentration(simulation_year, month)] = 0.0
+            output_dict[key_year][month] = np.zeros(len(depth_bins) - 1, dtype=np.float32)
+            counts_dict[key_year][month] = 0.0
 
     # Looping through all the simulation years and runs
     for run in progressbar.progressbar(range(settings.RUN_RANGE)):
         # Loop through the restart files
         for restart in range(settings.SIM_LENGTH):
+            key_year = utils.analysis_simulation_year_key(restart)
             # Load the depth data, with monthly intervals
             parcels_file = file_dict[run][restart]
             dataset = Dataset(parcels_file)
@@ -46,18 +49,18 @@ def parcels_to_vertical_concentration(file_dict: dict):
             for month in range(depth.shape[1]):
                 # Checking to make sure we don't have any nan values, or particles with beach==2 (indicating a particle
                 # that was previously removed)
-                key = utils.dict_key_vertical_concentration(simulation_year, month)
                 non_nan_values = (~np.isnan(depth[:, month])) & (beach[:, month] != 2)
                 depth_month = depth[:, month][non_nan_values]
                 # Now, calculating the vertical histogram
                 histogram_counts, _ = np.histogram(depth_month, bins=depth_bins)
-                output_dict[key] += histogram_counts
+                output_dict[key_year][month] += histogram_counts
                 # Updating the number of particles used within a certain profile so that we can normalize later
-                counts_dict[key] += depth_month.size
+                counts_dict[key_year][month] += depth_month.size
 
     # Now, we loop through all the profiles and normalize them by the number of particles within the profile
-    for key in counts_dict.keys():
-        output_dict[key] /= counts_dict[key]
+    for key_year in counts_dict.keys():
+        for key_month in counts_dict[key_year].keys():
+            output_dict[key_year][key_month] /= counts_dict[key_year][key_month]
 
     # Saving the output
     # Saving the computed concentration
