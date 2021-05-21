@@ -157,7 +157,10 @@ def set_normalization(beach_state, difference):
     :return:
     """
     if not difference:
-        vmin, vmax = 1, 1e4
+        if beach_state == 'afloat':
+            vmin, vmax = 1, 1e4
+        elif beach_state == 'beach':
+            vmin, vmax = 1, 1e5
         return colors.LogNorm(vmin=vmin, vmax=vmax)
     else:
         linthresh,linscale, vmin, vmax = 1e2, 1, -1e4, 1e4
