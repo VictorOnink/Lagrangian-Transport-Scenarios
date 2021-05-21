@@ -26,15 +26,15 @@ def run(scenario, figure_direc: str):
     #                                                                             rho_list=rho_list,
     #                                                                             time_selection='average',
     #                                                                             beach_state='afloat')
-    SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
-                                                                                scenario=scenario, size_list=size_list,
-                                                                                rho_list=rho_list,
-                                                                                time_selection='average',
-                                                                                beach_state='beach')
     # SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
     #                                                                             scenario=scenario, size_list=size_list,
     #                                                                             rho_list=rho_list,
     #                                                                             time_selection='average',
-    #                                                                             difference=True,
-    #                                                                             beach_state='afloat')
+    #                                                                             beach_state='beach')
+    SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
+                                                                                scenario=scenario, size_list=size_list,
+                                                                                rho_list=rho_list,
+                                                                                time_selection='average',
+                                                                                difference=True,
+                                                                                beach_state='afloat')
     pass
