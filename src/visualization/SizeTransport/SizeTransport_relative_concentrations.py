@@ -60,7 +60,7 @@ def SizeTransport_relative_concentrations(scenario, figure_direc, size_list, rho
         if reference_size is None:
             reference_size = np.nanmin(size_list)
         for keys in concentration_dict.keys():
-            concentration_dict[keys] -= concentration_dict[reference_size * 1e-5]
+            concentration_dict[keys] -= concentration_dict[reference_size]
 
     # Setting zero values to nan
     for size in concentration_dict.keys():
@@ -112,7 +112,7 @@ def SizeTransport_relative_concentrations(scenario, figure_direc, size_list, rho
         if beach_state in ['afloat']:
             ax_list[index].pcolormesh(Lon, Lat, concentration_dict[size], norm=norm, cmap=cmap_name)
         else:
-            ax_list[index].scatter(Lon.flatten(), Lat.flatten(), concentration_dict[size], norm=norm, cmap=cmap_name)
+            ax_list[index].scatter(Lon.flatten(), Lat.flatten(), c=concentration_dict[size], norm=norm, cmap=cmap_name)
 
     # Saving the figure
     file_name = animation_save_name(output_direc, np.nanmean(rho_list), time_selection, difference, beach_state,

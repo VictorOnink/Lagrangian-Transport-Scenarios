@@ -41,7 +41,7 @@ def run(scenario, figure_direc: str):
                                                                                 scenario=scenario, size_list=size_list,
                                                                                 rho_list=rho_list,
                                                                                 time_selection='average',
-                                                                                difference=True, reference_size=500,
+                                                                                difference=True, reference_size=500E-5,
                                                                                 beach_state='afloat')
 
     pass
