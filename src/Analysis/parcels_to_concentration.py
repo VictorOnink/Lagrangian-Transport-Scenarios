@@ -6,6 +6,7 @@ from netCDF4 import Dataset
 import numpy as np
 import progressbar
 import os
+from copy import deepcopy
 
 
 def parcels_to_concentration(file_dict: dict):
@@ -37,9 +38,9 @@ def parcels_to_concentration(file_dict: dict):
     # Create the output dictionarynp.zeros(GRID.shape)
     beach_state_dict = {'beach': np.zeros(GRID.shape), 'afloat': np.zeros(GRID.shape), 'seabed': np.zeros(GRID.shape)}
     beach_label_dict = {'beach': 1, 'afloat': 0, 'seabed': 3}
-    output_dict = {'overall_concentration': beach_state_dict, 'lon': LON, 'lat': LAT}
+    output_dict = {'overall_concentration': deepcopy(beach_state_dict), 'lon': LON, 'lat': LAT}
     for simulation_years in range(settings.SIM_LENGTH):
-        output_dict[utils.analysis_simulation_year_key(simulation_years)] = beach_state_dict
+        output_dict[utils.analysis_simulation_year_key(simulation_years)] = deepcopy(beach_state_dict)
 
     # loop through the runs
     for run in progressbar.progressbar(range(settings.RUN_RANGE)):

@@ -5,6 +5,7 @@ from netCDF4 import Dataset
 import numpy as np
 import progressbar
 import os
+from copy import deepcopy
 
 
 def parcels_to_vertical_concentration(file_dict: dict):
