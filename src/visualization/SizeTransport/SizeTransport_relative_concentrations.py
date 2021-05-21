@@ -60,7 +60,7 @@ def SizeTransport_relative_concentrations(scenario, figure_direc, size_list, rho
         if reference_size is None:
             reference_size = np.nanmin(size_list)
         for keys in concentration_dict.keys():
-            concentration_dict[keys] -= concentration_dict[reference_size]
+            concentration_dict[keys] -= concentration_dict[reference_size * 1e-5]
 
     # Setting zero values to nan
     for size in concentration_dict.keys():
@@ -115,7 +115,8 @@ def SizeTransport_relative_concentrations(scenario, figure_direc, size_list, rho
             ax_list[index].scatter(Lon.flatten(), Lat.flatten(), concentration_dict[size], norm=norm, cmap=cmap_name)
 
     # Saving the figure
-    file_name = animation_save_name(output_direc, np.nanmean(rho_list), time_selection, difference, beach_state)
+    file_name = animation_save_name(output_direc, np.nanmean(rho_list), time_selection, difference, beach_state,
+                                    reference_size)
     plt.savefig(file_name, bbox_inches='tight')
 
 
@@ -131,14 +132,21 @@ def subfigure_title(index, size, rho):
     return '({}) r = {} mm, '.format(alphabet[index], size * 1e3) + r'$\rho$ = ' + '{} kg m'.format(rho) + r'$^{-3}$'
 
 
-def animation_save_name(output_direc, rho, time_selection, difference, beach_state,
+def animation_save_name(output_direc, rho, time_selection, difference, beach_state, reference_size,
                         flowdata='CMEMS_MEDITERRANEAN', startyear=2010):
     selection_dict = {'average': 'TotalAverage', 0: 'year_0', 1: 'year_1', 2: 'year_2'}
     difference_dict = {True: 'Difference', False: 'absolute'}
-    return output_direc + 'SizeTransport_{}_{}_{}_{}_rho_{}_y_{}.png'.format(flowdata, beach_state,
-                                                                              difference_dict[difference],
-                                                                              selection_dict[time_selection], rho,
-                                                                              startyear)
+    if not difference:
+        return output_direc + 'SizeTransport_{}_{}_{}_{}_rho_{}_y_{}.png'.format(flowdata, beach_state,
+                                                                                  difference_dict[difference],
+                                                                                  selection_dict[time_selection], rho,
+                                                                                  startyear)
+    else:
+        return output_direc + 'SizeTransport_{}_{}_{}_refsize_{}_{}_rho_{}_y_{}.png'.format(flowdata, beach_state,
+                                                                                 difference_dict[difference],
+                                                                                            reference_size,
+                                                                                 selection_dict[time_selection], rho,
+                                                                                 startyear)
 
 
 def set_normalization(beach_state, difference):

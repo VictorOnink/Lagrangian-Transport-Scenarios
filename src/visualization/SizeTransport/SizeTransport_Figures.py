@@ -21,20 +21,27 @@ def run(scenario, figure_direc: str):
 
     # Creating figures showing the relative distribution, averaged over the entire simulation and time-snapshots at the
     # end of each simulation year
-    # SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
-    #                                                                             scenario=scenario, size_list=size_list,
-    #                                                                             rho_list=rho_list,
-    #                                                                             time_selection='average',
-    #                                                                             beach_state='afloat')
-    # SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
-    #                                                                             scenario=scenario, size_list=size_list,
-    #                                                                             rho_list=rho_list,
-    #                                                                             time_selection='average',
-    #                                                                             beach_state='beach')
+    SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
+                                                                                scenario=scenario, size_list=size_list,
+                                                                                rho_list=rho_list,
+                                                                                time_selection='average',
+                                                                                beach_state='afloat')
+    SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
+                                                                                scenario=scenario, size_list=size_list,
+                                                                                rho_list=rho_list,
+                                                                                time_selection='average',
+                                                                                beach_state='beach')
     SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
                                                                                 scenario=scenario, size_list=size_list,
                                                                                 rho_list=rho_list,
                                                                                 time_selection='average',
                                                                                 difference=True,
                                                                                 beach_state='afloat')
+    SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
+                                                                                scenario=scenario, size_list=size_list,
+                                                                                rho_list=rho_list,
+                                                                                time_selection='average',
+                                                                                difference=True, reference_size=500,
+                                                                                beach_state='afloat')
+
     pass
