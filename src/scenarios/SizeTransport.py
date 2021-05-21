@@ -28,7 +28,7 @@ class SizeTransport(base_scenario.BaseScenario):
             self.file_dict = advection_scenario.file_names
             self.field_set = self.create_fieldset()
 
-    var_list = ['lon', 'lat', 'beach', 'age', 'distance_horizontal', 'distance_vertical']
+    var_list = ['lon', 'lat', 'beach', 'age', 'distance_horizontal', 'distance_vertical', 'z']
 
     def create_fieldset(self) -> FieldSet:
         os.system('echo "Creating the fieldset"')
@@ -56,7 +56,7 @@ class SizeTransport(base_scenario.BaseScenario):
                                lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
                                age=var_dict['age'], time=start_time,
                                distance_horizontal=var_dict['distance_horizontal'],
-                               distance_vertical=var_dict['distance_vertical'],
+                               distance_vertical=var_dict['distance_vertical'], depth=var_dict['z'],
                                repeatdt=repeat_dt)
         return pset
 
