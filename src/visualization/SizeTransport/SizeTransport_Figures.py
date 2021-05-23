@@ -16,27 +16,27 @@ def run(scenario, figure_direc: str):
     rho_list = np.ones(size_list.shape, dtype=int) * 920
 
     # Creating an animation showing how the six different size classes I have simulations for at the moment look like
-    # SizeTransport_Animation.SizeTransport_Animation(figure_direc=figure_direc, scenario=scenario, size_list=size_list,
-    #                                                 rho_list=rho_list)
+    SizeTransport_Animation.SizeTransport_Animation(figure_direc=figure_direc, scenario=scenario, size_list=size_list,
+                                                    rho_list=rho_list)
 
     # Creating figures showing the relative distribution, averaged over the entire simulation and time-snapshots at the
     # end of each simulation year
-    time_select = 'average'
-    SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
-                                                                                scenario=scenario, size_list=size_list,
-                                                                                rho_list=rho_list,
-                                                                                time_selection=time_select,
-                                                                                beach_state='afloat')
-    SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
-                                                                                scenario=scenario, size_list=size_list,
-                                                                                rho_list=rho_list,
-                                                                                time_selection=time_select,
-                                                                                beach_state='beach')
-    SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
-                                                                                scenario=scenario, size_list=size_list,
-                                                                                rho_list=rho_list,
-                                                                                time_selection=time_select,
-                                                                                difference=True,
-                                                                                beach_state='afloat')
+    # time_select = 'average'
+    # SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
+    #                                                                             scenario=scenario, size_list=size_list,
+    #                                                                             rho_list=rho_list,
+    #                                                                             time_selection=time_select,
+    #                                                                             beach_state='afloat')
+    # SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
+    #                                                                             scenario=scenario, size_list=size_list,
+    #                                                                             rho_list=rho_list,
+    #                                                                             time_selection=time_select,
+    #                                                                             beach_state='beach')
+    # SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
+    #                                                                             scenario=scenario, size_list=size_list,
+    #                                                                             rho_list=rho_list,
+    #                                                                             time_selection=time_select,
+    #                                                                             difference=True,
+    #                                                                             beach_state='afloat')
 
     pass
