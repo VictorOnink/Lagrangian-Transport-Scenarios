@@ -20,11 +20,12 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
     # Loading in the data
     prefix = 'timeseries'
     timeseries_dict = {}
+    beach_state_list = ['beach', 'afloat', 'seabed', 'removed', 'total']
     for index, size in enumerate(size_list):
         data_dict = vUtils.SizeTransport_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
                                                    size=size, rho=rho_list[index])
         timeseries_dict[size] = {}
-        for beach_state in ['beach', 'afloat', 'seabed', 'removed', 'total']:
+        for beach_state in beach_state_list:
             timeseries_dict[size][beach_state] = data_dict[beach_state]
     time = data_dict['time']
 
@@ -50,6 +51,20 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
         ax.grid(True)
         ax_list.append(ax)
     ax_list[0].set_xlabel('Time (yr)', fontsize=fontsize)
+    for index, beach_state in enumerate(beach_state_list):
+        ax_list[index].set_title(subfigure_title(index, beach_state), fontsize=fontsize)
 
     file_name = output_direc + 'test.jpg'
     plt.savefig(file_name)
+
+
+def subfigure_title(index, beach_state):
+    """
+    setting the title of the subfigure
+    :param index:
+    :param size:
+    :param rho:
+    :return:
+    """
+    alphabet = string.ascii_lowercase
+    return '({}) {}'.format(alphabet[index], beach_state)
