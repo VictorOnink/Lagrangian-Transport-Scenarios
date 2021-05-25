@@ -27,7 +27,7 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
                                                    size=size, rho=rho_list[index])
         timeseries_dict[size] = {}
         for beach_state in beach_state_list:
-            timeseries_dict[size][beach_state] = data_dict[beach_state]
+            timeseries_dict[size][beach_state] = data_dict[beach_state].astype(float)
     time = data_dict['time']
     total = float(data_dict['total'][0])
 
