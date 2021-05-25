@@ -11,7 +11,7 @@ import matplotlib.dates as mdates
 from matplotlib.ticker import FixedLocator, FixedFormatter
 
 
-def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, figsize=(8, 12), fontsize=12):
+def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, figsize=(10, 10), fontsize=12):
     # Setting the folder within which we have the output, and where we have the saved timeslices
     output_direc = figure_direc + 'timeseries/'
     data_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/{}/'.format('SizeTransport')
@@ -42,7 +42,7 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
 
     # Creating the figure
     fig = plt.figure(figsize=figsize)
-    gs = fig.add_gridspec(nrows=5, ncols=1)
+    gs = fig.add_gridspec(nrows=3, ncols=1)
     gs.update(wspace=0.2, hspace=0.2)
 
     ax_list = []
