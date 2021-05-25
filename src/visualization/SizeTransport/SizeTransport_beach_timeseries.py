@@ -89,4 +89,4 @@ def subfigure_title(index, beach_state):
     return '({}) {}'.format(alphabet[index], beach_state)
 
 def size_label(size):
-    return r'r = {} mm'.format(size)
+    return r'r = {} mm'.format(size * 1e-5)
