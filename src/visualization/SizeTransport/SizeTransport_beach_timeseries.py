@@ -37,7 +37,7 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
     # Creating the figure
     fig = plt.figure(figsize=figsize)
     gs = fig.add_gridspec(nrows=5, ncols=1)
-    gs.update(wspace=0.1, hspace=0.1)
+    gs.update(wspace=1, hspace=1)
 
     ax_list = []
     for row in range(gs.nrows):
@@ -56,7 +56,7 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
         ax_list[index].set_title(subfigure_title(index, beach_state), fontsize=fontsize)
 
     file_name = output_direc + 'test.jpg'
-    plt.savefig(file_name)
+    plt.savefig(file_name, bbox_inches='tight')
 
 
 def subfigure_title(index, beach_state):
