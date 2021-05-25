@@ -13,7 +13,7 @@ from matplotlib.ticker import FixedLocator, FixedFormatter
 
 def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, figsize=(10, 10), fontsize=14):
     # Setting the folder within which we have the output, and where we have the saved timeslices
-    output_direc = figure_direc + 'concentrations/'
+    output_direc = figure_direc + 'timeseries/'
     data_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/{}/'.format('SizeTransport')
     utils.check_direc_exist(output_direc)
 
@@ -39,7 +39,7 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
 
     ax_list = []
     for row in range(gs.nrows):
-        ax = fig.add_subplot([row, 0])
+        ax = fig.add_subplot(gs[row, 0])
         ax.xaxis.set_major_locator(years)
         ax.xaxis.set_major_formatter(yearsFmt)
         ax.xaxis.set_minor_locator(months)
