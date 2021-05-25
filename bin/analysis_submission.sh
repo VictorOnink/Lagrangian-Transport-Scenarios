@@ -25,7 +25,7 @@ INPUT=1
 # 0 = Global HYCOM, 1 = Caribbean HYCOM, 2 = Mediterranean CMEMS
 ADVECTION_DATA=2
 #Number of years the simulation runs
-SIMLEN=1
+SIMLEN=3
 #Inclusion of Stokes drift. 0 = include stokes, 1 = do not include stokes
 STOKES=0
 #Ensemble member
