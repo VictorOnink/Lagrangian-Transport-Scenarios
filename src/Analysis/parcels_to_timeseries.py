@@ -16,10 +16,12 @@ def parcels_to_timeseries(file_dict: dict, lon_min: float = -180, lon_max: float
     utils.check_direc_exist(output_direc)
     # Get the time axis
     time_list = np.array([], dtype=np.int)
+    restart_list = np.array([], dtype=np.int)
     for restart in range(settings.SIM_LENGTH):
         parcels_file = file_dict[0][restart]
         parcels_dataset = Dataset(parcels_file)
         time_list = np.append(time_list, parcels_dataset.variables['time'][0, :-1])
+        restart_list = np.append(restart_list, np.ones(parcels_dataset.variables['time'][0, :-1].shape) * restart)
 
     # Initializing the arrays of the timeseries
     beach_state_dict = {'beach': np.zeros(time_list.shape, dtype=float),
@@ -56,16 +58,17 @@ def parcels_to_timeseries(file_dict: dict, lon_min: float = -180, lon_max: float
             # Now, looping through all the time steps and adding up the total weight/counts of particles within each of
             # the beach state domains at each time step
             for index, time_value in enumerate(time_list):
-                time_selection = full_data_dict['time'] == time_value
-                if np.nansum(full_data_dict['time'] == time_value) > 0:
-                    time_dict = {}
-                    for variable in ['beach', 'weights']:
-                        time_dict[variable] = full_data_dict[variable][time_selection]
-                    for beach_state in beach_label_dict.keys():
-                        beach_state_dict[beach_state][index] += np.nansum(time_dict['weights'][time_dict['beach'] == beach_label_dict[beach_state]])
-                    beach_state_dict['total'][index] += np.nansum(full_data_dict['time'] == time_value)
+                if restart_list[index] == restart:
+                    time_selection = full_data_dict['time'] == time_value
+                    if np.nansum(full_data_dict['time'] == time_value) > 0:
+                        time_dict = {}
+                        for variable in ['beach', 'weights']:
+                            time_dict[variable] = full_data_dict[variable][time_selection]
+                        for beach_state in beach_label_dict.keys():
+                            beach_state_dict[beach_state][index] += np.nansum(time_dict['weights'][time_dict['beach'] == beach_label_dict[beach_state]])
+                        beach_state_dict['total'][index] += np.nansum(full_data_dict['time'] == time_value)
+    # Saving the output
     prefix = 'timeseries'
-
     output_name = output_direc + utils._analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
     utils.save_obj(output_name, beach_state_dict)
     os.system('echo "The timeseries has been saved"')
