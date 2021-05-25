@@ -5,7 +5,7 @@ import numpy as np
 import visualization.visualization_utils as vUtils
 import matplotlib.pyplot as plt
 import matplotlib.colors as colors
-import cartopy.crs as ccrs
+import cmocean
 
 
 def General_bathymetry(scenario, figure_direc, figsize=(10, 8), fontsize=14):
@@ -17,7 +17,6 @@ def General_bathymetry(scenario, figure_direc, figsize=(10, 8), fontsize=14):
     """
     # Setting the folder within which we have the output
     output_direc = figure_direc + 'General/'
-    print(output_direc)
     utils.check_direc_exist(output_direc)
 
     # Getting the bathymetry data
@@ -52,7 +51,7 @@ def General_bathymetry(scenario, figure_direc, figsize=(10, 8), fontsize=14):
 
     # The actual plotting
     Lon, Lat = np.meshgrid(bath_dict['LON'], bath_dict['LAT'])
-    cmap = 'binary'
+    cmap = cmocean.deep
     depth_plot = plt.pcolormesh(Lon, Lat, bath_dict['DEPTH'], norm=normalization, cmap=cmap)
 
     cax = fig.add_subplot(gs[:, -1])
