@@ -22,15 +22,11 @@ def parcels_to_timeseries(file_dict: dict, lon_min: float = -180, lon_max: float
         time_list = np.append(time_list, parcels_dataset.variables['time'][0, :-1])
 
     # Initializing the arrays of the timeseries
-    if 'weights' in parcels_dataset.variables.keys():
-        var_type = float
-    else:
-        var_type = int
-    beach_state_dict = {'beach': np.zeros(time_list.shape, dtype=var_type),
-                        'afloat': np.zeros(time_list.shape, dtype=var_type),
-                        'seabed': np.zeros(time_list.shape, dtype=var_type),
-                        'removed': np.zeros(time_list.shape, dtype=var_type),
-                        'total': np.zeros(time_list.shape, dtype=var_type),
+    beach_state_dict = {'beach': np.zeros(time_list.shape, dtype=float),
+                        'afloat': np.zeros(time_list.shape, dtype=float),
+                        'seabed': np.zeros(time_list.shape, dtype=float),
+                        'removed': np.zeros(time_list.shape, dtype=float),
+                        'total': np.zeros(time_list.shape, dtype=float),
                         'time': time_list}
     beach_label_dict = {'beach': 1, 'afloat': 0, 'seabed': 3, 'removed': 2}
 
@@ -48,7 +44,7 @@ def parcels_to_timeseries(file_dict: dict, lon_min: float = -180, lon_max: float
             if 'weights' in parcels_dataset.variables.keys():
                 full_data_dict['weights'] = parcels_dataset.variables['weights'][:, :-1] * settings.BUOYANT
             else:
-                full_data_dict['weights'] = np.ones(full_data_dict['lon'].shape, dtype=int)
+                full_data_dict['weights'] = np.ones(full_data_dict['lon'].shape, dtype=float)
 
             # Just get the particles within the domain, which we do by setting all values not within the domain to nan
             # These will therefore not be taken into account in the calculations of total counts/weights
