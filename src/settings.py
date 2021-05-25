@@ -60,8 +60,7 @@ if SUBMISSION in ['simulation', 'analysis']:
 
 # UV ADVECTION DATA
 ADVECTION_DICT: dict = {0: 'HYCOM_GLOBAL', 1: 'HYCOM_CARIBBEAN', 2: 'CMEMS_MEDITERRANEAN'}
-if SUBMISSION in ['simulation', 'analysis']:
-    ADVECTION_DATA: str = ADVECTION_DICT[int(os.environ['ADVECTION_DATA'])]
+ADVECTION_DATA: str = ADVECTION_DICT[int(os.environ['ADVECTION_DATA'])]
 # STOKES DRIFT: 0 -> STOKES, 1 -> NO STOKES
 STOKES: int = int(os.environ['STOKES'])
 
@@ -206,7 +205,6 @@ if SUBMISSION == 'visualization':
     VICINITY: int = 0
     SHORE_DEP: int = 0
     WMIN: int = 0
-    ADVECTION_DATA: str = ADVECTION_DICT[0]
     INIT_SIZE: float = 500 * 1e-5
     INIT_DENSITY: int = 920
     START_YEAR: int = 2010
