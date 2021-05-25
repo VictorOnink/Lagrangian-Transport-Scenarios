@@ -82,3 +82,7 @@ def cartopy_standard_map(fig, gridspec, row, column, domain, resolution='50m', a
     axis.set_aspect('auto', adjustable=None)
     return axis
 
+
+def discrete_color_from_cmap(index, subdivisions, cmap='viridis_r'):
+    cmap_steps = plt.cm.get_cmap(cmap, subdivisions)
+    return cmap_steps(index)

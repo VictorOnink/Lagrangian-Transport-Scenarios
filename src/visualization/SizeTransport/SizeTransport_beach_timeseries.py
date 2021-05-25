@@ -34,6 +34,12 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
     months = mdates.MonthLocator()  # every month
     yearsFmt = mdates.DateFormatter('%Y')
 
+    # Getting the datetime objects for all of the time
+    time_list = []
+    startdate = datetime(settings.START_YEAR, 1, 1, 12, 0)
+    for seconds in time:
+        time_list.append(startdate + timedelta(seconds=seconds))
+
     # Creating the figure
     fig = plt.figure(figsize=figsize)
     gs = fig.add_gridspec(nrows=5, ncols=1)
@@ -56,6 +62,13 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
 
     for index, beach_state in enumerate(beach_state_list):
         ax_list[index].set_title(subfigure_title(index, beach_state), fontsize=fontsize)
+
+    # Now, adding in the actual data
+    for index_size, size in size_list:
+        for index_beach, beach_state:
+            ax_list[index_beach].plot(time_list, timeseries_dict[size][beach_state], linestyle='-',
+                                      color=vUtils.discrete_color_from_cmap(index_size, subdivisions=len(size_list)))
+
 
     file_name = output_direc + 'test.jpg'
     plt.savefig(file_name, bbox_inches='tight')
