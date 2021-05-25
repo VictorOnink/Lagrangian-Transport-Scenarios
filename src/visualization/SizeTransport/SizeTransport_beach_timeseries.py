@@ -44,7 +44,7 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
         ax.xaxis.set_major_formatter(yearsFmt)
         ax.xaxis.set_minor_locator(months)
         ax.set_ylabel(r'Particle Count', fontsize=fontsize)
-        ax.set_xlim(datetime(2010, 1, 1), datetime(2010 + settings.RUN_RANGE, 1, 1))
+        ax.set_xlim(datetime(2010, 1, 1), datetime(2013, 1, 1))
         ax.tick_params(which='major', length=7)
         ax.tick_params(which='minor', length=3)
         ax.grid(True)
