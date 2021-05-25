@@ -20,6 +20,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="bug fix">
+      <change beforePath="$PROJECT_DIR$/bin/analysis_submission.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/analysis_submission.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Analysis/parcels_to_timeseries.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analysis/parcels_to_timeseries.py" afterDir="false" />
     </list>
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
@@ -103,20 +104,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-00685" summary="update">
-      <created>1621523609510</created>
-      <option name="number" value="00685" />
-      <option name="presentableId" value="LOCAL-00685" />
-      <option name="project" value="LOCAL" />
-      <updated>1621523609510</updated>
-    </task>
-    <task id="LOCAL-00686" summary="update">
-      <created>1621523723087</created>
-      <option name="number" value="00686" />
-      <option name="presentableId" value="LOCAL-00686" />
-      <option name="project" value="LOCAL" />
-      <updated>1621523723087</updated>
     </task>
     <task id="LOCAL-00687" summary="update">
       <created>1621523879738</created>
@@ -447,7 +434,21 @@
       <option name="project" value="LOCAL" />
       <updated>1621929938487</updated>
     </task>
-    <option name="localTasksCounter" value="734" />
+    <task id="LOCAL-00734" summary="bug fix">
+      <created>1621930049174</created>
+      <option name="number" value="00734" />
+      <option name="presentableId" value="LOCAL-00734" />
+      <option name="project" value="LOCAL" />
+      <updated>1621930049174</updated>
+    </task>
+    <task id="LOCAL-00735" summary="bug fix">
+      <created>1621930165131</created>
+      <option name="number" value="00735" />
+      <option name="presentableId" value="LOCAL-00735" />
+      <option name="project" value="LOCAL" />
+      <updated>1621930165131</updated>
+    </task>
+    <option name="localTasksCounter" value="736" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
