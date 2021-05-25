@@ -20,9 +20,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="bug fix">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_beach_timeseries.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_beach_timeseries.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/visualization_utils/utils_visual.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/visualization_utils/utils_visual.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_Figures.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_Figures.py" afterDir="false" />
     </list>
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
     <list id="c5adc810-e024-4e30-b33b-a2709ed2c5b7" name="moving the release repeat timescale to the scenario" comment="" />
@@ -105,34 +103,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-00707" summary="update">
-      <created>1621603373996</created>
-      <option name="number" value="00707" />
-      <option name="presentableId" value="LOCAL-00707" />
-      <option name="project" value="LOCAL" />
-      <updated>1621603373996</updated>
-    </task>
-    <task id="LOCAL-00708" summary="update">
-      <created>1621603487635</created>
-      <option name="number" value="00708" />
-      <option name="presentableId" value="LOCAL-00708" />
-      <option name="project" value="LOCAL" />
-      <updated>1621603487635</updated>
-    </task>
-    <task id="LOCAL-00709" summary="update">
-      <created>1621603884097</created>
-      <option name="number" value="00709" />
-      <option name="presentableId" value="LOCAL-00709" />
-      <option name="project" value="LOCAL" />
-      <updated>1621603884097</updated>
-    </task>
-    <task id="LOCAL-00710" summary="update">
-      <created>1621604266938</created>
-      <option name="number" value="00710" />
-      <option name="presentableId" value="LOCAL-00710" />
-      <option name="project" value="LOCAL" />
-      <updated>1621604266938</updated>
     </task>
     <task id="LOCAL-00711" summary="update">
       <created>1621604639972</created>
@@ -449,7 +419,35 @@
       <option name="project" value="LOCAL" />
       <updated>1621946630230</updated>
     </task>
-    <option name="localTasksCounter" value="756" />
+    <task id="LOCAL-00756" summary="bug fix">
+      <created>1621947556746</created>
+      <option name="number" value="00756" />
+      <option name="presentableId" value="LOCAL-00756" />
+      <option name="project" value="LOCAL" />
+      <updated>1621947556746</updated>
+    </task>
+    <task id="LOCAL-00757" summary="bug fix">
+      <created>1621947573682</created>
+      <option name="number" value="00757" />
+      <option name="presentableId" value="LOCAL-00757" />
+      <option name="project" value="LOCAL" />
+      <updated>1621947573682</updated>
+    </task>
+    <task id="LOCAL-00758" summary="bug fix">
+      <created>1621947703091</created>
+      <option name="number" value="00758" />
+      <option name="presentableId" value="LOCAL-00758" />
+      <option name="project" value="LOCAL" />
+      <updated>1621947703091</updated>
+    </task>
+    <task id="LOCAL-00759" summary="bug fix">
+      <created>1621947848832</created>
+      <option name="number" value="00759" />
+      <option name="presentableId" value="LOCAL-00759" />
+      <option name="project" value="LOCAL" />
+      <updated>1621947848832</updated>
+    </task>
+    <option name="localTasksCounter" value="760" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
