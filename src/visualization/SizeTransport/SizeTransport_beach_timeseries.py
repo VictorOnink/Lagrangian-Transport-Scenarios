@@ -52,4 +52,4 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
     ax_list[0].set_xlabel('Time (yr)', fontsize=fontsize)
 
     file_name = output_direc + 'test.jpg'
-    plt.savefig(file_name, bbox_inches='tight')
+    plt.savefig(file_name)
