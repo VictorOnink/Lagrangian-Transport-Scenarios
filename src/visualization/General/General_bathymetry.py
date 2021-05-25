@@ -5,6 +5,7 @@ import numpy as np
 import visualization.visualization_utils as vUtils
 import matplotlib.pyplot as plt
 import matplotlib.colors as colors
+import cartopy.crs as ccrs
 
 
 def General_bathymetry(scenario, figure_direc, figsize=(10, 8), fontsize=14):
@@ -52,7 +53,7 @@ def General_bathymetry(scenario, figure_direc, figsize=(10, 8), fontsize=14):
     # The actual plotting
     Lon, Lat = np.meshgrid(bath_dict['LON'], bath_dict['LAT'])
     cmap = 'binary'
-    depth_plot = ax_list[0].meshgrid(Lon, Lat, c=bath_dict['DEPTH'], norm=normalization, cmap='binary')
+    depth_plot = plt.pcolormesh(Lon, Lat, c=bath_dict['DEPTH'], norm=normalization, cmap=cmap)
 
     cax = fig.add_subplot(gs[:, -1])
     cbar = plt.colorbar(depth_plot, cax=cax, orientation='vertical', extend='max')
