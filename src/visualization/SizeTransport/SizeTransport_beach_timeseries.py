@@ -64,7 +64,7 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
         ax_list[index].set_title(subfigure_title(index, beach_state), fontsize=fontsize)
 
     # Now, adding in the actual data
-    for index_size, size in size_list:
+    for index_size, size in enumerate(size_list):
         for index_beach, beach_state in enumerate(beach_state_list):
             ax_list[index_beach].plot(time_list, timeseries_dict[size][beach_state], linestyle='-',
                                       color=vUtils.discrete_color_from_cmap(index_size, subdivisions=len(size_list)))
