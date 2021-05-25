@@ -32,7 +32,7 @@ def parcels_to_timeseries(file_dict: dict, lon_min: float = -180, lon_max: float
 
     os.system('echo "Start running through the restart and run files"')
     # loop through the runs
-    for run in progressbar.progressbar(range(settings.RUN_RANGE)):
+    for run in range(settings.RUN_RANGE):
         # Loop through the restart files
         for restart in range(settings.SIM_LENGTH):
             # Load the lon, lat, time, beach and weight data
@@ -55,7 +55,7 @@ def parcels_to_timeseries(file_dict: dict, lon_min: float = -180, lon_max: float
 
             # Now, looping through all the time steps and adding up the total weight/counts of particles within each of
             # the beach state domains at each time step
-            for index, time_value in enumerate(time_list):
+            for index, time_value in progressbar.progressbar(enumerate(time_list)):
                 time_selection = full_data_dict['time'] == time_value
                 if np.nansum(full_data_dict['time'] == time_value) > 0:
                     time_dict = {}
