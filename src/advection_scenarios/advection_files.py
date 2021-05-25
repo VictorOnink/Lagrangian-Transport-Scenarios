@@ -80,7 +80,7 @@ class AdvectionFiles:
                                           variable=ELEV_dimensions)
 
             # The surface winds
-            WIND_filenames = glob.glob(self.data_dir + "Wind/ERA5-wind10m*.nc")
+            WIND_filenames = glob.glob(self.data_dir + "Wind/ERA5-wind10m*{}.nc".format(settings.START_YEAR + settings.RESTART))
             WIND_filenames.sort()
             WIND_variables = {'u10': 'u10', 'v10': 'v10'}
             WIND_dimensions = {'time': 'time', 'lat': 'latitude', 'lon': 'longitude'}
