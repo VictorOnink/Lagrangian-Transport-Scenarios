@@ -22,6 +22,7 @@ export SCENARIO
 export STOKES
 export SERVER
 export INPUT
+export ADVECTION_DATA
 
 #Now, we can set the job name prefix
 if [ "$SCENARIO" -eq "0" ]; then
