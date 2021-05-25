@@ -53,6 +53,7 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
         ax.xaxis.set_major_formatter(yearsFmt)
         ax.set_ylabel(r'Particle Count', fontsize=fontsize)
         ax.set_xlim(datetime(2010, 1, 1), datetime(2013, 1, 1))
+        ax.set_ylim([-1, 86000])
         ax.tick_params(which='major', length=7)
         ax.tick_params(which='minor', length=3)
         if row != (gs.nrows - 1):
