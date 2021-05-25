@@ -44,14 +44,16 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
         ax = fig.add_subplot(gs[row, 0])
         ax.xaxis.set_major_locator(years)
         ax.xaxis.set_minor_locator(months)
+        ax.xaxis.set_major_formatter(yearsFmt)
         ax.set_ylabel(r'Particle Count', fontsize=fontsize)
         ax.set_xlim(datetime(2010, 1, 1), datetime(2013, 1, 1))
         ax.tick_params(which='major', length=7)
         ax.tick_params(which='minor', length=3)
-        ax.grid(True)
+        if row != (gs.nrows - 1):
+            ax.set_xticklabels([])
         ax_list.append(ax)
     ax_list[-1].set_xlabel('Time (yr)', fontsize=fontsize)
-    ax_list[-1].xaxis.set_major_formatter(yearsFmt)
+
     for index, beach_state in enumerate(beach_state_list):
         ax_list[index].set_title(subfigure_title(index, beach_state), fontsize=fontsize)
 
