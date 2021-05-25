@@ -193,26 +193,6 @@ if SUBMISSION == 'analysis':
 
 ########################################################################################################################
 #                                                                                                                      #
-#                                       Plotting specific parameters                                                   #
-#                                                                                                                      #
-########################################################################################################################
-if SUBMISSION == 'visualization':
-    # DEFAULTS TO PREVENT ERRORS
-    RUN: int = 0
-    RESTART: int = 0
-    SHORE_TIME: int = 20
-    RESUS_TIME: int = 69
-    VICINITY: int = 0
-    SHORE_DEP: int = 0
-    WMIN: int = 0
-    INIT_SIZE: float = 500 * 1e-5
-    INIT_DENSITY: int = 920
-    START_YEAR: int = 2010
-
-
-
-########################################################################################################################
-#                                                                                                                      #
 #                                       Model and physical parameters                                                  #
 #                                                                                                                      #
 ########################################################################################################################
@@ -232,14 +212,16 @@ K_Z_BULK = 3e-5
 # WIDTH OF THE BEACHING ZONE (KM) WITHIN WHICH BEACHING CAN OCCUR
 if SCENARIO_NAME != 'AdvectionDiffusionOnly' and SUBMISSION in ['simulation', 'analysis']:
     COAST_D = 10  # km, the distance from the nearest shoreline that falls under the coastal zone.
+# SIZE SCALING FACTOR
+SIZE_FACTOR = 1E-6
 if SCENARIO_NAME == 'FragmentationKaandorp' and SUBMISSION in ['simulation', 'analysis']:
     # INITIAL PARTICLE SIZE (m)
-    INIT_SIZE = int(os.environ['PARTICLE_SIZE']) * 1e-5
+    INIT_SIZE = int(os.environ['PARTICLE_SIZE']) * SIZE_FACTOR
     # INITIAL DENSITY (KG/M^3): 920 = polypropylene
     INIT_DENSITY = 1020
 if SCENARIO_NAME == 'SizeTransport' and SUBMISSION in ['simulation', 'analysis']:
     # INITIAL PARTICLE SIZE (m)
-    INIT_SIZE = int(os.environ['PARTICLE_SIZE']) * 1e-5
+    INIT_SIZE = int(os.environ['PARTICLE_SIZE']) * SIZE_FACTOR
     # INITIAL DENSITY (KG/M^3): 920 = POLYPROPYLENE, 980 = HIGH DENSITY POLYETHYLENE (BRIGNAC ET AL. 2017)
     INIT_DENSITY = 920
 # ACCELERATION DUE TO GRAVITY (M/S^2)
@@ -256,6 +238,25 @@ VK = 0.4
 BETA, BETA_STAR = 1.21, 35
 # STABILITY FUNCTION IN MONIN-OBUKOV BOUNDARY LAYER THEORY (BOUFADEL ET AL. 2020)
 PHI = 0.9
+
+########################################################################################################################
+#                                                                                                                      #
+#                                       Plotting specific parameters                                                   #
+#                                                                                                                      #
+########################################################################################################################
+if SUBMISSION == 'visualization':
+    # DEFAULTS TO PREVENT ERRORS
+    RUN: int = 0
+    RESTART: int = 0
+    SHORE_TIME: int = 20
+    RESUS_TIME: int = 69
+    VICINITY: int = 0
+    SHORE_DEP: int = 0
+    WMIN: int = 0
+    INIT_SIZE: float = 5000 * SIZE_FACTOR
+    INIT_DENSITY: int = 920
+    START_YEAR: int = 2010
+
 
 ########################################################################################################################
 #                                                                                                                      #
