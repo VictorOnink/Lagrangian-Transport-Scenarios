@@ -20,7 +20,8 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
     # Loading in the data
     prefix = 'timeseries'
     timeseries_dict = {}
-    beach_state_list = ['beach', 'afloat', 'seabed', 'removed', 'total']
+    # beach_state_list = ['beach', 'afloat', 'seabed', 'removed', 'total']
+    beach_state_list = ['beach', 'afloat', 'seabed']
     for index, size in enumerate(size_list):
         data_dict = vUtils.SizeTransport_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
                                                    size=size, rho=rho_list[index])
