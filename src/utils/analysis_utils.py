@@ -115,17 +115,12 @@ def _analysis_save_file_name(input_file: str, prefix: str, suffix=None):
     return file_name
 
 
-def _particles_in_domain(domain, lon, lat, weight=0, beach=0, time=0, distance=0,
-                         return_sub_array=False):
+def _particles_in_domain(domain, lon, lat):
     lon_min, lon_max, lat_min, lat_max = domain
     # Select only particles that are within the domain that we are interested in
     select = (lon >= lon_min) & (lon <= lon_max) & (lat >= lat_min) & (lat <= lat_max)
-    # And now we return the time, weight and beach arrays of the particles that are within
-    # the domain of interest
-    if return_sub_array==True:
-        return weight[select], beach[select], distance[select], time[select]
-    else:
-        return select
+    # Now return the boolean array indicating which particles are within the domain of interest
+    return select
 
 
 def dict_key_vertical_concentration(restart, month):
