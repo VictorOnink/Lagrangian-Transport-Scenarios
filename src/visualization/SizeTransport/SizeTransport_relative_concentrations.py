@@ -162,7 +162,7 @@ def set_normalization(beach_state, difference):
         elif beach_state == 'beach':
             vmin, vmax = 1, 1e5
         elif beach_state == 'seabed':
-            vmin, vmax = 1, 1e5
+            vmin, vmax = 1, 1e6
         return colors.LogNorm(vmin=vmin, vmax=vmax)
     else:
         linthresh,linscale, vmin, vmax = 1e2, 1, -1e4, 1e4

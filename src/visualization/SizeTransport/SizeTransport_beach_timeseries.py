@@ -53,7 +53,7 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
         ax.xaxis.set_major_formatter(yearsFmt)
         ax.set_ylabel(r'Particle Count', fontsize=fontsize)
         ax.set_xlim(datetime(2010, 1, 1), datetime(2013, 1, 1))
-        ax.set_ylim([-1, 86000])
+        ax.set_ylim([-1, 87000])
         ax.tick_params(which='major', length=7)
         ax.tick_params(which='minor', length=3)
         if row != (gs.nrows - 1):
@@ -68,10 +68,12 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
     for index_size, size in enumerate(size_list):
         for index_beach, beach_state in enumerate(beach_state_list):
             ax_list[index_beach].plot(time_list, timeseries_dict[size][beach_state], linestyle='-',
-                                      color=vUtils.discrete_color_from_cmap(index_size, subdivisions=len(size_list)))
+                                      color=vUtils.discrete_color_from_cmap(index_size, subdivisions=len(size_list)),
+                                      label=size_label(size))
+    # And adding in a legend
+    ax_list[0].legend(fontsize=fontsize, loc='upper right')
 
-
-    file_name = output_direc + 'test.jpg'
+    file_name = output_direc + 'SizeTransport_beach_state_timeseries.jpg'
     plt.savefig(file_name, bbox_inches='tight')
 
 
@@ -85,3 +87,6 @@ def subfigure_title(index, beach_state):
     """
     alphabet = string.ascii_lowercase
     return '({}) {}'.format(alphabet[index], beach_state)
+
+def size_label(size):
+    return r'r = {} mm'.format(size)
