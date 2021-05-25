@@ -16,6 +16,7 @@ def General_bathymetry(scenario, figure_direc, figsize=(10, 8), fontsize=14):
     """
     # Setting the folder within which we have the output
     output_direc = figure_direc + 'General/'
+    print(output_direc)
     utils.check_direc_exist(output_direc)
 
     # Getting the bathymetry data
