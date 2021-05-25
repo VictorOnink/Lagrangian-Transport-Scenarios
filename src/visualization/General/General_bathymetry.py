@@ -55,7 +55,7 @@ def General_bathymetry(scenario, figure_direc, figsize=(10, 8), fontsize=14):
     depth_plot = plt.pcolormesh(Lon, Lat, bath_dict['DEPTH'], norm=normalization, cmap=cmap)
 
     cax = fig.add_subplot(gs[:, -1])
-    cbar = plt.colorbar(depth_plot, cax=cax, orientation='vertical', extend='max')
+    cbar = plt.colorbar(depth_plot, cax=cax, orientation='vertical')
     cbar.set_label('Depth (m)', fontsize=fontsize)
     cbar.ax.tick_params(which='major', labelsize=fontsize - 2, length=14, width=2)
     cbar.ax.tick_params(which='minor', labelsize=fontsize - 2, length=7, width=2)
