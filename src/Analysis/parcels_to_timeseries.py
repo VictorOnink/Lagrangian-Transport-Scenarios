@@ -22,7 +22,7 @@ def parcels_to_timeseries(file_dict: dict, lon_min: float = -180, lon_max: float
         time_list = np.append(time_list, parcels_dataset.variables['time'][0, :-1])
 
     # Initializing the arrays of the timeseries
-    if 'weights' in parcels_dataset.keys():
+    if 'weights' in parcels_dataset.variables.keys():
         var_type = float
     else:
         var_type = int
