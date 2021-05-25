@@ -29,6 +29,13 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
         for beach_state in beach_state_list:
             timeseries_dict[size][beach_state] = data_dict[beach_state]
     time = data_dict['time']
+    total = data_dict['total'][0]
+
+    # Normalizing all the particle counts with the total number of particles, and then multiplying by 100 to get a
+    # percentage
+    for size in size_list:
+        for beach_state in beach_state_list:
+            timeseries_dict[size][beach_state] /= total * 100.
 
     # Setting parameters for the time axis
     years = mdates.YearLocator()   # every year
@@ -52,9 +59,9 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
         ax.xaxis.set_major_locator(years)
         ax.xaxis.set_minor_locator(months)
         ax.xaxis.set_major_formatter(yearsFmt)
-        ax.set_ylabel(r'Particle Count', fontsize=fontsize)
+        ax.set_ylabel(r'Fraction of Total (%)', fontsize=fontsize)
         ax.set_xlim(datetime(2010, 1, 1), datetime(2013, 1, 1))
-        ax.set_ylim([-1, 87000])
+        ax.set_ylim([0, 100])
         ax.tick_params(which='major', length=7)
         ax.tick_params(which='minor', length=3)
         if row != (gs.nrows - 1):
