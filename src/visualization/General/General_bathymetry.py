@@ -52,7 +52,7 @@ def General_bathymetry(scenario, figure_direc, figsize=(10, 8), fontsize=14):
     # The actual plotting
     Lon, Lat = np.meshgrid(bath_dict['LON'], bath_dict['LAT'])
     cmap = cmocean.cm.deep
-    depth_plot = plt.pcolormesh(Lon, Lat, bath_dict['DEPTH'], norm=normalization, cmap=cmap)
+    depth_plot = plt.pcolormesh(Lon, Lat, bath_dict['DEPTH'], norm=normalization, cmap=cmap, zorder=1000)
 
     cax = fig.add_subplot(gs[:, -1])
     cbar = plt.colorbar(depth_plot, cax=cax, orientation='vertical', extend='both')
