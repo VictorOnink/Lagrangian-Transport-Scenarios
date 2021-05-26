@@ -10,7 +10,7 @@ import matplotlib.dates as mdates
 
 def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, figsize=(10, 10), fontsize=12):
     # Setting the folder within which we have the output, and where we have the saved timeslices
-    output_direc = figure_direc + 'timeseries/'
+    output_direc = figure_direc + 'timeslices/'
     data_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/{}/'.format('SizeTransport')
     utils.check_direc_exist(output_direc)
 
