@@ -22,7 +22,7 @@ def SizeTransport_SeaFloorDepthDistribution(scenario, figure_direc, size_list, r
     utils.check_direc_exist(output_direc)
 
     # Loading in the data
-    date = datetime(2013, 12, 31, 12, 0, 0).strftime("%Y-%m-%d-%H-%M-%S")
+    date = datetime(2012, 12, 31, 12, 0, 0).strftime("%Y-%m-%d-%H-%M-%S")
     prefix = 'timeslices_{}'.format(date)
 
     timeseries_dict = {}
