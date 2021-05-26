@@ -58,7 +58,7 @@ def SizeTransport_SeaFloorDepthDistribution(scenario, figure_direc, size_list, r
     ax.set_ylabel(r'Fraction of Total (%)', fontsize=fontsize)
     ax.set_ylim([0, 100])
     ax.set_xlabel('Depth (m)', fontsize=fontsize)
-    ax.set_xlim([0, 200])
+    ax.set_xlim([0, 50])
 
     # Plotting the data
     for index_size, size in enumerate(size_list):
@@ -73,4 +73,4 @@ def SizeTransport_SeaFloorDepthDistribution(scenario, figure_direc, size_list, r
 
 
 def size_label(size):
-    return r'r = {:.1E} mm'.format(size * 1e3)
+    return r'r = {:.2f} mm'.format(np.size * 1e3)
