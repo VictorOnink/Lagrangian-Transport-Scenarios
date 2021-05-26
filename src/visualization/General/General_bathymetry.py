@@ -47,7 +47,7 @@ def General_bathymetry(scenario, figure_direc, figsize=(10, 8), fontsize=14):
                                                        lat_grid_step=5, lon_grid_step=10, resolution='10m'))
 
     # Setting the normalization of the colormap
-    normalization = colors.LogNorm(vmin=1e0, vmax=1e4)
+    normalization = colors.LogNorm(vmin=1e1, vmax=1e3)
 
     # The actual plotting
     Lon, Lat = np.meshgrid(bath_dict['LON'], bath_dict['LAT'])
@@ -55,7 +55,7 @@ def General_bathymetry(scenario, figure_direc, figsize=(10, 8), fontsize=14):
     depth_plot = plt.pcolormesh(Lon, Lat, bath_dict['DEPTH'], norm=normalization, cmap=cmap)
 
     cax = fig.add_subplot(gs[:, -1])
-    cbar = plt.colorbar(depth_plot, cax=cax, orientation='vertical')
+    cbar = plt.colorbar(depth_plot, cax=cax, orientation='vertical', extend='both')
     cbar.set_label('Depth (m)', fontsize=fontsize)
     cbar.ax.tick_params(which='major', labelsize=fontsize - 2, length=14, width=2)
     cbar.ax.tick_params(which='minor', labelsize=fontsize - 2, length=7, width=2)

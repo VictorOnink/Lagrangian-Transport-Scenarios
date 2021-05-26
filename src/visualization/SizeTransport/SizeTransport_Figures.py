@@ -18,7 +18,7 @@ def run(scenario, figure_direc: str):
     rho_list = np.ones(size_list.shape, dtype=int) * 920
 
     # Creating a figure of the basin bathymetry
-    # General.General_bathymetry(scenario=scenario, figure_direc=figure_direc)
+    General.General_bathymetry(scenario=scenario, figure_direc=figure_direc)
 
     # Creating an animation showing how the six different size classes I have simulations for at the moment look like
     # SizeTransport_Animation.SizeTransport_Animation(figure_direc=figure_direc, scenario=scenario, size_list=size_list,
