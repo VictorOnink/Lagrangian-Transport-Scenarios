@@ -2,13 +2,10 @@ import settings
 import utils
 import visualization.visualization_utils as vUtils
 import matplotlib.pyplot as plt
-import matplotlib.colors as colors
-from advection_scenarios import advection_files
 import numpy as np
 import string
 from datetime import datetime, timedelta
 import matplotlib.dates as mdates
-from matplotlib.ticker import FixedLocator, FixedFormatter
 
 
 def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, figsize=(10, 10), fontsize=12):
@@ -98,4 +95,4 @@ def subfigure_title(index, beach_state):
     return '({}) {}'.format(alphabet[index], beach_state)
 
 def size_label(size):
-    return r'r = {} mm'.format(size * 1e3)
+    return r'r = {} mm'.format(size * 1e4)
