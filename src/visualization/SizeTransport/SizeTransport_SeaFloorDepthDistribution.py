@@ -18,7 +18,7 @@ def SizeTransport_SeaFloorDepthDistribution(scenario, figure_direc, size_list, r
 
     # Setting the folder within which we have the output, and where we have the saved timeslices
     output_direc = figure_direc + 'mix/'
-    data_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/{}/'.format('SizeTransport')
+    data_direc = utils.get_output_directory(server=settings.SERVER) + 'timeslices/{}/'.format('SizeTransport')
     utils.check_direc_exist(output_direc)
 
     # Loading in the data
