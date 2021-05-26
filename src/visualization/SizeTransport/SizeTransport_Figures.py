@@ -15,7 +15,7 @@ def run(scenario, figure_direc: str):
     :param scenario:
     :return:
     """
-    size_list = np.array([500, 100, 50, 10, 5, 1]) * settings.SIZE_FACTOR
+    size_list = np.array([5000, 1000, 500, 100, 50, 10]) * settings.SIZE_FACTOR
     rho_list = np.ones(size_list.shape, dtype=int) * 920
 
     # Creating a figure of the basin bathymetry
