@@ -39,15 +39,17 @@ def SizeTransport_SeaFloorDepthDistribution(scenario, figure_direc, size_list, r
     for size in size_list:
         # Loading in the particle depths, and the beach states
         beach_state, all_depths = timeseries_dict[size]['beach'], timeseries_dict[size]['z']
+        print(all_depths)
         # Selecting just the particle depths for those at the seabed
         seabed_depths = all_depths[beach_state == 3]
+        print(seabed_depths)
         # Getting the histogram for the number of particles in which depth bins
-        seabed_depths, _ = np.histogram(a=seabed_depths, bins=depth_bins)
+        depth_histogram, _ = np.histogram(a=seabed_depths, bins=depth_bins)
         # Normalizing the histogram by the total number of seabed particles
-        seabed_depths /= np.nansum(seabed_depths)
-        seabed_depths *= 100.
+        depth_histogram /= np.nansum(depth_histogram)
+        depth_histogram *= 100.
         # Saving the histogram into the dictionary
-        depth_histogram_dict[size] = seabed_depths
+        depth_histogram_dict[size] = depth_histogram
 
     # Creating the figure structure
     fig = plt.figure(figsize=figsize)
