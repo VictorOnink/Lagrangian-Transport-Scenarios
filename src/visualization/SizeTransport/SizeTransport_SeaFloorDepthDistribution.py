@@ -9,7 +9,7 @@ import matplotlib.dates as mdates
 from advection_scenarios import advection_files
 
 
-def SizeTransport_SeaFloorDepthDistribution(scenario, figure_direc, size_list, rho_list, figsize=(10, 10), fontsize=12):
+def SizeTransport_SeaFloorDepthDistribution(scenario, figure_direc, size_list, rho_list, figsize=(10, 10), fontsize=16):
     # Getting the size of the domain that we want to plot for
     advection_scenario = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
                                                         advection_scenario='CMEMS_MEDITERRANEAN',
