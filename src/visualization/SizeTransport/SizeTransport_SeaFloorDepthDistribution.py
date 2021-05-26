@@ -26,24 +26,50 @@ def SizeTransport_SeaFloorDepthDistribution(scenario, figure_direc, size_list, r
     prefix = 'timeslices_{}'.format(date)
 
     timeseries_dict = {}
-    # for index, size in enumerate(size_list):
-    #     data_dict = vUtils.SizeTransport_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
-    #                                                size=size, rho=rho_list[index])
-    #     timeseries_dict[size] = {}
-    #     for variable in ['lon', 'lat', 'beach', 'z']:
-    #         timeseries_dict[size][variable] = data_dict[variable]
+    for index, size in enumerate(size_list):
+        data_dict = vUtils.SizeTransport_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
+                                                   size=size, rho=rho_list[index])
+        timeseries_dict[size] = {}
+        for variable in ['lon', 'lat', 'beach', 'z']:
+            timeseries_dict[size][variable] = data_dict[variable]
 
     # Beach histogram:
     depth_bins = np.arange(0, np.nanmax(adv_file_dict['DEPTH']), 1.0)
     depth_histogram_dict = {}
-    # for size in size_list:
-    #     # Loading in the particle depths, and the beach states
-    #     beach_state, all_depths = timeseries_dict[size]['beach'], timeseries_dict[size]['z']
-    #     # Selecting just the particle depths for those at the seabed
-    #     seabed_depths = all_depths[beach_state == 3]
-    #     # Getting the histogram for the number of particles in which depth bins
-    #     seabed_depths, _ = np.histogram(a=seabed_depths, bins=depth_bins)
-    #     # Normalizing the histogram by the total number of seabed particles
-    #     seabed_depths /= np.nansum(seabed_depths)
-    #     # Saving the histogram into the dictionary
-    #     depth_histogram_dict[size] = seabed_depths
+    for size in size_list:
+        # Loading in the particle depths, and the beach states
+        beach_state, all_depths = timeseries_dict[size]['beach'], timeseries_dict[size]['z']
+        # Selecting just the particle depths for those at the seabed
+        seabed_depths = all_depths[beach_state == 3]
+        # Getting the histogram for the number of particles in which depth bins
+        seabed_depths, _ = np.histogram(a=seabed_depths, bins=depth_bins)
+        # Normalizing the histogram by the total number of seabed particles
+        seabed_depths /= np.nansum(seabed_depths)
+        seabed_depths *= 100.
+        # Saving the histogram into the dictionary
+        depth_histogram_dict[size] = seabed_depths
+
+    # Creating the figure structure
+    fig = plt.figure(figsize=figsize)
+    gs = fig.add_gridspec(nrows=1, ncols=1)
+    ax = fig.add_subplot(gs[0, 0])
+
+    ax.set_ylabel(r'Fraction of Total (%)', fontsize=fontsize)
+    ax.set_ylim([0, 100])
+    ax.set_xlabel('Depth (m)', fontsize=fontsize)
+    ax.set_xlim([0, 1000])
+
+    # Plotting the data
+    for index_size, size in enumerate(size_list):
+        ax.plot(depth_bins[:-1], depth_histogram_dict[size], linestyle='-',
+                color=vUtils.discrete_color_from_cmap(index_size, subdivisions=len(size_list)),
+                label=size_label(size))
+    # And adding in a legend
+    ax.legend(fontsize=fontsize, loc='upper right')
+
+    file_name = output_direc + 'Seabed_depth_histogram.png'
+    plt.savefig(file_name, bbox_inches='tight')
+
+
+def size_label(size):
+    return r'r = {} mm'.format(size * 1e4)
