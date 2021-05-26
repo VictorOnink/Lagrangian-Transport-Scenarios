@@ -47,7 +47,7 @@ def General_bathymetry(scenario, figure_direc, figsize=(10, 8), fontsize=14):
                                                        lat_grid_step=5, lon_grid_step=10, resolution='10m'))
 
     # Setting the normalization of the colormap
-    normalization = colors.LogNorm(vmin=1e1, vmax=1e3)
+    normalization = colors.LogNorm(vmin=1e1, vmax=5e3)
 
     # The actual plotting
     Lon, Lat = np.meshgrid(bath_dict['LON'], bath_dict['LAT'])
