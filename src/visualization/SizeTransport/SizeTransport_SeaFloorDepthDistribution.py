@@ -44,7 +44,8 @@ def SizeTransport_SeaFloorDepthDistribution(scenario, figure_direc, size_list, r
         # Getting the histogram for the number of particles in which depth bins
         depth_histogram, _ = np.histogram(seabed_depths, bins=depth_bins)
         # Normalizing the histogram by the total number of seabed particles
-        depth_histogram /= np.nansum(depth_histogram.astype('float'))
+        depth_histogram = depth_histogram.astype(float)
+        depth_histogram /= np.nansum(depth_histogram)
         depth_histogram *= 100.
         # Saving the histogram into the dictionary
         depth_histogram_dict[size] = depth_histogram
