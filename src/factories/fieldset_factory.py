@@ -204,7 +204,6 @@ def _add_wind_field(fieldset: FieldSet, file_dict: dict):
     """
     os.system('echo "Adding 10m winds"')
     _check_presence(variable='WIND_filenames', file_dict=file_dict)
-    os.system('echo {}'.format(file_dict['WIND_filenames']))
     filenames = {'u10': file_dict['WIND_filenames'],
                  'v10': file_dict['WIND_filenames']}
     # Creating a fieldset for the wind data
