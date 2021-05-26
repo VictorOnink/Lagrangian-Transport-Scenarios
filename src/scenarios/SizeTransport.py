@@ -96,7 +96,7 @@ class SizeTransport(base_scenario.BaseScenario):
                     shore_time: int = settings.SHORE_TIME, init_size: float = settings.INIT_SIZE,
                     init_density: int = settings.INIT_DENSITY, start_year: int = settings.START_YEAR,
                     input: str = settings.INPUT, run: int = settings.RUN, restart: int = settings.RESTART):
-        odirec = self.output_dir + "SizeTransport/size_{}/".format(settings.INIT_SIZE)
+        odirec = self.output_dir + "SizeTransport/size_{:.1E}/".format(settings.INIT_SIZE)
         if new:
             os.system('echo "Set the output file name"')
             str_format = (
@@ -107,7 +107,7 @@ class SizeTransport(base_scenario.BaseScenario):
             str_format = (
                 advection_data, shore_time, utils.get_resuspension_timescale(L=init_size), init_size,
                 init_density, start_year, input, restart - 1, run)
-        return odirec + self.prefix + '_{}_st={}_rt={:.6f}_size={}_rho={}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
+        return odirec + self.prefix + '_{}_st={}_rt={:.6f}_size={:.1E}_rho={}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
 
     def _beaching_kernel(particle, fieldset, time):
         if particle.beach == 0:
