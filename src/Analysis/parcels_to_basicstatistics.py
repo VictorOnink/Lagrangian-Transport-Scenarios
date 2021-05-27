@@ -93,7 +93,7 @@ def parcels_to_basicstatistics(file_dict: dict):
         for beach_state in beach_label_dict.keys():
             for statistic in statistics_dict.keys():
                 output_dict[variable][beach_state][statistic] = output_dict[variable][beach_state][statistic][1:, :]
-                print("{}, {}".format(variable, np.nanmax(output_dict[variable][beach_state][statistic])))
+                print("{}, {}, {}".format(variable, beach_state, np.nanmax(output_dict[variable][beach_state][statistic])))
 
     # Saving the output file
     prefix = 'basic_statistics'
