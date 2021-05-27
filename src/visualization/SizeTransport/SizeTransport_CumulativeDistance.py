@@ -12,7 +12,7 @@ from advection_scenarios import advection_files
 from copy import deepcopy
 
 
-def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list, figsize=(12, 8), fontsize=14):
+def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list, figsize=(16, 8), fontsize=14):
     # Getting the size of the domain that we want to plot for
     advection_scenario = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
                                                         advection_scenario='CMEMS_MEDITERRANEAN',
@@ -41,7 +41,7 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
             timeseries_dict[size][variable] = np.zeros(shape=variable_domain[index_var].shape)
             for step in range(len(timeseries_dict[size][variable])):
                 timeseries_dict[size][variable][step] += np.nansum(var_data < variable_domain[index_var][step])
-            timeseries_dict[size][variable] /= np.nansum(timeseries_dict[size][variable])
+            timeseries_dict[size][variable] /= np.nansum(data_dict[variable]['total']['count'])
             timeseries_dict[size][variable] *= 100.
 
     # Creating the figure structure
@@ -81,6 +81,6 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
     plt.savefig(file_name, bbox_inches='tight')
 
 
-def size_label(size, index):
+def size_label(size):
     alphabet = string.ascii_lowercase
-    return r'({}) r = {:.2f} mm'.format(alphabet[index], size * 1e3)
+    return r'r = {:.2f} mm'.format(size * 1e3)
