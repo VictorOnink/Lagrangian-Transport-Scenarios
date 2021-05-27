@@ -4,6 +4,7 @@ import visualization.SizeTransport.SizeTransport_relative_concentrations as Size
 import visualization.SizeTransport.SizeTransport_beach_timeseries as SizeTransport_beach_timeseries
 import visualization.SizeTransport.SizeTransport_SeaFloorDepthDistribution as SizeTransport_SeaFloorDepthDistribution
 import visualization.General as General
+import visualization.SizeTransport.SizeTransport_CumulativeDistance as SizeTransport_CumulativeDistance
 import os
 import numpy as np
 
@@ -54,8 +55,14 @@ def run(scenario, figure_direc: str):
     #                                                                                 scenario=scenario,
     #                                                                                 size_list=size_list,
     #                                                                                 rho_list=rho_list, histogram=True)
-    SizeTransport_SeaFloorDepthDistribution.SizeTransport_SeaFloorDepthDistribution(figure_direc=figure_direc,
-                                                                                    scenario=scenario,
-                                                                                    size_list=size_list,
-                                                                                    rho_list=rho_list, cumulative=True)
+    # SizeTransport_SeaFloorDepthDistribution.SizeTransport_SeaFloorDepthDistribution(figure_direc=figure_direc,
+    #                                                                                 scenario=scenario,
+    #                                                                                 size_list=size_list,
+    #                                                                                 rho_list=rho_list, cumulative=True)
+
+    # Cumulative plots for the total distance travelled vertically and horizontally, and the max depth reached
+    SizeTransport_CumulativeDistance.SizeTransport_CumulativeDistance(figure_direc=figure_direc,
+                                                                      scenario=scenario,
+                                                                      size_list=size_list,
+                                                                      rho_list=rho_list, )
     pass
