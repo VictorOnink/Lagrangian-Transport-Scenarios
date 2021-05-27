@@ -9,7 +9,8 @@ import matplotlib.dates as mdates
 from advection_scenarios import advection_files
 
 
-def SizeTransport_SeaFloorDepthDistribution(scenario, figure_direc, size_list, rho_list, figsize=(10, 10), fontsize=16):
+def SizeTransport_SeaFloorDepthDistribution(scenario, figure_direc, size_list, rho_list, figsize=(10, 10), fontsize=16,
+                                            histogram=False, cumulative=False):
     # Getting the size of the domain that we want to plot for
     advection_scenario = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
                                                         advection_scenario='CMEMS_MEDITERRANEAN',
@@ -35,20 +36,37 @@ def SizeTransport_SeaFloorDepthDistribution(scenario, figure_direc, size_list, r
 
     # Beach histogram:
     depth_bins = np.arange(0, np.nanmax(adv_file_dict['DEPTH']), 1.0)
-    depth_histogram_dict = {}
-    for size in size_list:
-        # Loading in the particle depths, and the beach states
-        beach_state, all_depths = timeseries_dict[size]['beach'], timeseries_dict[size]['z']
-        # Selecting just the particle depths for those at the seabed
-        seabed_depths = all_depths[beach_state == 3]
-        # Getting the histogram for the number of particles in which depth bins
-        depth_histogram, _ = np.histogram(seabed_depths, bins=depth_bins)
-        # Normalizing the histogram by the total number of seabed particles
-        depth_histogram = depth_histogram.astype(float)
-        depth_histogram /= np.nansum(depth_histogram)
-        depth_histogram *= 100.
-        # Saving the histogram into the dictionary
-        depth_histogram_dict[size] = depth_histogram
+    if histogram:
+        depth_histogram_dict = {}
+        for size in size_list:
+            # Loading in the particle depths, and the beach states
+            beach_state, all_depths = timeseries_dict[size]['beach'], timeseries_dict[size]['z']
+            # Selecting just the particle depths for those at the seabed
+            seabed_depths = all_depths[beach_state == 3]
+            # Getting the histogram for the number of particles in which depth bins
+            depth_histogram, _ = np.histogram(seabed_depths, bins=depth_bins)
+            # Normalizing the histogram by the total number of seabed particles
+            depth_histogram = depth_histogram.astype(float)
+            depth_histogram /= np.nansum(depth_histogram)
+            depth_histogram *= 100.
+            # Saving the histogram into the dictionary
+            depth_histogram_dict[size] = depth_histogram
+    if cumulative:
+        depth_cumulative_dict = {}
+        for size in size_list:
+            # Loading in the particle depths, and the beach states
+            beach_state, all_depths = timeseries_dict[size]['beach'], timeseries_dict[size]['z']
+            # Selecting just the particle depths for those at the seabed
+            seabed_depths = all_depths[beach_state == 3]
+            # Initializing the cumulative counts array
+            depth_cumulative_dict[size] = np.zeros(depth_bins.shape, dtype=float)
+            # Now looping through the depths, and seeing how many particles are stuck at each depth
+            for index, depth in enumerate(depth_bins):
+                depth_cumulative_dict[size][index] += np.nansum(seabed_depths < depth)
+            # Normalizing by the total number of particles on the sea bed
+            depth_cumulative_dict[size] /= np.nansum(depth_cumulative_dict[size])
+            depth_cumulative_dict[size] *= 100.
+
 
     # Creating the figure structure
     fig = plt.figure(figsize=figsize)
@@ -58,17 +76,30 @@ def SizeTransport_SeaFloorDepthDistribution(scenario, figure_direc, size_list, r
     ax.set_ylabel(r'Fraction of Total (%)', fontsize=fontsize)
     ax.set_ylim([0, 100])
     ax.set_xlabel('Depth (m)', fontsize=fontsize)
-    ax.set_xlim([0, 50])
+    if histogram:
+        ax.set_xlim([0, 50])
+    elif cumulative:
+        ax.set_xlim([0, 100])
+        ax.set_xscale('log')
 
     # Plotting the data
-    for index_size, size in enumerate(size_list):
-        ax.plot(depth_bins[:-1], depth_histogram_dict[size], linestyle='-',
-                color=vUtils.discrete_color_from_cmap(index_size, subdivisions=len(size_list)),
-                label=size_label(size))
+    if histogram:
+        for index_size, size in enumerate(size_list):
+            ax.plot(depth_bins[:-1], depth_histogram_dict[size], linestyle='-',
+                    color=vUtils.discrete_color_from_cmap(index_size, subdivisions=len(size_list)),
+                    label=size_label(size))
+    elif cumulative:
+        for index_size, size in enumerate(size_list):
+            ax.plot(depth_bins, depth_cumulative_dict[size], linestyle='-',
+                    color=vUtils.discrete_color_from_cmap(index_size, subdivisions=len(size_list)),
+                    label=size_label(size))
     # And adding in a legend
     ax.legend(fontsize=fontsize, loc='upper right')
 
-    file_name = output_direc + 'Seabed_depth_histogram.png'
+    if histogram:
+        file_name = output_direc + 'Seabed_depth_histogram.png'
+    elif cumulative:
+        file_name = output_direc + 'Seabed_depth_cumulative.png'
     plt.savefig(file_name, bbox_inches='tight')
 
 

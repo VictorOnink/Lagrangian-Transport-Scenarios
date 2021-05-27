@@ -53,5 +53,9 @@ def run(scenario, figure_direc: str):
     SizeTransport_SeaFloorDepthDistribution.SizeTransport_SeaFloorDepthDistribution(figure_direc=figure_direc,
                                                                                     scenario=scenario,
                                                                                     size_list=size_list,
-                                                                                    rho_list=rho_list)
+                                                                                    rho_list=rho_list, histogram=True)
+    SizeTransport_SeaFloorDepthDistribution.SizeTransport_SeaFloorDepthDistribution(figure_direc=figure_direc,
+                                                                                    scenario=scenario,
+                                                                                    size_list=size_list,
+                                                                                    rho_list=rho_list, cumulative=True)
     pass
