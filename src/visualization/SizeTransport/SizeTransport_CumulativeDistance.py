@@ -53,20 +53,20 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
         if column == 0:
             ax.set_ylabel(r'Fraction of Total (%)', fontsize=fontsize)
         ax.tick_params(axis='both', labelsize=fontsize)
-        ax.set_ylim([0, 105])
+        # ax.set_ylim([0, 105])
         ax_list.append(ax)
     # First, we will plot the max depth
     ax_list[0].set_xlabel('Max depth (m)', fontsize=fontsize)
     ax_list[1].set_xscale('log')
-    ax_list[1].set_xlim([1e0, 1e3])
+    # ax_list[1].set_xlim([1e0, 1e3])
     # Next it will be the cumulative vertical distance
     ax_list[1].set_xlabel('Cumulative vertical distance (m)', fontsize=fontsize)
     ax_list[1].set_xscale('log')
-    ax_list[1].set_xlim([1e0, 1e4])
+    # ax_list[1].set_xlim([1e0, 1e4])
     # Finally, the cumulative horizontal distance
     ax_list[2].set_xlabel('Cumulative horizontal distance (km)', fontsize=fontsize)
     ax_list[2].set_xscale('log')
-    ax_list[2].set_xlim([1e0, 1e4])
+    # ax_list[2].set_xlim([1e0, 1e4])
 
     # Plotting the data
     for index_size, size in enumerate(size_list):
@@ -74,6 +74,7 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
             ax_list[index_var].plot(variable_domain[index_var], timeseries_dict[size][variable], linestyle='-',
                                     color=vUtils.discrete_color_from_cmap(index_size, subdivisions=len(size_list)),
                                     label=size_label(size, index_var))
+    ax_list[-1].legend(fontsize=fontsize, loc='lower right')
 
     # Saving the figure
     file_name = output_direc + 'Vertical_Horizontal_Distance_cumulative.png'
