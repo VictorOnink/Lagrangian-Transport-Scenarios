@@ -35,10 +35,11 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
     variable_dict = dict.fromkeys(variable_list)
     for index, key in enumerate(variable_dict.keys()):
         variable_dict[key] = np.zeros(shape=variable_domain[index].shape, dtype=float)
-
     timeseries_dict = dict.fromkeys(size_list)
-    for keys in timeseries_dict.keys:
+    for keys in timeseries_dict.keys():
         timeseries_dict[keys] = deepcopy(variable_dict)
+
+
     for index_size, size in enumerate(size_list):
         data_dict = vUtils.SizeTransport_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
                                                    size=size, rho=rho_list[index_size])
