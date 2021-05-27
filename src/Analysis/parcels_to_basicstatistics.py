@@ -24,7 +24,7 @@ def parcels_to_basicstatistics(file_dict: dict):
     # since these will essentially never be used for this sort of analysis
     dataset = Dataset(file_dict[0][0])
     variable_list = list(dataset.variables.keys())
-    for remove_variable in ['time', 'trajectory', 'lat', 'lon', 'beach', 'age', 'reynolds']:
+    for remove_variable in ['time', 'trajectory', 'lat', 'lon', 'beach', 'age', 'reynolds', 'size']:
         if remove_variable in variable_list:
             variable_list.remove(remove_variable)
     base_array = np.zeros((1, 1), dtype=float)
