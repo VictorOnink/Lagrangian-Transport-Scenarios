@@ -95,7 +95,6 @@ def SizeTransport_SeaFloorDepthDistribution(scenario, figure_direc, size_list, r
             ax.plot(depth_bins, depth_cumulative_dict[size], linestyle='-',
                     color=vUtils.discrete_color_from_cmap(index_size, subdivisions=len(size_list)),
                     label=size_label(size))
-            print(depth_cumulative_dict)
     # And adding in a legend
     if histogram:
         ax.legend(fontsize=fontsize, loc='upper right')
