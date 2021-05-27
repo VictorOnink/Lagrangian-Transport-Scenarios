@@ -41,6 +41,8 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
             timeseries_dict[size][variable] = np.zeros(shape=variable_domain[index_var].shape)
             for step in range(len(timeseries_dict[size][variable])):
                 timeseries_dict[size][variable][step] += np.nansum(var_data < variable_domain[index_var][step])
+            timeseries_dict[size][variable] /= np.nansum(timeseries_dict[size][variable])
+            timeseries_dict[size][variable] *= 100.
 
     # Creating the figure structure
     fig = plt.figure(figsize=figsize)
