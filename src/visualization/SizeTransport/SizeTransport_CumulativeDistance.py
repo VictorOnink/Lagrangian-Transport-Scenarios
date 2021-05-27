@@ -61,8 +61,8 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
         ax_list.append(ax)
     # First, we will plot the max depth
     ax_list[0].set_xlabel('Max depth (m)', fontsize=fontsize)
-    ax_list[1].set_xscale('log')
-    ax_list[1].set_xlim([1e0, 1e3])
+    ax_list[0].set_xscale('log')
+    ax_list[0].set_xlim([1e0, 1e3])
     # Next it will be the cumulative vertical distance
     ax_list[1].set_xlabel('Cumulative vertical distance (m)', fontsize=fontsize)
     ax_list[1].set_xscale('log')
