@@ -33,7 +33,9 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
                        np.logspace(0, 6, num=100),
                        np.logspace(0, 6, num=100)]
     variable_dict = dict.fromkeys(variable_list)
-    timeseries_dict = dict.fromkeys(size_list, deepcopy(variable_dict))
+    timeseries_dict = dict.fromkeys(size_list)
+    for keys in timeseries_dict.keys:
+        timeseries_dict[keys] = deepcopy(variable_dict)
     for index_size, size in enumerate(size_list):
         data_dict = vUtils.SizeTransport_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
                                                    size=size, rho=rho_list[index_size])
