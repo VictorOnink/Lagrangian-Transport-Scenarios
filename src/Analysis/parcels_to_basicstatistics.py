@@ -54,9 +54,9 @@ def parcels_to_basicstatistics(file_dict: dict):
                 parcels_file = file_dict[run][restart]
                 dataset = Dataset(parcels_file)
                 if restart == 0:
-                    variable_array = dataset.variables[variable][:, -1]
+                    variable_array = dataset.variables[variable][:, :-1]
                 else:
-                    variable_array = np.concatenate((variable_array, dataset.variables[variable][:, -1]), axis=1)
+                    variable_array = np.concatenate((variable_array, dataset.variables[variable][:, :-1]), axis=1)
             # Now, starting to compute the various parameters
             for beach_state in beach_label_dict.keys():
                 state_variable_array = deepcopy(variable_array)
