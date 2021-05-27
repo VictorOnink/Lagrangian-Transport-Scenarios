@@ -64,7 +64,7 @@ def SizeTransport_SeaFloorDepthDistribution(scenario, figure_direc, size_list, r
             for index, depth in enumerate(depth_bins):
                 depth_cumulative_dict[size][index] += np.nansum(seabed_depths < depth)
             # Normalizing by the total number of particles on the sea bed
-            depth_cumulative_dict[size] /= np.nansum(depth_cumulative_dict[size])
+            depth_cumulative_dict[size] /= len(seabed_depths)
             depth_cumulative_dict[size] *= 100.
 
 
@@ -94,8 +94,12 @@ def SizeTransport_SeaFloorDepthDistribution(scenario, figure_direc, size_list, r
             ax.plot(depth_bins, depth_cumulative_dict[size], linestyle='-',
                     color=vUtils.discrete_color_from_cmap(index_size, subdivisions=len(size_list)),
                     label=size_label(size))
+            print(depth_cumulative_dict)
     # And adding in a legend
-    ax.legend(fontsize=fontsize, loc='upper right')
+    if histogram:
+        ax.legend(fontsize=fontsize, loc='upper right')
+    elif cumulative:
+        ax.legend(fontsize=fontsize, loc='lower right')
 
     if histogram:
         file_name = output_direc + 'Seabed_depth_histogram.png'
