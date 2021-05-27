@@ -77,7 +77,7 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
         for index_var, variable in enumerate(variable_list):
             ax_list[index_var].plot(variable_domain[index_var], timeseries_dict[size][variable], linestyle='-',
                                     color=vUtils.discrete_color_from_cmap(index_size, subdivisions=len(size_list)),
-                                    label=size_label(size, index_var))
+                                    label=size_label(size))
     ax_list[-1].legend(fontsize=fontsize, loc='lower right')
 
     # Saving the figure
