@@ -41,6 +41,7 @@ def parcels_to_basicstatistics(file_dict: dict):
             dataset = Dataset(parcels_file)
             if restart == 0:
                 beach_array = dataset.variables['beach'][:, -1]
+                print(beach_array.shape)
             else:
                 beach_array = np.concatenate((beach_array, dataset.variables['beach'][:, -1]), axis=1)
     # loop through the runs
