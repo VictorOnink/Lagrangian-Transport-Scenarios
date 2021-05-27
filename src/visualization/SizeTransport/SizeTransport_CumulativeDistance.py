@@ -33,6 +33,9 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
                        np.logspace(0, 6, num=100),
                        np.logspace(0, 6, num=100)]
     variable_dict = dict.fromkeys(variable_list)
+    for index, key in enumerate(variable_dict.keys):
+        variable_dict[key] = np.zeros(shape=variable_domain[index].shape, dtype=float)
+
     timeseries_dict = dict.fromkeys(size_list)
     for keys in timeseries_dict.keys:
         timeseries_dict[keys] = deepcopy(variable_dict)
@@ -44,7 +47,6 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
             os.system('echo "the max value is {} for size {} and variable {}"'.format(np.nanmax(var_data),
                                                                                       size,
                                                                                       variable))
-            timeseries_dict[size][variable] = np.zeros(shape=variable_domain[index_var].shape, dtype=float)
             for step in range(len(timeseries_dict[size][variable])):
                 particle_number = data_dict[variable]['total']['count'].size
                 cumulative_fraction = np.nansum(var_data < variable_domain[index_var][step]) / particle_number * 100.
