@@ -25,8 +25,7 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
     utils.check_direc_exist(output_direc)
 
     # Loading in the data
-    date = datetime(2012, 12, 31, 12, 0, 0).strftime("%Y-%m-%d-%H-%M-%S")
-    prefix = 'timeslices_{}'.format(date)
+    prefix = 'basic_statistics'
 
     variable_list = ['z', 'distance_vertical', 'distance_horizontal']
     variable_domain = [np.arange(0, np.nanmax(adv_file_dict['DEPTH']), 1.0),
