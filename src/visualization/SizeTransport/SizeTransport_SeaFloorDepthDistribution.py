@@ -74,7 +74,7 @@ def SizeTransport_SeaFloorDepthDistribution(scenario, figure_direc, size_list, r
     ax = fig.add_subplot(gs[0, 0])
 
     ax.set_ylabel(r'Fraction of Total (%)', fontsize=fontsize)
-    ax.labelsize(fontsize)
+    ax.set_labelsize(fontsize)
     ax.set_ylim([0, 105])
     ax.set_xlabel('Depth (m)', fontsize=fontsize)
     if histogram:
