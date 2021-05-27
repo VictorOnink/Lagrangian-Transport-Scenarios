@@ -28,10 +28,16 @@ def parcels_to_basicstatistics(file_dict: dict):
         if remove_variable in variable_list:
             variable_list.remove(remove_variable)
     base_array = np.zeros((1, 1), dtype=float)
-    statistics_dict = dict.fromkeys(['mean', 'max', 'min', 'std', 'count'], deepcopy(base_array))
+    statistics_dict = dict.fromkeys(['mean', 'max', 'min', 'std', 'count'])
+    for key in statistics_dict.keys():
+        statistics_dict[key] = deepcopy(base_array)
     beach_label_dict = {'beach': 1, 'afloat': 0, 'seabed': 3, 'total': 2}
-    beach_state_dict = dict.fromkeys(beach_label_dict.keys(), deepcopy(statistics_dict))
-    output_dict = dict.fromkeys(variable_list, deepcopy(beach_state_dict))
+    beach_state_dict = dict.fromkeys(beach_label_dict.keys())
+    for key in beach_state_dict.keys():
+        beach_state_dict[key] = deepcopy(statistics_dict)
+    output_dict = dict.fromkeys(variable_list)
+    for key in output_dict:
+        output_dict[key] = deepcopy(beach_state_dict)
 
     # Loading in all the beach state data
     for run in progressbar.progressbar(range(settings.RUN_RANGE)):
@@ -61,10 +67,9 @@ def parcels_to_basicstatistics(file_dict: dict):
             for beach_state in beach_label_dict.keys():
                 state_variable_array = deepcopy(variable_array)
                 state_variable_array[beach_array != beach_label_dict[beach_state]] = np.nan
+                variable_mean = np.nanmean(state_variable_array, axis=1, keepdims=True)
                 output_dict[variable][beach_state]['mean'] = np.concatenate((output_dict[variable][beach_state]['mean'],
-                                                                             np.nanmean(state_variable_array, axis=1,
-                                                                                        keepdims=True)),
-                                                                            axis=0)
+                                                                             variable_mean), axis=0)
                 output_dict[variable][beach_state]['max'] = np.concatenate((output_dict[variable][beach_state]['max'],
                                                                             np.nanmax(state_variable_array, axis=1,
                                                                                       keepdims=True)),
