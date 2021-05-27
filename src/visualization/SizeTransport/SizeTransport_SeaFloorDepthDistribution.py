@@ -79,8 +79,9 @@ def SizeTransport_SeaFloorDepthDistribution(scenario, figure_direc, size_list, r
     if histogram:
         ax.set_xlim([0, 50])
     elif cumulative:
-        ax.set_xlim([0, 100])
         ax.set_xscale('log')
+        ax.set_xlim([1e0, 1e2])
+
 
     # Plotting the data
     if histogram:
