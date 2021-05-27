@@ -66,7 +66,10 @@ def parcels_to_basicstatistics(file_dict: dict):
             # Now, starting to compute the various parameters
             for beach_state in beach_label_dict.keys():
                 state_variable_array = deepcopy(variable_array)
-                state_variable_array[beach_array != beach_label_dict[beach_state]] = np.nan
+                if beach_state == 'total':
+                    state_variable_array[beach_array == beach_label_dict[beach_state]] = np.nan
+                else:
+                    state_variable_array[beach_array != beach_label_dict[beach_state]] = np.nan
 
                 variable_mean = np.nanmean(state_variable_array, axis=1, keepdims=True)
                 output_dict[variable][beach_state]['mean'] = np.concatenate((output_dict[variable][beach_state]['mean'],
