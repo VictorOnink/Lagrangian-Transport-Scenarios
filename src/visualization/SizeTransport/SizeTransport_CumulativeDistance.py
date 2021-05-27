@@ -39,7 +39,6 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
     for keys in timeseries_dict.keys():
         timeseries_dict[keys] = deepcopy(variable_dict)
 
-
     for index_size, size in enumerate(size_list):
         data_dict = vUtils.SizeTransport_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
                                                    size=size, rho=rho_list[index_size])
@@ -71,11 +70,11 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
     # Next it will be the cumulative vertical distance
     ax_list[1].set_xlabel('Cumulative vertical distance (m)', fontsize=fontsize)
     ax_list[1].set_xscale('log')
-    ax_list[1].set_xlim([1e0, 1e4])
+    ax_list[1].set_xlim([1e-1, 1e6])
     # Finally, the cumulative horizontal distance
     ax_list[2].set_xlabel('Cumulative horizontal distance (km)', fontsize=fontsize)
     ax_list[2].set_xscale('log')
-    ax_list[2].set_xlim([1e0, 1e4])
+    ax_list[2].set_xlim([1e0, 1e6])
 
     # Plotting the data
     for index_size, size in enumerate(size_list):
