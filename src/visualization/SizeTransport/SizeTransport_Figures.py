@@ -50,10 +50,10 @@ def run(scenario, figure_direc: str):
     #                                                               size_list=size_list, rho_list=rho_list)
 
     # A histogram indicating at which depths particles end up beaching
-    SizeTransport_SeaFloorDepthDistribution.SizeTransport_SeaFloorDepthDistribution(figure_direc=figure_direc,
-                                                                                    scenario=scenario,
-                                                                                    size_list=size_list,
-                                                                                    rho_list=rho_list, histogram=True)
+    # SizeTransport_SeaFloorDepthDistribution.SizeTransport_SeaFloorDepthDistribution(figure_direc=figure_direc,
+    #                                                                                 scenario=scenario,
+    #                                                                                 size_list=size_list,
+    #                                                                                 rho_list=rho_list, histogram=True)
     SizeTransport_SeaFloorDepthDistribution.SizeTransport_SeaFloorDepthDistribution(figure_direc=figure_direc,
                                                                                     scenario=scenario,
                                                                                     size_list=size_list,
