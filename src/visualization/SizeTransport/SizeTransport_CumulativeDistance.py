@@ -32,7 +32,7 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
     variable_domain = [np.arange(0, np.nanmax(adv_file_dict['DEPTH']), 1.0),
                        np.logspace(0, 4, num=100),
                        np.logspace(0, 4, num=100)]
-    variable_dict = dict.fromkeys(variable_list, None)
+    variable_dict = dict.fromkeys(variable_list)
     timeseries_dict = dict.fromkeys(size_list, deepcopy(variable_dict))
     for index_size, size in enumerate(size_list):
         data_dict = vUtils.SizeTransport_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
@@ -42,7 +42,7 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
             os.system('echo "the max value is {} for size {} and variable {}"'.format(np.nanmax(var_data),
                                                                                       size,
                                                                                       variable))
-            timeseries_dict[size][variable] = np.zeros(shape=variable_domain[index_var].shape)
+            timeseries_dict[size][variable] = np.zeros(shape=variable_domain[index_var].shape, dtype=float)
             for step in range(len(timeseries_dict[size][variable])):
                 cumulative_fraction = np.nansum(var_data < variable_domain[index_var][step]) / data_dict[variable]['total']['count'] * 100.
                 timeseries_dict[size][variable][step] += cumulative_fraction
