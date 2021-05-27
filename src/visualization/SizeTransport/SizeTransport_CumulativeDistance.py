@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 import matplotlib.dates as mdates
 from advection_scenarios import advection_files
 from copy import deepcopy
+import os
 
 
 def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list, figsize=(16, 8), fontsize=14):
@@ -38,6 +39,9 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
                                                    size=size, rho=rho_list[index_size])
         for index_var, variable in enumerate(variable_list):
             var_data = data_dict[variable]['total']['max']
+            os.system('echo "the max value is {} for size {} and variable {}"'.format(np.nanmax(var_data),
+                                                                                      size,
+                                                                                      variable))
             timeseries_dict[size][variable] = np.zeros(shape=variable_domain[index_var].shape)
             for step in range(len(timeseries_dict[size][variable])):
                 cumulative_fraction = np.nansum(var_data < variable_domain[index_var][step]) / data_dict[variable]['total']['count'] * 100.
