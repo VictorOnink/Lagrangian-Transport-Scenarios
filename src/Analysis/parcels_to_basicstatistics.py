@@ -67,33 +67,33 @@ def parcels_to_basicstatistics(file_dict: dict):
             for beach_state in beach_label_dict.keys():
                 state_variable_array = deepcopy(variable_array)
                 state_variable_array[beach_array != beach_label_dict[beach_state]] = np.nan
+
                 variable_mean = np.nanmean(state_variable_array, axis=1, keepdims=True)
                 output_dict[variable][beach_state]['mean'] = np.concatenate((output_dict[variable][beach_state]['mean'],
                                                                              variable_mean), axis=0)
+
+                variable_max = np.nanmax(state_variable_array, axis=1, keepdims=True)
                 output_dict[variable][beach_state]['max'] = np.concatenate((output_dict[variable][beach_state]['max'],
-                                                                            np.nanmax(state_variable_array, axis=1,
-                                                                                      keepdims=True)),
-                                                                           axis=0)
+                                                                            variable_max), axis=0)
+
+                variable_min = np.nanmin(state_variable_array, axis=1, keepdims=True)
                 output_dict[variable][beach_state]['min'] = np.concatenate((output_dict[variable][beach_state]['min'],
-                                                                            np.nanmin(state_variable_array, axis=1,
-                                                                                      keepdims=True)),
-                                                                           axis=0)
+                                                                            variable_min), axis=0)
+
+                variable_std = np.nanstd(state_variable_array, axis=1, keepdims=True)
                 output_dict[variable][beach_state]['std'] = np.concatenate((output_dict[variable][beach_state]['std'],
-                                                                            np.nanstd(state_variable_array, axis=1,
-                                                                                      keepdims=True)),
-                                                                           axis=0)
+                                                                            variable_std), axis=0)
+
+                variable_count = np.nansum(beach_array == beach_label_dict[beach_state], axis=1, keepdims=True)
                 output_dict[variable][beach_state]['count'] = np.concatenate((output_dict[variable][beach_state]['count'],
-                                                                              np.nansum(
-                                                                                  beach_array == beach_label_dict[
-                                                                                      beach_state],
-                                                                                  axis=1,
-                                                                                  keepdims=True)),
-                                                                             axis=0)
+                                                                              variable_count), axis=0)
+
     # remove the first element of each array, as this was a dummy that was just there to initialize the array
     for variable in variable_list:
         for beach_state in beach_label_dict.keys():
             for statistic in statistics_dict.keys():
                 output_dict[variable][beach_state][statistic] = output_dict[variable][beach_state][statistic][1:, :]
+                print(np.nanmax(output_dict[variable][beach_state][statistic]))
 
     # Saving the output file
     prefix = 'basic_statistics'
