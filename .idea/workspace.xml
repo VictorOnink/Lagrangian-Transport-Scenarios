@@ -20,7 +20,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="bug fix">
-      <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_SeaFloorDepthDistribution.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_SeaFloorDepthDistribution.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Analysis/parcels_to_basicstatistics.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/analysis_submission.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/analysis_submission.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Analysis/parcels_to_maxminmean.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/settings.py" afterDir="false" />
     </list>
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
     <list id="c5adc810-e024-4e30-b33b-a2709ed2c5b7" name="moving the release repeat timescale to the scenario" comment="" />
@@ -103,20 +107,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-00821" summary="bug fix">
-      <created>1622024444304</created>
-      <option name="number" value="00821" />
-      <option name="presentableId" value="LOCAL-00821" />
-      <option name="project" value="LOCAL" />
-      <updated>1622024444304</updated>
-    </task>
-    <task id="LOCAL-00822" summary="bug fix">
-      <created>1622024457143</created>
-      <option name="number" value="00822" />
-      <option name="presentableId" value="LOCAL-00822" />
-      <option name="project" value="LOCAL" />
-      <updated>1622024457143</updated>
     </task>
     <task id="LOCAL-00823" summary="bug fix">
       <created>1622024473837</created>
@@ -447,7 +437,21 @@
       <option name="project" value="LOCAL" />
       <updated>1622106201257</updated>
     </task>
-    <option name="localTasksCounter" value="870" />
+    <task id="LOCAL-00870" summary="bug fix">
+      <created>1622106290132</created>
+      <option name="number" value="00870" />
+      <option name="presentableId" value="LOCAL-00870" />
+      <option name="project" value="LOCAL" />
+      <updated>1622106290132</updated>
+    </task>
+    <task id="LOCAL-00871" summary="bug fix">
+      <created>1622106540862</created>
+      <option name="number" value="00871" />
+      <option name="presentableId" value="LOCAL-00871" />
+      <option name="project" value="LOCAL" />
+      <updated>1622106540862</updated>
+    </task>
+    <option name="localTasksCounter" value="872" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

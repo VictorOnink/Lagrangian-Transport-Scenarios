@@ -3,7 +3,8 @@ import os
 
 class AnalysisFactory():
     def create_procedure(file_dict: dict, concentration: bool = False, timeseries: bool = False,
-                         max_distance: bool = False, vertical_concentration: bool = False, timeslicing: bool = False):
+                         max_distance: bool = False, vertical_concentration: bool = False, timeslicing: bool = False,
+                         statistics: bool = False):
         if concentration:
             os.system('echo "Calculating the concentration"')
             Analysis.parcels_to_concentration(file_dict=file_dict)
@@ -19,3 +20,6 @@ class AnalysisFactory():
         if timeslicing:
             os.system('echo "Creating time slices of the simulation"')
             Analysis.parcels_to_timeslicing(file_dict=file_dict)
+        if statistics:
+            os.system('echo "Calculating basic particle trajectory statistics"')
+            Analysis.parcels_to_basicstatistics(file_dict=file_dict)

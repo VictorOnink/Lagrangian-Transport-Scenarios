@@ -26,7 +26,8 @@ def run():
                                                           vertical_concentration=settings.VERTICAL_CONCENTRATION,
                                                           timeseries=settings.TIMESERIES,
                                                           max_distance=settings.MAX_DISTANCE,
-                                                          timeslicing=settings.TIMESLICING)
+                                                          timeslicing=settings.TIMESLICING,
+                                                          statistics=settings.STATISTICS)
     elif settings.SUBMISSION == 'visualization':
         os.system('echo "Generating all visualizations"')
         scenario_name = settings.SCENARIO_NAME
