@@ -33,7 +33,7 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
                        np.logspace(0, 6, num=100),
                        np.logspace(0, 6, num=100)]
     variable_dict = dict.fromkeys(variable_list)
-    for index, key in enumerate(variable_dict.keys):
+    for index, key in enumerate(variable_dict.keys()):
         variable_dict[key] = np.zeros(shape=variable_domain[index].shape, dtype=float)
 
     timeseries_dict = dict.fromkeys(size_list)
