@@ -40,10 +40,10 @@ def parcels_to_basicstatistics(file_dict: dict):
             parcels_file = file_dict[run][restart]
             dataset = Dataset(parcels_file)
             if restart == 0:
-                beach_array = dataset.variables['beach'][:, -1]
-                print(beach_array.shape)
+                beach_array = dataset.variables['beach'][:, :-1]
             else:
                 beach_array = np.concatenate((beach_array, dataset.variables['beach'][:, -1]), axis=1)
+
     # loop through the runs
     for run in progressbar.progressbar(range(settings.RUN_RANGE)):
         for variable in variable_list:
