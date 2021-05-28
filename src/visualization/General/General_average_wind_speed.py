@@ -44,7 +44,7 @@ def General_average_wind_speed(scenario, figure_direc, figsize=(10, 8), fontsize
                                                        land_zorder=90))
 
     # Setting the normalization of the colormap
-    normalization = colors.Normalize(vmin=0.1, vmax=20)
+    normalization = colors.LogNorm(vmin=1e-2, vmax=1e1)
 
     # The actual plotting
     Lon, Lat = np.meshgrid(lon, lat)
