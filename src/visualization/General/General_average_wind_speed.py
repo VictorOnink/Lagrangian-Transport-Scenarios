@@ -48,7 +48,7 @@ def General_average_wind_speed(scenario, figure_direc, figsize=(10, 8), fontsize
 
     # The actual plotting
     Lon, Lat = np.meshgrid(lon, lat)
-    cmap = cmocean.cm.speefd
+    cmap = cmocean.cm.speed
     depth_plot = plt.pcolormesh(Lon, Lat, wind_magnitude, norm=normalization, cmap=cmap, zorder=50,
                                 transform=ccrs.PlateCarree())
 
