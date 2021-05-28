@@ -32,7 +32,8 @@ def SizeTransport_load_data(scenario, prefix, data_direc, size,  rho, advection_
 
 
 def cartopy_standard_map(fig, gridspec, row, column, domain, resolution='50m', add_gridlines=True, add_gridlabels=True,
-                         lat_grid_step=20, lon_grid_step=30, label_size=14):
+                         lat_grid_step=20, lon_grid_step=30, label_size=14, land_zorder=1, ocean_zorder=1,
+                         line_zorder=101):
     """
     A nice basic function that can be used to create standardized maps
     :param axis:
@@ -45,16 +46,17 @@ def cartopy_standard_map(fig, gridspec, row, column, domain, resolution='50m', a
 
     # Adding coastlines, borders, land and ocean shapefiles
     axis.coastlines(resolution=resolution)
-    axis.add_feature(cpf.BORDERS.with_scale(resolution), edgecolor='black', zorder=101)
-    axis.add_feature(cpf.LAND.with_scale(resolution), facecolor='lightgray')
-    axis.add_feature(cpf.OCEAN.with_scale(resolution), facecolor='white')
+    axis.add_feature(cpf.BORDERS.with_scale(resolution), edgecolor='black', zorder=line_zorder)
+    axis.add_feature(cpf.LAND.with_scale(resolution), facecolor='lightgray', zorder=land_zorder)
+    axis.add_feature(cpf.OCEAN.with_scale(resolution), facecolor='white', zorder=ocean_zorder)
 
     # Adding gridlines and axis labels
     if add_gridlines:
         grid = axis.gridlines(crs=ccrs.PlateCarree(),  # specify the projection being used
                               draw_labels=add_gridlabels,  # Add labels
                               linestyle='-',  # style
-                              color='black'
+                              color='black',
+                              zorder=line_zorder
                               )
         # Here we can choose along which axes we want to have the labels included
         grid.top_labels = False
