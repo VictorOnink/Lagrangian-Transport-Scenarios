@@ -64,8 +64,8 @@ def run(scenario, figure_direc: str):
     #                                                                                 rho_list=rho_list, cumulative=True)
 
     # Cumulative plots for the total distance travelled vertically and horizontally, and the max depth reached
-    SizeTransport_CumulativeDistance.SizeTransport_CumulativeDistance(figure_direc=figure_direc,
-                                                                      scenario=scenario,
-                                                                      size_list=size_list,
-                                                                      rho_list=rho_list, )
+    # SizeTransport_CumulativeDistance.SizeTransport_CumulativeDistance(figure_direc=figure_direc,
+    #                                                                   scenario=scenario,
+    #                                                                   size_list=size_list,
+    #                                                                   rho_list=rho_list, )
     pass
