@@ -91,4 +91,4 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
 
 def size_label(size):
     alphabet = string.ascii_lowercase
-    return r'r = {:.2f} mm'.format(size * 1e3)
+    return r'r = {:.3f} mm'.format(size * 1e3)

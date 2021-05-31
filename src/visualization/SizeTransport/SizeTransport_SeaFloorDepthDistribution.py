@@ -109,4 +109,4 @@ def SizeTransport_SeaFloorDepthDistribution(scenario, figure_direc, size_list, r
 
 
 def size_label(size):
-    return r'r = {:.2f} mm'.format(size * 1e3)
+    return r'r = {:.3f} mm'.format(size * 1e3)

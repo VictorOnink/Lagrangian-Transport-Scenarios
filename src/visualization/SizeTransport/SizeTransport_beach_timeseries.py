@@ -94,5 +94,6 @@ def subfigure_title(index, beach_state):
     alphabet = string.ascii_lowercase
     return '({}) {}'.format(alphabet[index], beach_state)
 
+
 def size_label(size):
-    return r'r = {} mm'.format(size * 1e4)
+    return r'r = {:.3f} mm'.format(size * 1e4)

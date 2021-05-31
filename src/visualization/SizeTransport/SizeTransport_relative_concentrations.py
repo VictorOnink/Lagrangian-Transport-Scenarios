@@ -129,7 +129,7 @@ def subfigure_title(index, size, rho):
     :return:
     """
     alphabet = string.ascii_lowercase
-    return '({}) r = {} mm, '.format(alphabet[index], size * 1e4) + r'$\rho$ = ' + '{} kg m'.format(rho) + r'$^{-3}$'
+    return '({}) r = {:.3f} mm, '.format(alphabet[index], size * 1e4) + r'$\rho$ = ' + '{} kg m'.format(rho) + r'$^{-3}$'
 
 
 def plot_save_name(output_direc, rho, time_selection, difference, beach_state, reference_size,
