@@ -31,22 +31,22 @@ def run(scenario, figure_direc: str):
 
     # Creating figures showing the relative distribution, averaged over the entire simulation and time-snapshots at the
     # end of each simulation year
-    time_select = 2
-    SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
-                                                                                scenario=scenario, size_list=size_list,
-                                                                                rho_list=rho_list,
-                                                                                time_selection=time_select,
-                                                                                beach_state='afloat')
-    SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
-                                                                                scenario=scenario, size_list=size_list,
-                                                                                rho_list=rho_list,
-                                                                                time_selection=time_select,
-                                                                                beach_state='seabed')
-    SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
-                                                                                scenario=scenario, size_list=size_list,
-                                                                                rho_list=rho_list,
-                                                                                time_selection=time_select,
-                                                                                beach_state='beach')
+    # time_select = 2
+    # SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
+    #                                                                             scenario=scenario, size_list=size_list,
+    #                                                                             rho_list=rho_list,
+    #                                                                             time_selection=time_select,
+    #                                                                             beach_state='afloat')
+    # SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
+    #                                                                             scenario=scenario, size_list=size_list,
+    #                                                                             rho_list=rho_list,
+    #                                                                             time_selection=time_select,
+    #                                                                             beach_state='seabed')
+    # SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
+    #                                                                             scenario=scenario, size_list=size_list,
+    #                                                                             rho_list=rho_list,
+    #                                                                             time_selection=time_select,
+    #                                                                             beach_state='beach')
     # SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
     #                                                                             scenario=scenario, size_list=size_list,
     #                                                                             rho_list=rho_list,
@@ -55,12 +55,12 @@ def run(scenario, figure_direc: str):
     #                                                                             beach_state='afloat')
 
 
-    # size_list = np.array([5000, 1000, 500, 100, 50, 10, 5, 1]) * settings.SIZE_FACTOR
-    # rho_list = np.ones(size_list.shape, dtype=int) * 920
+    size_list = np.array([5000, 1000, 500, 100, 50, 10, 5, 1]) * settings.SIZE_FACTOR
+    rho_list = np.ones(size_list.shape, dtype=int) * 920
 
     # Creating figures of the timeseries of the number of particles that are beached/afloat/seabed/removed
-    # SizeTransport_beach_timeseries.SizeTransport_beach_timeseries(figure_direc=figure_direc, scenario=scenario,
-    #                                                               size_list=size_list, rho_list=rho_list)
+    SizeTransport_beach_timeseries.SizeTransport_beach_timeseries(figure_direc=figure_direc, scenario=scenario,
+                                                                  size_list=size_list, rho_list=rho_list)
 
 
     # A histogram indicating at which depths particles end up beaching
