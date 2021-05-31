@@ -110,9 +110,10 @@ def SizeTransport_relative_concentrations(scenario, figure_direc, size_list, rho
     # The actual plotting of the figures
     for index, size in enumerate(size_list):
         if beach_state in ['afloat']:
-            ax_list[index].pcolormesh(Lon, Lat, concentration_dict[size], norm=norm, cmap=cmap_name)
+            ax_list[index].pcolormesh(Lon, Lat, concentration_dict[size], norm=norm, cmap=cmap_name, zorder=200)
         else:
-            ax_list[index].scatter(Lon.flatten(), Lat.flatten(), c=concentration_dict[size], norm=norm, cmap=cmap_name)
+            ax_list[index].scatter(Lon.flatten(), Lat.flatten(), c=concentration_dict[size], norm=norm, cmap=cmap_name,
+                                   zorder=200)
 
     # Saving the figure
     file_name = plot_save_name(output_direc, np.nanmean(rho_list), time_selection, difference, beach_state,
