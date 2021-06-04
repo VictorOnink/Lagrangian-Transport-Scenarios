@@ -29,6 +29,7 @@ class FieldSetFactory():
                         MLD: bool = False,
                         KPP_mixing: bool = False,
                         TIDAL_mixing: bool = False,
+                        seabed_resuspension: bool = False,
                         coastal_zone: bool = True,
                         grid_spacing: bool = True,
                         halo: bool = True
@@ -70,6 +71,8 @@ class FieldSetFactory():
             _add_KPP_wind_mixing(fieldset=fieldset, file_dict=file_dict)
         if TIDAL_mixing:
             _add_TIDAL_mixing(fieldset=fieldset, file_dict=file_dict)
+        if seabed_resuspension:
+            _add_seabed_resuspension(fieldset=fieldset)
         if coastal_zone:
             _add_coastal_zone_boundary(fieldset=fieldset)
         if grid_spacing:
@@ -262,7 +265,7 @@ def _add_bathymetry_field(fieldset: FieldSet, file_dict: dict):
     _check_presence(variable='BATH_filenames', file_dict=file_dict)
     dataset = Dataset(file_dict['BATH_filenames'])
     bathymetry = np.array(dataset.variables[file_dict['BATH_variables']['DEPTH']][:])
-    bathymetry[dataset.variables[file_dict['BATH_variables']['DEPTH']][:].mask] = 0
+    bathymetry[dataset.variables[file_dict['BATH_variables']['DEPTH']][:].mask] = np.nanmin(np.abs(file_dict['DEPTH']))
     fieldset.add_field(Field('bathymetry', bathymetry, lon=dataset.variables[file_dict['BATH_variables']['LON']][:],
                              lat=dataset.variables[file_dict['BATH_variables']['LAT']][:], mesh='spherical'))
 
@@ -357,7 +360,6 @@ def _add_TIDAL_mixing(fieldset: FieldSet, file_dict: dict):
     fieldset.add_constant('K_Z_BULK', settings.K_Z_BULK)
 
 
-
 def _add_grid_spacing(fieldset: FieldSet, file_dict: dict):
     # Adding in the lon and lat grid spacing for use in the initial scattering of particles on the first time step
     os.system('echo "Adding lon and lat grid spacing"')
@@ -379,3 +381,9 @@ def _check_presence(variable: str, file_dict: dict):
         str_format = (variable, variable)
         os.system('echo "The variable {} is not within file_dict. Check that {} is in the advection scenario"'.format(
             *str_format))
+
+
+def _add_seabed_resuspension(fieldset: FieldSet):
+    # Adding in the constant critical shear stress for particle resuspension from the sea bed
+    os.system('echo "Adding seabed resuspension constant"')
+    fieldset.add_constant('SEABED_CRIT', settings.SEABED_CRIT)

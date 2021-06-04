@@ -95,29 +95,55 @@ class SizeTransport(base_scenario.BaseScenario):
     def _file_names(self, new: bool = False, advection_data: str = settings.ADVECTION_DATA,
                     shore_time: int = settings.SHORE_TIME, init_size: float = settings.INIT_SIZE,
                     init_density: int = settings.INIT_DENSITY, start_year: int = settings.START_YEAR,
-                    input: str = settings.INPUT, run: int = settings.RUN, restart: int = settings.RESTART):
+                    input: str = settings.INPUT, run: int = settings.RUN, restart: int = settings.RESTART,
+                    seabed_crit: float = settings.SEABED_CRIT):
         odirec = self.output_dir + "SizeTransport/size_{:.1E}/".format(settings.INIT_SIZE)
         if new:
             os.system('echo "Set the output file name"')
             str_format = (
-                advection_data, shore_time, utils.get_resuspension_timescale(L=init_size), init_size,
-                init_density, start_year, input, restart, run)
+                advection_data, shore_time, utils.get_resuspension_timescale(L=init_size), init_size, init_density,
+                seabed_crit, start_year, input, restart, run)
         else:
             os.system('echo "Set the restart file name"')
             str_format = (
-                advection_data, shore_time, utils.get_resuspension_timescale(L=init_size), init_size,
-                init_density, start_year, input, restart - 1, run)
-        return odirec + self.prefix + '_{}_st={}_rt={:.6f}_size={:.1E}_rho={}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
+                advection_data, shore_time, utils.get_resuspension_timescale(L=init_size), init_size, init_density,
+                seabed_crit, start_year, input, restart - 1, run)
+        return odirec + self.prefix + '_{}_st={}_rt={:.6f}_size={:.1E}_rho={}_taubss={:.2E}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
 
     def _beaching_kernel(particle, fieldset, time):
+        """
+        The beaching and resuspension kernels for beaching on the coastline follows the procedure outlined in Onink et
+        al. (2021).
+        Onink et al. (2021) = https://doi.org/10.1088/1748-9326/abecbd
+
+        For particles on the seabed, we follow the resuspension procedure outlined in Carvajalino-Fernandez et al.
+        (2020), where a particle at the sea bed gets resuspended if the estimated sea floor sea stress is greater than a
+        critical threshold. Particles can get stuck on the seabed if the potential depth due to KPP or internal tide
+        mixing is below the bathymetry depth
+
+        The bottom sea stress is calculated using a quadratic drag extrapolation according to Warner et al. (2008)
+        Carvajalino-Fernandez et al. (2020) = https://doi.org/10.1016/j.marpolbul.2020.111685
+        Warner et al. (2008) = https://doi.org/10.1016/j.cageo.2008.02.012
+        """
+        # First, the beaching of particles on the coastline
         if particle.beach == 0:
             dist = fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
             if dist < fieldset.Coastal_Boundary:
                 if ParcelsRandom.uniform(0, 1) > fieldset.p_beach:
                     particle.beach = 1
-        # Now the part where we build in the resuspension
+        # Next the resuspension of particles on the coastline
         elif particle.beach == 1:
             if ParcelsRandom.uniform(0, 1) > fieldset.p_resus:
+                particle.beach = 0
+        # Finally, the resuspension of particles on the seabed
+        elif particle.beach == 3:
+            # Getting the current strength at the particle position at the sea bed, and converting it to m/s
+            U_bed, V_bed = fieldset.U[time, particle.depth, particle.lat, particle.lon], fieldset.V[time, particle.depth, particle.lat, particle.lon]
+            U_bed, V_bed = U_bed * 1852 * 60 * math.cos(40 * math.pi / 180), V_bed * 1852 * 60
+            # Getting the bottom shear stress
+            tau_bss = 0.003 * (math.pow(U_bed, 2) + math.pow(V_bed, 2))
+            # if tau_bss is greater than fieldset.SEABED_CRIT, then the particle gets resuspended
+            if tau_bss > fieldset.SEABED_CRIT:
                 particle.beach = 0
         # Update the age of the particle
         particle.age += particle.dt
