@@ -39,7 +39,8 @@ class SizeTransport(base_scenario.BaseScenario):
                                                                       distance=True, salinity=True, temperature=True,
                                                                       bathymetry=True, beach_timescale=True,
                                                                       resus_timescale=True, MLD=True, KPP_mixing=True,
-                                                                      wind=True, TIDAL_mixing=True)
+                                                                      wind=True, TIDAL_mixing=True,
+                                                                      seabed_resuspension=True)
         return fieldset
 
     def _get_pset(self, fieldset: FieldSet, particle_type: utils.BaseParticle, var_dict: dict,
