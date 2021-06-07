@@ -82,7 +82,7 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
             ax_list[index_var].plot(variable_domain[index_var], timeseries_dict[size][variable], linestyle='-',
                                     color=vUtils.discrete_color_from_cmap(index_size, subdivisions=len(size_list)),
                                     label=size_label(size))
-    ax_list[-1].legend(fontsize=fontsize, loc='lower right')
+    ax_list[-1].legend(fontsize=fontsize, loc='upper left')
 
     # Saving the figure
     file_name = output_direc + 'Vertical_Horizontal_Distance_cumulative.png'
