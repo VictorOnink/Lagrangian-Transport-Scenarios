@@ -16,7 +16,7 @@ SHOREDEPEN=0
 #for scenario 4, the minimum wind speed for resusplension. Divide by 10 for actual value
 WMIN=3
 #for scenario 6, the initial size of the particle in 1e-5 m
-PARTICLE_SIZE=1
+PARTICLE_SIZE=5000
 #for scenario 6, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=25
 #the starting year of the simulation, and how many years the simulation will take
@@ -54,12 +54,12 @@ export SERVER
 
 #A number of switches to indicate which analysis steps we want to run.
 #0 = off, 1 = on
-CONCENTRATION=1
+CONCENTRATION=0
 VERTICAL_CONCENTRATION=1
-TIMESERIES=1
+TIMESERIES=0
 MAX_DISTANCE=0
-TIMESLICING=1
-STATISTICS=1
+TIMESLICING=0
+STATISTICS=0
 
 export CONCENTRATION
 export VERTICAL_CONCENTRATION
