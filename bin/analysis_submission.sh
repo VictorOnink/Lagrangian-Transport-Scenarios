@@ -16,7 +16,7 @@ SHOREDEPEN=0
 #for scenario 4, the minimum wind speed for resusplension. Divide by 10 for actual value
 WMIN=3
 #for scenario 6, the initial size of the particle in 1e-5 m
-PARTICLE_SIZE=1
+PARTICLE_SIZE=5000
 #for scenario 6, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=25
 #the starting year of the simulation, and how many years the simulation will take
@@ -27,7 +27,7 @@ INPUT=1
 # 0 = Global HYCOM, 1 = Caribbean HYCOM, 2 = Mediterranean CMEMS
 ADVECTION_DATA=2
 #Number of years the simulation runs
-SIMLEN=3
+SIMLEN=1
 #Inclusion of Stokes drift. 0 = include stokes, 1 = do not include stokes
 STOKES=0
 #Ensemble member
@@ -121,7 +121,7 @@ part5="#SBATCH --output="runOutput/$runname".o%j"
 part6="#SBATCH --mem-per-cpu=20G"
 if [ "$DEBUG" -eq "0" ]; then
 #      part7="#SBATCH --time=95:59:00"
-      part7="#SBATCH --time=02:00:00"
+      part7="#SBATCH --time=00:30:00"
       part8="#SBATCH --partition=epyc2"
       part9='#SBATCH --qos=job_epyc2'
 else

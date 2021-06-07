@@ -21,7 +21,7 @@
   <component name="ChangeListManager">
     <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="Adding in resuspension from the seabed">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/simulation_submission.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/simulation_submission.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/analysis_submission.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/analysis_submission.sh" afterDir="false" />
     </list>
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
     <list id="c5adc810-e024-4e30-b33b-a2709ed2c5b7" name="moving the release repeat timescale to the scenario" comment="" />
@@ -104,118 +104,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-00904" summary="bugfix">
-      <created>1622126748616</created>
-      <option name="number" value="00904" />
-      <option name="presentableId" value="LOCAL-00904" />
-      <option name="project" value="LOCAL" />
-      <updated>1622126748616</updated>
-    </task>
-    <task id="LOCAL-00905" summary="bugfix">
-      <created>1622126762695</created>
-      <option name="number" value="00905" />
-      <option name="presentableId" value="LOCAL-00905" />
-      <option name="project" value="LOCAL" />
-      <updated>1622126762695</updated>
-    </task>
-    <task id="LOCAL-00906" summary="bugfix">
-      <created>1622126989531</created>
-      <option name="number" value="00906" />
-      <option name="presentableId" value="LOCAL-00906" />
-      <option name="project" value="LOCAL" />
-      <updated>1622126989531</updated>
-    </task>
-    <task id="LOCAL-00907" summary="bugfix">
-      <created>1622127721784</created>
-      <option name="number" value="00907" />
-      <option name="presentableId" value="LOCAL-00907" />
-      <option name="project" value="LOCAL" />
-      <updated>1622127721784</updated>
-    </task>
-    <task id="LOCAL-00908" summary="bugfix">
-      <created>1622127767845</created>
-      <option name="number" value="00908" />
-      <option name="presentableId" value="LOCAL-00908" />
-      <option name="project" value="LOCAL" />
-      <updated>1622127767845</updated>
-    </task>
-    <task id="LOCAL-00909" summary="bugfix">
-      <created>1622127942290</created>
-      <option name="number" value="00909" />
-      <option name="presentableId" value="LOCAL-00909" />
-      <option name="project" value="LOCAL" />
-      <updated>1622127942290</updated>
-    </task>
-    <task id="LOCAL-00910" summary="bugfix">
-      <created>1622128431797</created>
-      <option name="number" value="00910" />
-      <option name="presentableId" value="LOCAL-00910" />
-      <option name="project" value="LOCAL" />
-      <updated>1622128431797</updated>
-    </task>
-    <task id="LOCAL-00911" summary="bugfix">
-      <created>1622128681741</created>
-      <option name="number" value="00911" />
-      <option name="presentableId" value="LOCAL-00911" />
-      <option name="project" value="LOCAL" />
-      <updated>1622128681741</updated>
-    </task>
-    <task id="LOCAL-00912" summary="bugfix">
-      <created>1622128846255</created>
-      <option name="number" value="00912" />
-      <option name="presentableId" value="LOCAL-00912" />
-      <option name="project" value="LOCAL" />
-      <updated>1622128846255</updated>
-    </task>
-    <task id="LOCAL-00913" summary="bugfix">
-      <created>1622128866082</created>
-      <option name="number" value="00913" />
-      <option name="presentableId" value="LOCAL-00913" />
-      <option name="project" value="LOCAL" />
-      <updated>1622128866082</updated>
-    </task>
-    <task id="LOCAL-00914" summary="bugfix">
-      <created>1622128897441</created>
-      <option name="number" value="00914" />
-      <option name="presentableId" value="LOCAL-00914" />
-      <option name="project" value="LOCAL" />
-      <updated>1622128897441</updated>
-    </task>
-    <task id="LOCAL-00915" summary="bugfix">
-      <created>1622128926705</created>
-      <option name="number" value="00915" />
-      <option name="presentableId" value="LOCAL-00915" />
-      <option name="project" value="LOCAL" />
-      <updated>1622128926705</updated>
-    </task>
-    <task id="LOCAL-00916" summary="bugfix">
-      <created>1622128950584</created>
-      <option name="number" value="00916" />
-      <option name="presentableId" value="LOCAL-00916" />
-      <option name="project" value="LOCAL" />
-      <updated>1622128950584</updated>
-    </task>
-    <task id="LOCAL-00917" summary="bugfix">
-      <created>1622129039127</created>
-      <option name="number" value="00917" />
-      <option name="presentableId" value="LOCAL-00917" />
-      <option name="project" value="LOCAL" />
-      <updated>1622129039127</updated>
-    </task>
-    <task id="LOCAL-00918" summary="bugfix">
-      <created>1622129208036</created>
-      <option name="number" value="00918" />
-      <option name="presentableId" value="LOCAL-00918" />
-      <option name="project" value="LOCAL" />
-      <updated>1622129208036</updated>
-    </task>
-    <task id="LOCAL-00919" summary="bugfix">
-      <created>1622129506302</created>
-      <option name="number" value="00919" />
-      <option name="presentableId" value="LOCAL-00919" />
-      <option name="project" value="LOCAL" />
-      <updated>1622129506302</updated>
     </task>
     <task id="LOCAL-00920" summary="bugfix">
       <created>1622129523816</created>
@@ -448,7 +336,119 @@
       <option name="project" value="LOCAL" />
       <updated>1622801616645</updated>
     </task>
-    <option name="localTasksCounter" value="953" />
+    <task id="LOCAL-00953" summary="Adding in resuspension from the seabed">
+      <created>1622807723162</created>
+      <option name="number" value="00953" />
+      <option name="presentableId" value="LOCAL-00953" />
+      <option name="project" value="LOCAL" />
+      <updated>1622807723162</updated>
+    </task>
+    <task id="LOCAL-00954" summary="Adding in resuspension from the seabed">
+      <created>1622807737440</created>
+      <option name="number" value="00954" />
+      <option name="presentableId" value="LOCAL-00954" />
+      <option name="project" value="LOCAL" />
+      <updated>1622807737440</updated>
+    </task>
+    <task id="LOCAL-00955" summary="Adding in resuspension from the seabed">
+      <created>1622807749601</created>
+      <option name="number" value="00955" />
+      <option name="presentableId" value="LOCAL-00955" />
+      <option name="project" value="LOCAL" />
+      <updated>1622807749601</updated>
+    </task>
+    <task id="LOCAL-00956" summary="Adding in resuspension from the seabed">
+      <created>1622807759719</created>
+      <option name="number" value="00956" />
+      <option name="presentableId" value="LOCAL-00956" />
+      <option name="project" value="LOCAL" />
+      <updated>1622807759719</updated>
+    </task>
+    <task id="LOCAL-00957" summary="Adding in resuspension from the seabed">
+      <created>1622807771728</created>
+      <option name="number" value="00957" />
+      <option name="presentableId" value="LOCAL-00957" />
+      <option name="project" value="LOCAL" />
+      <updated>1622807771728</updated>
+    </task>
+    <task id="LOCAL-00958" summary="Adding in resuspension from the seabed">
+      <created>1622807783139</created>
+      <option name="number" value="00958" />
+      <option name="presentableId" value="LOCAL-00958" />
+      <option name="project" value="LOCAL" />
+      <updated>1622807783139</updated>
+    </task>
+    <task id="LOCAL-00959" summary="Adding in resuspension from the seabed">
+      <created>1622807794123</created>
+      <option name="number" value="00959" />
+      <option name="presentableId" value="LOCAL-00959" />
+      <option name="project" value="LOCAL" />
+      <updated>1622807794123</updated>
+    </task>
+    <task id="LOCAL-00960" summary="Adding in resuspension from the seabed">
+      <created>1622807804617</created>
+      <option name="number" value="00960" />
+      <option name="presentableId" value="LOCAL-00960" />
+      <option name="project" value="LOCAL" />
+      <updated>1622807804617</updated>
+    </task>
+    <task id="LOCAL-00961" summary="Adding in resuspension from the seabed">
+      <created>1622807839351</created>
+      <option name="number" value="00961" />
+      <option name="presentableId" value="LOCAL-00961" />
+      <option name="project" value="LOCAL" />
+      <updated>1622807839351</updated>
+    </task>
+    <task id="LOCAL-00962" summary="Adding in resuspension from the seabed">
+      <created>1622807853681</created>
+      <option name="number" value="00962" />
+      <option name="presentableId" value="LOCAL-00962" />
+      <option name="project" value="LOCAL" />
+      <updated>1622807853681</updated>
+    </task>
+    <task id="LOCAL-00963" summary="Adding in resuspension from the seabed">
+      <created>1622807866837</created>
+      <option name="number" value="00963" />
+      <option name="presentableId" value="LOCAL-00963" />
+      <option name="project" value="LOCAL" />
+      <updated>1622807866837</updated>
+    </task>
+    <task id="LOCAL-00964" summary="Adding in resuspension from the seabed">
+      <created>1622807877680</created>
+      <option name="number" value="00964" />
+      <option name="presentableId" value="LOCAL-00964" />
+      <option name="project" value="LOCAL" />
+      <updated>1622807877680</updated>
+    </task>
+    <task id="LOCAL-00965" summary="Adding in resuspension from the seabed">
+      <created>1622807889158</created>
+      <option name="number" value="00965" />
+      <option name="presentableId" value="LOCAL-00965" />
+      <option name="project" value="LOCAL" />
+      <updated>1622807889158</updated>
+    </task>
+    <task id="LOCAL-00966" summary="Adding in resuspension from the seabed">
+      <created>1622807905676</created>
+      <option name="number" value="00966" />
+      <option name="presentableId" value="LOCAL-00966" />
+      <option name="project" value="LOCAL" />
+      <updated>1622807905676</updated>
+    </task>
+    <task id="LOCAL-00967" summary="Adding in resuspension from the seabed">
+      <created>1622807925126</created>
+      <option name="number" value="00967" />
+      <option name="presentableId" value="LOCAL-00967" />
+      <option name="project" value="LOCAL" />
+      <updated>1622807925126</updated>
+    </task>
+    <task id="LOCAL-00968" summary="Adding in resuspension from the seabed">
+      <created>1622807939534</created>
+      <option name="number" value="00968" />
+      <option name="presentableId" value="LOCAL-00968" />
+      <option name="project" value="LOCAL" />
+      <updated>1622807939534</updated>
+    </task>
+    <option name="localTasksCounter" value="969" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
