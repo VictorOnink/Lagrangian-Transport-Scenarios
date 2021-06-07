@@ -35,7 +35,7 @@ def SizeTransport_SeaFloorDepthDistribution(scenario, figure_direc, size_list, r
             timeseries_dict[size][variable] = data_dict[variable]
 
     # Beach histogram:
-    depth_bins = np.arange(0, np.nanmax(adv_file_dict['DEPTH']), 1.0)
+    depth_bins = np.arange(0, np.nanmax(adv_file_dict['DEPTH']), 0.1)
     if histogram:
         depth_histogram_dict = {}
         for size in size_list:

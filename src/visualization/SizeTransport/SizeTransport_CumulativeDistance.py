@@ -29,9 +29,9 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
     prefix = 'basic_statistics'
 
     variable_list = ['z', 'distance_vertical', 'distance_horizontal']
-    variable_domain = [np.arange(0, np.nanmax(adv_file_dict['DEPTH']), 1.0),
-                       np.logspace(0, 6, num=100),
-                       np.logspace(0, 6, num=100)]
+    variable_domain = [np.arange(0, np.nanmax(adv_file_dict['DEPTH']), 0.1),
+                       np.logspace(0, 6, num=1000),
+                       np.logspace(0, 6, num=1000)]
     variable_dict = dict.fromkeys(variable_list)
     for index, key in enumerate(variable_dict.keys()):
         variable_dict[key] = np.zeros(shape=variable_domain[index].shape, dtype=float)
