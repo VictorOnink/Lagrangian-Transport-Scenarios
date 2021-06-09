@@ -19,8 +19,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="Adding in resuspension from the seabed">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="analysis submission">
+      <change beforePath="$PROJECT_DIR$/bin/analysis_submission.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/analysis_submission.sh" afterDir="false" />
     </list>
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
     <list id="c5adc810-e024-4e30-b33b-a2709ed2c5b7" name="moving the release repeat timescale to the scenario" comment="" />
@@ -103,27 +103,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-00941" summary="bugfix">
-      <created>1622460401881</created>
-      <option name="number" value="00941" />
-      <option name="presentableId" value="LOCAL-00941" />
-      <option name="project" value="LOCAL" />
-      <updated>1622460401881</updated>
-    </task>
-    <task id="LOCAL-00942" summary="bugfix">
-      <created>1622460785017</created>
-      <option name="number" value="00942" />
-      <option name="presentableId" value="LOCAL-00942" />
-      <option name="project" value="LOCAL" />
-      <updated>1622460785017</updated>
-    </task>
-    <task id="LOCAL-00943" summary="bugfix">
-      <created>1622461400593</created>
-      <option name="number" value="00943" />
-      <option name="presentableId" value="LOCAL-00943" />
-      <option name="project" value="LOCAL" />
-      <updated>1622461400593</updated>
     </task>
     <task id="LOCAL-00944" summary="bugfix">
       <created>1622461743051</created>
@@ -447,7 +426,28 @@
       <option name="project" value="LOCAL" />
       <updated>1623074266123</updated>
     </task>
-    <option name="localTasksCounter" value="990" />
+    <task id="LOCAL-00990" summary="analysis submission">
+      <created>1623244474857</created>
+      <option name="number" value="00990" />
+      <option name="presentableId" value="LOCAL-00990" />
+      <option name="project" value="LOCAL" />
+      <updated>1623244474857</updated>
+    </task>
+    <task id="LOCAL-00991" summary="analysis submission">
+      <created>1623244505106</created>
+      <option name="number" value="00991" />
+      <option name="presentableId" value="LOCAL-00991" />
+      <option name="project" value="LOCAL" />
+      <updated>1623244505106</updated>
+    </task>
+    <task id="LOCAL-00992" summary="analysis submission">
+      <created>1623244524314</created>
+      <option name="number" value="00992" />
+      <option name="presentableId" value="LOCAL-00992" />
+      <option name="project" value="LOCAL" />
+      <updated>1623244524314</updated>
+    </task>
+    <option name="localTasksCounter" value="993" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -463,7 +463,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Adding in KPP turbulent wind mixing" />
     <MESSAGE value="Wind mixing now works :)" />
     <MESSAGE value="Starting to add computation of 3D internal tide vertical diffusion fields" />
     <MESSAGE value="To ubelix" />
@@ -488,6 +487,7 @@
     <MESSAGE value="adding basic statistics calculation process" />
     <MESSAGE value="bugfix" />
     <MESSAGE value="Adding in resuspension from the seabed" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding in resuspension from the seabed" />
+    <MESSAGE value="analysis submission" />
+    <option name="LAST_COMMIT_MESSAGE" value="analysis submission" />
   </component>
 </project>
