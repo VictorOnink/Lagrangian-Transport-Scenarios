@@ -2,7 +2,7 @@
 # First we define the general parameters of the run                                 #
 #####################################################################################
 SUBMISSION='analysis'
-DEBUG=0 # 0 = Not a debug run, 1 = a debug run
+DEBUG=1 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Cozar based fragmentation, 6 = Size dependent transport
 SCENARIO=6
@@ -16,7 +16,7 @@ SHOREDEPEN=0
 #for scenario 4, the minimum wind speed for resusplension. Divide by 10 for actual value
 WMIN=3
 #for scenario 6, the initial size of the particle in 1e-5 m
-PARTICLE_SIZE=1
+PARTICLE_SIZE=5000
 #for scenario 6, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=25
 #the starting year of the simulation, and how many years the simulation will take
@@ -55,8 +55,8 @@ export SERVER
 #A number of switches to indicate which analysis steps we want to run.
 #0 = off, 1 = on
 CONCENTRATION=0
-VERTICAL_CONCENTRATION=1
-TIMESERIES=0
+VERTICAL_CONCENTRATION=0
+TIMESERIES=1
 MAX_DISTANCE=0
 TIMESLICING=0
 STATISTICS=0
