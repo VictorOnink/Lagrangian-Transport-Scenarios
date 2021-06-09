@@ -8,7 +8,8 @@ from datetime import datetime, timedelta
 import matplotlib.dates as mdates
 
 
-def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, figsize=(10, 10), fontsize=12):
+def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, tau_list=[settings.SEABED_CRIT],
+                                   figsize=(10, 10), fontsize=12):
     # Setting the folder within which we have the output, and where we have the saved timeslices
     output_direc = figure_direc + 'timeseries/'
     data_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/{}/'.format('SizeTransport')
@@ -20,20 +21,23 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
     # beach_state_list = ['beach', 'afloat', 'seabed', 'removed', 'total']
     beach_state_list = ['beach', 'afloat', 'seabed']
     for index, size in enumerate(size_list):
-        data_dict = vUtils.SizeTransport_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
-                                                   size=size, rho=rho_list[index])
         timeseries_dict[size] = {}
-        for beach_state in beach_state_list:
-            timeseries_dict[size][beach_state] = data_dict[beach_state]
+        for tau in tau_list:
+            data_dict = vUtils.SizeTransport_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
+                                                       size=size, rho=rho_list[index], tau=tau)
+            timeseries_dict[size][tau] = {}
+            for beach_state in beach_state_list:
+                timeseries_dict[size][tau][beach_state] = data_dict[beach_state]
     time = data_dict['time']
     total = float(data_dict['total'][0])
 
     # Normalizing all the particle counts with the total number of particles, and then multiplying by 100 to get a
     # percentage
     for size in size_list:
-        for beach_state in beach_state_list:
-            timeseries_dict[size][beach_state] /= total
-            timeseries_dict[size][beach_state] *= 100.
+        for tau in tau_list:
+            for beach_state in beach_state_list:
+                timeseries_dict[size][tau][beach_state] /= total
+                timeseries_dict[size][tau][beach_state] *= 100.
 
     # Setting parameters for the time axis
     years = mdates.YearLocator()   # every year
@@ -72,10 +76,13 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
 
     # Now, adding in the actual data
     for index_size, size in enumerate(size_list):
-        for index_beach, beach_state in enumerate(beach_state_list):
-            ax_list[index_beach].plot(time_list, timeseries_dict[size][beach_state], linestyle='-',
-                                      color=vUtils.discrete_color_from_cmap(index_size, subdivisions=len(size_list)),
-                                      label=size_label(size))
+        for tau in tau_list:
+            for index_beach, beach_state in enumerate(beach_state_list):
+                ax_list[index_beach].plot(time_list, timeseries_dict[size][tau][beach_state],
+                                          linestyle=vUtils.SizeTransport_linestyle_SEABED_CRIT(tau=tau),
+                                          color=vUtils.discrete_color_from_cmap(index_size,
+                                                                                subdivisions=len(size_list)),
+                                          label=size_label(size))
     # And adding in a legend
     ax_list[0].legend(fontsize=fontsize, loc='upper right')
 

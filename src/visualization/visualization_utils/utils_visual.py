@@ -8,8 +8,8 @@ import matplotlib.ticker as mticker
 import numpy as np
 
 
-def SizeTransport_load_data(scenario, prefix, data_direc, size,  rho, advection_data='CMEMS_MEDITERRANEAN',
-                            shore_time=20, start_year=2010, input='Lebreton'):
+def SizeTransport_load_data(scenario, prefix, data_direc, size,  rho, tau=settings.SEABED_CRIT,
+                            advection_data='CMEMS_MEDITERRANEAN', shore_time=20, start_year=2010, input='Lebreton'):
     """
     Loading the data we want for SizeTransport analysis output, which will generally just differ in terms of which
     particle size and density
@@ -26,9 +26,18 @@ def SizeTransport_load_data(scenario, prefix, data_direc, size,  rho, advection_
     """
     file_name = scenario._file_names(new=True, advection_data=advection_data, shore_time=shore_time, init_size=size,
                                      init_density=rho, start_year=start_year, input=input, run=settings.RUN,
-                                     restart=settings.RESTART)
+                                     restart=settings.RESTART, seabed_crit=tau)
     full_path = data_direc + utils._analysis_save_file_name(input_file=file_name, prefix=prefix)
     return utils.load_obj(full_path)
+
+
+def SizeTransport_linestyle_SEABED_CRIT(tau):
+    """
+    Returning the linestyle for line-based figures depending on the
+    :param tau:
+    :return:
+    """
+    return {0.14: '--', 0.025: '-'}[tau]
 
 
 def cartopy_standard_map(fig, gridspec, row, column, domain, resolution='50m', add_gridlines=True, add_gridlabels=True,
