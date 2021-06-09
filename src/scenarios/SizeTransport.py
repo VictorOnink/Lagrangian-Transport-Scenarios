@@ -54,8 +54,8 @@ class SizeTransport(base_scenario.BaseScenario):
             #                    lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
             #                    age=var_dict['age'], time=start_time, repeatdt=repeat_dt)
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
-                               lon=var_dict['lon'][:10], lat=var_dict['lat'][:10], beach=3 * np.ones(10),
-                               age=var_dict['age'][:10], time=start_time, repeatdt=repeat_dt)
+                               lon=var_dict['lon'][:1], lat=var_dict['lat'][:1], beach=3 * np.ones(1),
+                               age=var_dict['age'][:1], time=start_time, repeatdt=repeat_dt)
 
         else:
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
@@ -142,14 +142,18 @@ class SizeTransport(base_scenario.BaseScenario):
                 particle.beach = 0
         # Finally, the resuspension of particles on the seabed
         elif particle.beach == 3:
+            id = particle.id
+            print('Particle ID is')
+            print(id)
             # Getting the current strength at the particle position at the sea bed, and converting it to m/s
             # U_bed, V_bed = fieldset.U[time, particle.depth, particle.lat, particle.lon], fieldset.V[time, particle.depth, particle.lat, particle.lon]
             U_bed, V_bed = fieldset.U[time, fieldset.SURF_Z, particle.lat, particle.lon], fieldset.V[time, fieldset.SURF_Z, particle.lat, particle.lon]
-            id = particle.id
+            print(U_bed)
+            print(V_bed)
             U_bed, V_bed = U_bed * 1852. * 60. * math.cos(40. * math.pi / 180.), V_bed * 1852. * 60.
             # Getting the bottom shear stress
             tau_bss = 0.003 * (math.pow(U_bed, 2) + math.pow(V_bed, 2))
-            print(id)
+            print('LON/LAT to m/s Corrected')
             print(U_bed)
             print(V_bed)
             print(tau_bss)
