@@ -49,8 +49,8 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
     for size in size_list:
         for tau in tau_list:
             timeseries_dict[size][tau]['time'] = []
-        for seconds in timeseries_dict[size][tau]['time_raw']:
-            timeseries_dict[size][tau]['time'].append(startdate + timedelta(seconds=seconds))
+            for seconds in timeseries_dict[size][tau]['time_raw']:
+                timeseries_dict[size][tau]['time'].append(startdate + timedelta(seconds=seconds))
 
     # Creating the figure
     fig = plt.figure(figsize=figsize)
