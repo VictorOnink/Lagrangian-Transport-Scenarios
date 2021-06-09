@@ -28,7 +28,7 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
             timeseries_dict[size][tau] = {}
             for beach_state in beach_state_list:
                 timeseries_dict[size][tau][beach_state] = data_dict[beach_state]
-    time = data_dict['time']
+            timeseries_dict[size][tau]['time_raw'] = data_dict['time']
     total = float(data_dict['total'][0])
 
     # Normalizing all the particle counts with the total number of particles, and then multiplying by 100 to get a
@@ -44,11 +44,13 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
     months = mdates.MonthLocator()  # every month
     yearsFmt = mdates.DateFormatter('%Y')
 
-    # Getting the datetime objects for all of the time
-    time_list = []
+    # Getting the datetime objects for all of the time arrays
     startdate = datetime(settings.START_YEAR, 1, 1, 12, 0)
-    for seconds in time:
-        time_list.append(startdate + timedelta(seconds=seconds))
+    for size in size_list:
+        for tau in tau_list:
+            timeseries_dict[size][tau]['time'] = []
+        for seconds in timeseries_dict[size][tau]['time_raw']:
+            timeseries_dict[size][tau]['time'].append(startdate + timedelta(seconds=seconds))
 
     # Creating the figure
     fig = plt.figure(figsize=figsize)
@@ -78,7 +80,7 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
     for index_size, size in enumerate(size_list):
         for tau in tau_list:
             for index_beach, beach_state in enumerate(beach_state_list):
-                ax_list[index_beach].plot(time_list, timeseries_dict[size][tau][beach_state],
+                ax_list[index_beach].plot(timeseries_dict[size][tau]['time'], timeseries_dict[size][tau][beach_state],
                                           linestyle=vUtils.SizeTransport_linestyle_SEABED_CRIT(tau=tau),
                                           color=vUtils.discrete_color_from_cmap(index_size,
                                                                                 subdivisions=len(size_list)),
