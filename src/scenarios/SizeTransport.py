@@ -50,9 +50,13 @@ class SizeTransport(base_scenario.BaseScenario):
         """
         os.system('echo "Creating the particle set"')
         if settings.RESTART == 0:
+            # pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
+            #                    lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
+            #                    age=var_dict['age'], time=start_time, repeatdt=repeat_dt)
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
-                               lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
-                               age=var_dict['age'], time=start_time, repeatdt=repeat_dt)
+                               lon=var_dict['lon'][:10], lat=var_dict['lat'][:10], beach=3 * np.ones(10),
+                               age=var_dict['age'][:10], time=start_time, repeatdt=repeat_dt)
+
         else:
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
                                lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
@@ -139,10 +143,17 @@ class SizeTransport(base_scenario.BaseScenario):
         # Finally, the resuspension of particles on the seabed
         elif particle.beach == 3:
             # Getting the current strength at the particle position at the sea bed, and converting it to m/s
-            U_bed, V_bed = fieldset.U[time, particle.depth, particle.lat, particle.lon], fieldset.V[time, particle.depth, particle.lat, particle.lon]
-            U_bed, V_bed = U_bed * 1852 * 60 * math.cos(40 * math.pi / 180), V_bed * 1852 * 60
+            bath = fieldset.bathymetry[time, particle.depth, particle.lat, particle.lon]
+            # U_bed, V_bed = fieldset.U[time, particle.depth, particle.lat, particle.lon], fieldset.V[time, particle.depth, particle.lat, particle.lon]
+            U_bed, V_bed = fieldset.U[time, bath, particle.lat, particle.lon], fieldset.V[time, bath, particle.lat, particle.lon]
+            id = particle.id
+            U_bed, V_bed = U_bed * 1852. * 60. * math.cos(40. * math.pi / 180.), V_bed * 1852. * 60.
             # Getting the bottom shear stress
             tau_bss = 0.003 * (math.pow(U_bed, 2) + math.pow(V_bed, 2))
+            print(id)
+            print(U_bed)
+            print(V_bed)
+            print(tau_bss)
             # if tau_bss is greater than fieldset.SEABED_CRIT, then the particle gets resuspended
             if tau_bss > fieldset.SEABED_CRIT:
                 particle.beach = 0
