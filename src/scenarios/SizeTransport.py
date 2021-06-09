@@ -143,7 +143,9 @@ class SizeTransport(base_scenario.BaseScenario):
         # Finally, the resuspension of particles on the seabed
         elif particle.beach == 3:
             # Getting the current strength at the particle position at the sea bed, and converting it to m/s
-            bath = fieldset.bathymetry[time, particle.depth, particle.lat, particle.lon]
+            bath = fieldset.bathymetry[time, particle.depth, particle.lat, particle.lon] - 10
+            if bath < fieldset.SURF_Z:
+                bath = fieldset.SURF_Z
             # U_bed, V_bed = fieldset.U[time, particle.depth, particle.lat, particle.lon], fieldset.V[time, particle.depth, particle.lat, particle.lon]
             U_bed, V_bed = fieldset.U[time, bath, particle.lat, particle.lon], fieldset.V[time, bath, particle.lat, particle.lon]
             id = particle.id
