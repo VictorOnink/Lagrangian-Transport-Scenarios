@@ -243,7 +243,8 @@ PHI = 0.9
 # CRITICAL SHEAR STRESS FOR RESUSPENSION OF PARTICLES FROM THE SEA BED, HORIZONTAL DIFFUSION AT THE SEA BED
 if SUBMISSION in ['simulation', 'analysis']:
     SEABED_CRIT = int(os.environ['SEABED_CRIT']) * 1E-3
-    SEABED_KH = 0.1
+# HORIZONTAL DIFFUSION AT THE SEA BED
+SEABED_KH = 0.3
 
 ########################################################################################################################
 #                                                                                                                      #
@@ -263,7 +264,6 @@ if SUBMISSION == 'visualization':
     INIT_DENSITY: int = 920
     START_YEAR: int = 2010
     SEABED_CRIT: float = 0.025
-    SEABED_KH: float = 0.1
 
 
 ########################################################################################################################
