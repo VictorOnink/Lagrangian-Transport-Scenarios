@@ -151,8 +151,8 @@ class SizeTransport(base_scenario.BaseScenario):
             dWx = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
             dWy = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
 
-            bx = math.sqrt(2 * 1)
-            by = math.sqrt(2 * 1)
+            bx = math.sqrt(2 * 0.5)
+            by = math.sqrt(2 * 0.5)
 
             id = particle.id
             print('Particle ID is')
