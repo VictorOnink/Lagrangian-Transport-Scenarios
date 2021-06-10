@@ -153,7 +153,7 @@ class SizeTransport(base_scenario.BaseScenario):
             print(id)
             # Getting the current strength at the particle position at the sea bed, and converting it to m/s
             # U_bed, V_bed = fieldset.U[time, particle.depth, particle.lat, particle.lon], fieldset.V[time, particle.depth, particle.lat, particle.lon]
-            U_bed, V_bed = fieldset.U[time, fieldset.SURF_Z, particle.lat, particle.lon], fieldset.V[time, fieldset.SURF_Z, particle.lat, particle.lon]
+            U_bed, V_bed = fieldset.U[time, bath, particle.lat, particle.lon], fieldset.V[time, bath, particle.lat, particle.lon]
             print(U_bed)
             print(V_bed)
             U_bed, V_bed = U_bed * 1852. * 60. * math.cos(40. * math.pi / 180.), V_bed * 1852. * 60.
