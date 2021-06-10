@@ -151,15 +151,8 @@ class SizeTransport(base_scenario.BaseScenario):
             dWx = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
             dWy = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
 
-            Kxp1 = fieldset.Kh_zonal[time, particle.depth, particle.lat, particle.lon + fieldset.dres]
-            Kxm1 = fieldset.Kh_zonal[time, particle.depth, particle.lat, particle.lon - fieldset.dres]
-            dKdx = (Kxp1 - Kxm1) / (2 * fieldset.dres)
-            bx = math.sqrt(2 * fieldset.Kh_zonal[time, particle.depth, particle.lat, particle.lon])
-
-            Kyp1 = fieldset.Kh_meridional[time, particle.depth, particle.lat + fieldset.dres, particle.lon]
-            Kym1 = fieldset.Kh_meridional[time, particle.depth, particle.lat - fieldset.dres, particle.lon]
-            dKdy = (Kyp1 - Kym1) / (2 * fieldset.dres)
-            by = math.sqrt(2 * fieldset.Kh_meridional[time, particle.depth, particle.lat, particle.lon])
+            bx = math.sqrt(2 * 1)
+            by = math.sqrt(2 * 1)
 
             id = particle.id
             print('Particle ID is')
@@ -167,10 +160,10 @@ class SizeTransport(base_scenario.BaseScenario):
             # Getting the current strength at the particle position at the sea bed, and converting it to m/s
             # U_bed, V_bed = fieldset.U[time, particle.depth, particle.lat, particle.lon], fieldset.V[time, particle.depth, particle.lat, particle.lon]
             U_bed, V_bed = fieldset.U[time, bath, particle.lat, particle.lon], fieldset.V[time, bath, particle.lat, particle.lon]
-            U_bed, V_bed = U_bed + bx * dWx, V_bed + by * dWy
             print(U_bed)
             print(V_bed)
             U_bed, V_bed = U_bed * 1852. * 60. * math.cos(40. * math.pi / 180.), V_bed * 1852. * 60.
+            U_bed, V_bed = U_bed + bx * dWx, V_bed + by * dWy
             # Getting the bottom shear stress
             tau_bss = 0.003 * (math.pow(U_bed, 2) + math.pow(V_bed, 2))
             print('LON/LAT to m/s Corrected')
