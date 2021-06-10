@@ -104,13 +104,6 @@
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
     </task>
-    <task id="LOCAL-00978" summary="Adding in resuspension from the seabed">
-      <created>1623073169561</created>
-      <option name="number" value="00978" />
-      <option name="presentableId" value="LOCAL-00978" />
-      <option name="project" value="LOCAL" />
-      <updated>1623073169562</updated>
-    </task>
     <task id="LOCAL-00979" summary="Adding in resuspension from the seabed">
       <created>1623073207855</created>
       <option name="number" value="00979" />
@@ -447,7 +440,14 @@
       <option name="project" value="LOCAL" />
       <updated>1623335569860</updated>
     </task>
-    <option name="localTasksCounter" value="1027" />
+    <task id="LOCAL-01027" summary="analysis submission">
+      <created>1623336159130</created>
+      <option name="number" value="01027" />
+      <option name="presentableId" value="LOCAL-01027" />
+      <option name="project" value="LOCAL" />
+      <updated>1623336159130</updated>
+    </task>
+    <option name="localTasksCounter" value="1028" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

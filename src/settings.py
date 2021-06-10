@@ -244,7 +244,7 @@ PHI = 0.9
 if SUBMISSION in ['simulation', 'analysis']:
     SEABED_CRIT = int(os.environ['SEABED_CRIT']) * 1E-3
 # HORIZONTAL DIFFUSION AT THE SEA BED
-SEABED_KH = 0.3
+SEABED_KH = 0.2
 
 ########################################################################################################################
 #                                                                                                                      #
