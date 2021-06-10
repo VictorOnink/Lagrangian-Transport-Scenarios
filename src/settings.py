@@ -240,9 +240,10 @@ VK = 0.4
 BETA, BETA_STAR = 1.21, 35
 # STABILITY FUNCTION IN MONIN-OBUKOV BOUNDARY LAYER THEORY (BOUFADEL ET AL. 2020)
 PHI = 0.9
-# CRITICAL SHEAR STRESS FOR RESUSPENSION OF PARTICLES FROM THE SEA BED
+# CRITICAL SHEAR STRESS FOR RESUSPENSION OF PARTICLES FROM THE SEA BED, HORIZONTAL DIFFUSION AT THE SEA BED
 if SUBMISSION in ['simulation', 'analysis']:
     SEABED_CRIT = int(os.environ['SEABED_CRIT']) * 1E-3
+    SEABED_KH = 0.1
 
 ########################################################################################################################
 #                                                                                                                      #
@@ -262,6 +263,7 @@ if SUBMISSION == 'visualization':
     INIT_DENSITY: int = 920
     START_YEAR: int = 2010
     SEABED_CRIT: float = 0.025
+    SEABED_KH: float = 0.1
 
 
 ########################################################################################################################

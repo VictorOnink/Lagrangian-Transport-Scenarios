@@ -387,3 +387,4 @@ def _add_seabed_resuspension(fieldset: FieldSet):
     # Adding in the constant critical shear stress for particle resuspension from the sea bed
     os.system('echo "Adding seabed resuspension constant"')
     fieldset.add_constant('SEABED_CRIT', settings.SEABED_CRIT)
+    fieldset.add_constant('SEABED_KH', settings.SEABED_KH)

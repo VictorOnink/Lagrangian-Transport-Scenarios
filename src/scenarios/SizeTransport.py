@@ -151,25 +151,15 @@ class SizeTransport(base_scenario.BaseScenario):
             dWx = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
             dWy = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
 
-            bx = math.sqrt(2 * 0.5)
-            by = math.sqrt(2 * 0.5)
+            bx = math.sqrt(2 * fieldset.SEABED_KH)
 
-            id = particle.id
-            print('Particle ID is')
-            print(id)
             # Getting the current strength at the particle position at the sea bed, and converting it to m/s
             # U_bed, V_bed = fieldset.U[time, particle.depth, particle.lat, particle.lon], fieldset.V[time, particle.depth, particle.lat, particle.lon]
             U_bed, V_bed = fieldset.U[time, bath, particle.lat, particle.lon], fieldset.V[time, bath, particle.lat, particle.lon]
-            print(U_bed)
-            print(V_bed)
             U_bed, V_bed = U_bed * 1852. * 60. * math.cos(40. * math.pi / 180.), V_bed * 1852. * 60.
-            U_bed, V_bed = U_bed + bx * dWx, V_bed + by * dWy
+            U_bed, V_bed = U_bed + bx * dWx, V_bed + bx * dWy
             # Getting the bottom shear stress
             tau_bss = 0.003 * (math.pow(U_bed, 2) + math.pow(V_bed, 2))
-            print('LON/LAT to m/s Corrected')
-            print(U_bed)
-            print(V_bed)
-            print(tau_bss)
             # if tau_bss is greater than fieldset.SEABED_CRIT, then the particle gets resuspended
             if tau_bss > fieldset.SEABED_CRIT:
                 print('the particle is resuspended')
