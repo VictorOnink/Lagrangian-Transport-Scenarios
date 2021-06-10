@@ -53,8 +53,11 @@ class SizeTransport(base_scenario.BaseScenario):
             # pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
             #                    lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
             #                    age=var_dict['age'], time=start_time, repeatdt=repeat_dt)
+            # pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
+            #                    lon=var_dict['lon'][:1], lat=var_dict['lat'][:1], beach=3 * np.ones(1),
+            #                    age=var_dict['age'][:1], time=start_time, repeatdt=repeat_dt)
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
-                               lon=var_dict['lon'][:1], lat=var_dict['lat'][:1], beach=3 * np.ones(1),
+                               lon=[11.487277], lat=[11.487277], beach=3 * np.ones(1),
                                age=var_dict['age'][:1], time=start_time, repeatdt=repeat_dt)
 
         else:
