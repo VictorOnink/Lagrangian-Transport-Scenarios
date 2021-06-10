@@ -148,6 +148,19 @@ class SizeTransport(base_scenario.BaseScenario):
                 particle.beach = 0
         # Finally, the resuspension of particles on the seabed
         elif particle.beach == 3:
+            dWx = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
+            dWy = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
+
+            Kxp1 = fieldset.Kh_zonal[time, particle.depth, particle.lat, particle.lon + fieldset.dres]
+            Kxm1 = fieldset.Kh_zonal[time, particle.depth, particle.lat, particle.lon - fieldset.dres]
+            dKdx = (Kxp1 - Kxm1) / (2 * fieldset.dres)
+            bx = math.sqrt(2 * fieldset.Kh_zonal[time, particle.depth, particle.lat, particle.lon])
+
+            Kyp1 = fieldset.Kh_meridional[time, particle.depth, particle.lat + fieldset.dres, particle.lon]
+            Kym1 = fieldset.Kh_meridional[time, particle.depth, particle.lat - fieldset.dres, particle.lon]
+            dKdy = (Kyp1 - Kym1) / (2 * fieldset.dres)
+            by = math.sqrt(2 * fieldset.Kh_meridional[time, particle.depth, particle.lat, particle.lon])
+
             id = particle.id
             print('Particle ID is')
             print(id)
@@ -156,7 +169,7 @@ class SizeTransport(base_scenario.BaseScenario):
             U_bed, V_bed = fieldset.U[time, bath, particle.lat, particle.lon], fieldset.V[time, bath, particle.lat, particle.lon]
             print(U_bed)
             print(V_bed)
-            U_bed, V_bed = U_bed * 1852. * 60. * math.cos(40. * math.pi / 180.), V_bed * 1852. * 60.
+            U_bed, V_bed = (U_bed + bx * dWx) * 1852. * 60. * math.cos(40. * math.pi / 180.), (V_bed + by * dWy) * 1852. * 60.
             # Getting the bottom shear stress
             tau_bss = 0.003 * (math.pow(U_bed, 2) + math.pow(V_bed, 2))
             print('LON/LAT to m/s Corrected')
