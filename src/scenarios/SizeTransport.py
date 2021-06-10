@@ -54,7 +54,7 @@ class SizeTransport(base_scenario.BaseScenario):
             #                    lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
             #                    age=var_dict['age'], time=start_time, repeatdt=repeat_dt)
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
-                               lon=var_dict['lon'][:1], lat=var_dict['lat'][:1], beach=3 * np.ones(1),
+                               lon=var_dict['lon'][:1], lat=var_dict['lat'][:1], beach=0 * np.ones(1),
                                age=var_dict['age'][:1], time=start_time, repeatdt=repeat_dt)
 
         else:
@@ -131,6 +131,9 @@ class SizeTransport(base_scenario.BaseScenario):
         Warner et al. (2008) = https://doi.org/10.1016/j.cageo.2008.02.012
         """
         # First, the beaching of particles on the coastline
+        bath = fieldset.bathymetry[time, particle.depth, particle.lat, particle.lon]
+        print('depth is ')
+        print(bath)
         if particle.beach == 0:
             dist = fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
             if dist < fieldset.Coastal_Boundary:
