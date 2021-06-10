@@ -167,9 +167,10 @@ class SizeTransport(base_scenario.BaseScenario):
             # Getting the current strength at the particle position at the sea bed, and converting it to m/s
             # U_bed, V_bed = fieldset.U[time, particle.depth, particle.lat, particle.lon], fieldset.V[time, particle.depth, particle.lat, particle.lon]
             U_bed, V_bed = fieldset.U[time, bath, particle.lat, particle.lon], fieldset.V[time, bath, particle.lat, particle.lon]
+            U_bed, V_bed = U_bed + bx * dWx, V_bed + by * dWy
             print(U_bed)
             print(V_bed)
-            U_bed, V_bed = (U_bed + bx * dWx) * 1852. * 60. * math.cos(40. * math.pi / 180.), (V_bed + by * dWy) * 1852. * 60.
+            U_bed, V_bed = U_bed * 1852. * 60. * math.cos(40. * math.pi / 180.), V_bed * 1852. * 60.
             # Getting the bottom shear stress
             tau_bss = 0.003 * (math.pow(U_bed, 2) + math.pow(V_bed, 2))
             print('LON/LAT to m/s Corrected')
@@ -179,7 +180,7 @@ class SizeTransport(base_scenario.BaseScenario):
             # if tau_bss is greater than fieldset.SEABED_CRIT, then the particle gets resuspended
             if tau_bss > fieldset.SEABED_CRIT:
                 print('the particle is resuspended')
-                particle.beach = 0
+                particle.beach = 3
         # Update the age of the particle
         particle.age += particle.dt
 
