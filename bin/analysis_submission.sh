@@ -54,12 +54,12 @@ export SERVER
 
 #A number of switches to indicate which analysis steps we want to run.
 #0 = off, 1 = on
-CONCENTRATION=0
-VERTICAL_CONCENTRATION=0
+CONCENTRATION=1
+VERTICAL_CONCENTRATION=1
 TIMESERIES=1
 MAX_DISTANCE=0
-TIMESLICING=0
-STATISTICS=0
+TIMESLICING=1
+STATISTICS=1
 
 export CONCENTRATION
 export VERTICAL_CONCENTRATION
@@ -121,7 +121,7 @@ part5="#SBATCH --output="runOutput/$runname".o%j"
 part6="#SBATCH --mem-per-cpu=20G"
 if [ "$DEBUG" -eq "0" ]; then
 #      part7="#SBATCH --time=95:59:00"
-      part7="#SBATCH --time=00:30:00"
+      part7="#SBATCH --time=04:00:00"
       part8="#SBATCH --partition=epyc2"
       part9='#SBATCH --qos=job_epyc2'
 else
