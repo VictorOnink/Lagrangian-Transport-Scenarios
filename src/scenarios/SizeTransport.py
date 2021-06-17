@@ -151,7 +151,7 @@ class SizeTransport(base_scenario.BaseScenario):
             tau_bss = 0.003 * (math.pow(U_bed, 2) + math.pow(V_bed, 2))
             # if tau_bss is greater than fieldset.SEABED_CRIT, then the particle gets resuspended
             if tau_bss > fieldset.SEABED_CRIT:
-                particle.beach = 3
+                particle.beach = 0
         # Update the age of the particle
         particle.age += particle.dt
 
