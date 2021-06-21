@@ -74,17 +74,17 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
     # Next it will be the cumulative vertical distance
     ax_list[1].set_xlabel('Cumulative vertical distance (m)', fontsize=fontsize)
     ax_list[1].set_xscale('log')
-    ax_list[1].set_xlim([1e-1, 1e6])
+    ax_list[1].set_xlim([1e0, 1e6])
     # Finally, the cumulative horizontal distance
     ax_list[2].set_xlabel('Cumulative horizontal distance (km)', fontsize=fontsize)
     ax_list[2].set_xscale('log')
-    ax_list[2].set_xlim([1e0, 1e6])
+    ax_list[2].set_xlim([1e0, 1e5])
 
     # Plotting the data
     for index_size, size in enumerate(size_list):
         for tau in tau_list:
             for index_var, variable in enumerate(variable_list):
-                ax_list[index_var].plot(variable_domain[index_var], timeseries_dict[size][variable],
+                ax_list[index_var].plot(variable_domain[index_var], timeseries_dict[size][tau][variable],
                                         linestyle=vUtils.SizeTransport_linestyle_SEABED_CRIT(tau),
                                         color=vUtils.discrete_color_from_cmap(index_size, subdivisions=len(size_list)),
                                         label=size_label(size))
