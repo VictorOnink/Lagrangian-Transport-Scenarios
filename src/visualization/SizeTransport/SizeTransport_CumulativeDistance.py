@@ -58,7 +58,7 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
 
     # Creating the figure structure
     fig = plt.figure(figsize=figsize)
-    gs = fig.add_gridspec(nrows=1, ncols=3, width_ratios=[1, 1, 1, 0.2])
+    gs = fig.add_gridspec(nrows=1, ncols=4, width_ratios=[1, 1, 1, 0.2])
     ax_list = []
     for column in range(gs.ncols):
         ax = fig.add_subplot(gs[0, column])
@@ -94,7 +94,7 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
                            linestyle=vUtils.SizeTransport_linestyle_SEABED_CRIT(tau=tau))[0] for tau in tau_list]
     size_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(index_size, subdivisions=len(size_list)),
                             label=size_label(size), linestyle='-')[0] for index_size, size in enumerate(size_list)]
-    ax_legend = fig.add_subplot(gs[:, 1])
+    ax_legend = fig.add_subplot(gs[:, 3])
     ax_legend.legend(handles=linestyles + size_colors, fontsize=fontsize, loc='upper right')
     ax_legend.axis('off')
 
