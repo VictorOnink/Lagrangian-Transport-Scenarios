@@ -42,7 +42,7 @@ def SizeTransport_relative_concentrations(scenario, figure_direc, size_list, rho
     for index, size in enumerate(size_list):
         data_dict = vUtils.SizeTransport_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
                                                    size=size, rho=rho_list[index], tau=tau_list[index])
-        concentration_dict[size] = data_dict[key_concentration][beach_state]
+        concentration_dict[index] = data_dict[key_concentration][beach_state]
     lon, lat = data_dict['lon'], data_dict['lat']
     Lon, Lat = np.meshgrid(lon, lat)
 
@@ -111,9 +111,9 @@ def SizeTransport_relative_concentrations(scenario, figure_direc, size_list, rho
     # The actual plotting of the figures
     for index, size in enumerate(size_list):
         if beach_state in ['afloat']:
-            ax_list[index].pcolormesh(Lon, Lat, concentration_dict[size], norm=norm, cmap=cmap_name, zorder=200)
+            ax_list[index].pcolormesh(Lon, Lat, concentration_dict[index], norm=norm, cmap=cmap_name, zorder=200)
         else:
-            ax_list[index].scatter(Lon.flatten(), Lat.flatten(), c=concentration_dict[size], norm=norm, cmap=cmap_name,
+            ax_list[index].scatter(Lon.flatten(), Lat.flatten(), c=concentration_dict[index], norm=norm, cmap=cmap_name,
                                    zorder=200)
 
     # Saving the figure
