@@ -54,7 +54,7 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
 
     # Creating the figure
     fig = plt.figure(figsize=figsize)
-    gs = fig.add_gridspec(nrows=3, ncols=1)
+    gs = fig.add_gridspec(nrows=3, ncols=2, width_ratios=[1, 0.2])
     gs.update(wspace=0.2, hspace=0.2)
 
     ax_list = []
@@ -85,8 +85,10 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
                                           color=vUtils.discrete_color_from_cmap(index_size,
                                                                                 subdivisions=len(size_list)),
                                           label=size_label(size))
-    # And adding in a legend
-    ax_list[0].legend(fontsize=fontsize, loc='upper right')
+    # Creating a legend
+    linestyles = [plt.plot([], [], c='k', label=r'$\tau_{crit}$ = ' + '{}'.format(tau), linestyle=vUtils.SizeTransport_linestyle_SEABED_CRIT(tau=tau))[0] for tau in tau_list]
+    ax_legend = fig.add_subplot(gs[:, 1])
+    ax_legend.legend(handles=linestyles, fontsize=fontsize, loc='upper right')
 
     file_name = output_direc + 'SizeTransport_beach_state_timeseries.jpg'
     plt.savefig(file_name, bbox_inches='tight')
