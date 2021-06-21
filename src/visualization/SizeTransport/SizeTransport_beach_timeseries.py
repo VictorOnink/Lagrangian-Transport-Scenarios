@@ -30,7 +30,7 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
                 timeseries_dict[size][tau][beach_state] = data_dict[beach_state]
             timeseries_dict[size][tau]['time_raw'] = data_dict['time']
             timeseries_dict[size][tau]['total'] = data_dict['total'][0]
-            print('size {}, tau {}, total {}, max total {}'.format(size, tau, data_dict['total'][0], np.nanmax(data_dict['total'])))
+            print('size {}, tau {}, max seabed {}'.format(size, tau, np.nanmax(timeseries_dict[size][tau]['seabed'])))
 
 
     # Normalizing all the particle counts with the total number of particles, and then multiplying by 100 to get a
