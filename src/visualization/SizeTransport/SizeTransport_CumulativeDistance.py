@@ -13,7 +13,8 @@ from copy import deepcopy
 import os
 
 
-def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list, figsize=(16, 8), fontsize=14):
+def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list, tau_list,
+                                     figsize=(16, 8), fontsize=14):
     # Getting the size of the domain that we want to plot for
     advection_scenario = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
                                                         advection_scenario='CMEMS_MEDITERRANEAN',
@@ -37,24 +38,27 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
         variable_dict[key] = np.zeros(shape=variable_domain[index].shape, dtype=float)
     timeseries_dict = dict.fromkeys(size_list)
     for keys in timeseries_dict.keys():
-        timeseries_dict[keys] = deepcopy(variable_dict)
+        timeseries_dict[keys] = {}
+        for tau in tau_list:
+            timeseries_dict[keys][tau] = deepcopy(variable_dict)
 
     for index_size, size in enumerate(size_list):
-        data_dict = vUtils.SizeTransport_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
-                                                   size=size, rho=rho_list[index_size])
-        for index_var, variable in enumerate(variable_list):
-            var_data = data_dict[variable]['total']['max']
-            os.system('echo "the max value is {} for size {} and variable {}"'.format(np.nanmax(var_data),
-                                                                                      size,
-                                                                                      variable))
-            for step in range(len(timeseries_dict[size][variable])):
-                particle_number = data_dict[variable]['total']['count'].size
-                cumulative_fraction = np.nansum(var_data < variable_domain[index_var][step]) / particle_number * 100.
-                timeseries_dict[size][variable][step] += cumulative_fraction
+        for tau in tau_list:
+            data_dict = vUtils.SizeTransport_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
+                                                       size=size, rho=rho_list[index_size], tau=tau)
+            for index_var, variable in enumerate(variable_list):
+                var_data = data_dict[variable]['total']['max']
+                os.system('echo "the max value is {} for size {} and variable {}"'.format(np.nanmax(var_data),
+                                                                                          size,
+                                                                                          variable))
+                for step in range(len(timeseries_dict[size][variable])):
+                    particle_number = data_dict[variable]['total']['count'].size
+                    cumulative_fraction = np.nansum(var_data < variable_domain[index_var][step]) / particle_number * 100.
+                    timeseries_dict[size][tau][variable][step] += cumulative_fraction
 
     # Creating the figure structure
     fig = plt.figure(figsize=figsize)
-    gs = fig.add_gridspec(nrows=1, ncols=3)
+    gs = fig.add_gridspec(nrows=1, ncols=3, width_ratios=[1, 1, 1, 0.2])
     ax_list = []
     for column in range(gs.ncols):
         ax = fig.add_subplot(gs[0, column])
@@ -78,11 +82,21 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
 
     # Plotting the data
     for index_size, size in enumerate(size_list):
-        for index_var, variable in enumerate(variable_list):
-            ax_list[index_var].plot(variable_domain[index_var], timeseries_dict[size][variable], linestyle='-',
-                                    color=vUtils.discrete_color_from_cmap(index_size, subdivisions=len(size_list)),
-                                    label=size_label(size))
-    ax_list[-1].legend(fontsize=fontsize, loc='upper left')
+        for tau in tau_list:
+            for index_var, variable in enumerate(variable_list):
+                ax_list[index_var].plot(variable_domain[index_var], timeseries_dict[size][variable],
+                                        linestyle=vUtils.SizeTransport_linestyle_SEABED_CRIT(tau),
+                                        color=vUtils.discrete_color_from_cmap(index_size, subdivisions=len(size_list)),
+                                        label=size_label(size))
+
+    # Creating a legend
+    linestyles = [plt.plot([], [], c='k', label=r'$\tau_{crit}$ = ' + '{}'.format(tau),
+                           linestyle=vUtils.SizeTransport_linestyle_SEABED_CRIT(tau=tau))[0] for tau in tau_list]
+    size_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(index_size, subdivisions=len(size_list)),
+                            label=size_label(size), linestyle='-')[0] for index_size, size in enumerate(size_list)]
+    ax_legend = fig.add_subplot(gs[:, 1])
+    ax_legend.legend(handles=linestyles + size_colors, fontsize=fontsize, loc='upper right')
+    ax_legend.axis('off')
 
     # Saving the figure
     file_name = output_direc + 'Vertical_Horizontal_Distance_cumulative.png'
