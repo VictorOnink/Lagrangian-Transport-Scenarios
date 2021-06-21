@@ -14,7 +14,7 @@ import os
 
 
 def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list, tau_list,
-                                     figsize=(18, 8), fontsize=14):
+                                     figsize=(18, 8), fontsize=14, legendsize=12):
     # Getting the size of the domain that we want to plot for
     advection_scenario = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
                                                         advection_scenario='CMEMS_MEDITERRANEAN',
@@ -58,7 +58,7 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
 
     # Creating the figure structure
     fig = plt.figure(figsize=figsize)
-    gs = fig.add_gridspec(nrows=1, ncols=4, width_ratios=[1, 1, 1, 0.2])
+    gs = fig.add_gridspec(nrows=1, ncols=4, width_ratios=[1, 1, 1, 0.35])
     ax_list = []
     for column in range(gs.ncols):
         ax = fig.add_subplot(gs[0, column])
@@ -95,7 +95,7 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
     size_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(index_size, subdivisions=len(size_list)),
                             label=size_label(size), linestyle='-')[0] for index_size, size in enumerate(size_list)]
     ax_legend = fig.add_subplot(gs[:, 3])
-    ax_legend.legend(handles=linestyles + size_colors, fontsize=fontsize, loc='upper right')
+    ax_legend.legend(handles=linestyles + size_colors, fontsize=legendsize, loc='upper right')
     ax_legend.axis('off')
 
     # Saving the figure
