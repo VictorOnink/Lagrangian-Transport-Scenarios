@@ -122,7 +122,7 @@ def SizeTransport_relative_concentrations(scenario, figure_direc, size_list, rho
     plt.savefig(file_name, bbox_inches='tight')
 
 
-def subfigure_title(index, size, rho_list, tau_list):
+def subfigure_title(index, size_list, rho_list, tau_list):
     """
     setting the title of the subfigure
     :param index:
@@ -130,7 +130,7 @@ def subfigure_title(index, size, rho_list, tau_list):
     :param rho:
     :return:
     """
-    title = '({}) r = {:.3f} mm'.format(string.ascii_lowercase[index], size * 1e3)
+    title = '({}) r = {:.3f} mm'.format(string.ascii_lowercase[index], size_list[index] * 1e3)
     if len(np.unique(rho_list)) > 1:
         title += r', $\rho$ = ' + '{} kg m'.format(rho_list[index]) + r'$^{-3}$'
     if len(np.unique(tau_list)) > 1:
