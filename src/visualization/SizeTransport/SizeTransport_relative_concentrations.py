@@ -8,7 +8,8 @@ import numpy as np
 import string
 
 
-def SizeTransport_relative_concentrations(scenario, figure_direc, size_list, rho_list, beach_state, time_selection,
+def SizeTransport_relative_concentrations(scenario, figure_direc, size_list, rho_list, tau_list, beach_state,
+                                          time_selection,
                                           difference=False, reference_size=None, figsize=(20, 10), fontsize=14):
     """
 
@@ -40,7 +41,7 @@ def SizeTransport_relative_concentrations(scenario, figure_direc, size_list, rho
         key_concentration = utils.analysis_simulation_year_key(time_selection)
     for index, size in enumerate(size_list):
         data_dict = vUtils.SizeTransport_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
-                                                   size=size, rho=rho_list[index])
+                                                   size=size, rho=rho_list[index], tau=tau_list[index])
         concentration_dict[size] = data_dict[key_concentration][beach_state]
     lon, lat = data_dict['lon'], data_dict['lat']
     Lon, Lat = np.meshgrid(lon, lat)
@@ -105,7 +106,7 @@ def SizeTransport_relative_concentrations(scenario, figure_direc, size_list, rho
     # Defining the particle sizes and densities that we want to plot, and adding subfigure titles to the corresponding
     # subfigures
     for index, ax in enumerate(ax_list):
-        ax.set_title(subfigure_title(index, size_list[index], rho_list[index]), weight='bold', fontsize=fontsize)
+        ax.set_title(subfigure_title(index, size_list, rho_list, tau_list), weight='bold', fontsize=fontsize)
 
     # The actual plotting of the figures
     for index, size in enumerate(size_list):
@@ -121,7 +122,7 @@ def SizeTransport_relative_concentrations(scenario, figure_direc, size_list, rho
     plt.savefig(file_name, bbox_inches='tight')
 
 
-def subfigure_title(index, size, rho):
+def subfigure_title(index, size, rho_list, tau_list):
     """
     setting the title of the subfigure
     :param index:
@@ -129,8 +130,12 @@ def subfigure_title(index, size, rho):
     :param rho:
     :return:
     """
-    alphabet = string.ascii_lowercase
-    return '({}) r = {:.3f} mm, '.format(alphabet[index], size * 1e3) + r'$\rho$ = ' + '{} kg m'.format(rho) + r'$^{-3}$'
+    title = '({}) r = {:.3f} mm'.format(string.ascii_lowercase[index], size * 1e3)
+    if len(np.unique(rho_list)) > 1:
+        title += r', $\rho$ = ' + '{} kg m'.format(rho_list[index]) + r'$^{-3}$'
+    if len(np.unique(tau_list)) > 1:
+        title += r', $\tau_{crit} = $' + '{} Pa'.format(tau_list[index])
+    return title
 
 
 def plot_save_name(output_direc, rho, time_selection, difference, beach_state, reference_size,
@@ -139,15 +144,16 @@ def plot_save_name(output_direc, rho, time_selection, difference, beach_state, r
     difference_dict = {True: 'Difference', False: 'absolute'}
     if not difference:
         return output_direc + 'SizeTransport_{}_{}_{}_{}_rho_{}_y_{}.png'.format(flowdata, beach_state,
-                                                                                  difference_dict[difference],
-                                                                                  selection_dict[time_selection], rho,
-                                                                                  startyear)
-    else:
-        return output_direc + 'SizeTransport_{}_{}_{}_refsize_{}_{}_rho_{}_y_{}.png'.format(flowdata, beach_state,
                                                                                  difference_dict[difference],
-                                                                                            reference_size,
                                                                                  selection_dict[time_selection], rho,
                                                                                  startyear)
+    else:
+        return output_direc + 'SizeTransport_{}_{}_{}_refsize_{}_{}_rho_{}_y_{}.png'.format(flowdata, beach_state,
+                                                                                            difference_dict[difference],
+                                                                                            reference_size,
+                                                                                            selection_dict[
+                                                                                                time_selection], rho,
+                                                                                            startyear)
 
 
 def set_normalization(beach_state, difference):
@@ -166,5 +172,5 @@ def set_normalization(beach_state, difference):
             vmin, vmax = 1, 1e6
         return colors.LogNorm(vmin=vmin, vmax=vmax)
     else:
-        linthresh,linscale, vmin, vmax = 1e2, 1, -1e4, 1e4
+        linthresh, linscale, vmin, vmax = 1e2, 1, -1e4, 1e4
         return colors.SymLogNorm(linthresh=linthresh, linscale=linscale, vmin=vmin, vmax=vmax)

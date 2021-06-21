@@ -16,8 +16,10 @@ def run(scenario, figure_direc: str):
     :param scenario:
     :return:
     """
-    size_list = np.array([5000, 500, 50, 10, 5, 1]) * settings.SIZE_FACTOR
+    # size_list = np.array([5000, 500, 50, 10, 5, 1]) * settings.SIZE_FACTOR
+    size_list = np.array([500, 100, 50, 500, 100, 50]) * settings.SIZE_FACTOR
     rho_list = np.ones(size_list.shape, dtype=int) * 920
+    tau_list = np.array([0.14, 0.14, 0.14, 0.025, 0.025, 0.025])
 
     # Creating a figure of the basin bathymetry
     # General.General_bathymetry(scenario=scenario, figure_direc=figure_direc)
@@ -31,19 +33,20 @@ def run(scenario, figure_direc: str):
 
     # Creating figures showing the relative distribution, averaged over the entire simulation and time-snapshots at the
     # end of each simulation year
-    # time_select = 2
+    time_select = 1
     # SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
     #                                                                             scenario=scenario,
     #                                                                             size_list=size_list,
     #                                                                             rho_list=rho_list,
     #                                                                             time_selection=time_select,
     #                                                                             beach_state='afloat')
-    # SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
-    #                                                                             scenario=scenario,
-    #                                                                             size_list=size_list,
-    #                                                                             rho_list=rho_list,
-    #                                                                             time_selection=time_select,
-    #                                                                             beach_state='seabed')
+    SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
+                                                                                scenario=scenario,
+                                                                                size_list=size_list,
+                                                                                rho_list=rho_list,
+                                                                                time_selection=time_select,
+                                                                                tau_list=tau_list,
+                                                                                beach_state='seabed')
     # SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
     #                                                                             scenario=scenario,
     #                                                                             size_list=size_list,
@@ -80,9 +83,9 @@ def run(scenario, figure_direc: str):
     #                                                                                 cumulative=True)
 
     # Cumulative plots for the total distance travelled vertically and horizontally, and the max depth reached
-    SizeTransport_CumulativeDistance.SizeTransport_CumulativeDistance(figure_direc=figure_direc,
-                                                                      scenario=scenario,
-                                                                      size_list=size_list,
-                                                                      rho_list=rho_list,
-                                                                      tau_list=tau_list)
+    # SizeTransport_CumulativeDistance.SizeTransport_CumulativeDistance(figure_direc=figure_direc,
+    #                                                                   scenario=scenario,
+    #                                                                   size_list=size_list,
+    #                                                                   rho_list=rho_list,
+    #                                                                   tau_list=tau_list)
     pass
