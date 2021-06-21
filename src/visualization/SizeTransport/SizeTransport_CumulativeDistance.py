@@ -47,11 +47,11 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
             data_dict = vUtils.SizeTransport_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
                                                        size=size, rho=rho_list[index_size], tau=tau)
             for index_var, variable in enumerate(variable_list):
-                var_data = data_dict[variable]['total']['max']
+                var_data = data_dict[variable][tau]['total']['max']
                 os.system('echo "the max value is {} for size {} and variable {}"'.format(np.nanmax(var_data),
                                                                                           size,
                                                                                           variable))
-                for step in range(len(timeseries_dict[size][variable])):
+                for step in range(len(timeseries_dict[size][tau][variable])):
                     particle_number = data_dict[variable]['total']['count'].size
                     cumulative_fraction = np.nansum(var_data < variable_domain[index_var][step]) / particle_number * 100.
                     timeseries_dict[size][tau][variable][step] += cumulative_fraction
