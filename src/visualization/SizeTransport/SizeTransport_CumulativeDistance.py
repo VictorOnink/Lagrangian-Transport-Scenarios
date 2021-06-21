@@ -14,7 +14,7 @@ import os
 
 
 def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list, tau_list,
-                                     figsize=(16, 8), fontsize=14):
+                                     figsize=(18, 8), fontsize=14):
     # Getting the size of the domain that we want to plot for
     advection_scenario = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
                                                         advection_scenario='CMEMS_MEDITERRANEAN',
