@@ -13,10 +13,10 @@ SHORETIME=20
 RESUSTIME=69
 #for scenario 3, the shore dependence scenario.
 SHOREDEPEN=0
-#for scenario 4, the minimum wind speed for resusplension. Divide by 10 for actual value
+#for scenario 4, the minimum wind speed for resuspension. Divide by 10 for actual value
 WMIN=3
 #for scenario 6, the initial size of the particle in 1e-6 m
-PARTICLE_SIZE=1
+PARTICLE_SIZE=5000
 #for scenario 6, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=140
 #the starting year of the simulation, and how many years the simulation will take
@@ -124,7 +124,7 @@ do
 	   part3="#SBATCH --mail-user=victor.onink@climate.unibe.ch"
 	   part4="#SBATCH --job-name="$runname
 	   part5="#SBATCH --output="runOutput/$runname".o%j"
-	   part6="#SBATCH --mem-per-cpu=30G"
+	   part6="#SBATCH --mem-per-cpu=40G"
 	   if [ "$DEBUG" -eq "0" ]; then
 	          part7="#SBATCH --time=95:59:00"
             part8="#SBATCH --partition=epyc2"
