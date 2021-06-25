@@ -185,7 +185,7 @@ def slicing_correction(array: np.array):
 
 def within_domain(lon: np.array, lat: np.array, lon_inputs: np.array, lat_inputs: np.array, plastic_inputs: np.array):
     lon_max, lon_min = np.max(lon), np.min(lon)
-    lat_max, lat_min = np.max(lat), np.min(lon)
+    lat_max, lat_min = np.max(lat), np.min(lat)
     # Check which cells are within the domain and non-zero inputs
     domain = (lon_inputs <= lon_max) & (lon_inputs >= lon_min) & (lat_inputs >= lat_min) & \
              (lat_inputs <= lat_max) & (plastic_inputs > 0)
