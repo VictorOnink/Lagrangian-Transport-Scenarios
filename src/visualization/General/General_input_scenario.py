@@ -16,7 +16,7 @@ def General_input_scenario(scenario, figure_direc, figsize=(10, 8), fontsize=14)
     # Getting the bathymetry data
     file_dict = scenario.file_dict
     input_dict = file_dict['STARTFILES_filename']
-    df = pd.Dataframe({'lat': np.load(input_dict['lat']), 'lon': np.load(input_dict['lon'])})
+    df = pd.DataFrame({'lat': np.load(input_dict['lat']), 'lon': np.load(input_dict['lon'])})
     print(df)
 
     print(df.groupby(['lat', 'lon']).size())
