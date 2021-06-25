@@ -32,7 +32,7 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
         os.system('echo "Perhaps take another look at what input you are using?"')
 
     # Check existence
-    if len(glob.glob(output_prefix + '*')) > 0:
+    if len(glob.glob(output_prefix + '*')) > 10000:
         os.system('echo "The input files {} are already present"'.format(output_prefix))
     else:
         os.system('echo "We need to create the input files {}"'.format(output_prefix))
@@ -86,9 +86,11 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
         # Only keep the particles that are within the domain
         lon_inputs, lat_inputs, plastic_inputs = within_domain(lon=lon, lat=lat, lon_inputs=lon_inputs,
                                                                lat_inputs=lat_inputs, plastic_inputs=plastic_inputs)
+        print(np.nansum(plastic_inputs))
         # Get the inputs onto the grid of the advection data
         inputs_grid = utils.histogram(lon_data=lon_inputs, lat_data=lat_inputs, bins_Lon=lon, bins_Lat=lat,
                                       weight_data=plastic_inputs, area_correc=False)
+        print(np.nansum(inputs_grid))
         if settings.INPUT == 'Jambeck':
             inputs_grid[distance > 50] = 0
         # Get the ocean cells adjacent to coastal ocean cells, as these are the ones in which the particles will
