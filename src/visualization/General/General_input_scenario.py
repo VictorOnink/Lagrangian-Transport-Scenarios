@@ -18,6 +18,6 @@ def General_input_scenario(scenario, figure_direc, figsize=(10, 8), fontsize=14)
     input_dict = file_dict['STARTFILES_filename']
     df = pd.DataFrame({'lat': np.load(input_dict['lat']), 'lon': np.load(input_dict['lon'])})
     df = df.groupby(['lat', 'lon']).size()
-
+    print(df)
     for index in df.index:
         print('{}, {}, {}'.format(index, df['lat'][index], df['lon'][index]))
