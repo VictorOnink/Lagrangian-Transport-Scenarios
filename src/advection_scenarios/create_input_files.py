@@ -87,7 +87,7 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
         # Only keep the particles that are within the domain
         lon_inputs, lat_inputs, plastic_inputs = within_domain(lon=lon, lat=lat, lon_inputs=lon_inputs,
                                                                lat_inputs=lat_inputs, plastic_inputs=plastic_inputs)
-        plt.plot(lon_inputs, lat_inputs)
+        plt.plot(lon_inputs, lat_inputs, '.')
         plt.savefig('/storage/homefs/vo18e689/Data/Output/Figures/SizeTransport/General/test.png')
 
         print('at lat {} lon {} we have the highest input, namely {}'.format(lat_inputs[np.argmax(plastic_inputs)],
