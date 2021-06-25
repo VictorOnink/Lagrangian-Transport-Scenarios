@@ -38,7 +38,7 @@ def General_input_scenario(scenario, figure_direc, figsize=(10, 8), fontsize=14)
                                                        lat_grid_step=5, lon_grid_step=10, resolution='10m'))
 
     # Plotting the data
-    plt.scatter(df['lon'], df['lat'], s=df['count'] * 10, zorder=1000, edgecolor='r', facecolor=None)
+    plt.scatter(df['lon'], df['lat'], s=df['count'], zorder=1000, edgecolor='r', facecolor='none')
 
     file_name = output_direc + 'InputScenario.png'
     plt.savefig(file_name, bbox_inches='tight')
