@@ -60,6 +60,7 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
             lat_inputs = Lat_population[mismanaged_total > 0].flatten()
             plastic_inputs = mismanaged_total[mismanaged_total > 0].flatten()
         elif settings.INPUT == 'Lebreton':
+            os.system('echo "Loading the lebreton data"')
             lebData = pd.read_csv(settings.INPUT_DIREC + 'PlasticRiverInputs.csv')
             lon_inputs, lat_inputs = np.array(lebData['X']), np.array(lebData['Y'])
             plastic_inputs = np.array(lebData['i_low'])
