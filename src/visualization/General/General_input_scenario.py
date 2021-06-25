@@ -13,11 +13,32 @@ def General_input_scenario(scenario, figure_direc, figsize=(10, 8), fontsize=14)
     output_direc = figure_direc + 'General/'
     utils.check_direc_exist(output_direc)
 
-    # Getting the bathymetry data
+    # Getting the input location data
     file_dict = scenario.file_dict
     input_dict = file_dict['STARTFILES_filename']
+
+    # Now we have all the unique input locations, and the number of particles that are released there
     df = pd.DataFrame({'lat': np.load(input_dict['lat']), 'lon': np.load(input_dict['lon'])})
     df = df.groupby(['lat', 'lon']).size().reset_index().rename(columns={0: 'count'})
-    print(df)
-    for index in df.index:
-        print('{}, {}, {}'.format(index, df['lat'][index], df['lon'][index]))
+
+    # Getting the spatial domain for the figure
+    spatial_domain = np.nanmin(file_dict['LON']), np.nanmax(file_dict['LON']), \
+                     np.nanmin(file_dict['LAT']), np.nanmax(file_dict['LAT'])
+
+    # Creating the base figure
+    gridspec_shape = (1, 1)
+    fig = plt.figure(figsize=figsize)
+    gs = fig.add_gridspec(nrows=gridspec_shape[0], ncols=gridspec_shape[1] + 1, width_ratios=[1, 0.1])
+
+    ax_list = []
+    for rows in range(gridspec_shape[0]):
+        for columns in range(gridspec_shape[1]):
+            ax_list.append(vUtils.cartopy_standard_map(fig=fig, gridspec=gs, row=rows, column=columns,
+                                                       domain=spatial_domain,
+                                                       lat_grid_step=5, lon_grid_step=10, resolution='10m'))
+
+    # Plotting the data
+    plt.plot(df['lon'], df['lat'], s=df['count'] * 10, zorder=1000, edgecolor='r', facecolor=None)
+
+    file_name = output_direc + 'InputScenario.png'
+    plt.savefig(file_name, bbox_inches='tight')
