@@ -17,6 +17,7 @@ SHOREDEPEN=0
 WMIN=3
 #for scenario 6, the initial size of the particle in 1e-5 m
 PARTICLE_SIZE_list=(5 1)
+echo $PARTICLE_SIZE_list
 #for scenario 6, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=25
 #the starting year of the simulation, and how many years the simulation will take
@@ -75,7 +76,7 @@ for SHORETIME in $SHORETIME_list; do
       export SHORETIME
       export RESUSTIME
       export PARTICLE_SIZE
-
+      echo $PARTICLE_SIZE
       #Now, we can set the job name prefix
       if [ "$SCENARIO" -eq "0" ]; then
         RUNNAMEPREFIX="Analysis_AdvDifOnly_y="${STARTYEAR}"_"
