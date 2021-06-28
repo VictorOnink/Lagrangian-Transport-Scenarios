@@ -11,7 +11,8 @@ import matplotlib.animation as animation
 import os
 
 
-def SizeTransport_Animation(scenario, figure_direc, size_list, rho_list, figsize=(20, 10), fontsize=14):
+def SizeTransport_Animation(scenario, figure_direc, size_list, rho_list, tau_list=[settings.SEABED_CRIT],
+                            figsize=(20, 10), fontsize=14):
     """
     Here we want to make an animation of the
     :return:
@@ -92,7 +93,7 @@ def SizeTransport_Animation(scenario, figure_direc, size_list, rho_list, figsize
             # Loading the dictionary with the data
             prefix = 'timeslices_{}'.format(date)
             data_dict = vUtils.SizeTransport_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
-                                                       size=size, rho=rho_list[index])
+                                                       size=size, rho=rho_list[index], tau=tau_list[index])
             lon, lat, depth = data_dict['lon'], data_dict['lat'], data_dict['z'].astype(int)
             # Updating the plot on each axis with the data
             plot_list[index].set_offsets(np.c_[lon, lat])

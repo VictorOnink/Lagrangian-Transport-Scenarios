@@ -77,42 +77,43 @@ for SHORETIME in $SHORETIME_list; do
       export RESUSTIME
       export PARTICLE_SIZE
       echo $PARTICLE_SIZE
+
       #Now, we can set the job name prefix
       if [ "$SCENARIO" -eq "0" ]; then
         RUNNAMEPREFIX="Analysis_AdvDifOnly_y="${STARTYEAR}"_"
         if [ "$STOKES" -eq "1" ]; then
-            RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
-              fi
+          RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
+        fi
       elif [ "$SCENARIO" -eq "1" ]; then
         RUNNAMEPREFIX="Analysis_Prox_vic="${VICINITY}"_y="${STARTYEAR}"_"
         if [ "$STOKES" -eq "1" ]; then
-            RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
-              fi
+          RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
+        fi
       elif [ "$SCENARIO" -eq "2" ]; then
         RUNNAMEPREFIX="Analysis_Stochastic_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTYEAR}"_"
         if [ "$STOKES" -eq "1" ]; then
-            RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
-              fi
+          RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
+        fi
       elif [ "$SCENARIO" -eq "3" ]; then
-              RUNNAMEPREFIX="Analysis_SDResus_SD="${SHOREDEPEN}"_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTYEAR}"_"
-              if [ "$STOKES" -eq "1" ]; then
-            RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
-              fi
+        RUNNAMEPREFIX="Analysis_SDResus_SD="${SHOREDEPEN}"_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTYEAR}"_"
+        if [ "$STOKES" -eq "1" ]; then
+          RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
+        fi
       elif [ "$SCENARIO" -eq "4" ]; then
-              RUNNAMEPREFIX="Analysis_Turrell_Wmin="${WMIN}"_ST="${SHORETIME}"_y"${STARTYEAR}"_"
-              if [ "$STOKES" -eq "1" ]; then
-            RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
-              fi
+        RUNNAMEPREFIX="Analysis_Turrell_Wmin="${WMIN}"_ST="${SHORETIME}"_y"${STARTYEAR}"_"
+        if [ "$STOKES" -eq "1" ]; then
+          RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
+        fi
       elif [ "$SCENARIO" -eq "5" ]; then
-              RUNNAMEPREFIX="Analysis_KaandorpFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTYEAR}"_"
-              if [ "$STOKES" -eq "1" ]; then
-            RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
-              fi
+        RUNNAMEPREFIX="Analysis_KaandorpFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTYEAR}"_"
+        if [ "$STOKES" -eq "1" ]; then
+          RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
+        fi
       elif [ "$SCENARIO" -eq "6" ]; then
-              RUNNAMEPREFIX="Analysis_SizeTransport_SIZE="${PARTICLE_SIZE}"_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTYEAR}"_"
-              if [ "$STOKES" -eq "1" ]; then
-            RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
-              fi
+        RUNNAMEPREFIX="Analysis_SizeTransport_SIZE="${PARTICLE_SIZE}"_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTYEAR}"_"
+        if [ "$STOKES" -eq "1" ]; then
+          RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
+        fi
       fi
       RUNNAMEPREFIX=${RUNNAMEPREFIX}"ENSEMBLE="${ENSEMBLE}
       echo $RUNNAMEPREFIX
@@ -141,14 +142,13 @@ for SHORETIME in $SHORETIME_list; do
       #And now the actual running of the code
       part13="python src/main.py -p 10 -v"
       #and now the creation of the submission file
-      for i in {1..13}
-      do
-      partGrab="part"$i
-      echo ${!partGrab} >> jobsubmissionFile_${run}_${restartnum}.sh
+      for i in {1..13}; do
+        partGrab="part"$i
+        echo ${!partGrab} >> jobsubmissionFile_${run}_${restartnum}.sh
       done
-
+      # submitting the job
       sbatch jobsubmissionFile_${run}_${restartnum}.sh
-
+      # deleting the submission file
       rm jobsubmissionFile_${run}_${restartnum}.sh
     done
   done
