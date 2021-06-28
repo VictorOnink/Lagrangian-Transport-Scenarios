@@ -16,7 +16,7 @@ SHOREDEPEN=0
 #for scenario 4, the minimum wind speed for resusplension. Divide by 10 for actual value
 WMIN=3
 #for scenario 6, the initial size of the particle in 1e-5 m
-PARTICLE_SIZE_list=(1)
+PARTICLE_SIZE_list=(5 1)
 #for scenario 6, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=25
 #the starting year of the simulation, and how many years the simulation will take
@@ -65,10 +65,6 @@ export MAX_DISTANCE
 export TIMESLICING
 export STATISTICS
 
-
-
-RUNNAMEPREFIX=${RUNNAMEPREFIX}"ENSEMBLE="${ENSEMBLE}
-echo $RUNNAMEPREFIX
 #####################################################################################
 # Now the part where we create the submission file                                  #
 #####################################################################################
@@ -117,6 +113,8 @@ for SHORETIME in $SHORETIME_list; do
             RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
               fi
       fi
+      RUNNAMEPREFIX=${RUNNAMEPREFIX}"ENSEMBLE="${ENSEMBLE}
+      echo $RUNNAMEPREFIX
 
       runname=$RUNNAMEPREFIX
       part1="#!/bin/sh"
