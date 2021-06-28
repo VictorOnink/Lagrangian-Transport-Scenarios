@@ -11,7 +11,7 @@ import matplotlib.animation as animation
 import os
 
 
-def SizeTransport_Animation(scenario, figure_direc, size_list, rho_list, tau_list=[settings.SEABED_CRIT],
+def SizeTransport_Animation(scenario, figure_direc, size_list, rho_list, tau_list,
                             figsize=(20, 10), fontsize=14):
     """
     Here we want to make an animation of the
