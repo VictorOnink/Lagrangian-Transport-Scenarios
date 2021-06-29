@@ -71,10 +71,10 @@ export STATISTICS
 #####################################################################################
 
 for SHORETIME in $SHORETIME_list; do
+  export SHORETIME
   for RESUSTIME in $RESUSTIME_list; do
+    export RESUSTIME
     for PARTICLE_SIZE in $PARTICLE_SIZE_list; do
-      export SHORETIME
-      export RESUSTIME
       export PARTICLE_SIZE
       echo $PARTICLE_SIZE
 
@@ -144,12 +144,12 @@ for SHORETIME in $SHORETIME_list; do
       #and now the creation of the submission file
       for i in {1..13}; do
         partGrab="part"$i
-        echo ${!partGrab} >> jobsubmissionFile_${run}_${restartnum}.sh
+        echo ${!partGrab} >> jobsubmissionFile.sh
       done
       # submitting the job
-      sbatch jobsubmissionFile_${run}_${restartnum}.sh
+      sbatch jobsubmissionFile.sh
       # deleting the submission file
-      rm jobsubmissionFile_${run}_${restartnum}.sh
+      rm jobsubmissionFile.sh
     done
   done
 done
