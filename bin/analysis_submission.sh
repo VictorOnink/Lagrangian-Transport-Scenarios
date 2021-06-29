@@ -70,11 +70,11 @@ export STATISTICS
 # Now the part where we create the submission file                                  #
 #####################################################################################
 
-for SHORETIME in $SHORETIME_list; do
+for SHORETIME in "${SHORETIME_list[@]}"; do
   export SHORETIME
-  for RESUSTIME in $RESUSTIME_list; do
+  for RESUSTIME in "${RESUSTIME_list[@]}"; do
     export RESUSTIME
-    for PARTICLE_SIZE in $PARTICLE_SIZE_list; do
+    for PARTICLE_SIZE in "${PARTICLE_SIZE_list[@]}"; do
       export PARTICLE_SIZE
       echo $PARTICLE_SIZE
 
