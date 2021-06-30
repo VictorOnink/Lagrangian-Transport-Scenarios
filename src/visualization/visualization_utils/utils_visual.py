@@ -24,10 +24,10 @@ def SizeTransport_load_data(scenario, prefix, data_direc, size,  rho, tau=settin
     :param input:
     :return:
     """
-    file_name = scenario._file_names(new=True, advection_data=advection_data, shore_time=shore_time, init_size=size,
-                                     init_density=rho, start_year=start_year, input=input, run=settings.RUN,
-                                     restart=settings.RESTART, seabed_crit=tau)
-    full_path = data_direc + utils._analysis_save_file_name(input_file=file_name, prefix=prefix)
+    file_name = scenario.file_names(new=True, advection_data=advection_data, shore_time=shore_time, init_size=size,
+                                    init_density=rho, start_year=start_year, input=input, run=settings.RUN,
+                                    restart=settings.RESTART, seabed_crit=tau)
+    full_path = data_direc + utils.analysis_save_file_name(input_file=file_name, prefix=prefix)
     return utils.load_obj(full_path)
 
 

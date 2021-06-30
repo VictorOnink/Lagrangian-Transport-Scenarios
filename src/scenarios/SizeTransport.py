@@ -43,8 +43,8 @@ class SizeTransport(base_scenario.BaseScenario):
                                                                       seabed_resuspension=True)
         return fieldset
 
-    def _get_pset(self, fieldset: FieldSet, particle_type: utils.BaseParticle, var_dict: dict,
-                  start_time: datetime, repeat_dt: timedelta):
+    def get_pset(self, fieldset: FieldSet, particle_type: utils.BaseParticle, var_dict: dict,
+                 start_time: datetime, repeat_dt: timedelta):
         """
         :return:
         """
@@ -62,7 +62,7 @@ class SizeTransport(base_scenario.BaseScenario):
                                repeatdt=repeat_dt)
         return pset
 
-    def _get_pclass(self):
+    def get_pclass(self):
         os.system('echo "Creating the particle class"')
         particle_type = utils.BaseParticle
         if settings.RESTART == 0:
@@ -93,11 +93,11 @@ class SizeTransport(base_scenario.BaseScenario):
                                     other_value=settings.INIT_SIZE)
         return particle_type
 
-    def _file_names(self, new: bool = False, advection_data: str = settings.ADVECTION_DATA,
-                    shore_time: int = settings.SHORE_TIME, init_size: float = settings.INIT_SIZE,
-                    init_density: int = settings.INIT_DENSITY, start_year: int = settings.START_YEAR,
-                    input: str = settings.INPUT, run: int = settings.RUN, restart: int = settings.RESTART,
-                    seabed_crit: float = settings.SEABED_CRIT):
+    def file_names(self, new: bool = False, advection_data: str = settings.ADVECTION_DATA,
+                   shore_time: int = settings.SHORE_TIME, init_size: float = settings.INIT_SIZE,
+                   init_density: int = settings.INIT_DENSITY, start_year: int = settings.START_YEAR,
+                   input: str = settings.INPUT, run: int = settings.RUN, restart: int = settings.RESTART,
+                   seabed_crit: float = settings.SEABED_CRIT):
         odirec = self.output_dir + "SizeTransport/size_{:.1E}/".format(settings.INIT_SIZE)
         if new:
             os.system('echo "Set the output file name"')
@@ -111,7 +111,7 @@ class SizeTransport(base_scenario.BaseScenario):
                 seabed_crit, start_year, input, restart - 1, run)
         return odirec + self.prefix + '_{}_st={}_rt={:.6f}_size={:.1E}_rho={}_taubss={:.2E}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
 
-    def _beaching_kernel(particle, fieldset, time):
+    def beaching_kernel(particle, fieldset, time):
         """
         The beaching and resuspension kernels for beaching on the coastline follows the procedure outlined in Onink et
         al. (2021).
@@ -182,16 +182,16 @@ class SizeTransport(base_scenario.BaseScenario):
         particle.prev_lat = particle.lat
         particle.prev_depth = particle.depth
 
-    def _get_particle_behavior(self, pset: ParticleSet):
+    def get_particle_behavior(self, pset: ParticleSet):
         os.system('echo "Setting the particle behavior"')
         base_behavior = pset.Kernel(utils.PolyTEOS10_bsq) + \
-                        pset.Kernel(utils._get_kinematic_viscosity) + \
+                        pset.Kernel(utils.get_kinematic_viscosity) + \
                         pset.Kernel(self._get_reynolds_number) + \
-                        pset.Kernel(utils._floating_AdvectionRK4DiffusionEM_stokes_depth) + \
-                        pset.Kernel(utils._anti_beach_nudging) + \
+                        pset.Kernel(utils.floating_AdvectionRK4DiffusionEM_stokes_depth) + \
+                        pset.Kernel(utils.anti_beach_nudging) + \
                         pset.Kernel(self._get_rising_velocity) + \
                         pset.Kernel(utils.KPP_wind_mixing) + \
                         pset.Kernel(self._TotalDistance) + \
                         pset.Kernel(utils.internal_tide_mixing) + \
-                        pset.Kernel(self._beaching_kernel)
+                        pset.Kernel(self.beaching_kernel)
         return base_behavior

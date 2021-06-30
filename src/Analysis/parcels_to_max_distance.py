@@ -27,7 +27,7 @@ def parcels_to_max_distance(file_dict: dict, lon_min: float = -180, lon_max: flo
             if restart == 0:
                 # If this is the beginning of the run, we want to see if the initial positions of the particles fall
                 # within the area we have defined as the domain
-                within_domain = utils._particles_in_domain(domain=domain, lon=lon[:, :1], lat=lat[:, :1])
+                within_domain = utils.particles_in_domain(domain=domain, lon=lon[:, :1], lat=lat[:, :1])
             # Making a cumulative array for the run
             if restart == 0:
                 max_distance_file = max_distance_file[within_domain]
@@ -49,6 +49,6 @@ def parcels_to_max_distance(file_dict: dict, lon_min: float = -180, lon_max: flo
         prefix = 'maximum_distance-lon_min={}-lon_max={}-lat_min={}-lat_max={}'.format(lon_min, lon_max, lat_min,
                                                                                        lat_max)
 
-    output_name = output_direc + utils._analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
+    output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
     io.savemat(output_name, output_dict)
     os.system('echo "The maximum distance has been saved"')

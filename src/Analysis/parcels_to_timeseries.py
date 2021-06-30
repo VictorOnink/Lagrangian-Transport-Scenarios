@@ -50,8 +50,8 @@ def parcels_to_timeseries(file_dict: dict, lon_min: float = -180, lon_max: float
 
             # Just get the particles within the domain, which we do by setting all values not within the domain to nan
             # These will therefore not be taken into account in the calculations of total counts/weights
-            within_domain = utils._particles_in_domain(domain=domain, lon=full_data_dict['lon'],
-                                                       lat=full_data_dict['lat'])
+            within_domain = utils.particles_in_domain(domain=domain, lon=full_data_dict['lon'],
+                                                      lat=full_data_dict['lat'])
             for variable in full_data_dict.keys():
                 full_data_dict[variable][within_domain == False] = np.nan
 
@@ -69,6 +69,6 @@ def parcels_to_timeseries(file_dict: dict, lon_min: float = -180, lon_max: float
                         beach_state_dict['total'][index] += np.nansum(full_data_dict['time'] == time_value)
     # Saving the output
     prefix = 'timeseries'
-    output_name = output_direc + utils._analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
+    output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
     utils.save_obj(output_name, beach_state_dict)
     os.system('echo "The timeseries has been saved"')

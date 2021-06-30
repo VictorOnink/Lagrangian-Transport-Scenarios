@@ -4,6 +4,7 @@ import factories.scenario_factory as scenario_factory
 import factories.analysis_factory as analysis_factory
 import factories.visualization_factory as visualization_factory
 
+
 def run():
     if settings.SUBMISSION == 'simulation':
         os.system('echo "Running the simulation"')

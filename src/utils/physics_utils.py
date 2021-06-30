@@ -6,7 +6,7 @@ import numpy as np
 import os
 
 
-def _anti_beach_nudging(particle, fieldset, time):
+def anti_beach_nudging(particle, fieldset, time):
     """
     If a particle is within 0.5km of the nearest coastline (determined by sampling
     the distance2shore field), then it gets nudged away back out to sea. I have
@@ -23,7 +23,7 @@ def _anti_beach_nudging(particle, fieldset, time):
         particle.lat -= borVab * particle.dt
 
 
-def _floating_advection_rk4(particle, fieldset, time):
+def floating_advection_rk4(particle, fieldset, time):
     """Advection of particles using fourth-order Runge-Kutta integration.
 
     Function needs to be converted to Kernel object before execution
@@ -80,7 +80,7 @@ def _floating_advection_rk4(particle, fieldset, time):
         particle.lat += ((v1 + vS1) + 2 * (v2 + vS2) + 2 * (v3 + vS3) + (v4 + vS4)) / 6. * particle.dt
 
 
-def _floating_2d_brownian_motion(particle, fieldset, time):
+def floating_2d_brownian_motion(particle, fieldset, time):
     """Kernel for simple Brownian particle diffusion in zonal and meridional direction.
     Assumes that fieldset has fields Kh_zonal and Kh_meridional
     we don't want particles to jump on land and thereby beach"""
@@ -96,7 +96,7 @@ def _floating_2d_brownian_motion(particle, fieldset, time):
         particle.lat += by * dWy
 
 
-def _floating_AdvectionRK4DiffusionEM_stokes_depth(particle, fieldset, time):
+def floating_AdvectionRK4DiffusionEM_stokes_depth(particle, fieldset, time):
     """Kernel for 2D advection-diffusion,  with advection solved
     using fourth order Runge-Kutta (RK4) and diffusion using the
     Euler-Maruyama scheme (EM). Using the RK4 scheme for diffusion is
@@ -125,7 +125,8 @@ def _floating_AdvectionRK4DiffusionEM_stokes_depth(particle, fieldset, time):
         # Stokes depth dependence term
         w_p = 2 * math.pi / fieldset.WP[t, d, la, lo]  # Peak period
         k_p = w_p ** 2 / 9.81  # peak wave number
-        z_correc = max(d - fieldset.SURF_Z, 0)  # correction since the surface in the CMEMS Mediterranean data is not at 0
+        z_correc = max(d - fieldset.SURF_Z,
+                       0)  # correction since the surface in the CMEMS Mediterranean data is not at 0
         st_z = math.exp(-2 * k_p * z_correc) - math.sqrt(2 * math.pi * k_p * z_correc) * math.erfc(2 * k_p * z_correc)
 
         # RK4 terms
@@ -165,7 +166,7 @@ def _floating_AdvectionRK4DiffusionEM_stokes_depth(particle, fieldset, time):
                          / 6. + dKdy) * particle.dt + by * dWy
 
 
-def _initial_input(particle, fieldset, time):
+def initial_input(particle, fieldset, time):
     """
     Since we have many instances that particles start at the very same position,
     when a particle is first added to the simulation it will get a random kick
@@ -198,7 +199,7 @@ def _initial_input(particle, fieldset, time):
             check += 1
 
 
-def _delete_particle(particle, fieldset, time):
+def delete_particle(particle, fieldset, time):
     # This delete particle format from Philippe Delandmeter
     # https://github.com/OceanParcels/Parcelsv2.0PaperNorthSeaScripts/blob/master/northsea_mp_kernels.py
     print("Particle [%d] lost !! (%g %g %g %g)" % (
@@ -206,7 +207,7 @@ def _delete_particle(particle, fieldset, time):
     particle.delete()
 
 
-def _get_kinematic_viscosity(particle, fieldset, time):
+def get_kinematic_viscosity(particle, fieldset, time):
     # Using equations 25 - 29 from Kooi et al. 2017
     # Assuming that the fieldset has a salinity field called abs_salinity and a temperature field called
     # cons_temperature.
@@ -246,7 +247,7 @@ def kooi_rising_velocity(particle, fieldset, time):
 
     dn = 2. * r_tot  # equivalent spherical diameter [m]
     delta_rho = (
-                            rho_tot - rho_sw) / rho_sw  # normalised difference in density between total plastic+bf and seawater[-]
+                        rho_tot - rho_sw) / rho_sw  # normalised difference in density between total plastic+bf and seawater[-]
     dstar = ((rho_tot - rho_sw) * g * dn ** 3.) / (rho_sw * kin_visc ** 2.)  # dimensional diameter[-]
 
     # Getting the dimensionless settling velocity
@@ -358,12 +359,22 @@ def PolyTEOS10_bsq(particle, fieldset, time):
     zz = -Z / Zu
     rz3 = R013 * tt + R103 * ss + R003
     rz2 = (R022 * tt + R112 * ss + R012) * tt + (R202 * ss + R102) * ss + R002
-    rz1 = (((R041 * tt + R131 * ss + R031) * tt + (R221 * ss + R121) * ss + R021) * tt + ((R311 * ss + R211) * ss + R111) * ss + R011) * tt + (((R401 * ss + R301) * ss + R201) * ss + R101) * ss + R001
-    rz0 = (((((R060 * tt + R150 * ss + R050) * tt + (R240 * ss + R140) * ss + R040) * tt + ((R330 * ss + R230) * ss + R130) * ss + R030) * tt + (((R420 * ss + R320) * ss + R220) * ss + R120) * ss + R020) * tt + ((((R510 * ss + R410) * ss + R310) * ss + R210) * ss + R110) * ss + R010) * tt + (((((R600 * ss + R500) * ss + R400) * ss + R300) * ss + R200) * ss + R100) * ss + R000
+    rz1 = (((R041 * tt + R131 * ss + R031) * tt + (R221 * ss + R121) * ss + R021) * tt + (
+                (R311 * ss + R211) * ss + R111) * ss + R011) * tt + (
+                      ((R401 * ss + R301) * ss + R201) * ss + R101) * ss + R001
+    rz0 = (((((R060 * tt + R150 * ss + R050) * tt + (R240 * ss + R140) * ss + R040) * tt + (
+                (R330 * ss + R230) * ss + R130) * ss + R030) * tt + (
+                        ((R420 * ss + R320) * ss + R220) * ss + R120) * ss + R020) * tt + (
+                       (((R510 * ss + R410) * ss + R310) * ss + R210) * ss + R110) * ss + R010) * tt + (
+                      ((((R600 * ss + R500) * ss + R400) * ss + R300) * ss + R200) * ss + R100) * ss + R000
     particle.density = ((rz3 * zz + rz2) * zz + rz1) * zz + rz0
     ss = math.sqrt((SA_SURF + deltaS) / SAu)
     tt = CT_SURF / CTu
-    rz0 = (((((R060 * tt + R150 * ss + R050) * tt + (R240 * ss + R140) * ss + R040) * tt + ((R330 * ss + R230) * ss + R130) * ss + R030) * tt + (((R420 * ss + R320) * ss + R220) * ss + R120) * ss + R020) * tt + ((((R510 * ss + R410) * ss + R310) * ss + R210) * ss + R110) * ss + R010) * tt + (((((R600 * ss + R500) * ss + R400) * ss + R300) * ss + R200) * ss + R100) * ss + R000
+    rz0 = (((((R060 * tt + R150 * ss + R050) * tt + (R240 * ss + R140) * ss + R040) * tt + (
+                (R330 * ss + R230) * ss + R130) * ss + R030) * tt + (
+                        ((R420 * ss + R320) * ss + R220) * ss + R120) * ss + R020) * tt + (
+                       (((R510 * ss + R410) * ss + R310) * ss + R210) * ss + R110) * ss + R010) * tt + (
+                      ((((R600 * ss + R500) * ss + R400) * ss + R300) * ss + R200) * ss + R100) * ss + R000
     particle.surface_density = rz0
 
 
@@ -460,6 +471,7 @@ def initial_estimate_particle_rise_velocity(L=settings.INIT_SIZE, print_rise=Fal
     :param L: the particle size in meters
     :return:
     """
+
     def to_optimize(w_rise):
         rho_p = settings.INIT_DENSITY  # Density of plastic particle
         rho_w = 1027  # density sea water (kg/m^3)

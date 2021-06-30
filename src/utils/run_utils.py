@@ -3,7 +3,7 @@ from parcels import ParcelsRandom
 import os
 
 
-def _set_random_seed(seed: str):
+def set_random_seed(seed: str):
     """
     Setting the random seed of the run
     :param seed: Fixed = Then use the default random seed that I have defined

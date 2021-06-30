@@ -107,7 +107,7 @@ def histogram(lon_data, lat_data, bins_Lon, bins_Lat, weight_data=0,
         return counts  # counts / km^2
 
 
-def _analysis_save_file_name(input_file: str, prefix: str, suffix=None):
+def analysis_save_file_name(input_file: str, prefix: str, suffix=None):
     _, file_name = os.path.split(input_file)
     file_name = prefix + '_' + file_name.split('_r=')[0]
     if suffix is not None:
@@ -115,7 +115,7 @@ def _analysis_save_file_name(input_file: str, prefix: str, suffix=None):
     return file_name
 
 
-def _particles_in_domain(domain, lon, lat):
+def particles_in_domain(domain, lon, lat):
     lon_min, lon_max, lat_min, lat_max = domain
     # Select only particles that are within the domain that we are interested in
     select = (lon >= lon_min) & (lon <= lon_max) & (lat >= lat_min) & (lat <= lat_max)

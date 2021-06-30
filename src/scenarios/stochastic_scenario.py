@@ -8,7 +8,6 @@ import utils as utils
 from datetime import datetime, timedelta
 import os
 from parcels import ParcelsRandom
-import math
 
 
 class Stochastic(base_scenario.BaseScenario):
@@ -24,14 +23,14 @@ class Stochastic(base_scenario.BaseScenario):
             self.repeat_dt = timedelta(days=31)
         else:
             self.repeat_dt = None
-        if settings.SUBMISSION == 'simulation':
+        if settings.SUBMISSION in ['simulation', 'visualization']:
             advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
                                                                 advection_scenario=settings.ADVECTION_DATA,
                                                                 repeat_dt=self.repeat_dt)
             self.file_dict = advection_scenario.file_names
             self.field_set = self.create_fieldset()
 
-    var_list = ['lon', 'lat', 'weights', 'beach', 'age', 'weight']
+    var_list = ['lon', 'lat', 'weights', 'beach', 'age']
 
     def create_fieldset(self) -> FieldSet:
         os.system('echo "Creating the fieldset"')
@@ -42,8 +41,8 @@ class Stochastic(base_scenario.BaseScenario):
                                                                       )
         return fieldset
 
-    def _get_pset(self, fieldset: FieldSet, particle_type: utils.BaseParticle, var_dict: dict,
-                  start_time: datetime, repeat_dt: timedelta):
+    def get_pset(self, fieldset: FieldSet, particle_type: utils.BaseParticle, var_dict: dict,
+                 start_time: datetime, repeat_dt: timedelta):
         """
         :return:
         """
@@ -54,28 +53,31 @@ class Stochastic(base_scenario.BaseScenario):
                            time=start_time, repeatdt=repeat_dt)
         return pset
 
-    def _get_pclass(self):
+    def get_pclass(self):
         os.system('echo "Creating the particle class"')
         particle_type = utils.BaseParticle
         utils.add_particle_variable(particle_type, 'distance', dtype=np.float32, set_initial=False)
         utils.add_particle_variable(particle_type, 'weights', dtype=np.float32, set_initial=True)
         return particle_type
 
-    def _file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART):
-        odirec = self.output_dir + "st_" + str(settings.SHORE_TIME) + "_rs_" + str(settings.RESUS_TIME) + \
-                 "_e_" + str(settings.ENSEMBLE) + "/"
-        if new == True:
+    def file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART):
+        odirec = self.output_dir + 'st_{}_rs_{}_e_{}/'.format(settings.SHORE_TIME, settings.RESUS_TIME,
+                                                              settings.ENSEMBLE)
+        if new:
             os.system('echo "Set the output file name"')
-            return odirec + self.prefix + '_{}'.format(settings.ADVECTION_DATA) + "_st=" + str(settings.SHORE_TIME) + \
-                   "_rt=" + str(settings.RESUS_TIME) + "_y=" + str(settings.START_YEAR) + "_I=" + str(settings.INPUT) + \
-                   "_r=" + str(restart) + "_run=" + str(run) + ".nc"
+            str_format = (settings.ADVECTION_DATA, settings.SHORE_TIME, settings.RESUS_TIME, settings.START_YEAR,
+                          settings.INPUT, restart, run)
         else:
             os.system('echo "Set the restart file name"')
-            return odirec + self.prefix + '_{}'.format(settings.ADVECTION_DATA) + "_st=" + str(settings.SHORE_TIME) + \
-                   "_rt=" + str(settings.RESUS_TIME) + "_y=" + str(settings.START_YEAR) + "_I=" + str(settings.INPUT) + \
-                   "_r=" + str(restart - 1) + "_run=" + str(run) + ".nc"
+            str_format = (settings.ADVECTION_DATA, settings.SHORE_TIME, settings.RESUS_TIME, settings.START_YEAR,
+                          settings.INPUT, restart - 1, run)
+        return odirec + self.prefix + '_{}_st={}_rt={}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
 
-    def _beaching_kernel(particle, fieldset, time):
+    def beaching_kernel(particle, fieldset, time):
+        """
+        The beaching and resuspension kernels for beaching on the coastline follows the procedure outlined in Onink et
+        al. (2021) https://doi.org/10.1088/1748-9326/abecbd
+        """
         if particle.beach == 0:
             dist = fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
             if dist < fieldset.Coastal_Boundary:
@@ -88,9 +90,11 @@ class Stochastic(base_scenario.BaseScenario):
         # Update the age of the particle
         particle.age += particle.dt
 
-    def _get_particle_behavior(self, pset: ParticleSet):
+    def get_particle_behavior(self, pset: ParticleSet):
         os.system('echo "Setting the particle behavior"')
-        base_behavior = pset.Kernel(utils._initial_input) + pset.Kernel(utils._floating_advection_rk4) + \
-                        pset.Kernel(utils._floating_2d_brownian_motion)
-        total_behavior = base_behavior + pset.Kernel(utils._anti_beach_nudging) + pset.Kernel(self._beaching_kernel)
+        total_behavior = pset.Kernel(utils.initial_input) + \
+                         pset.Kernel(utils.floating_advection_rk4) + \
+                         pset.Kernel(utils.floating_2d_brownian_motion) + \
+                         pset.Kernel(utils.anti_beach_nudging) + \
+                         pset.Kernel(self.beaching_kernel)
         return total_behavior

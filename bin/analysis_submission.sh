@@ -17,7 +17,6 @@ SHOREDEPEN=0
 WMIN=3
 #for scenario 6, the initial size of the particle in 1e-5 m
 PARTICLE_SIZE_list=(5 1)
-echo $PARTICLE_SIZE_list
 #for scenario 6, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=25
 #the starting year of the simulation, and how many years the simulation will take
@@ -67,7 +66,7 @@ export TIMESLICING
 export STATISTICS
 
 #####################################################################################
-# Now the part where we create the submission file                                  #
+# Now the part where we create the submission file and submit the job               #
 #####################################################################################
 
 for SHORETIME in "${SHORETIME_list[@]}"; do
@@ -76,7 +75,6 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
     export RESUSTIME
     for PARTICLE_SIZE in "${PARTICLE_SIZE_list[@]}"; do
       export PARTICLE_SIZE
-      echo $PARTICLE_SIZE
 
       #Now, we can set the job name prefix
       if [ "$SCENARIO" -eq "0" ]; then
@@ -90,69 +88,66 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
           RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
         fi
       elif [ "$SCENARIO" -eq "2" ]; then
-        RUNNAMEPREFIX="Analysis_Stochastic_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTYEAR}"_"
+        RUNNAMEPREFIX="Analysis_Stochastic_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
         if [ "$STOKES" -eq "1" ]; then
           RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
         fi
       elif [ "$SCENARIO" -eq "3" ]; then
-        RUNNAMEPREFIX="Analysis_SDResus_SD="${SHOREDEPEN}"_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTYEAR}"_"
+        RUNNAMEPREFIX="Analysis_SDResus_SD="${SHOREDEPEN}"_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
         if [ "$STOKES" -eq "1" ]; then
           RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
         fi
       elif [ "$SCENARIO" -eq "4" ]; then
-        RUNNAMEPREFIX="Analysis_Turrell_Wmin="${WMIN}"_ST="${SHORETIME}"_y"${STARTYEAR}"_"
+        RUNNAMEPREFIX="Analysis_Turrell_Wmin="${WMIN}"_ST="${SHORETIME}"_y="${STARTYEAR}"_"
         if [ "$STOKES" -eq "1" ]; then
           RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
         fi
       elif [ "$SCENARIO" -eq "5" ]; then
-        RUNNAMEPREFIX="Analysis_KaandorpFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTYEAR}"_"
+        RUNNAMEPREFIX="Analysis_KaandorpFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
         if [ "$STOKES" -eq "1" ]; then
           RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
         fi
       elif [ "$SCENARIO" -eq "6" ]; then
-        RUNNAMEPREFIX="Analysis_SizeTransport_SIZE="${PARTICLE_SIZE}"_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTYEAR}"_"
+        RUNNAMEPREFIX="Analysis_SizeTransport_SIZE="${PARTICLE_SIZE}"_ST="${SHORETIME}"_y="${STARTYEAR}"_tau="${SEABED_CRIT}"_"
         if [ "$STOKES" -eq "1" ]; then
           RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
         fi
       fi
-      RUNNAMEPREFIX=${RUNNAMEPREFIX}"ENSEMBLE="${ENSEMBLE}
+      RUNNAMEPREFIX=${RUNNAMEPREFIX}"ENSEMBLE="${ENSEMBLE}"_"
       echo $RUNNAMEPREFIX
 
-      runname=$RUNNAMEPREFIX
+      # specifying the parts of the submission file
       part1="#!/bin/sh"
       part2="#SBATCH --mail-type=begin,end,fail"
       part3="#SBATCH --mail-user=victor.onink@climate.unibe.ch"
-      part4="#SBATCH --job-name="$runname
-      part5="#SBATCH --output="runOutput/$runname".o%j"
+      part4="#SBATCH --job-name="${RUNNAMEPREFIX}
+      part5="#SBATCH --output="runOutput/${RUNNAMEPREFIX}".o%j"
       part6="#SBATCH --mem-per-cpu=20G"
       if [ "$DEBUG" -eq "0" ]; then
-      #      part7="#SBATCH --time=95:59:00"
-            part7="#SBATCH --time=04:00:00"
-            part8="#SBATCH --partition=epyc2"
-            part9='#SBATCH --qos=job_epyc2'
+        part7="#SBATCH --time=04:00:00"
+        part8="#SBATCH --partition=epyc2"
+        part9='#SBATCH --qos=job_epyc2'
       else
-            part7="#SBATCH --time=00:19:00"
-            part8="#SBATCH --partition=epyc2"
-            part9='#SBATCH --qos=job_epyc2_debug'
+        part7="#SBATCH --time=00:19:00"
+        part8="#SBATCH --partition=epyc2"
+        part9='#SBATCH --qos=job_epyc2_debug'
       fi
-      #loading the bash and setting the environment
       part10="source /storage/homefs/vo18e689/.bash_profile"
       part11="source /storage/homefs/vo18e689/anaconda3/bin/activate py3_parcels"
       part12='cd "/storage/homefs/vo18e689/codes/Next-Stage-Plastic-Beaching/"'
-      #And now the actual running of the code
       part13="python src/main.py -p 10 -v"
-      #and now the creation of the submission file
+
+      # Putting all the parts into the submission file
       for i in {1..13}; do
         partGrab="part"$i
-        echo ${!partGrab} >> jobsubmissionFile.sh
+        echo ${!partGrab} >>jobsubmissionFile.sh
       done
+
       # submitting the job
       sbatch jobsubmissionFile.sh
+
       # deleting the submission file
       rm jobsubmissionFile.sh
     done
   done
 done
-
-
-

@@ -9,14 +9,14 @@ SCENARIO=6
 #for scenario 1, the time a particle must be near the coast to beach (in days)
 VICINITY=2
 #for scenario 2, the beaching and resuspension timescales (in days)
-SHORETIME=20
-RESUSTIME=69
+SHORETIME_list=(20)
+RESUSTIME_list=(69)
 #for scenario 3, the shore dependence scenario.
 SHOREDEPEN=0
 #for scenario 4, the minimum wind speed for resuspension. Divide by 10 for actual value
 WMIN=3
 #for scenario 6, the initial size of the particle in 1e-6 m
-PARTICLE_SIZE=1
+PARTICLE_SIZE_list=(1)
 #for scenario 6, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=140
 #the starting year of the simulation, and how many years the simulation will take
@@ -37,14 +37,12 @@ ENSEMBLE=1
 #Ubelix server, so server==1
 SERVER=1
 
+#Exporting the variables
 export SUBMISSION
 export SCENARIO
 export VICINITY
-export SHORETIME
-export RESUSTIME
 export SHOREDEPEN
 export WMIN
-export PARTICLE_SIZE
 export SEABED_CRIT
 export STARTYEAR
 export INPUT
@@ -55,102 +53,112 @@ export STOKES
 export ENSEMBLE
 export SERVER
 
-#Setting the name of the job
-if [ "$SCENARIO" -eq "0" ]; then
-	RUNNAMEPREFIX="AdvDifOnly_y="${STARTYEAR}"_"
-	if [ "$STOKES" -eq "1" ]; then
-	    RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
-        fi
-elif [ "$SCENARIO" -eq "1" ]; then
-	RUNNAMEPREFIX="Prox_vic="${VICINITY}"_y="${STARTYEAR}"_"
-	if [ "$STOKES" -eq "1" ]; then
-	    RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
-        fi
-elif [ "$SCENARIO" -eq "2" ]; then
-	RUNNAMEPREFIX="Stochastic_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTYEAR}"_"
-	if [ "$STOKES" -eq "1" ]; then
-	    RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
-        fi
-elif [ "$SCENARIO" -eq "3" ]; then
-        RUNNAMEPREFIX="SDResus_SD="${SHOREDEPEN}"_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTYEAR}"_"
-        if [ "$STOKES" -eq "1" ]; then
-	    RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
-        fi
-elif [ "$SCENARIO" -eq "4" ]; then
-        RUNNAMEPREFIX="Turrell_Wmin="${WMIN}"_ST="${SHORETIME}"_y"${STARTYEAR}"_"
-        if [ "$STOKES" -eq "1" ]; then
-	    RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
-        fi
-elif [ "$SCENARIO" -eq "5" ]; then
-        RUNNAMEPREFIX="KaandorpFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTYEAR}"_"
-        if [ "$STOKES" -eq "1" ]; then
-	    RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
-        fi
-elif [ "$SCENARIO" -eq "6" ]; then
-        RUNNAMEPREFIX="SizeTransport_SIZE="${PARTICLE_SIZE}"_ST="${SHORETIME}"_RT="${RESUSTIME}"_y"${STARTYEAR}"_"
-        if [ "$STOKES" -eq "1" ]; then
-	    RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
-        fi
-fi
-
-
-RUNNAMEPREFIX=${RUNNAMEPREFIX}"ENSEMBLE="${ENSEMBLE}
-echo $RUNNAMEPREFIX
-#####################################################################################
-# Now the part where we create the submission file                                  #
-#####################################################################################
-
 #The number of runs we do, dependent on the input scenario.
 if [ "$INPUT" -eq "0" ]; then
-    runlength=0 #8
+  runlength=0 #8
 elif [ "$INPUT" -eq "1" ]; then
-    runlength=0 #3
+  runlength=0 #3
 elif [ "$INPUT" -eq "2" ]; then
-    runlength=0
+  runlength=0
 elif [ "$INPUT" -eq "3" ]; then
-    runlength=0
+  runlength=0
 fi
 
-#Create a loop to run over all 
-for ((RUN=0; RUN<=$runlength; RUN++))
-do
-	export RUN           
-	for ((RESTARTNUM=$START; RESTARTNUM<$SIMLEN; RESTARTNUM++))
-	do
-	   export RESTARTNUM
-	   runname=$RUNNAMEPREFIX"_run="$RUN"_restart="$RESTARTNUM
-	   part1="#!/bin/sh"
-	   part2="#SBATCH --mail-type=begin,end,fail"
-	   part3="#SBATCH --mail-user=victor.onink@climate.unibe.ch"
-	   part4="#SBATCH --job-name="$runname
-	   part5="#SBATCH --output="runOutput/$runname".o%j"
-	   part6="#SBATCH --mem-per-cpu=40G"
-	   if [ "$DEBUG" -eq "0" ]; then
-	          part7="#SBATCH --time=95:59:00"
+#####################################################################################
+# Creating the submission file and submitting the job                               #
+#####################################################################################
+for SHORETIME in "${SHORETIME_list[@]}"; do
+  export SHORETIME
+  for RESUSTIME in "${RESUSTIME_list[@]}"; do
+    export RESUSTIME
+    for PARTICLE_SIZE in "${PARTICLE_SIZE_list[@]}"; do
+      export PARTICLE_SIZE
+
+      #Setting the name of the job
+      if [ "$SCENARIO" -eq "0" ]; then
+        RUNNAMEPREFIX="AdvDifOnly_y="${STARTYEAR}"_"
+        if [ "$STOKES" -eq "1" ]; then
+            RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
+        fi
+      elif [ "$SCENARIO" -eq "1" ]; then
+        RUNNAMEPREFIX="Prox_vic="${VICINITY}"_y="${STARTYEAR}"_"
+        if [ "$STOKES" -eq "1" ]; then
+            RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
+        fi
+      elif [ "$SCENARIO" -eq "2" ]; then
+        RUNNAMEPREFIX="Stochastic_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
+        if [ "$STOKES" -eq "1" ]; then
+            RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
+        fi
+      elif [ "$SCENARIO" -eq "3" ]; then
+        RUNNAMEPREFIX="SDResus_SD="${SHOREDEPEN}"_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
+        if [ "$STOKES" -eq "1" ]; then
+          RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
+        fi
+      elif [ "$SCENARIO" -eq "4" ]; then
+        RUNNAMEPREFIX="Turrell_Wmin="${WMIN}"_ST="${SHORETIME}"_y="${STARTYEAR}"_"
+        if [ "$STOKES" -eq "1" ]; then
+          RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
+        fi
+      elif [ "$SCENARIO" -eq "5" ]; then
+        RUNNAMEPREFIX="KaandorpFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
+        if [ "$STOKES" -eq "1" ]; then
+          RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
+        fi
+      elif [ "$SCENARIO" -eq "6" ]; then
+        RUNNAMEPREFIX="SizeTransport_SIZE="${PARTICLE_SIZE}"_ST="${SHORETIME}"_y="${STARTYEAR}"_tau="${SEABED_CRIT}"_"
+        if [ "$STOKES" -eq "1" ]; then
+          RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
+        fi
+      fi
+
+      RUNNAMEPREFIX=${RUNNAMEPREFIX}"ENSEMBLE="${ENSEMBLE}"_"
+      echo $RUNNAMEPREFIX
+
+      #Looping over all the runs based on the input scenario
+      for ((RUN=0; RUN<=$runlength; RUN++)); do
+        export RUN
+        # looping over all the simulation years
+        for ((RESTARTNUM=$START; RESTARTNUM<$SIMLEN; RESTARTNUM++)); do
+           export RESTARTNUM
+           runname=$RUNNAMEPREFIX"_run="$RUN"_restart="$RESTARTNUM
+           part1="#!/bin/sh"
+           part2="#SBATCH --mail-type=begin,end,fail"
+           part3="#SBATCH --mail-user=victor.onink@climate.unibe.ch"
+           part4="#SBATCH --job-name="$runname
+           part5="#SBATCH --output="runOutput/$runname".o%j"
+           part6="#SBATCH --mem-per-cpu=40G"
+           if [ "$DEBUG" -eq "0" ]; then
+            part7="#SBATCH --time=95:59:00"
             part8="#SBATCH --partition=epyc2"
             part9='#SBATCH --qos=job_epyc2'
-     else
+           else
             part7="#SBATCH --time=00:10:00"
             part8="#SBATCH --partition=epyc2"
             part9='#SBATCH --qos=job_epyc2_debug'
-     fi
-	   #loading the bash and setting the environment
-	   part10="source /storage/homefs/vo18e689/.bash_profile"
-	   part11="source /storage/homefs/vo18e689/anaconda3/bin/activate py3_parcels"
-	   part12='cd "/storage/homefs/vo18e689/codes/Next-Stage-Plastic-Beaching/"'
-	   #And now the actual running of the code
-	   part13="python src/main.py -p 10 -v"
-	   #and now the creation of the submission file
-	   for i in {1..13}
-	   do
-		partGrab="part"$i
-		echo ${!partGrab} >> jobsubmissionFile_${RUN}_${RESTARTNUM}.sh
-	   done
-	   if [ "$RESTARTNUM" -eq "$START" ]; then
-   	      jobid=$(sbatch --parsable jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
+           fi
+           part10="source /storage/homefs/vo18e689/.bash_profile"
+           part11="source /storage/homefs/vo18e689/anaconda3/bin/activate py3_parcels"
+           part12='cd "/storage/homefs/vo18e689/codes/Next-Stage-Plastic-Beaching/"'
+           part13="python src/main.py -p 10 -v"
+
+           #and now the creation of the submission file
+           for i in {1..13}; do
+              partGrab="part"$i
+              echo ${!partGrab} >> jobsubmissionFile_${RUN}_${RESTARTNUM}.sh
+           done
+
+           #Submitting the job
+           if [ "$RESTARTNUM" -eq "$START" ]; then
+              jobid=$(sbatch --parsable jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
            else
-	      jobid=$(sbatch --parsable --dependency=afterok:${jobid} jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
-	   fi
-	   rm jobsubmissionFile_${RUN}_${RESTARTNUM}.sh
-	done
+              jobid=$(sbatch --parsable --dependency=afterok:${jobid} jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
+           fi
+
+           #Removing the used submission file
+           rm jobsubmissionFile_${RUN}_${RESTARTNUM}.sh
+        done
+      done
+    done
+  done
 done

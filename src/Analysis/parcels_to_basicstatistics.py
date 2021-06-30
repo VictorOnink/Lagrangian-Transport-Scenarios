@@ -100,6 +100,6 @@ def parcels_to_basicstatistics(file_dict: dict):
 
     # Saving the output file
     prefix = 'basic_statistics'
-    output_name = output_direc + utils._analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
+    output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
     utils.save_obj(output_name, output_dict)
     os.system('echo "The concentration has been saved"')
