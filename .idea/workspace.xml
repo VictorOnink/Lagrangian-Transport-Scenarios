@@ -19,39 +19,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="stupid bug fix">
-      <change afterPath="$PROJECT_DIR$/bin/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_model_setup/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" />
+    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="A lot of code has been cleaned up somewhat, and I'm in the process of adding a lot of model documentation.">
+      <change afterPath="$PROJECT_DIR$/src/utils/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/analysis_submission.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/analysis_submission.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/simulation_submission.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/simulation_submission.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/poetry.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Analysis/parcels_to_basicstatistics.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analysis/parcels_to_basicstatistics.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Analysis/parcels_to_concentration.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analysis/parcels_to_concentration.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Analysis/parcels_to_max_distance.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analysis/parcels_to_max_distance.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Analysis/parcels_to_timeseries.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analysis/parcels_to_timeseries.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Analysis/parcels_to_timeslices.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analysis/parcels_to_timeslices.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Analysis/parcels_to_vertical_concentration.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analysis/parcels_to_vertical_concentration.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/advection_scenarios/create_input_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/advection_scenarios/create_input_files.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/FragmentationKaandorp.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/FragmentationKaandorp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/SizeTransport.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/SizeTransport.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/Turrel_Beaching_scenario.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/Turrel_Beaching_scenario.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/advection_diffusion_only_scenario.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/advection_diffusion_only_scenario.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/base_scenario.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/base_scenario.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/coastal_proximity.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/coastal_proximity.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/shore_dependent_resuspension_scenario.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/shore_dependent_resuspension_scenario.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/stochastic_scenario.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/stochastic_scenario.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/analysis_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/analysis_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/file_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/file_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/physics_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/physics_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/run_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/run_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/visualization_utils/utils_visual.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/visualization_utils/utils_visual.py" afterDir="false" />
     </list>
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
     <list id="c5adc810-e024-4e30-b33b-a2709ed2c5b7" name="moving the release repeat timescale to the scenario" comment="" />
@@ -134,13 +104,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-01166" summary="stupid bug fix">
-      <created>1624631896163</created>
-      <option name="number" value="01166" />
-      <option name="presentableId" value="LOCAL-01166" />
-      <option name="project" value="LOCAL" />
-      <updated>1624631896163</updated>
     </task>
     <task id="LOCAL-01167" summary="stupid bug fix">
       <created>1624632782752</created>
@@ -478,7 +441,14 @@
       <option name="project" value="LOCAL" />
       <updated>1624967378131</updated>
     </task>
-    <option name="localTasksCounter" value="1215" />
+    <task id="LOCAL-01215" summary="A lot of code has been cleaned up somewhat, and I'm in the process of adding a lot of model documentation.">
+      <created>1625065119114</created>
+      <option name="number" value="01215" />
+      <option name="presentableId" value="LOCAL-01215" />
+      <option name="project" value="LOCAL" />
+      <updated>1625065119114</updated>
+    </task>
+    <option name="localTasksCounter" value="1216" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -494,7 +464,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Starting to add computation of 3D internal tide vertical diffusion fields" />
     <MESSAGE value="To ubelix" />
     <MESSAGE value="Computing the tidal Kz field" />
     <MESSAGE value="Adding cap value for Kz Tidal, due to division by nearly 0 issues" />
@@ -519,6 +488,7 @@
     <MESSAGE value="Adding in resuspension from the seabed" />
     <MESSAGE value="analysis submission" />
     <MESSAGE value="stupid bug fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="stupid bug fix" />
+    <MESSAGE value="A lot of code has been cleaned up somewhat, and I'm in the process of adding a lot of model documentation." />
+    <option name="LAST_COMMIT_MESSAGE" value="A lot of code has been cleaned up somewhat, and I'm in the process of adding a lot of model documentation." />
   </component>
 </project>
