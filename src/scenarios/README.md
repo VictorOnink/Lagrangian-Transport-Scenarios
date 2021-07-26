@@ -22,3 +22,13 @@ from the old file.
 - `run()`: This is really the main function that runs everything, loading the fieldset, creating the particleset and executing the parcels simulation. 
 - `return_full_run_directory()`: This function is used more in the analysis, but it returns a dictionary that contains all the filenames within a simulation (so looped over all 
 run and restart files)
+
+
+Now, we have a number of different scenarios built in at the moment:
+- `FragmentationKaandorp.py`: This is a fragmentation scenario, seeking to adapt the transition matrix microplastic fragmentation model from [Kaandorp et al. (2021)](https://doi.org/10.1088/1748-9326/abe9ea).
+- `SizeTransport.py`: This is a scenario for studying the effect of initial particle size on the 3D transport behavior of microplastic particles.
+- `Turrel_Beaching_scenario.py`: This is a scenario where plastic resuspension is dependent on wind direction and water level. This is based on [Turrell (2018)](https://doi.org/10.1016/j.marpolbul.2018.10.024) and [Turrell (2020)](https://doi.org/10.1016/j.marpolbul.2020.111600), but hasn't been extensively tested.
+- `advection_diffusion_only_scenario.py`: This is a beaching scenario where a particle beaches if it is advected onto a land cell. Based on the simple beaching implementations often used in the field, this has not been included in any final paper.
+- `coastal_proximity.py`: This is a beaching scenario where a particle beaches when it is within the coastal zone for more than a predetermined period of time. This has not been included in any final paper
+- `stochastic_scenario.py`: This is a beaching/resuspension scenario where beaching/resuspension are implemented stochastically when the particle is within the coastal zone. This is the main scenario described in [Onink et al. (2021)](https://doi.org/10.1088/1748-9326/abecbd).
+- `shore_dependent_resuspension_scenario.py`: This beaching/resuspension scenario is very similar to the `stochastic_scenario.py` scenario, but here the resuspension rate is spatially varying based on the sandiness of the coastline. This scenario was also described in [Onink et al. (2021)](https://doi.org/10.1088/1748-9326/abecbd).
