@@ -15,7 +15,7 @@ RESUSTIME_list=(69)
 SHOREDEPEN=0
 #for scenario 4, the minimum wind speed for resusplension. Divide by 10 for actual value
 WMIN=3
-#for scenario 6, the initial size of the particle in 1e-5 m
+#for scenario 6, the initial size of the particle in 1e-6 m
 PARTICLE_SIZE_list=(5000 1000 500 100 50 40 30 20 10 5 1)
 #for scenario 6, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=140

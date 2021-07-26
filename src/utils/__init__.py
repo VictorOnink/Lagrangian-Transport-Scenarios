@@ -1,11 +1,11 @@
 # Utilities for setting up the model runs
-from utils.file_utils import get_input_directory, get_start_end_time, add_particle_variable, get_data_directory, \
-    get_repeat_dt, restart_nan_removal, add_particle_variable, get_output_directory, save_obj, load_obj
+from utils.file_utils import get_input_directory, get_start_end_time, get_data_directory, \
+    restart_nan_removal, get_output_directory, save_obj, load_obj
 from utils.physics_utils import initial_input, floating_advection_rk4, floating_2d_brownian_motion, \
     anti_beach_nudging, delete_particle, floating_AdvectionRK4DiffusionEM_stokes_depth, get_kinematic_viscosity, \
     KPP_wind_mixing, PolyTEOS10_bsq, internal_tide_mixing, initial_estimate_particle_rise_velocity, \
     get_resuspension_timescale
-from utils.run_utils import set_random_seed
+from utils.run_utils import set_random_seed, add_particle_variable, get_repeat_dt
 from utils.BaseParticle import BaseParticle
 
 # Here we have the utilities that are more commonly used for analysis

@@ -85,29 +85,6 @@ def restart_nan_removal(dataset: Dataset, variable: str, last_selec: np.array,
     return var_selec
 
 
-def get_repeat_dt():
-    if settings.RESTART == 0:
-        repeat_dt = settings.REPEAT_DT_R0
-    else:
-        repeat_dt = settings.REPEAT_DT_ELSE
-    return repeat_dt
-
-
-def add_particle_variable(particleType: JITParticle, name: str, other_name=None, other_value: str = None,
-                          dtype=np.int32, set_initial: bool = True, to_write: bool = True):
-    if set_initial:
-        if other_name is None and other_value is None:
-            init = attrgetter(name)
-        elif other_name is None and other_value is not None:
-            init = other_value
-        else:
-            init = attrgetter(other_name)
-    else:
-        init = 0
-    var = Variable(name, dtype=dtype, initial=init, to_write=to_write)
-    setattr(particleType, name, var)
-
-
 def check_direc_exist(direc: str):
     if not os.path.isdir(direc):
         os.makedirs(direc)
