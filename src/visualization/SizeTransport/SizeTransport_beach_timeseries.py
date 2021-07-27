@@ -9,7 +9,7 @@ import matplotlib.dates as mdates
 
 
 def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, tau_list=[settings.SEABED_CRIT],
-                                   figsize=(12, 10), fontsize=12):
+                                   figsize=(12, 10), fontsize=12, simulation_years=1):
     # Setting the folder within which we have the output, and where we have the saved timeslices
     output_direc = figure_direc + 'timeseries/'
     data_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/{}/'.format('SizeTransport')
@@ -66,7 +66,7 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
         ax.xaxis.set_minor_locator(months)
         ax.xaxis.set_major_formatter(yearsFmt)
         ax.set_ylabel(r'Fraction of Total (%)', fontsize=fontsize)
-        ax.set_xlim(datetime(2010, 1, 1), datetime(2011, 1, 1))
+        ax.set_xlim(datetime(2010, 1, 1), datetime(2010 + simulation_years, 1, 1))
         ax.set_ylim([0, 100])
         ax.tick_params(which='major', length=7)
         ax.tick_params(which='minor', length=3)
