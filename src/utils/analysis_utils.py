@@ -125,7 +125,16 @@ def histogram(lon_data, lat_data, bins_Lon, bins_Lat, weight_data=0,
     weight_data = weight_data.reshape(np.size(weight_data))
     masses = np.zeros((len(bins_Lat), len(bins_Lon)))
     counts = np.zeros((len(bins_Lat), len(bins_Lon)))
-    if operation != 'count':
+    if operation == 'count':
+        for i in range(np.array(lon_data).shape[0]):
+            if weight_data[i] > 0:
+                lat_selec, lon_selec = np.argmin(np.abs(lat_data[i] - bins_Lat)), np.argmin(
+                    np.abs(lon_data[i] - bins_Lon))
+                counts[lat_selec, lon_selec] += 1
+        if area_correc:
+            counts = np.divide(counts, surface_area_grid(bins_Lat, bins_Lon))
+        return counts  # counts / km^2
+    else:
         for i in range(np.array(lon_data).shape[0]):
             if weight_data[i] > 0:
                 lat_selec, lon_selec = np.argmin(np.abs(lat_data[i] - bins_Lat)), np.argmin(
@@ -134,18 +143,9 @@ def histogram(lon_data, lat_data, bins_Lon, bins_Lat, weight_data=0,
                 counts[lat_selec, lon_selec] += 1
         if operation == 'mean':
             masses[counts > 0] = np.divide(masses[counts > 0], counts[counts > 0])
-        if area_correc == True:
+        if area_correc:
             masses = np.divide(masses, surface_area_grid(bins_Lat, bins_Lon))
         return masses  # weight / km^2
-    elif operation == 'count':
-        for i in range(np.array(lon_data).shape[0]):
-            if weight_data[i] > 0:
-                lat_selec, lon_selec = np.argmin(np.abs(lat_data[i] - bins_Lat)), np.argmin(
-                    np.abs(lon_data[i] - bins_Lon))
-                counts[lat_selec, lon_selec] += 1
-        if area_correc == True:
-            counts = np.divide(counts, surface_area_grid(bins_Lat, bins_Lon))
-        return counts  # counts / km^2
 
 
 def analysis_save_file_name(input_file: str, prefix: str, suffix=None):
