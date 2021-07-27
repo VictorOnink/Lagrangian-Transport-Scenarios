@@ -67,8 +67,7 @@ def run(scenario, figure_direc: str):
     #                                                                             difference=True,
     #                                                                             beach_state='afloat')
 
-    # size_list = np.array([50, 40, 30, 20, 10, 5, 1]) * settings.SIZE_FACTOR
-    size_list = np.array([5000, 1000, 500, 100, 50]) * settings.SIZE_FACTOR
+    size_list = np.array([5000, 1000, 500, 100, 50, 40, 30, 20, 10, 5, 1]) * settings.SIZE_FACTOR
     rho_list = np.ones(size_list.shape, dtype=int) * 920
     tau_list = np.array([0.14])
 

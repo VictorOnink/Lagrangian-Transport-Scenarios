@@ -67,6 +67,47 @@ def earth_radius(lat):
     return r / 1000.
 
 
+def distance_between_points(lon1, lat1, lon2, lat2, units='km'):
+    """
+    This function computes the distance between two sets of points using the Haversine approximation. This does assume
+    the Earth is a perfect sphere, but this is an approximation we'll accept for a relatively cheap computation
+
+    This function is designed to work both with float lon/lat values and numpy arrays of lon/lat values, but then we do
+    need to have that the sizes of lon1, lat1, lon2 and lat2 are the same
+
+    Based on: https://stackoverflow.com/questions/19412462/getting-distance-between-two-points-based-on-latitude-longitude/43211266#43211266
+    :param lon1: array or float value containing first set of lon values
+    :param lat1: array of float value containing first set of lat values
+    :param lon2: array or float value containing second set of lon values
+    :param lat2: array or float value containing second set of lat values
+    :param units: distance in km or m
+    :return:
+    """
+    # Check variable types
+    variable_assertion = 'The variable types do not match'
+    assert type(lon1) == type(lat1) and type(lon1) == type(lon2) and type(lon1) == type(lat2), variable_assertion
+    # Check if the numpy arrays are the correct size if the coordinates are indeed numpy arrays
+    if type(lon1) == np.ndarray:
+        size_assertion = 'The coordinate arrays do not have the same sizes'
+        assert lon1.size == lon2.size and lon1.size == lat1.size and lon1.size == lat2.size, size_assertion
+    # Check units are either km or m
+    assert units in ['km', 'm'], "Please choose either 'km' or 'm' for your units"
+    # Computing the difference in coordinates in radians
+    lon1_rad, lat1_rad = np.deg2rad(lon1), np.deg2rad(lat1)
+    lon2_rad, lat2_rad = np.deg2rad(lon2), np.deg2rad(lat2)
+    dlon, dlat = lon1_rad - lon2_rad, lat1_rad - lat2_rad
+    # Converting that to a physical distance
+    radius = earth_radius(lat=0)
+    a = np.sin(dlat / 2) ** 2 + np.cos(lat1_rad) * np.cos(lat2_rad) * np.sin(dlon / 2) ** 2
+    angle = 2 * np.arctan2(np.sqrt(a), np.sqrt(1 - a))
+    distance = radius * angle
+    # Returning the distance
+    if units == 'km':
+        return distance
+    else:
+        return distance * 1000.0
+
+
 def histogram(lon_data, lat_data, bins_Lon, bins_Lat, weight_data=0,
               area_correc=True, operation='sum'):
     """
