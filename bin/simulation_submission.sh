@@ -16,7 +16,7 @@ SHOREDEPEN=0
 #for scenario 4, the minimum wind speed for resuspension. Divide by 10 for actual value
 WMIN=3
 #for scenario 6, the initial size of the particle in 1e-6 m
-PARTICLE_SIZE_list=(500 100 10)
+PARTICLE_SIZE_list=(90 80 70 60)
 #for scenario 6, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=140
 #the starting year of the simulation, and how many years the simulation will take
@@ -27,7 +27,7 @@ INPUT=1
 # 0 = Global HYCOM, 1 = Caribbean HYCOM, 2 = Mediterranean CMEMS
 ADVECTION_DATA=2
 #Start year of the simulation. 0 = new simulation, otherwise it picks up from a previous simulation
-START=2
+START=0
 #Number of years the simulation runs
 SIMLEN=3
 #Inclusion of Stokes drift. 0 = include stokes, 1 = do not include stokes
