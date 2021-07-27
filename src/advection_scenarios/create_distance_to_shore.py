@@ -55,6 +55,7 @@ def create_distance_to_shore(output_name: str, grid: np.array, lon: np.array, la
     dset = xarray.Dataset({'distance': dist}, coords=dcoo)
     dset.to_netcdf(output_name)
 
+
 def create_distance_to_shore_land(output_name: str, grid: np.array, lon: np.array, lat: np.array):
     # Getting the dimensions of the model grid
     mask = grid.mask
