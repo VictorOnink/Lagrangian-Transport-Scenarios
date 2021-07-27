@@ -8,7 +8,7 @@ Almost all code is written in python and uses the parcels (**P**robably **A**
 described in detail in [Lange & van Sebille (2017)](https://doi.org/10.5194/gmd-10-4175-2017)
  and [Delandmeter & van Sebille (2019)](https://doi.org/10.5194/gmd-12-3571-2019). For 
 detailed explanations regarding the working of parcels, I refer you to the parcels website
-[here]([parcels](http://oceanparcels.org/)), which has a number of tutorials and plenty of
+[here](http://oceanparcels.org/), which has a number of tutorials and plenty of
 documentation/references of papers applying parcels in a variety of settings.
 
 Each subdirectory within this repository contains a README file that explains the basic
