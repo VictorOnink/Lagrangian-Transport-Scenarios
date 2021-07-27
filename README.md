@@ -24,6 +24,6 @@ reference, but its use is not encouraged.
   
 - `src`: This contains all the model source code.
 
-All code was written by [Victor Onink](https://github.com/VictorOnink). The structuring of 
+All code was written by [Victor Onink](https://github.com/VictorOnink). The initial structuring of 
 the model code was done in close collaboration with 
 [Inger van Boeijen](https://github.com/IngerMathilde).
