@@ -2,7 +2,7 @@
 This contains the old model_setup prior to the restructuring, and it is essentially the same
 code as was used for [Onink et al. (2021)](https://doi.org/10.1088/1748-9326/abecbd). However,
 I would not recommend using the current code, as some parts are outdated, and others are now
-set up much more effeciently in the new setup within the `src` directory. 
+set up much more efficiently in the new setup within the `src` directory. 
 
 The files within are:
 - `DataSetup.py`: this contains all code for creating the model fieldset
