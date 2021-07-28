@@ -95,7 +95,7 @@ def distance_between_points(lon1, lat1, lon2, lat2, units='km'):
     # Computing the difference in coordinates in radians
     lon1_rad, lat1_rad = np.deg2rad(lon1), np.deg2rad(lat1)
     lon2_rad, lat2_rad = np.deg2rad(lon2), np.deg2rad(lat2)
-    dlon, dlat = lon1_rad - lon2_rad, lat1_rad - lat2_rad
+    dlon, dlat = np.abs(lon1_rad - lon2_rad) % (2 * np.pi), np.abs(lat1_rad - lat2_rad) % np.pi
     # Converting that to a physical distance
     radius = earth_radius(lat=0)
     a = np.sin(dlat / 2) ** 2 + np.cos(lat1_rad) * np.cos(lat2_rad) * np.sin(dlon / 2) ** 2
