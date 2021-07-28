@@ -11,4 +11,4 @@ from utils.BaseParticle import BaseParticle
 # Here we have the utilities that are more commonly used for analysis
 from utils.file_utils import check_direc_exist, check_file_exist
 from utils.analysis_utils import histogram, analysis_save_file_name, particles_in_domain, \
-    dict_key_vertical_concentration, analysis_simulation_year_key
+    dict_key_vertical_concentration, analysis_simulation_year_key, init_size_key, distance_between_points

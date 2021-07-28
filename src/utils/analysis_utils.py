@@ -170,3 +170,7 @@ def dict_key_vertical_concentration(restart, month):
 
 def analysis_simulation_year_key(simulation_years):
     return 'year_{}'.format(simulation_years)
+
+
+def init_size_key(size):
+    return 'size_{:.1E}'.format(size)
