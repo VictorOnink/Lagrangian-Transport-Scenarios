@@ -58,8 +58,9 @@ def parcels_to_separation_distance(file_dict: dict, scenario):
                     #
                     # print('{} {} {}'.format(time, np.mean(distance), median(distance)))
                     if time == 176:
+                        sorted = np.sort(distance)
                         for i in range(len(distance)):
-                            print(distance[i])
+                            print('{} {}'.format(distance[i], sorted[i]))
     #                 output_dict['MEAN'][time][key_size] = np.nanmean(distance)
     #                 output_dict['MEDIAN'][time][key_size] = np.nanmedian(distance)
     #                 output_dict['STD'][time][key_size] = np.nanstd(distance)
