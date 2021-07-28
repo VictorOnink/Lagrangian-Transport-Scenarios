@@ -50,17 +50,10 @@ def parcels_to_separation_distance(file_dict: dict, scenario):
                     key_size = utils.init_size_key(size)
                     distance = utils.distance_between_points(lon_reference[:, time], lat_reference[:, time],
                                                              lon_comparison[:, time], lat_comparison[:, time])
-                    output_dict['MEAN'][time][key_size] = np.nanmean(distance)
-                    output_dict['MEDIAN'][time][key_size] = np.nanmedian(distance)
-                    output_dict['STD'][time][key_size] = np.nanstd(distance)
-    print('final mean {} median {} std {}'.format(output_dict['MEAN'][720][key_size],
-                                                  output_dict['MEDIAN'][720][key_size],
-                                                  output_dict['STD'][720][key_size]))
-
-    # # loop through the runs
-    # for run in range(settings.RUN_RANGE):
-    #     # Loop through the restart files
-    #     for restart in range(settings.SIM_LENGTH):
-    #         # Getting the parcels output file
-    #         parcels_file = file_dict[run][restart]
-    #         dataset = Dataset(parcels_file)
+                    print(np.max(distance))
+    #                 output_dict['MEAN'][time][key_size] = np.nanmean(distance)
+    #                 output_dict['MEDIAN'][time][key_size] = np.nanmedian(distance)
+    #                 output_dict['STD'][time][key_size] = np.nanstd(distance)
+    # print('final mean {} median {} std {}'.format(output_dict['MEAN'][720][key_size],
+    #                                               output_dict['MEDIAN'][720][key_size],
+    #                                               output_dict['STD'][720][key_size]))
