@@ -27,6 +27,7 @@ def parcels_to_separation_distance(file_dict: dict, scenario):
     for key in output_dict.keys():
         output_dict[key] = dict.fromkeys(range(time_steps))
         for time in output_dict[key].keys():
+            output_dict[key][time]= {}
             for size in particle_size:
                 output_dict[key][time][utils.init_size_key(size)] = 0
 
@@ -35,7 +36,7 @@ def parcels_to_separation_distance(file_dict: dict, scenario):
     output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
 
     # Starting to loop through the runs
-    for run in range(settings.RUN_RANGE):
+    for run in ProgressBar(range(settings.RUN_RANGE)):
         # We only look at the first year of the simulation at the moment
         for restart in range(1):
             dataset = Dataset(file_dict[run][restart])
