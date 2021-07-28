@@ -47,10 +47,15 @@ def parcels_to_separation_distance(file_dict: dict, scenario):
                 lon_comparison, lat_comparison = comparison_dataset.variables['lon'][:], comparison_dataset.variables['lat'][:]
                 # Looping through all the time steps
                 for time in range(1, time_steps):
+                    key_size = utils.init_size_key(size)
                     distance = utils.distance_between_points(lon_reference[:, time], lat_reference[:, time],
                                                              lon_comparison[:, time], lat_comparison[:, time])
-                    output_dict['MEAN'][time][size] = np.nanmean(distance)
-    print(output_dict['MEAN'])
+                    output_dict['MEAN'][time][key_size] = np.nanmean(distance)
+                    output_dict['MEDIAN'][time][key_size] = np.nanmedian(distance)
+                    output_dict['STD'][time][key_size] = np.nanstd(distance)
+    print('final mean {} median {} std {}'.format(output_dict['MEAN'][720][key_size],
+                                                  output_dict['MEDIAN'][720][key_size],
+                                                  output_dict['STD'][720][key_size]))
 
     # # loop through the runs
     # for run in range(settings.RUN_RANGE):
