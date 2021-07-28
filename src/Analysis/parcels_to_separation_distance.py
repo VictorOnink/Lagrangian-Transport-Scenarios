@@ -50,17 +50,22 @@ def parcels_to_separation_distance(file_dict: dict, scenario):
                     key_size = utils.init_size_key(size)
                     distance = utils.distance_between_points(lon_reference[:, time], lat_reference[:, time],
                                                              lon_comparison[:, time], lat_comparison[:, time])
-
+                    print('{} {} {} {}'.format(lon_reference[2, time], lat_reference[2, time],
+                                                             lon_comparison[2, time], lat_comparison[2, time]))
                     # def median(array):
                     #     sorted_array = np.sort(array)
                     #     if time == 176:
                     #     return sorted_array[len(array) // 2]
                     #
                     # print('{} {} {}'.format(time, np.mean(distance), median(distance)))
-                    if time == 176:
-                        sorted = np.sort(distance)
-                        for i in range(len(distance)):
-                            print('{} {}'.format(distance[i], sorted[i]))
+
+
+                    # if time == 176:
+                    #     sorted = np.sort(distance)
+                    #     for i in range(len(distance)):
+                    #         print('{} {}'.format(distance[i], sorted[i]))
+
+
     #                 output_dict['MEAN'][time][key_size] = np.nanmean(distance)
     #                 output_dict['MEDIAN'][time][key_size] = np.nanmedian(distance)
     #                 output_dict['STD'][time][key_size] = np.nanstd(distance)
