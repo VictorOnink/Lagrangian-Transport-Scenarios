@@ -36,7 +36,8 @@ def parcels_to_separation_distance(file_dict: dict, scenario):
     output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
 
     # Starting to loop through the runs
-    for run in ProgressBar(range(settings.RUN_RANGE)):
+    pbar = ProgressBar()
+    for run in pbar(range(settings.RUN_RANGE)):
         # We only look at the first year of the simulation at the moment
         for restart in range(1):
             dataset = Dataset(file_dict[run][restart])
