@@ -50,8 +50,7 @@ def parcels_to_separation_distance(file_dict: dict, scenario):
                     key_size = utils.init_size_key(size)
                     distance = utils.distance_between_points(lon_reference[:, time], lat_reference[:, time],
                                                              lon_comparison[:, time], lat_comparison[:, time])
-                    print('{} {} {} {}'.format(lon_reference[2, time], lat_reference[2, time],
-                                                             lon_comparison[2, time], lat_comparison[2, time]))
+                    print('{} {}'.format(time, np.nansum(lon_reference[:, time] == np.nan)))
                     # def median(array):
                     #     sorted_array = np.sort(array)
                     #     if time == 176:
