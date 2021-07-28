@@ -98,7 +98,7 @@ class SizeTransport(base_scenario.BaseScenario):
                    init_density: int = settings.INIT_DENSITY, start_year: int = settings.START_YEAR,
                    input: str = settings.INPUT, run: int = settings.RUN, restart: int = settings.RESTART,
                    seabed_crit: float = settings.SEABED_CRIT):
-        odirec = self.output_dir + "SizeTransport/size_{:.1E}/".format(settings.INIT_SIZE)
+        odirec = self.output_dir + "SizeTransport/size_{:.1E}/".format(init_size)
         if new:
             os.system('echo "Set the output file name"')
             str_format = (
