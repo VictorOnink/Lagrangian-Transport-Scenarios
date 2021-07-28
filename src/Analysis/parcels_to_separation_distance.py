@@ -54,7 +54,7 @@ def parcels_to_separation_distance(file_dict: dict, scenario):
                     def median(array):
                         sorted_array = np.sort(array)
                         if time == 176:
-                            print(sorted_array)
+                            print(sum(np.isnan(sorted_array)))
                         return sorted_array[len(array) // 2]
 
                     print('{} {} {}'.format(time, np.mean(distance), median(distance)))
