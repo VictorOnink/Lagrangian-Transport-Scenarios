@@ -23,12 +23,14 @@ def run():
                                                                     server=server)
         file_dict = scenario.return_full_run_directory()
         analysis_factory.AnalysisFactory.create_procedure(file_dict=file_dict,
+                                                          scenario=scenario,
                                                           concentration=settings.CONCENTRATION,
                                                           vertical_concentration=settings.VERTICAL_CONCENTRATION,
                                                           timeseries=settings.TIMESERIES,
                                                           max_distance=settings.MAX_DISTANCE,
                                                           timeslicing=settings.TIMESLICING,
-                                                          statistics=settings.STATISTICS)
+                                                          statistics=settings.STATISTICS,
+                                                          separation_distance=settings.SEPARATION)
     elif settings.SUBMISSION == 'visualization':
         os.system('echo "Generating all visualizations"')
         scenario_name = settings.SCENARIO_NAME

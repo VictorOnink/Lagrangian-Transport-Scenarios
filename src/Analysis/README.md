@@ -16,3 +16,4 @@ the parcels simulation.
 particles in the simulation at a given timepoint. This allows for easier loading of particles data in e.g. making
 animations, as for large simulations loading all particle trajectory data is too much for the computer RAM.
 - `parcels_to_vertical_concentration.py`: Computes vertical concentration profiles.
+- `parcels_to_separation_distance.py`: Computes distance between particles over time
