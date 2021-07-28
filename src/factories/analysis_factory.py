@@ -25,4 +25,4 @@ class AnalysisFactory():
             Analysis.parcels_to_basicstatistics(file_dict=file_dict)
         if separation_distance:
             os.system('echo "Computing separation distances"')
-            Analysis.parcels_to_separation_distance(file_dict=file_dict)
+            Analysis.parcels_to_separation_distance(file_dict=file_dict, scenario=scenario)
