@@ -71,18 +71,18 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         utils.add_particle_variable(particle_type, 'weights', dtype=np.float32, set_initial=True)
         return particle_type
 
-    def file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART):
-        odirec = self.output_dir + "Kaandorp_Fragmentation/st_{}_rt_{}_e_{}/".format(settings.SHORE_TIME,
-                                                                                     settings.RESUS_TIME,
-                                                                                     settings.ENSEMBLE)
+    def file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART,
+                   shore_time=settings.SHORE_TIME, resus_time=settings.RESUS_TIME, ensemble=settings.ENSEMBLE,
+                   advection_data=settings.ADVECTION_DATA, start_year=settings.START_YEAR, input=settings.INPUT):
+        odirec = self.output_dir + "Kaandorp_Fragmentation/st_{}_rt_{}_e_{}/".format(shore_time,
+                                                                                     resus_time,
+                                                                                     ensemble)
         if new:
             os.system('echo "Set the output file name"')
-            str_format = (settings.ADVECTION_DATA, settings.SHORE_TIME, settings.RESUS_TIME, settings.START_YEAR,
-                          settings.INPUT, restart, run)
+            str_format = (advection_data, shore_time, resus_time, start_year, input, restart, run)
         else:
             os.system('echo "Set the restart file name"')
-            str_format = (settings.ADVECTION_DATA, settings.SHORE_TIME, settings.RESUS_TIME, settings.START_YEAR,
-                          settings.INPUT, restart - 1, run)
+            str_format = (advection_data, shore_time, resus_time, start_year, input, restart - 1, run)
         return odirec + self.prefix + '_{}_st={}_rt={}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
 
     def beaching_kernel(particle, fieldset, time):
