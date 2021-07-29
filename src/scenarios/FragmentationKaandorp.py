@@ -132,3 +132,6 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                          pset.Kernel(utils.anti_beach_nudging) + \
                          pset.Kernel(self.beaching_kernel)
         return total_behavior
+
+    def run(self):
+        os.system('echo "Yes, this overwrites the run function in the base scenario"')

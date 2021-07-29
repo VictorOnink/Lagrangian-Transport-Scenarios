@@ -4,7 +4,7 @@
 SUBMISSION='visualization'
 DEBUG=1 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
-#5 = Cozar based fragmentation, 6 = Size dependent transport
+#5 = Kaandorp based fragmentation, 6 = Size dependent transport
 SCENARIO=6
 #Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=point release, 3=uniform release
 INPUT=1
