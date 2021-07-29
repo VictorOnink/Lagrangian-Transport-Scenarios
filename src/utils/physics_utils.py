@@ -427,10 +427,10 @@ def KPP_wind_mixing(particle, fieldset, time):
         # The ocean surface acts as a lid off, and if a particle goes above the ocean surface it is placed back at the
         # ocean surface (so at fieldset.SURF_Z)
         potential = particle.depth + gradient + R + rise
-        bathymetry_KPP = fieldset.bathymetry[time, particle.depth, particle.lat, particle.lon]
-        if potential < fieldset.SURF_Z and potential < bathymetry_KPP:
+        bathymetry_local = fieldset.bathymetry[time, particle.depth, particle.lat, particle.lon]
+        if potential < fieldset.SURF_Z and potential < bathymetry_local:
             particle.depth = fieldset.SURF_Z
-        elif potential > bathymetry_KPP:
+        elif potential > bathymetry_local:
             # If the particle has gone through the sea floor, the particle is considered stuck on the sea floor
             particle.beach = 3
         else:
@@ -456,13 +456,82 @@ def internal_tide_mixing(particle, fieldset, time):
 
         tidal_potential = particle.depth + tidal_gradient + tidal_random
 
-        # bathymetry_TIDE = fieldset.bathymetry[time, particle.depth, particle.lat, particle.lon]
-        if tidal_potential < fieldset.SURF_Z and tidal_potential < bathymetry_KPP:
+        bathymetry_local = fieldset.bathymetry[time, particle.depth, particle.lat, particle.lon]
+        if tidal_potential < fieldset.SURF_Z and tidal_potential < bathymetry_local:
             particle.depth = fieldset.SURF_Z
-        elif tidal_potential > bathymetry_KPP:
+        elif tidal_potential > bathymetry_local:
             particle.beach = 3
         else:
             particle.depth = tidal_potential
+
+
+def KPP_TIDAL_mixing(particle, fieldset, time):
+    """
+    Combination of KPP and internal tide mixing. By running only one kernel I hope to make everything a bit more
+    efficient computationally
+    :param particle:
+    :param fieldset:
+    :param time:
+    :return:
+    """
+    if particle.beach == 0:
+        # Loading the mixed layer depth
+        mld = fieldset.MLD[time, particle.depth, particle.lat, particle.lon]
+
+        if particle.depth > mld:
+            Kz_KPP = 0
+            dKz_KPP = 0
+        # Within the MLD we compute the vertical diffusion according to Boufadel et al. (2020)
+        else:
+            # Wind speed
+            if particle.lon < 0:
+                temp_lon = particle.lon + 360.
+            else:
+                temp_lon = particle.lon
+            w_10 = math.sqrt(fieldset.u10[time, fieldset.SURF_Z, particle.lat, temp_lon] ** 2 + \
+                             fieldset.v10[time, fieldset.SURF_Z, particle.lat, temp_lon] ** 2)
+            # Drag coefficient
+            C_D = min(max(1.2E-3, 1.0E-3 * (0.49 + 0.065 * w_10)), 2.12E-3)
+            # wind stress
+            tau = C_D * fieldset.RHO_A * w_10 ** 2
+            # Frictional velocity of water at the ocean surface
+            U_W = tau / particle.surface_density
+            # Surface roughness z0 following Zhao & Li (2019)
+            z0 = 3.5153e-5 * fieldset.BETA ** (-0.42) * w_10 ** 2 / fieldset.G
+            # The corrected particle depth, since the depth is not always zero for the surface circulation data
+            z_correct = particle.depth - fieldset.SURF_Z
+            # The diffusion gradient at particle.depth
+            alpha = (fieldset.VK * U_W) / (fieldset.PHI * mld ** 2)
+            dKz_KPP = alpha * (mld - z_correct) * (mld - 3 * z_correct - 2 * z0)
+            # The KPP profile vertical diffusion, at a depth corrected for the vertical gradient in Kz, and including
+            # the bulk diffusivity
+            alpha = (fieldset.VK * U_W) / fieldset.PHI
+            Kz_KPP = alpha * (z_correct + z0) * math.pow(1 - z_correct / mld, 2)
+
+        # The grid of the tidal mixing isn't an exact match with the CMEMS data, so in regions where Kz_tidal is either 0
+        # or very very small, we take the Waterhouse et al. (2014) estimate of the diapycnal diffusion below the MLD
+        Kz_tidal = fieldset.TIDAL_Kz[time, particle.depth, particle.lat, particle.lon]
+        dKz_tidal = fieldset.TIDAL_dKz[time, particle.depth, particle.lat, particle.lon]
+        if Kz_tidal < fieldset.K_Z_BULK:
+            Kz_tidal = fieldset.K_Z_BULK
+            dKz_tidal = 0.0
+
+        # The Markov-0 vertical transport from Grawe et al. (2012)
+        gradient = (dKz_KPP + dKz_tidal) * particle.dt
+        R = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3) * math.sqrt(2 * (Kz_KPP + Kz_tidal))
+        rise = particle.rise_velocity * particle.dt
+
+        # The ocean surface acts as a lid off, and if a particle goes above the ocean surface it is placed back at the
+        # ocean surface (so at fieldset.SURF_Z)
+        potential = particle.depth + gradient + R + rise
+        bathymetry_local = fieldset.bathymetry[time, particle.depth, particle.lat, particle.lon]
+        if potential < fieldset.SURF_Z and potential < bathymetry_local:
+            particle.depth = fieldset.SURF_Z
+        elif potential > bathymetry_local:
+            # If the particle has gone through the sea floor, the particle is considered stuck on the sea floor
+            particle.beach = 3
+        else:
+            particle.depth = potential
 
 
 def initial_estimate_particle_rise_velocity(L=settings.INIT_SIZE, print_rise=False):
