@@ -161,7 +161,7 @@ def _add_diffusion(fieldset: FieldSet, file_dict: dict):
     _check_presence(variable='GRID', file_dict=file_dict)
     mask = file_dict['GRID'].mask
     kh_f = kh * np.ones(mask.shape)
-    kh_f[mask == True] = 0
+    kh_f[mask] = 0.0
     fieldset.add_field(Field('Kh_zonal', kh_f, lon=file_dict['LON'], lat=file_dict['LAT'], mesh='spherical'))
     fieldset.add_field(Field('Kh_meridional', kh_f, lon=file_dict['LON'], lat=file_dict['LAT'], mesh='spherical'))
     # In case we use the Euler-Maruyama scheme for diffusion, we need a parameter `fieldset.dres`, to set the resolution
