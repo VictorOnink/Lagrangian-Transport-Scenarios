@@ -456,12 +456,10 @@ def internal_tide_mixing(particle, fieldset, time):
 
         tidal_potential = particle.depth + tidal_gradient + tidal_random
 
-        bathymetry_TIDE = fieldset.bathymetry[time, particle.depth, particle.lat, particle.lon]
-        if tidal_potential < fieldset.SURF_Z and tidal_potential < bathymetry_TIDE:
+        # bathymetry_TIDE = fieldset.bathymetry[time, particle.depth, particle.lat, particle.lon]
+        if tidal_potential < fieldset.SURF_Z and tidal_potential < bathymetry_KPP:
             particle.depth = fieldset.SURF_Z
-        elif tidal_potential > bathymetry_TIDE:
-            # If the particle has gone through the sea floor, consider the particle 'beached', with currently no
-            # resuspension
+        elif tidal_potential > bathymetry_KPP:
             particle.beach = 3
         else:
             particle.depth = tidal_potential
