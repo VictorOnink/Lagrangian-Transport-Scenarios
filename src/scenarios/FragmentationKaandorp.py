@@ -39,7 +39,8 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                                                                       distance=True, salinity=True, temperature=True,
                                                                       bathymetry=True, beach_timescale=True,
                                                                       resus_timescale=True, MLD=True, KPP_mixing=True,
-                                                                      wind=True
+                                                                      wind=True, TIDAL_mixing=True,
+                                                                      seabed_resuspension=True
                                                                       )
         return fieldset
 
