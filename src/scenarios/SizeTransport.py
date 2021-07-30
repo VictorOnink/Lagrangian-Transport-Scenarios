@@ -184,13 +184,13 @@ class SizeTransport(base_scenario.BaseScenario):
 
     def get_particle_behavior(self, pset: ParticleSet):
         os.system('echo "Setting the particle behavior"')
-        base_behavior = pset.Kernel(utils.PolyTEOS10_bsq) + \
-                        pset.Kernel(utils.get_kinematic_viscosity) + \
-                        pset.Kernel(self._get_reynolds_number) + \
-                        pset.Kernel(utils.floating_AdvectionRK4DiffusionEM_stokes_depth) + \
-                        pset.Kernel(utils.anti_beach_nudging) + \
-                        pset.Kernel(self._get_rising_velocity) + \
-                        pset.Kernel(utils.KPP_TIDAL_mixing) + \
-                        pset.Kernel(self._TotalDistance) + \
-                        pset.Kernel(self.beaching_kernel)
-        return base_behavior
+        # base_behavior = pset.Kernel(utils.PolyTEOS10_bsq) + \
+        #                 pset.Kernel(utils.get_kinematic_viscosity) + \
+        #                 pset.Kernel(self._get_reynolds_number) + \
+        #                 pset.Kernel(utils.floating_AdvectionRK4DiffusionEM_stokes_depth) + \
+        #                 pset.Kernel(utils.anti_beach_nudging) + \
+        #                 pset.Kernel(self._get_rising_velocity) + \
+        #                 pset.Kernel(utils.KPP_TIDAL_mixing) + \
+        #                 pset.Kernel(self._TotalDistance) + \
+        #                 pset.Kernel(self.beaching_kernel)
+        return pset.Kernel(utils.floating_AdvectionRK4DiffusionEM_stokes_depth)
