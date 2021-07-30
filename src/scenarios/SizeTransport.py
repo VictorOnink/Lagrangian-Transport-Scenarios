@@ -36,7 +36,7 @@ class SizeTransport(base_scenario.BaseScenario):
         fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict, stokes=self.stokes,
                                                                       stokes_depth=False,
                                                                       border_current=False, diffusion=True,
-                                                                      distance=False, salinity=False, temperature=False,
+                                                                      distance=True, salinity=False, temperature=False,
                                                                       bathymetry=False, beach_timescale=False,
                                                                       resus_timescale=False, MLD=False, KPP_mixing=False,
                                                                       wind=False, TIDAL_mixing=False,
