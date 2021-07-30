@@ -35,12 +35,12 @@ class SizeTransport(base_scenario.BaseScenario):
         os.system('echo "Creating the fieldset"')
         fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict, stokes=self.stokes,
                                                                       stokes_depth=True,
-                                                                      border_current=False, diffusion=True,
-                                                                      distance=False, salinity=False, temperature=False,
-                                                                      bathymetry=False, beach_timescale=False,
-                                                                      resus_timescale=False, MLD=False, KPP_mixing=True,
-                                                                      wind=False, TIDAL_mixing=False,
-                                                                      seabed_resuspension=False)
+                                                                      border_current=True, diffusion=True,
+                                                                      distance=True, salinity=True, temperature=True,
+                                                                      bathymetry=True, beach_timescale=True,
+                                                                      resus_timescale=True, MLD=True, KPP_mixing=True,
+                                                                      wind=True, TIDAL_mixing=True,
+                                                                      seabed_resuspension=True)
         return fieldset
 
     def get_pset(self, fieldset: FieldSet, particle_type: utils.BaseParticle, var_dict: dict,
@@ -184,14 +184,13 @@ class SizeTransport(base_scenario.BaseScenario):
 
     def get_particle_behavior(self, pset: ParticleSet):
         os.system('echo "Setting the particle behavior"')
-        base_behavior = pset.Kernel(utils.floating_AdvectionRK4DiffusionEM_stokes_depth)
-                        # pset.Kernel(utils.PolyTEOS10_bsq) + \
-                        # pset.Kernel(utils.get_kinematic_viscosity) + \
-                        # pset.Kernel(self._get_reynolds_number) + \
-                        # pset.Kernel(utils.floating_AdvectionRK4DiffusionEM_stokes_depth) + \
-                        # pset.Kernel(utils.anti_beach_nudging) + \
-                        # pset.Kernel(self._get_rising_velocity) + \
-                        # pset.Kernel(utils.KPP_TIDAL_mixing) + \
-                        # pset.Kernel(self._TotalDistance) + \
-                        # pset.Kernel(self.beaching_kernel)
+        base_behavior = pset.Kernel(utils.PolyTEOS10_bsq) + \
+                        pset.Kernel(utils.get_kinematic_viscosity) + \
+                        pset.Kernel(self._get_reynolds_number) + \
+                        pset.Kernel(utils.floating_AdvectionRK4DiffusionEM_stokes_depth) + \
+                        pset.Kernel(utils.anti_beach_nudging) + \
+                        pset.Kernel(self._get_rising_velocity) + \
+                        pset.Kernel(utils.KPP_TIDAL_mixing) + \
+                        pset.Kernel(self._TotalDistance) + \
+                        pset.Kernel(self.beaching_kernel)
         return base_behavior
