@@ -51,8 +51,8 @@ class SizeTransport(base_scenario.BaseScenario):
         os.system('echo "Creating the particle set"')
         if settings.RESTART == 0:
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
-                               lon=var_dict['lon'][:100], lat=var_dict['lat'][:100], beach=var_dict['beach'][:100],
-                               age=var_dict['age'][:100], time=start_time, repeatdt=repeat_dt)
+                               lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
+                               age=var_dict['age'], time=start_time, repeatdt=repeat_dt)
         else:
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
                                lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
@@ -184,13 +184,13 @@ class SizeTransport(base_scenario.BaseScenario):
 
     def get_particle_behavior(self, pset: ParticleSet):
         os.system('echo "Setting the particle behavior"')
-        # base_behavior = pset.Kernel(utils.PolyTEOS10_bsq) + \
-        #                 pset.Kernel(utils.get_kinematic_viscosity) + \
-        #                 pset.Kernel(self._get_reynolds_number) + \
-        #                 pset.Kernel(utils.floating_AdvectionRK4DiffusionEM_stokes_depth) + \
-        #                 pset.Kernel(utils.anti_beach_nudging) + \
-        #                 pset.Kernel(self._get_rising_velocity) + \
-        #                 pset.Kernel(utils.KPP_TIDAL_mixing) + \
-        #                 pset.Kernel(self._TotalDistance) + \
-        #                 pset.Kernel(self.beaching_kernel)
-        return pset.Kernel(utils.floating_AdvectionRK4DiffusionEM_stokes_depth)
+        base_behavior = pset.Kernel(utils.PolyTEOS10_bsq) + \
+                        pset.Kernel(utils.get_kinematic_viscosity) + \
+                        pset.Kernel(self._get_reynolds_number) + \
+                        pset.Kernel(utils.floating_AdvectionRK4DiffusionEM_stokes_depth) + \
+                        pset.Kernel(utils.anti_beach_nudging) + \
+                        pset.Kernel(self._get_rising_velocity) + \
+                        pset.Kernel(utils.KPP_TIDAL_mixing) + \
+                        pset.Kernel(self._TotalDistance) + \
+                        pset.Kernel(self.beaching_kernel)
+        return base_behavior
