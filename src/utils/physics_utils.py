@@ -31,7 +31,7 @@ def floating_advection_rk4(particle, fieldset, time):
     A particle only moves if it has not beached (rather obviously)
     """
     if particle.beach == 0:
-        particle.distance = fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
+        # particle.distance = fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
         d2 = particle.depth
         if particle.lon > 180:
             particle.lon -= 360
