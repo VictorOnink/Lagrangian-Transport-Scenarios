@@ -155,42 +155,15 @@ class SizeTransport(base_scenario.BaseScenario):
         # Update the age of the particle
         particle.age += particle.dt
 
-    def _get_rising_velocity(particle, fieldset, time):
-        rho_sw = particle.density  # sea water density (kg m^-3)
-        rho_p = particle.rho_plastic  # plastic particle density (kg m^-3)
-        left = (1. - rho_p / rho_sw) * 8. / 3. * particle.size * fieldset.G
-        right = 24. / particle.reynolds + 5. / math.sqrt(particle.reynolds) + 2. / 5.
-        particle.rise_velocity = - 1 * math.sqrt(left / right)
-
-    def _get_reynolds_number(particle, fieldset, time):
-        w_b = math.fabs(particle.rise_velocity)
-        particle.reynolds = particle.size * w_b / particle.kinematic_viscosity
-
-    def _TotalDistance(particle, fieldset, time):
-        """
-        Calculating the cumulative distance travelled by the particle in vertical and horizontal directions
-        """
-        # Calculate the distance in latitudinal direction (using 1.11e2 kilometer per degree latitude)
-        lat_dist = (particle.lat - particle.prev_lat) * 1.11e2
-        # Calculate the distance in longitudinal direction, using cosine(latitude) - spherical earth
-        lon_dist = (particle.lon - particle.prev_lon) * 1.11e2 * math.cos(particle.lat * math.pi / 180)
-        # Calculate the total Euclidean distance travelled by the particle
-        particle.distance_horizontal += math.sqrt(math.pow(lon_dist, 2) + math.pow(lat_dist, 2))
-        particle.distance_vertical += math.fabs(particle.depth - particle.prev_depth)
-
-        particle.prev_lon = particle.lon  # Set the stored values for next iteration.
-        particle.prev_lat = particle.lat
-        particle.prev_depth = particle.depth
-
     def get_particle_behavior(self, pset: ParticleSet):
         os.system('echo "Setting the particle behavior"')
         base_behavior = pset.Kernel(utils.PolyTEOS10_bsq) + \
                         pset.Kernel(utils.get_kinematic_viscosity) + \
-                        pset.Kernel(self._get_reynolds_number) + \
+                        pset.Kernel(utils.get_reynolds_number) + \
                         pset.Kernel(utils.floating_AdvectionRK4DiffusionEM_stokes_depth) + \
                         pset.Kernel(utils.anti_beach_nudging) + \
-                        pset.Kernel(self._get_rising_velocity) + \
+                        pset.Kernel(utils.get_rising_velocity) + \
                         pset.Kernel(utils.KPP_TIDAL_mixing) + \
-                        pset.Kernel(self._TotalDistance) + \
+                        pset.Kernel(utils.TotalDistance) + \
                         pset.Kernel(self.beaching_kernel)
         return base_behavior

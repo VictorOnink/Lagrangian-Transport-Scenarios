@@ -541,23 +541,42 @@ def initial_estimate_particle_rise_velocity(L=settings.INIT_SIZE, print_rise=Fal
     :param L: the particle size in meters
     :return:
     """
+    if type(L) is float:
+        def to_optimize(w_rise):
+            rho_p = settings.INIT_DENSITY  # Density of plastic particle
+            rho_w = 1027  # density sea water (kg/m^3)
+            nu = 1.1e-6  # kinematic viscosity of sea water (Enders et al., 2015)
+            left = (1. - rho_p / rho_w) * 8. / 3. * L * settings.G
+            Re = 2. * L * np.abs(w_rise) / nu
+            right = np.square(w_rise) * (24. / Re + 5. / np.sqrt(Re) + 2. / 5.)
+            return np.abs(left - right)
 
-    def to_optimize(w_rise):
-        rho_p = settings.INIT_DENSITY  # Density of plastic particle
-        rho_w = 1027  # density sea water (kg/m^3)
-        nu = 1.1e-6  # kinematic viscosity of sea water (Enders et al., 2015)
-        left = (1. - rho_p / rho_w) * 8. / 3. * L * settings.G
-        Re = 2. * L * np.abs(w_rise) / nu
-        right = np.square(w_rise) * (24. / Re + 5. / np.sqrt(Re) + 2. / 5.)
-        return np.abs(left - right)
-
-    w_rise = scipy.optimize.minimize_scalar(to_optimize, bounds=[-100, 0], method='bounded').x
-    if print_rise:
-        os.system('echo "The rise velocity is for a particle with size {} is {}"'.format(L, w_rise))
+        w_rise = scipy.optimize.minimize_scalar(to_optimize, bounds=[-100, 0], method='bounded').x
+        if print_rise:
+            os.system('echo "The rise velocity is for a particle with size {} is {}"'.format(L, w_rise))
+    elif type(L) is np.ndarray:
+        w_rise = np.zeros(L.shape)
+        for index_L, L_size in enumerate(L):
+            def to_optimize(w_rise):
+                rho_p = settings.INIT_DENSITY  # Density of plastic particle
+                rho_w = 1027  # density sea water (kg/m^3)
+                nu = 1.1e-6  # kinematic viscosity of sea water (Enders et al., 2015)
+                left = (1. - rho_p / rho_w) * 8. / 3. * L_size * settings.G
+                Re = 2. * L_size * np.abs(w_rise) / nu
+                right = np.square(w_rise) * (24. / Re + 5. / np.sqrt(Re) + 2. / 5.)
+                return np.abs(left - right)
+            w_rise[index_L] = scipy.optimize.minimize_scalar(to_optimize, bounds=[-100, 0], method='bounded').x
     return w_rise
 
 
 def get_resuspension_timescale(L=settings.INIT_SIZE, print_size=False):
+    """
+    This follows equation 9 from Hinata et al. (2017)
+    https://doi.org/10.1016/j.marpolbul.2017.05.012
+    :param L:
+    :param print_size:
+    :return:
+    """
     w_rise = initial_estimate_particle_rise_velocity(L=L)
     lambda_R = 2.6e2 * np.abs(w_rise) + 7.1
     if print_size:
@@ -565,3 +584,41 @@ def get_resuspension_timescale(L=settings.INIT_SIZE, print_size=False):
             'echo "The resuspension timescale for a particle of size {} is {:.6f} days"'.format(settings.INIT_SIZE,
                                                                                                 lambda_R))
     return lambda_R
+
+
+def get_reynolds_number(particle, fieldset, time):
+        """
+        Calculating the reynolds number (https://en.wikipedia.org/wiki/Reynolds_number)
+        """
+        w_b = math.fabs(particle.rise_velocity)
+        particle.reynolds = particle.size * w_b / particle.kinematic_viscosity
+
+
+def get_rising_velocity(particle, fieldset, time):
+    """
+    Calculating the rise velocity of a particle following the Enders et al. (2015) paper
+    https://doi.org/10.1016/j.marpolbul.2015.09.027
+    :return:
+    """
+    rho_sw = particle.density  # sea water density (kg m^-3)
+    rho_p = particle.rho_plastic  # plastic particle density (kg m^-3)
+    left = (1. - rho_p / rho_sw) * 8. / 3. * particle.size * fieldset.G
+    right = 24. / particle.reynolds + 5. / math.sqrt(particle.reynolds) + 2. / 5.
+    particle.rise_velocity = - 1 * math.sqrt(left / right)
+
+
+def TotalDistance(particle, fieldset, time):
+    """
+    Calculating the cumulative distance travelled by the particle in vertical and horizontal directions
+    """
+    # Calculate the distance in latitudinal direction (using 1.11e2 kilometer per degree latitude)
+    lat_dist = (particle.lat - particle.prev_lat) * 1.11e2
+    # Calculate the distance in longitudinal direction, using cosine(latitude) - spherical earth
+    lon_dist = (particle.lon - particle.prev_lon) * 1.11e2 * math.cos(particle.lat * math.pi / 180)
+    # Calculate the total Euclidean distance travelled by the particle
+    particle.distance_horizontal += math.sqrt(math.pow(lon_dist, 2) + math.pow(lat_dist, 2))
+    particle.distance_vertical += math.fabs(particle.depth - particle.prev_depth)
+
+    particle.prev_lon = particle.lon  # Set the stored values for next iteration.
+    particle.prev_lat = particle.lat
+    particle.prev_depth = particle.depth

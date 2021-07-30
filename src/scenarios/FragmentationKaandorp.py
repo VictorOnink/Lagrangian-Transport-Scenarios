@@ -49,10 +49,19 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         :return:
         """
         os.system('echo "Creating the particle set"')
-        pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
-                           lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
-                           age=var_dict['age'], weights=var_dict['weight'], size=var_dict['size'],
-                           rho_plastic=var_dict['rho_plastic'], time=start_time, repeatdt=repeat_dt)
+        if settings.RESTART == 0:
+            pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
+                               lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
+                               age=var_dict['age'], weights=var_dict['weight'], size=var_dict['size'],
+                               rho_plastic=var_dict['rho_plastic'],
+                               rise_velocity=utils.initial_estimate_particle_rise_velocity(L=var_dict['size']),
+                               time=start_time, repeatdt=repeat_dt)
+        else:
+            pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
+                               lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
+                               age=var_dict['age'], weights=var_dict['weight'], size=var_dict['size'],
+                               rho_plastic=var_dict['rho_plastic'], rise_velocity=var_dict['rise_velocity'],
+                               time=start_time, repeatdt=repeat_dt)
         return pset
 
     def get_pclass(self):
@@ -64,7 +73,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                                     to_write=True)
         utils.add_particle_variable(particle_type, 'kinematic_viscosity', dtype=np.float32, set_initial=False,
                                     to_write=False)
-        utils.add_particle_variable(particle_type, 'rise_velocity', dtype=np.float32, set_initial=False)
+        utils.add_particle_variable(particle_type, 'rise_velocity', dtype=np.float32, set_initial=True)
         utils.add_particle_variable(particle_type, 'reynolds', dtype=np.float32, set_initial=False)
         utils.add_particle_variable(particle_type, 'rho_plastic', dtype=np.float32, set_initial=True, to_write=False)
         utils.add_particle_variable(particle_type, 'size', dtype=np.float32)
@@ -86,51 +95,62 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         return odirec + self.prefix + '_{}_st={}_rt={}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
 
     def beaching_kernel(particle, fieldset, time):
+        """
+        The basic beaching and resuspension procedure Onink et al. (2021). However, since Hinata et al. (2017) showed
+        that the resuspension  varies with
+        Onink et al. (2021) = https://doi.org/10.1088/1748-9326/abecbd
+        Hinata et al. (2017) = https://doi.org/10.1016/j.marpolbul.2017.05.012
+
+        For particles on the seabed, we follow the resuspension procedure outlined in Carvajalino-Fernandez et al.
+        (2020), where a particle at the sea bed gets resuspended if the estimated sea floor sea stress is greater than a
+        critical threshold. Particles can get stuck on the seabed if the potential depth due to KPP or internal tide
+        mixing is below the bathymetry depth
+
+        The bottom sea stress is calculated using a quadratic drag extrapolation according to Warner et al. (2008)
+        Carvajalino-Fernandez et al. (2020) = https://doi.org/10.1016/j.marpolbul.2020.111685
+        Warner et al. (2008) = https://doi.org/10.1016/j.cageo.2008.02.012
+        """
+        # First, the beaching of particles on the coastline
         if particle.beach == 0:
             dist = fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
             if dist < fieldset.Coastal_Boundary:
                 if ParcelsRandom.uniform(0, 1) > fieldset.p_beach:
                     particle.beach = 1
-        # Now the part where we build in the resuspension
+        # Next the resuspension of particles on the coastline
         elif particle.beach == 1:
-            if ParcelsRandom.uniform(0, 1) > fieldset.p_resus:
+            lambda_resus = 2.6e2 * math.fabs(particle.rise_velocity) + 7.1
+            prob_resus = math.exp(-particle.dt / (lambda_resus * 86400.))
+            if ParcelsRandom.uniform(0, 1) > prob_resus:
+                particle.beach = 0
+        # Finally, the resuspension of particles on the seabed
+        elif particle.beach == 3:
+            dWx = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
+            dWy = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
+
+            bx = math.sqrt(2 * fieldset.SEABED_KH)
+
+            # Getting the current strength at the particle position at the sea bed, and converting it to m/s
+            U_bed, V_bed = fieldset.U[time, particle.depth, particle.lat, particle.lon], fieldset.V[time, particle.depth, particle.lat, particle.lon]
+            U_bed, V_bed = U_bed * 1852. * 60. * math.cos(40. * math.pi / 180.), V_bed * 1852. * 60.
+            U_bed, V_bed = U_bed + bx * dWx, V_bed + bx * dWy
+            # Getting the bottom shear stress
+            tau_bss = 0.003 * (math.pow(U_bed, 2) + math.pow(V_bed, 2))
+            # if tau_bss is greater than fieldset.SEABED_CRIT, then the particle gets resuspended
+            if tau_bss > fieldset.SEABED_CRIT:
                 particle.beach = 0
         # Update the age of the particle
         particle.age += particle.dt
 
-    def _get_rising_velocity(particle, fieldset, time):
-        Re = particle.reynolds  # Reynolds number
-        rho_sw = particle.density  # sea water density (kg m^-3)
-        rho_p = particle.rho_plastic  # plastic particle density (kg m^-3)
-        L = particle.size  # particle size (m)
-        g = 9.81  # gravitational acceleration (m s^-2)
-        # Getting the equation according to Poulain et al (2019), equation 5 in the supplementary materials
-        left = 240 / (math.pi * Re) * (1 + 0.138 * Re ** 0.792)
-        right = 2. / 15. * L * (1. - rho_p / rho_sw) * g
-        # Calculate the rise velocity
-        particle.rise_velocity = - 1 * math.sqrt(right / left)
-
-    def _get_reynolds_number(particle, fieldset, time):
-        kin_visc = particle.kinematic_viscosity
-        L = particle.size
-        if particle.age == 0:
-            # An initial starting value for the Reynolds number, used to calculate the first rising velocity
-            particle.reynolds = 2.0
-        else:
-            w_b = math.fabs(particle.rise_velocity)
-            particle.reynolds = L * w_b / kin_visc
-
     def get_particle_behavior(self, pset: ParticleSet):
         os.system('echo "Setting the particle behavior"')
-        total_behavior = pset.Kernel(utils.initial_input) + \
-                         pset.Kernel(utils.PolyTEOS10_bsq) + \
-                         pset.Kernel(utils.get_kinematic_viscosity) + \
-                         pset.Kernel(self._get_reynolds_number) + \
-                         pset.Kernel(self._get_rising_velocity) + \
-                         pset.Kernel(utils.floating_AdvectionRK4DiffusionEM_stokes_depth) + \
-                         pset.Kernel(utils.KPP_wind_mixing) + \
-                         pset.Kernel(utils.anti_beach_nudging) + \
-                         pset.Kernel(self.beaching_kernel)
+        total_behavior = pset.Kernel(utils.PolyTEOS10_bsq) + \
+                        pset.Kernel(utils.get_kinematic_viscosity) + \
+                        pset.Kernel(utils.get_reynolds_number) + \
+                        pset.Kernel(utils.floating_AdvectionRK4DiffusionEM_stokes_depth) + \
+                        pset.Kernel(utils.anti_beach_nudging) + \
+                        pset.Kernel(utils.get_rising_velocity) + \
+                        pset.Kernel(utils.KPP_TIDAL_mixing) + \
+                        pset.Kernel(self.beaching_kernel)
         return total_behavior
 
     def run(self):
