@@ -34,11 +34,11 @@ class SizeTransport(base_scenario.BaseScenario):
     def create_fieldset(self) -> FieldSet:
         os.system('echo "Creating the fieldset"')
         fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict, stokes=self.stokes,
-                                                                      stokes_depth=False,
+                                                                      stokes_depth=True,
                                                                       border_current=False, diffusion=True,
                                                                       distance=False, salinity=False, temperature=False,
                                                                       bathymetry=False, beach_timescale=False,
-                                                                      resus_timescale=False, MLD=False, KPP_mixing=False,
+                                                                      resus_timescale=False, MLD=False, KPP_mixing=True,
                                                                       wind=False, TIDAL_mixing=False,
                                                                       seabed_resuspension=False)
         return fieldset
@@ -184,7 +184,7 @@ class SizeTransport(base_scenario.BaseScenario):
 
     def get_particle_behavior(self, pset: ParticleSet):
         os.system('echo "Setting the particle behavior"')
-        base_behavior = pset.Kernel(utils.floating_advection_rk4)
+        base_behavior = pset.Kernel(utils.floating_AdvectionRK4DiffusionEM_stokes_depth)
                         # pset.Kernel(utils.PolyTEOS10_bsq) + \
                         # pset.Kernel(utils.get_kinematic_viscosity) + \
                         # pset.Kernel(self._get_reynolds_number) + \
