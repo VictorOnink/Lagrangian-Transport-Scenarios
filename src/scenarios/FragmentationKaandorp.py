@@ -154,4 +154,22 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         return total_behavior
 
     def run(self):
-        os.system('echo "Yes, this overwrites the run function in the base scenario"')
+        os.system('echo "Creating the particle set"')
+        pset = self.get_pset(fieldset=self.field_set, particle_type=self.particle,
+                             var_dict=self.get_var_dict(), start_time=utils.get_start_end_time(time='start'),
+                             repeat_dt=self.repeat_dt)
+        pfile = pset.ParticleFile(name=self.file_names(new=True),
+                                  outputdt=settings.OUTPUT_TIME_STEP)
+        os.system('echo "Setting the random seed"')
+        utils.set_random_seed(seed=settings.SEED)
+        os.system('echo "Defining the particle behavior"')
+        behavior_kernel = self.get_particle_behavior(pset=pset)
+        os.system('echo "The actual execution of the run"')
+        # pset.execute(behavior_kernel,
+        #              runtime=timedelta(days=get_start_end_time(time='length')),
+        #              dt=settings.TIME_STEP,
+        #              # recovery={ErrorCode.ErrorOutOfBounds: delete_particle},
+        #              output_file=pfile
+        #              )
+        # pfile.export()
+        os.system('echo "Run completed"')
