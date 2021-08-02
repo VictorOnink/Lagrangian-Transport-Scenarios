@@ -80,6 +80,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         utils.add_particle_variable(particle_type, 'size', dtype=np.float32)
         utils.add_particle_variable(particle_type, 'weights', dtype=np.float32, set_initial=True)
         utils.add_particle_variable(particle_type, 'to_split', dtype=np.int32, set_initial=False)
+        utils.add_particle_variable(particle_type, 'to_delete', dtype=np.int32, set_initial=False)
         return particle_type
 
     def file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART,
