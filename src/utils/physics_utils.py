@@ -554,6 +554,7 @@ def initial_estimate_particle_rise_velocity(L=settings.INIT_SIZE, print_rise=Fal
         w_rise = scipy.optimize.minimize_scalar(to_optimize, bounds=[-100, 0], method='bounded').x
         if print_rise:
             os.system('echo "The rise velocity is for a particle with size {} is {}"'.format(L, w_rise))
+        return w_rise
     elif type(L) is np.ndarray:
         w_rise = np.zeros(L.shape)
         for index_L, L_size in enumerate(L):
@@ -566,7 +567,7 @@ def initial_estimate_particle_rise_velocity(L=settings.INIT_SIZE, print_rise=Fal
                 right = np.square(w_rise) * (24. / Re + 5. / np.sqrt(Re) + 2. / 5.)
                 return np.abs(left - right)
             w_rise[index_L] = scipy.optimize.minimize_scalar(to_optimize, bounds=[-100, 0], method='bounded').x
-    return w_rise
+        return w_rise
 
 
 def get_resuspension_timescale(L=settings.INIT_SIZE, print_size=False):
