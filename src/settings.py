@@ -94,8 +94,8 @@ if SCENARIO_NAME == 'ShoreDependentResuspension' and SUBMISSION in ['simulation'
 if SCENARIO_NAME == 'TurrellResuspension' and SUBMISSION in ['simulation', 'analysis']:
     # BEACHING TIMESCALE
     SHORE_TIME: int = int(os.environ['SHORETIME'])  # days
-    # MINIMUM OFF-SHORE WIND SPEED FOR RESUSPENSION (x10 TO NOT GET DECIMAL IN OUTPUT FILES)
-    WMIN: int = int(os.environ['WMIN'])
+# MINIMUM OFF-SHORE WIND SPEED FOR RESUSPENSION (x10 TO NOT GET DECIMAL IN OUTPUT FILES)
+WMIN: int = int(os.environ['WMIN'])
 
 if SCENARIO_NAME == 'FragmentationKaandorp' and SUBMISSION in ['simulation', 'analysis']:
     # BEACHING TIMESCALE
