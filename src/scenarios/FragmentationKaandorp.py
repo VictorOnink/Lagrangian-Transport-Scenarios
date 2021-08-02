@@ -222,14 +222,9 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         time = utils.get_start_end_time(time='start')
         output_time = time + settings.OUTPUT_TIME_STEP
         while time <= utils.get_start_end_time(time='end'):
-            if time == output_time:
-                pset.execute(behavior_kernel, runtime=settings.TIME_STEP, dt=settings.TIME_STEP,
-                             recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle},
-                             output_file=pfile)
-                output_time = time + settings.OUTPUT_TIME_STEP
-            else:
-                pset.execute(behavior_kernel, runtime=settings.TIME_STEP, dt=settings.TIME_STEP,
-                             recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle})
-            time += settings.TIME_STEP
+            pset.execute(behavior_kernel, runtime=settings.OUTPUT_TIME_STEP, dt=settings.TIME_STEP,
+                         recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle},
+                         output_file=pfile)
+            time += settings.OUTPUT_TIME_STEP
         pfile.export()
         os.system('echo "Run completed"')
