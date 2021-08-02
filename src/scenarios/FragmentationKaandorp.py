@@ -159,8 +159,11 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         #                 pset.Kernel(utils.KPP_TIDAL_mixing) + \
         #                 pset.Kernel(self.beaching_kernel) #+\
                         # pset.Kernel(self.fragmentation_kernel)
-        # return total_behavior
-        return pset.Kernel(utils.floating_AdvectionRK4DiffusionEM_stokes_depth)
+        total_behavior = pset.Kernel(utils.PolyTEOS10_bsq) + \
+                         pset.Kernel(utils.get_kinematic_viscosity) + \
+                         pset.Kernel(utils.get_reynolds_number) + \
+                         pset.Kernel(utils.floating_AdvectionRK4DiffusionEM_stokes_depth) #+ \
+        return total_behavior
 
     def fragmentation_kernel(particle, fieldset, time):
         particle.landid = fieldset.landID[time, particle.depth, particle.lat, particle.lon]
