@@ -51,10 +51,10 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         os.system('echo "Creating the particle set"')
         if settings.RESTART == 0:
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
-                               lon=var_dict['lon'][:5], lat=var_dict['lat'][:5], beach=var_dict['beach'][:5],
-                               age=var_dict['age'][:5], weights=var_dict['weight'][:5], size=var_dict['size'][:5],
-                               rho_plastic=var_dict['rho_plastic'][:5],
-                               rise_velocity=utils.initial_estimate_particle_rise_velocity(L=var_dict['size'])[:5],
+                               lon=var_dict['lon'][::1000], lat=var_dict['lat'][::1000], beach=var_dict['beach'][::1000],
+                               age=var_dict['age'][::1000], weights=var_dict['weight'][::1000], size=var_dict['size'][::1000],
+                               rho_plastic=var_dict['rho_plastic'][::1000],
+                               rise_velocity=utils.initial_estimate_particle_rise_velocity(L=var_dict['size'])[::1000],
                                time=start_time, repeatdt=repeat_dt)
         else:
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
