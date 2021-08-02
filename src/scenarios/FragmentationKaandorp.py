@@ -162,7 +162,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         return total_behavior
 
     def fragmentation_kernel(particle, fieldset, time):
-        if particle.particle.to_delete == 1:
+        if particle.to_delete == 1:
             particle.delete()
         else:
             if particle.beach == 1:
