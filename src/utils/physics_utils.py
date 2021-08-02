@@ -541,7 +541,7 @@ def initial_estimate_particle_rise_velocity(L=settings.INIT_SIZE, print_rise=Fal
     :param L: the particle size in meters
     :return:
     """
-    if type(L) is float:
+    if type(L) in [float, int]:
         def to_optimize(w_rise):
             rho_p = settings.INIT_DENSITY  # Density of plastic particle
             rho_w = 1027  # density sea water (kg/m^3)
@@ -568,6 +568,8 @@ def initial_estimate_particle_rise_velocity(L=settings.INIT_SIZE, print_rise=Fal
                 return np.abs(left - right)
             w_rise[index_L] = scipy.optimize.minimize_scalar(to_optimize, bounds=[-100, 0], method='bounded').x
         return w_rise
+    else:
+        os.system('echo "the input type is {}, and the value is {}"'.format(type(L), L))
 
 
 def get_resuspension_timescale(L=settings.INIT_SIZE, print_size=False):
