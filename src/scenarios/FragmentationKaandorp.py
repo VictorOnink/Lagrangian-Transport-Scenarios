@@ -162,7 +162,8 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         total_behavior = pset.Kernel(utils.PolyTEOS10_bsq) + \
                          pset.Kernel(utils.get_kinematic_viscosity) + \
                          pset.Kernel(utils.get_reynolds_number) + \
-                         pset.Kernel(utils.floating_AdvectionRK4DiffusionEM_stokes_depth) #+ \
+                         pset.Kernel(utils.floating_AdvectionRK4DiffusionEM_stokes_depth) + \
+                         pset.Kernel(utils.anti_beach_nudging)
         return total_behavior
 
     def fragmentation_kernel(particle, fieldset, time):
