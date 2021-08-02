@@ -64,7 +64,6 @@ def parcels_to_vertical_concentration(file_dict: dict):
             output_dict[key_year][key_month] /= counts_dict[key_year][key_month]
 
     # Saving the output
-    # Saving the computed concentration
     prefix = 'vertical_concentration'
     output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
     utils.save_obj(output_name, output_dict)

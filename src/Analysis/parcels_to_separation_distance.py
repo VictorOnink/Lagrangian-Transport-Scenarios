@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from progressbar import ProgressBar
 import settings
 import utils
+import os
 
 
 def parcels_to_separation_distance(file_dict: dict, scenario):
@@ -31,10 +32,6 @@ def parcels_to_separation_distance(file_dict: dict, scenario):
             for size in particle_size:
                 output_dict[key][time][utils.init_size_key(size)] = 0
 
-    # Setting the file name
-    prefix = 'separation_distance'
-    output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
-
     # Starting to loop through the runs
     pbar = ProgressBar()
     for run in pbar(range(settings.RUN_RANGE)):
@@ -54,7 +51,9 @@ def parcels_to_separation_distance(file_dict: dict, scenario):
                     output_dict['MEDIAN'][time][key_size] = np.nanmedian(distance)
                     output_dict['STD'][time][key_size] = np.nanstd(distance)
 
-    print('final mean {} median {} std {}'.format(output_dict['MEAN'][720][key_size],
-                                                  output_dict['MEDIAN'][720][key_size],
-                                                  output_dict['STD'][720][key_size]))
+    # Saving the output
+    prefix = 'separation_distance'
+    output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
+    utils.save_obj(output_name, output_dict)
+    os.system('echo "The vertical concentration has been saved"')
 
