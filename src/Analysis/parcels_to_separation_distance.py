@@ -22,7 +22,7 @@ def parcels_to_separation_distance(file_dict: dict, scenario):
 
     # Setting the particle sizes we loop through and creating a dictionary to save the average separation distance
     particle_size = np.array([1]) * settings.SIZE_FACTOR
-    time_steps = len(Dataset(scenario.file_names(new=True, run=0, restart=0)).variables['time'][0, :])
+    time_steps = len(Dataset(scenario.file_names(new=True, run=0, restart=0, init_size=settings.INIT_SIZE)).variables['time'][0, :])
     output_dict = dict.fromkeys(['STD', 'MEAN', 'MEDIAN'])
     for key in output_dict.keys():
         output_dict[key] = dict.fromkeys(range(time_steps))
