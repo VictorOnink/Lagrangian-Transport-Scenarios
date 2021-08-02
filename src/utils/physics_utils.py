@@ -541,7 +541,7 @@ def initial_estimate_particle_rise_velocity(L=settings.INIT_SIZE, print_rise=Fal
     :param L: the particle size in meters
     :return:
     """
-    if type(L) in [float, int]:
+    if type(L) in [float, int, np.float64, np.float32, np.int64, np.int32]:
         def to_optimize(w_rise):
             rho_p = settings.INIT_DENSITY  # Density of plastic particle
             rho_w = 1027  # density sea water (kg/m^3)
