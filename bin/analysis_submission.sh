@@ -15,10 +15,16 @@ RESUSTIME_list=(69)
 SHOREDEPEN=0
 #for scenario 4, the minimum wind speed for resusplension. Divide by 10 for actual value
 WMIN=3
-#for scenario 6, the initial size of the particle in 1e-6 m
+#for scenario 5 and 6, the initial size of the particle in 1e-6 m
 PARTICLE_SIZE_list=(5000 1000 500 100 90 80 70 60 50 40 30 20 10 5 1)
-#for scenario 6, the critical bottom shear stress for particle resuspension (x1e-3)
+#for scenario 5 and 6, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=140
+# For scenario 5, the fragmentation parameters p (x1e-1), DN (x1e-1), the number of size classes and fragmentation
+# timescale (days)
+P=4
+DN=25
+SIZE_CLASS_NUMBER=6
+LAMBDA_FRAG=385
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010
 #Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=point release, 3=uniform release
@@ -41,6 +47,10 @@ export VICINITY
 export SHOREDEPEN
 export WMIN
 export SEABED_CRIT
+export P
+export DN
+export SIZE_CLASS_NUMBER
+export LAMBDA_FRAG
 export SIMLEN
 export STOKES
 export INPUT

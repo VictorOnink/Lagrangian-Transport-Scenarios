@@ -106,3 +106,7 @@ def load_obj(filename):
         filename += '.pkl'
     with open(filename, 'rb') as f:
         return pickle.load(f)
+
+
+def create_list(var, length):
+    return [var] * length

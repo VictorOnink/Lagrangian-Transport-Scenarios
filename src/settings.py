@@ -223,6 +223,14 @@ if SCENARIO_NAME == 'FragmentationKaandorp' and SUBMISSION in ['simulation', 'an
     INIT_SIZE = int(os.environ['PARTICLE_SIZE']) * SIZE_FACTOR
     # INITIAL DENSITY (KG/M^3): 920 = polypropylene
     INIT_DENSITY = 1020
+    # FRAGMENTATION PROBABILITY
+    P_FRAG = int(os.environ['P']) * 1e-1
+    # NUMBER OF SPATIAL DIMENSIONS
+    DN = int(os.environ['DN']) * 1e-1
+    # NUMBER OF SIZE CLASSES
+    SIZE_CLASS_NUMBER = int(os.environ['SIZE_CLASS_NUMBER'])
+    # FRAGMENTATION TIMESCALE (DAYS)
+    LAMBDA_FRAG = int(os.environ['SIZE_CLASS_NUMBER'])
 if SCENARIO_NAME == 'SizeTransport' and SUBMISSION in ['simulation', 'analysis']:
     # INITIAL PARTICLE SIZE (m)
     INIT_SIZE = int(os.environ['PARTICLE_SIZE']) * SIZE_FACTOR
@@ -297,5 +305,6 @@ elif SCENARIO_NAME == 'TurrellResuspension':
 
 elif SCENARIO_NAME == 'FragmentationKaandorp':
     os.system('echo "The beaching timescale is {} days "'.format(SHORE_TIME))
-    os.system('echo "The resuspension timescale is {} days "'.format(RESUS_TIME))
+    os.system('echo "The fragmentation timescale is {} days "'.format(LAMBDA_FRAG))
     os.system('echo "The initial particle size is {} m and a density of {} kg/m^3"'.format(INIT_SIZE, INIT_DENSITY))
+    os.system('echo "This simulation has {} size classes"'.format(SIZE_CLASS_NUMBER))

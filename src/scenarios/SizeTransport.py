@@ -34,13 +34,14 @@ class SizeTransport(base_scenario.BaseScenario):
     def create_fieldset(self) -> FieldSet:
         os.system('echo "Creating the fieldset"')
         fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict, stokes=self.stokes,
-                                                                      stokes_depth=True,
-                                                                      border_current=True, diffusion=True,
+                                                                      stokes_depth=True, border_current=True,
+                                                                      diffusion=True,
                                                                       distance=True, salinity=True, temperature=True,
                                                                       bathymetry=True, beach_timescale=True,
-                                                                      resus_timescale=True, MLD=True, KPP_mixing=True,
+                                                                      resus_timescale=True, MLD=True,
+                                                                      physics_constants=True,
                                                                       wind=True, TIDAL_mixing=True,
-                                                                      seabed_resuspension=True)
+                                                                      )
         return fieldset
 
     def get_pset(self, fieldset: FieldSet, particle_type: utils.BaseParticle, var_dict: dict,

@@ -38,9 +38,9 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                                                                       border_current=True, diffusion=True, landID=True,
                                                                       distance=True, salinity=True, temperature=True,
                                                                       bathymetry=True, beach_timescale=True,
-                                                                      resus_timescale=True, MLD=True, KPP_mixing=True,
-                                                                      wind=True, TIDAL_mixing=True,
-                                                                      seabed_resuspension=True
+                                                                      resus_timescale=True, MLD=True,
+                                                                      physics_constants=True, wind=True,
+                                                                      TIDAL_mixing=True, fragmentation_timescale=True
                                                                       )
         return fieldset
 
@@ -79,21 +79,25 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         utils.add_particle_variable(particle_type, 'rho_plastic', dtype=np.float32, set_initial=True, to_write=False)
         utils.add_particle_variable(particle_type, 'size', dtype=np.float32)
         utils.add_particle_variable(particle_type, 'weights', dtype=np.float32, set_initial=True)
+        utils.add_particle_variable(particle_type, 'to_split', dtype=np.int32, set_initial=False)
         return particle_type
 
     def file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART,
                    shore_time=settings.SHORE_TIME, resus_time=settings.RESUS_TIME, ensemble=settings.ENSEMBLE,
-                   advection_data=settings.ADVECTION_DATA, start_year=settings.START_YEAR, input=settings.INPUT):
+                   advection_data=settings.ADVECTION_DATA, start_year=settings.START_YEAR, input=settings.INPUT,
+                   p_frag=settings.P_FRAG, dn=settings.DN, size_class_number=settings.SIZE_CLASS_NUMBER):
         odirec = self.output_dir + "Kaandorp_Fragmentation/st_{}_rt_{}_e_{}/".format(shore_time,
                                                                                      resus_time,
                                                                                      ensemble)
         if new:
             os.system('echo "Set the output file name"')
-            str_format = (advection_data, shore_time, resus_time, start_year, input, restart, run)
+            str_format = (advection_data, shore_time, resus_time, p_frag, dn, size_class_number, start_year, input,
+                          restart, run)
         else:
             os.system('echo "Set the restart file name"')
-            str_format = (advection_data, shore_time, resus_time, start_year, input, restart - 1, run)
-        return odirec + self.prefix + '_{}_st={}_rt={}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
+            str_format = (advection_data, shore_time, resus_time, p_frag, dn, size_class_number, start_year, input,
+                          restart - 1, run)
+        return odirec + self.prefix + '_{}_st={}_rt={}_pfrag={}_dn={}_sizeclasses={}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
 
     def beaching_kernel(particle, fieldset, time):
         """
@@ -131,7 +135,8 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
             bx = math.sqrt(2 * fieldset.SEABED_KH)
 
             # Getting the current strength at the particle position at the sea bed, and converting it to m/s
-            U_bed, V_bed = fieldset.U[time, particle.depth, particle.lat, particle.lon], fieldset.V[time, particle.depth, particle.lat, particle.lon]
+            U_bed = fieldset.U[time, particle.depth, particle.lat, particle.lon]
+            V_bed = fieldset.V[time, particle.depth, particle.lat, particle.lon]
             U_bed, V_bed = U_bed * 1852. * 60. * math.cos(40. * math.pi / 180.), V_bed * 1852. * 60.
             U_bed, V_bed = U_bed + bx * dWx, V_bed + bx * dWy
             # Getting the bottom shear stress
@@ -154,6 +159,53 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                         pset.Kernel(self.beaching_kernel)
         return total_behavior
 
+    def fragmentation_kernel(particle, fieldset, time):
+        if particle.particle.to_delete == 1:
+            particle.delete()
+        else:
+            if particle.beach == 1:
+                if ParcelsRandom.uniform(0, 1) > fieldset.p_frag:
+                    particle.to_split = 1
+
+    def particle_splitter(self, fieldset, pset, size_limit):
+        for particle in pset:
+            if particle.to_split == 1:
+                # First, we set the split condition statement back to 0
+                particle.to_split = 0
+                # Then, we calculate the new size of the particle
+                original_size = particle.size
+                particle.size = original_size * (1 - settings.P)
+                # Next, in what size class would the particle be? e.g. a particle with size 4mm would be in size class 0
+                # when size_limit[1] = 2, since it is larger than the limit of k = 1
+                size_class = max(index for index, limit in enumerate(size_limit) if limit > particle.size)
+                # If the particle is in the smallest size class, then mark the particle for deletion since it is then
+                # too small for us to follow further fragmentation
+                if size_class == (settings.SIZE_CLASS_NUMBER - 1):
+                    particle.to_delete = 1
+                # Otherwise, if the particle is not in the smallest size class then we can figure out how many fragments
+                # are created in smaller size classes
+                else:
+                    for k in range(0, settings.size_class_number - size_class):
+                        new_particle_size = original_size * settings.P_FRAG ** (k + 1)
+                        particle_number = int(np.round(self.number_function(k)))
+                        pset_new = ParticleSet(fieldset=fieldset, pclass=utils.particle_class,
+                                               lon=utils.create_list(particle.lon, particle_number),
+                                               lat=utils.create_list(particle.lat, particle_number),
+                                               depth=utils.create_list(particle.depth, particle_number),
+                                               size=utils.create_list(new_particle_size, particle_number),
+                                               parent=utils.create_list(particle.id, particle_number),
+                                               age=utils.create_list(0, particle_number),
+                                               time=utils.create_list(particle.time, particle_number))
+                        pset.add(pset_new)
+        return pset
+
+    def mass_per_size_class(k, f, p=settings.P_FRAG):
+        gamma_ratio = math.gamma(k + f) / (math.gamma(k + 1) * math.gamma(f))
+        return gamma_ratio * p ** k * (1 - p) ** f
+
+    def particle_number_per_size_class(self, k, f=1, p=settings.P_FRAG, Dn=settings.DN):
+        return self.mass_per_size_class(k, f, p) * 2 ** (Dn * k)
+
     def run(self):
         os.system('echo "Creating the particle set"')
         pset = self.get_pset(fieldset=self.field_set, particle_type=self.particle,
@@ -172,5 +224,5 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         #              # recovery={ErrorCode.ErrorOutOfBounds: delete_particle},
         #              output_file=pfile
         #              )
-        # pfile.export()
+        pfile.export()
         os.system('echo "Run completed"')
