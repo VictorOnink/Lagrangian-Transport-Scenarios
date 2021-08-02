@@ -127,7 +127,7 @@ def floating_AdvectionRK4DiffusionEM_stokes_depth(particle, fieldset, time):
 
         k_p = w_p ** 2 / 9.81  # peak wave number
         z_correc = max(d - fieldset.SURF_Z, 0)  # depth correction
-        st_z = max(math.exp(-2 * k_p * z_correc) - math.sqrt(2 * math.pi * k_p * z_correc) * math.erfc(2 * k_p * z_correc), 0)
+        st_z = min(max(math.exp(-2 * k_p * z_correc) - math.sqrt(2 * math.pi * k_p * z_correc) * math.erfc(2 * k_p * z_correc), 0), 1)
 
         # RK4 terms
         (u1, v1) = fieldset.UV[t, d, la, lo]

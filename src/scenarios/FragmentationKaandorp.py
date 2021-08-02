@@ -78,8 +78,8 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         utils.add_particle_variable(particle_type, 'rho_plastic', dtype=np.float32, set_initial=True, to_write=False)
         utils.add_particle_variable(particle_type, 'size', dtype=np.float32)
         utils.add_particle_variable(particle_type, 'weights', dtype=np.float32, set_initial=True)
-        utils.add_particle_variable(particle_type, 'to_split', dtype=np.int32, set_initial=False)
-        utils.add_particle_variable(particle_type, 'to_delete', dtype=np.int32, set_initial=False)
+        utils.add_particle_variable(particle_type, 'to_split', dtype=np.int32, set_initial=False, to_write=False)
+        utils.add_particle_variable(particle_type, 'to_delete', dtype=np.int32, set_initial=False, to_write=False)
         return particle_type
 
     def file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART,
@@ -220,7 +220,6 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         behavior_kernel = self.get_particle_behavior(pset=pset)
         os.system('echo "The actual execution of the run"')
         time = utils.get_start_end_time(time='start')
-        output_time = time + settings.OUTPUT_TIME_STEP
         while time <= utils.get_start_end_time(time='end'):
             pset.execute(behavior_kernel, runtime=settings.OUTPUT_TIME_STEP, dt=settings.TIME_STEP,
                          recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle},
