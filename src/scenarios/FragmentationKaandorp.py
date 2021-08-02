@@ -1,5 +1,4 @@
-from parcels import FieldSet, ParticleSet
-# from parcels.kernels.TEOSseawaterdensity import PolyTEOS10_bsq
+from parcels import FieldSet, ParticleSet, ErrorCode
 import numpy as np
 import settings as settings
 import scenarios.base_scenario as base_scenario
@@ -220,11 +219,17 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         os.system('echo "Defining the particle behavior"')
         behavior_kernel = self.get_particle_behavior(pset=pset)
         os.system('echo "The actual execution of the run"')
-        # pset.execute(behavior_kernel,
-        #              runtime=timedelta(days=get_start_end_time(time='length')),
-        #              dt=settings.TIME_STEP,
-        #              # recovery={ErrorCode.ErrorOutOfBounds: delete_particle},
-        #              output_file=pfile
-        #              )
+        time = utils.get_start_end_time(time='start')
+        output_time = time + settings.OUTPUT_TIME_STEP
+        while time <= utils.get_start_end_time(time='end'):
+            if time == output_time:
+                pset.execute(behavior_kernel, runtime=settings.TIME_STEP, dt=settings.TIME_STEP,
+                             recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle},
+                             output_file=pfile)
+                output_time = time + settings.OUTPUT_TIME_STEP
+            else:
+                pset.execute(behavior_kernel, runtime=settings.TIME_STEP, dt=settings.TIME_STEP,
+                             recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle})
+            time += settings.TIME_STEP
         pfile.export()
         os.system('echo "Run completed"')
