@@ -21,7 +21,7 @@ def parcels_to_separation_distance(file_dict: dict, scenario):
     utils.check_direc_exist(output_direc)
 
     # Setting the particle sizes we loop through and creating a dictionary to save the average separation distance
-    particle_size = np.array([1]) * settings.SIZE_FACTOR
+    particle_size = np.array([5000, 1000, 500, 100, 90, 80, 70, 60, 50, 40, 30, 20, 10, 5, 1]) * settings.SIZE_FACTOR
     time_steps = len(Dataset(scenario.file_names(new=True, run=0, restart=0, init_size=settings.INIT_SIZE)).variables['time'][0, :])
     output_dict = dict.fromkeys(['STD', 'MEAN', 'MEDIAN'])
     for key in output_dict.keys():
@@ -50,24 +50,10 @@ def parcels_to_separation_distance(file_dict: dict, scenario):
                     key_size = utils.init_size_key(size)
                     distance = utils.distance_between_points(lon_reference[:, time], lat_reference[:, time],
                                                              lon_comparison[:, time], lat_comparison[:, time])
-                    # print('{} {}'.format(time, np.nansum(lon_reference[:, time].mask)))
-                    # def median(array):
-                    #     sorted_array = np.sort(array)
-                    #     if time == 176:
-                    #     return sorted_array[len(array) // 2]
-                    #
-                    # print('{} {} {}'.format(time, np.mean(distance), median(distance)))
-
-
-                    # if time == 176:
-                    #     sorted = np.sort(distance)
-                    #     for i in range(len(distance)):
-                    #         print('{} {}'.format(distance[i], sorted[i]))
-
-
                     output_dict['MEAN'][time][key_size] = np.nanmean(distance)
                     output_dict['MEDIAN'][time][key_size] = np.nanmedian(distance)
                     output_dict['STD'][time][key_size] = np.nanstd(distance)
+
     print('final mean {} median {} std {}'.format(output_dict['MEAN'][720][key_size],
                                                   output_dict['MEDIAN'][720][key_size],
                                                   output_dict['STD'][720][key_size]))
