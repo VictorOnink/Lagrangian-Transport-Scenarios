@@ -150,16 +150,17 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
 
     def get_particle_behavior(self, pset: ParticleSet):
         os.system('echo "Setting the particle behavior"')
-        total_behavior = pset.Kernel(utils.PolyTEOS10_bsq) + \
-                        pset.Kernel(utils.get_kinematic_viscosity) + \
-                        pset.Kernel(utils.get_reynolds_number) + \
-                        pset.Kernel(utils.floating_AdvectionRK4DiffusionEM_stokes_depth) + \
-                        pset.Kernel(utils.anti_beach_nudging) + \
-                        pset.Kernel(utils.get_rising_velocity) + \
-                        pset.Kernel(utils.KPP_TIDAL_mixing) + \
-                        pset.Kernel(self.beaching_kernel) #+\
+        # total_behavior = pset.Kernel(utils.PolyTEOS10_bsq) + \
+        #                 pset.Kernel(utils.get_kinematic_viscosity) + \
+        #                 pset.Kernel(utils.get_reynolds_number) + \
+        #                 pset.Kernel(utils.floating_AdvectionRK4DiffusionEM_stokes_depth) + \
+        #                 pset.Kernel(utils.anti_beach_nudging) + \
+        #                 pset.Kernel(utils.get_rising_velocity) + \
+        #                 pset.Kernel(utils.KPP_TIDAL_mixing) + \
+        #                 pset.Kernel(self.beaching_kernel) #+\
                         # pset.Kernel(self.fragmentation_kernel)
-        return total_behavior
+        # return total_behavior
+        return pset.Kernel(utils.floating_AdvectionRK4DiffusionEM_stokes_depth)
 
     def fragmentation_kernel(particle, fieldset, time):
         particle.landid = fieldset.landID[time, particle.depth, particle.lat, particle.lon]
