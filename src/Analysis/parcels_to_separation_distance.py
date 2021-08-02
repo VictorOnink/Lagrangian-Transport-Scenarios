@@ -50,7 +50,7 @@ def parcels_to_separation_distance(file_dict: dict, scenario):
                     key_size = utils.init_size_key(size)
                     distance = utils.distance_between_points(lon_reference[:, time], lat_reference[:, time],
                                                              lon_comparison[:, time], lat_comparison[:, time])
-                    print('{} {}'.format(time, np.nansum(lon_reference[:, time].mask)))
+                    # print('{} {}'.format(time, np.nansum(lon_reference[:, time].mask)))
                     # def median(array):
                     #     sorted_array = np.sort(array)
                     #     if time == 176:
@@ -65,10 +65,10 @@ def parcels_to_separation_distance(file_dict: dict, scenario):
                     #         print('{} {}'.format(distance[i], sorted[i]))
 
 
-    #                 output_dict['MEAN'][time][key_size] = np.nanmean(distance)
-    #                 output_dict['MEDIAN'][time][key_size] = np.nanmedian(distance)
-    #                 output_dict['STD'][time][key_size] = np.nanstd(distance)
-    # print('final mean {} median {} std {}'.format(output_dict['MEAN'][720][key_size],
-    #                                               output_dict['MEDIAN'][720][key_size],
-    #                                               output_dict['STD'][720][key_size]))
+                    output_dict['MEAN'][time][key_size] = np.nanmean(distance)
+                    output_dict['MEDIAN'][time][key_size] = np.nanmedian(distance)
+                    output_dict['STD'][time][key_size] = np.nanstd(distance)
+    print('final mean {} median {} std {}'.format(output_dict['MEAN'][720][key_size],
+                                                  output_dict['MEDIAN'][720][key_size],
+                                                  output_dict['STD'][720][key_size]))
 
