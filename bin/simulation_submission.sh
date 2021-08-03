@@ -2,14 +2,14 @@
 # General run parameters                                                            #
 #####################################################################################
 SUBMISSION='simulation'
-DEBUG=1 # 0 = Not a debug run, 1 = a debug run
+DEBUG=0 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Kaandorp based fragmentation, 6 = Size dependent transport
-SCENARIO=5
+SCENARIO=6
 #for scenario 1, the time a particle must be near the coast to beach (in days)
 VICINITY=2
 #for scenario 2, the beaching and resuspension timescales (in days)
-SHORETIME_list=(1)
+SHORETIME_list=(5000 1000 500 100 90 80 70 60 50 40 30 20 10 5 1)
 RESUSTIME_list=(69)
 #for scenario 3, the shore dependence scenario.
 SHOREDEPEN=0
@@ -33,9 +33,9 @@ INPUT=1
 # 0 = Global HYCOM, 1 = Caribbean HYCOM, 2 = Mediterranean CMEMS
 ADVECTION_DATA=2
 #Start year of the simulation. 0 = new simulation, otherwise it picks up from a previous simulation
-START=0
+START=1
 #Number of years the simulation runs
-SIMLEN=1
+SIMLEN=3
 #Inclusion of Stokes drift. 0 = include stokes, 1 = do not include stokes
 STOKES=0 
 #Ensemble member
