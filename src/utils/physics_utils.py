@@ -388,9 +388,12 @@ def KPP_wind_mixing(particle, fieldset, time):
         mld = fieldset.MLD[time, particle.depth, particle.lat, particle.lon]
 
         # Below the MLD there is no wind-driven turbulent diffusion according to KPP theory
-        # if particle.depth > mld:
-        #     Kz = 0
-        #     dKz = 0
+        if particle.depth > mld:
+            Kz = fieldset.K_Z_BULK
+            dKz = 0
+        else:
+            Kz = 0
+            dKz = 0
         # # Within the MLD we compute the vertical diffusion according to Boufadel et al. (2020)
         # else:
         #     # Wind speed
@@ -417,7 +420,6 @@ def KPP_wind_mixing(particle, fieldset, time):
         #     # bulk diffusivity
         #     alpha = (fieldset.VK * U_W) / fieldset.PHI
         #     Kz = alpha * (z_correct + z0) * math.pow(1 - z_correct / mld, 2)
-        dKz, Kz =0, 0
         # The Markov-0 vertical transport from Grawe et al. (2012)
         gradient = dKz * particle.dt
         R = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3) * math.sqrt(2 * Kz)
