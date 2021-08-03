@@ -383,7 +383,6 @@ def KPP_wind_mixing(particle, fieldset, time):
     Markov-0 implementation of wind mixing based on the KPP wind mixing parametrization. For more exact details, look
     at the full wind mixing code at https://github.com/VictorOnink/Wind-Mixing-Diffusion/ or at the paper draft
     """
-    # This of course should only be affecting particles that aren't beached
     if particle.beach == 0:
         # Loading the mixed layer depth
         mld = fieldset.MLD[time, particle.depth, particle.lat, particle.lon]
@@ -427,10 +426,9 @@ def KPP_wind_mixing(particle, fieldset, time):
         # The ocean surface acts as a lid off, and if a particle goes above the ocean surface it is placed back at the
         # ocean surface (so at fieldset.SURF_Z)
         potential = particle.depth + gradient + R + rise
-        bathymetry_local = fieldset.bathymetry[time, fieldset.SURF_Z, particle.lat, particle.lon]
         if potential < fieldset.SURF_Z:
             particle.depth = fieldset.SURF_Z
-        elif potential > bathymetry_local:
+        elif potential > fieldset.bathymetry[time, particle.depth, particle.lat, particle.lon]:
             # If the particle has gone through the sea floor, the particle is considered stuck on the sea floor
             particle.beach = 3
         else:
