@@ -392,7 +392,7 @@ def KPP_wind_mixing(particle, fieldset, time):
             Kz = fieldset.K_Z_BULK
             dKz = 0
         else:
-            Kz = 0
+            Kz = fieldset.K_Z_BULK
             dKz = 0
         # # Within the MLD we compute the vertical diffusion according to Boufadel et al. (2020)
         # else:
