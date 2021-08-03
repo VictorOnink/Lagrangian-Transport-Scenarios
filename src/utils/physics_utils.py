@@ -388,7 +388,7 @@ def KPP_wind_mixing(particle, fieldset, time):
         mld = fieldset.MLD[time, particle.depth, particle.lat, particle.lon]
 
         # Below the MLD there is no wind-driven turbulent diffusion according to KPP theory
-        if particle.depth > mld:
+        if particle.depth < mld:
             Kz = 0
             dKz = 0
         # Within the MLD we compute the vertical diffusion according to Boufadel et al. (2020)
