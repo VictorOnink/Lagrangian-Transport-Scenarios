@@ -229,7 +229,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         behavior_kernel = self.get_particle_behavior(pset=pset)
         os.system('echo "The actual execution of the run"')
         time = utils.get_start_end_time(time='start')
-        while time <= utils.get_start_end_time(time='start') + settings.OUTPUT_TIME_STEP#utils.get_start_end_time(time='end'):
+        while time <= utils.get_start_end_time(time='start') + settings.OUTPUT_TIME_STEP: #utils.get_start_end_time(time='end'):
             pset.execute(behavior_kernel, runtime=settings.OUTPUT_TIME_STEP, dt=settings.TIME_STEP,
                          recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle},
                          output_file=pfile)
