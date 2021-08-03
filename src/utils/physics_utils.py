@@ -425,10 +425,11 @@ def KPP_wind_mixing(particle, fieldset, time):
 
         # The ocean surface acts as a lid off, and if a particle goes above the ocean surface it is placed back at the
         # ocean surface (so at fieldset.SURF_Z)
+        bathymetry_local = fieldset.bathymetry[time, particle.depth, particle.lat, particle.lon]
         potential = particle.depth #+ gradient + R + rise
         if potential < fieldset.SURF_Z:
             particle.depth = fieldset.SURF_Z
-        elif potential > fieldset.bathymetry[time, particle.depth, particle.lat, particle.lon]:
+        elif potential >= bathymetry_local:
             # If the particle has gone through the sea floor, the particle is considered stuck on the sea floor
             particle.beach = 3
         else:
@@ -455,9 +456,9 @@ def internal_tide_mixing(particle, fieldset, time):
         tidal_potential = particle.depth + tidal_gradient + tidal_random
 
         bathymetry_local = fieldset.bathymetry[time, particle.depth, particle.lat, particle.lon]
-        if tidal_potential < fieldset.SURF_Z and tidal_potential < bathymetry_local:
+        if tidal_potential < fieldset.SURF_Z:
             particle.depth = fieldset.SURF_Z
-        elif tidal_potential > bathymetry_local:
+        elif tidal_potential >= bathymetry_local:
             particle.beach = 3
         else:
             particle.depth = tidal_potential
