@@ -218,24 +218,27 @@ if SCENARIO_NAME != 'AdvectionDiffusionOnly' and SUBMISSION in ['simulation', 'a
     COAST_D = 10  # km, the distance from the nearest shoreline that falls under the coastal zone.
 # SIZE SCALING FACTOR
 SIZE_FACTOR = 1E-6
+
 if SCENARIO_NAME == 'FragmentationKaandorp' and SUBMISSION in ['simulation', 'analysis']:
     # INITIAL PARTICLE SIZE (m)
     INIT_SIZE = int(os.environ['PARTICLE_SIZE']) * SIZE_FACTOR
     # INITIAL DENSITY (KG/M^3): 920 = polypropylene
     INIT_DENSITY = 1020
-    # FRAGMENTATION PROBABILITY
-    P_FRAG = int(os.environ['P']) * 1e-1
-    # NUMBER OF SPATIAL DIMENSIONS
-    DN = int(os.environ['DN']) * 1e-1
-    # NUMBER OF SIZE CLASSES
-    SIZE_CLASS_NUMBER = int(os.environ['SIZE_CLASS_NUMBER'])
-    # FRAGMENTATION TIMESCALE (DAYS)
-    LAMBDA_FRAG = int(os.environ['SIZE_CLASS_NUMBER'])
+# FRAGMENTATION PROBABILITY
+P_FRAG = int(os.environ['P']) * 1e-1
+# NUMBER OF SPATIAL DIMENSIONS
+DN = int(os.environ['DN']) * 1e-1
+# NUMBER OF SIZE CLASSES
+SIZE_CLASS_NUMBER = int(os.environ['SIZE_CLASS_NUMBER'])
+# FRAGMENTATION TIMESCALE (DAYS)
+LAMBDA_FRAG = int(os.environ['SIZE_CLASS_NUMBER'])
+
 if SCENARIO_NAME == 'SizeTransport' and SUBMISSION in ['simulation', 'analysis']:
-    # INITIAL PARTICLE SIZE (m)
-    INIT_SIZE = int(os.environ['PARTICLE_SIZE']) * SIZE_FACTOR
     # INITIAL DENSITY (KG/M^3): 920 = POLYPROPYLENE, 980 = HIGH DENSITY POLYETHYLENE (BRIGNAC ET AL. 2017)
     INIT_DENSITY = 920
+# INITIAL PARTICLE SIZE (m)
+INIT_SIZE = int(os.environ['PARTICLE_SIZE']) * SIZE_FACTOR
+
 # ACCELERATION DUE TO GRAVITY (M/S^2)
 G = 9.81
 # THERMAL EXPANSION COEFFICIENT (1/K) AND REFERENCE TEMPERATURE (K)
