@@ -425,7 +425,7 @@ def KPP_wind_mixing(particle, fieldset, time):
 
         # The ocean surface acts as a lid off, and if a particle goes above the ocean surface it is placed back at the
         # ocean surface (so at fieldset.SURF_Z)
-        potential = particle.depth + gradient + R + rise
+        potential = particle.depth #+ gradient + R + rise
         if potential < fieldset.SURF_Z:
             particle.depth = fieldset.SURF_Z
         elif potential > fieldset.bathymetry[time, particle.depth, particle.lat, particle.lon]:
