@@ -16,17 +16,17 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
 
     def __init__(self, server, stokes):
         """Constructor for FragmentationKaandorp"""
-        super().__init__(server, stokes)
-        self.prefix = "Frag_Kaandorp"
-        self.input_dir = utils.get_input_directory(server=self.server)
-        self.output_dir = utils.get_output_directory(server=self.server)
-        self.repeat_dt = None
-        if settings.SUBMISSION in ['simulation', 'visualization']:
-            advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
-                                                                advection_scenario=settings.ADVECTION_DATA,
-                                                                repeat_dt=self.repeat_dt)
-            self.file_dict = advection_scenario.file_names
-            self.field_set = self.create_fieldset()
+        # super().__init__(server, stokes)
+        # self.prefix = "Frag_Kaandorp"
+        # self.input_dir = utils.get_input_directory(server=self.server)
+        # self.output_dir = utils.get_output_directory(server=self.server)
+        # self.repeat_dt = None
+        # if settings.SUBMISSION in ['simulation', 'visualization']:
+        #     advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
+        #                                                         advection_scenario=settings.ADVECTION_DATA,
+        #                                                         repeat_dt=self.repeat_dt)
+        #     self.file_dict = advection_scenario.file_names
+        #     self.field_set = self.create_fieldset()
 
     var_list = ['lon', 'lat', 'weights', 'beach', 'age', 'size', 'rho_plastic']
 
