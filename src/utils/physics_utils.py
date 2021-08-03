@@ -385,7 +385,7 @@ def KPP_wind_mixing(particle, fieldset, time):
     """
     if particle.beach == 0:
         # Loading the mixed layer depth
-        mld = fieldset.MLD[time, particle.depth, particle.lat, particle.lon]
+        mld = fieldset.MLD[time, fieldset.SURF_Z, particle.lat, particle.lon]
 
         # Below the MLD there is no wind-driven turbulent diffusion according to KPP theory
         if particle.depth > mld:
