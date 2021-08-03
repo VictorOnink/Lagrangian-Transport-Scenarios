@@ -49,7 +49,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         :return:
         """
         os.system('echo "Creating the particle set"')
-        os.system('echo " we have a {}'.format(type(var_dict['size'])))
+        os.system('echo ' + str(var_dict['size']))
         if settings.RESTART == 0:
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
                                lon=var_dict['lon'][::1000], lat=var_dict['lat'][::1000], beach=var_dict['beach'][::1000],
