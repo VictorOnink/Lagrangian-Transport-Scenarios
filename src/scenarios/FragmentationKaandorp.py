@@ -49,7 +49,6 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         :return:
         """
         os.system('echo "Creating the particle set"')
-        os.system('echo ' + str(var_dict['size']))
         if settings.RESTART == 0:
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
                                lon=var_dict['lon'][::1000], lat=var_dict['lat'][::1000], beach=var_dict['beach'][::1000],
@@ -211,10 +210,12 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         return self.mass_per_size_class(k, f, p) * 2 ** (Dn * k)
 
     def run(self):
-        os.system('echo "Creating the particle set"')
-        pset = self.get_pset(fieldset=self.field_set, particle_type=self.particle,
-                             var_dict=self.get_var_dict(), start_time=utils.get_start_end_time(time='start'),
-                             repeat_dt=self.repeat_dt)
+        os.system('echo "for {}, the rise velocity is {}"'.format(0.005, utils.initial_estimate_particle_rise_velocity(L=0.005)))
+        os.system(
+            'echo "for {}, the rise velocity is {}"'.format([0.005, 0.005] utils.initial_estimate_particle_rise_velocity(L=[0.005, 0.005])))
+        # pset = self.get_pset(fieldset=self.field_set, particle_type=self.particle,
+        #                      var_dict=self.get_var_dict(), start_time=utils.get_start_end_time(time='start'),
+        #                      repeat_dt=self.repeat_dt)
         # pfile = pset.ParticleFile(name=self.file_names(new=True),
         #                           outputdt=settings.OUTPUT_TIME_STEP)
         # os.system('echo "Setting the random seed"')
