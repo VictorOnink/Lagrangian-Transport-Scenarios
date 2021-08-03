@@ -50,6 +50,9 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         """
         os.system('echo "Creating the particle set"')
         if settings.RESTART == 0:
+            os.system('echo " we have a {} object that looks like {}"'.format(type(var_dict['size']), var_dict['size'][::1000]))
+            os.system('echo "The rise velocities are type {} and {}"'.format(type(utils.initial_estimate_particle_rise_velocity(L=var_dict['size'])[::1000]),
+                                                                             utils.initial_estimate_particle_rise_velocity(L=var_dict['size'])[::1000]))
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
                                lon=var_dict['lon'][::1000], lat=var_dict['lat'][::1000], beach=var_dict['beach'][::1000],
                                age=var_dict['age'][::1000], weights=var_dict['weight'][::1000], size=var_dict['size'][::1000],
@@ -150,15 +153,6 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
 
     def get_particle_behavior(self, pset: ParticleSet):
         os.system('echo "Setting the particle behavior"')
-        # total_behavior = pset.Kernel(utils.PolyTEOS10_bsq) + \
-        #                 pset.Kernel(utils.get_kinematic_viscosity) + \
-        #                 pset.Kernel(utils.get_reynolds_number) + \
-        #                 pset.Kernel(utils.floating_AdvectionRK4DiffusionEM_stokes_depth) + \
-        #                 pset.Kernel(utils.anti_beach_nudging) + \
-        #                 pset.Kernel(utils.get_rising_velocity) + \
-        #                 pset.Kernel(utils.KPP_TIDAL_mixing) + \
-        #                 pset.Kernel(self.beaching_kernel) #+\
-                        # pset.Kernel(self.fragmentation_kernel)
         total_behavior = pset.Kernel(utils.PolyTEOS10_bsq) + \
                          pset.Kernel(utils.get_kinematic_viscosity) + \
                          pset.Kernel(utils.get_reynolds_number) + \
@@ -166,8 +160,8 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                          pset.Kernel(utils.anti_beach_nudging) + \
                          pset.Kernel(utils.get_rising_velocity) + \
                          pset.Kernel(utils.KPP_TIDAL_mixing) + \
-                         pset.Kernel(self.beaching_kernel)
-                         #pset.Kernel(utils.KPP_wind_mixing)
+                         pset.Kernel(self.beaching_kernel) + \
+                         pset.Kernel(self.fragmentation_kernel)
         return total_behavior
 
     def fragmentation_kernel(particle, fieldset, time):
@@ -223,18 +217,18 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         pset = self.get_pset(fieldset=self.field_set, particle_type=self.particle,
                              var_dict=self.get_var_dict(), start_time=utils.get_start_end_time(time='start'),
                              repeat_dt=self.repeat_dt)
-        pfile = pset.ParticleFile(name=self.file_names(new=True),
-                                  outputdt=settings.OUTPUT_TIME_STEP)
-        os.system('echo "Setting the random seed"')
-        utils.set_random_seed(seed=settings.SEED)
-        os.system('echo "Defining the particle behavior"')
-        behavior_kernel = self.get_particle_behavior(pset=pset)
-        os.system('echo "The actual execution of the run"')
-        time = utils.get_start_end_time(time='start')
-        while time <= (utils.get_start_end_time(time='start') + 2 * settings.OUTPUT_TIME_STEP): #utils.get_start_end_time(time='end'):
-            pset.execute(behavior_kernel, runtime=settings.OUTPUT_TIME_STEP, dt=settings.TIME_STEP,
-                         recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle},
-                         output_file=pfile)
-            time += settings.OUTPUT_TIME_STEP
-        pfile.export()
+        # pfile = pset.ParticleFile(name=self.file_names(new=True),
+        #                           outputdt=settings.OUTPUT_TIME_STEP)
+        # os.system('echo "Setting the random seed"')
+        # utils.set_random_seed(seed=settings.SEED)
+        # os.system('echo "Defining the particle behavior"')
+        # behavior_kernel = self.get_particle_behavior(pset=pset)
+        # os.system('echo "The actual execution of the run"')
+        # time = utils.get_start_end_time(time='start')
+        # while time <= (utils.get_start_end_time(time='start') + 2 * settings.OUTPUT_TIME_STEP): #utils.get_start_end_time(time='end'):
+        #     pset.execute(behavior_kernel, runtime=settings.OUTPUT_TIME_STEP, dt=settings.TIME_STEP,
+        #                  recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle},
+        #                  output_file=pfile)
+        #     time += settings.OUTPUT_TIME_STEP
+        # pfile.export()
         os.system('echo "Run completed"')
