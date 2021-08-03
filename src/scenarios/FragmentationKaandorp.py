@@ -16,17 +16,17 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
 
     def __init__(self, server, stokes):
         """Constructor for FragmentationKaandorp"""
-        # super().__init__(server, stokes)
-        # self.prefix = "Frag_Kaandorp"
-        # self.input_dir = utils.get_input_directory(server=self.server)
-        # self.output_dir = utils.get_output_directory(server=self.server)
-        # self.repeat_dt = None
-        # if settings.SUBMISSION in ['simulation', 'visualization']:
-        #     advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
-        #                                                         advection_scenario=settings.ADVECTION_DATA,
-        #                                                         repeat_dt=self.repeat_dt)
-        #     self.file_dict = advection_scenario.file_names
-        #     self.field_set = self.create_fieldset()
+        super().__init__(server, stokes)
+        self.prefix = "Frag_Kaandorp"
+        self.input_dir = utils.get_input_directory(server=self.server)
+        self.output_dir = utils.get_output_directory(server=self.server)
+        self.repeat_dt = None
+        if settings.SUBMISSION in ['simulation', 'visualization']:
+            advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
+                                                                advection_scenario=settings.ADVECTION_DATA,
+                                                                repeat_dt=self.repeat_dt)
+            self.file_dict = advection_scenario.file_names
+            self.field_set = self.create_fieldset()
 
     var_list = ['lon', 'lat', 'weights', 'beach', 'age', 'size', 'rho_plastic']
 
@@ -210,24 +210,21 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         return self.mass_per_size_class(k, f, p) * 2 ** (Dn * k)
 
     def run(self):
-        os.system('echo "for {}, the rise velocity is {}"'.format(0.005, utils.initial_estimate_particle_rise_velocity(L=0.005)))
-        os.system(
-            'echo "for {}, the rise velocity is {}"'.format([0.005, 0.005], utils.initial_estimate_particle_rise_velocity(L=[0.005, 0.005])))
-        # pset = self.get_pset(fieldset=self.field_set, particle_type=self.particle,
-        #                      var_dict=self.get_var_dict(), start_time=utils.get_start_end_time(time='start'),
-        #                      repeat_dt=self.repeat_dt)
-        # pfile = pset.ParticleFile(name=self.file_names(new=True),
-        #                           outputdt=settings.OUTPUT_TIME_STEP)
-        # os.system('echo "Setting the random seed"')
-        # utils.set_random_seed(seed=settings.SEED)
-        # os.system('echo "Defining the particle behavior"')
-        # behavior_kernel = self.get_particle_behavior(pset=pset)
-        # os.system('echo "The actual execution of the run"')
-        # time = utils.get_start_end_time(time='start')
-        # while time <= (utils.get_start_end_time(time='start') + 2 * settings.OUTPUT_TIME_STEP): #utils.get_start_end_time(time='end'):
-        #     pset.execute(behavior_kernel, runtime=settings.OUTPUT_TIME_STEP, dt=settings.TIME_STEP,
-        #                  recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle},
-        #                  output_file=pfile)
-        #     time += settings.OUTPUT_TIME_STEP
-        # pfile.export()
+        pset = self.get_pset(fieldset=self.field_set, particle_type=self.particle,
+                             var_dict=self.get_var_dict(), start_time=utils.get_start_end_time(time='start'),
+                             repeat_dt=self.repeat_dt)
+        pfile = pset.ParticleFile(name=self.file_names(new=True),
+                                  outputdt=settings.OUTPUT_TIME_STEP)
+        os.system('echo "Setting the random seed"')
+        utils.set_random_seed(seed=settings.SEED)
+        os.system('echo "Defining the particle behavior"')
+        behavior_kernel = self.get_particle_behavior(pset=pset)
+        os.system('echo "The actual execution of the run"')
+        time = utils.get_start_end_time(time='start')
+        while time <= (utils.get_start_end_time(time='start') + 2 * settings.OUTPUT_TIME_STEP): #utils.get_start_end_time(time='end'):
+            pset.execute(behavior_kernel, runtime=settings.OUTPUT_TIME_STEP, dt=settings.TIME_STEP,
+                         recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle},
+                         output_file=pfile)
+            time += settings.OUTPUT_TIME_STEP
+        pfile.export()
         os.system('echo "Run completed"')
