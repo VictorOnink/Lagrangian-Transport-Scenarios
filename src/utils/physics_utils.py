@@ -4,6 +4,7 @@ import settings
 import scipy.optimize
 import numpy as np
 import os
+from copy import deepcopy
 
 
 def anti_beach_nudging(particle, fieldset, time):
@@ -554,7 +555,7 @@ def initial_estimate_particle_rise_velocity(L=settings.INIT_SIZE, print_rise=Fal
             os.system('echo "The rise velocity is for a particle with size {} is {}"'.format(L, w_rise))
         return w_rise
     elif type(L) in [np.ndarray, list]:
-        w_rise = np.zeros(L.shape)
+        w_rise = deepcopy(L)
         for index_L, L_size in enumerate(L):
             def to_optimize(w_rise):
                 rho_p = settings.INIT_DENSITY  # Density of plastic particle
