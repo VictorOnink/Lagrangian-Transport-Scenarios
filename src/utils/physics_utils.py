@@ -553,7 +553,7 @@ def initial_estimate_particle_rise_velocity(L=settings.INIT_SIZE, print_rise=Fal
         if print_rise:
             os.system('echo "The rise velocity is for a particle with size {} is {}"'.format(L, w_rise))
         return w_rise
-    elif type(L) is np.ndarray:
+    elif type(L) in [np.ndarray, list]:
         w_rise = np.zeros(L.shape)
         for index_L, L_size in enumerate(L):
             def to_optimize(w_rise):
