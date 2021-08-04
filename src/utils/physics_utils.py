@@ -21,6 +21,7 @@ def anti_beach_nudging(particle, fieldset, time):
     if fieldset.distance2shore[time, d1, particle.lat, particle.lon] < 0.5:
         borUab, borVab = fieldset.borU[time, d1, particle.lat, particle.lon], fieldset.borV[
             time, d1, particle.lat, particle.lon]
+        particle.haha = borUab + borVab
         particle.lon -= borUab * particle.dt
         particle.lat -= borVab * particle.dt
 
@@ -299,7 +300,6 @@ def PolyTEOS10_bsq(particle, fieldset, time):
     CT = fieldset.cons_temperature[time, particle.depth, particle.lat, particle.lon]
     SA_SURF = fieldset.abs_salinity[time, fieldset.SURF_Z, particle.lat, particle.lon]
     CT_SURF = fieldset.cons_temperature[time, fieldset.SURF_Z, particle.lat, particle.lon]
-    particle.haha = SA + CT + SA_SURF + CT_SURF
 
     SAu = 40 * 35.16504 / 35
     CTu = 40
