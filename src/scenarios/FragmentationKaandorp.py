@@ -51,10 +51,10 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         os.system('echo "Creating the particle set"')
         if settings.RESTART == 0:
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
-                               lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
-                               age=var_dict['age'], weights=var_dict['weight'], size=var_dict['size'],
-                               rho_plastic=var_dict['rho_plastic'],
-                               rise_velocity=utils.initial_estimate_particle_rise_velocity(L=var_dict['size']),
+                               lon=var_dict['lon'][::1000], lat=var_dict['lat'][::1000], beach=var_dict['beach'][::1000],
+                               age=var_dict['age'][::1000], weights=var_dict['weight'][::1000], size=var_dict['size'][::1000],
+                               rho_plastic=var_dict['rho_plastic'][::1000],
+                               rise_velocity=utils.initial_estimate_particle_rise_velocity(L=var_dict['size'][::1000]),
                                time=start_time, repeatdt=repeat_dt)
         else:
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
@@ -209,16 +209,24 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
     def particle_number_per_size_class(self, k, f=1, p=settings.P_FRAG, Dn=settings.DN):
         return self.mass_per_size_class(k, f, p) * 2 ** (Dn * k)
 
+    def size_class_limits(self, k_range=settings.SIZE_CLASS_NUMBER):
+        return np.array([settings.INIT_SIZE * settings.P_FRAG ** k for k in range(k_range)])
+
     def run(self):
+        # Creating the particle set and output file
         pset = self.get_pset(fieldset=self.field_set, particle_type=self.particle,
                              var_dict=self.get_var_dict(), start_time=utils.get_start_end_time(time='start'),
                              repeat_dt=self.repeat_dt)
         pfile = pset.ParticleFile(name=self.file_names(new=True),
                                   outputdt=settings.OUTPUT_TIME_STEP)
+        # Setting the random seed and defining the particle behavior
         os.system('echo "Setting the random seed"')
         utils.set_random_seed(seed=settings.SEED)
         os.system('echo "Defining the particle behavior"')
         behavior_kernel = self.get_particle_behavior(pset=pset)
+        # Getting the size class limits for the particle splitting
+        size_limit = self.size_class_limits()
+        # Carrying out the execution of the simulation
         os.system('echo "The actual execution of the run"')
         time = utils.get_start_end_time(time='start')
         while time <= (utils.get_start_end_time(time='start') + 2 * settings.OUTPUT_TIME_STEP): #utils.get_start_end_time(time='end'):
