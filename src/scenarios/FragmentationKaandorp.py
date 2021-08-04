@@ -184,7 +184,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                 # Otherwise, if the particle is not in the smallest size class then we can figure out how many fragments
                 # are created in smaller size classes
                 else:
-                    for k in range(0, settings.size_class_number - size_class):
+                    for k in range(0, settings.SIZE_CLASS_NUMBER - size_class):
                         new_particle_size = original_size * settings.P_FRAG ** (k + 1)
                         particle_number = int(np.round(self.number_function(k)))
                         pset_new = ParticleSet(fieldset=fieldset, pclass=utils.particle_class,
@@ -205,8 +205,9 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
     def particle_number_per_size_class(self, k, f=1, p=settings.P_FRAG, Dn=settings.DN):
         return self.mass_per_size_class(k, f, p) * 2 ** (Dn * k)
 
-    def size_class_limits(self, k_range=settings.SIZE_CLASS_NUMBER):
-        return np.array([settings.INIT_SIZE * settings.P_FRAG ** k for k in range(k_range)])
+    def size_class_limits(self, k_range=settings.SIZE_CLASS_NUMBER, init_size=settings.INIT_SIZE,
+                          p_frag=settings.P_FRAG):
+        return np.array([init_size * p_frag ** k for k in range(k_range)])
 
     def run(self):
         # Creating the particle set and output file
