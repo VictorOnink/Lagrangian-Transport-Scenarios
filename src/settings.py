@@ -1,7 +1,5 @@
 import os
-# from dotenv import load_dotenv
 from datetime import timedelta
-# load_dotenv()
 
 SUBMISSION = str(os.environ["SUBMISSION"])
 os.system('echo "run="' + SUBMISSION)

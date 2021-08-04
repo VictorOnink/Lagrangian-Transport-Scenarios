@@ -166,6 +166,9 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
             if particle.beach == 1:
                 if ParcelsRandom.uniform(0, 1) > fieldset.p_frag:
                     particle.to_split = 1
+                    print('We split!')
+                    a=fieldset.p_frag
+                    print(a)
 
     def particle_splitter(self, fieldset, pset, size_limit):
         for particle in pset:
