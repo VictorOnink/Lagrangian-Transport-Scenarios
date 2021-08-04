@@ -28,7 +28,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
             self.file_dict = advection_scenario.file_names
             self.field_set = self.create_fieldset()
 
-    var_list = ['lon', 'lat', 'weights', 'beach', 'age', 'size', 'rho_plastic', parent]
+    var_list = ['lon', 'lat', 'weights', 'beach', 'age', 'size', 'rho_plastic', 'parent']
 
     def create_fieldset(self) -> FieldSet:
         utils.print_statement("Creating the fieldset")
