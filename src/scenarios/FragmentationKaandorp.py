@@ -186,7 +186,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                 else:
                     for k in range(0, settings.SIZE_CLASS_NUMBER - size_class):
                         new_particle_size = original_size * settings.P_FRAG ** (k + 1)
-                        particle_number = int(np.round(self.number_function(k)))
+                        particle_number = int(np.round(self.particle_number_per_size_class(k)))
                         pset_new = ParticleSet(fieldset=fieldset, pclass=utils.particle_class,
                                                lon=utils.create_list(particle.lon, particle_number),
                                                lat=utils.create_list(particle.lat, particle_number),
