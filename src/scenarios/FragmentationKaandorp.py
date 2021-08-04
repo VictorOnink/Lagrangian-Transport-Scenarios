@@ -198,7 +198,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                         pset.add(pset_new)
         return pset
 
-    def mass_per_size_class(k, f, p=settings.P_FRAG):
+    def mass_per_size_class(self, k, f, p=settings.P_FRAG):
         gamma_ratio = math.gamma(k + f) / (math.gamma(k + 1) * math.gamma(f))
         return gamma_ratio * p ** k * (1 - p) ** f
 
