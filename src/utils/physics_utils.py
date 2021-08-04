@@ -422,7 +422,7 @@ def KPP_wind_mixing(particle, fieldset, time):
         # The Markov-0 vertical transport from Grawe et al. (2012)
         gradient = dKz * particle.dt
         R = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3) * math.sqrt(2 * Kz)
-        rise = particle.rise_velocity * particle.dt
+        rise = 0#particle.rise_velocity * particle.dt
 
         # The ocean surface acts as a lid off, and if a particle goes above the ocean surface it is placed back at the
         # ocean surface (so at fieldset.SURF_Z)
