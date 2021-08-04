@@ -87,7 +87,7 @@ def SizeTransport_Animation(scenario, figure_direc, size_list, rho_list, tau_lis
         return plot_list
 
     def animate(frame_index):
-        os.system('echo "we are at index {} of {}"'.format(frame_index, frame_number))
+        utils.print_statement("we are at index {} of {}".format(frame_index, frame_number), to_print=True)
         date = time_list[frame_index].strftime("%Y-%m-%d-%H-%M-%S")
         for index, size in enumerate(size_list):
             # Loading the dictionary with the data

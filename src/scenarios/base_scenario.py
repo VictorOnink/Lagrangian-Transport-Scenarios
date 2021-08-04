@@ -4,6 +4,7 @@ from parcels import FieldSet, JITParticle, ParticleSet, ErrorCode
 import numpy as np
 from netCDF4 import Dataset
 from utils import set_random_seed, delete_particle, restart_nan_removal, get_start_end_time
+import utils
 import settings as settings
 import os
 from factories.pset_variable_factory import PsetVariableFactory as pvf
@@ -70,17 +71,17 @@ class BaseScenario(ABC):
             return self.get_restart_variables()
 
     def run(self) -> object:
-        os.system('echo "Creating the particle set"')
+        utils.print_statement("Creating the particle set")
         pset = self.get_pset(fieldset=self.field_set, particle_type=self.particle,
                              var_dict=self.get_var_dict(), start_time=get_start_end_time(time='start'),
                              repeat_dt=self.repeat_dt)
         pfile = pset.ParticleFile(name=self.file_names(new=True),
                                   outputdt=settings.OUTPUT_TIME_STEP)
-        os.system('echo "Setting the random seed"')
+        utils.print_statement("Setting the random seed")
         set_random_seed(seed=settings.SEED)
-        os.system('echo "Defining the particle behavior"')
+        utils.print_statement("Defining the particle behavior")
         behavior_kernel = self.get_particle_behavior(pset=pset)
-        os.system('echo "The actual execution of the run"')
+        utils.print_statement("The actual execution of the run")
         pset.execute(behavior_kernel,
                      runtime=timedelta(days=get_start_end_time(time='length')),
                      dt=settings.TIME_STEP,
@@ -88,7 +89,7 @@ class BaseScenario(ABC):
                      output_file=pfile
                      )
         pfile.export()
-        os.system('echo "Run completed"')
+        utils.print_statement("Run completed")
 
     def return_full_run_directory(self) -> dict:
         """

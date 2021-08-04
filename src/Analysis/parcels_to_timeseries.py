@@ -32,7 +32,7 @@ def parcels_to_timeseries(file_dict: dict, lon_min: float = -180, lon_max: float
                         'time': time_list}
     beach_label_dict = {'beach': 1, 'afloat': 0, 'seabed': 3, 'removed': 2}
 
-    os.system('echo "Start running through the restart and run files"')
+    utils.print_statement("Start running through the restart and run files")
     # loop through the runs
     for run in range(settings.RUN_RANGE):
         # Loop through the restart files
@@ -71,4 +71,4 @@ def parcels_to_timeseries(file_dict: dict, lon_min: float = -180, lon_max: float
     prefix = 'timeseries'
     output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
     utils.save_obj(output_name, beach_state_dict)
-    os.system('echo "The timeseries has been saved"')
+    utils.print_statement("The timeseries has been saved")

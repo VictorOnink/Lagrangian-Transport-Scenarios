@@ -33,7 +33,7 @@ class AdvectionDiffusionOnly(base_scenario.BaseScenario):
     var_list = ['lon', 'lat', 'weights', 'beach', 'age']
 
     def create_fieldset(self) -> FieldSet:
-        os.system('echo "Creating the fieldset"')
+        utils.print_statement("Creating the fieldset")
         fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict, stokes=self.stokes,
                                                                       diffusion=True, landID=True, distance=True,
                                                                       coastal_zone=False)
@@ -44,14 +44,14 @@ class AdvectionDiffusionOnly(base_scenario.BaseScenario):
         """
         :return:
         """
-        os.system('echo "Creating the particle set"')
+        utils.print_statement("Creating the particle set")
         pset = ParticleSet(fieldset=fieldset, pclass=particle_type, lon=var_dict['lon'], lat=var_dict['lat'],
                            beach=var_dict['beach'], age=var_dict['age'], weights=var_dict['weight'], time=start_time,
                            repeatdt=repeat_dt)
         return pset
 
     def get_pclass(self):
-        os.system('echo "Creating the particle class"')
+        utils.print_statement("Creating the particle class")
         particle_type = utils.BaseParticle
         utils.add_particle_variable(particle_type, 'distance', dtype=np.float32, set_initial=False)
         utils.add_particle_variable(particle_type, 'weights', dtype=np.float32, set_initial=True)
@@ -75,7 +75,7 @@ class AdvectionDiffusionOnly(base_scenario.BaseScenario):
         particle.age += particle.dt
 
     def get_particle_behavior(self, pset: ParticleSet):
-        os.system('echo "Setting the particle behavior"')
+        utils.print_statement("Setting the particle behavior")
         total_behavior = pset.Kernel(utils.initial_input) + \
                          pset.Kernel(utils.floating_advection_rk4) + \
                          pset.Kernel(utils.floating_2d_brownian_motion) + \

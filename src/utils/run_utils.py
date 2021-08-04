@@ -4,6 +4,7 @@ import numpy as np
 import os
 from operator import attrgetter
 import settings
+from utils.file_utils import print_statement
 
 
 def set_random_seed(seed: str):
@@ -21,7 +22,7 @@ def set_random_seed(seed: str):
         seed_value = int(time())*1000000
     else:
         seed_value = int(seed)
-    os.system('echo "The random seed is "'+str(seed_value))
+    print_statement("The random seed is {}".format(seed_value))
     ParcelsRandom.seed(seed_value)
 
 

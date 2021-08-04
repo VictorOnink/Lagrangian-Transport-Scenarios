@@ -1,5 +1,5 @@
 import settings
-import os
+import utils
 import numpy as np
 import xarray
 import progressbar
@@ -26,10 +26,8 @@ def create_grid_spacing(output_name: str, grid: np.array, lon: np.array, lat: np
     dset.to_netcdf(output_name)
 
     # Checks to see if the grid spacing calculation works as expected
-    os.system('echo "The maximum lon spacing is {}, and the minimum is {}"'.format(grid_lon_spacing.max(),
-                                                                                   grid_lon_spacing.min()))
-    os.system('echo "The maximum lat spacing is {}, and the minimum is {}"'.format(grid_lat_spacing.max(),
-                                                                                   grid_lat_spacing.min()))
+    utils.print_statement("The maximum lon spacing is {}, and the minimum is {}".format(grid_lon_spacing.max(), grid_lon_spacing.min()))
+    utils.print_statement("The maximum lat spacing is {}, and the minimum is {}".format(grid_lat_spacing.max(), grid_lat_spacing.min()))
 
 
 def fill_last(array: np.array):

@@ -67,7 +67,7 @@ def parcels_to_vertical_concentration(file_dict: dict):
     prefix = 'vertical_concentration'
     output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
     utils.save_obj(output_name, output_dict)
-    os.system('echo "The vertical concentration has been saved"')
+    utils.print_statement("The vertical concentration has been saved")
 
 
 

@@ -110,3 +110,8 @@ def load_obj(filename):
 
 def create_list(var, length):
     return [var] * length
+
+
+def print_statement(statement, to_print=False):
+    if settings.SUBMISSION in ['simulation'] or to_print is True:
+        os.system('echo {}'.format(statement))

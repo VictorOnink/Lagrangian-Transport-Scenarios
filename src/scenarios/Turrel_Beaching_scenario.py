@@ -34,7 +34,7 @@ class Turrell_Resuspension(base_scenario.BaseScenario):
     var_list = ['lon', 'lat', 'weights', 'beach', 'age']
 
     def create_fieldset(self) -> FieldSet:
-        os.system('echo "Creating the fieldset"')
+        utils.print_statement("Creating the fieldset")
         fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict, stokes=self.stokes,
                                                                       border_current=True, diffusion=True, landID=True,
                                                                       distance=True, beach_timescale=True, wind=True,
@@ -47,7 +47,7 @@ class Turrell_Resuspension(base_scenario.BaseScenario):
         """
         :return:
         """
-        os.system('echo "Creating the particle set"')
+        utils.print_statement("Creating the particle set")
         pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
                            lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
                            age=var_dict['age'], weights=var_dict['weight'],
@@ -55,7 +55,7 @@ class Turrell_Resuspension(base_scenario.BaseScenario):
         return pset
 
     def get_pclass(self):
-        os.system('echo "Creating the particle class"')
+        utils.print_statement("Creating the particle class")
         particle_type = utils.BaseParticle
         utils.add_particle_variable(particle_type, 'distance', dtype=np.float32, set_initial=False)
         utils.add_particle_variable(particle_type, 'weights', dtype=np.float32, set_initial=True)
@@ -65,11 +65,9 @@ class Turrell_Resuspension(base_scenario.BaseScenario):
         odirec = self.output_dir + "Turrell/st_{}_W_{}_e_{}/".format(settings.SHORE_TIME, settings.WMIN,
                                                                      settings.ENSEMBLE)
         if new:
-            os.system('echo "Set the output file name"')
             str_format = (settings.ADVECTION_DATA, settings.WMIN, settings.SHORE_TIME, settings.START_YEAR,
                           settings.INPUT, restart, run)
         else:
-            os.system('echo "Set the restart file name"')
             str_format = (settings.ADVECTION_DATA, settings.WMIN, settings.SHORE_TIME, settings.START_YEAR,
                           settings.INPUT, restart - 1, run)
         return odirec + self.prefix + "_{}_Wmin={}_st={}_y={}_I={}_r={}_run={}.nc".format(*str_format)
@@ -122,7 +120,7 @@ class Turrell_Resuspension(base_scenario.BaseScenario):
         particle.age += particle.dt
 
     def get_particle_behavior(self, pset: ParticleSet):
-        os.system('echo "Setting the particle behavior"')
+        utils.print_statement("Setting the particle behavior")
         total_behavior = pset.Kernel(utils.initial_input) + \
                          pset.Kernel(utils.floating_advection_rk4) + \
                          pset.Kernel(utils.floating_2d_brownian_motion) + \

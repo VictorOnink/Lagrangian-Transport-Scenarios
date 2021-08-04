@@ -4,7 +4,7 @@ import settings as settings
 import scenarios.base_scenario as base_scenario
 import factories.fieldset_factory as fieldset_factory
 from advection_scenarios import advection_files
-import utils as utils
+import utils
 from datetime import datetime, timedelta
 import os
 from parcels import ParcelsRandom
@@ -31,7 +31,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
     var_list = ['lon', 'lat', 'weights', 'beach', 'age', 'size', 'rho_plastic']
 
     def create_fieldset(self) -> FieldSet:
-        os.system('echo "Creating the fieldset"')
+        utils.print_statement("Creating the fieldset")
         fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict, stokes=self.stokes,
                                                                       stokes_depth=True,
                                                                       border_current=True, diffusion=True, landID=True,
@@ -48,7 +48,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         """
         :return:
         """
-        os.system('echo "Creating the particle set"')
+        utils.print_statement("Creating the particle set")
         if settings.RESTART == 0:
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
                                lon=var_dict['lon'][::1000], lat=var_dict['lat'][::1000], beach=var_dict['beach'][::1000],
@@ -65,7 +65,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         return pset
 
     def get_pclass(self):
-        os.system('echo "Creating the particle class"')
+        utils.print_statement("Creating the particle class")
         particle_type = utils.BaseParticle
         utils.add_particle_variable(particle_type, 'distance', dtype=np.float32, set_initial=False)
         utils.add_particle_variable(particle_type, 'density', dtype=np.float32, set_initial=False, to_write=True)
@@ -91,11 +91,9 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                                                                                      resus_time,
                                                                                      ensemble)
         if new:
-            os.system('echo "Set the output file name"')
             str_format = (advection_data, shore_time, resus_time, p_frag, dn, size_class_number, start_year, input,
                           restart, run)
         else:
-            os.system('echo "Set the restart file name"')
             str_format = (advection_data, shore_time, resus_time, p_frag, dn, size_class_number, start_year, input,
                           restart - 1, run)
         return odirec + self.prefix + '_{}_st={}_rt={}_pfrag={}_dn={}_sizeclasses={}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
@@ -149,7 +147,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         particle.age += particle.dt
 
     def get_particle_behavior(self, pset: ParticleSet):
-        os.system('echo "Setting the particle behavior"')
+        utils.print_statement("Setting the particle behavior")
         total_behavior = pset.Kernel(utils.PolyTEOS10_bsq) + \
                          pset.Kernel(utils.get_kinematic_viscosity) + \
                          pset.Kernel(utils.get_reynolds_number) + \
@@ -220,14 +218,14 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         pfile = pset.ParticleFile(name=self.file_names(new=True),
                                   outputdt=settings.OUTPUT_TIME_STEP)
         # Setting the random seed and defining the particle behavior
-        os.system('echo "Setting the random seed"')
+        utils.print_statement("Setting the random seed")
         utils.set_random_seed(seed=settings.SEED)
-        os.system('echo "Defining the particle behavior"')
+        utils.print_statement("Defining the particle behavior")
         behavior_kernel = self.get_particle_behavior(pset=pset)
         # Getting the size class limits for the particle splitting
         size_limit = self.size_class_limits()
         # Carrying out the execution of the simulation
-        os.system('echo "The actual execution of the run"')
+        utils.print_statement("The actual execution of the run")
         time = utils.get_start_end_time(time='start')
         while time <= (utils.get_start_end_time(time='start') + 2 * settings.OUTPUT_TIME_STEP): #utils.get_start_end_time(time='end'):
             pset.execute(behavior_kernel, runtime=settings.OUTPUT_TIME_STEP, dt=settings.TIME_STEP,
@@ -235,4 +233,4 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                          output_file=pfile)
             time += settings.OUTPUT_TIME_STEP
         pfile.export()
-        os.system('echo "Run completed"')
+        utils.print_statement("Run completed")

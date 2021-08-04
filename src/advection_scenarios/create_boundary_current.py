@@ -4,7 +4,7 @@ from numpy import array
 import xarray
 import progressbar
 from copy import deepcopy
-import os
+import utils
 
 
 def create_border_current(output_name: str, filenames: list, variables: dict, dimensions: dict, grid: array):
@@ -58,15 +58,9 @@ def create_border_current(output_name: str, filenames: list, variables: dict, di
 
     # Just to check some basics to see if it did what I want
     magnitude = np.sqrt(np.square(u_vel_all) + np.square(v_vel_all))
-    if np.max(magnitude, axis=(0, 1)) != 1:
-        os.system('echo "WARNING: The maximum magnitude is too high, namely {} m/s"'.format(
-            np.max(magnitude, axis=(0, 1)) != 0))
-    if np.max(np.abs(u_vel_all), axis=(0, 1)) > 1:
-        os.system('echo "WARNING: The maximum u component is too high, namely {} m/s"'.format(
-            np.max(np.abs(u_vel_all), axis=(0, 1))))
-    if np.max(np.abs(v_vel_all), axis=(0, 1)) > 1:
-        os.system('echo "WARNING: The maximum v component is too high, namely {} m/s"'.format(
-            np.max(np.abs(v_vel_all), axis=(0, 1))))
+    assert np.max(magnitude, axis=(0, 1)) != 1, utils.print_statement("WARNING: The maximum magnitude is too high, namely {} m/s".format(np.max(magnitude, axis=(0, 1)) != 0))
+    assert np.max(np.abs(u_vel_all), axis=(0, 1)) <= 1, utils.print_statement("WARNING: The maximum u component is too high, namely {} m/s".format(np.max(np.abs(u_vel_all), axis=(0, 1))))
+    assert np.max(np.abs(v_vel_all), axis=(0, 1)) <= 1, utils.print_statement("WARNING: The maximum v component is too high, namely {} m/s".format(np.max(np.abs(v_vel_all), axis=(0, 1))))
 
 
 def set_fieldset(filenames: list, variables: dict, dimensions: dict):
@@ -81,7 +75,7 @@ def reduce_array(data: array):
     elif len(data.shape) == 3:
         data = data[0, :, :]
     else:
-        os.system('echo "What weird data are you working with? It has shape {}"'.format(data.shape))
+        utils.print_statement("What weird data are you working with? It has shape {}".format(data.shape))
     return np.array(data)
 
 

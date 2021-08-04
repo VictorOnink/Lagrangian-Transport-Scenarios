@@ -5,6 +5,7 @@ import scipy.optimize
 import numpy as np
 import os
 from copy import deepcopy
+from utils.file_utils import print_statement
 
 
 def anti_beach_nudging(particle, fieldset, time):
@@ -551,8 +552,7 @@ def initial_estimate_particle_rise_velocity(L=settings.INIT_SIZE, print_rise=Fal
             return np.abs(left - right)
 
         w_rise = scipy.optimize.minimize_scalar(to_optimize, bounds=[-100, 0], method='bounded').x
-        if print_rise:
-            os.system('echo "The rise velocity is for a particle with size {} is {}"'.format(L, w_rise))
+        print_statement("The rise velocity is for a particle with size {} is {}".format(L, w_rise), to_print=print_rise)
         return w_rise
     elif type(L) in [np.ndarray, list]:
         w_rise = deepcopy(L)
@@ -568,7 +568,7 @@ def initial_estimate_particle_rise_velocity(L=settings.INIT_SIZE, print_rise=Fal
             w_rise[index_L] = scipy.optimize.minimize_scalar(to_optimize, bounds=[-100, 0], method='bounded').x
         return w_rise
     else:
-        os.system('echo "the input type is {}, and the value is {}"'.format(type(L), L))
+        print_statement("the input type is {}, and the value is {}".format(type(L), L), to_print=True)
 
 
 def get_resuspension_timescale(L=settings.INIT_SIZE, print_size=False):
@@ -581,10 +581,8 @@ def get_resuspension_timescale(L=settings.INIT_SIZE, print_size=False):
     """
     w_rise = initial_estimate_particle_rise_velocity(L=L)
     lambda_R = 2.6e2 * np.abs(w_rise) + 7.1
-    if print_size:
-        os.system(
-            'echo "The resuspension timescale for a particle of size {} is {:.6f} days"'.format(settings.INIT_SIZE,
-                                                                                                lambda_R))
+    print_statement("The resuspension timescale for a particle of size {} is {:.6f} days".format(settings.INIT_SIZE,
+                                                                                                lambda_R), to_print=print_size)
     return lambda_R
 
 

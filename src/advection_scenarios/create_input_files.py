@@ -16,7 +16,6 @@ from shapely.geometry import shape
 import xarray
 import progressbar
 from parcels import Field
-import matplotlib.pyplot as plt
 
 
 def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array, repeat_dt):
@@ -30,13 +29,13 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
         str_format = (prefix, settings.START_YEAR)
         output_prefix = settings.INPUT_DIREC + settings.INPUT + '_{}_{}_'.format(*str_format)
     else:
-        os.system('echo "Perhaps take another look at what input you are using?"')
+        utils.print_statement("Perhaps take another look at what input you are using?")
 
     # Check existence
     if len(glob.glob(output_prefix + '*')) > 0:
-        os.system('echo "The input files {} are already present"'.format(output_prefix))
+        utils.print_statement("The input files {} are already present".format(output_prefix))
     else:
-        os.system('echo "We need to create the input files {}"'.format(output_prefix))
+        utils.print_statement("We need to create the input files {}".format(output_prefix))
         # Calculating the number of particle releases per year
         releases = number_of_releases(repeat_dt)
         if settings.INPUT == 'Jambeck':
@@ -61,7 +60,7 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
             lat_inputs = Lat_population[mismanaged_total > 0].flatten()
             plastic_inputs = mismanaged_total[mismanaged_total > 0].flatten()
         elif settings.INPUT == 'Lebreton':
-            os.system('echo "Loading the lebreton data"')
+            utils.print_statement("Loading the lebreton data")
             lebData = pd.read_csv(settings.INPUT_DIREC + 'PlasticRiverInputs.csv')
             lon_inputs, lat_inputs = np.array(lebData['X']), np.array(lebData['Y'])
             plastic_inputs = np.array(lebData['i_low'])
@@ -80,7 +79,7 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
                 np.array([la for lo, la in zip(lon_inputs, lat_inputs) if Land[0, 0, la, lo] == 0.0])]
             # If we are dealing with a uniform release, we are going to assume that weight doesn't really matter, and
             # we only care about the release positions.
-            print('The number of particles released per year is {} particles'.format(len(lon_inputs) * releases))
+            utils.print_statement('The number of particles released per year is {} particles'.format(len(lon_inputs) * releases))
             split_to_runs(particle_lat=lat_inputs, particle_lon=lon_inputs, particle_weight=None,
                           output_prefix=output_prefix)
             return output_prefix
@@ -111,13 +110,13 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
         # How much of the plastic is being accounted for
         missing_percent = np.divide(np.sum(inputs_coastal_grid) - np.sum(particle_weight),
                                     np.sum(inputs_coastal_grid)) * 100
-        os.system('echo "The particles account for {}% of the total inputs"'.format(100 - missing_percent))
+        utils.print_statement("The particles account for {}% of the total inputs".format(100 - missing_percent))
         str_format = len(particle_lat), len(particle_lat) * releases, releases
-        os.system('echo "We release {} particles per release step, so {} per year over {} steps"'.format(*str_format))
+        utils.print_statement("We release {} particles per release step, so {} per year over {} steps".format(*str_format))
         # Dividing the particles into runs
         split_to_runs(particle_lat=particle_lat, particle_lon=particle_lon, particle_weight=particle_weight,
                       output_prefix=output_prefix)
-        os.system('echo "The input files have been created"')
+        utils.print_statement("The input files have been created")
     # Returning the output prefix
     return output_prefix
 
@@ -125,10 +124,10 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
 def get_mismanaged_fraction_Jambeck(dataset: Dataset):
     mismanaged_file = settings.INPUT_DIREC + 'Jambeck_mismanaged_grid.nc'
     if utils.check_file_exist(mismanaged_file):
-        os.system('echo "The mismanaged grid already exists"')
+        utils.print_statement("The mismanaged grid already exists")
         return Dataset(mismanaged_file).variables['mismanaged_plastic'][:]
     else:
-        os.system('echo "We need to generate the mismanaged grid"')
+        utils.print_statement("We need to generate the mismanaged grid")
         # Load the grid of the population data
         lon_pop, lat_pop = dataset.variables['longitude'][:], dataset.variables['latitude'][:]
         Lon, Lat = np.meshgrid(lon_pop, lat_pop)
@@ -153,19 +152,19 @@ def get_mismanaged_fraction_Jambeck(dataset: Dataset):
                     mismanaged_grid[country_mask] = jambeck_data[
                         jambeck_country.index(countries[country_index]['properties']['NAME0'])]
         # Saving the entire distance field
-        os.system('echo "Starting to save the mismanaged grid"')
+        utils.print_statement("Starting to save the mismanaged grid")
         coords = [('lat', lat_pop), ('lon', lon_pop)]
         misman = xarray.DataArray(mismanaged_grid, coords=coords)
         dcoo = {'lat': lat_pop, 'lon': lon_pop}
         dset = xarray.Dataset({'mismanaged_plastic': misman}, coords=dcoo)
         dset.to_netcdf(mismanaged_file)
-        os.system('echo "The mismanaged grid has now been created and saved for future use"')
+        utils.print_statement("The mismanaged grid has now been created and saved for future use")
         return mismanaged_grid
 
 
 def get_distance_to_shore(filename: str, grid: np.array, lon: np.array, lat: np.array):
     if utils.check_file_exist(filename):
-        os.system('echo "The mismanaged grid already exists"')
+        utils.print_statement("The mismanaged grid already exists")
     else:
         create_distance_to_shore_land(output_name=filename, grid=grid, lon=lon, lat=lat)
     return slicing_correction(Dataset(filename).variables['distance'][:, :])
@@ -185,7 +184,7 @@ def within_domain(lon: np.array, lat: np.array, lon_inputs: np.array, lat_inputs
     domain = (lon_inputs <= lon_max) & (lon_inputs >= lon_min) & (lat_inputs >= lat_min) & \
              (lat_inputs <= lat_max) & (plastic_inputs > 0)
     str_format = (len(lon_inputs), settings.INPUT, np.sum(domain * 1))
-    os.system('echo "Of the original {} input sites in the {} scenario, {} are within the domain"'.format(*str_format))
+    utils.print_statement("Of the original {} input sites in the {} scenario, {} are within the domain".format(*str_format))
     return lon_inputs[domain], lat_inputs[domain], plastic_inputs[domain]
 
 

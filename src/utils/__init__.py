@@ -1,6 +1,6 @@
 # Utilities for setting up the model runs
 from utils.file_utils import get_input_directory, get_start_end_time, get_data_directory, \
-    restart_nan_removal, get_output_directory, save_obj, load_obj, create_list
+    restart_nan_removal, get_output_directory, save_obj, load_obj, create_list, print_statement
 from utils.physics_utils import initial_input, floating_advection_rk4, floating_2d_brownian_motion, \
     anti_beach_nudging, delete_particle, floating_AdvectionRK4DiffusionEM_stokes_depth, get_kinematic_viscosity, \
     KPP_wind_mixing, PolyTEOS10_bsq, internal_tide_mixing, initial_estimate_particle_rise_velocity, \

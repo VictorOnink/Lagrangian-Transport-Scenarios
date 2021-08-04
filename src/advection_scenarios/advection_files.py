@@ -1,6 +1,5 @@
 import settings
 import utils
-
 import glob
 from netCDF4 import Dataset
 import os
@@ -294,71 +293,71 @@ class AdvectionFiles:
             TIDE_Kz_filenames = self.input_dir + prefix + "_Kz_TIDAL.nc"
             file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='TIDE_Kz_filenames', variable=TIDE_Kz_filenames)
             if not utils.check_file_exist(TIDE_Kz_filenames):
-                os.system('echo "The tidal Kz file does not yet exist"')
+                utils.print_statement("The tidal Kz file does not yet exist")
                 create_tidal_Kz_files.create_tidal_Kz_files(file_name=TIDE_Kz_filenames, LON=LON, LAT=LAT, DEPTH=DEPTH,
                                                             BATH_filenames=BATH_filenames,
                                                             BATH_variables=BATH_variables)
             else:
-                os.system('echo "The tidal Kz file already exists"')
+                utils.print_statement("The tidal Kz file already exists")
 
         # The border current
         BORDER_filename = self.input_dir + prefix + '_boundary_velocities.nc'
         file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='BORDER_filename',
                                       variable=BORDER_filename)
         if utils.check_file_exist(BORDER_filename):
-            os.system('echo "border current file exists"')
+            utils.print_statement("border current file exists")
         else:
-            os.system('echo "The border current file does not yet exist"')
+            utils.print_statement("The border current file does not yet exist")
             create_boundary_current.create_border_current(output_name=BORDER_filename, filenames=UV_filenames,
                                                           variables=UV_variables, dimensions=UV_dimensions,
                                                           grid=GRID)
             if utils.check_file_exist(BORDER_filename):
-                os.system('echo "The border current for "' + str(prefix) + ' has been created')
+                utils.print_statement("The border current for {} has been created".format(prefix))
             else:
-                os.system('echo "The border current file still does not exist"')
+                utils.print_statement("The border current file still does not exist")
 
         # Distance to shore (from ocean cells to the nearest land cell)
         DISTANCE_filename = self.input_dir + prefix + '_distance2coast.nc'
         file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='DISTANCE_filename',
                                       variable=DISTANCE_filename)
         if utils.check_file_exist(DISTANCE_filename):
-            os.system('echo "distance to coast file exists"')
+            utils.print_statement("distance to coast file exists")
         else:
-            os.system('echo "The distance to coast file does not yet exist"')
+            utils.print_statement("The distance to coast file does not yet exist")
             create_distance_to_shore.create_distance_to_shore(output_name=DISTANCE_filename, grid=GRID, lon=LON,
                                                               lat=LAT)
             if utils.check_file_exist(BORDER_filename):
-                os.system('echo "The border current for "' + str(prefix) + ' has been created')
+                utils.print_statement("The border current for {} has been created".format(prefix))
             else:
-                os.system('echo "The border current file still does not exist"')
+                utils.print_statement("The border current file still does not exist")
 
         # Land ID
         LANDID_filename = self.input_dir + prefix + '_land_cell_identifier.nc'
         file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='LANDID_filename',
                                       variable=LANDID_filename)
         if utils.check_file_exist(LANDID_filename):
-            os.system('echo "LANDID file exists"')
+            utils.print_statement("LANDID file exists")
         else:
-            os.system('echo "The LANDID file does not yet exist"')
+            utils.print_statement("The LANDID file does not yet exist")
             create_land_ID.create_land_ID(output_name=LANDID_filename, grid=GRID, lon=LON, lat=LAT)
             if utils.check_file_exist(BORDER_filename):
-                os.system('echo "The LANDID file for "' + str(prefix) + ' has been created')
+                utils.print_statement("The LANDID file for {} has been created".format(prefix))
             else:
-                os.system('echo "The LANDID file still does not exist"')
+                utils.print_statement("The LANDID file still does not exist")
 
         # Grid size
         GRIDSPACING_filename = self.input_dir + prefix + '_grid_spacing.nc'
         file_dict = _add_to_file_dict(file_dict=file_dict, variable_name='GRIDSPACING_filename',
                                       variable=GRIDSPACING_filename)
         if utils.check_file_exist(GRIDSPACING_filename):
-            os.system('echo "Grid spacing file exists"')
+            utils.print_statement("Grid spacing file exists")
         else:
-            os.system('echo "The grid spacing file does not yet exist"')
+            utils.print_statement("The grid spacing file does not yet exist")
             create_grid_spacing.create_grid_spacing(output_name=GRIDSPACING_filename, grid=GRID, lon=LON, lat=LAT)
             if utils.check_file_exist(GRIDSPACING_filename):
-                os.system('echo "The grid spacing file for "' + str(prefix) + ' has been created')
+                utils.print_statement("The grid spacing file for {} has been created".format(prefix))
             else:
-                os.system('echo "The grid spacing file still does not exist"')
+                utils.print_statement("The grid spacing file still does not exist")
 
         # Checking for the input files
         output_prefix = create_input_files.create_input_files(prefix=prefix, grid=GRID, lon=LON, lat=LAT,

@@ -86,7 +86,7 @@ def get_base_fieldset(file_dict: dict) -> FieldSet:
     :return:
     """
     # Defining the folders in which all the data is stored on the different servers
-    os.system('echo "Creating the main fieldset"')
+    utils.print_statement("Creating the main fieldset")
     # Loading in the surface currents, where we always load in the 2000-01-01 file to ensure that time is always given
     # relative to the same starting point, whereas we then only load in the files for the specific year that the
     # simulation runs in. This speeds up the fieldset creation somewhat.
@@ -105,7 +105,7 @@ def add_stokes_drift(fieldset: FieldSet, file_dict: dict):
     :param fieldset:
     :param input_dir:
     """
-    os.system('echo "Adding Stokes drift"')
+    utils.print_statement("Adding Stokes drift")
     check_presence(variable='STOKES_filenames', file_dict=file_dict)
     filenames = {'Ust': file_dict['STOKES_filenames'], 'Vst': file_dict['STOKES_filenames']}
     fieldset_stoke = FieldSet.from_netcdf(filenames, file_dict['STOKES_variables'], file_dict['STOKES_dimensions'],
@@ -120,7 +120,7 @@ def add_stokes_drift(fieldset: FieldSet, file_dict: dict):
 
 
 def add_stokes_depth_depen(fieldset: FieldSet, file_dict: dict):
-    os.system('echo "Adding Stokes drift depth dependence data"')
+    utils.print_statement("Adding Stokes drift depth dependence data")
     check_presence(variable='PERIOD_filenames', file_dict=file_dict)
     filenames = {'WP': file_dict['PERIOD_filenames']}
     fieldset_period = FieldSet.from_netcdf(filenames, file_dict['PERIOD_variables'], file_dict['PERIOD_dimensions'],
@@ -134,7 +134,7 @@ def add_border_current(fieldset: FieldSet, file_dict: dict):
     :param fieldset:
     :param input_dir:
     """
-    os.system('echo "Adding the border current"')
+    utils.print_statement("Adding the border current")
     check_presence(variable='BORDER_filename', file_dict=file_dict)
     datasetBor = Dataset(file_dict['BORDER_filename'])
     borU = datasetBor.variables['border_u'][:]
@@ -153,7 +153,7 @@ def add_diffusion(fieldset: FieldSet, file_dict: dict):
     :param fieldset:
     :param input_dir:
     """
-    os.system('echo "Adding diffusion"')
+    utils.print_statement("Adding diffusion")
     kh = settings.K_HOR  # m^2 s^-1
     check_presence(variable='GRID', file_dict=file_dict)
     mask = file_dict['GRID'].mask
@@ -173,7 +173,7 @@ def add_land_ID_field(fieldset: FieldSet, file_dict: dict):
     :param fieldset:
     :param input_dir:
     """
-    os.system('echo "Adding land/water boolean field"')
+    utils.print_statement("Adding land/water boolean field")
     check_presence(variable='LANDID_filename', file_dict=file_dict)
     dataset = Dataset(file_dict['LANDID_filename'])
     landID = dataset.variables['land_ID'][:]
@@ -187,7 +187,7 @@ def add_distance2shore_field(fieldset: FieldSet, file_dict: dict):
     :param input_dir:
     :return:
     """
-    os.system('echo "Adding distance to shore"')
+    utils.print_statement("Adding distance to shore")
     check_presence(variable='DISTANCE_filename', file_dict=file_dict)
     datasetCoast = Dataset(file_dict['DISTANCE_filename'])
     distance = datasetCoast.variables['distance'][:]
@@ -202,7 +202,7 @@ def add_wind_field(fieldset: FieldSet, file_dict: dict):
     :param input_dir:
     :return:
     """
-    os.system('echo "Adding 10m winds"')
+    utils.print_statement("Adding 10m winds")
     check_presence(variable='WIND_filenames', file_dict=file_dict)
     filenames = {'u10': file_dict['WIND_filenames'],
                  'v10': file_dict['WIND_filenames']}
@@ -215,7 +215,7 @@ def add_wind_field(fieldset: FieldSet, file_dict: dict):
 
 
 def add_MLD_field(fieldset: FieldSet, file_dict: dict):
-    os.system('echo "Adding Mixed Layer Depth"')
+    utils.print_statement("Adding Mixed Layer Depth")
     check_presence(variable='MLD_filenames', file_dict=file_dict)
     filenames = {'MLD': file_dict['MLD_filenames']}
     fieldset_MLD = FieldSet.from_netcdf(filenames, file_dict['MLD_variables'], file_dict['MLD_dimensions'],
@@ -225,7 +225,7 @@ def add_MLD_field(fieldset: FieldSet, file_dict: dict):
 
 
 def add_sea_elevation_field(fieldset: FieldSet, file_dict: dict):
-    os.system('echo "Adding sea surface elevation"')
+    utils.print_statement("Adding sea surface elevation")
     check_presence(variable='ELEV_filenames', file_dict=file_dict)
     filenames = {'eta': file_dict['ELEV_filenames']}
     # Creating a fieldset for the wind data
@@ -236,7 +236,7 @@ def add_sea_elevation_field(fieldset: FieldSet, file_dict: dict):
 
 
 def add_salinity_field(fieldset: FieldSet, file_dict: dict):
-    os.system('echo "Adding ocean salinity"')
+    utils.print_statement("Adding ocean salinity")
     check_presence(variable='SALINITY_filenames', file_dict=file_dict)
     filenames = {'abs_salinity': file_dict['SALINITY_filenames']}
     # Creating a fieldset for the salinity data
@@ -247,7 +247,7 @@ def add_salinity_field(fieldset: FieldSet, file_dict: dict):
 
 
 def add_temperature_field(fieldset: FieldSet, file_dict: dict):
-    os.system('echo "Adding ocean temperature"')
+    utils.print_statement("Adding ocean temperature")
     check_presence(variable='TEMP_filenames', file_dict=file_dict)
     filenames = {'cons_temperature': file_dict['TEMP_filenames']}
     # Creating a fieldset for the temperature data
@@ -258,7 +258,7 @@ def add_temperature_field(fieldset: FieldSet, file_dict: dict):
 
 
 def add_bathymetry_field(fieldset: FieldSet, file_dict: dict):
-    os.system('echo "Adding ocean bathymetry"')
+    utils.print_statement("Adding ocean bathymetry")
     check_presence(variable='BATH_filenames', file_dict=file_dict)
     dataset = Dataset(file_dict['BATH_filenames'])
     bathymetry = np.array(dataset.variables[file_dict['BATH_variables']['DEPTH']][:])
@@ -325,7 +325,7 @@ def add_coastal_zone_boundary(fieldset: FieldSet):
 
 
 def add_TIDAL_mixing(fieldset: FieldSet, file_dict: dict):
-    os.system('echo "Adding TIDAL Kz mixing"')
+    utils.print_statement("Adding TIDAL Kz mixing")
     check_presence(variable='TIDE_Kz_filenames', file_dict=file_dict)
     dataset = Dataset(file_dict['TIDE_Kz_filenames'])
     TIDAL_Kz = dataset.variables['TIDAL_Kz'][:]
@@ -339,7 +339,7 @@ def add_TIDAL_mixing(fieldset: FieldSet, file_dict: dict):
 
 def add_grid_spacing(fieldset: FieldSet, file_dict: dict):
     # Adding in the lon and lat grid spacing for use in the initial scattering of particles on the first time step
-    os.system('echo "Adding lon and lat grid spacing"')
+    utils.print_statement("Adding lon and lat grid spacing")
     check_presence(variable='GRIDSPACING_filename', file_dict=file_dict)
     datasetCoast = Dataset(file_dict['GRIDSPACING_filename'])
     dlon = datasetCoast.variables['lon_spacing'][:]
@@ -349,7 +349,7 @@ def add_grid_spacing(fieldset: FieldSet, file_dict: dict):
 
 
 def add_halo(fieldset: FieldSet):
-    os.system('echo "Finally, the periodic halo"')
+    utils.print_statement("Finally, the periodic halo")
     fieldset.add_periodic_halo(zonal=True)
 
 
@@ -363,7 +363,7 @@ def check_presence(variable: str, file_dict: dict):
 def add_physics_constants(fieldset: FieldSet, file_dict: dict):
     # This adds in a number of physics-related constants to the fieldset. Not all might be relevant for all model
     # simulations, but adding simple constants should not significantly slow down computation.
-    os.system('echo "Adding constant physics parameters"')
+    utils.print_statement("Adding constant physics parameters")
     # Adding in the constant critical shear stress for particle resuspension from the sea bed
     fieldset.add_constant('SEABED_CRIT', settings.SEABED_CRIT)
     fieldset.add_constant('SEABED_KH', settings.SEABED_KH)

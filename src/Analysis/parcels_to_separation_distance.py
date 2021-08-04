@@ -55,5 +55,5 @@ def parcels_to_separation_distance(file_dict: dict, scenario):
     prefix = 'separation_distance'
     output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
     utils.save_obj(output_name, output_dict)
-    os.system('echo "The vertical concentration has been saved"')
+    utils.print_statement("The separation distance has been saved")
 

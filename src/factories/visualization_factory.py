@@ -2,6 +2,7 @@ import visualization.SizeTransport.SizeTransport_Figures as SizeTransport
 import factories.scenario_factory as scenario_factory
 import settings
 
+
 class VisualizationFactory:
     def __init__(self, server, stokes, scenario):
         self.server = server

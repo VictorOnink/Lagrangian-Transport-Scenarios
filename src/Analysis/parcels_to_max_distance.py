@@ -51,4 +51,4 @@ def parcels_to_max_distance(file_dict: dict, lon_min: float = -180, lon_max: flo
 
     output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
     io.savemat(output_name, output_dict)
-    os.system('echo "The maximum distance has been saved"')
+    utils.print_statement("The maximum distance has been saved")

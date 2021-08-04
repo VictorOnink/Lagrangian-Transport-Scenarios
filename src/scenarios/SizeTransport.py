@@ -32,7 +32,7 @@ class SizeTransport(base_scenario.BaseScenario):
     var_list = ['lon', 'lat', 'beach', 'age', 'distance_horizontal', 'distance_vertical', 'z']
 
     def create_fieldset(self) -> FieldSet:
-        os.system('echo "Creating the fieldset"')
+        utils.print_statement("Creating the fieldset")
         fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict, stokes=self.stokes,
                                                                       stokes_depth=True, border_current=True,
                                                                       diffusion=True,
@@ -49,7 +49,7 @@ class SizeTransport(base_scenario.BaseScenario):
         """
         :return:
         """
-        os.system('echo "Creating the particle set"')
+        utils.print_statement("Creating the particle set")
         if settings.RESTART == 0:
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
                                lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
@@ -64,7 +64,7 @@ class SizeTransport(base_scenario.BaseScenario):
         return pset
 
     def get_pclass(self):
-        os.system('echo "Creating the particle class"')
+        utils.print_statement("Creating the particle class")
         particle_type = utils.BaseParticle
         if settings.RESTART == 0:
             utils.add_particle_variable(particle_type, 'distance_horizontal', dtype=np.float32, set_initial=False,
@@ -101,12 +101,10 @@ class SizeTransport(base_scenario.BaseScenario):
                    seabed_crit: float = settings.SEABED_CRIT):
         odirec = self.output_dir + "SizeTransport/size_{:.1E}/".format(init_size)
         if new:
-            os.system('echo "Set the output file name"')
             str_format = (
                 advection_data, shore_time, utils.get_resuspension_timescale(L=init_size), init_size, init_density,
                 seabed_crit, start_year, input, restart, run)
         else:
-            os.system('echo "Set the restart file name"')
             str_format = (
                 advection_data, shore_time, utils.get_resuspension_timescale(L=init_size), init_size, init_density,
                 seabed_crit, start_year, input, restart - 1, run)
@@ -157,7 +155,7 @@ class SizeTransport(base_scenario.BaseScenario):
         particle.age += particle.dt
 
     def get_particle_behavior(self, pset: ParticleSet):
-        os.system('echo "Setting the particle behavior"')
+        utils.print_statement("Setting the particle behavior")
         base_behavior = pset.Kernel(utils.PolyTEOS10_bsq) + \
                         pset.Kernel(utils.get_kinematic_viscosity) + \
                         pset.Kernel(utils.get_reynolds_number) + \

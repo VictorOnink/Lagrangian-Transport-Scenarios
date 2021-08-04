@@ -4,7 +4,7 @@ import settings as settings
 import scenarios.base_scenario as base_scenario
 import factories.fieldset_factory as fieldset_factory
 from advection_scenarios import advection_files
-import utils as utils
+import utils
 from datetime import datetime, timedelta
 import os
 
@@ -32,7 +32,7 @@ class CoastalProximity(base_scenario.BaseScenario):
     var_list = ['lon', 'lat', 'weights', 'beach', 'age', 'prox']
 
     def create_fieldset(self) -> FieldSet:
-        os.system('echo "Creating the fieldset"')
+        utils.print_statement("Creating the fieldset")
         fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict, stokes=self.stokes,
                                                                       border_current=True, diffusion=True,
                                                                       landID=True, distance=True, vicinity=True)
@@ -43,7 +43,7 @@ class CoastalProximity(base_scenario.BaseScenario):
         """
         :return:
         """
-        os.system('echo "Creating the particle set"')
+        utils.print_statement("Creating the particle set")
         pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
                            lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
                            age=var_dict['age'], prox=var_dict['prox'], weights=var_dict['weight'],
@@ -51,7 +51,7 @@ class CoastalProximity(base_scenario.BaseScenario):
         return pset
 
     def get_pclass(self):
-        os.system('echo "Creating the particle class"')
+        utils.print_statement("Creating the particle class")
         particle_type = utils.BaseParticle
         utils.add_particle_variable(particle_type, 'prox')
         utils.add_particle_variable(particle_type, 'distance', dtype=np.float32, set_initial=False)
@@ -61,10 +61,8 @@ class CoastalProximity(base_scenario.BaseScenario):
     def file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART):
         odirec = self.output_dir + "coastal_v_" + str(settings.VICINITY) + "_e_" + str(settings.ENSEMBLE) + "/"
         if new:
-            os.system('echo "Set the output file name"')
             str_format = (settings.ADVECTION_DATA, settings.VICINITY, settings.START_YEAR, settings.INPUT, restart, run)
         else:
-            os.system('echo "Set the restart file name"')
             str_format = (settings.ADVECTION_DATA, settings.VICINITY, settings.START_YEAR, settings.INPUT, restart - 1,
                           run)
         return odirec + self.prefix + '_{}_v={}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
@@ -83,7 +81,7 @@ class CoastalProximity(base_scenario.BaseScenario):
         particle.age += particle.dt
 
     def get_particle_behavior(self, pset: ParticleSet):
-        os.system('echo "Setting the particle behavior"')
+        utils.print_statement("Setting the particle behavior")
         total_behavior = pset.Kernel(utils.initial_input) + \
                          pset.Kernel(utils.floating_advection_rk4) + \
                          pset.Kernel(utils.floating_2d_brownian_motion) + \
