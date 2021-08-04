@@ -19,7 +19,7 @@ def General_input_scenario(scenario, figure_direc, figsize=(10, 8), fontsize=14)
     input_dict = file_dict['STARTFILES_filename']
 
     # Now we have all the unique input locations, and the number of particles that are released there
-    df = pd.DataFrame({'lat': np.load(input_dict['lat'])[::1000], 'lon': np.load(input_dict['lon'])[::1000]})
+    df = pd.DataFrame({'lat': np.load(input_dict['lat']), 'lon': np.load(input_dict['lon'])})
     df = df.groupby(['lat', 'lon']).size().reset_index().rename(columns={0: 'count'})
 
     # Getting the spatial domain for the figure
