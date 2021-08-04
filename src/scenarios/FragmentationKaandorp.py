@@ -28,7 +28,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
             self.file_dict = advection_scenario.file_names
             self.field_set = self.create_fieldset()
 
-    var_list = ['lon', 'lat', 'weights', 'beach', 'age', 'size', 'rho_plastic']
+    var_list = ['lon', 'lat', 'weights', 'beach', 'age', 'size', 'rho_plastic', parent]
 
     def create_fieldset(self) -> FieldSet:
         utils.print_statement("Creating the fieldset")
@@ -53,12 +53,12 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
                                lon=var_dict['lon'][::1000], lat=var_dict['lat'][::1000], beach=var_dict['beach'][::1000],
                                age=var_dict['age'][::1000], weights=var_dict['weight'][::1000], size=var_dict['size'][::1000],
-                               rho_plastic=var_dict['rho_plastic'][::1000],
+                               rho_plastic=var_dict['rho_plastic'][::1000], parent=range(len(var_dict['weight'][::1000])),
                                rise_velocity=utils.initial_estimate_particle_rise_velocity(L=var_dict['size'][::1000]),
                                time=start_time, repeatdt=repeat_dt)
         else:
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
-                               lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
+                               lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'], parent=var_dict['parent'],
                                age=var_dict['age'], weights=var_dict['weight'], size=var_dict['size'],
                                rho_plastic=var_dict['rho_plastic'], rise_velocity=var_dict['rise_velocity'],
                                time=start_time, repeatdt=repeat_dt)
@@ -80,6 +80,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         utils.add_particle_variable(particle_type, 'weights', dtype=np.float32, set_initial=True)
         utils.add_particle_variable(particle_type, 'to_split', dtype=np.int32, set_initial=False, to_write=False)
         utils.add_particle_variable(particle_type, 'to_delete', dtype=np.int32, set_initial=False, to_write=False)
+        utils.add_particle_variable(particle_type, 'parent', dtype=np.int32, set_initial=True, to_write=True)
         return particle_type
 
     def file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART,
