@@ -80,7 +80,6 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         utils.add_particle_variable(particle_type, 'weights', dtype=np.float32, set_initial=True)
         utils.add_particle_variable(particle_type, 'to_split', dtype=np.int32, set_initial=False, to_write=False)
         utils.add_particle_variable(particle_type, 'to_delete', dtype=np.int32, set_initial=False, to_write=False)
-        utils.add_particle_variable(particle_type, 'landid', dtype=np.float32, set_initial=False, to_write=True)
         return particle_type
 
     def file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART,
@@ -160,7 +159,6 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         return total_behavior
 
     def fragmentation_kernel(particle, fieldset, time):
-        particle.landid = fieldset.landID[time, particle.depth, particle.lat, particle.lon]
         if particle.to_delete == 1:
             particle.delete()
         else:
@@ -227,10 +225,12 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         # Carrying out the execution of the simulation
         utils.print_statement("The actual execution of the run")
         time = utils.get_start_end_time(time='start')
-        while time <= (utils.get_start_end_time(time='start') + 2 * settings.OUTPUT_TIME_STEP): #utils.get_start_end_time(time='end'):
+        while time <= utils.get_start_end_time(time='end'):
             pset.execute(behavior_kernel, runtime=settings.OUTPUT_TIME_STEP, dt=settings.TIME_STEP,
                          recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle},
                          output_file=pfile)
             time += settings.OUTPUT_TIME_STEP
+            pset = self.particle_splitter(self.field_set, pset, size_limit)
+            utils.print_statement('time = {}'.format(time))
         pfile.export()
         utils.print_statement("Run completed")

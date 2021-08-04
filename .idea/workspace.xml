@@ -19,34 +19,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="update">
+    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="changing how print statements are implemented so that the ones related to simulations only get printed during simulations">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Analysis/parcels_to_basicstatistics.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analysis/parcels_to_basicstatistics.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Analysis/parcels_to_concentration.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analysis/parcels_to_concentration.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Analysis/parcels_to_max_distance.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analysis/parcels_to_max_distance.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Analysis/parcels_to_separation_distance.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analysis/parcels_to_separation_distance.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Analysis/parcels_to_timeseries.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analysis/parcels_to_timeseries.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Analysis/parcels_to_vertical_concentration.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analysis/parcels_to_vertical_concentration.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/advection_scenarios/advection_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/advection_scenarios/advection_files.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/advection_scenarios/create_boundary_current.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/advection_scenarios/create_boundary_current.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/advection_scenarios/create_grid_spacing.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/advection_scenarios/create_grid_spacing.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/advection_scenarios/create_input_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/advection_scenarios/create_input_files.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/factories/analysis_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/factories/analysis_factory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/factories/fieldset_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/factories/fieldset_factory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/factories/visualization_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/factories/visualization_factory.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/scenarios/FragmentationKaandorp.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/FragmentationKaandorp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/SizeTransport.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/SizeTransport.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/Turrel_Beaching_scenario.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/Turrel_Beaching_scenario.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/advection_diffusion_only_scenario.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/advection_diffusion_only_scenario.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/base_scenario.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/base_scenario.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/coastal_proximity.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/coastal_proximity.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/shore_dependent_resuspension_scenario.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/shore_dependent_resuspension_scenario.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/stochastic_scenario.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/stochastic_scenario.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/file_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/file_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/physics_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/physics_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/run_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/run_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_Animation.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_Animation.py" afterDir="false" />
     </list>
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
     <list id="c5adc810-e024-4e30-b33b-a2709ed2c5b7" name="moving the release repeat timescale to the scenario" comment="" />
@@ -130,20 +105,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-01328" summary="update">
-      <created>1627979459038</created>
-      <option name="number" value="01328" />
-      <option name="presentableId" value="LOCAL-01328" />
-      <option name="project" value="LOCAL" />
-      <updated>1627979459038</updated>
-    </task>
-    <task id="LOCAL-01329" summary="update">
-      <created>1627980679529</created>
-      <option name="number" value="01329" />
-      <option name="presentableId" value="LOCAL-01329" />
-      <option name="project" value="LOCAL" />
-      <updated>1627980679529</updated>
     </task>
     <task id="LOCAL-01330" summary="update">
       <created>1627981182818</created>
@@ -474,7 +435,21 @@
       <option name="project" value="LOCAL" />
       <updated>1628067942770</updated>
     </task>
-    <option name="localTasksCounter" value="1377" />
+    <task id="LOCAL-01377" summary="changing how print statements are implemented so that the ones related to simulations only get printed during simulations">
+      <created>1628070762315</created>
+      <option name="number" value="01377" />
+      <option name="presentableId" value="LOCAL-01377" />
+      <option name="project" value="LOCAL" />
+      <updated>1628070762315</updated>
+    </task>
+    <task id="LOCAL-01378" summary="changing how print statements are implemented so that the ones related to simulations only get printed during simulations">
+      <created>1628070788855</created>
+      <option name="number" value="01378" />
+      <option name="presentableId" value="LOCAL-01378" />
+      <option name="project" value="LOCAL" />
+      <updated>1628070788855</updated>
+    </task>
+    <option name="localTasksCounter" value="1379" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -490,7 +465,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="initial particle size is now" />
     <MESSAGE value="initial particle size is now added as a new variable in the submission bash script" />
     <MESSAGE value="adding size_dependent resuspension" />
     <MESSAGE value="Adding in analysis of vertical concentrations" />
@@ -515,6 +489,7 @@
     <MESSAGE value="Adding in distance separation analysis" />
     <MESSAGE value="A bunch of updates to the fieldset in terms of where we add physical constants, and further development of the fragmentation scenario" />
     <MESSAGE value="update" />
-    <option name="LAST_COMMIT_MESSAGE" value="update" />
+    <MESSAGE value="changing how print statements are implemented so that the ones related to simulations only get printed during simulations" />
+    <option name="LAST_COMMIT_MESSAGE" value="changing how print statements are implemented so that the ones related to simulations only get printed during simulations" />
   </component>
 </project>
