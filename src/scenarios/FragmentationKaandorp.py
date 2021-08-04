@@ -173,7 +173,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                 particle.to_split = 0
                 # Then, we calculate the new size of the particle
                 original_size = particle.size
-                particle.size = original_size * (1 - settings.P)
+                particle.size = original_size * (1 - settings.P_FRAG)
                 # Next, in what size class would the particle be? e.g. a particle with size 4mm would be in size class 0
                 # when size_limit[1] = 2, since it is larger than the limit of k = 1
                 size_class = max(index for index, limit in enumerate(size_limit) if limit > particle.size)
