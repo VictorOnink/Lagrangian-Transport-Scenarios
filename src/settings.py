@@ -220,25 +220,27 @@ if SCENARIO_NAME != 'AdvectionDiffusionOnly' and SUBMISSION in ['simulation', 'a
 # SIZE SCALING FACTOR
 SIZE_FACTOR = 1E-6
 
-if SCENARIO_NAME == 'FragmentationKaandorp' and SUBMISSION in ['simulation', 'analysis']:
+if SCENARIO_NAME == 'FragmentationKaandorp':
     # INITIAL PARTICLE SIZE (m)
     INIT_SIZE = int(os.environ['PARTICLE_SIZE']) * SIZE_FACTOR
     # INITIAL DENSITY (KG/M^3): 920 = polypropylene
     INIT_DENSITY = 1020
-# FRAGMENTATION PROBABILITY
-P_FRAG = int(os.environ['P']) * 1e-1
-# NUMBER OF SPATIAL DIMENSIONS
-DN = int(os.environ['DN']) * 1e-1
-# NUMBER OF SIZE CLASSES
-SIZE_CLASS_NUMBER = int(os.environ['SIZE_CLASS_NUMBER'])
-# FRAGMENTATION TIMESCALE (DAYS)
-LAMBDA_FRAG = int(os.environ['SIZE_CLASS_NUMBER'])
 
 if SCENARIO_NAME == 'SizeTransport' and SUBMISSION in ['simulation', 'analysis']:
     # INITIAL DENSITY (KG/M^3): 920 = POLYPROPYLENE, 980 = HIGH DENSITY POLYETHYLENE (BRIGNAC ET AL. 2017)
     INIT_DENSITY = 920
-# INITIAL PARTICLE SIZE (m)
-INIT_SIZE = int(os.environ['PARTICLE_SIZE']) * SIZE_FACTOR
+
+if SUBMISSION in ['simulation', 'analysis']:
+    # FRAGMENTATION PROBABILITY
+    P_FRAG = int(os.environ['P']) * 1e-1
+    # NUMBER OF SPATIAL DIMENSIONS
+    DN = int(os.environ['DN']) * 1e-1
+    # NUMBER OF SIZE CLASSES
+    SIZE_CLASS_NUMBER = int(os.environ['SIZE_CLASS_NUMBER'])
+    # FRAGMENTATION TIMESCALE (DAYS)
+    LAMBDA_FRAG = int(os.environ['SIZE_CLASS_NUMBER'])
+    # INITIAL PARTICLE SIZE (m)
+    INIT_SIZE = int(os.environ['PARTICLE_SIZE']) * SIZE_FACTOR
 
 # ACCELERATION DUE TO GRAVITY (M/S^2)
 G = 9.81
@@ -278,6 +280,10 @@ if SUBMISSION == 'visualization':
     INIT_DENSITY: int = 920
     START_YEAR: int = 2010
     SEABED_CRIT: float = 0.025
+    P_FRAG = 4 * 1e-1
+    DN = 25 * 1e-1
+    SIZE_CLASS_NUMBER = 6
+    LAMBDA_FRAG = 385
 
 
 ########################################################################################################################
