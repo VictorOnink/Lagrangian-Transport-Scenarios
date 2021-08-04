@@ -187,14 +187,16 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                     for k in range(0, settings.SIZE_CLASS_NUMBER - size_class):
                         new_particle_size = original_size * settings.P_FRAG ** (k + 1)
                         particle_number = int(np.round(self.particle_number_per_size_class(k)))
-                        pset_new = ParticleSet(fieldset=fieldset, pclass=utils.particle_class,
+                        pset_new = ParticleSet(fieldset=fieldset, pclass=self.particle,
                                                lon=utils.create_list(particle.lon, particle_number),
                                                lat=utils.create_list(particle.lat, particle_number),
                                                depth=utils.create_list(particle.depth, particle_number),
                                                size=utils.create_list(new_particle_size, particle_number),
                                                parent=utils.create_list(particle.id, particle_number),
                                                age=utils.create_list(0, particle_number),
-                                               time=utils.create_list(particle.time, particle_number))
+                                               time=utils.create_list(particle.time, particle_number),
+                                               rho_plastic=utils.create_list(particle.rho_plastic, particle_number),
+                                               rise_velocity=utils.create_list(utils.initial_estimate_particle_rise_velocity(L=new_particle_size), particle_number))
                         pset.add(pset_new)
         return pset
 
