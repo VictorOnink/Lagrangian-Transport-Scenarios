@@ -155,8 +155,8 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                          pset.Kernel(utils.anti_beach_nudging) + \
                          pset.Kernel(utils.get_rising_velocity) + \
                          pset.Kernel(utils.KPP_TIDAL_mixing) + \
-                         pset.Kernel(self.beaching_kernel) + \
-                         pset.Kernel(self.fragmentation_kernel)
+                         pset.Kernel(self.beaching_kernel)# + \
+                         #pset.Kernel(self.fragmentation_kernel)
         return total_behavior
 
     def fragmentation_kernel(particle, fieldset, time):
