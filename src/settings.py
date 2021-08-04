@@ -77,37 +77,38 @@ SCENARIO_DICT: dict = {0: 'AdvectionDiffusionOnly', 1: 'CoastalProximity', 2: 'S
 SCENARIO_NUM: int = int(os.environ["SCENARIO"])
 SCENARIO_NAME: str = SCENARIO_DICT[SCENARIO_NUM]
 
-if SCENARIO_NAME == 'CoastalProximity' and SUBMISSION in ['simulation', 'analysis']:
-    # TIME IN BEACHING ZONE PRIOR TO BEACHING (DAYS)
-    VICINITY: int = int(os.environ['VICINITY'])
+if SUBMISSION in ['simulation', 'analysis']:
+    if SCENARIO_NAME == 'CoastalProximity':
+        # TIME IN BEACHING ZONE PRIOR TO BEACHING (DAYS)
+        VICINITY: int = int(os.environ['VICINITY'])
 
-if SCENARIO_NAME == 'Stochastic' or SCENARIO_NAME == 'ShoreDependentResuspension' and SUBMISSION in ['simulation', 'analysis']:
-    # BEACHING TIMESCALE
-    SHORE_TIME: int = int(os.environ['SHORETIME'])  # days
-    # RESUSPENSION TIMESCALE
-    RESUS_TIME: int = int(os.environ['RESUSTIME'])  # days
+    if SCENARIO_NAME == 'Stochastic' or SCENARIO_NAME == 'ShoreDependentResuspension':
+        # BEACHING TIMESCALE
+        SHORE_TIME: int = int(os.environ['SHORETIME'])  # days
+        # RESUSPENSION TIMESCALE
+        RESUS_TIME: int = int(os.environ['RESUSTIME'])  # days
 
-if SCENARIO_NAME == 'ShoreDependentResuspension' and SUBMISSION in ['simulation', 'analysis']:
-    # 0 -> SAMARAS ET AL (2015) RESUSPENSION DEPENDENCE, 1 -> 1:4 RESUSPENSION DEPENDENCE
-    SHORE_DEP: int = int(os.environ['SHOREDEPEN'])
+    if SCENARIO_NAME == 'ShoreDependentResuspension':
+        # 0 -> SAMARAS ET AL (2015) RESUSPENSION DEPENDENCE, 1 -> 1:4 RESUSPENSION DEPENDENCE
+        SHORE_DEP: int = int(os.environ['SHOREDEPEN'])
 
-if SCENARIO_NAME == 'TurrellResuspension' and SUBMISSION in ['simulation', 'analysis']:
-    # BEACHING TIMESCALE
-    SHORE_TIME: int = int(os.environ['SHORETIME'])  # days
-# MINIMUM OFF-SHORE WIND SPEED FOR RESUSPENSION (x10 TO NOT GET DECIMAL IN OUTPUT FILES)
-WMIN: int = int(os.environ['WMIN'])
+    if SCENARIO_NAME == 'TurrellResuspension':
+        # BEACHING TIMESCALE
+        SHORE_TIME: int = int(os.environ['SHORETIME'])  # days
+    # MINIMUM OFF-SHORE WIND SPEED FOR RESUSPENSION (x10 TO NOT GET DECIMAL IN OUTPUT FILES)
+    WMIN: int = int(os.environ['WMIN'])
 
-if SCENARIO_NAME == 'FragmentationKaandorp' and SUBMISSION in ['simulation', 'analysis']:
-    # BEACHING TIMESCALE
-    SHORE_TIME: int = int(os.environ['SHORETIME'])  # days
-    # RESUSPENSION TIMESCALE
-    RESUS_TIME: int = int(os.environ['RESUSTIME'])  # days
+    if SCENARIO_NAME == 'FragmentationKaandorp':
+        # BEACHING TIMESCALE
+        SHORE_TIME: int = int(os.environ['SHORETIME'])  # days
+        # RESUSPENSION TIMESCALE
+        RESUS_TIME: int = int(os.environ['RESUSTIME'])  # days
 
-if SCENARIO_NAME == 'SizeTransport' and SUBMISSION in ['simulation', 'analysis']:
-    # BEACHING TIMESCALE
-    SHORE_TIME: int = int(os.environ['SHORETIME'])  # days
-    # RESUSPENSION TIMESCALE
-    RESUS_TIME: int = int(os.environ['RESUSTIME'])  # days
+    if SCENARIO_NAME == 'SizeTransport':
+        # BEACHING TIMESCALE
+        SHORE_TIME: int = int(os.environ['SHORETIME'])  # days
+        # RESUSPENSION TIMESCALE
+        RESUS_TIME: int = int(os.environ['RESUSTIME'])  # days
 
 
 ########################################################################################################################
