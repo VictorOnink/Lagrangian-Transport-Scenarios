@@ -166,9 +166,6 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
             if particle.beach == 1:
                 if ParcelsRandom.uniform(0, 1) > fieldset.p_frag:
                     particle.to_split = 1
-                    print('We split!')
-                    a=fieldset.p_frag
-                    print(a)
 
     def particle_splitter(self, fieldset, pset, size_limit):
         for particle in pset:
@@ -223,6 +220,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         pfile = pset.ParticleFile(name=self.file_names(new=True),
                                   outputdt=settings.OUTPUT_TIME_STEP)
         vardict=self.get_var_dict()
+        utils.print_statement(vardict['size'][::1000])
         utils.print_statement(utils.initial_estimate_particle_rise_velocity(L=vardict['size'][::1000]))
         # Setting the random seed and defining the particle behavior
         utils.print_statement("Setting the random seed")
