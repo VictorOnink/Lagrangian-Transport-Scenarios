@@ -280,10 +280,11 @@ if SUBMISSION == 'visualization':
     INIT_DENSITY: int = 920
     START_YEAR: int = 2010
     SEABED_CRIT: float = 0.025
-    P_FRAG = 4 * 1e-1
-    DN = 25 * 1e-1
-    SIZE_CLASS_NUMBER = 6
-    LAMBDA_FRAG = 385
+    P_FRAG: float = 4 * 1e-1
+    DN: float = 25 * 1e-1
+    SIZE_CLASS_NUMBER: int = 6
+    LAMBDA_FRAG: int = 385
+    ENSEMBLE: int = 1
 
 
 ########################################################################################################################
