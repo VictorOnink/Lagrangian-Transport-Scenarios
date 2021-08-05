@@ -159,8 +159,8 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                          pset.Kernel(utils.floating_AdvectionRK4DiffusionEM_stokes_depth) + \
                          pset.Kernel(utils.anti_beach_nudging) + \
                          pset.Kernel(utils.get_rising_velocity) + \
-                         pset.Kernel(utils.KPP_wind_mixing)# + \
-                         # pset.Kernel(self.beaching_kernel)# + \
+                         pset.Kernel(utils.KPP_wind_mixing) + \
+                         pset.Kernel(self.beaching_kernel)# + \
                          # #pset.Kernel(self.fragmentation_kernel)
         return total_behavior
 
@@ -243,10 +243,6 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                          recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle},
                          output_file=pfile)
             time += settings.OUTPUT_TIME_STEP
-            # pset.execute(behavior_kernel, runtime=settings.TIME_STEP, dt=settings.TIME_STEP,
-            #              recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle},
-            #              output_file=pfile)
-            # time += settings.TIME_STEP
             # pset = self.particle_splitter(self.field_set, pset, size_limit)
             utils.print_statement('time = {}'.format(time))
         pfile.export()
