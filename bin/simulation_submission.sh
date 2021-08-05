@@ -16,7 +16,7 @@ SHOREDEPEN=0
 #for scenario 4, the minimum wind speed for resuspension. Divide by 10 for actual value
 WMIN=3
 #for scenario 5 and 6, the initial size of the particle in 1e-6 m
-PARTICLE_SIZE_list=(5000)
+PARTICLE_SIZE_list=(5000 1000 500 100 90 80 70 60 50 40 30 20 10 5 1)
 #for scenario 5 and 6, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=140
 # For scenario 5, the fragmentation parameters p (x1e-1), DN (x1e-1), the number of size classes and the fragmentation
@@ -33,9 +33,9 @@ INPUT=1
 # 0 = Global HYCOM, 1 = Caribbean HYCOM, 2 = Mediterranean CMEMS
 ADVECTION_DATA=2
 #Start year of the simulation. 0 = new simulation, otherwise it picks up from a previous simulation
-START=0
+START=1
 #Number of years the simulation runs
-SIMLEN=1
+SIMLEN=3
 #Inclusion of Stokes drift. 0 = include stokes, 1 = do not include stokes
 STOKES=0 
 #Ensemble member
