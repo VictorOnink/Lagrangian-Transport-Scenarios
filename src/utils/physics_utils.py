@@ -604,9 +604,9 @@ def get_rising_velocity(particle, fieldset, time):
     rho_sw = particle.density  # sea water density (kg m^-3)
     rho_p = particle.rho_plastic  # plastic particle density (kg m^-3)
     left = (1. - rho_p / rho_sw) * 8. / 3. * particle.size * fieldset.G
-    particle.haha1 = left
     right = 24. / particle.reynolds + 5. / math.sqrt(particle.reynolds) + 2. / 5.
-    particle.haha2 = right
+    particle.haha1 = 24. / particle.reynolds
+    particle.haha2 = 5. / math.sqrt(particle.reynolds)
     particle.rise_velocity = - 1 * math.sqrt(left / right)
 
 
