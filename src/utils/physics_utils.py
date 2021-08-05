@@ -364,7 +364,6 @@ def PolyTEOS10_bsq(particle, fieldset, time):
                        (((R510 * ss + R410) * ss + R310) * ss + R210) * ss + R110) * ss + R010) * tt + (
                       ((((R600 * ss + R500) * ss + R400) * ss + R300) * ss + R200) * ss + R100) * ss + R000
     particle.density = ((rz3 * zz + rz2) * zz + rz1) * zz + rz0
-    particle.haha = ((rz3 * zz + rz2) * zz + rz1) * zz + rz0
     ss = math.sqrt((SA_SURF + deltaS) / SAu)
     tt = CT_SURF / CTu
     rz0 = (((((R060 * tt + R150 * ss + R050) * tt + (R240 * ss + R140) * ss + R040) * tt + (
@@ -506,7 +505,7 @@ def KPP_TIDAL_mixing(particle, fieldset, time):
         # The grid of the tidal mixing isn't an exact match with the CMEMS data, so in regions where Kz_tidal is either 0
         # or very very small, we take the Waterhouse et al. (2014) estimate of the diapycnal diffusion below the MLD
         Kz += fieldset.TIDAL_Kz[time, particle.depth, particle.lat, particle.lon]
-        dKz += fieldset.TIDAL_dKz[time, particle.depth, particle.lat, particle.lon]
+        dKz += fieldset.TIDAL_dKz[time, particle.depthx, particle.lat, particle.lon]
         if Kz < fieldset.K_Z_BULK:
             Kz = fieldset.K_Z_BULK
             dKz = 0.0
@@ -603,7 +602,9 @@ def get_rising_velocity(particle, fieldset, time):
     :return:
     """
     rho_sw = particle.density  # sea water density (kg m^-3)
+    particle.haha1 = rho_sw
     rho_p = particle.rho_plastic  # plastic particle density (kg m^-3)
+    particle.haha2 = rho_p
     left = (1. - rho_p / rho_sw) * 8. / 3. * particle.size * fieldset.G
     right = 24. / particle.reynolds + 5. / math.sqrt(particle.reynolds) + 2. / 5.
     particle.rise_velocity = - 1 * math.sqrt(left / right)
