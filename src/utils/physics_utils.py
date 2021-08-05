@@ -364,6 +364,7 @@ def PolyTEOS10_bsq(particle, fieldset, time):
                        (((R510 * ss + R410) * ss + R310) * ss + R210) * ss + R110) * ss + R010) * tt + (
                       ((((R600 * ss + R500) * ss + R400) * ss + R300) * ss + R200) * ss + R100) * ss + R000
     particle.density = ((rz3 * zz + rz2) * zz + rz1) * zz + rz0
+    particle.haha = ((rz3 * zz + rz2) * zz + rz1) * zz + rz0
     ss = math.sqrt((SA_SURF + deltaS) / SAu)
     tt = CT_SURF / CTu
     rz0 = (((((R060 * tt + R150 * ss + R050) * tt + (R240 * ss + R140) * ss + R040) * tt + (
@@ -372,7 +373,6 @@ def PolyTEOS10_bsq(particle, fieldset, time):
                        (((R510 * ss + R410) * ss + R310) * ss + R210) * ss + R110) * ss + R010) * tt + (
                       ((((R600 * ss + R500) * ss + R400) * ss + R300) * ss + R200) * ss + R100) * ss + R000
     particle.surface_density = rz0
-    particle.haha = rz0
 
 
 def KPP_wind_mixing(particle, fieldset, time):
