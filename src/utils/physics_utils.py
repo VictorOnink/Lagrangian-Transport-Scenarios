@@ -505,7 +505,7 @@ def KPP_TIDAL_mixing(particle, fieldset, time):
         # The grid of the tidal mixing isn't an exact match with the CMEMS data, so in regions where Kz_tidal is either 0
         # or very very small, we take the Waterhouse et al. (2014) estimate of the diapycnal diffusion below the MLD
         Kz += fieldset.TIDAL_Kz[time, particle.depth, particle.lat, particle.lon]
-        dKz += fieldset.TIDAL_dKz[time, particle.depthx, particle.lat, particle.lon]
+        dKz += fieldset.TIDAL_dKz[time, particle.depth, particle.lat, particle.lon]
         if Kz < fieldset.K_Z_BULK:
             Kz = fieldset.K_Z_BULK
             dKz = 0.0
