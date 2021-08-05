@@ -269,13 +269,6 @@ def kooi_rising_velocity(particle, fieldset, time):
         a_del_rho = delta_rho * -1.
         vs = -1. * (g * kin_visc * w * a_del_rho) ** (1. / 3.)  # m s-1
 
-    # z0 = z + vs * particle.dt
-    # # # 1.472102
-    # if z0 <= 1.472102 or z0 >= fieldset.bathymetry[time, particle.depth, particle.lat, particle.lon]:
-    #     vs = 0
-    # else:
-    #     particle.depth = z0
-
     particle.rise_velocity = vs
 
 
