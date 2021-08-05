@@ -55,12 +55,14 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                                age=var_dict['age'][::1000], weights=var_dict['weight'][::1000], size=var_dict['size'][::1000],
                                rho_plastic=var_dict['rho_plastic'][::1000], parent=range(len(var_dict['weight'][::1000])),
                                rise_velocity=utils.initial_estimate_particle_rise_velocity(L=var_dict['size'][::1000]),
+                               reynolds=utils.initial_reynolds_number(L=var_dict['size'][::1000]),
                                time=start_time, repeatdt=repeat_dt)
         else:
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
                                lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'], parent=var_dict['parent'],
                                age=var_dict['age'], weights=var_dict['weight'], size=var_dict['size'],
                                rho_plastic=var_dict['rho_plastic'], rise_velocity=var_dict['rise_velocity'],
+                               reynolds=utils.initial_reynolds_number(L=var_dict['size'], rise_velocity=var_dict['rise_velocity']),
                                time=start_time, repeatdt=repeat_dt)
         return pset
 
@@ -74,7 +76,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         utils.add_particle_variable(particle_type, 'kinematic_viscosity', dtype=np.float32, set_initial=False,
                                     to_write=True)
         utils.add_particle_variable(particle_type, 'rise_velocity', dtype=np.float32, set_initial=True)
-        utils.add_particle_variable(particle_type, 'reynolds', dtype=np.float32, set_initial=False)
+        utils.add_particle_variable(particle_type, 'reynolds', dtype=np.float32, set_initial=True)
         utils.add_particle_variable(particle_type, 'rho_plastic', dtype=np.float32, set_initial=True, to_write=False)
         utils.add_particle_variable(particle_type, 'size', dtype=np.float32)
         utils.add_particle_variable(particle_type, 'weights', dtype=np.float32, set_initial=True)
@@ -198,7 +200,8 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                                                age=utils.create_list(0, particle_number),
                                                time=utils.create_list(particle.time, particle_number),
                                                rho_plastic=utils.create_list(particle.rho_plastic, particle_number),
-                                               rise_velocity=utils.create_list(utils.initial_estimate_particle_rise_velocity(L=new_particle_size), particle_number))
+                                               rise_velocity=utils.create_list(utils.initial_estimate_particle_rise_velocity(L=new_particle_size), particle_number),
+                                               reynolds=utils.create_list(utils.initial_reynolds_number(L=new_particle_size), particle_number))
                         pset.add(pset_new)
         return pset
 
