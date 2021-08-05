@@ -578,7 +578,7 @@ def initial_reynolds_number(L=settings.INIT_SIZE, rise_velocity=None):
     if rise_velocity is None:
         rise_velocity = initial_estimate_particle_rise_velocity(L=L)
     nu = 1.1e-6  # kinematic viscosity of sea water (Enders et al., 2015)
-    return L * rise_velocity / nu
+    return L * np.abs(rise_velocity) / nu
 
 
 def get_resuspension_timescale(L=settings.INIT_SIZE, print_size=False):
