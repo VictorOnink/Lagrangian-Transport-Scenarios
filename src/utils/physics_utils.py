@@ -401,7 +401,7 @@ def KPP_wind_mixing(particle, fieldset, time):
             # wind stress
             tau = C_D * fieldset.RHO_A * w_10 ** 2
             # Frictional velocity of water at the ocean surface
-            U_W = tau / particle.surface_density
+            U_W = math.sqrt(tau / particle.surface_density)
             # Surface roughness z0 following Zhao & Li (2019)
             z0 = 3.5153e-5 * fieldset.BETA ** (-0.42) * w_10 ** 2 / fieldset.G
             # The corrected particle depth, since the depth is not always zero for the surface circulation data
@@ -489,7 +489,7 @@ def KPP_TIDAL_mixing(particle, fieldset, time):
             # wind stress
             tau = C_D * fieldset.RHO_A * w_10 ** 2
             # Frictional velocity of water at the ocean surface
-            U_W = tau / particle.surface_density
+            U_W = math.sqrt(tau / particle.surface_density)
             # Surface roughness z0 following Zhao & Li (2019)
             z0 = 3.5153e-5 * fieldset.BETA ** (-0.42) * w_10 ** 2 / fieldset.G
             # The corrected particle depth, since the depth is not always zero for the surface circulation data
