@@ -606,7 +606,7 @@ def get_rising_velocity(particle, fieldset, time):
     left = (1. - rho_p / rho_sw) * 8. / 3. * particle.size * fieldset.G
     right = 24. / particle.reynolds + 5. / math.sqrt(particle.reynolds) + 2. / 5.
     particle.haha1 = 24. / particle.reynolds
-    particle.haha = 5. / math.sqrt(particle.reynolds)
+    particle.haha2 = 5. / math.sqrt(particle.reynolds)
     particle.rise_velocity = - 1 * math.sqrt(left / right)
 
 
