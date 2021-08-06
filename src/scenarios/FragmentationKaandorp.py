@@ -89,6 +89,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         return particle_type
 
     def resuspension_probability(self, L):
+        utils.print_statement('the input is type {} with {}'.format(type(L), L))
         lambda_resus = utils.get_resuspension_timescale(L=L)
         prob_resus = np.exp(-settings.TIME_STEP.total_seconds() / (np.array(lambda_resus) * 86400.))
         return prob_resus
