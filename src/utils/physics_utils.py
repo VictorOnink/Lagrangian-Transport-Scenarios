@@ -572,7 +572,7 @@ def initial_reynolds_number(L=settings.INIT_SIZE, rise_velocity=None):
     return L * np.abs(rise_velocity) / nu
 
 
-def get_resuspension_timescale(L=settings.INIT_SIZE, print_size=False):
+def get_resuspension_timescale(L=settings.INIT_SIZE, w_rise=None, print_size=False):
     """
     This follows equation 9 from Hinata et al. (2017)
     https://doi.org/10.1016/j.marpolbul.2017.05.012
@@ -580,22 +580,21 @@ def get_resuspension_timescale(L=settings.INIT_SIZE, print_size=False):
     :param print_size:
     :return:
     """
-    w_rise = initial_estimate_particle_rise_velocity(L=L)
+    if w_rise is None:
+        w_rise = initial_estimate_particle_rise_velocity(L=L)
     lambda_R = 2.6e2 * np.abs(w_rise) + 7.1
     print_statement("The resuspension timescale for a particle of size {} is {:.6f} days".format(settings.INIT_SIZE,
                                                                                                 lambda_R), to_print=print_size)
     return lambda_R
 
 
-def resuspension_probability(L):
+def resuspension_probability(L=settings.INIT_SIZE, w_rise=None):
     """
     This computes the resuspension probability for a particle with size L
     :param L:
     :return:
     """
-    print_statement('the input is type {}'.format(type(L)))
-    print_statement(L)
-    lambda_resus = get_resuspension_timescale(L=L)
+    lambda_resus = get_resuspension_timescale(L=L, w_rise=w_rise)
     prob_resus = np.exp(-settings.TIME_STEP.total_seconds() / (np.array(lambda_resus) * 86400.))
     return prob_resus
 
