@@ -197,7 +197,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                                                size=utils.create_list(new_particle_size, particle_number),
                                                parent=utils.create_list(particle.id, particle_number),
                                                age=utils.create_list(0, particle_number),
-                                               beach=utils.create_list(0, particle_number),
+                                               beach=utils.create_list(particle.beach, particle_number),
                                                time=utils.create_list(particle.time, particle_number),
                                                rho_plastic=utils.create_list(particle.rho_plastic, particle_number),
                                                rise_velocity=utils.create_list(utils.initial_estimate_particle_rise_velocity(L=new_particle_size), particle_number),
@@ -236,7 +236,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         # Carrying out the execution of the simulation
         utils.print_statement("The actual execution of the run")
         time = utils.get_start_end_time(time='start')
-        while time <= utils.get_start_end_time(time='start') + 2 * settings.OUTPUT_TIME_STEP:
+        while time <= utils.get_start_end_time(time='end'):
             pset.execute(behavior_kernel, runtime=settings.OUTPUT_TIME_STEP, dt=settings.TIME_STEP,
                          recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle},
                          output_file=pfile)
