@@ -588,13 +588,13 @@ def get_resuspension_timescale(L=settings.INIT_SIZE, w_rise=None, print_size=Fal
     return lambda_R
 
 
-def resuspension_probability(L=settings.INIT_SIZE, w_rise=None):
+def resuspension_probability(w_rise):
     """
     This computes the resuspension probability for a particle with size L
     :param L:
     :return:
     """
-    lambda_resus = get_resuspension_timescale(L=L, w_rise=w_rise)
+    lambda_resus = get_resuspension_timescale(L=None, w_rise=w_rise)
     prob_resus = np.exp(-settings.TIME_STEP.total_seconds() / (np.array(lambda_resus) * 86400.))
     return prob_resus
 

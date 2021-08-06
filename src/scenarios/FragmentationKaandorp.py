@@ -57,7 +57,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                                rho_plastic=var_dict['rho_plastic'][::1000], parent=range(len(var_dict['weight'][::1000])),
                                rise_velocity=rise_velocity,
                                reynolds=utils.initial_reynolds_number(L=var_dict['size'][::1000]),
-                               prob_resus=utils.resuspension_probability(L=var_dict['size'][::1000], w_rise=rise_velocity),
+                               prob_resus=utils.resuspension_probability(w_rise=rise_velocity),
                                time=start_time, repeatdt=repeat_dt)
         else:
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
@@ -65,7 +65,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                                age=var_dict['age'], weights=var_dict['weight'], size=var_dict['size'],
                                rho_plastic=var_dict['rho_plastic'], rise_velocity=var_dict['rise_velocity'],
                                reynolds=utils.initial_reynolds_number(L=var_dict['size'], rise_velocity=var_dict['rise_velocity']),
-                               prob_resus=utils.resuspension_probability(L=var_dict['size'], w_rise=var_dict['rise_velocity']),
+                               prob_resus=utils.resuspension_probability(w_rise=var_dict['rise_velocity']),
                                time=start_time, repeatdt=repeat_dt)
         return pset
 
