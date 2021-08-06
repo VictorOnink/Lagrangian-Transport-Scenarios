@@ -90,7 +90,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
 
     def resuspension_probability(self, L):
         lambda_resus = utils.get_resuspension_timescale(L=L)
-        prob_resus = np.exp(-settings.TIME_STEP.total_seconds() / (lambda_resus * 86400.))
+        prob_resus = np.exp(-settings.TIME_STEP.total_seconds() / (np.array(lambda_resus) * 86400.))
         return prob_resus
 
     def file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART,
