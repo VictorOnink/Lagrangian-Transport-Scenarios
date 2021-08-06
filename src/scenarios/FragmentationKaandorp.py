@@ -80,7 +80,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         utils.add_particle_variable(particle_type, 'rho_plastic', dtype=np.float32, set_initial=True, to_write=False)
         utils.add_particle_variable(particle_type, 'size', dtype=np.float32)
         utils.add_particle_variable(particle_type, 'weights', dtype=np.float32, set_initial=True, to_write=False)
-        utils.add_particle_variable(particle_type, 'to_split', dtype=np.int32, set_initial=False, to_write=False)
+        utils.add_particle_variable(particle_type, 'to_split', dtype=np.int32, set_initial=False, to_write=True)
         utils.add_particle_variable(particle_type, 'to_delete', dtype=np.int32, set_initial=False, to_write=False)
         utils.add_particle_variable(particle_type, 'parent', dtype=np.int32, set_initial=True, to_write=True)
         return particle_type
@@ -197,6 +197,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                                                size=utils.create_list(new_particle_size, particle_number),
                                                parent=utils.create_list(particle.id, particle_number),
                                                age=utils.create_list(0, particle_number),
+                                               beach=utils.create_list(0, particle_number),
                                                time=utils.create_list(particle.time, particle_number),
                                                rho_plastic=utils.create_list(particle.rho_plastic, particle_number),
                                                rise_velocity=utils.create_list(utils.initial_estimate_particle_rise_velocity(L=new_particle_size), particle_number),
