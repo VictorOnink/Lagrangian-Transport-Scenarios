@@ -230,9 +230,6 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                              repeat_dt=self.repeat_dt)
         pfile = pset.ParticleFile(name=self.file_names(new=True),
                                   outputdt=settings.OUTPUT_TIME_STEP)
-        vardict=self.get_var_dict()
-        utils.print_statement(vardict['size'][::1000])
-        utils.print_statement(utils.initial_estimate_particle_rise_velocity(L=vardict['size'][::1000]))
         # Setting the random seed and defining the particle behavior
         utils.print_statement("Setting the random seed")
         utils.set_random_seed(seed=settings.SEED)
