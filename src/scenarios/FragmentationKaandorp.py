@@ -50,13 +50,14 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         """
         utils.print_statement("Creating the particle set")
         if settings.RESTART == 0:
-            rise_velocity = utils.initial_estimate_particle_rise_velocity(L=var_dict['size'][::1000])
+            step = 100
+            rise_velocity = utils.initial_estimate_particle_rise_velocity(L=var_dict['size'][::step])
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
-                               lon=var_dict['lon'][::1000], lat=var_dict['lat'][::1000], beach=var_dict['beach'][::1000],
-                               age=var_dict['age'][::1000], weights=var_dict['weight'][::1000], size=var_dict['size'][::1000],
-                               rho_plastic=var_dict['rho_plastic'][::1000], parent=range(len(var_dict['weight'][::1000])),
+                               lon=var_dict['lon'][::step], lat=var_dict['lat'][::step], beach=var_dict['beach'][::step],
+                               age=var_dict['age'][::step], weights=var_dict['weight'][::step], size=var_dict['size'][::step],
+                               rho_plastic=var_dict['rho_plastic'][::step], parent=range(len(var_dict['weight'][::step])),
                                rise_velocity=rise_velocity,
-                               reynolds=utils.initial_reynolds_number(L=var_dict['size'][::1000]),
+                               reynolds=utils.initial_reynolds_number(L=var_dict['size'][::step]),
                                prob_resus=utils.resuspension_probability(w_rise=rise_velocity),
                                time=start_time, repeatdt=repeat_dt)
         else:
