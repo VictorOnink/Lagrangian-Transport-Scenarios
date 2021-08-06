@@ -593,7 +593,8 @@ def resuspension_probability(L):
     :param L:
     :return:
     """
-    print_statement('the input is type {} with {}'.format(type(L), L[0]))
+    print_statement('the input is type {}'.format(type(L)))
+    print_statement(L)
     lambda_resus = get_resuspension_timescale(L=L)
     prob_resus = np.exp(-settings.TIME_STEP.total_seconds() / (np.array(lambda_resus) * 86400.))
     return prob_resus
