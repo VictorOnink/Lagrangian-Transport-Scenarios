@@ -79,13 +79,10 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         utils.add_particle_variable(particle_type, 'reynolds', dtype=np.float32, set_initial=True)
         utils.add_particle_variable(particle_type, 'rho_plastic', dtype=np.float32, set_initial=True, to_write=False)
         utils.add_particle_variable(particle_type, 'size', dtype=np.float32)
-        utils.add_particle_variable(particle_type, 'weights', dtype=np.float32, set_initial=True)
+        utils.add_particle_variable(particle_type, 'weights', dtype=np.float32, set_initial=True, to_write=False)
         utils.add_particle_variable(particle_type, 'to_split', dtype=np.int32, set_initial=False, to_write=False)
         utils.add_particle_variable(particle_type, 'to_delete', dtype=np.int32, set_initial=False, to_write=False)
         utils.add_particle_variable(particle_type, 'parent', dtype=np.int32, set_initial=True, to_write=True)
-        utils.add_particle_variable(particle_type, 'haha1', dtype=np.float32, set_initial=False, to_write=True)
-        utils.add_particle_variable(particle_type, 'haha2', dtype=np.float32, set_initial=False, to_write=True)
-        utils.add_particle_variable(particle_type, 'haha3', dtype=np.float32, set_initial=False, to_write=True)
         return particle_type
 
     def file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART,
@@ -243,7 +240,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                          recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle},
                          output_file=pfile)
             time += settings.OUTPUT_TIME_STEP
-            # pset = self.particle_splitter(self.field_set, pset, size_limit)
+            pset = self.particle_splitter(self.field_set, pset, size_limit)
             utils.print_statement('time = {}'.format(time))
         pfile.export()
         utils.print_statement("Run completed")
