@@ -192,6 +192,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                     for k in range(0, settings.SIZE_CLASS_NUMBER - size_class):
                         new_particle_size = original_size * settings.P_FRAG ** (k + 1)
                         particle_number = int(np.round(self.particle_number_per_size_class(k)))
+                        utils.print_statement('{} {}'.format(new_particle_size, particle_number))
                         pset_new = ParticleSet(fieldset=fieldset, pclass=self.particle,
                                                lon=utils.create_list(particle.lon, particle_number),
                                                lat=utils.create_list(particle.lat, particle_number),
@@ -236,7 +237,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         # Carrying out the execution of the simulation
         utils.print_statement("The actual execution of the run")
         time = utils.get_start_end_time(time='start')
-        while time <= utils.get_start_end_time(time='end'):
+        while time <= utils.get_start_end_time(time='start') + 4 * settings.OUTPUT_TIME_STEP:
             pset.execute(behavior_kernel, runtime=settings.OUTPUT_TIME_STEP, dt=settings.TIME_STEP,
                          recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle},
                          output_file=pfile)
