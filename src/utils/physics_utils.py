@@ -587,6 +587,18 @@ def get_resuspension_timescale(L=settings.INIT_SIZE, print_size=False):
     return lambda_R
 
 
+def resuspension_probability(L):
+    """
+    This computes the resuspension probability for a particle with size L
+    :param L:
+    :return:
+    """
+    print_statement('the input is type {} with {}'.format(type(L), L[0]))
+    lambda_resus = get_resuspension_timescale(L=L)
+    prob_resus = np.exp(-settings.TIME_STEP.total_seconds() / (np.array(lambda_resus) * 86400.))
+    return prob_resus
+
+
 def get_reynolds_number(particle, fieldset, time):
         """
         Calculating the reynolds number (https://en.wikipedia.org/wiki/Reynolds_number)

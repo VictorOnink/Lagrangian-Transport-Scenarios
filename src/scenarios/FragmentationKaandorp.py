@@ -56,7 +56,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                                rho_plastic=var_dict['rho_plastic'][::1000], parent=range(len(var_dict['weight'][::1000])),
                                rise_velocity=utils.initial_estimate_particle_rise_velocity(L=var_dict['size'][::1000]),
                                reynolds=utils.initial_reynolds_number(L=var_dict['size'][::1000]),
-                               prob_resus=self.resuspension_probability(L=var_dict['size'][::1000]),
+                               prob_resus=utils.resuspension_probability(L=var_dict['size'][::1000]),
                                time=start_time, repeatdt=repeat_dt)
         else:
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
@@ -64,7 +64,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                                age=var_dict['age'], weights=var_dict['weight'], size=var_dict['size'],
                                rho_plastic=var_dict['rho_plastic'], rise_velocity=var_dict['rise_velocity'],
                                reynolds=utils.initial_reynolds_number(L=var_dict['size'], rise_velocity=var_dict['rise_velocity']),
-                               prob_resus=self.resuspension_probability(L=var_dict['size']),
+                               prob_resus=utils.resuspension_probability(L=var_dict['size']),
                                time=start_time, repeatdt=repeat_dt)
         return pset
 
@@ -87,12 +87,6 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         utils.add_particle_variable(particle_type, 'parent', dtype=np.int32, set_initial=True, to_write=True)
         utils.add_particle_variable(particle_type, 'prob_resus', dtype=np.int32, set_initial=True, to_write=False)
         return particle_type
-
-    def resuspension_probability(self, L):
-        utils.print_statement('the input is type {} with {}'.format(type(L), L))
-        lambda_resus = utils.get_resuspension_timescale(L=L)
-        prob_resus = np.exp(-settings.TIME_STEP.total_seconds() / (np.array(lambda_resus) * 86400.))
-        return prob_resus
 
     def file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART,
                    shore_time=settings.SHORE_TIME, resus_time=settings.RESUS_TIME, ensemble=settings.ENSEMBLE,
@@ -209,7 +203,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                                                rho_plastic=utils.create_list(particle.rho_plastic, particle_number),
                                                rise_velocity=utils.create_list(utils.initial_estimate_particle_rise_velocity(L=new_particle_size), particle_number),
                                                reynolds=utils.create_list(utils.initial_reynolds_number(L=new_particle_size), particle_number),
-                                               prob_resus=utils.create_list(self.resuspension_probability(L=new_particle_size), particle_number))
+                                               prob_resus=utils.create_list(utils.resuspension_probability(L=new_particle_size), particle_number))
                         pset.add(pset_new)
         return pset
 
