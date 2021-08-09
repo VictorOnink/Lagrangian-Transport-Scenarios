@@ -209,7 +209,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                                                rho_plastic=utils.create_list(particle.rho_plastic, particle_number),
                                                rise_velocity=utils.create_list(utils.initial_estimate_particle_rise_velocity(L=new_particle_size), particle_number),
                                                reynolds=utils.create_list(utils.initial_reynolds_number(L=new_particle_size), particle_number),
-                                               prob_resus=utils.create_list(utils.resuspension_probability(L=new_particle_size), particle_number))
+                                               prob_resus=utils.create_list(utils.resuspension_probability(w_rise=utils.initial_estimate_particle_rise_velocity(L=new_particle_size)), particle_number))
                         pset.add(pset_new)
         return pset
 
