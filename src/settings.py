@@ -236,7 +236,7 @@ if SUBMISSION in ['simulation', 'analysis']:
     # NUMBER OF SIZE CLASSES
     SIZE_CLASS_NUMBER = int(os.environ['SIZE_CLASS_NUMBER'])
     # FRAGMENTATION TIMESCALE (DAYS)
-    LAMBDA_FRAG = int(os.environ['SIZE_CLASS_NUMBER'])
+    LAMBDA_FRAG = int(os.environ['LAMBDA_FRAG'])
     # INITIAL PARTICLE SIZE (m)
     INIT_SIZE = int(os.environ['PARTICLE_SIZE']) * SIZE_FACTOR
 
