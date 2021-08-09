@@ -171,7 +171,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
             particle.delete()
         else:
             if particle.beach == 1:
-                if ParcelsRandom.uniform(0, 1) > fieldset.p_frag:
+                if ParcelsRandom.uniform(0, 1) > 0.5:#fieldset.p_frag:
                     particle.to_split = 1
                     print('SPLIT!!!!!')
 
