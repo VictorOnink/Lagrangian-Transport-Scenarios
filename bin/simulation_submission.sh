@@ -24,7 +24,7 @@ SEABED_CRIT=140
 P=4
 DN=25
 SIZE_CLASS_NUMBER=6
-LAMBDA_FRAG=96
+LAMBDA_FRAG=1
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010
 #Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=point release, 3=uniform release
