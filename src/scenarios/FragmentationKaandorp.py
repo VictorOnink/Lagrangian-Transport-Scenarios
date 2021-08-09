@@ -170,7 +170,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
             particle.delete()
         else:
             if particle.beach == 1:
-                if ParcelsRandom.uniform(0, 1) > 0.99:#fieldset.p_frag:
+                if ParcelsRandom.uniform(0, 1) > fieldset.p_frag:
                     particle.to_split = 1
 
     def particle_splitter(self, fieldset, pset, size_limit):
@@ -239,7 +239,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         # Carrying out the execution of the simulation
         utils.print_statement("The actual execution of the run")
         time = utils.get_start_end_time(time='start')
-        while time <= utils.get_start_end_time(time='start') + 4 * settings.OUTPUT_TIME_STEP:
+        while time <= utils.get_start_end_time(time='start') + 10 * settings.OUTPUT_TIME_STEP:
             pset.execute(behavior_kernel, runtime=settings.OUTPUT_TIME_STEP, dt=settings.TIME_STEP,
                          recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle},
                          output_file=pfile)
