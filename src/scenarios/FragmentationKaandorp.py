@@ -224,6 +224,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
 
     def run(self):
         utils.print_statement(self.field_set.p_frag)
+        utils.print_statement(self.field_set.p_beach)
         # Creating the particle set and output file
         # pset = self.get_pset(fieldset=self.field_set, particle_type=self.particle,
         #                      var_dict=self.get_var_dict(), start_time=utils.get_start_end_time(time='start'),
