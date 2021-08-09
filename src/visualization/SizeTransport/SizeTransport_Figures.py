@@ -73,9 +73,9 @@ def run(scenario, figure_direc: str):
 
     #
     # # Creating figures of the timeseries of the number of particles that are beached/afloat/seabed/removed
-    SizeTransport_beach_timeseries.SizeTransport_beach_timeseries(figure_direc=figure_direc, scenario=scenario,
-                                                                  size_list=size_list, rho_list=rho_list,
-                                                                  tau_list=tau_list, simulation_years=1)
+    # SizeTransport_beach_timeseries.SizeTransport_beach_timeseries(figure_direc=figure_direc, scenario=scenario,
+    #                                                               size_list=size_list, rho_list=rho_list,
+    #                                                               tau_list=tau_list, simulation_years=1)
 
     # A histogram indicating at which depths particles end up beaching
     # SizeTransport_SeaFloorDepthDistribution.SizeTransport_SeaFloorDepthDistribution(figure_direc=figure_direc,
@@ -89,9 +89,9 @@ def run(scenario, figure_direc: str):
     #                                                                                 cumulative=True)
 
     # Cumulative plots for the total distance travelled vertically and horizontally, and the max depth reached
-    # SizeTransport_CumulativeDistance.SizeTransport_CumulativeDistance(figure_direc=figure_direc,
-    #                                                                   scenario=scenario,
-    #                                                                   size_list=size_list,
-    #                                                                   rho_list=rho_list,
-    #                                                                   tau_list=tau_list)
+    SizeTransport_CumulativeDistance.SizeTransport_CumulativeDistance(figure_direc=figure_direc,
+                                                                      scenario=scenario,
+                                                                      size_list=size_list,
+                                                                      rho_list=rho_list,
+                                                                      tau_list=tau_list)
     pass
