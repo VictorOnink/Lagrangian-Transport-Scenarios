@@ -502,13 +502,9 @@ def KPP_TIDAL_mixing(particle, fieldset, time):
             alpha = (fieldset.VK * U_W) / fieldset.PHI
             Kz = alpha * (z_correct + z0) * math.pow(1 - z_correct / mld, 2)
 
-        # The grid of the tidal mixing isn't an exact match with the CMEMS data, so in regions where Kz_tidal is either 0
-        # or very very small, we take the Waterhouse et al. (2014) estimate of the diapycnal diffusion below the MLD
+        # Adding in the tidal mixing
         Kz += fieldset.TIDAL_Kz[time, particle.depth, particle.lat, particle.lon]
         dKz += fieldset.TIDAL_dKz[time, particle.depth, particle.lat, particle.lon]
-        if Kz < fieldset.K_Z_BULK:
-            Kz = fieldset.K_Z_BULK
-            dKz = 0.0
 
         # The Markov-0 vertical transport from Grawe et al. (2012)
         gradient = dKz * particle.dt
