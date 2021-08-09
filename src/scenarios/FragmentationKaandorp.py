@@ -128,7 +128,6 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
             if dist < fieldset.Coastal_Boundary:
                 if ParcelsRandom.uniform(0, 1) > fieldset.p_beach:
                     particle.beach = 1
-                    print('BEACH!!!!')
         # Next the resuspension of particles on the coastline
         elif particle.beach == 1:
             if ParcelsRandom.uniform(0, 1) > particle.prob_resus:
@@ -171,9 +170,8 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
             particle.delete()
         else:
             if particle.beach == 1:
-                if ParcelsRandom.uniform(0, 1) > 0.5:#fieldset.p_frag:
+                if ParcelsRandom.uniform(0, 1) > 0.9:#fieldset.p_frag:
                     particle.to_split = 1
-                    print('SPLIT!!!!!')
 
     def particle_splitter(self, fieldset, pset, size_limit):
         for particle in pset:
