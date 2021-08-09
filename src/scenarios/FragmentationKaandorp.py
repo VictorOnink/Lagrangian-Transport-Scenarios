@@ -128,6 +128,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
             if dist < fieldset.Coastal_Boundary:
                 if ParcelsRandom.uniform(0, 1) > fieldset.p_beach:
                     particle.beach = 1
+                    print('BEACH!!!!')
         # Next the resuspension of particles on the coastline
         elif particle.beach == 1:
             if ParcelsRandom.uniform(0, 1) > particle.prob_resus:
@@ -240,7 +241,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         # Carrying out the execution of the simulation
         utils.print_statement("The actual execution of the run")
         time = utils.get_start_end_time(time='start')
-        while time <= utils.get_start_end_time(time='end'):
+        while time <= utils.get_start_end_time(time='start') + 4 * settings.OUTPUT_TIME_STEP:
             pset.execute(behavior_kernel, runtime=settings.OUTPUT_TIME_STEP, dt=settings.TIME_STEP,
                          recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle},
                          output_file=pfile)
