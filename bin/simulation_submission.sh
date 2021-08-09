@@ -5,18 +5,18 @@ SUBMISSION='simulation'
 DEBUG=0 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Kaandorp based fragmentation, 6 = Size dependent transport
-SCENARIO=6
+SCENARIO=5
 #for scenario 1, the time a particle must be near the coast to beach (in days)
 VICINITY=2
 #for scenario 2, the beaching and resuspension timescales (in days)
-SHORETIME_list=(20)
+SHORETIME_list=(1)
 RESUSTIME_list=(69)
 #for scenario 3, the shore dependence scenario.
 SHOREDEPEN=0
 #for scenario 4, the minimum wind speed for resuspension. Divide by 10 for actual value
 WMIN=3
 #for scenario 5 and 6, the initial size of the particle in 1e-6 m
-PARTICLE_SIZE_list=(5000 1000 500 100 90 80 70 60 50 40 30 20 10 5 1)
+PARTICLE_SIZE_list=(5000)
 #for scenario 5 and 6, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=140
 # For scenario 5, the fragmentation parameters p (x1e-1), DN (x1e-1), the number of size classes and the fragmentation
@@ -33,9 +33,9 @@ INPUT=1
 # 0 = Global HYCOM, 1 = Caribbean HYCOM, 2 = Mediterranean CMEMS
 ADVECTION_DATA=2
 #Start year of the simulation. 0 = new simulation, otherwise it picks up from a previous simulation
-START=1
+START=0
 #Number of years the simulation runs
-SIMLEN=3
+SIMLEN=1
 #Inclusion of Stokes drift. 0 = include stokes, 1 = do not include stokes
 STOKES=0 
 #Ensemble member
