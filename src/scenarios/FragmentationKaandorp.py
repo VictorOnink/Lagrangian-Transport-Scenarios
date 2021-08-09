@@ -177,7 +177,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
 
     def particle_splitter(self, fieldset, pset, size_limit):
         for particle in pset:
-            if particle.to_split > 1:
+            if particle.to_split == 1:
                 # First, we set the split condition statement back to 0
                 particle.to_split = 0
                 # Then, we calculate the new size of the particle
@@ -247,6 +247,6 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                          output_file=pfile)
             time += settings.OUTPUT_TIME_STEP
             pset = self.particle_splitter(self.field_set, pset, size_limit)
-            utils.print_statement('time = {}'.format(time))
+            utils.print_statement('time = {}, pset size {}'.format(time, len(pset)))
         pfile.export()
         utils.print_statement("Run completed")
