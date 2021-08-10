@@ -91,17 +91,17 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                    shore_time=settings.SHORE_TIME, resus_time=settings.RESUS_TIME, ensemble=settings.ENSEMBLE,
                    advection_data=settings.ADVECTION_DATA, start_year=settings.START_YEAR, input=settings.INPUT,
                    p_frag=settings.P_FRAG, dn=settings.DN, size_class_number=settings.SIZE_CLASS_NUMBER,
-                   lambda_frag=settings.LAMBDA_FRAG):
+                   lambda_frag=settings.LAMBDA_FRAG, density=settings.INIT_DENSITY):
         odirec = self.output_dir + "Kaandorp_Fragmentation/st_{}_rt_{}_e_{}/".format(shore_time,
                                                                                      resus_time,
                                                                                      ensemble)
         if new:
-            str_format = (advection_data, shore_time, resus_time, p_frag, lambda_frag, dn, size_class_number, start_year, input,
-                          restart, run)
+            str_format = (advection_data, shore_time, resus_time, p_frag, lambda_frag, dn, size_class_number, density,
+                          start_year, input, restart, run)
         else:
-            str_format = (advection_data, shore_time, resus_time, p_frag, lambda_frag, dn, size_class_number, start_year, input,
-                          restart - 1, run)
-        return odirec + self.prefix + '_{}_st={}_rt={}_pfrag={}_lambdafrag={}_dn={}_sizeclasses={}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
+            str_format = (advection_data, shore_time, resus_time, p_frag, lambda_frag, dn, size_class_number, density,
+                          start_year, input, restart - 1, run)
+        return odirec + self.prefix + '_{}_st={}_rt={}_pfrag={}_lambdafrag={}_dn={}_sizeclasses={}_rho={}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
 
     def beaching_kernel(particle, fieldset, time):
         """
