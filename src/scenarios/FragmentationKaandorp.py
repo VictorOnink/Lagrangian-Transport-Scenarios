@@ -55,7 +55,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
                                lon=var_dict['lon'][::step], lat=var_dict['lat'][::step], beach=var_dict['beach'][::step],
                                age=var_dict['age'][::step], size=var_dict['size'][::step],
-                               rho_plastic=var_dict['rho_plastic'][::step], parent=range(len(var_dict['weight'][::step])),
+                               rho_plastic=var_dict['rho_plastic'][::step], parent=range(len(var_dict['lon'][::step])),
                                rise_velocity=rise_velocity,
                                prob_resus=utils.resuspension_probability(w_rise=rise_velocity),
                                time=start_time, repeatdt=repeat_dt)
