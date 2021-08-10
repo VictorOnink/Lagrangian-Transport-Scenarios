@@ -37,7 +37,7 @@ def run(scenario, figure_direc: str):
 
     # Creating figures showing the relative distribution, averaged over the entire simulation and time-snapshots at the
     # end of each simulation year
-    # time_select = 0
+    time_select = 0
     SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
                                                                                 scenario=scenario,
                                                                                 size_list=size_list,
