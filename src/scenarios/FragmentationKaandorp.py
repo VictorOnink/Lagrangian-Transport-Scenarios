@@ -28,7 +28,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
             self.file_dict = advection_scenario.file_names
             self.field_set = self.create_fieldset()
 
-    var_list = ['lon', 'lat', 'weights', 'beach', 'age', 'size', 'rho_plastic', 'parent', 'rise_velocity']
+    var_list = ['lon', 'lat', 'beach', 'age', 'size', 'rho_plastic', 'parent', 'rise_velocity']
 
     def create_fieldset(self) -> FieldSet:
         utils.print_statement("Creating the fieldset")
@@ -54,18 +54,16 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
             rise_velocity = utils.initial_estimate_particle_rise_velocity(L=var_dict['size'][::step])
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
                                lon=var_dict['lon'][::step], lat=var_dict['lat'][::step], beach=var_dict['beach'][::step],
-                               age=var_dict['age'][::step], weights=var_dict['weight'][::step], size=var_dict['size'][::step],
+                               age=var_dict['age'][::step], size=var_dict['size'][::step],
                                rho_plastic=var_dict['rho_plastic'][::step], parent=range(len(var_dict['weight'][::step])),
                                rise_velocity=rise_velocity,
-                               reynolds=utils.initial_reynolds_number(L=var_dict['size'][::step]),
                                prob_resus=utils.resuspension_probability(w_rise=rise_velocity),
                                time=start_time, repeatdt=repeat_dt)
         else:
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
                                lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'], parent=var_dict['parent'],
-                               age=var_dict['age'], weights=var_dict['weight'], size=var_dict['size'],
+                               age=var_dict['age'], size=var_dict['size'],
                                rho_plastic=var_dict['rho_plastic'], rise_velocity=var_dict['rise_velocity'],
-                               reynolds=utils.initial_reynolds_number(L=var_dict['size'], rise_velocity=var_dict['rise_velocity']),
                                prob_resus=utils.resuspension_probability(w_rise=var_dict['rise_velocity']),
                                time=start_time, repeatdt=repeat_dt)
         return pset
@@ -83,7 +81,6 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         utils.add_particle_variable(particle_type, 'reynolds', dtype=np.float32, set_initial=True)
         utils.add_particle_variable(particle_type, 'rho_plastic', dtype=np.float32, set_initial=True, to_write=False)
         utils.add_particle_variable(particle_type, 'size', dtype=np.float32)
-        utils.add_particle_variable(particle_type, 'weights', dtype=np.float32, set_initial=True, to_write=False)
         utils.add_particle_variable(particle_type, 'to_split', dtype=np.int32, set_initial=False, to_write=False)
         utils.add_particle_variable(particle_type, 'to_delete', dtype=np.int32, set_initial=False, to_write=False)
         utils.add_particle_variable(particle_type, 'parent', dtype=np.int32, set_initial=True, to_write=True)
@@ -206,7 +203,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                                                time=utils.create_list(particle.time, particle_number),
                                                rho_plastic=utils.create_list(particle.rho_plastic, particle_number),
                                                rise_velocity=utils.create_list(utils.initial_estimate_particle_rise_velocity(L=new_particle_size), particle_number),
-                                               reynolds=utils.create_list(utils.initial_reynolds_number(L=new_particle_size), particle_number),
+                                               reynolds=utils.create_list(0, particle_number),
                                                prob_resus=utils.create_list(utils.resuspension_probability(w_rise=utils.initial_estimate_particle_rise_velocity(L=new_particle_size)), particle_number))
                         pset.add(pset_new)
         return pset
@@ -239,7 +236,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         # Carrying out the execution of the simulation
         utils.print_statement("The actual execution of the run")
         time = utils.get_start_end_time(time='start')
-        while time <= utils.get_start_end_time(time='end'):
+        while time <= utils.get_start_end_time(time='start') + 3 * settings.OUTPUT_TIME_STEP:
             pset.execute(behavior_kernel, runtime=settings.OUTPUT_TIME_STEP, dt=settings.TIME_STEP,
                          recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle},
                          output_file=pfile)
