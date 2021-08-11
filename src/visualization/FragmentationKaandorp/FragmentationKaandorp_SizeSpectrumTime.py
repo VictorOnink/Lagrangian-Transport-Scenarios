@@ -3,6 +3,7 @@ import utils
 import visualization.visualization_utils as vUtils
 import matplotlib.pyplot as plt
 import matplotlib.colors as colors
+import string
 
 
 def FragmentationKaandorp_SizeSpectrumTime(figure_direc, scenario, shore_time, lambda_frag_list, figsize=(18, 12),
@@ -49,11 +50,24 @@ def FragmentationKaandorp_SizeSpectrumTime(figure_direc, scenario, shore_time, l
                 ax.set_yticklabels([])
             else:
                 ax.set_ylabel(r'Particles', fontsize=fontsize)
-
             ax_list.append(ax)
-
+    # Labelling the subfigures
+    for index_ax, ax in enumerate(ax_list):
+        ax.set_title(subfigure_title(index_ax, lambda_frag_list), fontsize=fontsize)
     # Creating the axis for the legend
     ax_legend = fig.add_subplot(gs[:, -1])
 
     file_name = output_direc + 'SizeSpectrumTime-ST={}.png'.format(shore_time)
     plt.savefig(file_name, bbox_inches='tight')
+
+
+def subfigure_title(index, lambda_frag_list):
+    """
+    setting the title of the subfigure
+    :param index:
+    :param size:
+    :param rho:
+    :return:
+    """
+    alphabet = string.ascii_lowercase
+    return '({}) '.format(alphabet[index]) + r'$\lambda_f$ = ' + '{} days'.format(lambda_frag_list[index])
