@@ -36,9 +36,9 @@ def FragmentationKaandorp_load_data(scenario, prefix, data_direc, shore_time, la
                                     size_class_number=settings.SIZE_CLASS_NUMBER, rt=69, p_frag=settings.P_FRAG,
                                     start_year=settings.START_YEAR, input='Lebreton'
                                     ):
-    file_name = scenario.file_names(new=True, advection_data=advection_data, shore_time=shore_time, dn=dn, 
+    file_name = scenario.file_names(new=True, advection_data=advection_data, shore_time=shore_time, dn=dn,
                                     size_class_number=size_class_number, resus_time=rt, p_frag=p_frag,
-                                    lambda_frag=lambda_frag, init_density=rho, start_year=start_year, input=input)
+                                    lambda_frag=lambda_frag, density=rho, start_year=start_year, input=input)
     full_path = data_direc + utils.analysis_save_file_name(input_file=file_name, prefix=prefix)
     return utils.load_obj(full_path)
 
