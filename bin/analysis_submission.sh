@@ -9,7 +9,7 @@ SCENARIO=5
 #for scenario 1, the time a particle must be near the coast to beach (in days)
 VICINITY=2
 #for scenario 2, the beaching and resuspension timescales (in days)
-SHORETIME_list=(1)
+SHORETIME_list=(1 20)
 RESUSTIME_list=(69)
 #for scenario 3, the shore dependence scenario.
 SHOREDEPEN=0
@@ -24,7 +24,7 @@ SEABED_CRIT=140
 P=4
 DN=25
 SIZE_CLASS_NUMBER=6
-LAMBDA_FRAG_list=(1)
+LAMBDA_FRAG_list=(1 10 100 200 300 388)
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010
 #Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=point release, 3=uniform release
