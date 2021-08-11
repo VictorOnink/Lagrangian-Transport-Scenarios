@@ -21,7 +21,8 @@ def parcels_to_sizespectrum(file_dict: dict):
     for restart in range(settings.SIM_LENGTH):
         parcels_file = file_dict[0][restart]
         parcels_dataset = Dataset(parcels_file)
-        time_list = np.append(time_list, np.unique(parcels_dataset.variables['time'][:, :-1]))
+        time = parcels_dataset.variables['time'][:, :-1]
+        time_list = np.append(time_list, np.unique(time))
     for t in range(1, len(time_list)):
         dif = np.abs(time_list[t] - time_list[t - 1])
-        utils.print_statement('{} dif {}'.format(t, dif), to_print=True)
+        utils.print_statement('{} dif {} {}'.format(t, dif, np.sum(time == time_list[t])), to_print=True)
