@@ -24,8 +24,6 @@ def FragmentationKaandorp_SizeSpectrumTime(figure_direc, scenario, shore_time, l
             if month != 'size_bins':
                 size_dict[lambda_frag][month] = data_dict[month]
     size_bins = data_dict['size_bins'][:-1]
-    for keys in size_dict[lambda_frag].keys():
-        utils.print_statement(keys, to_print=True)
 
     # Creating the figure
     fig = plt.figure(figsize=figsize)
@@ -60,6 +58,7 @@ def FragmentationKaandorp_SizeSpectrumTime(figure_direc, scenario, shore_time, l
     # Plotting the size distributions one figure (so fragmentation timescale) at a time
     for index_ax, ax in enumerate(ax_list):
         for month in size_dict[lambda_frag_list[index_ax]].keys():
+            utils.print_statement(month, to_print=True)
             ax.plot(size_bins, size_dict[lambda_frag_list[index_ax]][month], linestyle='-')
 
     file_name = output_direc + 'SizeSpectrumTime-ST={}.png'.format(shore_time)
