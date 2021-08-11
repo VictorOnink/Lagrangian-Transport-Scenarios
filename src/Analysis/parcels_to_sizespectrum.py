@@ -22,7 +22,7 @@ def parcels_to_sizespectrum(file_dict: dict):
         parcels_file = file_dict[0][restart]
         parcels_dataset = Dataset(parcels_file)
         time = parcels_dataset.variables['time'][:, :-1]
-        time_list = np.append(time_list, np.unique(time))
-    for t in range(1, len(time_list)):
-        dif = np.abs(time_list[t] - time_list[t - 1])
-        utils.print_statement('{} dif {} {}'.format(t, dif, np.sum(time == time_list[t])), to_print=True)
+        for time_case in np.unique(time):
+            if np.nansum(time_case == time) > 10 and time_case != np.nan:
+                time_list = np.append(time_list, time_case)
+    utils.print_statement(len(time_list), to_print=True)
