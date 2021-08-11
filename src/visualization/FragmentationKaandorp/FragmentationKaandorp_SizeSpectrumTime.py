@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as colors
 
 
-def FragmentationKaandorp_SizeSpectrumTime(figure_direc, scenario, shore_time, lambda_frag_list, figsize=(12, 16),
-                                           fontsize=12):
+def FragmentationKaandorp_SizeSpectrumTime(figure_direc, scenario, shore_time, lambda_frag_list, figsize=(16, 12),
+                                           fontsize=14):
     # Setting the folder within which we have the output, and where we have the saved data
     output_direc = figure_direc + 'size_distribution/'
     utils.check_direc_exist(output_direc)
