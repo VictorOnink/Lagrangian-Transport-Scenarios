@@ -14,7 +14,7 @@ def parcels_to_sizespectrum(file_dict: dict):
     :return:
     """
     # Setting the size bins
-    size_bins = np.logspace(start=-6, stop=-2, num=50)
+    size_bins = np.logspace(start=-5, stop=-2, num=20)
 
     output_direc = utils.get_output_directory(server=settings.SERVER) + 'size_distribution/{}/'.format(
         settings.SCENARIO_NAME)
