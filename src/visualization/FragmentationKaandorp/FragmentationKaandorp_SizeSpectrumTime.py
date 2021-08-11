@@ -24,7 +24,7 @@ def FragmentationKaandorp_SizeSpectrumTime(figure_direc, scenario, shore_time, l
             if month != 'size_bins':
                 size_dict[lambda_frag][month] = data_dict[month]
     size_bins = data_dict['size_bins'][:-1]
-    for keys in size_dict.keys():
+    for keys in size_dict[lambda_frag].keys():
         utils.print_statement(keys, to_print=True)
 
     # Creating the figure
