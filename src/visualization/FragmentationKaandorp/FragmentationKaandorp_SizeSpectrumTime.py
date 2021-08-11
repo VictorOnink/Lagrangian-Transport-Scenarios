@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as colors
 
 
-def FragmentationKaandorp_SizeSpectrumTime(figure_direc, scenario, shore_time, lambda_frag_list, figsize=(12, 10),
+def FragmentationKaandorp_SizeSpectrumTime(figure_direc, scenario, shore_time, lambda_frag_list, figsize=(12, 12),
                                            fontsize=12):
     # Setting the folder within which we have the output, and where we have the saved data
     output_direc = figure_direc + 'size_distribution/'
@@ -34,13 +34,13 @@ def FragmentationKaandorp_SizeSpectrumTime(figure_direc, scenario, shore_time, l
     ax_list = []
     for row in range(gs.nrows):
         for column in range(gs.ncols - 1):
-            ax = fig.add_subplot(gs[row, 0])
+            ax = fig.add_subplot(gs[row, column])
             if column == 0:
                 ax.set_ylabel(r'Particles', fontsize=fontsize)
             if row == (gs.nrows - 1):
                 ax.set_xlabel(r'Size (m)', fontsize=fontsize)
             ax.set_xlim([size_bins.min(), size_bins.max()])
-            ax.set_ylim([0, 1e4])
+            ax.set_ylim([1e0, 1e4])
             ax.tick_params(which='major', length=7)
             ax.tick_params(which='minor', length=3)
             ax.set_yscale('log')
