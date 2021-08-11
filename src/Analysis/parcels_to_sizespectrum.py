@@ -46,7 +46,7 @@ def parcels_to_sizespectrum(file_dict: dict):
             # Calculating the spectrum every 30 days
             for index_time, time_select in enumerate(range(0, len(time_list), 60)):
                 size_selection = size[time_select == time]
-                utils.print_statement(size_selection.size)
+                utils.print_statement(size_selection.size, to_print=True)
                 size_counts, _ = np.histogram(size_selection, bins=size_bins)
                 output_dict[index_time] = size_counts
 
