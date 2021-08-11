@@ -30,7 +30,8 @@ def run():
                                                           max_distance=settings.MAX_DISTANCE,
                                                           timeslicing=settings.TIMESLICING,
                                                           statistics=settings.STATISTICS,
-                                                          separation_distance=settings.SEPARATION)
+                                                          separation_distance=settings.SEPARATION,
+                                                          size_spectrum=settings.SIZE_SPECTRUM)
     elif settings.SUBMISSION == 'visualization':
         os.system('echo "Generating all visualizations"')
         scenario_name = settings.SCENARIO_NAME

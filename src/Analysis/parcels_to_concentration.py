@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 from netCDF4 import Dataset
 import numpy as np
 import progressbar
-import os
 from copy import deepcopy
 
 

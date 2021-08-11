@@ -6,7 +6,7 @@ import utils
 class AnalysisFactory():
     def create_procedure(file_dict: dict, scenario, concentration: bool = False, timeseries: bool = False,
                          max_distance: bool = False, vertical_concentration: bool = False, timeslicing: bool = False,
-                         statistics: bool = False, separation_distance: bool = False):
+                         statistics: bool = False, separation_distance: bool = False, size_spectrum: bool = False):
         if concentration:
             utils.print_statement("Calculating the concentration", to_print=True)
             Analysis.parcels_to_concentration(file_dict=file_dict)
@@ -28,3 +28,5 @@ class AnalysisFactory():
         if separation_distance:
             utils.print_statement("Computing separation distances", to_print=True)
             Analysis.parcels_to_separation_distance(file_dict=file_dict, scenario=scenario)
+        if size_spectrum:
+            utils.print_statement("Computing separation distances", to_print=True)
