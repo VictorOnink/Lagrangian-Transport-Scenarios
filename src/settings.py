@@ -220,7 +220,7 @@ if SCENARIO_NAME != 'AdvectionDiffusionOnly' and SUBMISSION in ['simulation', 'a
 # SIZE SCALING FACTOR
 SIZE_FACTOR = 1E-6
 
-if SCENARIO_NAME == 'FragmentationKaandorp':
+if SCENARIO_NAME == 'FragmentationKaandorp' and SUBMISSION in ['simulation', 'analysis']:
     # INITIAL PARTICLE SIZE (m)
     INIT_SIZE = int(os.environ['PARTICLE_SIZE']) * SIZE_FACTOR
     # INITIAL DENSITY (KG/M^3): 920 = polypropylene
