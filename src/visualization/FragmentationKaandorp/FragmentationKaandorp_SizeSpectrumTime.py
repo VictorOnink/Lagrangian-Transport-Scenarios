@@ -23,7 +23,7 @@ def FragmentationKaandorp_SizeSpectrumTime(figure_direc, scenario, shore_time, l
         for month in data_dict.keys():
             if month != 'size_bins':
                 size_dict[lambda_frag][month] = data_dict[month]
-    size_bins = data_dict['size_bins']
+    size_bins = data_dict['size_bins'][:-1]
     for keys in size_dict.keys():
         utils.print_statement(keys, to_print=True)
 
@@ -49,13 +49,18 @@ def FragmentationKaandorp_SizeSpectrumTime(figure_direc, scenario, shore_time, l
             if column != 0:
                 ax.set_yticklabels([])
             else:
-                ax.set_ylabel(r'Particles', fontsize=fontsize)
+                ax.set_ylabel(r'Number of Particles', fontsize=fontsize)
             ax_list.append(ax)
     # Labelling the subfigures
     for index_ax, ax in enumerate(ax_list):
         ax.set_title(subfigure_title(index_ax, lambda_frag_list), fontsize=fontsize)
     # Creating the axis for the legend
     ax_legend = fig.add_subplot(gs[:, -1])
+
+    # Plotting the size distributions one figure (so fragmentation timescale) at a time
+    for index_ax, ax in enumerate(ax_list):
+        for month in size_dict[lambda_frag_list[index_ax]].keys():
+            ax.plot(size_bins, size_dict[lambda_frag_list[index_ax]][month], linestyle='-')
 
     file_name = output_direc + 'SizeSpectrumTime-ST={}.png'.format(shore_time)
     plt.savefig(file_name, bbox_inches='tight')
