@@ -46,6 +46,7 @@ def parcels_to_sizespectrum(file_dict: dict):
             # Calculating the spectrum every 30 days
             for index_time, time_select in enumerate(range(0, len(time_list), 60)):
                 size_selection = size[time_select == time]
+                utils.print_statement(size_selection.size)
                 size_counts, _ = np.histogram(size_selection, bins=size_bins)
                 output_dict[index_time] = size_counts
 
@@ -53,4 +54,4 @@ def parcels_to_sizespectrum(file_dict: dict):
     prefix = 'size_distribution'
     output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
     utils.save_obj(output_name, output_dict)
-    utils.print_statement("The timeseries has been saved")
+    utils.print_statement("The size distribution has been saved")
