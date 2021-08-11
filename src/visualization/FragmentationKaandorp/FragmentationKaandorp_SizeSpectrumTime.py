@@ -35,10 +35,6 @@ def FragmentationKaandorp_SizeSpectrumTime(figure_direc, scenario, shore_time, l
     for row in range(gs.nrows):
         for column in range(gs.ncols - 1):
             ax = fig.add_subplot(gs[row, column])
-            if column == 0:
-                ax.set_ylabel(r'Particles', fontsize=fontsize)
-            if row == (gs.nrows - 1):
-                ax.set_xlabel(r'Size (m)', fontsize=fontsize)
             ax.set_xlim([size_bins.min(), size_bins.max()])
             ax.set_ylim([1e0, 1e4])
             ax.tick_params(which='major', length=7)
@@ -47,7 +43,17 @@ def FragmentationKaandorp_SizeSpectrumTime(figure_direc, scenario, shore_time, l
             ax.set_xscale('log')
             if row != (gs.nrows - 1):
                 ax.set_xticklabels([])
+            else:
+                ax.set_xlabel(r'Size (m)', fontsize=fontsize)
+            if column != 0:
+                ax.set_yticklabels([])
+            else:
+                ax.set_ylabel(r'Particles', fontsize=fontsize)
+
             ax_list.append(ax)
+
+    # Creating the axis for the legend
+    ax_legend = fig.add_subplot(gs[:, -1])
 
     file_name = output_direc + 'SizeSpectrumTime-ST={}.png'.format(shore_time)
     plt.savefig(file_name, bbox_inches='tight')
