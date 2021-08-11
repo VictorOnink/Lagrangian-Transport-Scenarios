@@ -9,3 +9,5 @@ def run(scenario, figure_direc: str):
 
     FragmentationKaandorp_SizeSpectrumTime(figure_direc=figure_direc, scenario=scenario, shore_time=1,
                                            lambda_frag_list=lambda_frag_list)
+    FragmentationKaandorp_SizeSpectrumTime(figure_direc=figure_direc, scenario=scenario, shore_time=20,
+                                           lambda_frag_list=lambda_frag_list)
