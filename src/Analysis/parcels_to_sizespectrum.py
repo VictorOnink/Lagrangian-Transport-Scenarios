@@ -44,8 +44,8 @@ def parcels_to_sizespectrum(file_dict: dict):
             size = parcels_dataset.variables['size'][:, :-1]
 
             # Calculating the spectrum every 30 days
-            for index_time, time_select in enumerate(range(0, len(time_list), 60)):
-                size_selection = size[time_select == time]
+            for index_time in range(0, len(time_list), 60):
+                size_selection = size[time_list[index_time] == time]
                 utils.print_statement(size_selection.size, to_print=True)
                 size_counts, _ = np.histogram(size_selection, bins=size_bins)
                 output_dict[index_time] = size_counts
