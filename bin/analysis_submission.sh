@@ -24,7 +24,7 @@ SEABED_CRIT=140
 P=4
 DN=25
 SIZE_CLASS_NUMBER=6
-LAMBDA_FRAG_list=(1 )
+LAMBDA_FRAG_list=(1)
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010
 #Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=point release, 3=uniform release
@@ -33,7 +33,7 @@ INPUT=1
 # 0 = Global HYCOM, 1 = Caribbean HYCOM, 2 = Mediterranean CMEMS
 ADVECTION_DATA=2
 #Number of years the simulation runs
-SIMLEN=2
+SIMLEN=1
 #Inclusion of Stokes drift. 0 = include stokes, 1 = do not include stokes
 STOKES=0
 #Ensemble member
