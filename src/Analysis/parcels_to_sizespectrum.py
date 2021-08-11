@@ -22,4 +22,4 @@ def parcels_to_sizespectrum(file_dict: dict):
         parcels_file = file_dict[0][restart]
         parcels_dataset = Dataset(parcels_file)
         time_list = np.append(time_list, np.unique(parcels_dataset.variables['time'][:, :-1]))
-    utils.print_statement('we have {} time points'.format(time_list.size))
+    utils.print_statement('we have {} time points'.format(time_list.size), to_print=True)
