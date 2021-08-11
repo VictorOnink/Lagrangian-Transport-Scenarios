@@ -35,7 +35,7 @@ def FragmentationKaandorp_SizeSpectrumTime(figure_direc, scenario, shore_time, l
     for row in range(gs.nrows):
         for column in range(gs.ncols - 1):
             ax = fig.add_subplot(gs[row, column])
-            ax.set_xlim([size_bins.min(), size_bins.max()])
+            ax.set_xlim([size_bins.min(), size_bins.max() + 0.1])
             ax.set_ylim([1e0, 1e4])
             ax.tick_params(which='major', length=7)
             ax.tick_params(which='minor', length=3)
