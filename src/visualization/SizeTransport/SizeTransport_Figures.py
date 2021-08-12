@@ -5,6 +5,7 @@ import visualization.SizeTransport.SizeTransport_beach_timeseries as SizeTranspo
 import visualization.SizeTransport.SizeTransport_SeaFloorDepthDistribution as SizeTransport_SeaFloorDepthDistribution
 import visualization.General as General
 import visualization.SizeTransport.SizeTransport_CumulativeDistance as SizeTransport_CumulativeDistance
+import visualization.SizeTransport.SizeTransport_SeparationDistance as SizeTransport_SeparationDistance
 import os
 import numpy as np
 
@@ -38,27 +39,27 @@ def run(scenario, figure_direc: str):
     # Creating figures showing the relative distribution, averaged over the entire simulation and time-snapshots at the
     # end of each simulation year
     time_select = 1
-    SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
-                                                                                scenario=scenario,
-                                                                                size_list=size_list,
-                                                                                rho_list=rho_list,
-                                                                                tau_list=tau_list,
-                                                                                time_selection=time_select,
-                                                                                beach_state='afloat')
-    SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
-                                                                                scenario=scenario,
-                                                                                size_list=size_list,
-                                                                                rho_list=rho_list,
-                                                                                time_selection=time_select,
-                                                                                tau_list=tau_list,
-                                                                                beach_state='seabed')
-    SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
-                                                                                scenario=scenario,
-                                                                                size_list=size_list,
-                                                                                rho_list=rho_list,
-                                                                                tau_list=tau_list,
-                                                                                time_selection=time_select,
-                                                                                beach_state='beach')
+    # SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
+    #                                                                             scenario=scenario,
+    #                                                                             size_list=size_list,
+    #                                                                             rho_list=rho_list,
+    #                                                                             tau_list=tau_list,
+    #                                                                             time_selection=time_select,
+    #                                                                             beach_state='afloat')
+    # SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
+    #                                                                             scenario=scenario,
+    #                                                                             size_list=size_list,
+    #                                                                             rho_list=rho_list,
+    #                                                                             time_selection=time_select,
+    #                                                                             tau_list=tau_list,
+    #                                                                             beach_state='seabed')
+    # SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
+    #                                                                             scenario=scenario,
+    #                                                                             size_list=size_list,
+    #                                                                             rho_list=rho_list,
+    #                                                                             tau_list=tau_list,
+    #                                                                             time_selection=time_select,
+    #                                                                             beach_state='beach')
     # SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
     #                                                                             scenario=scenario,
     #                                                                             size_list=size_list,
@@ -73,9 +74,9 @@ def run(scenario, figure_direc: str):
 
     #
     # Creating figures of the timeseries of the number of particles that are beached/afloat/seabed/removed
-    SizeTransport_beach_timeseries.SizeTransport_beach_timeseries(figure_direc=figure_direc, scenario=scenario,
-                                                                  size_list=size_list, rho_list=rho_list,
-                                                                  tau_list=tau_list, simulation_years=2)
+    # SizeTransport_beach_timeseries.SizeTransport_beach_timeseries(figure_direc=figure_direc, scenario=scenario,
+    #                                                               size_list=size_list, rho_list=rho_list,
+    #                                                               tau_list=tau_list, simulation_years=2)
 
     # A histogram indicating at which depths particles end up beaching
     # SizeTransport_SeaFloorDepthDistribution.SizeTransport_SeaFloorDepthDistribution(figure_direc=figure_direc,
@@ -94,4 +95,10 @@ def run(scenario, figure_direc: str):
     #                                                                   size_list=size_list,
     #                                                                   rho_list=rho_list,
     #                                                                   tau_list=tau_list)
+
+    # Plotting the separation distance
+    size_selection = 5000 * settings.SIZE_FACTOR
+    SizeTransport_SeparationDistance.SizeTransport_SeparationDistance(scenario=scenario, figure_direc=figure_direc,
+                                                                      size_selection=size_selection, rho_selection=920,
+                                                                      tau_selection=0.14, size_list=size_list)
     pass
