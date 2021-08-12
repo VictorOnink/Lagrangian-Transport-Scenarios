@@ -29,11 +29,6 @@ def SizeTransport_SeparationDistance(scenario, figure_direc, size_selection, rho
     median_dict = data_dict['MEDIAN']
     time = data_dict['TIME']
 
-    # Setting parameters for the time axis
-    years = mdates.YearLocator()   # every year
-    months = mdates.MonthLocator()  # every month
-    yearsFmt = mdates.DateFormatter('%Y')
-
     # Getting the datetime objects for all of the time arrays
     startdate = datetime(settings.START_YEAR, 1, 1, 12, 0)
     time_list = []
@@ -44,7 +39,7 @@ def SizeTransport_SeparationDistance(scenario, figure_direc, size_selection, rho
     ax_range = datetime(settings.START_YEAR + 1, 1, 1), datetime(settings.START_YEAR, 1, 1), 4000, 1
     ax = vUtils.base_figure(fig_size=fig_size, ax_range=ax_range, x_label=x_label, y_label=y_label,
                             ax_ticklabel_size=ax_ticklabel_size, ax_label_size=ax_label_size, shape=(1, 2),
-                            plot_num=2, legend_axis=True, log_yscale=True,
+                            plot_num=2, legend_axis=True, log_yscale=True, x_time_axis=True,
                             width_ratios=[1, 1, 0.5], all_x_labels=True)
 
     # Saving the figure
