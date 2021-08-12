@@ -26,7 +26,7 @@ def parcels_to_separation_distance(file_dict: dict, scenario):
     time_steps = len(Dataset(scenario.file_names(new=True, run=0, restart=0, init_size=settings.INIT_SIZE)).variables['time'][0, :])
     output_dict = dict.fromkeys(['STD', 'MEAN', 'MEDIAN'])
     for key in output_dict.keys():
-        output_dict[key] = dict.fromkeys(range(time_steps))
+        output_dict[key] = {}
         for size in particle_size:
             output_dict[key][utils.init_size_key(size)] = np.zeros(time_steps, dtype=float)
 
