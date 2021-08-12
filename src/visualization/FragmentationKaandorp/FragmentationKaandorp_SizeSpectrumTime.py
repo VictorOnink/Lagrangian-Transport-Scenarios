@@ -61,7 +61,11 @@ def FragmentationKaandorp_SizeSpectrumTime(figure_direc, scenario, shore_time, l
     for index_ax, ax in enumerate(ax_list):
         for index_month, month in enumerate(list(size_dict[lambda_frag_list[index_ax]].keys())[::month_step]):
             ax.plot(size_bins, size_dict[lambda_frag_list[index_ax]][month], linestyle='-',
-                    color=vUtils.discrete_color_from_cmap(index_month, 12 // month_step))
+                    color=vUtils.discrete_color_from_cmap(index_month, 12 // month_step),
+                    label='t = {} months'.format(month * 3))
+    # Adding in a legend
+    cbar = plt.legend(ax, cax=ax_legend, fontsize=fontsize)
+    ax_legend.axis('off')
 
     file_name = output_direc + 'SizeSpectrumTime-ST={}.png'.format(shore_time)
     plt.savefig(file_name, bbox_inches='tight')
