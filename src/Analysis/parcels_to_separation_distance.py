@@ -27,10 +27,12 @@ def parcels_to_separation_distance(file_dict: dict, scenario):
     output_dict = dict.fromkeys(['STD', 'MEAN', 'MEDIAN'])
     for key in output_dict.keys():
         output_dict[key] = dict.fromkeys(range(time_steps))
-        for time in output_dict[key].keys():
-            output_dict[key][time]= {}
-            for size in particle_size:
-                output_dict[key][time][utils.init_size_key(size)] = 0
+        for size in particle_size:
+            output_dict[key][utils.init_size_key(size)] = {}
+        # for time in output_dict[key].keys():
+        #     output_dict[key][time] = {}
+        #     for size in particle_size:
+        #         output_dict[key][time][utils.init_size_key(size)] = 0
 
     # Starting to loop through the runs
     pbar = ProgressBar()
@@ -47,9 +49,13 @@ def parcels_to_separation_distance(file_dict: dict, scenario):
                     key_size = utils.init_size_key(size)
                     distance = utils.distance_between_points(lon_reference[:, time], lat_reference[:, time],
                                                              lon_comparison[:, time], lat_comparison[:, time])
-                    output_dict['MEAN'][time][key_size] = np.nanmean(distance)
-                    output_dict['MEDIAN'][time][key_size] = np.nanmedian(distance)
-                    output_dict['STD'][time][key_size] = np.nanstd(distance)
+                    # output_dict['MEAN'][time][key_size] = np.nanmean(distance)
+                    # output_dict['MEDIAN'][time][key_size] = np.nanmedian(distance)
+                    # output_dict['STD'][time][key_size] = np.nanstd(distance)
+                    output_dict['MEAN'][key_size][time] = np.nanmean(distance)
+                    output_dict['MEDIAN'][key_size][time] = np.nanmedian(distance)
+                    output_dict['STD'][key_size][time] = np.nanstd(distance)
+
 
     # Saving the output
     prefix = 'separation_distance'
