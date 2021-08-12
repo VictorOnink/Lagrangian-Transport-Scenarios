@@ -6,6 +6,8 @@ import cartopy.feature as cpf
 from cartopy.mpl.gridliner import LONGITUDE_FORMATTER, LATITUDE_FORMATTER
 import matplotlib.ticker as mticker
 import numpy as np
+from matplotlib.gridspec import GridSpec
+import matplotlib.dates as mdates
 
 
 def SizeTransport_load_data(scenario, prefix, data_direc, size, rho, tau=settings.SEABED_CRIT,
@@ -13,6 +15,7 @@ def SizeTransport_load_data(scenario, prefix, data_direc, size, rho, tau=setting
     """
     Loading the data we want for SizeTransport analysis output, which will generally just differ in terms of which
     particle size and density
+    :param tau:
     :param scenario:
     :param prefix:
     :param data_direc:
@@ -57,7 +60,20 @@ def cartopy_standard_map(fig, gridspec, row, column, domain, resolution='50m', a
                          line_zorder=101):
     """
     A nice basic function that can be used to create standardized maps
-    :param axis:
+    :param fig:
+    :param gridspec:
+    :param row:
+    :param column:
+    :param domain:
+    :param resolution:
+    :param add_gridlines:
+    :param add_gridlabels:
+    :param lat_grid_step:
+    :param lon_grid_step:
+    :param label_size:
+    :param land_zorder:
+    :param ocean_zorder:
+    :param line_zorder:
     :return:
     """
     axis = fig.add_subplot(gridspec[row, column], projection=ccrs.PlateCarree())
@@ -109,3 +125,86 @@ def cartopy_standard_map(fig, gridspec, row, column, domain, resolution='50m', a
 def discrete_color_from_cmap(index, subdivisions, cmap='viridis_r'):
     cmap_steps = plt.cm.get_cmap(cmap, subdivisions)
     return cmap_steps(index)
+
+
+def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, shape=(1, 1), plot_num=1, all_x_labels=False,
+                legend_axis=False, log_yscale=False, log_xscale=False, x_time_axis=False,
+                width_ratios=None, height_ratios=None):
+    """
+    Function creating the base figure that we use as a foundation for almost all figures
+    :param log_yscale: if True, the y axis has a log scale
+    :param log_xscale: if True, the x axis has a log scale
+    :param x_time_axis: if True, the x axis is a time axis
+    :param height_ratios:
+    :param width_ratios:
+    :param fig_size: size of the figure
+    :param ax_range: the limits of the x and y axes
+    :param y_label: the y label
+    :param x_label: the x label
+    :param ax_label_size: the fontsize of the axis labels
+    :param shape: the shape of the array (rows, columns)
+    :param plot_num: how many subplots we want to create (e.g. in case we have a 2x3 figure but only want 5 panels)
+    :param all_x_labels: if True, all subplots in the bottom row of teh figure will have x labels, otherwise just the
+                         middle one
+    :param legend_axis: if true, we add an additional column in which we can add the legend (in case it is too big to
+                        fit within a subplot)
+    :return:
+    """
+    # Loading the axis limits
+    xmax, xmin, ymax, ymin = ax_range
+    # Creating the figure
+    fig = plt.figure(figsize=fig_size)
+    if legend_axis:
+        grid = GridSpec(nrows=shape[0], ncols=shape[1] + 1, figure=fig, width_ratios=width_ratios,
+                        height_ratios=height_ratios)
+    else:
+        grid = GridSpec(nrows=shape[0], ncols=shape[1], figure=fig, width_ratios=width_ratios,
+                        height_ratios=height_ratios)
+    ax, fig_index = [], 1
+    for row in range(shape[0]):
+        for column in range(shape[1]):
+            ax_sub = fig.add_subplot(grid[row, column])
+            # Setting the axis limits
+            ax_sub.set_ylim((ymin, ymax))
+            ax_sub.set_xlim((xmin, xmax))
+            # Setting the tick parameters and setting the axis scale
+            ax_sub.tick_params(axis='both', labelsize=ax_label_size)
+            if log_xscale:
+                ax_sub.set_xscale('log')
+            if log_yscale:
+                ax_sub.set_yscale('log')
+            if x_time_axis:
+                years = mdates.YearLocator()
+                months = mdates.MonthLocator()
+                yearsFmt = mdates.DateFormatter('%Y')
+                ax_sub.xaxis.set_major_locator(years)
+                ax_sub.xaxis.set_minor_locator(months)
+                ax_sub.xaxis.set_major_formatter(yearsFmt)
+            # Labeling the x and y axes
+            # Only add y labels if we are in the first column
+            if column == 0:
+                ax_sub.set_ylabel(y_label, fontsize=ax_label_size)
+            else:
+                ax_sub.tick_params(labelleft=False)
+            # Only add x labels if we are in the bottom row, and only to the middle one unless all_x_labels == True
+            if row == (shape[0] - 1):
+                if not all_x_labels and column % 2 is 1:
+                    ax_sub.set_xlabel(x_label, fontsize=ax_label_size)
+                elif all_x_labels:
+                    ax_sub.set_xlabel(x_label, fontsize=ax_label_size)
+                else:
+                    ax_sub.tick_params(labelbottom=False)
+            else:
+                ax_sub.tick_params(labelbottom=False)
+            # Adding the axis to the list and continuiing to the next plot
+            ax.append(ax_sub)
+            fig_index += 1
+            if fig_index > plot_num:
+                break
+    if legend_axis:
+        # Adding a legend axis
+        ax_legend = fig.add_subplot(grid[:, -1])
+        ax_legend.set_axis_off()
+        ax.append(ax_legend)
+    return tuple(ax)
+
