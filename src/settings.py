@@ -224,7 +224,7 @@ if SCENARIO_NAME == 'FragmentationKaandorp' and SUBMISSION in ['simulation', 'an
     # INITIAL PARTICLE SIZE (m)
     INIT_SIZE = int(os.environ['PARTICLE_SIZE']) * SIZE_FACTOR
     # INITIAL DENSITY (KG/M^3): 920 = polypropylene
-    INIT_DENSITY = 920
+    INIT_DENSITY = 1000 #920
 
 if SCENARIO_NAME == 'SizeTransport' and SUBMISSION in ['simulation', 'analysis']:
     # INITIAL DENSITY (KG/M^3): 920 = POLYPROPYLENE, 980 = HIGH DENSITY POLYETHYLENE (BRIGNAC ET AL. 2017)
