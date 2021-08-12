@@ -5,18 +5,18 @@ SUBMISSION='analysis'
 DEBUG=0 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Kaandorp based fragmentation, 6 = Size dependent transport
-SCENARIO=5
+SCENARIO=6
 #for scenario 1, the time a particle must be near the coast to beach (in days)
 VICINITY=2
 #for scenario 2, the beaching and resuspension timescales (in days)
-SHORETIME_list=(1 20)
+SHORETIME_list=(20)
 RESUSTIME_list=(69)
 #for scenario 3, the shore dependence scenario.
 SHOREDEPEN=0
 #for scenario 4, the minimum wind speed for resusplension. Divide by 10 for actual value
 WMIN=3
 #for scenario 5 and 6, the initial size of the particle in 1e-6 m
-PARTICLE_SIZE_list=(5000)
+PARTICLE_SIZE_list=(5000 1000 500 100 90 80 70 60 50 40 30 20 10 5 1)
 #for scenario 5 and 6, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=140
 # For scenario 5, the fragmentation parameters p (x1e-1), DN (x1e-1), the number of size classes and fragmentation
@@ -24,7 +24,7 @@ SEABED_CRIT=140
 P=4
 DN=25
 SIZE_CLASS_NUMBER=6
-LAMBDA_FRAG_list=(1 10 100 200 300 388)
+LAMBDA_FRAG_list=(388)
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010
 #Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=point release, 3=uniform release
@@ -67,8 +67,8 @@ TIMESERIES=0
 MAX_DISTANCE=0
 TIMESLICING=0
 STATISTICS=0
-SEPARATION=0
-SIZE_SPECTRUM=1
+SEPARATION=1
+SIZE_SPECTRUM=0
 
 export CONCENTRATION
 export VERTICAL_CONCENTRATION
