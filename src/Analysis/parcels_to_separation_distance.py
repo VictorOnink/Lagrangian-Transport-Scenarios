@@ -28,7 +28,8 @@ def parcels_to_separation_distance(file_dict: dict, scenario):
     for key in output_dict.keys():
         output_dict[key] = dict.fromkeys(range(time_steps))
         for size in particle_size:
-            output_dict[key][utils.init_size_key(size)] = {}
+            output_dict[key][utils.init_size_key(size)] = np.zeros(time_steps, dtype=float)
+
         # for time in output_dict[key].keys():
         #     output_dict[key][time] = {}
         #     for size in particle_size:
@@ -52,9 +53,9 @@ def parcels_to_separation_distance(file_dict: dict, scenario):
                     # output_dict['MEAN'][time][key_size] = np.nanmean(distance)
                     # output_dict['MEDIAN'][time][key_size] = np.nanmedian(distance)
                     # output_dict['STD'][time][key_size] = np.nanstd(distance)
-                    output_dict['MEAN'][key_size][time] = np.nanmean(distance)
-                    output_dict['MEDIAN'][key_size][time] = np.nanmedian(distance)
-                    output_dict['STD'][key_size][time] = np.nanstd(distance)
+                    output_dict['MEAN'][key_size][time] += np.nanmean(distance)
+                    output_dict['MEDIAN'][key_size][time] += np.nanmedian(distance)
+                    output_dict['STD'][key_size][time] += np.nanstd(distance)
 
 
     # Saving the output
