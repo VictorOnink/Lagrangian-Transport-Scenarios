@@ -24,4 +24,4 @@ def SizeTransport_SeparationDistance(scenario, figure_direc, size_selection, rho
     prefix = 'separation_distance'
     data_dict = vUtils.SizeTransport_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
                                                size=size_selection, rho=rho_selection, tau=tau_selection)
-    utils.print_statement(data_dict.keys(), to_print=True)
+    utils.print_statement(str(data_dict['MEAN'].keys()), to_print=True)
