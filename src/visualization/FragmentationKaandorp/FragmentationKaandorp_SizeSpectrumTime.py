@@ -28,7 +28,7 @@ def FragmentationKaandorp_SizeSpectrumTime(figure_direc, scenario, shore_time, l
 
     # Creating the figure
     fig = plt.figure(figsize=figsize)
-    gs = fig.add_gridspec(nrows=2, ncols=4, width_ratios=[1, 1, 1, 0.2])
+    gs = fig.add_gridspec(nrows=2, ncols=4, width_ratios=[1, 1, 1, 0.3])
     gs.update(wspace=0.2, hspace=0.2)
 
     ax_list = []
@@ -57,17 +57,16 @@ def FragmentationKaandorp_SizeSpectrumTime(figure_direc, scenario, shore_time, l
     ax_legend = fig.add_subplot(gs[:, -1])
 
     # Plotting the size distributions one figure (so fragmentation timescale) at a time
-    month_step = 3
+    month_step = 2
     for index_ax, ax in enumerate(ax_list):
         for index_month, month in enumerate(list(size_dict[lambda_frag_list[index_ax]].keys())[::month_step]):
             ax.plot(size_bins, size_dict[lambda_frag_list[index_ax]][month], linestyle='-',
-                    color=vUtils.discrete_color_from_cmap(index_month, 12 // month_step),
-                    label='t = {} months'.format(month * 3))
+                    color=vUtils.discrete_color_from_cmap(index_month, 12 // month_step))
     # Adding in a legend
     size_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(month, subdivisions=12 // month_step),
-                            label='t = {} months'.format(month * 3), linestyle='-')[0] for month in range(12 // month_step)]
+                            label='t = {} months'.format(month * month_step), linestyle='-')[0] for month in range(12 // month_step)]
 
-    cbar = ax_legend.legend(handles=size_colors, fontsize=fontsize)
+    ax_legend.legend(handles=size_colors, fontsize=fontsize)
     ax_legend.axis('off')
 
     file_name = output_direc + 'SizeSpectrumTime-ST={}.png'.format(shore_time)
