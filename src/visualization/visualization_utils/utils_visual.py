@@ -127,9 +127,9 @@ def discrete_color_from_cmap(index, subdivisions, cmap='viridis_r'):
     return cmap_steps(index)
 
 
-def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, shape=(1, 1), plot_num=1, all_x_labels=False,
-                legend_axis=False, log_yscale=False, log_xscale=False, x_time_axis=False,
-                width_ratios=None, height_ratios=None):
+def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabel_size,
+                shape=(1, 1), plot_num=1, all_x_labels=False, legend_axis=False, log_yscale=False, log_xscale=False,
+                x_time_axis=False, width_ratios=None, height_ratios=None):
     """
     Function creating the base figure that we use as a foundation for almost all figures
     :param log_yscale: if True, the y axis has a log scale
@@ -172,7 +172,7 @@ def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, shape=(1, 1
             ax_sub.set_ylim((ymin, ymax))
             ax_sub.set_xlim((xmin, xmax))
             # Setting the tick parameters and setting the axis scale
-            ax_sub.tick_params(axis='both', labelsize=ax_label_size)
+            ax_sub.tick_params(axis='both', labelsize=ax_ticklabel_size)
             if log_xscale:
                 ax_sub.set_xscale('log')
             if log_yscale:
