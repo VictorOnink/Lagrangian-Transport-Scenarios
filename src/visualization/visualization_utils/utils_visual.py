@@ -152,6 +152,10 @@ def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, shape=(1, 1
     """
     # Loading the axis limits
     xmax, xmin, ymax, ymin = ax_range
+    if log_xscale:
+        assert xmax > 0 and xmin > 0, "Must have positive x limits for log scales"
+    if log_yscale:
+        assert ymax > 0 and ymin > 0, "Must have positive y limits for log scales"
     # Creating the figure
     fig = plt.figure(figsize=fig_size)
     if legend_axis:
