@@ -41,7 +41,7 @@ def SizeTransport_SeparationDistance(scenario, figure_direc, size_selection, rho
         time_list.append(startdate + timedelta(seconds=t))
 
     # Creating the figure
-    ax_range = datetime(settings.START_YEAR, 1, 1), datetime(settings.START_YEAR + 1, 1, 1), 4000, 0
+    ax_range = datetime(settings.START_YEAR, 1, 1), datetime(settings.START_YEAR + 1, 1, 1), 4000, 0.1
     ax = vUtils.base_figure(fig_size=fig_size, ax_range=ax_range, x_label=x_label, y_label=y_label,
                             ax_label_size=fontsize, shape=(1, 2), plot_num=2, legend_axis=True, log_yscale=True,
                             width_ratios=[1, 1, 0.5])
