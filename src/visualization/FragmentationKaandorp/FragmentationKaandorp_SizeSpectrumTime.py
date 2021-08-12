@@ -64,7 +64,10 @@ def FragmentationKaandorp_SizeSpectrumTime(figure_direc, scenario, shore_time, l
                     color=vUtils.discrete_color_from_cmap(index_month, 12 // month_step),
                     label='t = {} months'.format(month * 3))
     # Adding in a legend
-    cbar = plt.legend(ax, cax=ax_legend, fontsize=fontsize)
+    size_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(month, subdivisions=12 // month_step),
+                            label='t = {} months'.format(month * 3), linestyle='-')[0] for month in range(12 // month_step)]
+
+    cbar = plt.legend(size_colors, cax=ax_legend, fontsize=fontsize)
     ax_legend.axis('off')
 
     file_name = output_direc + 'SizeSpectrumTime-ST={}.png'.format(shore_time)
