@@ -17,7 +17,7 @@ SHOREDEPEN=0
 WMIN=3
 #for scenario 5 and 6, the initial size of the particle in 1e-6 m and the particle density
 PARTICLE_SIZE_list=(5000 1000 500 100 90 80 70 60 50 40 30 20 10 5 1)
-INIT_DENSITY=1000
+INIT_DENSITY=920
 #for scenario 5 and 6, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=140
 # For scenario 5, the fragmentation parameters p (x1e-1), DN (x1e-1), the number of size classes and fragmentation
@@ -64,14 +64,14 @@ export SERVER
 
 #A number of switches to indicate which analysis steps we want to run.
 #0 = off, 1 = on
-CONCENTRATION=0
-VERTICAL_CONCENTRATION=0
-TIMESERIES=0
+CONCENTRATION=1
+VERTICAL_CONCENTRATION=1
+TIMESERIES=1
 MAX_DISTANCE=0
-TIMESLICING=0
-STATISTICS=0
+TIMESLICING=1
+STATISTICS=1
 SEPARATION=0
-SIZE_SPECTRUM=1
+SIZE_SPECTRUM=0
 
 export CONCENTRATION
 export VERTICAL_CONCENTRATION
