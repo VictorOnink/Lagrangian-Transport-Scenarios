@@ -15,8 +15,9 @@ RESUSTIME_list=(69)
 SHOREDEPEN=0
 #for scenario 4, the minimum wind speed for resuspension. Divide by 10 for actual value
 WMIN=3
-#for scenario 5 and 6, the initial size of the particle in 1e-6 m
+#for scenario 5 and 6, the initial size of the particle in 1e-6 m and the density of the particle
 PARTICLE_SIZE_list=(5000)
+INIT_DENSITY=1000
 #for scenario 5 and 6, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=140
 # For scenario 5, the fragmentation parameters p (x1e-1), DN (x1e-1), the number of size classes and the fragmentation
@@ -53,6 +54,7 @@ export SEABED_CRIT
 export P
 export DN
 export SIZE_CLASS_NUMBER
+export INIT_DENSITY
 export STARTYEAR
 export INPUT
 export ADVECTION_DATA
