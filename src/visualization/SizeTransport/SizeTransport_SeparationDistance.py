@@ -25,14 +25,11 @@ def SizeTransport_SeparationDistance(scenario, figure_direc, size_selection, rho
     prefix = 'separation_distance'
     data_dict = vUtils.SizeTransport_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
                                                size=size_selection, rho=rho_selection, tau=tau_selection)
-    mean_dict = data_dict['MEAN']
-    median_dict = data_dict['MEDIAN']
-    time = data_dict['TIME']
 
     # Getting the datetime objects for all of the time arrays
     startdate = datetime(settings.START_YEAR, 1, 1, 12, 0)
     time_list = []
-    for t in time:
+    for t in data_dict['TIME']:
         time_list.append(startdate + timedelta(seconds=t))
 
     # Creating the figure
@@ -41,6 +38,12 @@ def SizeTransport_SeparationDistance(scenario, figure_direc, size_selection, rho
                             ax_ticklabel_size=ax_ticklabel_size, ax_label_size=ax_label_size, shape=(1, 2),
                             plot_num=2, legend_axis=True, log_yscale=True, x_time_axis=True,
                             width_ratios=[1, 1, 0.5], all_x_labels=True)
+
+    # Plotting the figure
+    for size in size_list:
+        size_key = utils.init_size_key(size=size)
+        ax[0].plot(data_dict['TIME'], data_dict['MEAN'][size_key])
+        ax[1].plot(data_dict['TIME'], data_dict['MEDIAN'][size_key])
 
     # Saving the figure
     file_name = output_direc + 'Separation_distance_size={}.png'.format(size_selection)
