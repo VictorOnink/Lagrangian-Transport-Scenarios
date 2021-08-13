@@ -97,8 +97,9 @@ def run(scenario, figure_direc: str):
     #                                                                   tau_list=tau_list)
 
     # Plotting the separation distance
-    size_selection = 5000 * settings.SIZE_FACTOR
-    SizeTransport_SeparationDistance.SizeTransport_SeparationDistance(scenario=scenario, figure_direc=figure_direc,
-                                                                      size_selection=size_selection, rho_selection=920,
-                                                                      tau_selection=0.14, size_list=size_list)
+    for size_selection in size_list:
+        SizeTransport_SeparationDistance.SizeTransport_SeparationDistance(scenario=scenario, figure_direc=figure_direc,
+                                                                          size_selection=size_selection,
+                                                                          rho_selection=920, tau_selection=0.14,
+                                                                          size_list=size_list)
     pass
