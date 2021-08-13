@@ -20,7 +20,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         self.prefix = "Frag_Kaandorp"
         self.input_dir = utils.get_input_directory(server=self.server)
         self.output_dir = utils.get_output_directory(server=self.server)
-        self.repeat_dt = None
+        self.repeat_dt = timedelta(days=31)
         if settings.SUBMISSION in ['simulation', 'visualization']:
             advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
                                                                 advection_scenario=settings.ADVECTION_DATA,
@@ -205,7 +205,8 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                                                rho_plastic=utils.create_list(particle.rho_plastic, particle_number),
                                                rise_velocity=utils.create_list(utils.initial_estimate_particle_rise_velocity(L=new_particle_size), particle_number),
                                                reynolds=utils.create_list(0, particle_number),
-                                               prob_resus=utils.create_list(utils.resuspension_probability(w_rise=utils.initial_estimate_particle_rise_velocity(L=new_particle_size)), particle_number))
+                                               prob_resus=utils.create_list(utils.resuspension_probability(w_rise=utils.initial_estimate_particle_rise_velocity(L=new_particle_size)), particle_number),
+                                               repeatdt=None)
                         pset.add(pset_new)
         return pset
 
