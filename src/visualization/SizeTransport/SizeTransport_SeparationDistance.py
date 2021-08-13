@@ -31,8 +31,6 @@ def SizeTransport_SeparationDistance(scenario, figure_direc, size_selection, rho
     time_list = []
     for t in data_dict['TIME']:
         time_list.append(startdate + timedelta(seconds=t))
-    for t in time_list:
-        utils.print_statement(t, to_print=True)
 
     # Creating the figure
     ax_range = datetime(settings.START_YEAR + 1, 1, 1), datetime(settings.START_YEAR, 1, 1), 100, 1
@@ -44,8 +42,8 @@ def SizeTransport_SeparationDistance(scenario, figure_direc, size_selection, rho
     # Plotting the figure
     for size in size_list:
         size_key = utils.init_size_key(size=size)
-        ax[0].plot(data_dict['TIME'], data_dict['MEAN'][size_key])
-        ax[1].plot(data_dict['TIME'], data_dict['MEDIAN'][size_key])
+        ax[0].plot(time_list, data_dict['MEAN'][size_key])
+        ax[1].plot(time_list, data_dict['MEDIAN'][size_key])
 
     # Saving the figure
     file_name = output_direc + 'Separation_distance_size={}.png'.format(size_selection)
