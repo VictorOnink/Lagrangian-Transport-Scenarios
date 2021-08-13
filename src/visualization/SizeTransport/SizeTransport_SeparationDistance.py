@@ -52,11 +52,11 @@ def SizeTransport_SeparationDistance(scenario, figure_direc, size_selection, rho
     ax[-1].legend(handles=handles, labels=labels, fontsize=legend_size)
 
     # Adding subplot titles
-    ax[0].set_title('(a) Mean separation to r = {:.3f} mm'.format(size * 1e3))
-    ax[1].set_title('(b) Median separation to r = {:.3f} mm'.format(size * 1e3))
+    ax[0].set_title('(a) Mean separation to r = {:.3f} mm'.format(size_selection * 1e3))
+    ax[1].set_title('(b) Median separation to r = {:.3f} mm'.format(size_selection * 1e3))
 
     # Saving the figure
-    file_name = output_direc + 'Separation_distance_size={}.png'.format(size_selection)
+    file_name = output_direc + 'Separation_distance_size={:.3f}.png'.format(size_selection * 1e3)
     plt.savefig(file_name, bbox_inches='tight')
 
 
