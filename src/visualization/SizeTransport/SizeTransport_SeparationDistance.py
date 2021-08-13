@@ -43,7 +43,7 @@ def SizeTransport_SeparationDistance(scenario, figure_direc, size_selection, rho
     for index_size, size in enumerate(size_list):
         if size != size_selection:
             size_key = utils.init_size_key(size=size)
-            color = vUtils.discrete_color_from_cmap(index=index_size, subdivisions=20, cmap='tab20')
+            color = vUtils.discrete_color_from_cmap(index=index_size, subdivisions=15)
             ax[0].plot(time_list, data_dict['MEAN'][size_key], color=color, label=size_label(size))
             ax[1].plot(time_list, data_dict['MEDIAN'][size_key], color=color)
 
