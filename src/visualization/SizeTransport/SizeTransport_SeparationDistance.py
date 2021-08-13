@@ -31,6 +31,8 @@ def SizeTransport_SeparationDistance(scenario, figure_direc, size_selection, rho
     time_list = []
     for t in data_dict['TIME']:
         time_list.append(startdate + timedelta(seconds=t))
+    for t in time_list:
+        utils.print_statement(t, to_print=True)
 
     # Creating the figure
     ax_range = datetime(settings.START_YEAR + 1, 1, 1), datetime(settings.START_YEAR, 1, 1), 100, 1
