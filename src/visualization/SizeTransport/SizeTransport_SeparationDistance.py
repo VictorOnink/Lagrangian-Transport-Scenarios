@@ -45,6 +45,9 @@ def SizeTransport_SeparationDistance(scenario, figure_direc, size_selection, rho
         ax[0].plot(data_dict['TIME'], data_dict['MEAN'][size_key])
         ax[1].plot(data_dict['TIME'], data_dict['MEDIAN'][size_key])
 
+    for i in data_dict['MEDIAN'][size_key]:
+        utils.print_statement(i, to_print=True)
+
     # Saving the figure
     file_name = output_direc + 'Separation_distance_size={}.png'.format(size_selection)
     plt.savefig(file_name, bbox_inches='tight')

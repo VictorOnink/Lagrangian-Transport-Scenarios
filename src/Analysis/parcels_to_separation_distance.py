@@ -47,9 +47,9 @@ def parcels_to_separation_distance(file_dict: dict, scenario):
                     key_size = utils.init_size_key(size)
                     distance = utils.distance_between_points(lon_reference[:, time], lat_reference[:, time],
                                                              lon_comparison[:, time], lat_comparison[:, time])
-                    output_dict['MEAN'][key_size][time] += np.nanmean(distance)
-                    output_dict['MEDIAN'][key_size][time] += np.nanmedian(distance)
-                    output_dict['STD'][key_size][time] += np.nanstd(distance)
+                    output_dict['MEAN'][key_size][time] = np.nanmean(distance)
+                    output_dict['MEDIAN'][key_size][time] = np.nanmedian(distance)
+                    output_dict['STD'][key_size][time] = np.nanstd(distance)
 
     # Saving the output
     prefix = 'separation_distance'
