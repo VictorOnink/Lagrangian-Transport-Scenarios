@@ -14,7 +14,7 @@ import os
 
 
 def SizeTransport_SeparationDistance(scenario, figure_direc, size_selection, rho_selection, tau_selection, size_list,
-                                     fig_size=(18, 8), ax_ticklabel_size=12, ax_label_size=14, legendsize=12,
+                                     fig_size=(18, 8), ax_ticklabel_size=12, ax_label_size=14, legend_size=12,
                                      y_label='Distance (km)', x_label='Time'):
     # Setting the folder within which we have the output, and where we have the saved data
     output_direc = figure_direc + 'separation_distance/'
@@ -40,12 +40,21 @@ def SizeTransport_SeparationDistance(scenario, figure_direc, size_selection, rho
                             width_ratios=[1, 1, 0.5], all_x_labels=True)
 
     # Plotting the figure
-    for size in size_list:
-        size_key = utils.init_size_key(size=size)
-        ax[0].plot(time_list, data_dict['MEAN'][size_key])
-        ax[1].plot(time_list, data_dict['MEDIAN'][size_key])
+    for index_size, size in enumerate(size_list):
+        if size != size_selection:
+            size_key = utils.init_size_key(size=size)
+            color = vUtils.discrete_color_from_cmap(index=index_size, subdivisions=20, cmap='tab20')
+            ax[0].plot(time_list, data_dict['MEAN'][size_key], color=color, label=size_label(size))
+            ax[1].plot(time_list, data_dict['MEDIAN'][size_key], color=color)
+
+    # adding a legend
+    handles, labels = ax[0].get_legend_handles_labels()
+    ax[-1].legend(handles=handles, labels=labels, fontsize=legend_size)
 
     # Saving the figure
     file_name = output_direc + 'Separation_distance_size={}.png'.format(size_selection)
     plt.savefig(file_name, bbox_inches='tight')
 
+
+def size_label(size):
+    return r'r = {:.3f} mm'.format(size * 1e3)
