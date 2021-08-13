@@ -37,7 +37,7 @@ def SizeTransport_SeparationDistance(scenario, figure_direc, size_selection, rho
     ax = vUtils.base_figure(fig_size=fig_size, ax_range=ax_range, x_label=x_label, y_label=y_label,
                             ax_ticklabel_size=ax_ticklabel_size, ax_label_size=ax_label_size, shape=(1, 2),
                             plot_num=2, legend_axis=True, log_yscale=True, x_time_axis=True,
-                            width_ratios=[1, 1, 0.5], all_x_labels=True)
+                            width_ratios=[1, 1, 0.3], all_x_labels=True)
 
     # Plotting the figure
     for index_size, size in enumerate(size_list):
