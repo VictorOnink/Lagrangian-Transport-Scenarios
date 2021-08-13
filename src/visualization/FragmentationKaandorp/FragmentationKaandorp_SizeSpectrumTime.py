@@ -7,8 +7,8 @@ import string
 import numpy as np
 
 
-def FragmentationKaandorp_SizeSpectrumTime(figure_direc, scenario, shore_time, lambda_frag_list, figsize=(18, 12),
-                                           fontsize=14):
+def FragmentationKaandorp_SizeSpectrumTime(figure_direc, scenario, shore_time, lambda_frag_list, density,
+                                           figsize=(18, 12), fontsize=14):
     # Setting the folder within which we have the output, and where we have the saved data
     output_direc = figure_direc + 'size_distribution/'
     utils.check_direc_exist(output_direc)
@@ -19,7 +19,7 @@ def FragmentationKaandorp_SizeSpectrumTime(figure_direc, scenario, shore_time, l
     size_dict = {}
     for lambda_frag in lambda_frag_list:
         data_dict = vUtils.FragmentationKaandorp_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
-                                                           shore_time=shore_time, lambda_frag=lambda_frag, rho=920)
+                                                           shore_time=shore_time, lambda_frag=lambda_frag, rho=density)
         size_dict[lambda_frag] = {}
         for month in data_dict.keys():
             if month != 'size_bins':
@@ -69,7 +69,7 @@ def FragmentationKaandorp_SizeSpectrumTime(figure_direc, scenario, shore_time, l
     ax_legend.legend(handles=size_colors, fontsize=fontsize)
     ax_legend.axis('off')
 
-    file_name = output_direc + 'SizeSpectrumTime-ST={}.png'.format(shore_time)
+    file_name = output_direc + 'SizeSpectrumTime-ST={}-rho={}.png'.format(shore_time, density)
     plt.savefig(file_name, bbox_inches='tight')
 
 
