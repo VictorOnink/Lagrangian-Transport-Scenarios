@@ -24,7 +24,7 @@ SEABED_CRIT=140
 # timescale (DAYS)
 P=4
 DN=25
-SIZE_CLASS_NUMBER=6
+SIZE_CLASS_NUMBER=7
 LAMBDA_FRAG_list=(1 10 100 200 300 388)
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010

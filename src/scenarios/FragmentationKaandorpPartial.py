@@ -97,11 +97,11 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                    lambda_frag=settings.LAMBDA_FRAG, density=settings.INIT_DENSITY):
         odirec = self.output_dir + "Kaandorp_Fragmentation_Partial/st_{}_e_{}/".format(shore_time, ensemble)
         if new:
-            str_format = (advection_data, shore_time, p_frag, lambda_frag, dn, size_class_number, density,
-                          start_year, input, restart, run)
+            str_format = (advection_data, shore_time, p_frag, lambda_frag, dn, size_class_number, density, start_year,
+                          input, restart, run)
         else:
-            str_format = (advection_data, shore_time, p_frag, lambda_frag, dn, size_class_number, density,
-                          start_year, input, restart - 1, run)
+            str_format = (advection_data, shore_time, p_frag, lambda_frag, dn, size_class_number, density, start_year,
+                          input, restart - 1, run)
         return odirec + self.prefix + '_{}_st={}_pfrag={}_lambdafrag={}_dn={}_sizeclasses={}_rho={}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
 
     def beaching_kernel(particle, fieldset, time):
