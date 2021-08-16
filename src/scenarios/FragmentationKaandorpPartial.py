@@ -210,6 +210,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                                                prob_resus=utils.resuspension_probability(w_rise=particle_w_rise),
                                                particle_number=particle_number,
                                                size_class=parent_size_class + (k + 1),
+                                               beach_time=0,
                                                repeatdt=None)
                         pset.add(pset_new)
         return pset
