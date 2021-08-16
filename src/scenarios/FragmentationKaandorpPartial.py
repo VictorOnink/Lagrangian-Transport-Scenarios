@@ -134,8 +134,8 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         # Next the resuspension of particles on the coastline
         elif particle.beach == 1:
             particle.beach_time += particle.dt
-            # if ParcelsRandom.uniform(0, 1) > particle.prob_resus:
-            #     particle.beach = 0
+            if ParcelsRandom.uniform(0, 1) > particle.prob_resus:
+                particle.beach = 0
         # Finally, the resuspension of particles on the seabed
         elif particle.beach == 3:
             dWx = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
@@ -238,7 +238,6 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         utils.set_random_seed(seed=settings.SEED)
         utils.print_statement("Defining the particle behavior")
         behavior_kernel = self.get_particle_behavior(pset=pset)
-        utils.print_statement('the resuspension velocity is {}'.format(utils.resuspension_probability(w_rise=utils.initial_estimate_particle_rise_velocity(L=0.005))))
         # Carrying out the execution of the simulation
         utils.print_statement("The actual execution of the run")
         time = utils.get_start_end_time(time='start')
