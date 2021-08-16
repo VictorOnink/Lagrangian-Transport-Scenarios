@@ -134,7 +134,9 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         # Next the resuspension of particles on the coastline
         elif particle.beach == 1:
             particle.beach_time += particle.dt
-            if ParcelsRandom.uniform(0, 1) > particle.prob_resus:
+            random = ParcelsRandom.uniform(0, 1)
+            if random > particle.prob_resus:
+                print(random)
                 particle.beach = 0
         # Finally, the resuspension of particles on the seabed
         elif particle.beach == 3:
@@ -246,7 +248,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                          recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle},
                          output_file=pfile)
             time += settings.OUTPUT_TIME_STEP
-            pset = self.particle_splitter(self.field_set, pset)
+            # pset = self.particle_splitter(self.field_set, pset)
             utils.print_statement('time = {}'.format(time))
         pfile.export()
         utils.print_statement("Run completed")
