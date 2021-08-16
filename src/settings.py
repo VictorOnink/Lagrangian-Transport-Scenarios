@@ -76,37 +76,20 @@ SCENARIO_NUM: int = int(os.environ["SCENARIO"])
 SCENARIO_NAME: str = SCENARIO_DICT[SCENARIO_NUM]
 
 if SUBMISSION in ['simulation', 'analysis']:
-    if SCENARIO_NAME == 'CoastalProximity':
-        # TIME IN BEACHING ZONE PRIOR TO BEACHING (DAYS)
-        VICINITY: int = int(os.environ['VICINITY'])
+    # FOR 'CoastalProximity': TIME IN BEACHING ZONE PRIOR TO BEACHING (DAYS)
+    VICINITY: int = int(os.environ['VICINITY'])
 
-    if SCENARIO_NAME == 'Stochastic' or SCENARIO_NAME == 'ShoreDependentResuspension':
-        # BEACHING TIMESCALE
-        SHORE_TIME: int = int(os.environ['SHORETIME'])  # days
-        # RESUSPENSION TIMESCALE
-        RESUS_TIME: int = int(os.environ['RESUSTIME'])  # days
+    # BEACHING TIMESCALE
+    SHORE_TIME: int = int(os.environ['SHORETIME'])  # days
+    # RESUSPENSION TIMESCALE
+    RESUS_TIME: int = int(os.environ['RESUSTIME'])  # days
 
-    if SCENARIO_NAME == 'ShoreDependentResuspension':
-        # 0 -> SAMARAS ET AL (2015) RESUSPENSION DEPENDENCE, 1 -> 1:4 RESUSPENSION DEPENDENCE
-        SHORE_DEP: int = int(os.environ['SHOREDEPEN'])
+    # FOR 'ShoreDependentResuspension': 0 -> SAMARAS ET AL (2015) RESUSPENSION DEPENDENCE,
+    #                                   1 -> 1:4 RESUSPENSION DEPENDENCE
+    SHORE_DEP: int = int(os.environ['SHOREDEPEN'])
 
-    if SCENARIO_NAME == 'TurrellResuspension':
-        # BEACHING TIMESCALE
-        SHORE_TIME: int = int(os.environ['SHORETIME'])  # days
-    # MINIMUM OFF-SHORE WIND SPEED FOR RESUSPENSION (x10 TO NOT GET DECIMAL IN OUTPUT FILES)
+    # FOR 'TurrellResuspension': MINIMUM OFF-SHORE WIND SPEED FOR RESUSPENSION (x10 TO NOT GET DECIMAL IN OUTPUT FILES)
     WMIN: int = int(os.environ['WMIN'])
-
-    if SCENARIO_NAME == 'FragmentationKaandorp':
-        # BEACHING TIMESCALE
-        SHORE_TIME: int = int(os.environ['SHORETIME'])  # days
-        # RESUSPENSION TIMESCALE
-        RESUS_TIME: int = int(os.environ['RESUSTIME'])  # days
-
-    if SCENARIO_NAME == 'SizeTransport':
-        # BEACHING TIMESCALE
-        SHORE_TIME: int = int(os.environ['SHORETIME'])  # days
-        # RESUSPENSION TIMESCALE
-        RESUS_TIME: int = int(os.environ['RESUSTIME'])  # days
 
 
 ########################################################################################################################
@@ -170,7 +153,7 @@ elif INPUT == 'Uniform':
 #                                       Analysis specific parameters                                                   #
 #                                                                                                                      #
 ########################################################################################################################
-if SUBMISSION == 'analysis':
+if SUBMISSION in ['analysis']:
     # DEFAULTS TO PREVENT ERRORS
     RUN: int = 0
     RESTART: int = 0
@@ -215,22 +198,15 @@ K_HOR = 10
 # VERTICAL (DIAPYCNAL) DIFFUSION (M^2/S) BELOW THE MLD (WATERHOUSE ET AL, 2014)
 K_Z_BULK = 3e-5
 # WIDTH OF THE BEACHING ZONE (KM) WITHIN WHICH BEACHING CAN OCCUR
-if SCENARIO_NAME != 'AdvectionDiffusionOnly' and SUBMISSION in ['simulation', 'analysis']:
-    COAST_D = 10  # km, the distance from the nearest shoreline that falls under the coastal zone.
-# SIZE SCALING FACTOR
+COAST_D = 10
+# SIZE SCALING FACTOR FOR INIT_SIZE
 SIZE_FACTOR = 1E-6
 
-if SCENARIO_NAME == 'FragmentationKaandorp' and SUBMISSION in ['simulation', 'analysis']:
-    # INITIAL PARTICLE SIZE (m)
+if SUBMISSION in ['simulation', 'analysis']:
+    # INITIAL PARTICLE SIZE (M)
     INIT_SIZE = int(os.environ['PARTICLE_SIZE']) * SIZE_FACTOR
-    # INITIAL DENSITY (KG/M^3): 920 = polypropylene
-    INIT_DENSITY = int(os.environ['INIT_DENSITY'])
-
-if SCENARIO_NAME == 'SizeTransport' and SUBMISSION in ['simulation', 'analysis']:
     # INITIAL DENSITY (KG/M^3): 920 = POLYPROPYLENE, 980 = HIGH DENSITY POLYETHYLENE (BRIGNAC ET AL. 2017)
     INIT_DENSITY = int(os.environ['INIT_DENSITY'])
-
-if SUBMISSION in ['simulation', 'analysis']:
     # FRAGMENTATION PROBABILITY
     P_FRAG = int(os.environ['P']) * 1e-1
     # NUMBER OF SPATIAL DIMENSIONS
@@ -239,8 +215,8 @@ if SUBMISSION in ['simulation', 'analysis']:
     SIZE_CLASS_NUMBER = int(os.environ['SIZE_CLASS_NUMBER'])
     # FRAGMENTATION TIMESCALE (DAYS)
     LAMBDA_FRAG = int(os.environ['LAMBDA_FRAG'])
-    # INITIAL PARTICLE SIZE (m)
-    INIT_SIZE = int(os.environ['PARTICLE_SIZE']) * SIZE_FACTOR
+    # CRITICAL SHEAR STRESS FOR RESUSPENSION OF PARTICLES FROM THE SEA BED, HORIZONTAL DIFFUSION AT THE SEA BED
+    SEABED_CRIT = int(os.environ['SEABED_CRIT']) * 1E-3
 
 # ACCELERATION DUE TO GRAVITY (M/S^2)
 G = 9.81
@@ -256,9 +232,6 @@ VK = 0.4
 BETA, BETA_STAR = 1.21, 35
 # STABILITY FUNCTION IN MONIN-OBUKOV BOUNDARY LAYER THEORY (BOUFADEL ET AL. 2020)
 PHI = 0.9
-# CRITICAL SHEAR STRESS FOR RESUSPENSION OF PARTICLES FROM THE SEA BED, HORIZONTAL DIFFUSION AT THE SEA BED
-if SUBMISSION in ['simulation', 'analysis']:
-    SEABED_CRIT = int(os.environ['SEABED_CRIT']) * 1E-3
 # HORIZONTAL DIFFUSION AT THE SEA BED
 SEABED_KH = 0.2
 
@@ -267,7 +240,7 @@ SEABED_KH = 0.2
 #                                       Plotting-specific parameters                                                   #
 #                                                                                                                      #
 ########################################################################################################################
-if SUBMISSION == 'visualization':
+if SUBMISSION in ['visualization']:
     # DEFAULTS TO PREVENT ERRORS
     RUN: int = 0
     RESTART: int = 0
@@ -314,7 +287,7 @@ elif SCENARIO_NAME == 'TurrellResuspension':
     os.system('echo "The beaching timescale is {} days "'.format(SHORE_TIME))
     os.system('echo "The minimum offshore wind for resuspension is {} m / s"'.format(WMIN/10.))
 
-elif SCENARIO_NAME == 'FragmentationKaandorp':
+elif SCENARIO_NAME in ['FragmentationKaandorp', 'FragmentationKaandorpPartial']:
     os.system('echo "The beaching timescale is {} days "'.format(SHORE_TIME))
     os.system('echo "The fragmentation timescale is {} days "'.format(LAMBDA_FRAG))
     os.system('echo "The initial particle size is {} m and a density of {} kg/m^3"'.format(INIT_SIZE, INIT_DENSITY))
