@@ -29,7 +29,8 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
             if settings.SUBMISSION in ['simulation']:
                 self.field_set = self.create_fieldset()
 
-    var_list = ['lon', 'lat', 'beach', 'age', 'size', 'rho_plastic', 'parent', 'rise_velocity']
+    var_list = ['lon', 'lat', 'beach', 'age', 'size', 'rho_plastic', 'parent', 'rise_velocity', 'beach_time',
+                'size_class', 'particle_number']
 
     def create_fieldset(self) -> FieldSet:
         utils.print_statement("Creating the fieldset")
@@ -56,16 +57,19 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
                                lon=var_dict['lon'][::step], lat=var_dict['lat'][::step], beach=var_dict['beach'][::step],
                                age=var_dict['age'][::step], size=var_dict['size'][::step],
-                               rho_plastic=var_dict['rho_plastic'][::step], parent=range(len(var_dict['lon'][::step])),
-                               rise_velocity=rise_velocity,
+                               rho_plastic=var_dict['rho_plastic'][::step], parent=range(len(rise_velocity)),
+                               rise_velocity=rise_velocity, beach_time=np.zeros(rise_velocity.shape, dtype=np.float32),
                                prob_resus=utils.resuspension_probability(w_rise=rise_velocity),
+                               size_class=np.zeros(rise_velocity.shape, dtype=np.float32),
+                               particle_number=np.ones(rise_velocity.shape, dtype=np.float32),
                                time=start_time, repeatdt=repeat_dt)
         else:
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
                                lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'], parent=var_dict['parent'],
-                               age=var_dict['age'], size=var_dict['size'],
+                               age=var_dict['age'], size=var_dict['size'], beach_time=var_dict['beach_time'],
                                rho_plastic=var_dict['rho_plastic'], rise_velocity=var_dict['rise_velocity'],
                                prob_resus=utils.resuspension_probability(w_rise=var_dict['rise_velocity']),
+                               size_class=var_dict['size_class'], particle_number=var_dict['particle_number'],
                                time=start_time, repeatdt=repeat_dt)
         return pset
 
@@ -88,6 +92,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         utils.add_particle_variable(particle_type, 'prob_resus', dtype=np.int32, set_initial=True, to_write=False)
         utils.add_particle_variable(particle_type, 'beach_time', dtype=np.float32, set_initial=True, to_write=True)
         utils.add_particle_variable(particle_type, 'particle_number', dtype=np.float32, set_initial=True, to_write=True)
+        utils.add_particle_variable(particle_type, 'size_class', dtype=np.int32, set_initial=True, to_write=True)
         return particle_type
 
     def file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART,
@@ -164,48 +169,47 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         return total_behavior
 
     def fragmentation_kernel(particle, fieldset, time):
-        if particle.to_delete == 1:
-            particle.delete()
-        else:
-            if particle.beach == 1:
-                if ParcelsRandom.uniform(0, 1) > fieldset.p_frag:
-                    particle.to_split = 1
+        if particle.beach == 1:
+            particle.beach_time += particle.dt
+            if particle.beach_time >= 604800:
+                particle.to_split = 1
+                particle.beach_time = 0
 
-    def particle_splitter(self, fieldset, pset, size_limit):
+    def particle_splitter(self, fieldset, pset):
         for particle in pset:
             if particle.to_split == 1:
                 # First, we set the split condition statement back to 0
                 particle.to_split = 0
-                # Then, we calculate the new size of the particle
-                original_size = particle.size
-                particle.size = original_size * (1 - settings.P_FRAG)
-                # Next, in what size class would the particle be? e.g. a particle with size 4mm would be in size class 0
-                # when size_limit[1] = 2, since it is larger than the limit of k = 1
-                size_class = max(index for index, limit in enumerate(size_limit) if limit > particle.size)
-                # If the particle is in the smallest size class, then mark the particle for deletion since it is then
-                # too small for us to follow further fragmentation
-                if size_class == (settings.SIZE_CLASS_NUMBER - 1):
-                    particle.to_delete = 1
-                # Otherwise, if the particle is not in the smallest size class then we can figure out how many fragments
-                # are created in smaller size classes
-                else:
-                    for k in range(0, settings.SIZE_CLASS_NUMBER - size_class):
-                        new_particle_size = original_size * settings.P_FRAG ** (k + 1)
-                        particle_number = int(np.round(self.particle_number_per_size_class(k)))
-                        utils.print_statement('{} {}'.format(new_particle_size, particle_number))
+                # Calculating the fragmentation factor f
+                f = settings.LAMBDA_FRAG / 7
+                # Getting the properties of the parent particle
+                parent_size = particle.size
+                parent_number = particle.particle_number
+                parent_size_class = particle.size_class
+                # Calculating the new particle number for the parent particle
+                particle.particle_number = particle.particle_number * self.particle_number_per_size_class(k=0, f=f)
+                # Looping through the new particles being created, where new particles are only being created if the
+                # parent particle
+                if settings.SIZE_CLASS_NUMBER - parent_size_class > 0:
+                    for k in range(0, settings.SIZE_CLASS_NUMBER - parent_size_class):
+                        new_particle_size = parent_size * settings.P_FRAG ** (k + 1)
+                        particle_number = parent_number * self.particle_number_per_size_class(k=k, f=f)
+                        particle_w_rise = utils.initial_estimate_particle_rise_velocity(L=new_particle_size)
                         pset_new = ParticleSet(fieldset=fieldset, pclass=self.particle,
-                                               lon=utils.create_list(particle.lon, particle_number),
-                                               lat=utils.create_list(particle.lat, particle_number),
-                                               depth=utils.create_list(particle.depth, particle_number),
-                                               size=utils.create_list(new_particle_size, particle_number),
-                                               parent=utils.create_list(particle.id, particle_number),
-                                               age=utils.create_list(0, particle_number),
-                                               beach=utils.create_list(particle.beach, particle_number),
-                                               time=utils.create_list(particle.time, particle_number),
-                                               rho_plastic=utils.create_list(particle.rho_plastic, particle_number),
-                                               rise_velocity=utils.create_list(utils.initial_estimate_particle_rise_velocity(L=new_particle_size), particle_number),
-                                               reynolds=utils.create_list(0, particle_number),
-                                               prob_resus=utils.create_list(utils.resuspension_probability(w_rise=utils.initial_estimate_particle_rise_velocity(L=new_particle_size)), particle_number),
+                                               lon=particle.lon,
+                                               lat=particle.lat,
+                                               depth=particle.depth,
+                                               size=new_particle_size,
+                                               parent=particle.id,
+                                               age=0,
+                                               beach=particle.beach,
+                                               time=particle.time,
+                                               rho_plastic=particle.rho_plastic,
+                                               rise_velocity=particle_w_rise,
+                                               reynolds=0,
+                                               prob_resus=utils.resuspension_probability(w_rise=particle_w_rise),
+                                               particle_number=particle_number,
+                                               size_class=parent_size_class + (k + 1),
                                                repeatdt=None)
                         pset.add(pset_new)
         return pset
@@ -233,17 +237,15 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         utils.set_random_seed(seed=settings.SEED)
         utils.print_statement("Defining the particle behavior")
         behavior_kernel = self.get_particle_behavior(pset=pset)
-        # Getting the size class limits for the particle splitting
-        size_limit = self.size_class_limits()
         # Carrying out the execution of the simulation
         utils.print_statement("The actual execution of the run")
         time = utils.get_start_end_time(time='start')
-        while time <= utils.get_start_end_time(time='end'):
+        while time <= utils.get_start_end_time(time='start') + timedelta(days=10):
             pset.execute(behavior_kernel, runtime=settings.OUTPUT_TIME_STEP, dt=settings.TIME_STEP,
                          recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle},
                          output_file=pfile)
             time += settings.OUTPUT_TIME_STEP
-            pset = self.particle_splitter(self.field_set, pset, size_limit)
+            pset = self.particle_splitter(self.field_set, pset)
             utils.print_statement('time = {}'.format(time))
         pfile.export()
         utils.print_statement("Run completed")
