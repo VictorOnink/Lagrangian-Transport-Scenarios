@@ -20,7 +20,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         self.prefix = "Frag_Kaandorp"
         self.input_dir = utils.get_input_directory(server=self.server)
         self.output_dir = utils.get_output_directory(server=self.server)
-        self.repeat_dt = timedelta(days=31)
+        self.repeat_dt = None
         if settings.SUBMISSION in ['simulation', 'visualization']:
             advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
                                                                 advection_scenario=settings.ADVECTION_DATA,
@@ -89,20 +89,18 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         return particle_type
 
     def file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART,
-                   shore_time=settings.SHORE_TIME, resus_time=settings.RESUS_TIME, ensemble=settings.ENSEMBLE,
-                   advection_data=settings.ADVECTION_DATA, start_year=settings.START_YEAR, input=settings.INPUT,
+                   shore_time=settings.SHORE_TIME, ensemble=settings.ENSEMBLE, advection_data=settings.ADVECTION_DATA,
+                   start_year=settings.START_YEAR, input=settings.INPUT,
                    p_frag=settings.P_FRAG, dn=settings.DN, size_class_number=settings.SIZE_CLASS_NUMBER,
                    lambda_frag=settings.LAMBDA_FRAG, density=settings.INIT_DENSITY):
-        odirec = self.output_dir + "Kaandorp_Fragmentation/st_{}_rt_{}_e_{}/".format(shore_time,
-                                                                                     resus_time,
-                                                                                     ensemble)
+        odirec = self.output_dir + "Kaandorp_Fragmentation/st_{}_e_{}/".format(shore_time, ensemble)
         if new:
-            str_format = (advection_data, shore_time, resus_time, p_frag, lambda_frag, dn, size_class_number, density,
+            str_format = (advection_data, shore_time, p_frag, lambda_frag, dn, size_class_number, density,
                           start_year, input, restart, run)
         else:
-            str_format = (advection_data, shore_time, resus_time, p_frag, lambda_frag, dn, size_class_number, density,
+            str_format = (advection_data, shore_time, p_frag, lambda_frag, dn, size_class_number, density,
                           start_year, input, restart - 1, run)
-        return odirec + self.prefix + '_{}_st={}_rt={}_pfrag={}_lambdafrag={}_dn={}_sizeclasses={}_rho={}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
+        return odirec + self.prefix + '_{}_st={}_pfrag={}_lambdafrag={}_dn={}_sizeclasses={}_rho={}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
 
     def beaching_kernel(particle, fieldset, time):
         """
