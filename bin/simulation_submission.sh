@@ -9,7 +9,7 @@ SCENARIO=7
 #for scenario 1, the time a particle must be near the coast to beach (in days)
 VICINITY=2
 #for scenario 2, the beaching and resuspension timescales (in days)
-SHORETIME_list=(1)
+SHORETIME_list=(0)
 RESUSTIME_list=(69)
 #for scenario 3, the shore dependence scenario.
 SHOREDEPEN=0
