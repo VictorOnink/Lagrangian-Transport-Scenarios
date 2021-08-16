@@ -109,7 +109,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
           elif [ "$SCENARIO" -eq "6" ]; then
             RUNNAMEPREFIX="Analysis_KaandorpFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
           elif [ "$SCENARIO" -eq "7" ]; then
-            RUNNAMEPREFIX="Analysis_KaandorpFragPartial_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
+            RUNNAMEPREFIX="Analysis_PartialKaandorpFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
           elif [ "$SCENARIO" -eq "5" ]; then
             RUNNAMEPREFIX="Analysis_SizeTransport_SIZE="${PARTICLE_SIZE}"_ST="${SHORETIME}"_y="${STARTYEAR}"_tau="${SEABED_CRIT}"_"
           fi

@@ -40,7 +40,7 @@ elif [ "$SCENARIO" -eq "6" ]; then
 elif [ "$SCENARIO" -eq "5" ]; then
         RUNNAMEPREFIX="Visualization_SizeTransport"
 elif [ "$SCENARIO" -eq "7" ]; then
-        RUNNAMEPREFIX="Visualization_KaandorpFragPartial"
+        RUNNAMEPREFIX="Visualization_PartialKaandorpFrag"
 
 fi
 
