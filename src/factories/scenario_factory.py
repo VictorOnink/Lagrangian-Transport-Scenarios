@@ -5,6 +5,7 @@ import scenarios.stochastic_scenario as stochastic
 import scenarios.shore_dependent_resuspension_scenario as SD_resuspension
 import scenarios.Turrel_Beaching_scenario as Turrell
 import scenarios.FragmentationKaandorp as FragmentationKaandorp
+import scenarios.FragmentationKaandorpPartial as FragmentationKaandorpPartial
 import scenarios.SizeTransport as SizeTransport
 
 
@@ -23,6 +24,8 @@ class ScenarioFactory:
             return Turrell.Turrell_Resuspension(server=server, stokes=stokes)
         elif scenario_name == 'FragmentationKaandorp':
             return FragmentationKaandorp.FragmentationKaandorp(server=server, stokes=stokes)
+        elif scenario_name == 'FragmentationKaandorpPartial':
+            return FragmentationKaandorpPartial.FragmentationKaandorpPartial(server=server, stokes=stokes)
         elif scenario_name == 'SizeTransport':
             return SizeTransport.SizeTransport(server=server, stokes=stokes)
         else:

@@ -26,6 +26,7 @@ run and restart files)
 
 Now, we have a number of different scenarios built in at the moment:
 - `FragmentationKaandorp.py`: This is a fragmentation scenario, seeking to adapt the transition matrix microplastic fragmentation model from [Kaandorp et al. (2021)](https://doi.org/10.1088/1748-9326/abe9ea).
+- 'FragmentationKaandorpPartial.py': Very similar to `FragmentationKaandorp.py`, but with a different approach to splitting particles.
 - `SizeTransport.py`: This is a scenario for studying the effect of initial particle size on the 3D transport behavior of microplastic particles.
 - `Turrel_Beaching_scenario.py`: This is a scenario where plastic resuspension is dependent on wind direction and water level. This is based on [Turrell (2018)](https://doi.org/10.1016/j.marpolbul.2018.10.024) and [Turrell (2020)](https://doi.org/10.1016/j.marpolbul.2020.111600), but hasn't been extensively tested.
 - `advection_diffusion_only_scenario.py`: This is a beaching scenario where a particle beaches if it is advected onto a land cell. Based on the simple beaching implementations often used in the field, this has not been included in any final paper.

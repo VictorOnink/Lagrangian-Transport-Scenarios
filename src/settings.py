@@ -69,8 +69,8 @@ STOKES: int = int(os.environ['STOKES'])
 ########################################################################################################################
 # MODEL SCENARIO SETTINGS
 SCENARIO_DICT: dict = {0: 'AdvectionDiffusionOnly', 1: 'CoastalProximity', 2: 'Stochastic',
-                       3: 'ShoreDependentResuspension', 4: 'TurrellResuspension', 5: 'FragmentationKaandorp',
-                       6: 'SizeTransport'}
+                       3: 'ShoreDependentResuspension', 4: 'TurrellResuspension', 5: 'SizeTransport',
+                       6: 'FragmentationKaandorp', 7: 'FragmentationKaandorpPartial'}
 
 SCENARIO_NUM: int = int(os.environ["SCENARIO"])
 SCENARIO_NAME: str = SCENARIO_DICT[SCENARIO_NUM]
