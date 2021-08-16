@@ -129,7 +129,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         if particle.beach == 0:
             dist = fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
             if dist < fieldset.Coastal_Boundary:
-                if ParcelsRandom.uniform(0, 1) > 0:#fieldset.p_beach:
+                if ParcelsRandom.uniform(0, 1) > fieldset.p_beach:
                     particle.beach = 1
         # Next the resuspension of particles on the coastline
         elif particle.beach == 1:
