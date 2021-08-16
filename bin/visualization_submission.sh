@@ -35,10 +35,13 @@ elif [ "$SCENARIO" -eq "3" ]; then
         RUNNAMEPREFIX="Visualization_SDResus"
 elif [ "$SCENARIO" -eq "4" ]; then
         RUNNAMEPREFIX="Visualization_Turrell"
-elif [ "$SCENARIO" -eq "5" ]; then
-        RUNNAMEPREFIX="Visualization_KaandorpFrag"
 elif [ "$SCENARIO" -eq "6" ]; then
+        RUNNAMEPREFIX="Visualization_KaandorpFrag"
+elif [ "$SCENARIO" -eq "5" ]; then
         RUNNAMEPREFIX="Visualization_SizeTransport"
+elif [ "$SCENARIO" -eq "7" ]; then
+        RUNNAMEPREFIX="Visualization_KaandorpFragPartial"
+
 fi
 
 echo $RUNNAMEPREFIX

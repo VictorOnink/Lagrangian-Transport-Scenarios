@@ -98,39 +98,23 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
           #Now, we can set the job name prefix
           if [ "$SCENARIO" -eq "0" ]; then
             RUNNAMEPREFIX="Analysis_AdvDifOnly_y="${STARTYEAR}"_"
-            if [ "$STOKES" -eq "1" ]; then
-              RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
-            fi
           elif [ "$SCENARIO" -eq "1" ]; then
             RUNNAMEPREFIX="Analysis_Prox_vic="${VICINITY}"_y="${STARTYEAR}"_"
-            if [ "$STOKES" -eq "1" ]; then
-              RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
-            fi
           elif [ "$SCENARIO" -eq "2" ]; then
             RUNNAMEPREFIX="Analysis_Stochastic_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
-            if [ "$STOKES" -eq "1" ]; then
-              RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
-            fi
           elif [ "$SCENARIO" -eq "3" ]; then
             RUNNAMEPREFIX="Analysis_SDResus_SD="${SHOREDEPEN}"_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
-            if [ "$STOKES" -eq "1" ]; then
-              RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
-            fi
           elif [ "$SCENARIO" -eq "4" ]; then
             RUNNAMEPREFIX="Analysis_Turrell_Wmin="${WMIN}"_ST="${SHORETIME}"_y="${STARTYEAR}"_"
-            if [ "$STOKES" -eq "1" ]; then
-              RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
-            fi
-          elif [ "$SCENARIO" -eq "5" ]; then
-            RUNNAMEPREFIX="Analysis_KaandorpFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
-            if [ "$STOKES" -eq "1" ]; then
-              RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
-            fi
           elif [ "$SCENARIO" -eq "6" ]; then
+            RUNNAMEPREFIX="Analysis_KaandorpFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
+          elif [ "$SCENARIO" -eq "7" ]; then
+            RUNNAMEPREFIX="Analysis_KaandorpFragPartial_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
+          elif [ "$SCENARIO" -eq "5" ]; then
             RUNNAMEPREFIX="Analysis_SizeTransport_SIZE="${PARTICLE_SIZE}"_ST="${SHORETIME}"_y="${STARTYEAR}"_tau="${SEABED_CRIT}"_"
-            if [ "$STOKES" -eq "1" ]; then
-              RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
-            fi
+          fi
+          if [ "$STOKES" -eq "1" ]; then
+            RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
           fi
           RUNNAMEPREFIX=${RUNNAMEPREFIX}"ENSEMBLE="${ENSEMBLE}"_"
           echo $RUNNAMEPREFIX
