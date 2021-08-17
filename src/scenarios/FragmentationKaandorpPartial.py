@@ -242,7 +242,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         # Carrying out the execution of the simulation
         utils.print_statement("The actual execution of the run")
         time = utils.get_start_end_time(time='start')
-        while time <= utils.get_start_end_time(time='start') + timedelta(days=8):
+        while time <= utils.get_start_end_time(time='end'):
             pset.execute(behavior_kernel, runtime=settings.OUTPUT_TIME_STEP, dt=settings.TIME_STEP,
                          recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle},
                          output_file=pfile)
