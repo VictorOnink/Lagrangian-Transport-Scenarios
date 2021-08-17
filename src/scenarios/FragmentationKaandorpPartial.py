@@ -190,8 +190,9 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                 particle.particle_number = particle.particle_number * self.particle_number_per_size_class(k=0, f=f)
                 # Looping through the new particles being created, where new particles are only being created if the
                 # parent particle
-                if settings.SIZE_CLASS_NUMBER - parent_size_class > 0:
-                    for k in range(0, settings.SIZE_CLASS_NUMBER - parent_size_class):
+                remaining_classes = settings.SIZE_CLASS_NUMBER - parent_size_class - 1
+                if remaining_classes > 0:
+                    for k in range(0, remaining_classes):
                         new_particle_size = parent_size * settings.P_FRAG ** (k + 1)
                         particle_number = parent_number * self.particle_number_per_size_class(k=k+1, f=f)
                         particle_w_rise = utils.initial_estimate_particle_rise_velocity(L=new_particle_size)

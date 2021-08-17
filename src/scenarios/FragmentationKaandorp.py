@@ -29,7 +29,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
             if settings.SUBMISSION in ['simulation']:
                 self.field_set = self.create_fieldset()
 
-    var_list = ['lon', 'lat', 'beach', 'age', 'size', 'rho_plastic', 'parent', 'rise_velocity']
+    var_list = ['lon', 'lat', 'beach', 'age', 'size', 'rho_plastic', 'parent', 'rise_velocity', 'size_class']
 
     def create_fieldset(self) -> FieldSet:
         utils.print_statement("Creating the fieldset")
@@ -57,13 +57,13 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                                lon=var_dict['lon'][::step], lat=var_dict['lat'][::step], beach=var_dict['beach'][::step],
                                age=var_dict['age'][::step], size=var_dict['size'][::step],
                                rho_plastic=var_dict['rho_plastic'][::step], parent=range(len(var_dict['lon'][::step])),
-                               rise_velocity=rise_velocity,
+                               rise_velocity=rise_velocity, size_class=np.zeros(rise_velocity.shape, dtype=np.float32),
                                prob_resus=utils.resuspension_probability(w_rise=rise_velocity),
                                time=start_time, repeatdt=repeat_dt)
         else:
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
                                lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'], parent=var_dict['parent'],
-                               age=var_dict['age'], size=var_dict['size'],
+                               age=var_dict['age'], size=var_dict['size'], size_class=var_dict['size_class'],
                                rho_plastic=var_dict['rho_plastic'], rise_velocity=var_dict['rise_velocity'],
                                prob_resus=utils.resuspension_probability(w_rise=var_dict['rise_velocity']),
                                time=start_time, repeatdt=repeat_dt)
@@ -86,6 +86,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         utils.add_particle_variable(particle_type, 'to_delete', dtype=np.int32, set_initial=False, to_write=False)
         utils.add_particle_variable(particle_type, 'parent', dtype=np.int32, set_initial=True, to_write=True)
         utils.add_particle_variable(particle_type, 'prob_resus', dtype=np.int32, set_initial=True, to_write=False)
+        utils.add_particle_variable(particle_type, 'size_class', dtype=np.int32, set_initial=True, to_write=True)
         return particle_type
 
     def file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART,
