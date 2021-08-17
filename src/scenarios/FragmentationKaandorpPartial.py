@@ -171,7 +171,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
 
     def fragmentation_kernel(particle, fieldset, time):
         if particle.beach == 1:
-            if particle.beach_time >= (30 * 86400):
+            if particle.beach_time >= (60 * 86400):
                 particle.to_split = 1
                 particle.beach_time = 0
 
@@ -181,7 +181,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                 # First, we set the split condition statement back to 0
                 particle.to_split = 0
                 # Calculating the fragmentation factor f
-                f = 30 / settings.LAMBDA_FRAG
+                f = 60 / settings.LAMBDA_FRAG
                 # Getting the properties of the parent particle
                 parent_size = particle.size
                 parent_number = particle.particle_number
