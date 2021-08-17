@@ -52,7 +52,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         """
         utils.print_statement("Creating the particle set")
         if settings.RESTART == 0:
-            step = 1000
+            step = 100
             rise_velocity = utils.initial_estimate_particle_rise_velocity(L=var_dict['size'][::step])
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
                                lon=var_dict['lon'][::step], lat=var_dict['lat'][::step], beach=var_dict['beach'][::step],
