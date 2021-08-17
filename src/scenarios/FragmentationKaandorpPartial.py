@@ -21,13 +21,13 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         self.input_dir = utils.get_input_directory(server=self.server)
         self.output_dir = utils.get_output_directory(server=self.server)
         self.repeat_dt = None
-        if settings.SUBMISSION in ['simulation', 'visualization']:
-            advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
-                                                                advection_scenario=settings.ADVECTION_DATA,
-                                                                repeat_dt=self.repeat_dt)
-            self.file_dict = advection_scenario.file_names
-            if settings.SUBMISSION in ['simulation']:
-                self.field_set = self.create_fieldset()
+        # if settings.SUBMISSION in ['simulation', 'visualization']:
+        #     advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
+        #                                                         advection_scenario=settings.ADVECTION_DATA,
+        #                                                         repeat_dt=self.repeat_dt)
+        #     self.file_dict = advection_scenario.file_names
+        #     if settings.SUBMISSION in ['simulation']:
+        #         self.field_set = self.create_fieldset()
 
     var_list = ['lon', 'lat', 'beach', 'age', 'size', 'rho_plastic', 'parent', 'rise_velocity', 'beach_time',
                 'size_class', 'particle_number']
@@ -232,26 +232,30 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         return np.array([init_size * p_frag ** k for k in range(k_range)])
 
     def run(self):
+        rise_velocity = utils.initial_estimate_particle_rise_velocity(L=0.005)
+        p_r = utils.resuspension_probability(w_rise=rise_velocity)
+        print_statement = 'with w_rise {} for size {} we have p_r = {}'.format(rise_velocity, 0.005, p_r)
+        utils.print_statement(print_statement, to_print=True)
         # Creating the particle set and output file
-        pset = self.get_pset(fieldset=self.field_set, particle_type=self.particle,
-                             var_dict=self.get_var_dict(), start_time=utils.get_start_end_time(time='start'),
-                             repeat_dt=self.repeat_dt)
-        pfile = pset.ParticleFile(name=self.file_names(new=True),
-                                  outputdt=settings.OUTPUT_TIME_STEP)
-        # Setting the random seed and defining the particle behavior
-        utils.print_statement("Setting the random seed")
-        utils.set_random_seed(seed=settings.SEED)
-        utils.print_statement("Defining the particle behavior")
-        behavior_kernel = self.get_particle_behavior(pset=pset)
-        # Carrying out the execution of the simulation
-        utils.print_statement("The actual execution of the run")
-        time = utils.get_start_end_time(time='start')
-        while time <= utils.get_start_end_time(time='start') + timedelta(days=8):
-            pset.execute(behavior_kernel, runtime=settings.OUTPUT_TIME_STEP, dt=settings.TIME_STEP,
-                         recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle},
-                         output_file=pfile)
-            time += settings.OUTPUT_TIME_STEP
-            # pset = self.particle_splitter(self.field_set, pset)
-            utils.print_statement('time = {}'.format(time))
-        pfile.export()
-        utils.print_statement("Run completed")
+        # pset = self.get_pset(fieldset=self.field_set, particle_type=self.particle,
+        #                      var_dict=self.get_var_dict(), start_time=utils.get_start_end_time(time='start'),
+        #                      repeat_dt=self.repeat_dt)
+        # pfile = pset.ParticleFile(name=self.file_names(new=True),
+        #                           outputdt=settings.OUTPUT_TIME_STEP)
+        # # Setting the random seed and defining the particle behavior
+        # utils.print_statement("Setting the random seed")
+        # utils.set_random_seed(seed=settings.SEED)
+        # utils.print_statement("Defining the particle behavior")
+        # behavior_kernel = self.get_particle_behavior(pset=pset)
+        # # Carrying out the execution of the simulation
+        # utils.print_statement("The actual execution of the run")
+        # time = utils.get_start_end_time(time='start')
+        # while time <= utils.get_start_end_time(time='start') + timedelta(days=8):
+        #     pset.execute(behavior_kernel, runtime=settings.OUTPUT_TIME_STEP, dt=settings.TIME_STEP,
+        #                  recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle},
+        #                  output_file=pfile)
+        #     time += settings.OUTPUT_TIME_STEP
+        #     # pset = self.particle_splitter(self.field_set, pset)
+        #     utils.print_statement('time = {}'.format(time))
+        # pfile.export()
+        # utils.print_statement("Run completed")
