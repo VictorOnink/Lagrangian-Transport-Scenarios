@@ -246,7 +246,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                          recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle},
                          output_file=pfile)
             time += settings.OUTPUT_TIME_STEP
-            # pset = self.particle_splitter(self.field_set, pset)
+            pset = self.particle_splitter(self.field_set, pset)
             utils.print_statement('time = {}'.format(time))
         pfile.export()
         utils.print_statement("Run completed")
