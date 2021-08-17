@@ -134,9 +134,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         # Next the resuspension of particles on the coastline
         elif particle.beach == 1:
             particle.beach_time += particle.dt
-            random = ParcelsRandom.uniform(0, 1)
-            if random > particle.prob_resus:
-                a = particle.prob_resus
+            if ParcelsRandom.uniform(0, 1) > particle.prob_resus:
                 particle.beach = 0
         # Finally, the resuspension of particles on the seabed
         elif particle.beach == 3:
