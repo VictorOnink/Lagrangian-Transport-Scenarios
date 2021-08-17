@@ -54,30 +54,24 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         if settings.RESTART == 0:
             step = 1000
             rise_velocity = utils.initial_estimate_particle_rise_velocity(L=var_dict['size'][::step])
-            p_r = utils.resuspension_probability(w_rise=rise_velocity)
-            for i in range(len(rise_velocity)):
-                print_statement = 'for size {}, we have w_r {} and p_r {}'.format(var_dict['size'][::step][i],
-                                                                                  rise_velocity[i],
-                                                                                  p_r[i])
-                utils.print_statement(print_statement, to_print=True)
-            # pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
-            #                    lon=var_dict['lon'][::step], lat=var_dict['lat'][::step], beach=var_dict['beach'][::step],
-            #                    age=var_dict['age'][::step], size=var_dict['size'][::step],
-            #                    rho_plastic=var_dict['rho_plastic'][::step], parent=range(len(rise_velocity)),
-            #                    rise_velocity=rise_velocity, beach_time=np.zeros(rise_velocity.shape, dtype=np.float32),
-            #                    prob_resus=utils.resuspension_probability(w_rise=rise_velocity),
-            #                    size_class=np.zeros(rise_velocity.shape, dtype=np.float32),
-            #                    particle_number=np.ones(rise_velocity.shape, dtype=np.float32),
-            #                    time=start_time, repeatdt=repeat_dt)
-        # else:
-        #     pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
-        #                        lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'], parent=var_dict['parent'],
-        #                        age=var_dict['age'], size=var_dict['size'], beach_time=var_dict['beach_time'],
-        #                        rho_plastic=var_dict['rho_plastic'], rise_velocity=var_dict['rise_velocity'],
-        #                        prob_resus=utils.resuspension_probability(w_rise=var_dict['rise_velocity']),
-        #                        size_class=var_dict['size_class'], particle_number=var_dict['particle_number'],
-        #                        time=start_time, repeatdt=repeat_dt)
-        # return pset
+            pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
+                               lon=var_dict['lon'][::step], lat=var_dict['lat'][::step], beach=var_dict['beach'][::step],
+                               age=var_dict['age'][::step], size=var_dict['size'][::step],
+                               rho_plastic=var_dict['rho_plastic'][::step], parent=range(len(rise_velocity)),
+                               rise_velocity=rise_velocity, beach_time=np.zeros(rise_velocity.shape, dtype=np.float32),
+                               prob_resus=utils.resuspension_probability(w_rise=rise_velocity),
+                               size_class=np.zeros(rise_velocity.shape, dtype=np.float32),
+                               particle_number=np.ones(rise_velocity.shape, dtype=np.float32),
+                               time=start_time, repeatdt=repeat_dt)
+        else:
+            pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
+                               lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'], parent=var_dict['parent'],
+                               age=var_dict['age'], size=var_dict['size'], beach_time=var_dict['beach_time'],
+                               rho_plastic=var_dict['rho_plastic'], rise_velocity=var_dict['rise_velocity'],
+                               prob_resus=utils.resuspension_probability(w_rise=var_dict['rise_velocity']),
+                               size_class=var_dict['size_class'], particle_number=var_dict['particle_number'],
+                               time=start_time, repeatdt=repeat_dt)
+        return pset
 
     def get_pclass(self):
         utils.print_statement("Creating the particle class")
