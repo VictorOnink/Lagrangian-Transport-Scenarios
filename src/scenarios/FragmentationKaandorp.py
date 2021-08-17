@@ -176,22 +176,20 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                 # First, we set the split condition statement back to 0
                 particle.to_split = 0
                 # Then, we calculate the new size of the particle
-                original_size = particle.size
-                particle.size = original_size * (1 - settings.P_FRAG)
-                # Next, in what size class would the particle be? e.g. a particle with size 4mm would be in size class 0
-                # when size_limit[1] = 2, since it is larger than the limit of k = 1
-                size_class = max(index for index, limit in enumerate(size_limit) if limit > particle.size)
+                parent_size = particle.size
+                parent_size_class = particle.size_class
+                particle.size = parent_size * (1 - settings.P_FRAG)
                 # If the particle is in the smallest size class, then mark the particle for deletion since it is then
                 # too small for us to follow further fragmentation
-                if size_class == (settings.SIZE_CLASS_NUMBER - 1):
+                if parent_size_class == (settings.SIZE_CLASS_NUMBER - 1):
                     particle.to_delete = 1
                 # Otherwise, if the particle is not in the smallest size class then we can figure out how many fragments
                 # are created in smaller size classes
                 else:
-                    for k in range(0, settings.SIZE_CLASS_NUMBER - size_class):
-                        new_particle_size = original_size * settings.P_FRAG ** (k + 1)
-                        particle_number = int(np.round(self.particle_number_per_size_class(k)))
-                        utils.print_statement('{} {}'.format(new_particle_size, particle_number))
+                    remaining_classes = settings.SIZE_CLASS_NUMBER - parent_size_class - 1
+                    for k in range(0, remaining_classes):
+                        new_particle_size = parent_size * settings.P_FRAG ** (k + 1)
+                        particle_number = int(np.round(self.particle_number_per_size_class(k + 1)))
                         pset_new = ParticleSet(fieldset=fieldset, pclass=self.particle,
                                                lon=utils.create_list(particle.lon, particle_number),
                                                lat=utils.create_list(particle.lat, particle_number),
@@ -204,6 +202,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                                                rho_plastic=utils.create_list(particle.rho_plastic, particle_number),
                                                rise_velocity=utils.create_list(utils.initial_estimate_particle_rise_velocity(L=new_particle_size), particle_number),
                                                reynolds=utils.create_list(0, particle_number),
+                                               size_class=utils.create_list(parent_size_class + k + 1, particle_number),
                                                prob_resus=utils.create_list(utils.resuspension_probability(w_rise=utils.initial_estimate_particle_rise_velocity(L=new_particle_size)), particle_number),
                                                repeatdt=None)
                         pset.add(pset_new)
