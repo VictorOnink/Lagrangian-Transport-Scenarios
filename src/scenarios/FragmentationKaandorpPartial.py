@@ -57,8 +57,8 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
             p_r = utils.resuspension_probability(w_rise=rise_velocity)
             for i in range(len(rise_velocity)):
                 print_statement = 'for size {}, we have w_r {} and p_r {}'.format(var_dict['size'][::step][i],
-                                                                                  rise_velocity,
-                                                                                  p_r)
+                                                                                  rise_velocity[i],
+                                                                                  p_r[i])
                 utils.print_statement(print_statement, to_print=True)
             # pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
             #                    lon=var_dict['lon'][::step], lat=var_dict['lat'][::step], beach=var_dict['beach'][::step],
