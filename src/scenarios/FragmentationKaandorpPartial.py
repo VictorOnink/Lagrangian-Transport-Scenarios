@@ -59,6 +59,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                 print_statement = 'for size {}, we have w_r {} and p_r {}'.format(var_dict['size'][::step][i],
                                                                                   rise_velocity,
                                                                                   p_r)
+                utils.print_statement(print_statement, to_print=True)
             # pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
             #                    lon=var_dict['lon'][::step], lat=var_dict['lat'][::step], beach=var_dict['beach'][::step],
             #                    age=var_dict['age'][::step], size=var_dict['size'][::step],
