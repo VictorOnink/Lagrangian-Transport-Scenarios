@@ -64,10 +64,9 @@ def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, l
     frame_number = len(time_list)
 
     # Setting a text box to give the date
-    ax = ax_list[3]
     props = dict(boxstyle='round', facecolor='white', alpha=1)
     text = ax_list[0].text(0.02, 0.02, 'initial', horizontalalignment='left', verticalalignment='bottom',
-                   transform=ax.transAxes, bbox=props, fontsize=ax_label_size, zorder=200)
+                   transform=ax_list[0].transAxes, bbox=props, fontsize=ax_label_size, zorder=200)
     plt.savefig(animation_save_name(output_direc=output_direc, shore_time=shore_time, lambda_frag=lambda_frag, file_type='.jpg'))
     # # Now, the actual animation part
     # # Setting the initial values of the x and y, which will later be filled by lon and lat
