@@ -108,7 +108,7 @@ def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, l
     # # Saving the animation
     # animator.save(filename=animation_save_name(output_direc=output_direc, rho=np.mean(rho_list)), fps=10,
     #               extra_args=['-vcodec', 'libx264'])
-    plt.savefig(animation_save_name(output_direc, shore_time, lambda_frag, file_type='.jpg'))
+    plt.savefig(animation_save_name(output_direc, shore_time, lambda_frag, file_type='.png'))
 
 
 def subfigure_title(index, size, rho):
@@ -124,5 +124,5 @@ def subfigure_title(index, size, rho):
 
 
 def animation_save_name(output_direc, shore_time, lambda_frag, flowdata='CMEMS_MEDITERRANEAN', file_type='.mov'):
-    return output_direc + 'FragmentationKaandorpPartial_st={}_lam_f={}.{}'.format(flowdata, shore_time, lambda_frag,
-                                                                                  file_type)
+    return output_direc + 'FragmentationKaandorpPartial_st={}_lam_f={}'.format(flowdata, shore_time, lambda_frag) + \
+           file_type
