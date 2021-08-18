@@ -29,7 +29,7 @@ def FragmentationKaandorpPartial_SizeSpectrumTime(figure_direc, scenario, shore_
     size_bins = data_dict['size_bins'][:-1]
 
     # Creating the figure
-    ax_range = 1e-1, 1e-5, 1e5, 1e-2
+    ax_range = 1e-1, 1e-5, 1e6, 1e-2
     plot_num = 6
     ax = vUtils.base_figure(fig_size=fig_size, ax_range=ax_range, x_label=x_label, y_label=y_label,
                             ax_ticklabel_size=ax_ticklabel_size, ax_label_size=ax_label_size, shape=(2, 3),
