@@ -33,7 +33,7 @@ def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, l
     # Creating the base figure
     gridspec_shape = (1, 1)
     fig = plt.figure(figsize=figsize)
-    gs = fig.add_gridspec(nrows=gridspec_shape[0], ncols=gridspec_shape[1] + 1, width_ratios=[1, 1, 1, 0.1])
+    gs = fig.add_gridspec(nrows=gridspec_shape[0], ncols=gridspec_shape[1] + 1, width_ratios=[1, 0.1])
 
     ax_list = []
     for rows in range(gridspec_shape[0]):
