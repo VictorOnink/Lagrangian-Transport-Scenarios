@@ -53,29 +53,22 @@ def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, l
     cbar.ax.tick_params(which='major', labelsize=tick_label_size, length=14, width=2)
     cbar.ax.tick_params(which='minor', labelsize=tick_label_size, length=7, width=2)
 
-    plt.savefig(animation_save_name(output_direc, shore_time, lambda_frag, file_type='.png'))
+    # Setting the time range for which we want to create the simulation
+    current_time = datetime(2010, 1, 1, 0)
+    end_time = datetime(2010, 12, 31, 12)
+    time_step = timedelta(hours=12)
+    time_list = []
+    while current_time < end_time:
+        time_list.append(current_time)
+        current_time += time_step
+    frame_number = len(time_list)
 
-    # # Defining the particle sizes and densities that we want to plot, and adding subfigure titles to the corresponding
-    # # subfigures
-    # for index, ax in enumerate(ax_list):
-    #     ax.set_title(subfigure_title(index, size_list[index], rho_list[index]), weight='bold', fontsize=fontsize)
-    #
-    # # Setting the time range for which we want to create the simulation
-    # current_time = datetime(2010, 1, 1, 0)
-    # end_time = datetime(2010, 12, 31, 12)
-    # time_step = timedelta(hours=12)
-    # time_list = []
-    # while current_time < end_time:
-    #     time_list.append(current_time)
-    #     current_time += time_step
-    # frame_number = len(time_list)
-    #
-    # # Setting a text box to give the date
-    # ax = ax_list[3]
-    # props = dict(boxstyle='round', facecolor='white', alpha=1)
-    # text = ax_list[3].text(0.02, 0.02, 'initial', horizontalalignment='left', verticalalignment='bottom',
-    #                transform=ax.transAxes, bbox=props, fontsize=fontsize, zorder=200)
-    #
+    # Setting a text box to give the date
+    ax = ax_list[3]
+    props = dict(boxstyle='round', facecolor='white', alpha=1)
+    text = ax_list[0].text(0.02, 0.02, 'initial', horizontalalignment='left', verticalalignment='bottom',
+                   transform=ax.transAxes, bbox=props, fontsize=ax_label_size, zorder=200)
+    plt.savefig(animation_save_name(output_direc=output_direc, shore_time=shore_time, lambda_frag=lambda_frag, file_type='.jpg'))
     # # Now, the actual animation part
     # # Setting the initial values of the x and y, which will later be filled by lon and lat
     # plot_list = []
@@ -109,8 +102,9 @@ def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, l
     #                                    frames=frame_number, interval=100, blit=True)
     #
     # # Saving the animation
-    # animator.save(filename=animation_save_name(output_direc=output_direc, rho=np.mean(rho_list)), fps=10,
-    #               extra_args=['-vcodec', 'libx264'])
+    # animator.save(filename=animation_save_name(output_direc=output_direc, shore_time=shore_time,
+    #                                            lambda_frag=lambda_frag),
+    #               fps=10, extra_args=['-vcodec', 'libx264'])
 
 
 def subfigure_title(index, size, rho):
