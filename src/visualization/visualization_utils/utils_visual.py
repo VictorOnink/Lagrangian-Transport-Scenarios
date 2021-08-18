@@ -21,7 +21,7 @@ def SizeTransport_linestyle_SEABED_CRIT(tau):
 
 def cartopy_standard_map(fig, gridspec, row, column, domain, resolution='50m', add_gridlines=True, add_gridlabels=True,
                          lat_grid_step=20, lon_grid_step=30, label_size=14, land_zorder=1, ocean_zorder=1,
-                         line_zorder=101):
+                         line_zorder=101, border_color='black', land_color='lightgray', ocean_color='white'):
     """
     A nice basic function that can be used to create standardized maps
     :param fig:
@@ -47,9 +47,9 @@ def cartopy_standard_map(fig, gridspec, row, column, domain, resolution='50m', a
 
     # Adding coastlines, borders, land and ocean shapefiles
     axis.coastlines(resolution=resolution)
-    axis.add_feature(cpf.BORDERS.with_scale(resolution), edgecolor='black', zorder=line_zorder)
-    axis.add_feature(cpf.LAND.with_scale(resolution), facecolor='lightgray', zorder=land_zorder)
-    axis.add_feature(cpf.OCEAN.with_scale(resolution), facecolor='white', zorder=ocean_zorder)
+    axis.add_feature(cpf.BORDERS.with_scale(resolution), edgecolor=border_color, zorder=line_zorder)
+    axis.add_feature(cpf.LAND.with_scale(resolution), facecolor=land_color, zorder=land_zorder)
+    axis.add_feature(cpf.OCEAN.with_scale(resolution), facecolor=ocean_color, zorder=ocean_zorder)
 
     # Adding gridlines and axis labels
     if add_gridlines:
