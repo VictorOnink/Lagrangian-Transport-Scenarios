@@ -42,12 +42,18 @@ def parcels_to_sizespectrum(file_dict: dict):
             parcels_dataset = Dataset(parcels_file)
             time = parcels_dataset.variables['time'][:, :-1]
             size = parcels_dataset.variables['size'][:, :-1]
+            if 'particle_number' in parcels_dataset.variables.keys():
+                particle_number = parcels_dataset.variables['particle_number'][:, :-1]
 
             # Calculating the spectrum every 30 days (note, one output step is 12 hours)
             for index_time in range(0, len(time_list), 60):
                 size_selection = size[time_list[index_time] == time]
                 utils.print_statement(size_selection.size, to_print=True)
-                size_counts, _ = np.histogram(size_selection, bins=size_bins)
+                if 'particle_number' in parcels_dataset.variables.keys():
+                    particle_number_selection = particle_number[time_list[index_time] == time]
+                    size_counts, _ = np.histogram(size_selection, bins=size_bins, weights=particle_number_selection)
+                else:
+                    size_counts, _ = np.histogram(size_selection, bins=size_bins)
                 output_dict[index_time] = size_counts
 
     # Saving the output
