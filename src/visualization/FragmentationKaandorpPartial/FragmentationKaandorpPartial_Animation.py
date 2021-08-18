@@ -12,7 +12,7 @@ import os
 
 
 def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, lambda_frag,
-                                           figsize=(20, 10), fontsize=14):
+                                           figsize=(20, 10), ax_label_size=18, tick_label_size=16):
     """
     Here we want to make an animation of the
     :return:
@@ -40,7 +40,7 @@ def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, l
     for rows in range(gridspec_shape[0]):
         for columns in range(gridspec_shape[1]):
             ax_list.append(vUtils.cartopy_standard_map(fig=fig, gridspec=gs, row=rows, column=columns,
-                                                       domain=spatial_domain,
+                                                       domain=spatial_domain, label_size=tick_label_size,
                                                        lat_grid_step=5, lon_grid_step=10, resolution='10m'))
 
     # Setting the colormap, that we will use for coloring the scatter plot according to the particle depth. Then, adding
@@ -49,9 +49,9 @@ def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, l
     cmap = plt.cm.ScalarMappable(cmap='inferno_r', norm=norm)
     cax = fig.add_subplot(gs[:, -1])
     cbar = plt.colorbar(cmap, cax=cax, orientation='vertical', extend='max')
-    cbar.set_label(r"Depth (m)", fontsize=fontsize)
-    cbar.ax.tick_params(which='major', labelsize=fontsize - 2, length=14, width=2)
-    cbar.ax.tick_params(which='minor', labelsize=fontsize - 2, length=7, width=2)
+    cbar.set_label(r"Depth (m)", fontsize=ax_label_size)
+    cbar.ax.tick_params(which='major', labelsize=tick_label_size, length=14, width=2)
+    cbar.ax.tick_params(which='minor', labelsize=tick_label_size, length=7, width=2)
 
     plt.savefig(animation_save_name(output_direc, shore_time, lambda_frag, file_type='.png'))
 
