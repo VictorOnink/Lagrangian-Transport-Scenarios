@@ -255,7 +255,7 @@ if SUBMISSION in ['visualization']:
     SEABED_CRIT: float = 0.025
     P_FRAG: float = 4 * 1e-1
     DN: float = 25 * 1e-1
-    SIZE_CLASS_NUMBER: int = 6
+    SIZE_CLASS_NUMBER: int = 7
     LAMBDA_FRAG: int = 385
     ENSEMBLE: int = 1
 
