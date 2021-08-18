@@ -43,7 +43,7 @@ def parcels_to_sizespectrum(file_dict: dict):
             time = parcels_dataset.variables['time'][:, :-1]
             size = parcels_dataset.variables['size'][:, :-1]
 
-            # Calculating the spectrum every 30 days
+            # Calculating the spectrum every 30 days (note, one output step is 12 hours)
             for index_time in range(0, len(time_list), 60):
                 size_selection = size[time_list[index_time] == time]
                 utils.print_statement(size_selection.size, to_print=True)

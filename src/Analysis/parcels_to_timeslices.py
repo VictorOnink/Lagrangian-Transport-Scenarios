@@ -30,6 +30,9 @@ def parcels_to_timeslicing(file_dict: dict):
             full_dict = {'lon': None, 'lat': None, 'z': None, 'beach': None, 'time': None}
             for key in full_dict.keys():
                 full_dict[key] = dataset.variables[key][:, :-1]
+            if 'size_class' in dataset.variables.keys():
+                for key in ['size', 'size_class']:
+                    full_dict[key] = dataset.variables[key][:, :-1]
             # Going through all the time steps
             for timeslice in full_dict['time'][0, :]:
                 slice_dict = {}
@@ -37,6 +40,10 @@ def parcels_to_timeslicing(file_dict: dict):
                 # Looping for the variables for which I want the time slices
                 for key in ['lon', 'lat', 'z', 'beach']:
                     slice_dict[key] = full_dict[key][selection]
+                # For the fragmentation runs, getting the particle size
+                if 'size_class' in dataset.variables.keys():
+                    for key in ['size', 'size_class']:
+                        slice_dict[key] = full_dict[key][selection]
                 # Setting the output name
                 date = (reference_time + timedelta(seconds=timeslice)).strftime("%Y-%m-%d-%H-%M-%S")
                 prefix = 'timeslices_{}'.format(date)
