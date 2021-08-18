@@ -7,6 +7,8 @@ import numpy as np
 from matplotlib.gridspec import GridSpec
 import matplotlib.dates as mdates
 
+import utils
+
 
 def SizeTransport_linestyle_SEABED_CRIT(tau):
     """
@@ -114,6 +116,7 @@ def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabe
     """
     # Loading the axis limits
     xmax, xmin, ymax, ymin = ax_range
+    utils.print_statement('{} {}'.format(xmax, xmin), to_print=True)
     if log_xscale:
         assert xmax > 0 and xmin > 0, "Must have positive x limits for log scales"
     if log_yscale:
