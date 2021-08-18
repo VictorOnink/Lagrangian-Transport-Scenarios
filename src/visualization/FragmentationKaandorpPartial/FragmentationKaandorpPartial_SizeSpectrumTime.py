@@ -8,7 +8,8 @@ import numpy as np
 
 
 def FragmentationKaandorpPartial_SizeSpectrumTime(figure_direc, scenario, shore_time, lambda_frag_list, density,
-                                           figsize=(18, 12), fontsize=14):
+                                                  fig_size=(18, 12), x_label='Size (m)', y_label='Number of Particles',
+                                                  ax_ticklabel_size=12, ax_label_size=14, legend_size=14):
     # Setting the folder within which we have the output, and where we have the saved data
     output_direc = figure_direc + 'size_distribution/'
     utils.check_direc_exist(output_direc)
@@ -28,50 +29,32 @@ def FragmentationKaandorpPartial_SizeSpectrumTime(figure_direc, scenario, shore_
     size_bins = data_dict['size_bins'][:-1]
 
     # Creating the figure
-    fig = plt.figure(figsize=figsize)
-    gs = fig.add_gridspec(nrows=2, ncols=4, width_ratios=[1, 1, 1, 0.3])
-    gs.update(wspace=0.2, hspace=0.2)
+    ax_range = 1e-5, 1e-1, 1e4, 1e-2
+    plot_num = 6
+    ax = vUtils.base_figure(fig_size=fig_size, ax_range=ax_range, x_label=x_label, y_label=y_label,
+                            ax_ticklabel_size=ax_ticklabel_size, ax_label_size=ax_label_size, shape=(2, 3),
+                            plot_num=plot_num, legend_axis=True, log_yscale=True, x_time_axis=True,
+                            width_ratios=[1, 1, 1, 0.3], all_x_labels=True)
 
-    ax = vUtils.base_figure(fig_size=figsize)
-    ax_list = []
-    for row in range(gs.nrows):
-        for column in range(gs.ncols - 1):
-            ax = fig.add_subplot(gs[row, column])
-            ax.set_xlim([size_bins.min(), size_bins.max() + 0.1])
-            ax.set_ylim([1e0, 1e4])
-            ax.tick_params(which='major', length=7)
-            ax.tick_params(which='minor', length=3)
-            ax.set_yscale('log')
-            ax.set_xscale('log')
-            if row != (gs.nrows - 1):
-                ax.set_xticklabels([])
-            else:
-                ax.set_xlabel(r'Size (m)', fontsize=fontsize)
-            if column != 0:
-                ax.set_yticklabels([])
-            else:
-                ax.set_ylabel(r'Number of Particles', fontsize=fontsize)
-            ax_list.append(ax)
     # Labelling the subfigures
-    for index_ax, ax in enumerate(ax_list):
-        ax.set_title(subfigure_title(index_ax, lambda_frag_list), fontsize=fontsize)
-    # Creating the axis for the legend
-    ax_legend = fig.add_subplot(gs[:, -1])
+    for index_ax in range(plot_num):
+        ax[index_ax].set_title(subfigure_title(index_ax, lambda_frag_list), fontsize=ax_label_size)
 
     # Plotting the size distributions one figure (so fragmentation timescale) at a time
     month_step = 2
-    for index_ax, ax in enumerate(ax_list):
+    for index_ax in range(plot_num):
         for index_month, month in enumerate(list(size_dict[lambda_frag_list[index_ax]].keys())[::month_step]):
-            ax.plot(size_bins, size_dict[lambda_frag_list[index_ax]][month], linestyle='-',
-                    color=vUtils.discrete_color_from_cmap(index_month, 12 // month_step))
+            ax[index_ax].plot(size_bins, size_dict[lambda_frag_list[index_ax]][month], linestyle='-',
+                              color=vUtils.discrete_color_from_cmap(index_month, 12 // month_step))
+
     # Adding in a legend
     size_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(month, subdivisions=12 // month_step),
                             label='t = {} months'.format(month * month_step), linestyle='-')[0] for month in range(12 // month_step)]
 
-    ax_legend.legend(handles=size_colors, fontsize=fontsize)
-    ax_legend.axis('off')
+    ax[-1].legend(handles=size_colors, fontsize=legend_size)
+    ax[-1].axis('off')
 
-    file_name = output_direc + 'SizeSpectrumTime-ST={}-rho={}.png'.format(shore_time, density)
+    file_name = output_direc + 'SizeSpectrumTimePartial-ST={}-rho={}.png'.format(shore_time, density)
     plt.savefig(file_name, bbox_inches='tight')
 
 
