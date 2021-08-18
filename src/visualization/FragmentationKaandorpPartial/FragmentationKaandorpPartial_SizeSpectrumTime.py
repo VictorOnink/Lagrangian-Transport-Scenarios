@@ -13,7 +13,7 @@ def FragmentationKaandorpPartial_SizeSpectrumTime(figure_direc, scenario, shore_
     # Setting the folder within which we have the output, and where we have the saved data
     output_direc = figure_direc + 'size_distribution/'
     utils.check_direc_exist(output_direc)
-    data_direc = utils.get_output_directory(server=settings.SERVER) + 'size_distribution/FragmentationKaandorp/'
+    data_direc = utils.get_output_directory(server=settings.SERVER) + 'size_distribution/FragmentationKaandorpPartial/'
 
     # Loading in the data
     prefix = 'size_distribution'
@@ -33,7 +33,7 @@ def FragmentationKaandorpPartial_SizeSpectrumTime(figure_direc, scenario, shore_
     plot_num = 6
     ax = vUtils.base_figure(fig_size=fig_size, ax_range=ax_range, x_label=x_label, y_label=y_label,
                             ax_ticklabel_size=ax_ticklabel_size, ax_label_size=ax_label_size, shape=(2, 3),
-                            plot_num=plot_num, legend_axis=True, log_yscale=True, x_time_axis=True, log_xscale=True,
+                            plot_num=plot_num, legend_axis=True, log_yscale=True, log_xscale=True,
                             width_ratios=[1, 1, 1, 0.3], all_x_labels=True)
 
     # Labelling the subfigures
@@ -42,7 +42,7 @@ def FragmentationKaandorpPartial_SizeSpectrumTime(figure_direc, scenario, shore_
 
     # Plotting the size distributions one figure (so fragmentation timescale) at a time
     month_step = 2
-    for index_ax in range(plot_num):
+    for index_ax in range(plot_num, 0, -1):
         for index_month, month in enumerate(list(size_dict[lambda_frag_list[index_ax]].keys())[::month_step]):
             ax[index_ax].plot(size_bins, size_dict[lambda_frag_list[index_ax]][month], linestyle='-',
                               color=vUtils.discrete_color_from_cmap(index_month, 12 // month_step))
