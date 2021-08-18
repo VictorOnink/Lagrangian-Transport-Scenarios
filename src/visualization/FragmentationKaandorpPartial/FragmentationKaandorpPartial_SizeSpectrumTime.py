@@ -33,7 +33,7 @@ def FragmentationKaandorpPartial_SizeSpectrumTime(figure_direc, scenario, shore_
     plot_num = 6
     ax = vUtils.base_figure(fig_size=fig_size, ax_range=ax_range, x_label=x_label, y_label=y_label,
                             ax_ticklabel_size=ax_ticklabel_size, ax_label_size=ax_label_size, shape=(2, 3),
-                            plot_num=plot_num, legend_axis=True, log_yscale=True, x_time_axis=True,
+                            plot_num=plot_num, legend_axis=True, log_yscale=True, x_time_axis=True, log_xscale=True,
                             width_ratios=[1, 1, 1, 0.3], all_x_labels=True)
 
     # Labelling the subfigures
