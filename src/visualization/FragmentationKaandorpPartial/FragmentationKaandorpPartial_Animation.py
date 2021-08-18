@@ -52,6 +52,8 @@ def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, l
     cbar.ax.tick_params(which='major', labelsize=fontsize - 2, length=14, width=2)
     cbar.ax.tick_params(which='minor', labelsize=fontsize - 2, length=7, width=2)
 
+    plt.savefig(animation_save_name(output_direc, shore_time, lambda_frag, file_type='.png'))
+
     # # Defining the particle sizes and densities that we want to plot, and adding subfigure titles to the corresponding
     # # subfigures
     # for index, ax in enumerate(ax_list):
@@ -108,7 +110,6 @@ def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, l
     # # Saving the animation
     # animator.save(filename=animation_save_name(output_direc=output_direc, rho=np.mean(rho_list)), fps=10,
     #               extra_args=['-vcodec', 'libx264'])
-    plt.savefig(animation_save_name(output_direc, shore_time, lambda_frag, file_type='.png'))
 
 
 def subfigure_title(index, size, rho):
