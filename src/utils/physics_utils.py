@@ -528,7 +528,7 @@ def initial_estimate_particle_rise_velocity(L=settings.INIT_SIZE, print_rise=Fal
     """
     Here we make an initial estimate of what the particle rise velocity is based on Enders et al. (2015)
     https://doi.org/10.1016/j.marpolbul.2015.09.027
-    :param L: the particle size in meters
+    :param L: the particle size in meters (diameter, not radius)
     :return:
     """
     if type(L) in [float, int, np.float64, np.float32, np.int64, np.int32]:
