@@ -53,7 +53,7 @@ def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, l
     cbar.ax.tick_params(which='minor', labelsize=tick_label_size, length=7, width=2)
 
     # Setting the time range for which we want to create the simulation
-    current_time = datetime(2010, 11, 1, 0)
+    current_time = datetime(2010, 1, 1, 0)
     end_time = datetime(2010, 12, 31, 12)
     time_step = timedelta(hours=12)
     time_list = []
@@ -65,13 +65,13 @@ def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, l
     # Setting a text box to give the date
     props = dict(boxstyle='round', facecolor='white', alpha=1)
     text = ax_list[0].text(0.02, 0.02, 'initial', horizontalalignment='left', verticalalignment='bottom',
-                   transform=ax_list[0].transAxes, bbox=props, fontsize=ax_label_size, zorder=200)
+                           transform=ax_list[0].transAxes, bbox=props, fontsize=ax_label_size, zorder=200)
 
     # Now, the actual animation part
     # Setting the initial values of the x and y, which will later be filled by lon and lat
     plot_list = []
     for ax in ax_list:
-        plot_list.append(ax.scatter(0, 0, c=0, s=8, alpha=1, zorder=1000, cmap=cmo.deep, norm=norm))
+        plot_list.append(ax.scatter(0, 0, c=0, s=10, alpha=1, zorder=1000, cmap=cmo.deep, norm=norm))
 
     # Initializing the plots on each axis
     def init():
