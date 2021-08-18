@@ -13,7 +13,7 @@ def FragmentationKaandorpPartial_SizeSpectrumTime(figure_direc, scenario, shore_
     # Setting the folder within which we have the output, and where we have the saved data
     output_direc = figure_direc + 'size_distribution/'
     utils.check_direc_exist(output_direc)
-    data_direc = utils.get_output_directory(server=settings.SERVER) + 'size_distribution/FragmentationKaandorpPartial/'
+    data_direc = utils.get_output_directory(server=settings.SERVER) + 'size_distribution/FragmentationKaandorp/'
 
     # Loading in the data
     prefix = 'size_distribution'
