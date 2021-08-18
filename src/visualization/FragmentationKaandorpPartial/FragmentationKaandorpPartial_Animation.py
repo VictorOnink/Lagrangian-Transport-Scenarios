@@ -28,6 +28,7 @@ def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, l
 
     # Setting the folder within which we have the output, and where we have the saved timeslices
     output_direc = figure_direc + 'animations/'
+    utils.check_direc_exist(output_direc)
     data_direc = utils.get_output_directory(server=settings.SERVER) + 'timeslices/FragmentationKaandorpPartial/'
 
     # Creating the base figure
