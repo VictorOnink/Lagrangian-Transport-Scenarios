@@ -1,5 +1,9 @@
 import os
 from datetime import timedelta
+import socket
+if socket.gethostname() == 'kuphaven':
+    from dotenv import load_dotenv
+    load_dotenv()
 
 SUBMISSION = str(os.environ["SUBMISSION"])
 os.system('echo "run="' + SUBMISSION)
