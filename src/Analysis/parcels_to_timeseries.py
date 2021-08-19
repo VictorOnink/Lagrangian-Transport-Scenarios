@@ -2,8 +2,7 @@ import settings as settings
 import utils
 from netCDF4 import Dataset
 import numpy as np
-import progressbar
-import os
+from copy import deepcopy
 
 
 def parcels_to_timeseries(file_dict: dict, lon_min: float = -180, lon_max: float = 180, lat_min: float = -90,
@@ -98,14 +97,17 @@ def parcels_to_timeseries_sizebins(file_dict: dict, lon_min: float = -180, lon_m
         for time_case in np.unique(time):
             if np.nansum(time_case == time) > 10 and time_case != np.nan:
                 time_list = np.append(time_list, time_case)
-        restart_list = np.append(restart_list, np.ones(parcels_dataset.variables['time'][0, :-1].shape) * restart)
+                restart_list = np.append(restart_list, restart)
 
     # Initializing the arrays of the timeseries
-    beach_state_dict = {'beach': np.zeros(time_list.shape, dtype=float),
-                        'afloat': np.zeros(time_list.shape, dtype=float),
-                        'seabed': np.zeros(time_list.shape, dtype=float),
-                        'removed': np.zeros(time_list.shape, dtype=float),
-                        'total': np.zeros(time_list.shape, dtype=float),
+    size_dict = {}
+    for size_class in range(settings.SIZE_CLASS_NUMBER):
+        size_dict[size_class] = np.zeros(time_list.shape, dtype=float)
+    beach_state_dict = {'beach': deepcopy(size_dict),
+                        'afloat': deepcopy(size_dict),
+                        'seabed': deepcopy(size_dict),
+                        'removed': deepcopy(size_dict),
+                        'total': deepcopy(size_dict),
                         'time': time_list}
     beach_label_dict = {'beach': 1, 'afloat': 0, 'seabed': 3, 'removed': 2}
 
@@ -118,12 +120,8 @@ def parcels_to_timeseries_sizebins(file_dict: dict, lon_min: float = -180, lon_m
             parcels_file = file_dict[run][restart]
             parcels_dataset = Dataset(parcels_file)
             full_data_dict = {}
-            for variable in ['lon', 'lat', 'beach', 'time']:
+            for variable in ['lon', 'lat', 'beach', 'time', 'particle_number', 'size_class']:
                 full_data_dict[variable] = parcels_dataset.variables[variable][:, :-1]
-            if 'weights' in parcels_dataset.variables.keys():
-                full_data_dict['weights'] = parcels_dataset.variables['weights'][:, :-1] * settings.BUOYANT
-            else:
-                full_data_dict['weights'] = np.ones(full_data_dict['lon'].shape, dtype=float)
 
             # Just get the particles within the domain, which we do by setting all values not within the domain to nan
             # These will therefore not be taken into account in the calculations of total counts/weights
@@ -134,16 +132,22 @@ def parcels_to_timeseries_sizebins(file_dict: dict, lon_min: float = -180, lon_m
 
             # Now, looping through all the time steps and adding up the total weight/counts of particles within each of
             # the beach state domains at each time step
-            for index, time_value in enumerate(time_list):
-                if restart_list[index] == restart:
+            for time_index, time_value in enumerate(time_list):
+                if restart_list[time_index] == restart:
                     time_selection = full_data_dict['time'] == time_value
                     if np.nansum(full_data_dict['time'] == time_value) > 0:
                         time_dict = {}
-                        for variable in ['beach', 'weights']:
+                        for variable in ['beach', 'particle_number', 'size_class']:
                             time_dict[variable] = full_data_dict[variable][time_selection]
                         for beach_state in beach_label_dict.keys():
-                            beach_state_dict[beach_state][index] += np.nansum(time_dict['weights'][time_dict['beach'] == beach_label_dict[beach_state]])
-                        beach_state_dict['total'][index] += np.nansum(full_data_dict['time'] == time_value)
+                            beach_selection = time_dict['beach'] == beach_label_dict[beach_state]
+                            for size_class in range(settings.SIZE_CLASS_NUMBER):
+                                size_selection = time_dict['size_class'] == size_class
+                                beach_state_dict[beach_state][size_class][time_index] += np.nansum(time_dict['particle_number'][(beach_selection) & (size_selection)])
+                        for size_class in range(settings.SIZE_CLASS_NUMBER):
+                            size_selection = time_dict['size_class'] == size_class
+                            beach_state_dict['total'][time_index] += np.nansum(time_dict['particle_number'][size_selection])
+
     # Saving the output
     prefix = 'timeseries'
     output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
