@@ -10,7 +10,7 @@ import matplotlib.animation as animation
 import cmocean.cm as cmo
 
 
-def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, lambda_frag,
+def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, lambda_frag, rho,
                                            figsize=(20, 10), ax_label_size=18, tick_label_size=16):
     """
     Here we want to make an animation of the
@@ -87,8 +87,9 @@ def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, l
         for ax_index, size in enumerate(ax_list):
             # Loading the dictionary with the data
             prefix = 'timeslices_{}'.format(date)
-            data_dict = vUtils.FragmentationKaandorpPartial_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
-                                                                      lambda_frag=lambda_frag, rho=920, shore_time=shore_time)
+            data_dict = vUtils.FragmentationKaandorpPartial_load_data(scenario=scenario, prefix=prefix,
+                                                                      data_direc=data_direc, lambda_frag=lambda_frag,
+                                                                      rho=rho, shore_time=shore_time)
             lon, lat, depth = data_dict['lon'], data_dict['lat'], data_dict['z'].astype(int)
             # Updating the plot on each axis with the data
             plot_list[ax_index].set_offsets(np.c_[lon, lat])
