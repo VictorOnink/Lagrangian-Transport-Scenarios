@@ -97,7 +97,7 @@ def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, l
 
     # Calling the animator
     animator = animation.FuncAnimation(plt.gcf(), animate, init_func=init,
-                                       frames=2, interval=100, blit=True)
+                                       frames=frame_number, interval=100, blit=True)
 
     # Saving the animation
     animator.save(filename=animation_save_name(output_direc=output_direc, shore_time=shore_time,
