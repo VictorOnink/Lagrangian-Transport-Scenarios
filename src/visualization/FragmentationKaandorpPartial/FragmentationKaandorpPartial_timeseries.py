@@ -48,4 +48,4 @@ def FragmentationKaandorpPartial_timeseries(scenario, figure_direc, shore_time, 
 
 def size_label(size_class):
     particle_size = settings.INIT_SIZE * settings.P_FRAG ** size_class
-    return 'Size class {}, d = {} mm'.format(size_class, particle_size * 1e3)
+    return 'Size class {}, d = {:.3f} mm'.format(size_class, particle_size * 1e3)
