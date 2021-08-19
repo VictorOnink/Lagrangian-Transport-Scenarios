@@ -9,7 +9,7 @@ import matplotlib.dates as mdates
 
 
 def FragmentationKaandorpPartial_timeseries(scenario, figure_direc, shore_time, lambda_frag, rho, simulation_length,
-                                            fig_size=(14, 10), ax_label_size=14, ax_ticklabel_size=12,
+                                            fig_size=(14, 10), ax_label_size=14, ax_ticklabel_size=12, legend_size=12,
                                             y_label='Particles', x_label='Time'):
     # Setting the folder within which we have the output, and where we have the saved timeslices
     output_direc = figure_direc + 'timeseries/'
@@ -43,7 +43,7 @@ def FragmentationKaandorpPartial_timeseries(scenario, figure_direc, shore_time, 
     # Creating a legend
     size_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(size_class, subdivisions=settings.SIZE_CLASS_NUMBER),
                             label=size_label(size_class), linestyle='-')[0] for size_class in range(settings.SIZE_CLASS_NUMBER)]
-    ax[-1].legend(handles=size_colors, fontsize=ax_label_size, loc='upper right')
+    ax[-1].legend(handles=size_colors, fontsize=legend_size, loc='upper right')
 
     # Saving the figure
     file_name = output_direc + 'FragmentationKaandorpPartial_beach_state_timeseries_ST={}_lamf={}.png'.format(shore_time,
