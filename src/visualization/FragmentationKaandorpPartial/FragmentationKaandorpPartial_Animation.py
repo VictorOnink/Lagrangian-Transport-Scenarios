@@ -45,7 +45,7 @@ def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, l
     # Setting the colormap, that we will use for coloring the scatter plot according to the particle depth. Then, adding
     # a colorbar.
     norm = colors.Normalize(vmin=0.0, vmax=100.0)
-    cmap = plt.cm.ScalarMappable(cmap=cmo.deep, norm=norm)
+    cmap = plt.cm.ScalarMappable(cmap=cmo.haline_r, norm=norm)
     cax = fig.add_subplot(gs[:, -1])
     cbar = plt.colorbar(cmap, cax=cax, orientation='vertical', extend='max')
     cbar.set_label(r"Depth (m)", fontsize=ax_label_size)
@@ -71,7 +71,7 @@ def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, l
     # Setting the initial values of the x and y, which will later be filled by lon and lat
     plot_list = []
     for ax in ax_list:
-        plot_list.append(ax.scatter(0, 0, c=0, s=10, alpha=1, zorder=1000, cmap=cmo.deep, norm=norm))
+        plot_list.append(ax.scatter(0, 0, c=0, s=10, alpha=1, zorder=1000, cmap=cmo.haline_r, norm=norm))
 
     # Initializing the plots on each axis
     def init():
