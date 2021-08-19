@@ -9,7 +9,7 @@ import matplotlib.dates as mdates
 
 
 def FragmentationKaandorpPartial_timeseries(scenario, figure_direc, shore_time, lambda_frag, rho, simulation_length,
-                                            fig_size=(12, 10), ax_label_size=14, ax_ticklabel_size=12,
+                                            fig_size=(14, 10), ax_label_size=14, ax_ticklabel_size=12,
                                             y_label='Particles', x_label='Time'):
     # Setting the folder within which we have the output, and where we have the saved timeslices
     output_direc = figure_direc + 'timeseries/'
@@ -33,7 +33,7 @@ def FragmentationKaandorpPartial_timeseries(scenario, figure_direc, shore_time, 
     figure_shape = (4, 1)
     ax = vUtils.base_figure(fig_size=fig_size, ax_range=ax_range, y_label=y_label, x_label=x_label,
                             ax_label_size=ax_label_size, ax_ticklabel_size=ax_ticklabel_size, shape=figure_shape,
-                            plot_num=4, legend_axis=True, log_yscale=True, x_time_axis=True, width_ratios=[1, 0.2])
+                            plot_num=4, legend_axis=True, log_yscale=True, x_time_axis=True, width_ratios=[1, 0.3])
 
     # Creating a legend
     size_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(size_class, subdivisions=settings.SIZE_CLASS_NUMBER),
@@ -48,4 +48,4 @@ def FragmentationKaandorpPartial_timeseries(scenario, figure_direc, shore_time, 
 
 def size_label(size_class):
     particle_size = settings.INIT_SIZE * settings.P_FRAG ** size_class
-    return 'Size class {}, d = {:.3f} mm'.format(size_class, particle_size * 1e3)
+    return 'Size class {}, d = {:.3f} mm'.format(size_class, particle_size * 1e2)
