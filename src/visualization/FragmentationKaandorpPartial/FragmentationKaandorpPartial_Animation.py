@@ -40,7 +40,8 @@ def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, l
         for columns in range(gridspec_shape[1]):
             ax_list.append(vUtils.cartopy_standard_map(fig=fig, gridspec=gs, row=rows, column=columns,
                                                        domain=spatial_domain, label_size=tick_label_size,
-                                                       lat_grid_step=5, lon_grid_step=10, resolution='10m'))
+                                                       lat_grid_step=5, lon_grid_step=10, resolution='10m',
+                                                       ocean_color='black', border_color='white'))
 
     # Setting the colormap, that we will use for coloring the scatter plot according to the particle depth. Then, adding
     # a colorbar.
