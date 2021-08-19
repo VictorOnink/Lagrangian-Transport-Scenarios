@@ -27,6 +27,10 @@ def FragmentationKaandorpPartial_timeseries(scenario, figure_direc, shore_time, 
         for beach_state in beach_state_list:
             timeseries_dict[size_class][beach_state] = data_dict[beach_state][size_class]
         timeseries_dict[size_class]['time_raw'] = data_dict['time'][size_class]
+    # creating a time axis
+    time_list = []
+    for time in timeseries_dict[size_class]['time_raw']:
+        time_list.append(datetime(settings.START_YEAR, 1, 1, 12) + timedelta(seconds=time))
 
     # Creating the axis
     ax_range = datetime(settings.START_YEAR + simulation_length, 1, 1), datetime(settings.START_YEAR, 1, 1), 1e3, 1e-2
@@ -44,6 +48,12 @@ def FragmentationKaandorpPartial_timeseries(scenario, figure_direc, shore_time, 
     size_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(size_class, subdivisions=settings.SIZE_CLASS_NUMBER),
                             label=size_label(size_class), linestyle='-')[0] for size_class in range(settings.SIZE_CLASS_NUMBER)]
     ax[-1].legend(handles=size_colors, fontsize=legend_size, loc='upper right')
+
+    # Plotting the various fractions
+    for size_class in range(settings.SIZE_CLASS_NUMBER):
+        for beach_index, beach_state in enumerate(beach_state_list):
+            ax[beach_index].plot(time_list, timeseries_dict[size_class][beach_state], linestyle='-',
+                                 c=vUtils.discrete_color_from_cmap(size_class, subdivisions=settings.SIZE_CLASS_NUMBER))
 
     # Saving the figure
     file_name = output_direc + 'FragmentationKaandorpPartial_beach_state_timeseries_ST={}_lamf={}.png'.format(shore_time,
