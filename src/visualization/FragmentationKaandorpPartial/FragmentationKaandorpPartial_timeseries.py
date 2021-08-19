@@ -29,7 +29,7 @@ def FragmentationKaandorpPartial_timeseries(scenario, figure_direc, shore_time, 
         timeseries_dict[size_class]['time_raw'] = data_dict['time'][size_class]
 
     # Creating the axis
-    ax_range = datetime(settings.START_YEAR + simulation_length, 1, 1), datetime(settings.START_YEAR, 1, 1), 1e-2, 1e2
+    ax_range = datetime(settings.START_YEAR + simulation_length, 1, 1), datetime(settings.START_YEAR, 1, 1), 1e3, 1e-2
     figure_shape = (4, 1)
     ax = vUtils.base_figure(fig_size=fig_size, ax_range=ax_range, y_label=y_label, x_label=x_label,
                             ax_label_size=ax_label_size, ax_ticklabel_size=ax_ticklabel_size, shape=figure_shape,
@@ -63,4 +63,4 @@ def subfigure_title(index, beach_state):
 
 def size_label(size_class):
     particle_size = settings.INIT_SIZE * settings.P_FRAG ** size_class
-    return 'Size class {}, d = {:.3f} mm'.format(size_class, particle_size * 1e2)
+    return 'Size class {}, d = {:.2f} mm'.format(size_class, particle_size * 1e3)
