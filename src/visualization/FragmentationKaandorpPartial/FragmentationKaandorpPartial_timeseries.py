@@ -33,7 +33,7 @@ def FragmentationKaandorpPartial_timeseries(scenario, figure_direc, shore_time, 
         time_list.append(datetime(settings.START_YEAR, 1, 1, 12) + timedelta(seconds=time))
 
     # Creating the axis
-    ax_range = datetime(settings.START_YEAR + simulation_length, 1, 1), datetime(settings.START_YEAR, 1, 1), 1e5, 1e-1
+    ax_range = datetime(settings.START_YEAR + simulation_length, 1, 1), datetime(settings.START_YEAR, 1, 1), 1e5, 1e0
     figure_shape = (4, 1)
     ax = vUtils.base_figure(fig_size=fig_size, ax_range=ax_range, y_label=y_label, x_label=x_label,
                             ax_label_size=ax_label_size, ax_ticklabel_size=ax_ticklabel_size, shape=figure_shape,
