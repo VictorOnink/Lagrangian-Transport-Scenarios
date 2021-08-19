@@ -19,7 +19,6 @@ def FragmentationKaandorpPartial_timeseries(scenario, figure_direc, shore_time, 
     # Loading in the data
     prefix = 'timeseries'
     timeseries_dict = {}
-    # beach_state_list = ['beach', 'afloat', 'seabed', 'removed', 'total']
     beach_state_list = ['beach', 'afloat', 'seabed', 'total']
     for size_class in range(settings.SIZE_CLASS_NUMBER):
         timeseries_dict[size_class] = {}
@@ -29,11 +28,17 @@ def FragmentationKaandorpPartial_timeseries(scenario, figure_direc, shore_time, 
             timeseries_dict[size_class][beach_state] = data_dict[beach_state][size_class]
         timeseries_dict[size_class]['time_raw'] = data_dict['time'][size_class]
 
+    # Creating the axis
     ax_range = datetime(settings.START_YEAR + simulation_length, 1, 1), datetime(settings.START_YEAR, 1, 1), 1e-2, 1e2
     figure_shape = (4, 1)
     ax = vUtils.base_figure(fig_size=fig_size, ax_range=ax_range, y_label=y_label, x_label=x_label,
                             ax_label_size=ax_label_size, ax_ticklabel_size=ax_ticklabel_size, shape=figure_shape,
-                            plot_num=4, legend_axis=True, log_yscale=True, x_time_axis=True, width_ratios=[1, 0.3])
+                            plot_num=4, legend_axis=True, log_yscale=True, x_time_axis=True, width_ratios=[1, 0.3],
+                            all_x_labels=True)
+
+    # Setting the subfigure titles
+    for ax_index in range(figure_shape[0]):
+        ax[ax_index].set_title(subfigure_title(ax_index, beach_state_list[ax_index]), fontsize=ax_label_size)
 
     # Creating a legend
     size_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(size_class, subdivisions=settings.SIZE_CLASS_NUMBER),
@@ -44,6 +49,16 @@ def FragmentationKaandorpPartial_timeseries(scenario, figure_direc, shore_time, 
     file_name = output_direc + 'FragmentationKaandorpPartial_beach_state_timeseries_ST={}_lamf={}.png'.format(shore_time,
                                                                                                               lambda_frag)
     plt.savefig(file_name, bbox_inches='tight')
+
+
+def subfigure_title(index, beach_state):
+    """
+    setting the title of the subfigure
+    :param index:
+    :return:
+    """
+    alphabet = string.ascii_lowercase
+    return '({}) {}'.format(alphabet[index], beach_state)
 
 
 def size_label(size_class):
