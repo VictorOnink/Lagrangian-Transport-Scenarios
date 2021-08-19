@@ -146,7 +146,7 @@ def parcels_to_timeseries_sizebins(file_dict: dict, lon_min: float = -180, lon_m
                                 beach_state_dict[beach_state][size_class][time_index] += np.nansum(time_dict['particle_number'][(beach_selection) & (size_selection)])
                         for size_class in range(settings.SIZE_CLASS_NUMBER):
                             size_selection = time_dict['size_class'] == size_class
-                            beach_state_dict['total'][time_index] += np.nansum(time_dict['particle_number'][size_selection])
+                            beach_state_dict['total'][size_class][time_index] += np.nansum(time_dict['particle_number'][size_selection])
 
     # Saving the output
     prefix = 'timeseries'
