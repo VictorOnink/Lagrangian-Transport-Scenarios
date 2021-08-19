@@ -49,34 +49,56 @@ echo $RUNNAMEPREFIX
 # Now the part where we create the submission file                                  #
 #####################################################################################
 runname=$RUNNAMEPREFIX
-part1="#!/bin/sh"
-part2="#SBATCH --mail-type=begin,end,fail"
-part3="#SBATCH --mail-user=victor.onink@climate.unibe.ch"
-part4="#SBATCH --job-name="$runname
-part5="#SBATCH --output="runOutput/$runname".o%j"
-part6="#SBATCH --mem-per-cpu=20G"
-if [ "$DEBUG" -eq "0" ]; then
-      part7="#SBATCH --time=20:00:00"
-      part8="#SBATCH --partition=epyc2"
-      part9='#SBATCH --qos=job_epyc2'
-else
-      part7="#SBATCH --time=00:19:00"
-      part8="#SBATCH --partition=epyc2"
-      part9='#SBATCH --qos=job_epyc2_debug'
+if [ "$SERVER" -eq "1" ]; then
+  #Submission for ubelix
+  part1="#!/bin/sh"
+  part2="#SBATCH --mail-type=begin,end,fail"
+  part3="#SBATCH --mail-user=victor.onink@climate.unibe.ch"
+  part4="#SBATCH --job-name="$runname
+  part5="#SBATCH --output="runOutput/$runname".o%j"
+  part6="#SBATCH --mem-per-cpu=20G"
+  if [ "$DEBUG" -eq "0" ]; then
+        part7="#SBATCH --time=20:00:00"
+        part8="#SBATCH --partition=epyc2"
+        part9='#SBATCH --qos=job_epyc2'
+  else
+        part7="#SBATCH --time=00:19:00"
+        part8="#SBATCH --partition=epyc2"
+        part9='#SBATCH --qos=job_epyc2_debug'
+  fi
+  #loading the bash and setting the environment
+  part10="source /storage/homefs/vo18e689/.bash_profile"
+  part11="source /storage/homefs/vo18e689/anaconda3/bin/activate py3_parcels"
+  part12='cd "/storage/homefs/vo18e689/codes/Next-Stage-Plastic-Beaching/"'
+  #And now the actual running of the code
+  part13="python src/main.py -p 10 -v"
+  #and now the creation of the submission file
+  for i in {1..13}
+  do
+  partGrab="part"$i
+  echo ${!partGrab} >> jobsubmissionFile.sh
+  done
+elif [ "$SERVER" -eq "0" ]; then
+  #Submission for kuphaven
+  part1="#!/bin/sh"
+  part2="#SBATCH --mail-type=begin,end,fail"
+  part3="#SBATCH --mail-user=victor.onink@climate.unibe.ch"
+  part4="#SBATCH --job-name="$runname
+  part5="#SBATCH --output="runOutput/$runname".o%j"
+  part6="#SBATCH --mem-per-cpu=20G"
+  part7="#SBATCH --time=20:00:00"
+  part8="source /storage/climatestor/Bern3dLPX/onink/alphadata04/.bash_profile"
+  part9="source /storage/climatestor/Bern3dLPX/onink/alphadata04/anaconda3/bi/activate py3_parcels"
+  part10='cd "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/BeachingSim/Next-Stage-Plastic-Beaching/"'
+  part11="python src/main.py -p 10 -v"
+  #and now the creation of the submission file
+  for i in {1..11}
+  do
+  partGrab="part"$i
+  echo ${!partGrab} >> jobsubmissionFile.sh
+  done
 fi
-#loading the bash and setting the environment
-part10="source /storage/homefs/vo18e689/.bash_profile"
-part11="source /storage/homefs/vo18e689/anaconda3/bin/activate py3_parcels"
-part12='cd "/storage/homefs/vo18e689/codes/Next-Stage-Plastic-Beaching/"'
-#And now the actual running of the code
-part13="python src/main.py -p 10 -v"
-#and now the creation of the submission file
-for i in {1..13}
-do
-partGrab="part"$i
-echo ${!partGrab} >> jobsubmissionFile_${run}_${restartnum}.sh
-done
 
-sbatch jobsubmissionFile_${run}_${restartnum}.sh
+sbatch jobsubmissionFile.sh
 
-rm jobsubmissionFile_${run}_${restartnum}.sh
+rm jobsubmissionFile.sh

@@ -15,11 +15,11 @@ os.system('echo "run="' + SUBMISSION)
 SERVER: int = int(os.environ["SERVER"])
 DATA_DIR_SERVERS: dict = {0: "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/",
                           1: "/storage/homefs/vo18e689/Data/"}
-DATA_INPUT_DIR_SERVERS: dict = {0: "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/BeachingSim/Input/",
+DATA_INPUT_DIR_SERVERS: dict = {0: "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/Input/",
                                 1: "/storage/homefs/vo18e689/Data/Input/"}
-DATA_OUTPUT_DIR_SERVERS: dict = {0: "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/BeachingSim/Output/",
+DATA_OUTPUT_DIR_SERVERS: dict = {0: "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/Output/",
                                  1: "/storage/homefs/vo18e689/Data/Output/"}
-FIGURE_OUTPUT_SERVER: dict = {0: "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/BeachingSim/Output/Figures/",
+FIGURE_OUTPUT_SERVER: dict = {0: "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/Output/Figures/",
                               1: "/storage/homefs/vo18e689/Data/Output/Figures/"}
 INPUT_DIREC_DICT = {0: DATA_INPUT_DIR_SERVERS[SERVER] + 'Jambeck_Inputs/',
                     1: DATA_INPUT_DIR_SERVERS[SERVER] + 'Lebreton_Inputs/',
