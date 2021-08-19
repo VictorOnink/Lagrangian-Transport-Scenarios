@@ -26,10 +26,10 @@ def FragmentationKaandorpPartial_timeseries(scenario, figure_direc, shore_time, 
                                                                   shore_time=shore_time, lambda_frag=lambda_frag, rho=rho)
         for beach_state in beach_state_list:
             timeseries_dict[size_class][beach_state] = data_dict[beach_state][size_class]
-    print(data_dict['time'])
+
     # creating a time axis
     time_list = []
-    for time in data_dict['time'][size_class]:
+    for time in data_dict['time']:
         time_list.append(datetime(settings.START_YEAR, 1, 1, 12) + timedelta(seconds=time))
 
     # Creating the axis
