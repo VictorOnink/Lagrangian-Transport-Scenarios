@@ -99,8 +99,10 @@ def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabe
     :param log_yscale: if True, the y axis has a log scale
     :param log_xscale: if True, the x axis has a log scale
     :param x_time_axis: if True, the x axis is a time axis
-    :param height_ratios:
-    :param width_ratios:
+    :param height_ratios: ratios of the height of the subfigures (must be a list with the same size as the number of
+                          rows
+    :param width_ratios: ratios of the width of the subfigures (must be a list with the same size as the number of
+                          columns
     :param fig_size: size of the figure
     :param ax_range: the limits of the x and y axes
     :param y_label: the y label

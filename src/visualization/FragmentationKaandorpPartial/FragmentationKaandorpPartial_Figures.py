@@ -18,4 +18,4 @@ def run(scenario, figure_direc: str):
     #                                                  lambda_frag=388, rho=rho)
 
     timeseries.FragmentationKaandorpPartial_timeseries(scenario=scenario, figure_direc=figure_direc, shore_time=20,
-                                                       lambda_frag=388, rho=rho)
+                                                       lambda_frag=388, rho=rho, simulation_length=1)
