@@ -17,5 +17,6 @@ def run(scenario, figure_direc: str):
     # Animation.FragmentationKaandorpPartial_Animation(scenario=scenario, figure_direc=figure_direc, shore_time=20,
     #                                                  lambda_frag=388, rho=rho)
 
-    timeseries.FragmentationKaandorpPartial_timeseries(scenario=scenario, figure_direc=figure_direc, shore_time=20,
-                                                       lambda_frag=388, rho=rho, simulation_length=1)
+    for lambda_frag in lambda_frag_list:
+        timeseries.FragmentationKaandorpPartial_timeseries(scenario=scenario, figure_direc=figure_direc, shore_time=20,
+                                                           lambda_frag=lambda_frag, rho=rho, simulation_length=1)
