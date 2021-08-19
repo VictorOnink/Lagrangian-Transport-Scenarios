@@ -2,7 +2,7 @@
 # First we define the general parameters of the run                                 #
 #####################################################################################
 SUBMISSION='visualization'
-DEBUG=0 # 0 = Not a debug run, 1 = a debug run
+DEBUG=1 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation
 SCENARIO=7
@@ -86,11 +86,17 @@ elif [ "$SERVER" -eq "0" ]; then
   part4="#SBATCH --job-name="$runname
   part5="#SBATCH --output="runOutput/$runname".o%j"
   part6="#SBATCH --mem-per-cpu=20G"
-  part7="#SBATCH --time=20:00:00"
-  part8="source /storage/climatestor/Bern3dLPX/onink/alphadata04/.bash_profile"
-  part9="source /storage/climatestor/Bern3dLPX/onink/alphadata04/anaconda3/bi/activate py3_parcels"
-  part10='cd "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/BeachingSim/Next-Stage-Plastic-Beaching/"'
-  part11="python src/main.py -p 10 -v"
+  if [ "$DEBUG" -eq "0" ]; then
+    part7="#SBATCH --time=20:00:00"
+    part8="#SBATCH --partition=long"
+  else
+    part7="#SBATCH --time=00:29:59"
+    part8="#SBATCH --partition=debug"
+  fi
+  part9="source /storage/climatestor/Bern3dLPX/onink/alphadata04/.bash_profile"
+  part10="source /storage/climatestor/Bern3dLPX/onink/alphadata04/anaconda3/bi/activate py3_parcels"
+  part11='cd "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/BeachingSim/Next-Stage-Plastic-Beaching/"'
+  part12="python src/main.py -p 10 -v"
   #and now the creation of the submission file
   for i in {1..11}
   do
