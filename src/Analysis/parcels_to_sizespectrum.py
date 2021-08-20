@@ -146,6 +146,9 @@ def parcels_to_sizespectrum_beachstate(file_dict: dict):
                                               weights=time_selection_dict['particle_number'][afloat5m_selection])
                 output_dict['afloat_5m'][index_time] = size_counts
 
+    # Adding the index of the final timestep for ease later on
+    output_dict['final_index'] = index_time
+
     # Saving the output
     prefix = 'size_distribution'
     output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
