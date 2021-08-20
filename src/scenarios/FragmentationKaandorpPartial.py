@@ -77,7 +77,6 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
     def get_pclass(self):
         utils.print_statement("Creating the particle class")
         particle_type = utils.BaseParticle
-        utils.add_particle_variable(particle_type, 'distance', dtype=np.float32, set_initial=False)
         utils.add_particle_variable(particle_type, 'density', dtype=np.float32, set_initial=False, to_write=False)
         utils.add_particle_variable(particle_type, 'surface_density', dtype=np.float32, set_initial=False,
                                     to_write=False)
@@ -171,7 +170,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
 
     def fragmentation_kernel(particle, fieldset, time):
         if particle.beach == 1:
-            if particle.beach_time >= (1 * 86400):
+            if particle.beach_time >= (60 * 86400):
                 particle.to_split = 1
                 particle.beach_time = 0
 
