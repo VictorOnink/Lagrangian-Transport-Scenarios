@@ -8,7 +8,7 @@ import numpy as np
 
 
 def FragmentationKaandorpPartial_SizeSpectrumBeach(figure_direc, scenario, shore_time, lambda_frag, density,
-                                                  fig_size=(12, 18), x_label='Size (m)', y_label='Number of Particles',
+                                                  fig_size=(10, 14), x_label='Size (m)', y_label='Number of Particles',
                                                   ax_ticklabel_size=12, ax_label_size=14, legend_size=14):
     # Setting the folder within which we have the output, and where we have the saved data
     output_direc = figure_direc + 'size_distribution/'
