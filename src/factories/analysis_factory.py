@@ -35,4 +35,7 @@ class AnalysisFactory():
             Analysis.parcels_to_separation_distance(file_dict=file_dict, scenario=scenario)
         if size_spectrum:
             utils.print_statement("Computing size distribution", to_print=True)
-            Analysis.parcels_to_sizespectrum(file_dict=file_dict)
+            if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
+                Analysis.parcels_to_sizespectrum_beachstate(file_dict=file_dict)
+            else:
+                Analysis.parcels_to_sizespectrum(file_dict=file_dict)
