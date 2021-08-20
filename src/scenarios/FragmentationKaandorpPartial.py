@@ -64,11 +64,12 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                                particle_number=np.ones(rise_velocity.shape, dtype=np.float32),
                                time=start_time, repeatdt=repeat_dt)
         else:
+            rise_velocity = utils.initial_estimate_particle_rise_velocity(L=var_dict['size'])
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
                                lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'], parent=var_dict['parent'],
                                age=var_dict['age'], size=var_dict['size'], beach_time=var_dict['beach_time'],
-                               rho_plastic=var_dict['rho_plastic'], rise_velocity=var_dict['rise_velocity'],
-                               prob_resus=utils.resuspension_probability(w_rise=var_dict['rise_velocity']),
+                               rho_plastic=var_dict['rho_plastic'], rise_velocity=rise_velocity,
+                               prob_resus=utils.resuspension_probability(w_rise=rise_velocity),
                                size_class=var_dict['size_class'], particle_number=var_dict['particle_number'],
                                time=start_time, repeatdt=repeat_dt)
         return pset
@@ -82,12 +83,11 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                                     to_write=False)
         utils.add_particle_variable(particle_type, 'kinematic_viscosity', dtype=np.float32, set_initial=False,
                                     to_write=False)
-        utils.add_particle_variable(particle_type, 'rise_velocity', dtype=np.float32, set_initial=True)
+        utils.add_particle_variable(particle_type, 'rise_velocity', dtype=np.float32, set_initial=True, to_write=False)
         utils.add_particle_variable(particle_type, 'reynolds', dtype=np.float32, set_initial=False, to_write=False)
         utils.add_particle_variable(particle_type, 'rho_plastic', dtype=np.float32, set_initial=True, to_write=False)
         utils.add_particle_variable(particle_type, 'size', dtype=np.float32)
-        utils.add_particle_variable(particle_type, 'to_split', dtype=np.int32, set_initial=False, to_write=False)
-        utils.add_particle_variable(particle_type, 'to_delete', dtype=np.int32, set_initial=False, to_write=False)
+        utils.add_particle_variable(particle_type, 'to_split', dtype=np.int32, set_initial=False, to_write=True)
         utils.add_particle_variable(particle_type, 'parent', dtype=np.int32, set_initial=True, to_write=True)
         utils.add_particle_variable(particle_type, 'prob_resus', dtype=np.float32, set_initial=True, to_write=False)
         utils.add_particle_variable(particle_type, 'beach_time', dtype=np.float32, set_initial=True, to_write=True)
