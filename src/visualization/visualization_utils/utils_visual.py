@@ -93,7 +93,7 @@ def discrete_color_from_cmap(index, subdivisions, cmap='viridis_r'):
 
 def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabel_size,
                 shape=(1, 1), plot_num=1, all_x_labels=False, legend_axis=False, log_yscale=False, log_xscale=False,
-                x_time_axis=False, width_ratios=None, height_ratios=None):
+                x_time_axis=False, width_ratios=None, height_ratios=None, all_y_labels=True):
     """
     Function creating the base figure that we use as a foundation for almost all figures
     :param log_yscale: if True, the y axis has a log scale
@@ -112,6 +112,7 @@ def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabe
     :param plot_num: how many subplots we want to create (e.g. in case we have a 2x3 figure but only want 5 panels)
     :param all_x_labels: if True, all subplots in the bottom row of teh figure will have x labels, otherwise just the
                          middle one
+    :param all_y_labels: if True, all subplots will have the y axis labeled, otherwise just the middle row
     :param legend_axis: if true, we add an additional column in which we can add the legend (in case it is too big to
                         fit within a subplot)
     :return:
@@ -153,7 +154,8 @@ def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabe
             # Labeling the x and y axes
             # Only add y labels if we are in the first column
             if column == 0:
-                ax_sub.set_ylabel(y_label, fontsize=ax_label_size)
+                if all_y_labels or row == (shape[0] // 2 + 1):
+                    ax_sub.set_ylabel(y_label, fontsize=ax_label_size)
             else:
                 ax_sub.tick_params(labelleft=False)
             # Only add x labels if we are in the bottom row, and only to the middle one unless all_x_labels == True
