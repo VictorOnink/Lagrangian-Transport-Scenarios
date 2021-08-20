@@ -24,5 +24,5 @@ def run(scenario, figure_direc: str):
     #                                                    lambda_frag=388, rho=rho, simulation_length=1)
 
     SizeSpectrumBeach.FragmentationKaandorpPartial_SizeSpectrumBeach(figure_direc=figure_direc, scenario=scenario,
-                                                                     shore_time=20, lambda_frag_list=388,
+                                                                     shore_time=20, lambda_frag=388,
                                                                      density=rho)
