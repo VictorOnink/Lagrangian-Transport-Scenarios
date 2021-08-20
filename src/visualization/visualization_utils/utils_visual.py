@@ -154,7 +154,7 @@ def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabe
             # Labeling the x and y axes
             # Only add y labels if we are in the first column
             if column == 0:
-                if all_y_labels or row == (shape[0] // 2 + 1):
+                if all_y_labels or row == shape[0] // 2:
                     ax_sub.set_ylabel(y_label, fontsize=ax_label_size)
             else:
                 ax_sub.tick_params(labelleft=False)
