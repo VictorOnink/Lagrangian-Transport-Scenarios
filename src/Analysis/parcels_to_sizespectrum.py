@@ -101,7 +101,7 @@ def parcels_to_sizespectrum_beachstate(file_dict: dict):
                         'time': time_list}
     beach_label = {'beach': 1, 'afloat': 0, 'seabed': 3, 'removed': 2}
 
-    output_dict = {'size_bins': size_bins, 'beach': {}, 'afloat': {}, 'afloat_5m': {}, 'seabed': {},
+    output_dict = {'size_bins': size_bins, 'beach': {}, 'afloat': {}, 'afloat_5m': {}, 'afloat_2m': {}, 'seabed': {},
                    'total': {}}
 
     # loop through the runs
@@ -145,6 +145,12 @@ def parcels_to_sizespectrum_beachstate(file_dict: dict):
                 size_counts, _ = np.histogram(time_selection_dict['size'][afloat5m_selection], bins=size_bins,
                                               weights=time_selection_dict['particle_number'][afloat5m_selection])
                 output_dict['afloat_5m'][index_time] = size_counts
+                # floating particles within 2m of surface
+                afloat5m_selection = (time_selection_dict['beach'] == beach_label['afloat']) & (time_selection_dict['z'] < 2)
+                size_counts, _ = np.histogram(time_selection_dict['size'][afloat5m_selection], bins=size_bins,
+                                              weights=time_selection_dict['particle_number'][afloat5m_selection])
+                output_dict['afloat_2m'][index_time] = size_counts
+
 
     # Adding the index of the final timestep for ease later on
     output_dict['final_index'] = index_time
