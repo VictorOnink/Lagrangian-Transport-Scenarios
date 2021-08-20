@@ -21,6 +21,7 @@ def FragmentationKaandorpPartial_SizeSpectrumBeach(figure_direc, scenario, shore
                                                               data_direc=data_direc, shore_time=shore_time,
                                                               lambda_frag=lambda_frag, rho=density)
     time_index = data_dict['final_index']
+    size_bins = data_dict['size_bins']
     beach_state_list = ['total', 'beach', 'seabed', 'afloat', 'afloat_5m']
 
     # Creating the figure
@@ -34,6 +35,10 @@ def FragmentationKaandorpPartial_SizeSpectrumBeach(figure_direc, scenario, shore
     # Labelling the subfigures
     for index_ax in range(plot_num):
         ax[index_ax].set_title(subfigure_title(index_ax, beach_state_list[index_ax]), fontsize=ax_label_size)
+
+    # Plotting the size distributions
+    for index_ax, beach_state in enumerate(beach_state_list):
+        ax[index_ax].plot(size_bins, data_dict[beach_state][time_index], linestyle='-', color='r')
 
     file_name = output_direc + 'SizeSpectrumBeach-ST={}-rho={}-lamf={}.png'.format(shore_time, density, lambda_frag)
     plt.savefig(file_name, bbox_inches='tight')
