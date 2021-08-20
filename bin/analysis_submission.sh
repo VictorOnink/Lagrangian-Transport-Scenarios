@@ -25,7 +25,7 @@ SEABED_CRIT=140
 P=4
 DN=25
 SIZE_CLASS_NUMBER=7
-LAMBDA_FRAG_list=(300)
+LAMBDA_FRAG_list=(200)
 #(1 10 100 200 300 388)
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010
