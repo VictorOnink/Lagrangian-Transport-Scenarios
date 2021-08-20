@@ -8,7 +8,7 @@ import numpy as np
 
 
 def FragmentationKaandorpPartial_SizeSpectrumBeach(figure_direc, scenario, shore_time, lambda_frag, density,
-                                                  fig_size=(18, 12), x_label='Size (m)', y_label='Number of Particles',
+                                                  fig_size=(12, 18), x_label='Size (m)', y_label='Number of Particles',
                                                   ax_ticklabel_size=12, ax_label_size=14, legend_size=14):
     # Setting the folder within which we have the output, and where we have the saved data
     output_direc = figure_direc + 'size_distribution/'
@@ -28,7 +28,8 @@ def FragmentationKaandorpPartial_SizeSpectrumBeach(figure_direc, scenario, shore
     plot_num = 5
     ax = vUtils.base_figure(fig_size=fig_size, ax_range=ax_range, x_label=x_label, y_label=y_label,
                             ax_ticklabel_size=ax_ticklabel_size, ax_label_size=ax_label_size, shape=(5, 1),
-                            plot_num=plot_num, log_yscale=True, log_xscale=True, all_x_labels=True)
+                            plot_num=plot_num, log_yscale=True, log_xscale=True, all_x_labels=True,
+                            all_y_labels=False)
 
     # Labelling the subfigures
     for index_ax in range(plot_num):
