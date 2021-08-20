@@ -21,7 +21,7 @@ def FragmentationKaandorpPartial_SizeSpectrumBeach(figure_direc, scenario, shore
                                                               data_direc=data_direc, shore_time=shore_time,
                                                               lambda_frag=lambda_frag, rho=density)
     time_index = data_dict['final_index']
-    size_bins = data_dict['size_bins']
+    size_bins = data_dict['size_bins'][:-1]
     beach_state_list = ['total', 'beach', 'seabed', 'afloat', 'afloat_5m']
 
     # Creating the figure
