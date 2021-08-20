@@ -131,17 +131,17 @@ def parcels_to_sizespectrum_beachstate(file_dict: dict):
                                               weights=time_selection_dict['particle_number'][beach_selection])
                 output_dict['beach'][index_time] = size_counts
                 # seabed particles
-                seabed_selection = time_selection_dict['seabed'] == beach_label['seabed']
+                seabed_selection = time_selection_dict['beach'] == beach_label['seabed']
                 size_counts, _ = np.histogram(time_selection_dict['size'][seabed_selection], bins=size_bins,
                                               weights=time_selection_dict['particle_number'][seabed_selection])
                 output_dict['seabed'][index_time] = size_counts
                 # floating particles
-                afloat_selection = time_selection_dict['afloat'] == beach_label['afloat']
+                afloat_selection = time_selection_dict['beach'] == beach_label['afloat']
                 size_counts, _ = np.histogram(time_selection_dict['size'][afloat_selection], bins=size_bins,
                                               weights=time_selection_dict['particle_number'][afloat_selection])
                 output_dict['afloat'][index_time] = size_counts
                 # floating particles within 5m of surface
-                afloat5m_selection = (time_selection_dict['afloat'] == beach_label['afloat']) & (time_selection_dict['z'] < 5)
+                afloat5m_selection = (time_selection_dict['beach'] == beach_label['afloat']) & (time_selection_dict['z'] < 5)
                 size_counts, _ = np.histogram(time_selection_dict['size'][afloat5m_selection], bins=size_bins,
                                               weights=time_selection_dict['particle_number'][afloat5m_selection])
                 output_dict['afloat_5m'][index_time] = size_counts
