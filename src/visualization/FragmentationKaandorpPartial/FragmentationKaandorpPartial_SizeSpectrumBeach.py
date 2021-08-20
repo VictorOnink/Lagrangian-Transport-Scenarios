@@ -25,7 +25,7 @@ def FragmentationKaandorpPartial_SizeSpectrumBeach(figure_direc, scenario, shore
     beach_state_list = ['total', 'beach', 'seabed', 'afloat', 'afloat_5m']
 
     # Creating the figure
-    ax_range = 1e-2, 1e-5, 1e7, 1e-2
+    ax_range = 1e-2, 1e-5, 1e4, 1e0
     plot_num = 5
     ax = vUtils.base_figure(fig_size=fig_size, ax_range=ax_range, x_label=x_label, y_label=y_label,
                             ax_ticklabel_size=ax_ticklabel_size, ax_label_size=ax_label_size, shape=(5, 1),
