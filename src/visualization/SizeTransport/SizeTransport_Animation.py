@@ -60,7 +60,7 @@ def SizeTransport_Animation(scenario, figure_direc, size_list, rho_list, tau_lis
     # Setting the time range for which we want to create the simulation
     current_time = datetime(2010, 1, 1, 0)
     end_time = datetime(2012, 12, 31, 12)
-    time_step = timedelta(hours=12)
+    time_step = timedelta(hours=24)
     time_list = []
     while current_time < end_time:
         time_list.append(current_time)
@@ -106,7 +106,7 @@ def SizeTransport_Animation(scenario, figure_direc, size_list, rho_list, tau_lis
                                        frames=frame_number, interval=100, blit=True)
 
     # Saving the animation
-    animator.save(filename=animation_save_name(output_direc=output_direc, rho=np.mean(rho_list)), fps=30,
+    animator.save(filename=animation_save_name(output_direc=output_direc, rho=np.mean(rho_list)), fps=15,
                   extra_args=['-vcodec', 'libx264'])
 
 
