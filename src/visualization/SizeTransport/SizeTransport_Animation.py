@@ -8,7 +8,7 @@ import numpy as np
 from datetime import datetime, timedelta
 import string
 import matplotlib.animation as animation
-import os
+import cmocean.cm as cmo
 
 
 def SizeTransport_Animation(scenario, figure_direc, size_list, rho_list, tau_list,
@@ -45,7 +45,7 @@ def SizeTransport_Animation(scenario, figure_direc, size_list, rho_list, tau_lis
     # Setting the colormap, that we will use for coloring the scatter plot according to the particle depth. Then, adding
     # a colorbar.
     norm = colors.Normalize(vmin=0.0, vmax=100.0)
-    cmap = plt.cm.ScalarMappable(cmap='inferno_r', norm=norm)
+    cmap = plt.cm.ScalarMappable(cmap=cmo.haline_r, norm=norm)
     cax = fig.add_subplot(gs[:, -1])
     cbar = plt.colorbar(cmap, cax=cax, orientation='vertical', extend='max')
     cbar.set_label(r"Depth (m)", fontsize=fontsize)
@@ -59,7 +59,7 @@ def SizeTransport_Animation(scenario, figure_direc, size_list, rho_list, tau_lis
 
     # Setting the time range for which we want to create the simulation
     current_time = datetime(2010, 1, 1, 0)
-    end_time = datetime(2010, 12, 31, 12)
+    end_time = datetime(2012, 12, 31, 12)
     time_step = timedelta(hours=12)
     time_list = []
     while current_time < end_time:
@@ -77,7 +77,7 @@ def SizeTransport_Animation(scenario, figure_direc, size_list, rho_list, tau_lis
     # Setting the initial values of the x and y, which will later be filled by lon and lat
     plot_list = []
     for ax in ax_list:
-        plot_list.append(ax.scatter(0, 0, c=0, s=4, alpha=1, zorder=1000, cmap='inferno_r', norm=norm))
+        plot_list.append(ax.scatter(0, 0, c=0, s=4, alpha=1, zorder=1000, cmap=cmo.haline_r, norm=norm))
 
     # Initializing the plots on each axis
     def init():
@@ -106,7 +106,7 @@ def SizeTransport_Animation(scenario, figure_direc, size_list, rho_list, tau_lis
                                        frames=frame_number, interval=100, blit=True)
 
     # Saving the animation
-    animator.save(filename=animation_save_name(output_direc=output_direc, rho=np.mean(rho_list)), fps=10,
+    animator.save(filename=animation_save_name(output_direc=output_direc, rho=np.mean(rho_list)), fps=30,
                   extra_args=['-vcodec', 'libx264'])
 
 
