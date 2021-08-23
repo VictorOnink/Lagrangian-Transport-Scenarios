@@ -2,11 +2,14 @@ import settings
 import utils
 
 
-def SizeTransport_load_data(scenario, prefix, data_direc, size, rho, tau=settings.SEABED_CRIT,
-                            advection_data='CMEMS_MEDITERRANEAN', shore_time=20, start_year=2010, input='Lebreton'):
+def SizeTransport_load_data(scenario, prefix, data_direc, size, rho, tau=settings.SEABED_CRIT, restart=settings.RESTART,
+                            advection_data='CMEMS_MEDITERRANEAN', shore_time=20, start_year=2010, input='Lebreton',
+                            run=settings.RUN):
     """
     Loading the data we want for SizeTransport analysis output, which will generally just differ in terms of which
     particle size and density
+    :param run:
+    :param restart:
     :param tau:
     :param scenario:
     :param prefix:
@@ -20,8 +23,8 @@ def SizeTransport_load_data(scenario, prefix, data_direc, size, rho, tau=setting
     :return:
     """
     file_name = scenario.file_names(new=True, advection_data=advection_data, shore_time=shore_time, init_size=size,
-                                    init_density=rho, start_year=start_year, input=input, run=settings.RUN,
-                                    restart=settings.RESTART, seabed_crit=tau)
+                                    init_density=rho, start_year=start_year, input=input, run=run,
+                                    restart=restart, seabed_crit=tau)
     full_path = data_direc + utils.analysis_save_file_name(input_file=file_name, prefix=prefix)
     return utils.load_obj(full_path)
 
