@@ -29,8 +29,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
             if settings.SUBMISSION in ['simulation']:
                 self.field_set = self.create_fieldset()
 
-    var_list = ['lon', 'lat', 'beach', 'age', 'size', 'parent', 'rise_velocity', 'beach_time', 'size_class',
-                'particle_number']
+    var_list = ['lon', 'lat', 'beach', 'age', 'size', 'parent', 'beach_time', 'size_class', 'particle_number']
 
     def create_fieldset(self) -> FieldSet:
         utils.print_statement("Creating the fieldset")
