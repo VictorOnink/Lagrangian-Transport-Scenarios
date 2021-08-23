@@ -31,8 +31,8 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
 
     variable_list = ['z', 'distance_vertical', 'distance_horizontal']
     variable_domain = [np.arange(0, np.nanmax(adv_file_dict['DEPTH']), 0.1),
-                       np.logspace(0, 6, num=1000),
-                       np.logspace(0, 6, num=1000)]
+                       np.logspace(0, 7, num=1000),
+                       np.logspace(0, 7, num=1000)]
     variable_dict = dict.fromkeys(variable_list)
     for index, key in enumerate(variable_dict.keys()):
         variable_dict[key] = np.zeros(shape=variable_domain[index].shape, dtype=float)
@@ -74,11 +74,11 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
     # Next it will be the cumulative vertical distance
     ax_list[1].set_xlabel('Cumulative vertical distance (m)', fontsize=fontsize)
     ax_list[1].set_xscale('log')
-    ax_list[1].set_xlim([1e0, 1e6])
+    ax_list[1].set_xlim([1e1, 1e7])
     # Finally, the cumulative horizontal distance
     ax_list[2].set_xlabel('Cumulative horizontal distance (km)', fontsize=fontsize)
     ax_list[2].set_xscale('log')
-    ax_list[2].set_xlim([1e0, 1e5])
+    ax_list[2].set_xlim([1e1, 1e6])
 
     # Plotting the data
     for index_size, size in enumerate(size_list):

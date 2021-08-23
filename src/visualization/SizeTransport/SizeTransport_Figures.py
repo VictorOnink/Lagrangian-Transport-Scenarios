@@ -31,8 +31,8 @@ def run(scenario, figure_direc: str):
     # General.General_input_scenario(scenario=scenario, figure_direc=figure_direc)
 
     # Creating an animation showing how the six different size classes I have simulations for at the moment look like
-    SizeTransport_Animation.SizeTransport_Animation(figure_direc=figure_direc, scenario=scenario, size_list=size_list,
-                                                    rho_list=rho_list, tau_list=tau_list)
+    # SizeTransport_Animation.SizeTransport_Animation(figure_direc=figure_direc, scenario=scenario, size_list=size_list,
+    #                                                 rho_list=rho_list, tau_list=tau_list)
 
     # Creating figures showing the relative distribution, averaged over the entire simulation and time-snapshots at the
     # end of each simulation year
@@ -59,9 +59,9 @@ def run(scenario, figure_direc: str):
     #                                                                             time_selection=time_select,
     #                                                                             beach_state='beach')
 
-    # size_list = np.array([5000, 1000, 500, 100, 90, 80, 70, 60, 50, 40, 30, 20, 10, 5, 1]) * settings.SIZE_FACTOR
-    # rho_list = np.ones(size_list.shape, dtype=int) * 920
-    # tau_list = np.array([0.14])
+    size_list = np.array([5000, 1000, 500, 100, 90, 80, 70, 60, 50, 40, 30, 20, 10, 5, 1]) * settings.SIZE_FACTOR
+    rho_list = np.ones(size_list.shape, dtype=int) * 920
+    tau_list = np.array([0.14])
 
     # Creating figures of the timeseries of the number of particles that are beached/afloat/seabed/removed
     # SizeTransport_beach_timeseries.SizeTransport_beach_timeseries(figure_direc=figure_direc, scenario=scenario,
@@ -80,11 +80,11 @@ def run(scenario, figure_direc: str):
     #                                                                                 cumulative=True)
 
     # Cumulative plots for the total distance travelled vertically and horizontally, and the max depth reached
-    # SizeTransport_CumulativeDistance.SizeTransport_CumulativeDistance(figure_direc=figure_direc,
-    #                                                                   scenario=scenario,
-    #                                                                   size_list=size_list,
-    #                                                                   rho_list=rho_list,
-    #                                                                   tau_list=tau_list)
+    SizeTransport_CumulativeDistance.SizeTransport_CumulativeDistance(figure_direc=figure_direc,
+                                                                      scenario=scenario,
+                                                                      size_list=size_list,
+                                                                      rho_list=rho_list,
+                                                                      tau_list=tau_list)
 
     # Plotting the separation distance
     # for size_selection in size_list:
