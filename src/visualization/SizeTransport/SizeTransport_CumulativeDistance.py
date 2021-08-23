@@ -78,7 +78,7 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
     # Finally, the cumulative horizontal distance
     ax_list[2].set_xlabel('Cumulative horizontal distance (km)', fontsize=fontsize)
     ax_list[2].set_xscale('log')
-    ax_list[2].set_xlim([1e1, 1e6])
+    ax_list[2].set_xlim([1e1, 1e5])
 
     # Plotting the data
     for index_size, size in enumerate(size_list):
