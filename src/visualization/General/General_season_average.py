@@ -29,10 +29,13 @@ def General_season_average(scenario, figure_direc, variable, figsize=(16, 12), f
         if variable == 'MLD':
             variable_dict[season] = np.nanmean(dataset.variables['mlotst'][:], axis=0)
         elif variable == 'wind':
+            variable_dict[season] = {}
             u10, v10 = np.nanmean(dataset.variables['u10'][:], axis=0), np.nanmean(dataset.variables['v10'][:], axis=0)
-            variable_dict[season] = np.sqrt(np.square(u10) + np.square(v10))
+            variable_dict[season]['magnitude'] = np.sqrt(np.square(u10) + np.square(v10))
+            variable_dict[season]['u10'] = np.divide(u10, variable_dict[season]['magnitude'])
+            variable_dict[season]['v10'] = np.divide(v10, variable_dict[season]['magnitude'])
 
-    # Creating the figure
+            # Creating the figure
     gridspec_shape = (2, 2)
     fig = plt.figure(figsize=figsize)
     gs = fig.add_gridspec(nrows=gridspec_shape[0], ncols=gridspec_shape[1] + 1, width_ratios=[1, 1, 0.1])
@@ -53,14 +56,16 @@ def General_season_average(scenario, figure_direc, variable, figsize=(16, 12), f
         norm = colors.LogNorm(vmin=1e0, vmax=1e2)
         cmap_name = cmo.haline_r
         cbar_label = r"Depth (m)"
+        extend = 'max'
     elif variable == 'wind':
         norm = colors.LogNorm(vmin=1e-1, vmax=1e1)
         cmap_name = cmo.speed
         cbar_label = r"Wind speed (m s$^{-1}$)"
+        extend = 'both'
 
     cmap = plt.cm.ScalarMappable(cmap=cmap_name, norm=norm)
     cax = fig.add_subplot(gs[:, -1])
-    cbar = plt.colorbar(cmap, cax=cax, orientation='vertical', extend='max')
+    cbar = plt.colorbar(cmap, cax=cax, orientation='vertical', extend=extend)
     cbar.set_label(cbar_label, fontsize=fontsize)
     cbar.ax.tick_params(which='major', labelsize=fontsize - 2, length=14, width=2)
     cbar.ax.tick_params(which='minor', labelsize=fontsize - 2, length=7, width=2)
@@ -72,7 +77,12 @@ def General_season_average(scenario, figure_direc, variable, figsize=(16, 12), f
         Lon, Lat = np.meshgrid(dataset.variables['longitude'][:], dataset.variables['latitude'][:])
 
     for ax_index, ax in enumerate(ax_list):
-        ax.pcolormesh(Lon, Lat, variable_dict[season_list[ax_index]], cmap=cmap_name, zorder=10)
+        if variable == 'MLD':
+            ax.pcolormesh(Lon, Lat, variable_dict[season_list[ax_index]], cmap=cmap_name, zorder=10)
+        if variable == 'wind':
+            ax.pcolormesh(Lon, Lat, variable_dict[season_list[ax_index]]['magnitude'], cmap=cmap_name, zorder=10)
+            ax.quiver(Lon, Lat, variable_dict[season_list[ax_index]]['u10'],
+                      variable_dict[season_list[ax_index]]['v10'])
 
     # Saving the figure
     file_name = output_direc + 'Seasonal_average_{}_{}_2010-12.png'.format(variable, settings.ADVECTION_DATA)
