@@ -98,7 +98,7 @@ elif [ "$SERVER" -eq "0" ]; then
   part11='cd "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/BeachingSim/Next-Stage-Plastic-Beaching/"'
   part12="python src/main.py -p 10 -v"
   #and now the creation of the submission file
-  for i in {1..11}
+  for i in {1..12}
   do
   partGrab="part"$i
   echo ${!partGrab} >> jobsubmissionFile.sh
