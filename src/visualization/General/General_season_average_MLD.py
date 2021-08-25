@@ -10,7 +10,7 @@ import cartopy.crs as ccrs
 import string
 
 
-def General_season_average_MLD(scenario, figure_direc, figsize=(14, 12), fontsize=14):
+def General_season_average_MLD(scenario, figure_direc, figsize=(16, 12), fontsize=16):
     utils.print_statement('Creating a figure of the season average MLD', to_print=True)
     # Setting the folder within which we have the output
     output_direc = figure_direc + 'General/'
@@ -37,7 +37,7 @@ def General_season_average_MLD(scenario, figure_direc, figsize=(14, 12), fontsiz
     utils.print_statement('Setting up the figure', to_print=True)
     gridspec_shape = (2, 2)
     fig = plt.figure(figsize=figsize)
-    gs = fig.add_gridspec(nrows=gridspec_shape[0], ncols=gridspec_shape[1] + 1, width_ratios=[1, 1, 0.2])
+    gs = fig.add_gridspec(nrows=gridspec_shape[0], ncols=gridspec_shape[1] + 1, width_ratios=[1, 1, 0.1])
 
     ax_list = []
     for rows in range(gridspec_shape[0]):
