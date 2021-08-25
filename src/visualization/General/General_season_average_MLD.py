@@ -50,7 +50,8 @@ def General_season_average_MLD(scenario, figure_direc, figsize=(16, 12), fontsiz
 
     # Setting the colormap, that we will use for coloring the scatter plot according to the particle depth. Then, adding
     # a colorbar.
-    norm = colors.Normalize(vmin=0.0, vmax=100.0)
+    # norm = colors.Normalize(vmin=0.0, vmax=100.0)
+    norm = colors.LogNorm(vmin=1e0, vmax=1e2)
     cmap_name =cmo.haline_r
     cmap = plt.cm.ScalarMappable(cmap=cmap_name, norm=norm)
     cax = fig.add_subplot(gs[:, -1])
