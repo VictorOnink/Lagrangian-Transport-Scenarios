@@ -32,7 +32,7 @@ def run(scenario, figure_direc: str):
 
     # Figure of the seasonal average MLD and wind speed
     # General.General_season_average(scenario=scenario, figure_direc=figure_direc, variable='MLD')
-    General.General_season_average(scenario=scenario, figure_direc=figure_direc, variable='wind')
+    # General.General_season_average(scenario=scenario, figure_direc=figure_direc, variable='wind')
 
     # Creating an animation showing how the six different size classes I have simulations for at the moment look like
     # SizeTransport_Animation.SizeTransport_Animation(figure_direc=figure_direc, scenario=scenario, size_list=size_list,
