@@ -7,7 +7,7 @@ DEBUG=1 # 0 = Not a debug run, 1 = a debug run
 #5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation
 SCENARIO=5
 #Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=lebretonPartial, 3=point, 4=uniform
-INPUT=1
+INPUT=2
 #Inclusion of Stokes drift. 0 = include stokes, 1 = do not include stokes
 STOKES=0
 #kuphaven == 0, Ubelix == 1
