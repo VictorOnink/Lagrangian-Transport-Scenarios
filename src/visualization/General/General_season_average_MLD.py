@@ -25,12 +25,12 @@ def General_season_average_MLD(scenario, figure_direc, figsize=(16, 12), fontsiz
 
     # Loading the MLD mean fields
     utils.print_statement('Loading the MLD fields', to_print=True)
-    # season_list = ['DJF', 'MAM', 'JJA', 'SON']
-    season_list = ['20100101', '20100401', '20100701', '20101001']
+    season_list = ['DJF', 'MAM', 'JJA', 'SON']
+    # season_list = ['20100101', '20100401', '20100701', '20101001']
     MLD_dict = {}
     for season in season_list:
-        # file_name = settings.DATA_DIR_SERVERS[settings.SERVER] + 'CMEMS_MED/mean_{}_AMXL.nc'.format(season)
-        file_name = settings.DATA_DIR_SERVERS[settings.SERVER] + 'CMEMS_MED/{}_d-CMCC--AMXL-MFSe3r1-MED-b20200901_re-sv01.00.nc'.format(season)
+        file_name = settings.DATA_DIR_SERVERS[settings.SERVER] + 'CMEMS_MED/mean_{}_AMXL.nc'.format(season)
+        # file_name = settings.DATA_DIR_SERVERS[settings.SERVER] + 'CMEMS_MED/{}_d-CMCC--AMXL-MFSe3r1-MED-b20200901_re-sv01.00.nc'.format(season)
         dataset = Dataset(file_name)
         MLD_dict[season] = np.nanmean(dataset.variables['mlotst'][:], axis=0)
 
