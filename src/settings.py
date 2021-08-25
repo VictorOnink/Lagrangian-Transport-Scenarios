@@ -1,7 +1,7 @@
 import os
 from datetime import timedelta
 import socket
-if socket.gethostname() in ['kuphaven']:
+if socket.gethostname() in ['kuphaven', 'climatestor01']:
     from dotenv import load_dotenv
     load_dotenv()
 
