@@ -132,9 +132,9 @@ elif INPUT == 'LebretonDivision':
     # NUMBER OF RUNS
     RUN_RANGE: int = 1
     # MAXIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
-    INPUT_MAX = 10
+    INPUT_MAX = 5
     # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
-    INPUT_MIN = 0.5  # Minimum plastic mass input for a cell in order to be considered for the input
+    INPUT_MIN = 0.01  # Minimum plastic mass input for a cell in order to be considered for the input
 elif INPUT == 'Point_Release':
     # THE NUMBER OF PARTICLES PER RELEASE STEP PER RUN
     INPUT_DIV = 5000
