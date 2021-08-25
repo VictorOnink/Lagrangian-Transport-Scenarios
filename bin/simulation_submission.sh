@@ -28,7 +28,7 @@ SIZE_CLASS_NUMBER=7
 LAMBDA_FRAG_list=(388)
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010
-#Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=lebretonPartial, 3=point, 4=uniform
+#Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=lebretondivision, 3=point, 4=uniform
 INPUT=1
 #Which advection data do we want to use?
 # 0 = Global HYCOM, 1 = Caribbean HYCOM, 2 = Mediterranean CMEMS

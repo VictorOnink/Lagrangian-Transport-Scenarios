@@ -27,8 +27,9 @@ FIGURE_OUTPUT_SERVER: dict = {0: "/storage/climatestor/Bern3dLPX/onink/alphadata
                               1: "/storage/homefs/vo18e689/Data/Output/Figures/"}
 INPUT_DIREC_DICT = {0: DATA_INPUT_DIR_SERVERS[SERVER] + 'Jambeck_Inputs/',
                     1: DATA_INPUT_DIR_SERVERS[SERVER] + 'Lebreton_Inputs/',
-                    2: DATA_INPUT_DIR_SERVERS[SERVER] + 'Point_Release/',
-                    3: DATA_INPUT_DIR_SERVERS[SERVER] + 'Uniform/'}
+                    2: DATA_INPUT_DIR_SERVERS[SERVER] + 'LebretonDivision_Inputs/',
+                    3: DATA_INPUT_DIR_SERVERS[SERVER] + 'Point_Release/',
+                    4: DATA_INPUT_DIR_SERVERS[SERVER] + 'Uniform/'}
 
 if SUBMISSION in ['simulation', 'analysis']:
     # STARTING YEAR OF THE SIMULATION
