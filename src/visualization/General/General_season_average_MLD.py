@@ -28,7 +28,7 @@ def General_season_average_MLD(scenario, figure_direc, figsize=(16, 12), fontsiz
     season_list = ['DJF', 'MAM', 'JJA', 'SON']
     MLD_dict = {}
     for season in season_list:
-        file_name = settings.DATA_DIR_SERVERS[settings.SERVER] + '/CMEMS_MED/mean_{}_AXML.nc'.format(season)
+        file_name = settings.DATA_DIR_SERVERS[settings.SERVER] + 'CMEMS_MED/mean_{}_AMXL.nc'.format(season)
         dataset = Dataset(file_name)
         MLD_dict[season] = np.nanmean(dataset.variables['mlotst'][:], axis=0)
 
