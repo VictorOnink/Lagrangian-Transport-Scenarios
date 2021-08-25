@@ -107,4 +107,4 @@ fi
 
 sbatch jobsubmissionFile.sh
 
-#rm jobsubmissionFile.sh
+rm jobsubmissionFile.sh
