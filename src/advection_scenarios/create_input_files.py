@@ -19,6 +19,7 @@ from parcels import Field
 
 
 def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array, repeat_dt):
+    utils.check_direc_exist(settings.INPUT_DIREC)
     # Create the output prefix and then check if any files with such prefixes exist
     if settings.INPUT in ['Jambeck', 'Lebreton', 'LebretonDivision']:
         output_prefix = settings.INPUT_DIREC + settings.INPUT + '_{}_{}_'.format(prefix, settings.START_YEAR)
