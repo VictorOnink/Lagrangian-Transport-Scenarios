@@ -58,7 +58,7 @@ def General_season_average(scenario, figure_direc, variable, figsize=(16, 12), f
         cbar_label = r"Depth (m)"
         extend = 'max'
     elif variable == 'wind':
-        norm = colors.LogNorm(vmin=1e-1, vmax=1e1)
+        norm = colors.LogNorm(vmin=1e-2, vmax=1e0)
         cmap_name = cmo.speed
         cbar_label = r"Wind speed (m s$^{-1}$)"
         extend = 'both'
@@ -82,7 +82,7 @@ def General_season_average(scenario, figure_direc, variable, figsize=(16, 12), f
         if variable == 'wind':
             ax.pcolormesh(Lon, Lat, variable_dict[season_list[ax_index]]['magnitude'], cmap=cmap_name, zorder=10)
             ax.quiver(Lon, Lat, variable_dict[season_list[ax_index]]['u10'],
-                      variable_dict[season_list[ax_index]]['v10'])
+                      variable_dict[season_list[ax_index]]['v10'], zorder=15)
 
     # Saving the figure
     file_name = output_direc + 'Seasonal_average_{}_{}_2010-12.png'.format(variable, settings.ADVECTION_DATA)
