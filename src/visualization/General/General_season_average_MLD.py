@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as colors
 import cmocean.cm as cmo
 import cartopy.crs as ccrs
+import string
 
 
 def General_season_average_MLD(scenario, figure_direc, figsize=(10, 8), fontsize=14):
@@ -44,6 +45,9 @@ def General_season_average_MLD(scenario, figure_direc, figsize=(10, 8), fontsize
             ax_list.append(vUtils.cartopy_standard_map(fig=fig, gridspec=gs, row=rows, column=columns,
                                                        domain=spatial_domain, add_gridlines=False, resolution='10m',
                                                        land_zorder=90))
+    # Adding subplot titles
+    for ax_index, ax in enumerate(ax_list):
+        ax.set_title(subfigure_title(ax_index, season_list[ax_index]), fontsize=fontsize)
 
     # Setting the colormap, that we will use for coloring the scatter plot according to the particle depth. Then, adding
     # a colorbar.
@@ -58,3 +62,8 @@ def General_season_average_MLD(scenario, figure_direc, figsize=(10, 8), fontsize
     utils.print_statement('Saving the figure', to_print=True)
     file_name = output_direc + 'Seasonal_average_MLD_{}_2010-12.png'.format(settings.ADVECTION_DATA)
     plt.savefig(file_name, bbox_inches='tight')
+
+
+def subfigure_title(index, season):
+    alphabet = string.ascii_lowercase
+    return '({}) {}'.format(alphabet[index], season)
