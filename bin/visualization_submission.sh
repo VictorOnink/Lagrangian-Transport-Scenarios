@@ -94,7 +94,7 @@ elif [ "$SERVER" -eq "0" ]; then
     part8="#SBATCH --partition=debug"
   fi
   part9="source /storage/climatestor/Bern3dLPX/onink/alphadata04/.bash_profile"
-  part10="source /storage/climatestor/Bern3dLPX/onink/alphadata04/anaconda3/bi/activate py3_parcels"
+  part10="source /storage/climatestor/Bern3dLPX/onink/alphadata04/anaconda3/bin/activate py3_parcels"
   part11='cd "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/BeachingSim/Next-Stage-Plastic-Beaching/"'
   part12="python src/main.py -p 10 -v"
   #and now the creation of the submission file
