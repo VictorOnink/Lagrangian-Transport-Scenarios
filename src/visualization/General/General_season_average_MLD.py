@@ -43,7 +43,7 @@ def General_season_average_MLD(scenario, figure_direc, figsize=(16, 12), fontsiz
         for columns in range(gridspec_shape[1]):
             ax_list.append(vUtils.cartopy_standard_map(fig=fig, gridspec=gs, row=rows, column=columns,
                                                        domain=spatial_domain, add_gridlines=False, resolution='10m',
-                                                       land_zorder=90))
+                                                       land_zorder=90, ocean_zorder=0))
     # Adding subplot titles
     for ax_index, ax in enumerate(ax_list):
         ax.set_title(subfigure_title(ax_index, season_list[ax_index]), fontsize=fontsize)
@@ -62,7 +62,7 @@ def General_season_average_MLD(scenario, figure_direc, figsize=(16, 12), fontsiz
     # Plotting the actual mean MLD
     Lon, Lat = np.meshgrid(dataset.variables['lon'][:], dataset.variables['lat'][:])
     for ax_index, ax in enumerate(ax_list):
-        ax.pcolormesh(Lat, Lon, MLD_dict[season_list[ax_index]], cmap=cmap_name)
+        ax.pcolormesh(Lat, Lon, MLD_dict[season_list[ax_index]], cmap=cmap_name, zorder=10)
 
     # Saving the figure
     utils.print_statement('Saving the figure', to_print=True)
