@@ -31,7 +31,6 @@ def General_season_average_MLD(scenario, figure_direc, figsize=(16, 12), fontsiz
         file_name = settings.DATA_DIR_SERVERS[settings.SERVER] + '/CMEMS_MED/mean_{}_2010_2012_AXML.nc'.format(season)
         dataset = Dataset(file_name)
         MLD_dict[season] = np.nanmean(dataset.variables['mlotst'][:], axis=0)
-    MLD_dict['latlon'] = np.meshgrid(dataset.variables['lat'][:], dataset.variables['lon'][:])
 
     # Creating the figure
     utils.print_statement('Setting up the figure', to_print=True)
@@ -61,7 +60,7 @@ def General_season_average_MLD(scenario, figure_direc, figsize=(16, 12), fontsiz
     cbar.ax.tick_params(which='minor', labelsize=fontsize - 2, length=7, width=2)
 
     # Plotting the actual mean MLD
-    Lat, Lon = MLD_dict['latlon']
+    Lat, Lon = np.meshgrid(dataset.variables['lat'][:], dataset.variables['lon'][:])
     for ax_index, ax in enumerate(ax_list):
         ax.pcolormesh(Lat, Lon, MLD_dict[season_list[ax_index]], cmap=cmap)
 
