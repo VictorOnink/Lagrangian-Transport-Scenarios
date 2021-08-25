@@ -54,7 +54,7 @@ def General_season_average(scenario, figure_direc, variable, figsize=(16, 12), f
         cmap_name = cmo.haline_r
         cbar_label = r"Depth (m)"
     elif variable == 'wind':
-        norm = colors.LogNorm(vmin=1e-1, vmax=1e2)
+        norm = colors.LogNorm(vmin=1e-1, vmax=1e1)
         cmap_name = cmo.speed
         cbar_label = r"Wind speed (m s$^{-1}$)"
 
