@@ -61,6 +61,7 @@ def General_season_average_MLD(scenario, figure_direc, figsize=(16, 12), fontsiz
 
     # Plotting the actual mean MLD
     Lat, Lon = np.meshgrid(dataset.variables['lat'][:], dataset.variables['lon'][:])
+    utils.print_statement(Lat.shape, to_print=True)
     for ax_index, ax in enumerate(ax_list):
         ax.pcolormesh(Lat, Lon, MLD_dict[season_list[ax_index]], cmap=cmap)
 
