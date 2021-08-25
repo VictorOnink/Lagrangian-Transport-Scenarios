@@ -18,7 +18,8 @@ def General_input_scenario(scenario, figure_direc, figsize=(10, 8), fontsize=14)
     file_dict = scenario.file_dict
     input_dict = file_dict['STARTFILES_filename']
 
-    print_statement = 'We have {} particles in this release situation'.format(len(input_dict['lat']))
+
+    print_statement = 'We have {} particles in this release situation'.format(len(np.load(input_dict['lat'])))
     utils.print_statement(print_statement, to_print=True)
 
     # Now we have all the unique input locations, and the number of particles that are released there
