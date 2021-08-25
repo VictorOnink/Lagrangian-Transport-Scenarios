@@ -10,17 +10,20 @@ import cartopy.crs as ccrs
 
 
 def General_season_average_MLD(scenario, figure_direc, figsize=(10, 8), fontsize=14):
+    utils.print_statement('Creating a figure of the season average MLD', to_print=True)
     # Setting the folder within which we have the output
     output_direc = figure_direc + 'General/'
     utils.check_direc_exist(output_direc)
 
     # Getting the grid data
+    utils.print_statement('Getting the grid data', to_print=True)
     file_dict = scenario.file_dict
     LON_GRID, LAT_GRID = file_dict['LON'], file_dict['LAT']
     spatial_domain = np.nanmin(LON_GRID), np.nanmax(LON_GRID), \
                      np.nanmin(LAT_GRID), np.nanmax(LAT_GRID)
 
     # Loading the MLD mean fields
+    utils.print_statement('Loading the MLD fields', to_print=True)
     season_list = ['DJF', 'MAM', 'JJA', 'SON']
     MLD_dict = {}
     for season in season_list:
@@ -30,7 +33,7 @@ def General_season_average_MLD(scenario, figure_direc, figsize=(10, 8), fontsize
     MLD_dict['latlon'] = np.meshgrid(dataset.variables['lat'][:], dataset.variables['lon'][:])
 
     # Creating the figure
-    # Creating the base figure
+    utils.print_statement('Setting up the figure', to_print=True)
     gridspec_shape = (2, 2)
     fig = plt.figure(figsize=figsize)
     gs = fig.add_gridspec(nrows=gridspec_shape[0], ncols=gridspec_shape[1] + 1, width_ratios=[1, 1, 0.2])
@@ -53,5 +56,6 @@ def General_season_average_MLD(scenario, figure_direc, figsize=(10, 8), fontsize
     cbar.ax.tick_params(which='major', labelsize=fontsize - 2, length=14, width=2)
     cbar.ax.tick_params(which='minor', labelsize=fontsize - 2, length=7, width=2)
 
+    utils.print_statement('Saving the figure', to_print=True)
     file_name = output_direc + 'Seasonal_average_MLD_{}_2010-12.png'.format(settings.ADVECTION_DATA)
     plt.savefig(file_name, bbox_inches='tight')
