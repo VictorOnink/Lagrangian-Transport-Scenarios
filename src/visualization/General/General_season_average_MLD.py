@@ -27,7 +27,7 @@ def General_season_average_MLD(scenario, figure_direc, figsize=(10, 8), fontsize
     season_list = ['DJF', 'MAM', 'JJA', 'SON']
     MLD_dict = {}
     for season in season_list:
-        file_name = settings.DATA_DIR_SERVERS[settings.server] + '/CMEMS_MED/mean_{}_2010_2012_AXML.nc'.format(season)
+        file_name = settings.DATA_DIR_SERVERS[settings.SERVER] + '/CMEMS_MED/mean_{}_2010_2012_AXML.nc'.format(season)
         dataset = Dataset(file_name)
         MLD_dict[season] = np.nanmean(dataset.variables['mlotst'][:], axis=0)
     MLD_dict['latlon'] = np.meshgrid(dataset.variables['lat'][:], dataset.variables['lon'][:])
