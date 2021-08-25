@@ -88,7 +88,7 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
         # Only keep the particles that are within the domain
         lon_inputs, lat_inputs, plastic_inputs = within_domain(lon=lon, lat=lat, lon_inputs=lon_inputs,
                                                                lat_inputs=lat_inputs, plastic_inputs=plastic_inputs)
-
+        utils.print_statement('We have {} input locations'.format(len(lon_inputs)), to_print=True)
         # Get the inputs onto the grid of the advection data
         inputs_grid = utils.histogram(lon_data=lon_inputs, lat_data=lat_inputs, bins_Lon=lon, bins_Lat=lat,
                                       weight_data=plastic_inputs, area_correc=False)
@@ -112,14 +112,15 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
         # How much of the plastic is being accounted for
         missing_percent = np.divide(np.sum(inputs_coastal_grid) - np.sum(particle_weight),
                                     np.sum(inputs_coastal_grid)) * 100
-        utils.print_statement("The particles account for {}% of the total inputs".format(100 - missing_percent))
+        utils.print_statement("The particles account for {}% of the total inputs".format(100 - missing_percent),
+                              to_print=True)
         str_format = len(particle_lat), len(particle_lat) * releases, releases
         utils.print_statement(
-            "We release {} particles per release step, so {} per year over {} steps".format(*str_format))
+            "We release {} particles per release step, so {} per year over {} steps".format(*str_format), to_print=True)
         # Dividing the particles into runs
         split_to_runs(particle_lat=particle_lat, particle_lon=particle_lon, particle_weight=particle_weight,
                       output_prefix=output_prefix)
-        utils.print_statement("The input files have been created")
+        utils.print_statement("The input files have been created", to_print=True)
     # Returning the output prefix
     return output_prefix
 
