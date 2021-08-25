@@ -20,7 +20,7 @@ from parcels import Field
 
 def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array, repeat_dt):
     # Create the output prefix and then check if any files with such prefixes exist
-    if settings.INPUT in ['Jambeck', 'Lebreton']:
+    if settings.INPUT in ['Jambeck', 'Lebreton', 'LebretonDivision']:
         output_prefix = settings.INPUT_DIREC + settings.INPUT + '_{}_{}_'.format(prefix, settings.START_YEAR)
     elif settings.INPUT == 'Point_Release':
         str_format = (prefix, settings.START_YEAR, settings.INPUT_LAT, settings.INPUT_LON)
@@ -59,7 +59,7 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
             lon_inputs = Lon_population[mismanaged_total > 0].flatten()
             lat_inputs = Lat_population[mismanaged_total > 0].flatten()
             plastic_inputs = mismanaged_total[mismanaged_total > 0].flatten()
-        elif settings.INPUT == 'Lebreton':
+        elif settings.INPUT in ['Lebreton', 'LebretonDivision']:
             utils.print_statement("Loading the lebreton data")
             lebData = pd.read_csv(settings.INPUT_DIREC + 'PlasticRiverInputs.csv')
             lon_inputs, lat_inputs = np.array(lebData['X']), np.array(lebData['Y'])
@@ -79,7 +79,8 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
                 np.array([la for lo, la in zip(lon_inputs, lat_inputs) if Land[0, 0, la, lo] == 0.0])]
             # If we are dealing with a uniform release, we are going to assume that weight doesn't really matter, and
             # we only care about the release positions.
-            utils.print_statement('The number of particles released per year is {} particles'.format(len(lon_inputs) * releases))
+            utils.print_statement(
+                'The number of particles released per year is {} particles'.format(len(lon_inputs) * releases))
             split_to_runs(particle_lat=lat_inputs, particle_lon=lon_inputs, particle_weight=None,
                           output_prefix=output_prefix)
             return output_prefix
@@ -112,7 +113,8 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
                                     np.sum(inputs_coastal_grid)) * 100
         utils.print_statement("The particles account for {}% of the total inputs".format(100 - missing_percent))
         str_format = len(particle_lat), len(particle_lat) * releases, releases
-        utils.print_statement("We release {} particles per release step, so {} per year over {} steps".format(*str_format))
+        utils.print_statement(
+            "We release {} particles per release step, so {} per year over {} steps".format(*str_format))
         # Dividing the particles into runs
         split_to_runs(particle_lat=particle_lat, particle_lon=particle_lon, particle_weight=particle_weight,
                       output_prefix=output_prefix)
@@ -184,7 +186,8 @@ def within_domain(lon: np.array, lat: np.array, lon_inputs: np.array, lat_inputs
     domain = (lon_inputs <= lon_max) & (lon_inputs >= lon_min) & (lat_inputs >= lat_min) & \
              (lat_inputs <= lat_max) & (plastic_inputs > 0)
     str_format = (len(lon_inputs), settings.INPUT, np.sum(domain * 1))
-    utils.print_statement("Of the original {} input sites in the {} scenario, {} are within the domain".format(*str_format))
+    utils.print_statement(
+        "Of the original {} input sites in the {} scenario, {} are within the domain".format(*str_format))
     return lon_inputs[domain], lat_inputs[domain], plastic_inputs[domain]
 
 

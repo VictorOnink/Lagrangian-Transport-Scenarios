@@ -47,6 +47,8 @@ are created with the `create_input_files.py` file. Currently, we have the follow
 - `Jambeck`: This uses the nationwide estimates of mismanaged plastic waste per capita from [Jambeck et al. (2015)](https://doi.org/10.1126/science.1260352)
 together with population density estimates for 2010.
 - `Lebreton`: This uses estimates of annual riverine plastic inputs from [Lebreton et al. (2017)](https://doi.org/10.1038/ncomms15611)
+- 'LebretonDivision': This is the same as the Lebreton scenario, but with a slightly different subdivision of the particle
+release.
 - `Point_Release`: This releases a particle at a single point, where the initial coordinates are set in `src/settings.py`
 - `Uniform`: This releases particles on a uniformly spaced lon/lat grid over the entire basin (with the exception of
 land).

@@ -102,7 +102,7 @@ if SUBMISSION in ['simulation', 'analysis']:
 #                                                                                                                      #
 ########################################################################################################################
 # THE INPUT SCENARIO
-INPUT_NAMES = {0: 'Jambeck', 1: 'Lebreton', 2: 'Point_Release', 3: 'Uniform'}
+INPUT_NAMES = {0: 'Jambeck', 1: 'Lebreton', 2: 'LebretonDivision', 3: 'Point_Release', 4: 'Uniform'}
 INPUT = INPUT_NAMES[int(os.environ['INPUT'])]
 # DIRECTORY CONTAINING INITIAL INPUTS FOR RESTART == 0
 INPUT_DIREC = INPUT_DIREC_DICT[int(os.environ['INPUT'])]
@@ -125,6 +125,15 @@ elif INPUT == 'Lebreton':
     INPUT_MAX = 0.0125
     # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
     INPUT_MIN = 0.00001  # Minimum plastic mass input for a cell in order to be considered for the input
+elif INPUT == 'LebretonDivision':
+    # THE NUMBER OF PARTICLES PER RELEASE STEP PER RUN
+    INPUT_DIV = 200000
+    # NUMBER OF RUNS
+    RUN_RANGE: int = 1
+    # MAXIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
+    INPUT_MAX = 100
+    # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
+    INPUT_MIN = 1  # Minimum plastic mass input for a cell in order to be considered for the input
 elif INPUT == 'Point_Release':
     # THE NUMBER OF PARTICLES PER RELEASE STEP PER RUN
     INPUT_DIV = 5000
