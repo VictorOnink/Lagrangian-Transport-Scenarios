@@ -42,8 +42,7 @@ def General_season_average_MLD(scenario, figure_direc, figsize=(10, 8), fontsize
     for rows in range(gridspec_shape[0]):
         for columns in range(gridspec_shape[1]):
             ax_list.append(vUtils.cartopy_standard_map(fig=fig, gridspec=gs, row=rows, column=columns,
-                                                       domain=spatial_domain,
-                                                       lat_grid_step=5, lon_grid_step=10, resolution='10m',
+                                                       domain=spatial_domain, add_gridlines=False, resolution='10m',
                                                        land_zorder=90))
 
     # Setting the colormap, that we will use for coloring the scatter plot according to the particle depth. Then, adding
