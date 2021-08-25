@@ -81,8 +81,10 @@ def General_season_average(scenario, figure_direc, variable, figsize=(16, 12), f
             ax.pcolormesh(Lon, Lat, variable_dict[season_list[ax_index]], cmap=cmap_name, zorder=10)
         if variable == 'wind':
             ax.pcolormesh(Lon, Lat, variable_dict[season_list[ax_index]]['magnitude'], cmap=cmap_name, zorder=10)
-            ax.quiver(Lon, Lat, variable_dict[season_list[ax_index]]['u10'],
-                      variable_dict[season_list[ax_index]]['v10'], zorder=15)
+            step = 3
+            ax.quiver(Lon[::step, ::step], Lat[::step, ::step],
+                      variable_dict[season_list[ax_index]]['u10'][::step, ::step],
+                      variable_dict[season_list[ax_index]]['v10'][::step, ::step], zorder=15)
 
     # Saving the figure
     file_name = output_direc + 'Seasonal_average_{}_{}_2010-12.png'.format(variable, settings.ADVECTION_DATA)
