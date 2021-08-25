@@ -85,7 +85,7 @@ def General_season_average(scenario, figure_direc, variable, figsize=(16, 12), f
             ax.quiver(Lon[::step, ::step], Lat[::step, ::step],
                       variable_dict[season_list[ax_index]]['u10'][::step, ::step],
                       variable_dict[season_list[ax_index]]['v10'][::step, ::step], zorder=15,
-                      scale=2, scale_units='inches')
+                      scale=0.5, scale_units='inches')
 
     # Saving the figure
     file_name = output_direc + 'Seasonal_average_{}_{}_2010-12.png'.format(variable, settings.ADVECTION_DATA)
