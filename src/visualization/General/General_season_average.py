@@ -88,4 +88,4 @@ def file_name_variable(variable, season):
     if variable == 'MLD':
         return settings.DATA_DIR_SERVERS[settings.SERVER] + 'CMEMS_MED/mean_{}_AMXL.nc'.format(season)
     elif variable == 'wind':
-        return settings.DATA_DIR_SERVERS[settings.SERVER] + 'Wind/{}DJF_2010_2012_wind_mean.nc'.format(season)
+        return settings.DATA_DIR_SERVERS[settings.SERVER] + 'Wind/{}_2010_2012_wind_mean.nc'.format(season)
