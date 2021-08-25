@@ -51,8 +51,8 @@ def General_season_average_MLD(scenario, figure_direc, figsize=(16, 12), fontsiz
     # Setting the colormap, that we will use for coloring the scatter plot according to the particle depth. Then, adding
     # a colorbar.
     norm = colors.Normalize(vmin=0.0, vmax=100.0)
-    cmap =cmo.haline_r
-    cmap = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
+    cmap_name =cmo.haline_r
+    cmap = plt.cm.ScalarMappable(cmap=cmap_name, norm=norm)
     cax = fig.add_subplot(gs[:, -1])
     cbar = plt.colorbar(cmap, cax=cax, orientation='vertical', extend='max')
     cbar.set_label(r"Depth (m)", fontsize=fontsize)
@@ -62,7 +62,7 @@ def General_season_average_MLD(scenario, figure_direc, figsize=(16, 12), fontsiz
     # Plotting the actual mean MLD
     Lon, Lat = np.meshgrid(dataset.variables['lon'][:], dataset.variables['lat'][:])
     for ax_index, ax in enumerate(ax_list):
-        ax.pcolormesh(Lat, Lon, MLD_dict[season_list[ax_index]], cmap=cmap)
+        ax.pcolormesh(Lat, Lon, MLD_dict[season_list[ax_index]], cmap=cmap_name)
 
     # Saving the figure
     utils.print_statement('Saving the figure', to_print=True)
