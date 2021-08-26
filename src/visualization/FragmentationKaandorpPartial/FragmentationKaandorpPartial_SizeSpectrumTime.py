@@ -23,11 +23,8 @@ def FragmentationKaandorpPartial_SizeSpectrumTime(figure_direc, scenario, shore_
                                                                   data_direc=data_direc, shore_time=shore_time,
                                                                   lambda_frag=lambda_frag, rho=density)
         size_dict[lambda_frag] = {}
-        for month in data_dict.keys():
-            if month != 'size_bins':
-                size_dict[lambda_frag][month] = data_dict['total'][month]
-                utils.print_statement('for month {} and lambda {}, the size is {}'.format(month, lambda_frag, data_dict[month].size),
-                      to_print=True)
+        for month in data_dict['total'].keys():
+            size_dict[lambda_frag][month] = data_dict['total'][month]
 
     size_bins = data_dict['size_bins'][:-1]
     utils.print_statement('size of bins is {}'.format(size_bins.size), to_print=True)
