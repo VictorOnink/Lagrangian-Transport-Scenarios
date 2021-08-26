@@ -28,7 +28,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                                                                 advection_scenario=settings.ADVECTION_DATA,
                                                                 repeat_dt=self.repeat_dt)
             self.file_dict = advection_scenario.file_names
-            if settings.SUBMISSION in ['simulation']:
+            if settings.SUBMISSION in ['simulation'] and not settings.POST_PROCESS:
                 self.field_set = self.create_fieldset()
 
     var_list = ['lon', 'lat', 'beach', 'age', 'size', 'parent', 'beach_time', 'size_class', 'particle_number']
