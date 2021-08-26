@@ -8,7 +8,7 @@ import numpy as np
 
 
 def FragmentationKaandorpPartial_SizeSpectrumTime(figure_direc, scenario, shore_time, lambda_frag_list, density,
-                                                  reservoir='total',
+                                                  reservoir='total', with_legend=False,
                                                   fig_size=(18, 12), x_label='Size (m)', y_label='Number of Particles',
                                                   ax_ticklabel_size=12, ax_label_size=14, legend_size=14):
     # Setting the folder within which we have the output, and where we have the saved data
@@ -32,28 +32,34 @@ def FragmentationKaandorpPartial_SizeSpectrumTime(figure_direc, scenario, shore_
     # Creating the figure
     ax_range = 1e-2, 1e-5, 1e7, 1e-2
     plot_num = 6
+    if with_legend:
+        width_ratios = [1, 1, 1, 0.3]
+    else:
+        width_ratios = None
     ax = vUtils.base_figure(fig_size=fig_size, ax_range=ax_range, x_label=x_label, y_label=y_label,
                             ax_ticklabel_size=ax_ticklabel_size, ax_label_size=ax_label_size, shape=(2, 3),
-                            plot_num=plot_num, legend_axis=True, log_yscale=True, log_xscale=True, x_time_axis=False,
-                            width_ratios=[1, 1, 1, 0.3], all_x_labels=True)
+                            plot_num=plot_num, legend_axis=with_legend, log_yscale=True, log_xscale=True, x_time_axis=False,
+                            width_ratios=width_ratios, all_x_labels=True)
 
     # Labelling the subfigures
     for index_ax in range(plot_num):
         ax[index_ax].set_title(subfigure_title(index_ax, lambda_frag_list), fontsize=ax_label_size)
 
     # Plotting the size distributions one figure (so fragmentation timescale) at a time
-    month_step = 4
+    month_step = 12
     for index_ax in range(plot_num - 1, -1, -1):
         for index_month, month in enumerate(list(size_dict[lambda_frag_list[index_ax]].keys())[::month_step]):
             ax[index_ax].plot(size_bins, size_dict[lambda_frag_list[index_ax]][month], linestyle='-',
                               color=vUtils.discrete_color_from_cmap(index_month, 12 // month_step))
 
     # Adding in a legend
-    size_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(month, subdivisions=12 // month_step),
-                            label='t = {} months'.format(month * month_step), linestyle='-')[0] for month in range(12 // month_step)]
+    if with_legend:
+        size_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(month, subdivisions=12 // month_step),
+                                label='t = {} months'.format(month * month_step), linestyle='-')[0] for month in
+                       range(12 // month_step)]
 
-    ax[-1].legend(handles=size_colors, fontsize=legend_size)
-    ax[-1].axis('off')
+        ax[-1].legend(handles=size_colors, fontsize=legend_size)
+        ax[-1].axis('off')
 
     file_name = output_direc + 'SizeSpectrumTimePartial_{}-ST={}-rho={}.png'.format(reservoir, shore_time, density)
     plt.savefig(file_name, bbox_inches='tight')
