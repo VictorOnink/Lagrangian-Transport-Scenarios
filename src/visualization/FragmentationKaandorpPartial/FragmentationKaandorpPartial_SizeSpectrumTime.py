@@ -50,7 +50,7 @@ def FragmentationKaandorpPartial_SizeSpectrumTime(figure_direc, scenario, shore_
     for index_ax in range(plot_num - 1, -1, -1):
         for index_month, month in enumerate(list(size_dict[lambda_frag_list[index_ax]].keys())[::month_step]):
             ax[index_ax].plot(size_bins, size_dict[lambda_frag_list[index_ax]][month], linestyle='-',
-                              color=vUtils.discrete_color_from_cmap(index_month, 12 // month_step))
+                              color=vUtils.discrete_color_from_cmap(index_month, 12 // month_step, cmap='viridis_r'))
 
     # Adding in a legend
     if with_legend:
