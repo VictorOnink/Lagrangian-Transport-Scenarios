@@ -1,4 +1,6 @@
 import math
+
+import numpy
 from parcels import ParcelsRandom
 import settings
 import scipy.optimize
@@ -633,3 +635,12 @@ def TotalDistance(particle, fieldset, time):
     particle.prev_lon = particle.lon  # Set the stored values for next iteration.
     particle.prev_lat = particle.lat
     particle.prev_depth = particle.depth
+
+
+def mass_per_size_class(k, f, p=settings.P_FRAG):
+    gamma_ratio = math.gamma(k + f) / (math.gamma(k + 1) * math.gamma(f))
+    return gamma_ratio * p ** k * (1 - p) ** f
+
+
+def particle_number_per_size_class(k, f=1.0, p=settings.P_FRAG, Dn=settings.DN):
+    return mass_per_size_class(k, f, p) * 2 ** (Dn * k)

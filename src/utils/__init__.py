@@ -5,7 +5,7 @@ from utils.physics_utils import initial_input, floating_advection_rk4, floating_
     anti_beach_nudging, delete_particle, floating_AdvectionRK4DiffusionEM_stokes_depth, get_kinematic_viscosity, \
     KPP_wind_mixing, PolyTEOS10_bsq, internal_tide_mixing, initial_estimate_particle_rise_velocity, \
     get_resuspension_timescale, KPP_TIDAL_mixing, get_reynolds_number, get_rising_velocity, TotalDistance, \
-    initial_reynolds_number, resuspension_probability
+    initial_reynolds_number, resuspension_probability, particle_number_per_size_class, mass_per_size_class
 from utils.run_utils import set_random_seed, add_particle_variable, get_repeat_dt
 from utils.BaseParticle import BaseParticle
 

@@ -6,9 +6,11 @@ import factories.fieldset_factory as fieldset_factory
 from advection_scenarios import advection_files
 import utils
 from datetime import datetime, timedelta
-import os
+import Analysis
 from parcels import ParcelsRandom
 import math
+
+from utils.physics_utils import particle_number_per_size_class
 
 
 class FragmentationKaandorpPartial(base_scenario.BaseScenario):
@@ -98,7 +100,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                    shore_time=settings.SHORE_TIME, ensemble=settings.ENSEMBLE,
                    advection_data=settings.ADVECTION_DATA, start_year=settings.START_YEAR, input=settings.INPUT,
                    p_frag=settings.P_FRAG, dn=settings.DN, size_class_number=settings.SIZE_CLASS_NUMBER,
-                   lambda_frag=settings.LAMBDA_FRAG, density=settings.INIT_DENSITY):
+                   lambda_frag=settings.LAMBDA_FRAG, density=settings.INIT_DENSITY, postprocess=settings.POST_PROCESS):
         odirec = self.output_dir + "Kaandorp_Fragmentation_Partial/st_{}_e_{}/".format(shore_time, ensemble)
         if new:
             str_format = (advection_data, shore_time, p_frag, lambda_frag, dn, size_class_number, density, start_year,
@@ -106,7 +108,11 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         else:
             str_format = (advection_data, shore_time, p_frag, lambda_frag, dn, size_class_number, density, start_year,
                           input, restart - 1, run)
-        return odirec + self.prefix + '_{}_st={}_pfrag={}_lambdafrag={}_dn={}_sizeclasses={}_rho={}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
+        if postprocess:
+            prefix = self.prefix + '_PP'
+        else:
+            prefix = self.prefix
+        return odirec + prefix + '_{}_st={}_pfrag={}_lambdafrag={}_dn={}_sizeclasses={}_rho={}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
 
     def beaching_kernel(particle, fieldset, time):
         """
@@ -186,14 +192,14 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                 parent_number = particle.particle_number
                 parent_size_class = particle.size_class
                 # Calculating the new particle number for the parent particle
-                particle.particle_number = particle.particle_number * self.particle_number_per_size_class(k=0, f=f)
+                particle.particle_number = particle.particle_number * particle_number_per_size_class(k=0, f=f)
                 # Looping through the new particles being created, where new particles are only being created if the
                 # parent particle
                 remaining_classes = settings.SIZE_CLASS_NUMBER - parent_size_class - 1
                 if remaining_classes > 0:
                     for k in range(0, remaining_classes):
                         new_particle_size = parent_size * settings.P_FRAG ** (k + 1)
-                        particle_number = parent_number * self.particle_number_per_size_class(k=k+1, f=f)
+                        particle_number = parent_number * utils.particle_number_per_size_class(k=k + 1, f=f)
                         particle_w_rise = utils.initial_estimate_particle_rise_velocity(L=new_particle_size)
                         pset_new = ParticleSet(fieldset=fieldset, pclass=self.particle,
                                                lon=particle.lon,
@@ -215,38 +221,34 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                         pset.add(pset_new)
         return pset
 
-    def mass_per_size_class(self, k, f, p=settings.P_FRAG):
-        gamma_ratio = math.gamma(k + f) / (math.gamma(k + 1) * math.gamma(f))
-        return gamma_ratio * p ** k * (1 - p) ** f
-
-    def particle_number_per_size_class(self, k, f=1, p=settings.P_FRAG, Dn=settings.DN):
-        return self.mass_per_size_class(k, f, p) * 2 ** (Dn * k)
-
-    def size_class_limits(self, k_range=settings.SIZE_CLASS_NUMBER, init_size=settings.INIT_SIZE,
-                          p_frag=settings.P_FRAG):
-        return np.array([init_size * p_frag ** k for k in range(k_range)])
-
     def run(self):
-        # Creating the particle set and output file
-        pset = self.get_pset(fieldset=self.field_set, particle_type=self.particle,
-                             var_dict=self.get_var_dict(), start_time=utils.get_start_end_time(time='start'),
-                             repeat_dt=self.repeat_dt)
-        pfile = pset.ParticleFile(name=self.file_names(new=True),
-                                  outputdt=settings.OUTPUT_TIME_STEP)
-        # Setting the random seed and defining the particle behavior
-        utils.print_statement("Setting the random seed")
-        utils.set_random_seed(seed=settings.SEED)
-        utils.print_statement("Defining the particle behavior")
-        behavior_kernel = self.get_particle_behavior(pset=pset)
-        # Carrying out the execution of the simulation
-        utils.print_statement("The actual execution of the run")
-        time = utils.get_start_end_time(time='start')
-        while time <= utils.get_start_end_time(time='end'):
-            pset.execute(behavior_kernel, runtime=settings.OUTPUT_TIME_STEP, dt=settings.TIME_STEP,
-                         recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle},
-                         output_file=pfile)
-            time += settings.OUTPUT_TIME_STEP
-            pset = self.particle_splitter(self.field_set, pset)
-            utils.print_statement('time = {}'.format(time))
-        pfile.export()
-        utils.print_statement("Run completed")
+        if settings.POST_PROCESS:
+            utils.print_statement("Running postprocessing for LAMBDA_FRAG = {}".format(settings.LAMBDA_FRAG))
+            base_file = self.file_names(new=True, lambda_frag=388, postprocess=False)
+            output_file = self.file_names(new=True)
+            Analysis.parcels_to_particle_number(base_file=base_file, output_file=output_file)
+            utils.print_statement("Postprocessing is complete")
+        else:
+            # Creating the particle set and output file
+            pset = self.get_pset(fieldset=self.field_set, particle_type=self.particle,
+                                 var_dict=self.get_var_dict(), start_time=utils.get_start_end_time(time='start'),
+                                 repeat_dt=self.repeat_dt)
+            pfile = pset.ParticleFile(name=self.file_names(new=True),
+                                      outputdt=settings.OUTPUT_TIME_STEP)
+            # Setting the random seed and defining the particle behavior
+            utils.print_statement("Setting the random seed")
+            utils.set_random_seed(seed=settings.SEED)
+            utils.print_statement("Defining the particle behavior")
+            behavior_kernel = self.get_particle_behavior(pset=pset)
+            # Carrying out the execution of the simulation
+            utils.print_statement("The actual execution of the run")
+            time = utils.get_start_end_time(time='start')
+            while time <= utils.get_start_end_time(time='end'):
+                pset.execute(behavior_kernel, runtime=settings.OUTPUT_TIME_STEP, dt=settings.TIME_STEP,
+                             recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle},
+                             output_file=pfile)
+                time += settings.OUTPUT_TIME_STEP
+                pset = self.particle_splitter(self.field_set, pset)
+                utils.print_statement('time = {}'.format(time))
+            pfile.export()
+            utils.print_statement("Run completed")

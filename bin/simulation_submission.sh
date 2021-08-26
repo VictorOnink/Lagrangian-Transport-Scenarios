@@ -2,7 +2,7 @@
 # General run parameters                                                            #
 #####################################################################################
 SUBMISSION='simulation'
-DEBUG=0 # 0 = Not a debug run, 1 = a debug run
+DEBUG=1 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation
 SCENARIO=7
@@ -18,14 +18,19 @@ WMIN=3
 #for scenario 5 and 6, the initial size of the particle in 1e-6 m and the density of the particle
 PARTICLE_SIZE_list=(5000)
 INIT_DENSITY=920
-#for scenario 5 and 6, the critical bottom shear stress for particle resuspension (x1e-3)
+#for scenarios 5 - 7, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=140
-# For scenario 5, the fragmentation parameters p (x1e-1), DN (x1e-1), the number of size classes and the fragmentation
+# For scenario 7, the fragmentation parameters p (x1e-1), DN (x1e-1), the number of size classes and the fragmentation
 # timescale (DAYS)
 P=4
 DN=25
 SIZE_CLASS_NUMBER=7
 LAMBDA_FRAG_list=(388)
+# For scenario 7, we are either running a lagrangian simulation OR we are running postprocessing on the parcels output
+# to calculate the particle numbers.
+# POST_PROCESS == 0 -> run lagrangian simulation
+# POST_PROCESS == 1 -> run post processing
+POST_PROCESS=1
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010
 #Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=lebretondivision, 3=point, 4=uniform
@@ -70,7 +75,7 @@ if [ "$INPUT" -eq "0" ]; then
 elif [ "$INPUT" -eq "1" ]; then
   runlength=0 #3
 elif [ "$INPUT" -eq "2" ]; then
-  runlength=9
+  runlength=0 #9
 elif [ "$INPUT" -eq "3" ]; then
   runlength=0
 elif [ "$INPUT" -eq "2" ]; then

@@ -17,3 +17,5 @@ particles in the simulation at a given timepoint. This allows for easier loading
 animations, as for large simulations loading all particle trajectory data is too much for the computer RAM.
 - `parcels_to_vertical_concentration.py`: Computes vertical concentration profiles.
 - `parcels_to_separation_distance.py`: Computes distance between particles over time
+- `parcels_to_particle_number.py`: Calculates the particle number for a given `LAMBDA_FRAG` value for parcels output
+in the `KaandorpFragmentationPartial` scenario.

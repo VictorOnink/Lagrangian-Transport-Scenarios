@@ -43,6 +43,9 @@ if SUBMISSION in ['simulation', 'analysis']:
 #                                         Run/restart specific parameters                                              #
 #                                                                                                                      #
 ########################################################################################################################
+# DICTIONARY TO CONVERT 0/1 INDICATORS TO BOOLEAN FALSE/TRUE STATEMENTS
+BOOLEAN_DICT = {0: False, 1: True}
+
 if SUBMISSION == 'simulation':
     # WHICH OF THE SUBRUNS (DIVISION OF PARTICLE INPUTS)
     RUN: int = int(os.environ['RUN'])
@@ -50,6 +53,10 @@ if SUBMISSION == 'simulation':
     # RESTART NUMBER OF THE RUN
     # 0 = NEW RUN, N>0 INDICATES NTH YEAR FROM SIMULATION START
     RESTART: int = int(os.environ['RESTARTNUM'])
+
+    # LAGRANGIAN OR POSTPROCESSING RUN
+    # 0 = RUN LAGRANGIAN SIMULATION, 1 = RUN POST PROCESSING
+    POST_PROCESS: bool = BOOLEAN_DICT[int(os.environ['POST_PROCESS'])]
 
 if SUBMISSION in ['simulation', 'analysis']:
     # ENSEMBLE NUMBER
@@ -171,24 +178,22 @@ if SUBMISSION in ['analysis']:
     # DEFAULTS TO PREVENT ERRORS
     RUN: int = 0
     RESTART: int = 0
-    # SELECTING ANALYSIS TO RUN
-    ANALYSIS_DICT = {0: False, 1: True}
     # PLASTIC CONCENTRATION
-    CONCENTRATION = ANALYSIS_DICT[int(os.environ['CONCENTRATION'])]
+    CONCENTRATION = BOOLEAN_DICT[int(os.environ['CONCENTRATION'])]
     # VERTICAL PLASTIC CONCENTRATION
-    VERTICAL_CONCENTRATION = ANALYSIS_DICT[int(os.environ['VERTICAL_CONCENTRATION'])]
+    VERTICAL_CONCENTRATION = BOOLEAN_DICT[int(os.environ['VERTICAL_CONCENTRATION'])]
     # TIMESERIES OF BEACHED/COASTAL FRACTIONS
-    TIMESERIES = ANALYSIS_DICT[int(os.environ['TIMESERIES'])]
+    TIMESERIES = BOOLEAN_DICT[int(os.environ['TIMESERIES'])]
     # MAX DISTANCE FROM SHORE
-    MAX_DISTANCE = ANALYSIS_DICT[int(os.environ['MAX_DISTANCE'])]
+    MAX_DISTANCE = BOOLEAN_DICT[int(os.environ['MAX_DISTANCE'])]
     # CREATING TIME SLICES OF THE SIMULATION
-    TIMESLICING = ANALYSIS_DICT[int(os.environ['TIMESLICING'])]
+    TIMESLICING = BOOLEAN_DICT[int(os.environ['TIMESLICING'])]
     # CALCULATING BASIC STATISTICS FOR EACH PARTICLE TRAJECTORY
-    STATISTICS = ANALYSIS_DICT[int(os.environ['STATISTICS'])]
+    STATISTICS = BOOLEAN_DICT[int(os.environ['STATISTICS'])]
     # CAlCULATING SEPARATION DISTANCES BETWEEN PARTICLES
-    SEPARATION = ANALYSIS_DICT[int(os.environ['SEPARATION'])]
+    SEPARATION = BOOLEAN_DICT[int(os.environ['SEPARATION'])]
     # CALCULATING THE PARTICLE SIZE SPECTRUM/DISTRIBUTION
-    SIZE_SPECTRUM = ANALYSIS_DICT[int(os.environ['SIZE_SPECTRUM'])]
+    SIZE_SPECTRUM = BOOLEAN_DICT[int(os.environ['SIZE_SPECTRUM'])]
     # FRACTION OF PLASTIC ENTERING THE OCEAN IN 2010 THAT IS CONSIDERED BUOYANT (BASED ON GEYERS ET AL., 2017)
     BUOYANT = 0.54
 
