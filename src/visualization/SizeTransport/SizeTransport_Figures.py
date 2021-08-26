@@ -28,7 +28,7 @@ def run(scenario, figure_direc: str):
     # General.General_average_wind_speed(scenario=scenario, figure_direc=figure_direc)
 
     # Figure of the input scenario
-    General.General_input_scenario(scenario=scenario, figure_direc=figure_direc)
+    # General.General_input_scenario(scenario=scenario, figure_direc=figure_direc)
 
     # Figure of the seasonal average MLD and wind speed
     # General.General_season_average(scenario=scenario, figure_direc=figure_direc, variable='MLD')
