@@ -41,7 +41,7 @@ ADVECTION_DATA=2
 #Start year of the simulation. 0 = new simulation, otherwise it picks up from a previous simulation
 START=0
 #Number of years the simulation runs
-SIMLEN=2
+SIMLEN=1
 #Inclusion of Stokes drift. 0 = include stokes, 1 = do not include stokes
 STOKES=0 
 #Ensemble member
@@ -68,6 +68,7 @@ export SIMLEN
 export STOKES
 export ENSEMBLE
 export SERVER
+export POST_PROCESS
 
 #The number of runs we do, dependent on the input scenario.
 if [ "$INPUT" -eq "0" ]; then
@@ -109,6 +110,9 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
           RUNNAMEPREFIX="KaandorpFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
         elif [ "$SCENARIO" -eq "7" ]; then
           RUNNAMEPREFIX="PartialKaandorpFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
+          if [ "$POST_PROCESS" -eq "1" ]; then
+            RUNNAMEPREFIX='PP_'${RUNNAMEPREFIX}
+          fi
         elif [ "$SCENARIO" -eq "5" ]; then
           RUNNAMEPREFIX="SizeTransport_SIZE="${PARTICLE_SIZE}"_ST="${SHORETIME}"_y="${STARTYEAR}"_tau="${SEABED_CRIT}"_"
         fi
