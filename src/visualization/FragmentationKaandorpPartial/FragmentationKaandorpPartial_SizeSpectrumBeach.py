@@ -39,8 +39,6 @@ def FragmentationKaandorpPartial_SizeSpectrumBeach(figure_direc, scenario, shore
     # Plotting the size distributions
     for index_ax, beach_state in enumerate(beach_state_list):
         ax[index_ax].plot(size_bins, data_dict[beach_state][time_index], linestyle='-', color='r')
-        print(beach_state)
-        print(data_dict[beach_state][time_index])
 
     file_name = output_direc + 'SizeSpectrumBeach-ST={}-rho={}-lamf={}.png'.format(shore_time, density, lambda_frag)
     plt.savefig(file_name, bbox_inches='tight')
