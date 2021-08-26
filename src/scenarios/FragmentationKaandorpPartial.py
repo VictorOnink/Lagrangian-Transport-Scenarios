@@ -51,12 +51,11 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         """
         utils.print_statement("Creating the particle set")
         if settings.RESTART == 0:
-            step = 100
-            rise_velocity = utils.initial_estimate_particle_rise_velocity(L=var_dict['size'][::step])
+            rise_velocity = utils.initial_estimate_particle_rise_velocity(L=var_dict['size'])
             rho_plastic = np.ones(rise_velocity.shape, dtype=np.float32) * settings.INIT_DENSITY
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
-                               lon=var_dict['lon'][::step], lat=var_dict['lat'][::step], beach=var_dict['beach'][::step],
-                               age=var_dict['age'][::step], size=var_dict['size'][::step],
+                               lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
+                               age=var_dict['age'], size=var_dict['size'],
                                rho_plastic=rho_plastic, parent=range(len(rise_velocity)),
                                rise_velocity=rise_velocity, beach_time=np.zeros(rise_velocity.shape, dtype=np.float32),
                                prob_resus=utils.resuspension_probability(w_rise=rise_velocity),
