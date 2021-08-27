@@ -2,7 +2,7 @@
 # General run parameters                                                            #
 #####################################################################################
 SUBMISSION='simulation'
-DEBUG=1 # 0 = Not a debug run, 1 = a debug run
+DEBUG=0 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation
 SCENARIO=5
@@ -30,7 +30,7 @@ LAMBDA_FRAG_list=(388)
 # to calculate the particle numbers.
 # POST_PROCESS == 0 -> run lagrangian simulation
 # POST_PROCESS == 1 -> run post processing
-POST_PROCESS=1
+POST_PROCESS=0
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010
 #Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=lebretondivision, 3=point, 4=uniform
