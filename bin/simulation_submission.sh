@@ -5,7 +5,7 @@ SUBMISSION='simulation'
 DEBUG=1 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation
-SCENARIO=7
+SCENARIO=5
 #for scenario 1, the time a particle must be near the coast to beach (in days)
 VICINITY=2
 #for scenario 2, the beaching and resuspension timescales (in days)
@@ -16,10 +16,10 @@ SHOREDEPEN=0
 #for scenario 4, the minimum wind speed for resuspension. Divide by 10 for actual value
 WMIN=3
 #for scenario 5 and 6, the initial size of the particle in 1e-6 m and the density of the particle
-PARTICLE_SIZE_list=(5000)
+PARTICLE_SIZE_list=(5000 1000 500 100 50 10 5 1)
 INIT_DENSITY=920
 #for scenarios 5 - 7, the critical bottom shear stress for particle resuspension (x1e-3)
-SEABED_CRIT=140
+SEABED_CRIT=25
 # For scenario 7, the fragmentation parameters p (x1e-1), DN (x1e-1), the number of size classes and the fragmentation
 # timescale (DAYS)
 P=4
@@ -34,7 +34,7 @@ POST_PROCESS=1
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010
 #Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=lebretondivision, 3=point, 4=uniform
-INPUT=2
+INPUT=1
 #Which advection data do we want to use?
 # 0 = Global HYCOM, 1 = Caribbean HYCOM, 2 = Mediterranean CMEMS
 ADVECTION_DATA=2

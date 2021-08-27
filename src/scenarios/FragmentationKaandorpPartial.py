@@ -193,7 +193,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                 remaining_classes = settings.SIZE_CLASS_NUMBER - parent_size_class - 1
                 if remaining_classes > 0:
                     for k in range(0, remaining_classes):
-                        new_particle_size = parent_size * settings.P_FRAG ** (k + 1)
+                        new_particle_size = parent_size * 0.5 ** (k + 1)
                         particle_w_rise = utils.initial_estimate_particle_rise_velocity(L=new_particle_size)
                         pset_new = ParticleSet(fieldset=fieldset, pclass=self.particle,
                                                lon=particle.lon,
