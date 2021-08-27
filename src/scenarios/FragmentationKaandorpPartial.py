@@ -31,7 +31,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
             if settings.SUBMISSION in ['simulation'] and not settings.POST_PROCESS:
                 self.field_set = self.create_fieldset()
 
-    var_list = ['lon', 'lat', 'beach', 'age', 'size', 'parent', 'beach_time', 'size_class', 'particle_number']
+    var_list = ['lon', 'lat', 'beach', 'age', 'size', 'parent', 'beach_time', 'size_class']
 
     def create_fieldset(self) -> FieldSet:
         utils.print_statement("Creating the fieldset")
@@ -62,7 +62,6 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                                rise_velocity=rise_velocity, beach_time=np.zeros(rise_velocity.shape, dtype=np.float32),
                                prob_resus=utils.resuspension_probability(w_rise=rise_velocity),
                                size_class=np.zeros(rise_velocity.shape, dtype=np.float32),
-                               particle_number=np.ones(rise_velocity.shape, dtype=np.float32),
                                time=start_time, repeatdt=repeat_dt)
         else:
             rise_velocity = utils.initial_estimate_particle_rise_velocity(L=var_dict['size'])
@@ -72,7 +71,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                                age=var_dict['age'], size=var_dict['size'], beach_time=var_dict['beach_time'],
                                rho_plastic=rho_plastic, rise_velocity=rise_velocity,
                                prob_resus=utils.resuspension_probability(w_rise=rise_velocity),
-                               size_class=var_dict['size_class'], particle_number=var_dict['particle_number'],
+                               size_class=var_dict['size_class'],
                                time=start_time, repeatdt=repeat_dt)
         return pset
 
@@ -92,7 +91,6 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         utils.add_particle_variable(particle_type, 'parent', dtype=np.int32, set_initial=True, to_write=True)
         utils.add_particle_variable(particle_type, 'prob_resus', dtype=np.float32, set_initial=True, to_write=False)
         utils.add_particle_variable(particle_type, 'beach_time', dtype=np.float32, set_initial=True, to_write=True)
-        utils.add_particle_variable(particle_type, 'particle_number', dtype=np.float32, set_initial=True, to_write=True)
         utils.add_particle_variable(particle_type, 'size_class', dtype=np.int32, set_initial=True, to_write=True)
         return particle_type
 
@@ -189,17 +187,13 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                 f = 60 / settings.LAMBDA_FRAG
                 # Getting the properties of the parent particle
                 parent_size = particle.size
-                parent_number = particle.particle_number
                 parent_size_class = particle.size_class
-                # Calculating the new particle number for the parent particle
-                particle.particle_number = particle.particle_number * particle_number_per_size_class(k=0, f=f)
                 # Looping through the new particles being created, where new particles are only being created if the
                 # parent particle
                 remaining_classes = settings.SIZE_CLASS_NUMBER - parent_size_class - 1
                 if remaining_classes > 0:
                     for k in range(0, remaining_classes):
                         new_particle_size = parent_size * settings.P_FRAG ** (k + 1)
-                        particle_number = parent_number * utils.particle_number_per_size_class(k=k + 1, f=f)
                         particle_w_rise = utils.initial_estimate_particle_rise_velocity(L=new_particle_size)
                         pset_new = ParticleSet(fieldset=fieldset, pclass=self.particle,
                                                lon=particle.lon,
@@ -214,7 +208,6 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                                                rise_velocity=particle_w_rise,
                                                reynolds=0,
                                                prob_resus=utils.resuspension_probability(w_rise=particle_w_rise),
-                                               particle_number=particle_number,
                                                size_class=parent_size_class + (k + 1),
                                                beach_time=0,
                                                repeatdt=None)
