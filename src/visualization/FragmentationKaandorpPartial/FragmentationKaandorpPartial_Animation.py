@@ -99,7 +99,8 @@ def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, l
         text.set_text(time_list[frame_index].strftime("%Y-%m-%d"))
         return plot_list
 
-    plt.savefig(animation_save_name(output_direc=output_direc, shore_time=shore_time, lambda_frag=lambda_frag))
+    plt.savefig(animation_save_name(output_direc=output_direc, shore_time=shore_time, lambda_frag=lambda_frag,
+                                    file_type='.png'))
     # Calling the animator
     # animator = animation.FuncAnimation(plt.gcf(), animate, init_func=init,
     #                                    frames=frame_number, interval=100, blit=True)
