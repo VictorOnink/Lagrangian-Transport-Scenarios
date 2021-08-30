@@ -76,7 +76,7 @@ def Cozar2015_standardization(output_dict: dict):
     prefix = 'Cozar'
     output_dict[prefix] = {}
 
-    data_pd = pd.read_excel(data_direc + 'Cozar_MedData_SizeSpectra.xlsx', sheet_name=1)
+    data_pd = pd.read_excel(data_direc + 'Cozar_MedData_SizeSpectra.xls', sheet_name=1)
     data_pd = data_pd.drop([0, 29]).reset_index(drop=True)
 
     output_dict[prefix]['bin_edges'] = np.append(data_pd['Lower Size (mm)'].values,
