@@ -11,7 +11,7 @@ import cmocean.cm as cmo
 import string
 
 
-def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, lambda_frag, rho,
+def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, lambda_frag, rho, simulation_years,
                                            figsize=(20, 10), ax_label_size=18, tick_label_size=16):
     """
     Here we want to make an animation of the
@@ -56,13 +56,13 @@ def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, l
 
     # Setting the time range for which we want to create the simulation
     current_time = datetime(2010, 1, 1, 0)
-    end_time = datetime(2010, 12, 31, 12)
-    time_step = timedelta(hours=12)
+    end_time = datetime(2010 + simulation_years, 1, 1, 0)
+    time_step = timedelta(hours=24)
     time_list = []
     while current_time < end_time:
         time_list.append(current_time)
         current_time += time_step
-    frame_number = 5#len(time_list)
+    frame_number = len(time_list)
 
     # Setting a text box to give the date
     props = dict(boxstyle='round', facecolor='white', alpha=1)
