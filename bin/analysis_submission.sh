@@ -5,7 +5,7 @@ SUBMISSION='analysis'
 DEBUG=0 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation
-SCENARIO=7
+SCENARIO=5
 #for scenario 1, the time a particle must be near the coast to beach (in days)
 VICINITY=2
 #for scenario 2, the beaching and resuspension timescales (in days)
@@ -16,7 +16,7 @@ SHOREDEPEN=0
 #for scenario 4, the minimum wind speed for resusplension. Divide by 10 for actual value
 WMIN=3
 #for scenario 5 and 6, the initial size of the particle in 1e-6 m and the particle density
-PARTICLE_SIZE_list=(5000)
+PARTICLE_SIZE_list=(5000 2500 1250 625 313 156 78 39 20 10 5 2)
 INIT_DENSITY=920
 #for scenario 5 and 6, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=140
@@ -35,7 +35,7 @@ INPUT=2
 # 0 = Global HYCOM, 1 = Caribbean HYCOM, 2 = Mediterranean CMEMS
 ADVECTION_DATA=2
 #Number of years the simulation runs
-SIMLEN=2
+SIMLEN=1
 #Inclusion of Stokes drift. 0 = include stokes, 1 = do not include stokes
 STOKES=0
 #Ensemble member

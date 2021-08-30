@@ -8,6 +8,7 @@ import numpy as np
 from datetime import datetime, timedelta
 import matplotlib.animation as animation
 import cmocean.cm as cmo
+import string
 
 
 def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, lambda_frag, rho,
@@ -31,9 +32,9 @@ def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, l
     data_direc = utils.get_output_directory(server=settings.SERVER) + 'timeslices/FragmentationKaandorpPartial/'
 
     # Creating the base figure
-    gridspec_shape = (1, 1)
+    gridspec_shape = (2, 3)
     fig = plt.figure(figsize=figsize)
-    gs = fig.add_gridspec(nrows=gridspec_shape[0], ncols=gridspec_shape[1] + 1, width_ratios=[1, 0.1])
+    gs = fig.add_gridspec(nrows=gridspec_shape[0], ncols=gridspec_shape[1] + 1, width_ratios=[1, 1, 1, 0.1])
 
     ax_list = []
     for rows in range(gridspec_shape[0]):
@@ -65,14 +66,15 @@ def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, l
 
     # Setting a text box to give the date
     props = dict(boxstyle='round', facecolor='white', alpha=1)
-    text = ax_list[0].text(0.02, 0.02, 'initial', horizontalalignment='left', verticalalignment='bottom',
+    text = ax_list[3].text(0.02, 0.02, 'initial', horizontalalignment='left', verticalalignment='bottom',
                            transform=ax_list[0].transAxes, bbox=props, fontsize=ax_label_size, zorder=200)
 
     # Now, the actual animation part
     # Setting the initial values of the x and y, which will later be filled by lon and lat
     plot_list = []
-    for ax in ax_list:
+    for ax_index, ax in enumerate(ax_list):
         plot_list.append(ax.scatter(0, 0, c=0, s=10, alpha=1, zorder=1000, cmap=cmo.haline_r, norm=norm))
+        ax.set_title(subfigure_title(ax_index), fontsize=ax_label_size)
 
     # Initializing the plots on each axis
     def init():
@@ -97,16 +99,22 @@ def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, l
         text.set_text(time_list[frame_index].strftime("%Y-%m-%d"))
         return plot_list
 
+    plt.savefig(animation_save_name(output_direc=output_direc, shore_time=shore_time, lambda_frag=lambda_frag))
     # Calling the animator
-    animator = animation.FuncAnimation(plt.gcf(), animate, init_func=init,
-                                       frames=frame_number, interval=100, blit=True)
+    # animator = animation.FuncAnimation(plt.gcf(), animate, init_func=init,
+    #                                    frames=frame_number, interval=100, blit=True)
 
     # Saving the animation
-    animator.save(filename=animation_save_name(output_direc=output_direc, shore_time=shore_time,
-                                               lambda_frag=lambda_frag),
-                  fps=10, extra_args=['-vcodec', 'libx264'])
+    # animator.save(filename=animation_save_name(output_direc=output_direc, shore_time=shore_time,
+    #                                            lambda_frag=lambda_frag),
+    #               fps=10, extra_args=['-vcodec', 'libx264'])
 
 
 def animation_save_name(output_direc, shore_time, lambda_frag, flowdata='CMEMS_MEDITERRANEAN', file_type='.mov'):
     return output_direc + 'FragmentationKaandorpPartial_st={}_lam_f={}'.format(flowdata, shore_time, lambda_frag) + \
            file_type
+
+
+def subfigure_title(index):
+    size = settings.INIT_SIZE * 2 ** (-1 * index) * 1e3
+    return '({}) size class {}, d = {:.3f} mm'.format(string.ascii_letters[index], index, size)
