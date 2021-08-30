@@ -67,7 +67,7 @@ def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, l
     # Setting a text box to give the date
     props = dict(boxstyle='round', facecolor='white', alpha=1)
     text = ax_list[3].text(0.02, 0.02, 'initial', horizontalalignment='left', verticalalignment='bottom',
-                           transform=ax_list[0].transAxes, bbox=props, fontsize=ax_label_size, zorder=200)
+                           transform=ax_list[3].transAxes, bbox=props, fontsize=ax_label_size, zorder=200)
 
     # Now, the actual animation part
     # Setting the initial values of the x and y, which will later be filled by lon and lat
