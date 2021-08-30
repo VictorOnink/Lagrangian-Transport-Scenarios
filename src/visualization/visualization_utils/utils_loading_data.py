@@ -44,7 +44,7 @@ def FragmentationKaandorp_load_data(scenario, prefix, data_direc, shore_time, la
 def FragmentationKaandorpPartial_load_data(scenario, prefix, data_direc, shore_time, lambda_frag, rho,
                                            advection_data='CMEMS_MEDITERRANEAN', dn=settings.DN,
                                            size_class_number=settings.SIZE_CLASS_NUMBER, p_frag=settings.P_FRAG,
-                                           start_year=settings.START_YEAR, input='Lebreton'
+                                           start_year=settings.START_YEAR, input=settings.INPUT
                                            ):
     file_name = scenario.file_names(new=True, advection_data=advection_data, shore_time=shore_time, dn=dn,
                                     size_class_number=size_class_number, p_frag=p_frag,
