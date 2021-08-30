@@ -19,3 +19,6 @@ animations, as for large simulations loading all particle trajectory data is too
 - `parcels_to_separation_distance.py`: Computes distance between particles over time
 - `parcels_to_particle_number.py`: Calculates the particle number for a given `LAMBDA_FRAG` value for parcels output
 in the `KaandorpFragmentationPartial` scenario.
+
+We also include code for standardizing field data so that it can be easily plotted
+- `FragmentationKaandorpPartial_fielddata.py`: standardizing field data of microplastic size distributions

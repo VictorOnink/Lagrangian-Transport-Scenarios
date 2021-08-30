@@ -4,6 +4,7 @@ import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_S
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_Animation as Animation
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_timeseries as timeseries
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_SizeSpectrumBeach as SizeSpectrumBeach
+import Analysis
 
 
 def run(scenario, figure_direc: str):
@@ -11,12 +12,15 @@ def run(scenario, figure_direc: str):
     lambda_frag_list = np.array([100, 200, 300, 388, 1000, 10000])
     rho = 920
 
+    # Standardizing field data
+    Analysis.FragmentationKaandorpPartial_fielddata(to_overwrite=False)
+
     # SizeSpectrumTime.FragmentationKaandorpPartial_SizeSpectrumTime(figure_direc=figure_direc, scenario=scenario,
     #                                                                shore_time=20, lambda_frag_list=lambda_frag_list,
     #                                                                density=rho)
 
-    Animation.FragmentationKaandorpPartial_Animation(scenario=scenario, figure_direc=figure_direc, shore_time=20,
-                                                     lambda_frag=388, rho=rho, simulation_years=2)
+    # Animation.FragmentationKaandorpPartial_Animation(scenario=scenario, figure_direc=figure_direc, shore_time=20,
+    #                                                  lambda_frag=388, rho=rho, simulation_years=2)
 
     # timeseries.FragmentationKaandorpPartial_timeseries(scenario=scenario, figure_direc=figure_direc, shore_time=20,
     #                                                    lambda_frag=300, rho=rho, simulation_length=1)
