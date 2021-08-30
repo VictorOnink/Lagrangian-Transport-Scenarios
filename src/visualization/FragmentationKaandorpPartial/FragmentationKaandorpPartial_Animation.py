@@ -62,7 +62,7 @@ def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, l
     while current_time < end_time:
         time_list.append(current_time)
         current_time += time_step
-    frame_number = len(time_list)
+    frame_number = 5#len(time_list)
 
     # Setting a text box to give the date
     props = dict(boxstyle='round', facecolor='white', alpha=1)
@@ -86,29 +86,30 @@ def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, l
     def animate(frame_index):
         utils.print_statement("we are at index {} of {}".format(frame_index, frame_number), to_print=True)
         date = time_list[frame_index].strftime("%Y-%m-%d-%H-%M-%S")
+        # Loading the dictionary with the data
+        prefix = 'timeslices_{}'.format(date)
+        data_dict = vUtils.FragmentationKaandorpPartial_load_data(scenario=scenario, prefix=prefix,
+                                                                  data_direc=data_direc, lambda_frag=lambda_frag,
+                                                                  rho=rho, shore_time=shore_time)
+        lon, lat, depth, size_class = data_dict['lon'], data_dict['lat'], data_dict['z'].astype(int), data_dict['size_class']
         for ax_index, size in enumerate(ax_list):
-            # Loading the dictionary with the data
-            prefix = 'timeslices_{}'.format(date)
-            data_dict = vUtils.FragmentationKaandorpPartial_load_data(scenario=scenario, prefix=prefix,
-                                                                      data_direc=data_direc, lambda_frag=lambda_frag,
-                                                                      rho=rho, shore_time=shore_time)
-            lon, lat, depth = data_dict['lon'], data_dict['lat'], data_dict['z'].astype(int)
+            # Selecting just one size class
+            select = size_class == ax_index
+            lon_select, lat_select, depth_select = lon[select], lat[select], depth[select]
             # Updating the plot on each axis with the data
-            plot_list[ax_index].set_offsets(np.c_[lon, lat])
-            plot_list[ax_index].set_array(depth)
+            plot_list[ax_index].set_offsets(np.c_[lon_select, lat_select])
+            plot_list[ax_index].set_array(depth_select)
         text.set_text(time_list[frame_index].strftime("%Y-%m-%d"))
         return plot_list
 
-    plt.savefig(animation_save_name(output_direc=output_direc, shore_time=shore_time, lambda_frag=lambda_frag,
-                                    file_type='.png'))
     # Calling the animator
-    # animator = animation.FuncAnimation(plt.gcf(), animate, init_func=init,
-    #                                    frames=frame_number, interval=100, blit=True)
+    animator = animation.FuncAnimation(plt.gcf(), animate, init_func=init,
+                                       frames=frame_number, interval=100, blit=True)
 
     # Saving the animation
-    # animator.save(filename=animation_save_name(output_direc=output_direc, shore_time=shore_time,
-    #                                            lambda_frag=lambda_frag),
-    #               fps=10, extra_args=['-vcodec', 'libx264'])
+    animator.save(filename=animation_save_name(output_direc=output_direc, shore_time=shore_time,
+                                               lambda_frag=lambda_frag),
+                  fps=10, extra_args=['-vcodec', 'libx264'])
 
 
 def animation_save_name(output_direc, shore_time, lambda_frag, flowdata='CMEMS_MEDITERRANEAN', file_type='.mov'):
