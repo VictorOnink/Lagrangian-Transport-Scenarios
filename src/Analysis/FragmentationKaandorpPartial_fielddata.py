@@ -13,7 +13,7 @@ def FragmentationKaandorpPartial_fielddata(to_overwrite=False):
         output_dict = Cozar2015_standardization(output_dict=output_dict)
         output_dict = RuizOrejon_standardization(output_dict=output_dict)
         utils.save_obj(filename=file_name, item=output_dict)
-        utils.print_statement('The standardized field data has been saved.')
+        utils.print_statement('The standardized field data has been saved.', to_print=True)
 
 
 def Fok2017_standardization(output_dict: dict):
