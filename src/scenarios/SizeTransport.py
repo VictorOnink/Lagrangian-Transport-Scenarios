@@ -21,6 +21,7 @@ class SizeTransport(base_scenario.BaseScenario):
         self.input_dir = utils.get_input_directory(server=self.server)
         self.output_dir = utils.get_output_directory(server=self.server)
         self.repeat_dt = None
+        self.UV_interpolation = 'linear'
         if settings.SUBMISSION in ['simulation', 'visualization']:
             advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
                                                                 advection_scenario=settings.ADVECTION_DATA,
@@ -41,6 +42,7 @@ class SizeTransport(base_scenario.BaseScenario):
                                                                       resus_timescale=True, MLD=True,
                                                                       physics_constants=True,
                                                                       wind=True, TIDAL_mixing=True,
+                                                                      velocity_interpolation=self.UV_interpolation
                                                                       )
         return fieldset
 

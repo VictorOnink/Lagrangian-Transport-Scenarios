@@ -16,7 +16,7 @@ def SizeTransport_linestyle_SEABED_CRIT(tau):
     :param tau:
     :return:
     """
-    return {0.14: 'solid', 0.025: 'dashed', 0.0: 'dotted', 100.0: 'dashdot'}[float(tau)]
+    return {100.0: 'solid', 0.14: 'dashdot', 0.025: 'dashed', 0.0: 'dotted'}[float(tau)]
 
 
 def cartopy_standard_map(fig, gridspec, row, column, domain, resolution='50m', add_gridlines=True, add_gridlabels=True,

@@ -31,11 +31,13 @@ class FieldSetFactory():
                         physics_constants: bool = False,
                         coastal_zone: bool = True,
                         grid_spacing: bool = True,
-                        halo: bool = True
+                        halo: bool = True,
+                        velocity_interpolation: str = 'linear'
                         ):
-        fieldset = get_base_fieldset(file_dict=file_dict)
+        fieldset = get_base_fieldset(file_dict=file_dict, velocity_interpolation=velocity_interpolation)
         if stokes is 0:
-            fieldset = add_stokes_drift(fieldset=fieldset, file_dict=file_dict)
+            fieldset = add_stokes_drift(fieldset=fieldset, file_dict=file_dict,
+                                        velocity_interpolation=velocity_interpolation)
         if stokes_depth:
             add_stokes_depth_depen(fieldset=fieldset, file_dict=file_dict)
         if border_current:
@@ -79,10 +81,10 @@ class FieldSetFactory():
         return fieldset
 
 
-def get_base_fieldset(file_dict: dict) -> FieldSet:
+def get_base_fieldset(file_dict: dict, velocity_interpolation: str) -> FieldSet:
     """
-
-    :param data_dir:
+    :param file_dict:
+    :param velocity_interpolation:
     :return:
     """
     # Defining the folders in which all the data is stored on the different servers
@@ -92,24 +94,29 @@ def get_base_fieldset(file_dict: dict) -> FieldSet:
     # simulation runs in. This speeds up the fieldset creation somewhat.
     check_presence(variable='UV_filenames', file_dict=file_dict)
     filenames = {'U': file_dict['UV_filenames'],
-                 'V': file_dict['UV_filenames'],
-                 }
+                 'V': file_dict['UV_filenames']}
+    interpolation = {'U': velocity_interpolation,
+                     'V': velocity_interpolation}
     fieldset = FieldSet.from_netcdf(filenames, file_dict['UV_variables'], file_dict['UV_dimensions'],
-                                    allow_time_extrapolation=True)
+                                    allow_time_extrapolation=True, interp_method=interpolation)
     return fieldset
 
 
-def add_stokes_drift(fieldset: FieldSet, file_dict: dict):
+def add_stokes_drift(fieldset: FieldSet, file_dict: dict, velocity_interpolation: str):
     """
     Do we include stokes drift yes or no.
+    :param velocity_interpolation:
+    :param file_dict:
     :param fieldset:
-    :param input_dir:
     """
     utils.print_statement("Adding Stokes drift")
     check_presence(variable='STOKES_filenames', file_dict=file_dict)
     filenames = {'Ust': file_dict['STOKES_filenames'], 'Vst': file_dict['STOKES_filenames']}
+    interpolation = {'Ust': velocity_interpolation,
+                     'Vst': velocity_interpolation}
+
     fieldset_stoke = FieldSet.from_netcdf(filenames, file_dict['STOKES_variables'], file_dict['STOKES_dimensions'],
-                                          allow_time_extrapolation=True)
+                                          allow_time_extrapolation=True, interp_method=interpolation)
 
     fieldset_stoke.Ust.units = GeographicPolar()
     fieldset_stoke.Vst.units = Geographic()
