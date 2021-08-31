@@ -63,7 +63,7 @@ def run(scenario, figure_direc: str):
     #                                                                             time_selection=time_select,
     #                                                                             beach_state='beach')
 
-    size_list = np.array([5000, 625, 10]) * settings.SIZE_FACTOR
+    size_list = np.array([5000, 625, 78, 10]) * settings.SIZE_FACTOR
     rho_list = np.ones(size_list.shape, dtype=int) * 920
     tau_list = np.array([0.14, 0.025, 100])
 
