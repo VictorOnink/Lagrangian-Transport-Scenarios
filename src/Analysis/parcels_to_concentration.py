@@ -12,7 +12,7 @@ def parcels_to_concentration(file_dict: dict):
     """
     We calculate the horizontal concentrations on the grid of the circulation data. The concentration is calculated
     either as an average over the entire simulation, or over each given year. We also distinguish between whether
-    particles are beached, afloat, or stuck at the sea floor
+    particles are beached, adrift, or stuck at the sea floor
     :param file_dict:
     :return:
     """
@@ -35,8 +35,8 @@ def parcels_to_concentration(file_dict: dict):
     counter = 0
 
     # Create the output dictionarynp.zeros(GRID.shape)
-    beach_state_dict = {'beach': np.zeros(GRID.shape), 'afloat': np.zeros(GRID.shape), 'seabed': np.zeros(GRID.shape)}
-    beach_label_dict = {'beach': 1, 'afloat': 0, 'seabed': 3}
+    beach_state_dict = {'beach': np.zeros(GRID.shape), 'adrift': np.zeros(GRID.shape), 'seabed': np.zeros(GRID.shape)}
+    beach_label_dict = {'beach': 1, 'adrift': 0, 'seabed': 3}
     output_dict = {'overall_concentration': deepcopy(beach_state_dict), 'lon': LON, 'lat': LAT}
     for simulation_years in range(settings.SIM_LENGTH):
         output_dict[utils.analysis_simulation_year_key(simulation_years)] = deepcopy(beach_state_dict)
