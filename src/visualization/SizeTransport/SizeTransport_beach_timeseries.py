@@ -88,7 +88,7 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
                                                                                 subdivisions=len(size_list)),
                                           label=size_label(size))
     # Creating a legend
-    linestyles = [plt.plot([], [], c='k', label=r'$\tau_{crit}$ = ' + '{}'.format(tau),
+    linestyles = [plt.plot([], [], c='k', label=r'$\tau_{crit}$ = ' + '{} Pa'.format(tau),
                            linestyle=vUtils.SizeTransport_linestyle_SEABED_CRIT(tau=tau))[0] for tau in tau_list]
     size_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(index_size, subdivisions=len(size_list)),
                             label=size_label(size), linestyle='-')[0] for index_size, size in enumerate(size_list)]
