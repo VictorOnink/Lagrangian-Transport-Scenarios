@@ -85,7 +85,7 @@ class BaseScenario(ABC):
         pset.execute(behavior_kernel,
                      runtime=timedelta(days=get_start_end_time(time='length')),
                      dt=settings.TIME_STEP,
-                     #recovery={ErrorCode.ErrorOutOfBounds: delete_particle},
+                     recovery={ErrorCode.ErrorOutOfBounds: delete_particle},
                      output_file=pfile
                      )
         pfile.export()
