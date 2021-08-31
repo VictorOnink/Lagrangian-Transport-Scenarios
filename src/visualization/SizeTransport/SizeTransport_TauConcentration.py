@@ -33,9 +33,10 @@ def SizeTransport_TauConcentration(scenario, figure_direc, size_selection, tau_l
     normalization_factor = 1e10
     for size in concentration_dict.keys():
         concentration = concentration_dict[size]
-        min_non_zero = np.nanmin(concentration[concentration > 0])
-        if min_non_zero < normalization_factor:
-            normalization_factor = min_non_zero
+        if np.sum(concentration > 0) > 0:
+            min_non_zero = np.nanmin(concentration[concentration > 0])
+            if min_non_zero < normalization_factor:
+                normalization_factor = min_non_zero
     for size in concentration_dict.keys():
         concentration_dict[size] /= normalization_factor
 
