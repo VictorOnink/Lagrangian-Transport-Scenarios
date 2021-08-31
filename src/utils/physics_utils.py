@@ -422,15 +422,7 @@ def KPP_wind_mixing(particle, fieldset, time):
 
         # The ocean surface acts as a lid off, and if a particle goes above the ocean surface it is placed back at the
         # ocean surface (so at fieldset.SURF_Z)
-        bathymetry_local = fieldset.bathymetry[time, particle.depth, particle.lat, particle.lon]
-        potential = particle.depth + gradient + R + rise
-        if potential < fieldset.SURF_Z:
-            particle.depth = fieldset.SURF_Z
-        elif potential >= bathymetry_local:
-            # If the particle has gone through the sea floor, the particle is considered stuck on the sea floor
-            particle.beach = 3
-        else:
-            particle.depth = potential
+        particle.potential = particle.depth + gradient + R + rise
 
 
 def internal_tide_mixing(particle, fieldset, time):
@@ -450,15 +442,7 @@ def internal_tide_mixing(particle, fieldset, time):
         tidal_gradient = dKz_tidal * particle.dt
         tidal_random = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3) * math.sqrt(2 * Kz_tidal)
 
-        tidal_potential = particle.depth + tidal_gradient + tidal_random
-
-        bathymetry_local = fieldset.bathymetry[time, particle.depth, particle.lat, particle.lon]
-        if tidal_potential < fieldset.SURF_Z:
-            particle.depth = fieldset.SURF_Z
-        elif tidal_potential >= bathymetry_local:
-            particle.beach = 3
-        else:
-            particle.depth = tidal_potential
+        particle.potential = particle.depth + tidal_gradient + tidal_random
 
 
 def KPP_TIDAL_mixing(particle, fieldset, time):
@@ -515,15 +499,40 @@ def KPP_TIDAL_mixing(particle, fieldset, time):
 
         # The ocean surface acts as a lid off, and if a particle goes above the ocean surface it is placed back at the
         # ocean surface (so at fieldset.SURF_Z)
-        potential = particle.depth + gradient + R + rise
-        bathymetry_local = fieldset.bathymetry[time, fieldset.SURF_Z, particle.lat, particle.lon]
-        if potential < fieldset.SURF_Z:
-            particle.depth = fieldset.SURF_Z
-        elif potential > bathymetry_local:
-            # If the particle has gone through the sea floor, the particle is considered stuck on the sea floor
-            particle.beach = 3
-        else:
-            particle.depth = potential
+        particle.potential = particle.depth + gradient + R + rise
+
+
+def vertical_reflecting_boundary(particle, fieldset, time):
+    """
+    Somewhat in contrast with the name, the reflecting boundary is only applied at the sea bottom. At the surface, we
+    have that a particle is set at fieldset.SURF_Z if it crosses the surface boundary, as physically you would expect
+    that a particle just stays at the surface if it is rising (instead of shooting farther up or being reflected down).
+
+    This is meant to be used in conjuction with a vertical transport kernel (e.g. KPP_TIDAL_mixing), where the kernel
+    calculates the potential depth in the next time step before the boundary condition is applied.
+    """
+    local_bathymetry = fieldset.bathymetry[time, fieldset.SURF_Z, particle.lat, particle.lon]
+    if particle.potential < fieldset.SURF_Z:
+        particle.depth = fieldset.SURF_Z
+    elif particle.potential > local_bathymetry:
+        overshoot = math.fabs(local_bathymetry - particle.potential)
+        particle.depth = local_bathymetry - overshoot
+    else:
+        particle.depth = particle.potential
+
+
+def sticky_seafloor_boundary(particle, fieldset, time):
+    """
+    If the particle crosses the bottom boundary (e.g. it is deeper than the bathymetry), then the particle is stuck
+    and we set particle.beach = 3.
+    """
+    local_bathymetry = fieldset.bathymetry[time, fieldset.SURF_Z, particle.lat, particle.lon]
+    if particle.potential < fieldset.SURF_Z:
+        particle.depth = fieldset.SURF_Z
+    elif particle.potential > local_bathymetry:
+        particle.beach = 3
+    else:
+        particle.depth = particle.potential
 
 
 def initial_estimate_particle_rise_velocity(L=settings.INIT_SIZE, print_rise=False):
@@ -644,3 +653,51 @@ def mass_per_size_class(k, f, p=settings.P_FRAG):
 
 def particle_number_per_size_class(k, f=1.0, p=settings.P_FRAG, Dn=settings.DN):
     return mass_per_size_class(k, f, p) * 2 ** (Dn * k)
+
+
+def seabed_resuspension_beaching_kernel(particle, fieldset, time):
+    """
+    The beaching and resuspension kernels for beaching on the coastline follows the procedure outlined in Onink et
+    al. (2021).
+    Onink et al. (2021) = https://doi.org/10.1088/1748-9326/abecbd
+
+    For particles on the seabed, we follow the resuspension procedure outlined in Carvajalino-Fernandez et al.
+    (2020), where a particle at the sea bed gets resuspended if the estimated sea floor sea stress is greater than a
+    critical threshold. Particles can get stuck on the seabed if the potential depth due to KPP or internal tide
+    mixing is below the bathymetry depth
+
+    The bottom sea stress is calculated using a quadratic drag extrapolation according to Warner et al. (2008)
+    Carvajalino-Fernandez et al. (2020) = https://doi.org/10.1016/j.marpolbul.2020.111685
+    Warner et al. (2008) = https://doi.org/10.1016/j.cageo.2008.02.012
+
+    Note: This beaching kernel was developed for 3D size dependent transport runs, but given the high uncertainty in how
+    to represent the seabed resuspension it was ultimately not used.
+    """
+    # First, the beaching of particles on the coastline
+    if particle.beach == 0:
+        dist = fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
+        if dist < fieldset.Coastal_Boundary:
+            if ParcelsRandom.uniform(0, 1) > fieldset.p_beach:
+                particle.beach = 1
+    # Next the resuspension of particles on the coastline
+    elif particle.beach == 1:
+        if ParcelsRandom.uniform(0, 1) > fieldset.p_resus:
+            particle.beach = 0
+    # Finally, the resuspension of particles on the seabed
+    elif particle.beach == 3:
+        dWx = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
+        dWy = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
+
+        bx = math.sqrt(2 * fieldset.SEABED_KH)
+
+        # Getting the current strength at the particle position at the sea bed, and converting it to m/s
+        U_bed, V_bed = fieldset.U[time, particle.depth, particle.lat, particle.lon], fieldset.V[time, particle.depth, particle.lat, particle.lon]
+        U_bed, V_bed = U_bed * 1852. * 60. * math.cos(40. * math.pi / 180.), V_bed * 1852. * 60.
+        U_bed, V_bed = U_bed + bx * dWx, V_bed + bx * dWy
+        # Getting the bottom shear stress
+        tau_bss = 0.003 * (math.pow(U_bed, 2) + math.pow(V_bed, 2))
+        # if tau_bss is greater than fieldset.SEABED_CRIT, then the particle gets resuspended
+        if tau_bss > fieldset.SEABED_CRIT:
+            particle.beach = 0
+    # Update the age of the particle
+    particle.age += particle.dt

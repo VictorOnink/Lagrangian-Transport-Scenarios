@@ -82,6 +82,7 @@ class SizeTransport(base_scenario.BaseScenario):
                                     other_name='lat')
         utils.add_particle_variable(particle_type, 'prev_depth', dtype=np.float32, set_initial=True, to_write=False,
                                     other_name='depth')
+        utils.add_particle_variable(particle_type, 'potential', dtype=np.float32, set_initial=False, to_write=False)
         utils.add_particle_variable(particle_type, 'density', dtype=np.float32, set_initial=False, to_write=False)
         utils.add_particle_variable(particle_type, 'surface_density', dtype=np.float32, set_initial=False,
                                     to_write=False)
@@ -117,15 +118,6 @@ class SizeTransport(base_scenario.BaseScenario):
         The beaching and resuspension kernels for beaching on the coastline follows the procedure outlined in Onink et
         al. (2021).
         Onink et al. (2021) = https://doi.org/10.1088/1748-9326/abecbd
-
-        For particles on the seabed, we follow the resuspension procedure outlined in Carvajalino-Fernandez et al.
-        (2020), where a particle at the sea bed gets resuspended if the estimated sea floor sea stress is greater than a
-        critical threshold. Particles can get stuck on the seabed if the potential depth due to KPP or internal tide
-        mixing is below the bathymetry depth
-
-        The bottom sea stress is calculated using a quadratic drag extrapolation according to Warner et al. (2008)
-        Carvajalino-Fernandez et al. (2020) = https://doi.org/10.1016/j.marpolbul.2020.111685
-        Warner et al. (2008) = https://doi.org/10.1016/j.cageo.2008.02.012
         """
         # First, the beaching of particles on the coastline
         if particle.beach == 0:
@@ -136,22 +128,6 @@ class SizeTransport(base_scenario.BaseScenario):
         # Next the resuspension of particles on the coastline
         elif particle.beach == 1:
             if ParcelsRandom.uniform(0, 1) > fieldset.p_resus:
-                particle.beach = 0
-        # Finally, the resuspension of particles on the seabed
-        elif particle.beach == 3:
-            dWx = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
-            dWy = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
-
-            bx = math.sqrt(2 * fieldset.SEABED_KH)
-
-            # Getting the current strength at the particle position at the sea bed, and converting it to m/s
-            U_bed, V_bed = fieldset.U[time, particle.depth, particle.lat, particle.lon], fieldset.V[time, particle.depth, particle.lat, particle.lon]
-            U_bed, V_bed = U_bed * 1852. * 60. * math.cos(40. * math.pi / 180.), V_bed * 1852. * 60.
-            U_bed, V_bed = U_bed + bx * dWx, V_bed + bx * dWy
-            # Getting the bottom shear stress
-            tau_bss = 0.003 * (math.pow(U_bed, 2) + math.pow(V_bed, 2))
-            # if tau_bss is greater than fieldset.SEABED_CRIT, then the particle gets resuspended
-            if tau_bss > fieldset.SEABED_CRIT:
                 particle.beach = 0
         # Update the age of the particle
         particle.age += particle.dt
@@ -165,6 +141,7 @@ class SizeTransport(base_scenario.BaseScenario):
                         pset.Kernel(utils.anti_beach_nudging) + \
                         pset.Kernel(utils.get_rising_velocity) + \
                         pset.Kernel(utils.KPP_TIDAL_mixing) + \
+                        pset.Kernel(utils.vertical_reflecting_boundary) + \
                         pset.Kernel(utils.TotalDistance) + \
                         pset.Kernel(self.beaching_kernel)
         return base_behavior
