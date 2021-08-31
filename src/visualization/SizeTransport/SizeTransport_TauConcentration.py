@@ -95,7 +95,7 @@ def SizeTransport_TauConcentration(scenario, figure_direc, size_selection, tau_l
 def plot_save_name(output_direc, rho, time_selection, beach_state, size,
                    flowdata='CMEMS_MEDITERRANEAN', startyear=2010):
     selection_dict = {'average': 'TotalAverage', 0: 'year_0', 1: 'year_1', 2: 'year_2'}
-    return output_direc + 'SizeTransport_TAUCOMP_{}_{}_{}_{}_rho_{}_y_{}.png'.format(flowdata, beach_state, size,
+    return output_direc + 'SizeTransport_TAUCOMP_{}_{}_{:.3f}_{}_rho_{}_y_{}.png'.format(flowdata, beach_state, size,
                                                                                      selection_dict[time_selection],
                                                                                      rho, startyear)
 
