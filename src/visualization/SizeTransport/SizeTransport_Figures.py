@@ -70,16 +70,16 @@ def run(scenario, figure_direc: str):
 
     # Comparing the relative distributions with different tau values
     SizeTransport_TauConcentration.SizeTransport_TauConcentration(scenario=scenario, figure_direc=figure_direc,
-                                                                  size=5000 * settings.SIZE_FACTOR,
+                                                                  size_selection=5000 * settings.SIZE_FACTOR,
                                                                   tau_list=tau_list, beach_state='afloat')
     SizeTransport_TauConcentration.SizeTransport_TauConcentration(scenario=scenario, figure_direc=figure_direc,
-                                                                  size=625 * settings.SIZE_FACTOR,
+                                                                  size_selection=625 * settings.SIZE_FACTOR,
                                                                   tau_list=tau_list, beach_state='afloat')
     SizeTransport_TauConcentration.SizeTransport_TauConcentration(scenario=scenario, figure_direc=figure_direc,
-                                                                  size=20 * settings.SIZE_FACTOR,
+                                                                  size_selection=20 * settings.SIZE_FACTOR,
                                                                   tau_list=tau_list, beach_state='afloat')
     SizeTransport_TauConcentration.SizeTransport_TauConcentration(scenario=scenario, figure_direc=figure_direc,
-                                                                  size=2 * settings.SIZE_FACTOR,
+                                                                  size_selection=2 * settings.SIZE_FACTOR,
                                                                   tau_list=tau_list, beach_state='afloat')
 
     # Creating figures of the timeseries of the number of particles that are beached/afloat/seabed/removed
