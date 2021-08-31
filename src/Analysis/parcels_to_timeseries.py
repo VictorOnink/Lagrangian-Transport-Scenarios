@@ -27,7 +27,7 @@ def parcels_to_timeseries(file_dict: dict, lon_min: float = -180, lon_max: float
                         'removed': np.zeros(time_list.shape, dtype=float),
                         'total': np.zeros(time_list.shape, dtype=float),
                         'time': time_list}
-    beach_label_dict = {'beach': 1, 'adrift': 0, 'adrift': 3, 'removed': 2}
+    beach_label_dict = {'beach': 1, 'adrift': 0, 'seabed': 3, 'removed': 2}
 
     utils.print_statement("Start running through the restart and run files")
     # loop through the runs
