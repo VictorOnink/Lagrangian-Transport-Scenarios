@@ -64,29 +64,29 @@ def run(scenario, figure_direc: str):
     #                                                                             time_selection=time_select,
     #                                                                             beach_state='beach')
 
-    size_list = np.array([5000, 625, 39, 2]) * settings.SIZE_FACTOR
+    size_list = np.array([5000, 39, 2]) * settings.SIZE_FACTOR
     rho_list = np.ones(size_list.shape, dtype=int) * 920
     tau_list = np.array([100, 0.14, 0.025, 0])
 
     # Comparing the relative distributions with different tau values
     SizeTransport_TauConcentration.SizeTransport_TauConcentration(scenario=scenario, figure_direc=figure_direc,
                                                                   size_selection=5000 * settings.SIZE_FACTOR,
-                                                                  tau_list=tau_list, beach_state='beach')
+                                                                  tau_list=tau_list, beach_state='adrift')
     SizeTransport_TauConcentration.SizeTransport_TauConcentration(scenario=scenario, figure_direc=figure_direc,
                                                                   size_selection=625 * settings.SIZE_FACTOR,
-                                                                  tau_list=tau_list, beach_state='beach')
+                                                                  tau_list=tau_list, beach_state='adrift')
     SizeTransport_TauConcentration.SizeTransport_TauConcentration(scenario=scenario, figure_direc=figure_direc,
                                                                   size_selection=20 * settings.SIZE_FACTOR,
-                                                                  tau_list=tau_list, beach_state='beach')
+                                                                  tau_list=tau_list, beach_state='adrift')
     SizeTransport_TauConcentration.SizeTransport_TauConcentration(scenario=scenario, figure_direc=figure_direc,
                                                                   size_selection=2 * settings.SIZE_FACTOR,
-                                                                  tau_list=tau_list, beach_state='beach')
+                                                                  tau_list=tau_list, beach_state='adrift')
 
     # Creating figures of the timeseries of the number of particles that are beached/adrift/seabed
-    # SizeTransport_beach_timeseries.SizeTransport_beach_timeseries(figure_direc=figure_direc, scenario=scenario,
-    #                                                               size_list=size_list, rho_list=rho_list,
-    #                                                               tau_list=tau_list, simulation_years=1,
-    #                                                               tau_comp=True)
+    SizeTransport_beach_timeseries.SizeTransport_beach_timeseries(figure_direc=figure_direc, scenario=scenario,
+                                                                  size_list=size_list, rho_list=rho_list,
+                                                                  tau_list=tau_list, simulation_years=1,
+                                                                  tau_comp=True)
 
     # A histogram indicating at which depths particles end up beaching
     # SizeTransport_SeaFloorDepthDistribution.SizeTransport_SeaFloorDepthDistribution(figure_direc=figure_direc,
