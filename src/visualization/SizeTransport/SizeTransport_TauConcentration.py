@@ -78,7 +78,8 @@ def SizeTransport_TauConcentration(scenario, figure_direc, size, tau_list, beach
 
     # adding subfigure titles to the corresponding subfigures
     for index, ax in enumerate(ax_list):
-        ax.set_title(subfigure_title(index, size, rho, tau_list), weight='bold', fontsize=fontsize)
+        ax.set_title(subfigure_title(index, size, tau_list), weight='bold', fontsize=fontsize)
+
     # The actual plotting of the figures
     for index, tau in enumerate(tau_list):
         if beach_state in ['afloat']:
