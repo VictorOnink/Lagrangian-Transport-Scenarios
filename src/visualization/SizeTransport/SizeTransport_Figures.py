@@ -66,7 +66,7 @@ def run(scenario, figure_direc: str):
 
     size_list = np.array([5000, 625, 39, 2]) * settings.SIZE_FACTOR
     rho_list = np.ones(size_list.shape, dtype=int) * 920
-    tau_list = np.array([0.14, 0.025, 100, 0])
+    tau_list = np.array([100, 0.14, 0.025, 0])
 
     # Comparing the relative distributions with different tau values
     SizeTransport_TauConcentration.SizeTransport_TauConcentration(scenario=scenario, figure_direc=figure_direc,
