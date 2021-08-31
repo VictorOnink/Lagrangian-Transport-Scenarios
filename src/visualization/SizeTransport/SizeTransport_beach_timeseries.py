@@ -22,15 +22,15 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
     for index, size in enumerate(size_list):
         timeseries_dict[size] = {}
         for tau in tau_list:
+            print(tau)
             data_dict = vUtils.SizeTransport_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
                                                        size=size, rho=rho_list[index], tau=tau)
             timeseries_dict[size][tau] = {}
             for beach_state in beach_state_list:
                 timeseries_dict[size][tau][beach_state] = data_dict[beach_state]
+                print(data_dict[beach_state])
             timeseries_dict[size][tau]['time_raw'] = data_dict['time']
             timeseries_dict[size][tau]['total'] = data_dict['total'][0]
-            print('size {}, tau {}, max seabed {}'.format(size, tau, np.nanmax(timeseries_dict[size][tau]['seabed'])))
-
 
     # Normalizing all the particle counts with the total number of particles, and then multiplying by 100 to get a
     # percentage
