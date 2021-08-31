@@ -42,7 +42,8 @@ def parcels_to_concentration(file_dict: dict):
         output_dict[utils.analysis_simulation_year_key(simulation_years)] = deepcopy(beach_state_dict)
 
     # loop through the runs
-    for run in progressbar.progressbar(range(settings.RUN_RANGE)):
+    pbar = progressbar.ProgressBar()
+    for run in pbar(range(settings.RUN_RANGE)):
         # Loop through the restart files
         for restart in range(settings.SIM_LENGTH):
             # Load the lon, lat, weight data
