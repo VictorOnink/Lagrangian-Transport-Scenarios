@@ -22,12 +22,12 @@ def parcels_to_timeseries(file_dict: dict, lon_min: float = -180, lon_max: float
 
     # Initializing the arrays of the timeseries
     beach_state_dict = {'beach': np.zeros(time_list.shape, dtype=float),
-                        'afloat': np.zeros(time_list.shape, dtype=float),
+                        'adrift': np.zeros(time_list.shape, dtype=float),
                         'seabed': np.zeros(time_list.shape, dtype=float),
                         'removed': np.zeros(time_list.shape, dtype=float),
                         'total': np.zeros(time_list.shape, dtype=float),
                         'time': time_list}
-    beach_label_dict = {'beach': 1, 'afloat': 0, 'seabed': 3, 'removed': 2}
+    beach_label_dict = {'beach': 1, 'afloat': 0, 'adrift': 3, 'removed': 2}
 
     utils.print_statement("Start running through the restart and run files")
     # loop through the runs
@@ -104,12 +104,12 @@ def parcels_to_timeseries_sizebins(file_dict: dict, lon_min: float = -180, lon_m
     for size_class in range(settings.SIZE_CLASS_NUMBER):
         size_dict[size_class] = np.zeros(time_list.shape, dtype=float)
     beach_state_dict = {'beach': deepcopy(size_dict),
-                        'afloat': deepcopy(size_dict),
+                        'adrift': deepcopy(size_dict),
                         'seabed': deepcopy(size_dict),
                         'removed': deepcopy(size_dict),
                         'total': deepcopy(size_dict),
                         'time': time_list}
-    beach_label_dict = {'beach': 1, 'afloat': 0, 'seabed': 3, 'removed': 2}
+    beach_label_dict = {'beach': 1, 'adrift': 0, 'seabed': 3, 'removed': 2}
 
     utils.print_statement("Start running through the restart and run files")
     # loop through the runs

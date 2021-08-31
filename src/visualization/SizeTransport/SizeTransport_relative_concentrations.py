@@ -17,7 +17,7 @@ def SizeTransport_relative_concentrations(scenario, figure_direc, size_list, rho
     :param figure_direc: which directory to save the figure in
     :param size_list: the particle sizes that we are plotting
     :param rho_list: the particle densities we are plotting
-    :param beach_state: which particles do we want to consider for figures: 'beach', 'afloat' or 'seabed'
+    :param beach_state: which particles do we want to consider for figures: 'beach', 'adrift' or 'seabed'
     :param time_selection: if 'average', then it uses the average concentration calculated over the entire simulation,
                            otherwise it takes the year of the simulation given as input
     :param difference: if false, we plot just the normalized concentrations, otherwise we plot the difference relative
@@ -110,7 +110,7 @@ def SizeTransport_relative_concentrations(scenario, figure_direc, size_list, rho
 
     # The actual plotting of the figures
     for index, size in enumerate(size_list):
-        if beach_state in ['afloat']:
+        if beach_state in ['adrift']:
             ax_list[index].pcolormesh(Lon, Lat, concentration_dict[index], norm=norm, cmap=cmap_name, zorder=200)
         else:
             ax_list[index].scatter(Lon.flatten(), Lat.flatten(), c=concentration_dict[index], norm=norm, cmap=cmap_name,
@@ -159,12 +159,12 @@ def plot_save_name(output_direc, rho, time_selection, difference, beach_state, r
 def set_normalization(beach_state, difference):
     """
     Setting the normalization that we use for the colormap
-    :param beach_state: afloat, beach or seabed
+    :param beach_state: adrift, beach or seabed
     :param difference: is it absolute concentrations or the difference relative to reference size
     :return:
     """
     if not difference:
-        if beach_state == 'afloat':
+        if beach_state == 'adrift':
             vmin, vmax = 1, 1e4
         elif beach_state == 'beach':
             vmin, vmax = 1, 1e5

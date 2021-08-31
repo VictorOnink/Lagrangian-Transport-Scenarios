@@ -83,7 +83,7 @@ def SizeTransport_TauConcentration(scenario, figure_direc, size_selection, tau_l
 
     # The actual plotting of the figures
     for index, tau in enumerate(tau_list):
-        if beach_state in ['afloat']:
+        if beach_state in ['adrift']:
             ax_list[index].pcolormesh(Lon, Lat, concentration_dict[index], norm=norm, cmap=cmap_name, zorder=200)
         else:
             ax_list[index].scatter(Lon.flatten(), Lat.flatten(), c=concentration_dict[index], norm=norm, cmap=cmap_name,
@@ -104,10 +104,10 @@ def plot_save_name(output_direc, rho, time_selection, beach_state, size,
 def set_normalization(beach_state):
     """
     Setting the normalization that we use for the colormap
-    :param beach_state: afloat, beach or seabed
+    :param beach_state: adrift, beach or seabed
     :return:
     """
-    if beach_state == 'afloat':
+    if beach_state == 'adrift':
         vmin, vmax = 1, 1e4
     elif beach_state == 'beach':
         vmin, vmax = 1, 1e5
