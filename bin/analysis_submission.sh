@@ -19,7 +19,7 @@ WMIN=3
 PARTICLE_SIZE_list=(5000 2500 1250 625 313 156 78 39 20 10 5 2)
 INIT_DENSITY=920
 #for scenario 5 and 6, the critical bottom shear stress for particle resuspension (x1e-3)
-SEABED_CRIT=25
+SEABED_CRIT=100000
 # For scenario 5, the fragmentation parameters p (x1e-1), DN (x1e-1), the number of size classes and fragmentation
 # timescale (days)
 P=4
@@ -64,7 +64,7 @@ export SERVER
 
 #A number of switches to indicate which analysis steps we want to run.
 #0 = off, 1 = on
-CONCENTRATION=1
+CONCENTRATION=0
 VERTICAL_CONCENTRATION=1
 TIMESERIES=1
 MAX_DISTANCE=0

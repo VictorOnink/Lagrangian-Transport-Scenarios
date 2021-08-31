@@ -34,7 +34,8 @@ def parcels_to_vertical_concentration(file_dict: dict):
             counts_dict[key_year][month] = 0.0
 
     # Looping through all the simulation years and runs
-    for run in progressbar.progressbar(range(settings.RUN_RANGE)):
+    pbar = progressbar.ProgressBar()
+    for run in pbar(range(settings.RUN_RANGE)):
         # Loop through the restart files
         for restart in range(settings.SIM_LENGTH):
             key_year = utils.analysis_simulation_year_key(restart)
