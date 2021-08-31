@@ -9,7 +9,7 @@ import string
 import cmocean.cm as cmo
 
 
-def SizeTransport_TauConcentration(scenario, figure_direc, size, tau_list, beach_state, rho=920,
+def SizeTransport_TauConcentration(scenario, figure_direc, size_selection, tau_list, beach_state, rho=920,
                                    time_selection=0, figsize=(20, 10), fontsize=14):
     # Setting the folder within which we have the output, and where we have the saved timeslices
     output_direc = figure_direc + 'concentrations/'
@@ -24,7 +24,7 @@ def SizeTransport_TauConcentration(scenario, figure_direc, size, tau_list, beach
         key_concentration = utils.analysis_simulation_year_key(time_selection)
     for index, tau in enumerate(tau_list):
         data_dict = vUtils.SizeTransport_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
-                                                   size=size, rho=rho, tau=tau)
+                                                   size=size_selection, rho=rho, tau=tau)
         concentration_dict[index] = data_dict[key_concentration][beach_state]
     lon, lat = data_dict['lon'], data_dict['lat']
     Lon, Lat = np.meshgrid(lon, lat)
@@ -78,7 +78,7 @@ def SizeTransport_TauConcentration(scenario, figure_direc, size, tau_list, beach
 
     # adding subfigure titles to the corresponding subfigures
     for index, ax in enumerate(ax_list):
-        ax.set_title(subfigure_title(index, size, tau_list), weight='bold', fontsize=fontsize)
+        ax.set_title(subfigure_title(index, size_selection, tau_list), weight='bold', fontsize=fontsize)
 
     # The actual plotting of the figures
     for index, tau in enumerate(tau_list):
@@ -88,7 +88,7 @@ def SizeTransport_TauConcentration(scenario, figure_direc, size, tau_list, beach
             ax_list[index].scatter(Lon.flatten(), Lat.flatten(), c=concentration_dict[index], norm=norm, cmap=cmap_name,
                                    zorder=200)
     # Saving the figure
-    file_name = plot_save_name(output_direc, rho, time_selection, beach_state, size)
+    file_name = plot_save_name(output_direc, rho, time_selection, beach_state, size_selection)
     plt.savefig(file_name, bbox_inches='tight')
 
 
