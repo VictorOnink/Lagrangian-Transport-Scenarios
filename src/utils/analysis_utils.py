@@ -148,9 +148,9 @@ def histogram(lon_data, lat_data, bins_Lon, bins_Lat, weight_data=0,
         return masses  # weight / km^2
 
 
-def analysis_save_file_name(input_file: str, prefix: str, suffix=None):
+def analysis_save_file_name(input_file: str, prefix: str, suffix=None, split='_r='):
     _, file_name = os.path.split(input_file)
-    file_name = prefix + '_' + file_name.split('_r=')[0]
+    file_name = prefix + '_' + file_name.split(split)[0]
     if suffix is not None:
         file_name += suffix
     return file_name

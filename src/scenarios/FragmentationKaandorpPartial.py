@@ -193,7 +193,6 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
             if math.fabs(local_bathymetry - particle.depth) < 1:
                 particle.at_seafloor += particle.dt
 
-
     def particle_splitter(self, fieldset, pset):
         for particle in pset:
             if particle.to_split > 0:

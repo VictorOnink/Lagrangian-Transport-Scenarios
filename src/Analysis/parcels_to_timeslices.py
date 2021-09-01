@@ -46,7 +46,12 @@ def parcels_to_timeslicing(file_dict: dict):
                 # Setting the output name
                 date = (reference_time + timedelta(seconds=timeslice)).strftime("%Y-%m-%d-%H-%M-%S")
                 prefix = 'timeslices_{}'.format(date)
-                output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
+                if settings.SCENARIO_NAME == 'FragmentationKaandorpPartial':
+                    output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict[0][0],
+                                                                               prefix=prefix, split='_y=')
+                else:
+                    output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict[0][0],
+                                                                               prefix=prefix)
                 # If this is run=0, then save this as a new file
                 if run == 0:
                     utils.save_obj(filename=output_name, item=slice_dict)
