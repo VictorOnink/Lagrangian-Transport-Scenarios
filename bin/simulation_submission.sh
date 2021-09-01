@@ -16,7 +16,7 @@ SHOREDEPEN=0
 #for scenario 4, the minimum wind speed for resuspension. Divide by 10 for actual value
 WMIN=3
 #for scenario 5 and 6, the initial size of the particle in 1e-6 m and the density of the particle
-PARTICLE_SIZE_list=(5000 2500 1250 625 313 156 78 39 20 10 5 2)
+PARTICLE_SIZE_list=(5000)
 INIT_DENSITY=920
 #for scenarios 5 - 7, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=0
