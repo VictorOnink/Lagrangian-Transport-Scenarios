@@ -97,6 +97,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         utils.add_particle_variable(particle_type, 'adrift_time', dtype=np.float32, set_initial=True, to_write=True)
         utils.add_particle_variable(particle_type, 'size_class', dtype=np.int32, set_initial=True, to_write=True)
         utils.add_particle_variable(particle_type, 'potential', dtype=np.float32, set_initial=False, to_write=False)
+
         return particle_type
 
     def file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART,
