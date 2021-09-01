@@ -35,6 +35,12 @@ if SUBMISSION in ['simulation', 'analysis']:
     # STARTING YEAR OF THE SIMULATION
     START_YEAR: int = int(os.environ['STARTYEAR'])
 
+    # STARTING MONTH OF THE SIMULATION
+    START_MONTH: int = int(os.environ['STARTMONTH'])
+
+    # STARTING DAY OF THE SIMULATION
+    START_DAY: int = int(os.environ['STARTDAY'])
+
     # LENGTH IN YEARS OF THE SIMULATION
     SIM_LENGTH: int = int(os.environ['SIMLEN'])
 
@@ -274,6 +280,8 @@ if SUBMISSION in ['visualization']:
     INIT_SIZE: float = 5000 * SIZE_FACTOR
     INIT_DENSITY: int = 920
     START_YEAR: int = 2010
+    START_MONTH: int = 1
+    START_DAY: int = 1
     SEABED_CRIT: float = 0.025
     P_FRAG: float = 4 * 1e-1
     DN: float = 25 * 1e-1

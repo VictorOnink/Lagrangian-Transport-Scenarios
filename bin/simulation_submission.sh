@@ -5,7 +5,7 @@ SUBMISSION='simulation'
 DEBUG=0 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation
-SCENARIO=5
+SCENARIO=7
 #for scenario 1, the time a particle must be near the coast to beach (in days)
 VICINITY=2
 #for scenario 2, the beaching and resuspension timescales (in days)
@@ -33,15 +33,17 @@ LAMBDA_FRAG_list=(388)
 POST_PROCESS=0
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010
+STARTMONTH=1
+STARTDAY=1
 #Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=lebretondivision, 3=point, 4=uniform
-INPUT=1
+INPUT=2
 #Which advection data do we want to use?
 # 0 = Global HYCOM, 1 = Caribbean HYCOM, 2 = Mediterranean CMEMS
 ADVECTION_DATA=2
 #Start year of the simulation. 0 = new simulation, otherwise it picks up from a previous simulation
 START=0
 #Number of years the simulation runs
-SIMLEN=3
+SIMLEN=2
 #Inclusion of Stokes drift. 0 = include stokes, 1 = do not include stokes
 STOKES=0 
 #Ensemble member
@@ -61,9 +63,11 @@ export DN
 export SIZE_CLASS_NUMBER
 export INIT_DENSITY
 export STARTYEAR
+export STARTMONTH
+export STARTDAY
 export INPUT
 export ADVECTION_DATA
-export START
+export STARTMONTH
 export SIMLEN
 export STOKES
 export ENSEMBLE
@@ -76,7 +80,7 @@ if [ "$INPUT" -eq "0" ]; then
 elif [ "$INPUT" -eq "1" ]; then
   runlength=0 #3
 elif [ "$INPUT" -eq "2" ]; then
-  runlength=0 #9
+  runlength=9
 elif [ "$INPUT" -eq "3" ]; then
   runlength=0
 elif [ "$INPUT" -eq "2" ]; then

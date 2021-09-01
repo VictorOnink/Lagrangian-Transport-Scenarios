@@ -86,31 +86,34 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         utils.add_particle_variable(particle_type, 'rise_velocity', dtype=np.float32, set_initial=True, to_write=False)
         utils.add_particle_variable(particle_type, 'reynolds', dtype=np.float32, set_initial=False, to_write=False)
         utils.add_particle_variable(particle_type, 'rho_plastic', dtype=np.float32, set_initial=True, to_write=False)
-        utils.add_particle_variable(particle_type, 'size', dtype=np.float32)
+        utils.add_particle_variable(particle_type, 'size', dtype=np.float32, set_initial=True, to_write=True)
         utils.add_particle_variable(particle_type, 'to_split', dtype=np.int32, set_initial=False, to_write=True)
         utils.add_particle_variable(particle_type, 'parent', dtype=np.int32, set_initial=True, to_write=True)
         utils.add_particle_variable(particle_type, 'prob_resus', dtype=np.float32, set_initial=True, to_write=False)
         utils.add_particle_variable(particle_type, 'beach_time', dtype=np.float32, set_initial=True, to_write=True)
+        utils.add_particle_variable(particle_type, 'adrift_time', dtype=np.float32, set_initial=True, to_write=True)
         utils.add_particle_variable(particle_type, 'size_class', dtype=np.int32, set_initial=True, to_write=True)
+        utils.add_particle_variable(particle_type, 'potential', dtype=np.float32, set_initial=False, to_write=False)
         return particle_type
 
     def file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART,
                    shore_time=settings.SHORE_TIME, ensemble=settings.ENSEMBLE,
-                   advection_data=settings.ADVECTION_DATA, start_year=settings.START_YEAR, input=settings.INPUT,
+                   advection_data=settings.ADVECTION_DATA, year=settings.START_YEAR + settings.RESTART,
+                   month=settings.START_MONTH, input=settings.INPUT,
                    p_frag=settings.P_FRAG, dn=settings.DN, size_class_number=settings.SIZE_CLASS_NUMBER,
                    lambda_frag=settings.LAMBDA_FRAG, density=settings.INIT_DENSITY, postprocess=settings.POST_PROCESS):
         odirec = self.output_dir + "Kaandorp_Fragmentation_Partial/st_{}_e_{}/".format(shore_time, ensemble)
         if new:
-            str_format = (advection_data, shore_time, p_frag, lambda_frag, dn, size_class_number, density, start_year,
+            str_format = (advection_data, shore_time, p_frag, lambda_frag, dn, size_class_number, density, year, month,
                           input, restart, run)
         else:
-            str_format = (advection_data, shore_time, p_frag, lambda_frag, dn, size_class_number, density, start_year,
-                          input, restart - 1, run)
+            str_format = (advection_data, shore_time, p_frag, lambda_frag, dn, size_class_number, density, year - 1,
+                          month, input, restart - 1, run)
         if postprocess:
             prefix = self.prefix + '_PP'
         else:
             prefix = self.prefix
-        return odirec + prefix + '_{}_st={}_pfrag={}_lambdafrag={}_dn={}_sizeclasses={}_rho={}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
+        return odirec + prefix + '_{}_st={}_pfrag={}_lambdafrag={}_dn={}_sizeclasses={}_rho={}_y={}-{}_I={}_r={}_run={}.nc'.format(*str_format)
 
     def beaching_kernel(particle, fieldset, time):
         """
@@ -130,6 +133,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         """
         # First, the beaching of particles on the coastline
         if particle.beach == 0:
+            particle.adrift_time += particle.dt
             dist = fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
             if dist < fieldset.Coastal_Boundary:
                 if ParcelsRandom.uniform(0, 1) > fieldset.p_beach:
@@ -138,23 +142,6 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         elif particle.beach == 1:
             particle.beach_time += particle.dt
             if ParcelsRandom.uniform(0, 1) > particle.prob_resus:
-                particle.beach = 0
-        # Finally, the resuspension of particles on the seabed
-        elif particle.beach == 3:
-            dWx = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
-            dWy = ParcelsRandom.uniform(-1., 1.) * math.sqrt(math.fabs(particle.dt) * 3)
-
-            bx = math.sqrt(2 * fieldset.SEABED_KH)
-
-            # Getting the current strength at the particle position at the sea bed, and converting it to m/s
-            U_bed = fieldset.U[time, particle.depth, particle.lat, particle.lon]
-            V_bed = fieldset.V[time, particle.depth, particle.lat, particle.lon]
-            U_bed, V_bed = U_bed * 1852. * 60. * math.cos(40. * math.pi / 180.), V_bed * 1852. * 60.
-            U_bed, V_bed = U_bed + bx * dWx, V_bed + bx * dWy
-            # Getting the bottom shear stress
-            tau_bss = 0.003 * (math.pow(U_bed, 2) + math.pow(V_bed, 2))
-            # if tau_bss is greater than fieldset.SEABED_CRIT, then the particle gets resuspended
-            if tau_bss > fieldset.SEABED_CRIT:
                 particle.beach = 0
         # Update the age of the particle
         particle.age += particle.dt
@@ -168,6 +155,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                          pset.Kernel(utils.anti_beach_nudging) + \
                          pset.Kernel(utils.get_rising_velocity) + \
                          pset.Kernel(utils.KPP_TIDAL_mixing) + \
+                         pset.Kernel(utils.vertical_reflecting_boundary) + \
                          pset.Kernel(self.beaching_kernel) + \
                          pset.Kernel(self.fragmentation_kernel)
         return total_behavior
@@ -183,8 +171,6 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
             if particle.to_split == 1:
                 # First, we set the split condition statement back to 0
                 particle.to_split = 0
-                # Calculating the fragmentation factor f
-                f = 60 / settings.LAMBDA_FRAG
                 # Getting the properties of the parent particle
                 parent_size = particle.size
                 parent_size_class = particle.size_class

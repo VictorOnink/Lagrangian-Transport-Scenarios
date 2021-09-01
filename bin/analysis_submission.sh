@@ -29,6 +29,8 @@ LAMBDA_FRAG_list=(388)
 #(1 10 100 200 300 388)
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010
+STARTMONTH=1
+STARTDAY=1
 #Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=lebretondivision, 3=point, 4=uniform
 INPUT=1
 #Which advection data do we want to use?
@@ -59,6 +61,8 @@ export STOKES
 export INPUT
 export ENSEMBLE
 export STARTYEAR
+export STARTMONTH
+export STARTDAY
 export ADVECTION_DATA
 export SERVER
 
