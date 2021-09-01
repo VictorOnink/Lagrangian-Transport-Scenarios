@@ -55,6 +55,7 @@ export SEABED_CRIT
 export P
 export DN
 export SIZE_CLASS_NUMBER
+export OCEAN_FRAG
 export LAMBDA_FRAG
 export INIT_DENSITY
 export SIMLEN
