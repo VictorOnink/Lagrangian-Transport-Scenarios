@@ -112,6 +112,9 @@ if SUBMISSION in ['simulation', 'analysis']:
     # FOR 'TurrellResuspension': MINIMUM OFF-SHORE WIND SPEED FOR RESUSPENSION (x10 TO NOT GET DECIMAL IN OUTPUT FILES)
     WMIN: int = int(os.environ['WMIN'])
 
+    # FOR 'FragmentationKaandorpPartial': WHETHER WE WANT TO INCLUDE OCEAN FRAGMENTATION OR NOT
+    OCEAN_FRAG: bool = BOOLEAN_DICT[int(os.environ['OCEAN_FRAG'])]
+
 
 ########################################################################################################################
 #                                                                                                                      #
@@ -285,9 +288,10 @@ if SUBMISSION in ['visualization']:
     SEABED_CRIT: float = 0.025
     P_FRAG: float = 4 * 1e-1
     DN: float = 25 * 1e-1
-    SIZE_CLASS_NUMBER: int = 7
+    SIZE_CLASS_NUMBER: int = 6
     LAMBDA_FRAG: int = 385
     ENSEMBLE: int = 1
+    OCEAN_FRAG: bool = False
 
 
 ########################################################################################################################

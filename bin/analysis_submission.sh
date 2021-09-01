@@ -21,11 +21,12 @@ INIT_DENSITY=920
 #for scenario 5 and 6, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=100000
 # For scenario 5, the fragmentation parameters p (x1e-1), DN (x1e-1), the number of size classes and fragmentation
-# timescale (days)
+# timescale (days). Also, the option of including ocean fragmentation or not
 P=4
 DN=25
-SIZE_CLASS_NUMBER=7
+SIZE_CLASS_NUMBER=6
 LAMBDA_FRAG_list=(388)
+OCEAN_FRAG=0
 #(1 10 100 200 300 388)
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010

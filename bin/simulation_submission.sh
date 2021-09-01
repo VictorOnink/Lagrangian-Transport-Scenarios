@@ -21,11 +21,12 @@ INIT_DENSITY=920
 #for scenarios 5 - 7, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=0
 # For scenario 7, the fragmentation parameters p (x1e-1), DN (x1e-1), the number of size classes and the fragmentation
-# timescale (DAYS)
+# timescale (DAYS). Also, the option of including ocean fragmentation or not
 P=4
 DN=25
 SIZE_CLASS_NUMBER=7
 LAMBDA_FRAG_list=(388)
+OCEAN_FRAG=0
 # For scenario 7, we are either running a lagrangian simulation OR we are running postprocessing on the parcels output
 # to calculate the particle numbers.
 # POST_PROCESS == 0 -> run lagrangian simulation

@@ -23,6 +23,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         self.input_dir = utils.get_input_directory(server=self.server)
         self.output_dir = utils.get_output_directory(server=self.server)
         self.repeat_dt = None
+        self.OCEAN_FRAG = settings.OCEAN_FRAG
         if settings.SUBMISSION in ['simulation', 'visualization']:
             advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
                                                                 advection_scenario=settings.ADVECTION_DATA,
@@ -31,7 +32,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
             if settings.SUBMISSION in ['simulation'] and not settings.POST_PROCESS:
                 self.field_set = self.create_fieldset()
 
-    var_list = ['lon', 'lat', 'beach', 'age', 'size', 'parent', 'beach_time', 'size_class']
+    var_list = ['lon', 'lat', 'beach', 'age', 'size', 'parent', 'beach_time', 'size_class', 'ocean_time']
 
     def create_fieldset(self) -> FieldSet:
         utils.print_statement("Creating the fieldset")
@@ -59,9 +60,10 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                                lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
                                age=var_dict['age'], size=var_dict['size'],
                                rho_plastic=rho_plastic, parent=range(len(rise_velocity)),
-                               rise_velocity=rise_velocity, beach_time=np.zeros(rise_velocity.shape, dtype=np.float32),
+                               rise_velocity=rise_velocity, beach_time=np.zeros(rise_velocity.shape, dtype=np.int32),
                                prob_resus=utils.resuspension_probability(w_rise=rise_velocity),
                                size_class=np.zeros(rise_velocity.shape, dtype=np.float32),
+                               ocean_time=np.zeros(rise_velocity.shape, dtype=np.int32),
                                time=start_time, repeatdt=repeat_dt)
         else:
             rise_velocity = utils.initial_estimate_particle_rise_velocity(L=var_dict['size'])
@@ -71,7 +73,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                                age=var_dict['age'], size=var_dict['size'], beach_time=var_dict['beach_time'],
                                rho_plastic=rho_plastic, rise_velocity=rise_velocity,
                                prob_resus=utils.resuspension_probability(w_rise=rise_velocity),
-                               size_class=var_dict['size_class'],
+                               size_class=var_dict['size_class'], ocean_time=var_dict['ocean_time'],
                                time=start_time, repeatdt=repeat_dt)
         return pset
 
@@ -90,7 +92,8 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         utils.add_particle_variable(particle_type, 'to_split', dtype=np.int32, set_initial=False, to_write=True)
         utils.add_particle_variable(particle_type, 'parent', dtype=np.int32, set_initial=True, to_write=True)
         utils.add_particle_variable(particle_type, 'prob_resus', dtype=np.float32, set_initial=True, to_write=False)
-        utils.add_particle_variable(particle_type, 'beach_time', dtype=np.float32, set_initial=True, to_write=True)
+        utils.add_particle_variable(particle_type, 'beach_time', dtype=np.int32, set_initial=True, to_write=True)
+        utils.add_particle_variable(particle_type, 'ocean_time', dtype=np.int32, set_initial=True, to_write=True)
         utils.add_particle_variable(particle_type, 'adrift_time', dtype=np.float32, set_initial=True, to_write=True)
         utils.add_particle_variable(particle_type, 'size_class', dtype=np.int32, set_initial=True, to_write=True)
         utils.add_particle_variable(particle_type, 'potential', dtype=np.float32, set_initial=False, to_write=False)
@@ -104,16 +107,16 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                    lambda_frag=settings.LAMBDA_FRAG, density=settings.INIT_DENSITY, postprocess=settings.POST_PROCESS):
         odirec = self.output_dir + "Kaandorp_Fragmentation_Partial/st_{}_e_{}/".format(shore_time, ensemble)
         if new:
-            str_format = (advection_data, shore_time, p_frag, lambda_frag, dn, size_class_number, density, year, month,
-                          input, restart, run)
+            str_format = (advection_data, shore_time, p_frag, lambda_frag, dn, size_class_number, density, input, year,
+                          month, restart, run)
         else:
-            str_format = (advection_data, shore_time, p_frag, lambda_frag, dn, size_class_number, density, year - 1,
-                          month, input, restart - 1, run)
+            str_format = (advection_data, shore_time, p_frag, lambda_frag, dn, size_class_number, density, input,
+                          year - 1,month, restart - 1, run)
         if postprocess:
             prefix = self.prefix + '_PP'
         else:
             prefix = self.prefix
-        return odirec + prefix + '_{}_st={}_pfrag={}_lambdafrag={}_dn={}_sizeclasses={}_rho={}_y={}-{}_I={}_r={}_run={}.nc'.format(*str_format)
+        return odirec + prefix + '_{}_st={}_pfrag={}_lambdafrag={}_dn={}_sizeclasses={}_rho={}_I={}_y={}-{}_r={}_run={}.nc'.format(*str_format)
 
     def beaching_kernel(particle, fieldset, time):
         """
@@ -133,7 +136,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         """
         # First, the beaching of particles on the coastline
         if particle.beach == 0:
-            particle.adrift_time += particle.dt
+            particle.ocean_time += particle.dt
             dist = fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
             if dist < fieldset.Coastal_Boundary:
                 if ParcelsRandom.uniform(0, 1) > fieldset.p_beach:
@@ -160,15 +163,26 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                          pset.Kernel(self.fragmentation_kernel)
         return total_behavior
 
-    def fragmentation_kernel(particle, fieldset, time):
-        if particle.beach == 1:
-            if particle.beach_time >= (60 * 86400):
-                particle.to_split = 1
-                particle.beach_time = 0
+    if settings.OCEAN_FRAG:
+        def fragmentation_kernel(particle, fieldset, time):
+            if particle.beach == 0:
+                if particle.ocean_time >= (60 * 86400):
+                    particle.to_split = 2
+                    particle.ocean_time = 0
+            elif particle.beach == 1:
+                if particle.beach_time >= (60 * 86400):
+                    particle.to_split = 1
+                    particle.beach_time = 0
+    else:
+        def fragmentation_kernel(particle, fieldset, time):
+            if particle.beach == 1:
+                if particle.beach_time >= (60 * 86400):
+                    particle.to_split = 1
+                    particle.beach_time = 0
 
     def particle_splitter(self, fieldset, pset):
         for particle in pset:
-            if particle.to_split == 1:
+            if particle.to_split > 0:
                 # First, we set the split condition statement back to 0
                 particle.to_split = 0
                 # Getting the properties of the parent particle
@@ -196,6 +210,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                                                prob_resus=utils.resuspension_probability(w_rise=particle_w_rise),
                                                size_class=parent_size_class + (k + 1),
                                                beach_time=0,
+                                               ocean_time=0,
                                                repeatdt=None)
                         pset.add(pset_new)
         return pset
