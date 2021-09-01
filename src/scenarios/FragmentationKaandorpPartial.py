@@ -225,6 +225,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                                                size_class=parent_size_class + (k + 1),
                                                beach_time=0,
                                                ocean_time=0,
+                                               at_seafloor=0,
                                                repeatdt=None)
                         pset.add(pset_new)
         return pset
