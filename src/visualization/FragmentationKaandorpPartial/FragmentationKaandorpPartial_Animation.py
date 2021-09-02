@@ -12,7 +12,8 @@ import string
 
 
 def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, lambda_frag, rho, simulation_years,
-                                           figsize=(20, 10), ax_label_size=18, tick_label_size=16):
+                                           figsize=(20, 10), ax_label_size=18, tick_label_size=16,
+                                           ocean_frag=False):
     """
     Here we want to make an animation of the
     :return:
@@ -90,7 +91,7 @@ def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, l
         prefix = 'timeslices_{}'.format(date)
         data_dict = vUtils.FragmentationKaandorpPartial_load_data(scenario=scenario, prefix=prefix,
                                                                   data_direc=data_direc, lambda_frag=lambda_frag,
-                                                                  rho=rho, shore_time=shore_time)
+                                                                  rho=rho, shore_time=shore_time, ocean_frag=ocean_frag)
         lon, lat, depth, size_class = data_dict['lon'], data_dict['lat'], data_dict['z'].astype(int), data_dict['size_class']
         for ax_index, size in enumerate(ax_list):
             # Selecting just one size class
@@ -108,12 +109,13 @@ def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, l
 
     # Saving the animation
     animator.save(filename=animation_save_name(output_direc=output_direc, shore_time=shore_time,
-                                               lambda_frag=lambda_frag),
+                                               lambda_frag=lambda_frag, ocean_frag=ocean_frag),
                   fps=10, extra_args=['-vcodec', 'libx264'])
 
 
-def animation_save_name(output_direc, shore_time, lambda_frag, flowdata='CMEMS_MEDITERRANEAN', file_type='.mov'):
-    return output_direc + 'FragmentationKaandorpPartial_st={}_lam_f={}'.format(flowdata, shore_time, lambda_frag) + \
+def animation_save_name(output_direc, shore_time, lambda_frag, ocean_frag, flowdata='CMEMS_MEDITERRANEAN',
+                        file_type='.mov'):
+    return output_direc + 'FragmentationKaandorpPartial_OFRAG_{}_{}_st={}_lam_f={}'.format(ocean_frag, flowdata, shore_time, lambda_frag) + \
            file_type
 
 

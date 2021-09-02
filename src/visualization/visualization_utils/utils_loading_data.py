@@ -44,10 +44,11 @@ def FragmentationKaandorp_load_data(scenario, prefix, data_direc, shore_time, la
 def FragmentationKaandorpPartial_load_data(scenario, prefix, data_direc, shore_time, lambda_frag, rho,
                                            advection_data='CMEMS_MEDITERRANEAN', dn=settings.DN,
                                            size_class_number=settings.SIZE_CLASS_NUMBER, p_frag=settings.P_FRAG,
-                                           start_year=settings.START_YEAR, input=settings.INPUT
+                                           start_year=settings.START_YEAR, input=settings.INPUT,
+                                           ocean_frag=settings.OCEAN_FRAG
                                            ):
     file_name = scenario.file_names(new=True, advection_data=advection_data, shore_time=shore_time, dn=dn,
-                                    size_class_number=size_class_number, p_frag=p_frag,
+                                    size_class_number=size_class_number, p_frag=p_frag, ocean_frag=ocean_frag,
                                     lambda_frag=lambda_frag, density=rho, start_year=start_year, input=input)
     full_path = data_direc + utils.analysis_save_file_name(input_file=file_name, prefix=prefix)
     return utils.load_obj(full_path)
