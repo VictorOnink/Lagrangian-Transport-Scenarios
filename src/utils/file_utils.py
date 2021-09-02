@@ -36,8 +36,11 @@ def get_output_directory(server: int) -> str:
 
 
 def get_start_end_time(time: str):
-    start_time = datetime(settings.START_YEAR + settings.RESTART, settings.START_MONTH, settings.START_DAY, 0, 0)
-    end_time = datetime(settings.START_YEAR + settings.RESTART + 1, settings.START_MONTH, settings.START_DAY, 0, 0)
+    if settings.restart == 0:
+        start_time = datetime(settings.STARTYEAR, settings.STARTMONTH, settings.STARTDAY, 0, 0)
+    else:
+        start_time = datetime(settings.STARTYEAR, 1, 1, 0, 0)
+    end_time = datetime(settings.STARTYEAR + settings.RESTART + 1, 1, 1, 0, 0)
     simulation_length = (end_time - start_time).days
     if time == 'start':
         return start_time

@@ -99,7 +99,7 @@ class SizeTransport(base_scenario.BaseScenario):
 
     def file_names(self, new: bool = False, advection_data: str = settings.ADVECTION_DATA,
                    shore_time: int = settings.SHORE_TIME, init_size: float = settings.INIT_SIZE,
-                   init_density: int = settings.INIT_DENSITY, start_year: int = settings.START_YEAR,
+                   init_density: int = settings.INIT_DENSITY, start_year: int = settings.STARTYEAR,
                    input: str = settings.INPUT, run: int = settings.RUN, restart: int = settings.RESTART,
                    seabed_crit: float = settings.SEABED_CRIT):
         odirec = self.output_dir + "SizeTransport/size_{:.1E}/".format(init_size)

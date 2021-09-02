@@ -65,10 +65,10 @@ class SD_Resuspension(base_scenario.BaseScenario):
                                                                          settings.RESUS_TIME, settings.ENSEMBLE)
         if new:
             str_format = (settings.ADVECTION_DATA, settings.SHORE_DEP, settings.SHORE_TIME, settings.RESUS_TIME,
-                          settings.START_YEAR, settings.INPUT, restart, run)
+                          settings.STARTYEAR, settings.INPUT, restart, run)
         else:
             str_format = (settings.ADVECTION_DATA, settings.SHORE_DEP, settings.SHORE_TIME, settings.RESUS_TIME,
-                          settings.START_YEAR, settings.INPUT, restart - 1, run)
+                          settings.STARTYEAR, settings.INPUT, restart - 1, run)
         return odirec + self.prefix + '_{}_dep={}_st={}_rt={}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
 
     def beaching_kernel(particle, fieldset, time):

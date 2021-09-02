@@ -21,7 +21,7 @@ def create_MLD_files(UV_filenames: list, UV_variables: dict, TEMP_filenames: lis
     DEPTH = np.tile(DEPTH[np.newaxis, :, np.newaxis, np.newaxis], (1, 1, LAT.shape[0], LON.shape[0]))
     # Creating a list to which we save all MLD filenames
     MLD_filenames = []
-    if settings.ADVECTION_DATA is 'CMEMS_MEDITERRANEAN' and settings.START_YEAR is not 2010:
+    if settings.ADVECTION_DATA is 'CMEMS_MEDITERRANEAN' and settings.STARTYEAR is not 2010:
         UV_filenames = UV_filenames[1:]
 
     for step in range(len(UV_filenames)):

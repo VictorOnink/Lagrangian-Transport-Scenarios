@@ -18,7 +18,7 @@ def parcels_to_timeslicing(file_dict: dict):
         settings.SCENARIO_NAME)
     utils.check_direc_exist(output_direc)
     # Setting the datatime object to which all times are set
-    reference_time = datetime(settings.START_YEAR, 1, 1, 12)
+    reference_time = datetime(settings.STARTYEAR, 1, 1, 12)
     # loop through the runs
     pbar = ProgressBar()
     for run in pbar(range(settings.RUN_RANGE)):
@@ -46,12 +46,7 @@ def parcels_to_timeslicing(file_dict: dict):
                 # Setting the output name
                 date = (reference_time + timedelta(seconds=timeslice)).strftime("%Y-%m-%d-%H-%M-%S")
                 prefix = 'timeslices_{}'.format(date)
-                if settings.SCENARIO_NAME == 'FragmentationKaandorpPartial':
-                    output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict[0][0],
-                                                                               prefix=prefix, split='_y=')
-                else:
-                    output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict[0][0],
-                                                                               prefix=prefix)
+                output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
                 # If this is run=0, then save this as a new file
                 if run == 0:
                     utils.save_obj(filename=output_name, item=slice_dict)

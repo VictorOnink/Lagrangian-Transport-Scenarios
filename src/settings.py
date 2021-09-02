@@ -32,14 +32,10 @@ INPUT_DIREC_DICT = {0: DATA_INPUT_DIR_SERVERS[SERVER] + 'Jambeck_Inputs/',
                     4: DATA_INPUT_DIR_SERVERS[SERVER] + 'Uniform/'}
 
 if SUBMISSION in ['simulation', 'analysis']:
-    # STARTING YEAR OF THE SIMULATION
-    START_YEAR: int = int(os.environ['STARTYEAR'])
-
-    # STARTING MONTH OF THE SIMULATION
-    START_MONTH: int = int(os.environ['STARTMONTH'])
-
-    # STARTING DAY OF THE SIMULATION
-    START_DAY: int = int(os.environ['STARTDAY'])
+    # STARTING YEAR, MONTH AND DAY OF THE SIMULATION
+    STARTYEAR: int = int(os.environ['STARTYEAR'])
+    STARTMONTH: int = int(os.environ['STARTMONTH'])
+    STARTDAY: int = int(os.environ['STARTDAY'])
 
     # LENGTH IN YEARS OF THE SIMULATION
     SIM_LENGTH: int = int(os.environ['SIMLEN'])
@@ -246,6 +242,8 @@ if SUBMISSION in ['simulation', 'analysis']:
     SIZE_CLASS_NUMBER = int(os.environ['SIZE_CLASS_NUMBER'])
     # FRAGMENTATION TIMESCALE (DAYS)
     LAMBDA_FRAG = int(os.environ['LAMBDA_FRAG'])
+    # OPEN OCEAN FRAGMENTATION TIMESCALE (DAYS)
+    LAMBDA_OCEAN_FRAG = int(os.environ['LAMBDA_OCEAN_FRAG'])
     # CRITICAL SHEAR STRESS FOR RESUSPENSION OF PARTICLES FROM THE SEA BED, HORIZONTAL DIFFUSION AT THE SEA BED
     SEABED_CRIT = int(os.environ['SEABED_CRIT']) * 1E-3
 
@@ -282,16 +280,17 @@ if SUBMISSION in ['visualization']:
     WMIN: int = 0
     INIT_SIZE: float = 5000 * SIZE_FACTOR
     INIT_DENSITY: int = 920
-    START_YEAR: int = 2010
-    START_MONTH: int = 1
-    START_DAY: int = 1
+    STARTYEAR: int = 2010
+    STARTMONTH: int = 1
+    STARTDAY: int = 1
     SEABED_CRIT: float = 0.025
     P_FRAG: float = 4 * 1e-1
     DN: float = 25 * 1e-1
     SIZE_CLASS_NUMBER: int = 6
-    LAMBDA_FRAG: int = 385
+    LAMBDA_FRAG: int = 388
     ENSEMBLE: int = 1
     OCEAN_FRAG: bool = False
+    LAMBDA_OCEAN_FRAG: int = 388
 
 
 ########################################################################################################################
@@ -302,7 +301,7 @@ if SUBMISSION in ['visualization']:
 os.system('echo "This is the {} for the {} scenario"'.format(SUBMISSION, SCENARIO_NAME))
 os.system('echo "The input scenario is {}"'.format(INPUT))
 if SUBMISSION == 'simulation':
-    os.system('echo "The starting year is {}, and this is run {}, restart {}"'.format(START_YEAR, RUN, RESTART))
+    os.system('echo "The starting year is {}, and this is run {}, restart {}"'.format(STARTYEAR, RUN, RESTART))
     os.system('echo "We are using {} for the plastic advection"'.format(ADVECTION_DATA))
 
 if SCENARIO_NAME == 'CoastalProximity':

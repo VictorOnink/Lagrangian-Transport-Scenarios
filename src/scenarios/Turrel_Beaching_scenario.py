@@ -65,10 +65,10 @@ class Turrell_Resuspension(base_scenario.BaseScenario):
         odirec = self.output_dir + "Turrell/st_{}_W_{}_e_{}/".format(settings.SHORE_TIME, settings.WMIN,
                                                                      settings.ENSEMBLE)
         if new:
-            str_format = (settings.ADVECTION_DATA, settings.WMIN, settings.SHORE_TIME, settings.START_YEAR,
+            str_format = (settings.ADVECTION_DATA, settings.WMIN, settings.SHORE_TIME, settings.STARTYEAR,
                           settings.INPUT, restart, run)
         else:
-            str_format = (settings.ADVECTION_DATA, settings.WMIN, settings.SHORE_TIME, settings.START_YEAR,
+            str_format = (settings.ADVECTION_DATA, settings.WMIN, settings.SHORE_TIME, settings.STARTYEAR,
                           settings.INPUT, restart - 1, run)
         return odirec + self.prefix + "_{}_Wmin={}_st={}_y={}_I={}_r={}_run={}.nc".format(*str_format)
 

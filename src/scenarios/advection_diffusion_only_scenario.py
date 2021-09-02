@@ -61,10 +61,10 @@ class AdvectionDiffusionOnly(base_scenario.BaseScenario):
         odirec = self.output_dir + "AdvDifOnly_e_{}/".format(settings.ENSEMBLE)
         if new:
             os.system('echo "Set the output file name"')
-            str_format = (settings.ADVECTION_DATA, settings.START_YEAR, settings.INPUT, restart, run)
+            str_format = (settings.ADVECTION_DATA, settings.STARTYEAR, settings.INPUT, restart, run)
         else:
             os.system('echo "Set the restart file name"')
-            str_format = (settings.ADVECTION_DATA, settings.START_YEAR, settings.INPUT, restart - 1, run)
+            str_format = (settings.ADVECTION_DATA, settings.STARTYEAR, settings.INPUT, restart - 1, run)
         return odirec + self.prefix + '_{}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
 
     def beaching_kernel(particle, fieldset, time):

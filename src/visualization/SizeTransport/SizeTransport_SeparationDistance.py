@@ -27,13 +27,13 @@ def SizeTransport_SeparationDistance(scenario, figure_direc, size_selection, rho
                                                size=size_selection, rho=rho_selection, tau=tau_selection)
 
     # Getting the datetime objects for all of the time arrays
-    startdate = datetime(settings.START_YEAR, 1, 1, 12, 0)
+    startdate = datetime(settings.STARTYEAR, 1, 1, 12, 0)
     time_list = []
     for t in data_dict['TIME']:
         time_list.append(startdate + timedelta(seconds=t))
 
     # Creating the figure
-    ax_range = datetime(settings.START_YEAR + 1, 1, 1), datetime(settings.START_YEAR, 1, 1), 1000, 1
+    ax_range = datetime(settings.STARTYEAR + 1, 1, 1), datetime(settings.STARTYEAR, 1, 1), 1000, 1
     ax = vUtils.base_figure(fig_size=fig_size, ax_range=ax_range, x_label=x_label, y_label=y_label,
                             ax_ticklabel_size=ax_ticklabel_size, ax_label_size=ax_label_size, shape=(1, 2),
                             plot_num=2, legend_axis=True, log_yscale=True, x_time_axis=True,

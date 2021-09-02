@@ -44,7 +44,7 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
     yearsFmt = mdates.DateFormatter('%Y')
 
     # Getting the datetime objects for all of the time arrays
-    startdate = datetime(settings.START_YEAR, 1, 1, 12, 0)
+    startdate = datetime(settings.STARTYEAR, 1, 1, 12, 0)
     for size in size_list:
         for tau in tau_list:
             timeseries_dict[size][tau]['time'] = []

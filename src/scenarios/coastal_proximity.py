@@ -61,9 +61,9 @@ class CoastalProximity(base_scenario.BaseScenario):
     def file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART):
         odirec = self.output_dir + "coastal_v_" + str(settings.VICINITY) + "_e_" + str(settings.ENSEMBLE) + "/"
         if new:
-            str_format = (settings.ADVECTION_DATA, settings.VICINITY, settings.START_YEAR, settings.INPUT, restart, run)
+            str_format = (settings.ADVECTION_DATA, settings.VICINITY, settings.STARTYEAR, settings.INPUT, restart, run)
         else:
-            str_format = (settings.ADVECTION_DATA, settings.VICINITY, settings.START_YEAR, settings.INPUT, restart - 1,
+            str_format = (settings.ADVECTION_DATA, settings.VICINITY, settings.STARTYEAR, settings.INPUT, restart - 1,
                           run)
         return odirec + self.prefix + '_{}_v={}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
 

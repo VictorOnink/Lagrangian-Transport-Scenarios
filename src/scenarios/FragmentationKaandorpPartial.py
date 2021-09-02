@@ -107,8 +107,8 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
 
     def file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART,
                    shore_time=settings.SHORE_TIME, ensemble=settings.ENSEMBLE,
-                   advection_data=settings.ADVECTION_DATA, year=settings.START_YEAR + settings.RESTART,
-                   month=settings.START_MONTH, input=settings.INPUT, ocean_frag=settings.OCEAN_FRAG,
+                   advection_data=settings.ADVECTION_DATA, year=settings.STARTYEAR,
+                   month=settings.STARTMONTH, input=settings.INPUT, ocean_frag=settings.OCEAN_FRAG, ocean_lambda=settings.LAMBDA_OCEAN_FRAG,
                    p_frag=settings.P_FRAG, dn=settings.DN, size_class_number=settings.SIZE_CLASS_NUMBER,
                    lambda_frag=settings.LAMBDA_FRAG, density=settings.INIT_DENSITY, postprocess=settings.POST_PROCESS):
         odirec = self.output_dir + "Kaandorp_Fragmentation_Partial/st_{}_e_{}/".format(shore_time, ensemble)
@@ -123,7 +123,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         else:
             prefix = self.prefix
         if ocean_frag:
-            prefix += '_OFRAG'
+            prefix += '_OFRAG_{}'.format(ocean_lambda)
         return odirec + prefix + '_{}_st={}_pfrag={}_lambdafrag={}_dn={}_sizeclasses={}_rho={}_I={}_y={}-{}_r={}_run={}.nc'.format(*str_format)
 
     def beaching_kernel(particle, fieldset, time):

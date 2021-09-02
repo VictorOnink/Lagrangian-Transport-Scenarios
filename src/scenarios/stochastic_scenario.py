@@ -64,10 +64,10 @@ class Stochastic(base_scenario.BaseScenario):
         odirec = self.output_dir + 'st_{}_rs_{}_e_{}/'.format(settings.SHORE_TIME, settings.RESUS_TIME,
                                                               settings.ENSEMBLE)
         if new:
-            str_format = (settings.ADVECTION_DATA, settings.SHORE_TIME, settings.RESUS_TIME, settings.START_YEAR,
+            str_format = (settings.ADVECTION_DATA, settings.SHORE_TIME, settings.RESUS_TIME, settings.STARTYEAR,
                           settings.INPUT, restart, run)
         else:
-            str_format = (settings.ADVECTION_DATA, settings.SHORE_TIME, settings.RESUS_TIME, settings.START_YEAR,
+            str_format = (settings.ADVECTION_DATA, settings.SHORE_TIME, settings.RESUS_TIME, settings.STARTYEAR,
                           settings.INPUT, restart - 1, run)
         return odirec + self.prefix + '_{}_st={}_rt={}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
 

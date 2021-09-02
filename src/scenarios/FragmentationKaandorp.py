@@ -91,7 +91,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
 
     def file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART,
                    shore_time=settings.SHORE_TIME, ensemble=settings.ENSEMBLE, advection_data=settings.ADVECTION_DATA,
-                   start_year=settings.START_YEAR, input=settings.INPUT,
+                   start_year=settings.STARTYEAR, input=settings.INPUT,
                    p_frag=settings.P_FRAG, dn=settings.DN, size_class_number=settings.SIZE_CLASS_NUMBER,
                    lambda_frag=settings.LAMBDA_FRAG, density=settings.INIT_DENSITY):
         odirec = self.output_dir + "Kaandorp_Fragmentation/st_{}_e_{}/".format(shore_time, ensemble)

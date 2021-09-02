@@ -22,12 +22,12 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
     utils.check_direc_exist(settings.INPUT_DIREC)
     # Create the output prefix and then check if any files with such prefixes exist
     if settings.INPUT in ['Jambeck', 'Lebreton', 'LebretonDivision']:
-        output_prefix = settings.INPUT_DIREC + settings.INPUT + '_{}_{}_'.format(prefix, settings.START_YEAR)
+        output_prefix = settings.INPUT_DIREC + settings.INPUT + '_{}_{}_'.format(prefix, settings.STARTYEAR)
     elif settings.INPUT == 'Point_Release':
-        str_format = (prefix, settings.START_YEAR, settings.INPUT_LAT, settings.INPUT_LON)
+        str_format = (prefix, settings.STARTYEAR, settings.INPUT_LAT, settings.INPUT_LON)
         output_prefix = settings.INPUT_DIREC + settings.INPUT + '_{}_{}_{}_{}_'.format(*str_format)
     elif settings.INPUT == 'Uniform':
-        str_format = (prefix, settings.START_YEAR)
+        str_format = (prefix, settings.STARTYEAR)
         output_prefix = settings.INPUT_DIREC + settings.INPUT + '_{}_{}_'.format(*str_format)
     else:
         utils.print_statement("Perhaps take another look at what input you are using?")
