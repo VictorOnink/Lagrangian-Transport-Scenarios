@@ -50,5 +50,5 @@ def FragmentationKaandorpPartial_load_data(scenario, prefix, data_direc, shore_t
     file_name = scenario.file_names(new=True, advection_data=advection_data, shore_time=shore_time, dn=dn,
                                     size_class_number=size_class_number, p_frag=p_frag, ocean_frag=ocean_frag,
                                     lambda_frag=lambda_frag, density=rho, year=year, input=input)
-    full_path = data_direc + utils.analysis_save_file_name(input_file=file_name, prefix=prefix)
+    full_path = data_direc + utils.analysis_save_file_name(input_file=file_name, prefix=prefix, split='_y=')
     return utils.load_obj(full_path)
