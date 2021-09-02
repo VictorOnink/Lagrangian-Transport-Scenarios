@@ -33,7 +33,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                 self.field_set = self.create_fieldset()
 
     var_list = ['lon', 'lat', 'beach', 'age', 'size', 'parent', 'beach_time', 'size_class', 'ocean_time',
-                'at_seafloor']
+                'at_seafloor', 'distance2coast']
 
     def create_fieldset(self) -> FieldSet:
         utils.print_statement("Creating the fieldset")
@@ -66,6 +66,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                                size_class=np.zeros(rise_velocity.shape, dtype=np.float32),
                                ocean_time=np.zeros(rise_velocity.shape, dtype=np.int32),
                                at_seafloor=np.zeros(rise_velocity.shape, dtype=np.int32),
+                               distance2coast=np.zeros(rise_velocity.shape, dtype=np.float32),
                                time=start_time, repeatdt=repeat_dt)
         else:
             rise_velocity = utils.initial_estimate_particle_rise_velocity(L=var_dict['size'])
@@ -76,7 +77,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                                rho_plastic=rho_plastic, rise_velocity=rise_velocity,
                                prob_resus=utils.resuspension_probability(w_rise=rise_velocity),
                                size_class=var_dict['size_class'], ocean_time=var_dict['ocean_time'],
-                               at_seafloor=var_dict['at_seafloor'],
+                               at_seafloor=var_dict['at_seafloor'], distance2coast=var_dict['distance2coast'],
                                time=start_time, repeatdt=repeat_dt)
         return pset
 
@@ -84,6 +85,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         utils.print_statement("Creating the particle class")
         particle_type = utils.BaseParticle
         utils.add_particle_variable(particle_type, 'density', dtype=np.float32, set_initial=False, to_write=False)
+        utils.add_particle_variable(particle_type, 'distance2coast', dtype=np.float32, set_initial=True, to_write=True)
         utils.add_particle_variable(particle_type, 'surface_density', dtype=np.float32, set_initial=False,
                                     to_write=False)
         utils.add_particle_variable(particle_type, 'kinematic_viscosity', dtype=np.float32, set_initial=False,
@@ -143,8 +145,8 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         # First, the beaching of particles on the coastline
         if particle.beach == 0:
             particle.ocean_time += particle.dt
-            dist = fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
-            if dist < fieldset.Coastal_Boundary:
+            particle.distance2coast = fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
+            if particle.distance2coast < fieldset.Coastal_Boundary:
                 if ParcelsRandom.uniform(0, 1) > fieldset.p_beach:
                     particle.beach = 1
         # Next the resuspension of particles on the coastline
