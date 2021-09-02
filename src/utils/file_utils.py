@@ -36,7 +36,7 @@ def get_output_directory(server: int) -> str:
 
 
 def get_start_end_time(time: str):
-    if settings.restart == 0:
+    if settings.RESTART == 0:
         start_time = datetime(settings.STARTYEAR, settings.STARTMONTH, settings.STARTDAY, 0, 0)
     else:
         start_time = datetime(settings.STARTYEAR, 1, 1, 0, 0)

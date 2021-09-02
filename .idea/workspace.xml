@@ -22,30 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="test bash error messages">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/analysis_submission.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/analysis_submission.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/simulation_submission.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/simulation_submission.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Analysis/parcels_to_timeslices.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analysis/parcels_to_timeslices.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/advection_scenarios/advection_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/advection_scenarios/advection_files.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/advection_scenarios/create_MLD_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/advection_scenarios/create_MLD_files.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/advection_scenarios/create_input_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/advection_scenarios/create_input_files.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/FragmentationKaandorp.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/FragmentationKaandorp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/FragmentationKaandorpPartial.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/FragmentationKaandorpPartial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/SizeTransport.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/SizeTransport.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/Turrel_Beaching_scenario.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/Turrel_Beaching_scenario.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/advection_diffusion_only_scenario.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/advection_diffusion_only_scenario.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/coastal_proximity.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/coastal_proximity.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/shore_dependent_resuspension_scenario.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/shore_dependent_resuspension_scenario.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/stochastic_scenario.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/stochastic_scenario.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/analysis_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/analysis_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/file_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/file_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/FragmentationKaandorpPartial/FragmentationKaandorpPartial_timeseries.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/FragmentationKaandorpPartial/FragmentationKaandorpPartial_timeseries.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_SeparationDistance.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_SeparationDistance.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_beach_timeseries.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_beach_timeseries.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/visualization_utils/utils_loading_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/visualization_utils/utils_loading_data.py" afterDir="false" />
-    </list>
+    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="lots of updates related to setting the start and end point of inidividual runs and renaming some variables" />
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
     <list id="c5adc810-e024-4e30-b33b-a2709ed2c5b7" name="moving the release repeat timescale to the scenario" comment="" />
     <list id="2fbeabd3-88a4-46ae-904f-4b7515359807" name="Revert &quot;bug fix for adding the resuspension timescale&quot;" comment="Revert &quot;bug fix for adding the resuspension timescale&quot;&#10;&#10;This reverts commit 1851e512" />
@@ -130,13 +107,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-01882" summary="update">
-      <created>1630403698892</created>
-      <option name="number" value="01882" />
-      <option name="presentableId" value="LOCAL-01882" />
-      <option name="project" value="LOCAL" />
-      <updated>1630403698892</updated>
     </task>
     <task id="LOCAL-01883" summary="update">
       <created>1630403711053</created>
@@ -474,7 +444,14 @@
       <option name="project" value="LOCAL" />
       <updated>1630584906123</updated>
     </task>
-    <option name="localTasksCounter" value="1931" />
+    <task id="LOCAL-01931" summary="lots of updates related to setting the start and end point of inidividual runs and renaming some variables">
+      <created>1630591751948</created>
+      <option name="number" value="01931" />
+      <option name="presentableId" value="LOCAL-01931" />
+      <option name="project" value="LOCAL" />
+      <updated>1630591751948</updated>
+    </task>
+    <option name="localTasksCounter" value="1932" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -493,7 +470,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="running analysis" />
     <MESSAGE value="adding in time slicing" />
     <MESSAGE value="submitting analysis" />
     <MESSAGE value="Starting to add in a structure for figure and animation making" />
@@ -518,6 +494,7 @@
     <MESSAGE value="Adding base figure function" />
     <MESSAGE value="update" />
     <MESSAGE value="test bash error messages" />
-    <option name="LAST_COMMIT_MESSAGE" value="test bash error messages" />
+    <MESSAGE value="lots of updates related to setting the start and end point of inidividual runs and renaming some variables" />
+    <option name="LAST_COMMIT_MESSAGE" value="lots of updates related to setting the start and end point of inidividual runs and renaming some variables" />
   </component>
 </project>
