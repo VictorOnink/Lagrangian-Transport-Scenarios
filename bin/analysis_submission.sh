@@ -5,7 +5,7 @@ SUBMISSION='analysis'
 DEBUG=0 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation
-SCENARIO=5
+SCENARIO=7
 #for scenario 1, the time a particle must be near the coast to beach (in days)
 VICINITY=2
 #for scenario 2, the beaching and resuspension timescales (in days)
@@ -19,14 +19,14 @@ WMIN=3
 PARTICLE_SIZE_list=(5000 2500 1250 625 313 156 78 39 20 10 5 2)
 INIT_DENSITY=920
 #for scenario 5 and 6, the critical bottom shear stress for particle resuspension (x1e-3)
-SEABED_CRIT=100000
+SEABED_CRIT=0
 # For scenario 5, the fragmentation parameters p (x1e-1), DN (x1e-1), the number of size classes and fragmentation
 # timescale (days). Also, the option of including ocean fragmentation or not
 P=4
 DN=25
 SIZE_CLASS_NUMBER=6
 LAMBDA_FRAG_list=(388)
-OCEAN_FRAG=0
+OCEAN_FRAG=1
 #(1 10 100 200 300 388)
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010
@@ -72,9 +72,9 @@ export SERVER
 #0 = off, 1 = on
 CONCENTRATION=0
 VERTICAL_CONCENTRATION=0
-TIMESERIES=1
+TIMESERIES=0
 MAX_DISTANCE=0
-TIMESLICING=0
+TIMESLICING=1
 STATISTICS=0
 SEPARATION=0
 SIZE_SPECTRUM=0
