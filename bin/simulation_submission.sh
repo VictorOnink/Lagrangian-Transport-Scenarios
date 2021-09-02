@@ -26,7 +26,7 @@ P=4
 DN=25
 SIZE_CLASS_NUMBER=6
 LAMBDA_FRAG_list=(388)
-OCEAN_FRAG=1
+OCEAN_FRAG=0
 # For scenario 7, we are either running a lagrangian simulation OR we are running postprocessing on the parcels output
 # to calculate the particle numbers.
 # POST_PROCESS == 0 -> run lagrangian simulation
