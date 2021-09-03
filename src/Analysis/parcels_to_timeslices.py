@@ -25,9 +25,9 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
         # loop through the runs
         pbar = ProgressBar()
 
-        for ind_year, year in enumerate(range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH)):
+        for ind_year, year in pbar(enumerate(range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH))):
             for month in range(1, 13):
-                for run in pbar(range(0, settings.RUN_RANGE)):
+                for run in range(0, settings.RUN_RANGE):
                     # Loop through the restart files
                     for restart in range(0, settings.SIM_LENGTH - ind_year):
                         # Getting the parcels output file
