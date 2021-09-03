@@ -54,7 +54,6 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                                                                                        prefix=prefix)
                             # If the output file already exists, append the new slices to the previously saved one
                             if utils.check_file_exist(output_name + '.pkl'):
-                                print('it exists for year {} month {} run {} date {}'.format(year, month, run, date))
                                 previous_run_dict = utils.load_obj(filename=output_name)
                                 for key in previous_run_dict.keys():
                                     previous_run_dict[key] = np.append(previous_run_dict[key], slice_dict[key])
