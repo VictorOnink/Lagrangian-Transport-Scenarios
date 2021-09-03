@@ -1,7 +1,4 @@
 import Analysis
-import os
-
-import settings
 import utils
 
 
@@ -17,10 +14,7 @@ class AnalysisFactory():
             Analysis.parcels_to_vertical_concentration(file_dict=file_dict)
         if timeseries:
             utils.print_statement("Calculating timeseries of beached fractions", to_print=True)
-            if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
-                Analysis.parcels_to_timeseries_sizebins(file_dict=file_dict)
-            else:
-                Analysis.parcels_to_timeseries(file_dict=file_dict)
+            Analysis.parcels_to_timeseries_sizebins(file_dict=file_dict)
         if max_distance:
             utils.print_statement("Calculating maximum distance from shore along particle trajectories", to_print=True)
             Analysis.parcels_to_max_distance(file_dict=file_dict)
@@ -35,7 +29,4 @@ class AnalysisFactory():
             Analysis.parcels_to_separation_distance(file_dict=file_dict, scenario=scenario)
         if size_spectrum:
             utils.print_statement("Computing size distribution", to_print=True)
-            if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
-                Analysis.parcels_to_sizespectrum_beachstate(file_dict=file_dict)
-            else:
-                Analysis.parcels_to_sizespectrum(file_dict=file_dict)
+            Analysis.parcels_to_sizespectrum(file_dict=file_dict)

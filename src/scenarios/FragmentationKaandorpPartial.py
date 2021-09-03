@@ -262,3 +262,31 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                 utils.print_statement('time = {}'.format(time))
             pfile.export()
             utils.print_statement("Run completed")
+
+    def return_full_run_directory(self) -> dict:
+        """
+        Return a directory with all file names depending on the restart and run variables, and also for the different
+        starting months and years
+        We also have a separation to account that we can have both parcels files and post-processing output files
+        :return:
+        """
+        file_types = ['parcels', 'postprocess']
+        file_dict = {'parcels': {}, 'postprocess': {}}
+
+        for ind_type, file_key in enumerate(file_types):
+            for ind_year, year in enumerate(range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH)):
+                file_dict[file_key][year] = {}
+                for month in range(1, 13):
+                    file_dict[file_key][year][month] = {}
+                    for run in range(settings.RUN_RANGE):
+                        file_dict[file_key][year][month][run] = {}
+                        for restart in range(settings.SIM_LENGTH - ind_year):
+                            if file_key == 'parcels':
+                                lambda_frag = 388
+                            else:
+                                lambda_frag = settings.LAMBDA_FRAG
+                            file_dict[file_key][year][month][run][restart] = self.file_names(new=True, run=run, restart=restart,
+                                                                                             year=year, month=month,
+                                                                                             postprocess=settings.BOOLEAN_DICT[ind_type],
+                                                                                             lambda_frag=lambda_frag)
+        return file_dict
