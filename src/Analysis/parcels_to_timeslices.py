@@ -33,33 +33,34 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                         # Getting the parcels output file
                         parcels_file = file_dict['parcels'][year][month][run][restart]
                         print(parcels_file)
-                        # dataset = Dataset(parcels_file)
-                        # # Loading the particle lon, lat, depth, beach and time
-                        # full_dict = {'lon': None, 'lat': None, 'z': None, 'beach': None, 'time': None,
-                        #              'size_class': None}
-                        # for key in full_dict.keys():
-                        #     full_dict[key] = dataset.variables[key][:, :-1]
-                        # # Going through all the time steps
-                        # for timeslice in full_dict['time'][0, :]:
-                        #     slice_dict = {}
-                        #     selection = timeslice == full_dict['time']
-                        #     # Looping for the variables for which I want the time slices
-                        #     for key in ['lon', 'lat', 'z', 'beach', 'size_class']:
-                        #         slice_dict[key] = full_dict[key][selection]
-                        #     # Setting the output name
-                        #     date = (reference_time + timedelta(seconds=timeslice)).strftime("%Y-%m-%d-%H-%M-%S")
-                        #     prefix = 'timeslices_{}'.format(date)
-                        #     output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict['parcels'][settings.STARTYEAR][settings.STARTMONTH][0][0],
-                        #                                                                prefix=prefix)
-                        #     # If the output file already exists, append the new slices to the previously saved one
-                        #     if utils.check_file_exist(output_name):
-                        #         previous_run_dict = utils.load_obj(filename=output_name)
-                        #         for key in previous_run_dict.keys():
-                        #             previous_run_dict[key] = np.append(previous_run_dict[key], slice_dict[key])
-                        #         utils.save_obj(filename=output_name, item=previous_run_dict)
-                        #     # Otherwise create a new file to save
-                        #     else:
-                        #         utils.save_obj(filename=output_name, item=slice_dict)
+                        dataset = Dataset(parcels_file)
+                        # Loading the particle lon, lat, depth, beach and time
+                        full_dict = {'lon': None, 'lat': None, 'z': None, 'beach': None, 'time': None,
+                                     'size_class': None}
+                        for key in full_dict.keys():
+                            full_dict[key] = dataset.variables[key][:, :-1]
+                        # Going through all the time steps
+                        for timeslice in full_dict['time'][0, :]:
+                            slice_dict = {}
+                            selection = timeslice == full_dict['time']
+                            # Looping for the variables for which I want the time slices
+                            for key in ['lon', 'lat', 'z', 'beach', 'size_class']:
+                                slice_dict[key] = full_dict[key][selection]
+                            # Setting the output name
+                            date = (reference_time + timedelta(seconds=timeslice)).strftime("%Y-%m-%d-%H-%M-%S")
+                            prefix = 'timeslices_{}'.format(date)
+                            output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict['parcels'][settings.STARTYEAR][settings.STARTMONTH][0][0],
+                                                                                       prefix=prefix)
+                            # If the output file already exists, append the new slices to the previously saved one
+                            if utils.check_file_exist(output_name):
+                                print('it exists for year {} month {} run {} date {}'.format(year, month, run, date))
+                                previous_run_dict = utils.load_obj(filename=output_name)
+                                for key in previous_run_dict.keys():
+                                    previous_run_dict[key] = np.append(previous_run_dict[key], slice_dict[key])
+                                utils.save_obj(filename=output_name, item=previous_run_dict)
+                            # Otherwise create a new file to save
+                            else:
+                                utils.save_obj(filename=output_name, item=slice_dict)
 
 else:
     def parcels_to_timeslicing(file_dict: dict):
