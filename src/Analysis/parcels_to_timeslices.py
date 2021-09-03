@@ -32,7 +32,6 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                     for restart in range(0, settings.SIM_LENGTH - ind_year):
                         # Getting the parcels output file
                         parcels_file = file_dict['parcels'][year][month][run][restart]
-                        print(parcels_file)
                         dataset = Dataset(parcels_file)
                         # Loading the particle lon, lat, depth, beach and time
                         full_dict = {'lon': None, 'lat': None, 'z': None, 'beach': None, 'time': None,
