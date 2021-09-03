@@ -74,7 +74,7 @@ def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, l
     # Setting the initial values of the x and y, which will later be filled by lon and lat
     plot_list = []
     for ax_index, ax in enumerate(ax_list):
-        plot_list.append(ax.scatter(0, 0, c=0, s=10, alpha=1, zorder=1000, cmap=cmo.haline_r, norm=norm))
+        plot_list.append(ax.scatter(0, 0, c=0, s=7, alpha=1, zorder=1000, cmap=cmo.haline_r, norm=norm))
         ax.set_title(subfigure_title(ax_index), fontsize=ax_label_size)
 
     # Initializing the plots on each axis
