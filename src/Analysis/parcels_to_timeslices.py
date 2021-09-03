@@ -22,9 +22,8 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
         utils.check_direc_exist(output_direc)
         # Setting the datatime object to which all times are set
         reference_time = datetime(settings.STARTYEAR, 1, 1, 12)
-        # loop through the runs
-        pbar = ProgressBar()
 
+        pbar = ProgressBar()
         for ind_year, year in pbar(enumerate(range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH))):
             for month in range(1, 13):
                 for run in range(0, settings.RUN_RANGE):

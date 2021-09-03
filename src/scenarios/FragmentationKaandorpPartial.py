@@ -120,11 +120,13 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                           year, month, restart - 1, run)
         if postprocess:
             prefix = self.prefix + '_PP'
+            file_type = '.pkl'
         else:
             prefix = self.prefix
+            file_type = '.nc'
         if ocean_frag:
             prefix += '_OFRAG_{}'.format(ocean_lambda)
-        return odirec + prefix + '_{}_st={}_pfrag={}_lambdafrag={}_dn={}_sizeclasses={}_rho={}_I={}_y={}-{}_r={}_run={}.nc'.format(*str_format)
+        return odirec + prefix + '_{}_st={}_pfrag={}_lambdafrag={}_dn={}_sizeclasses={}_rho={}_I={}_y={}-{}_r={}_run={}'.format(*str_format) + file_type
 
     def beaching_kernel(particle, fieldset, time):
         """
