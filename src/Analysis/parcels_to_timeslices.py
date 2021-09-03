@@ -30,6 +30,8 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                 for run in range(0, settings.RUN_RANGE):
                     # Loop through the restart files
                     for restart in range(0, settings.SIM_LENGTH - ind_year):
+                        utils.print_statement('Splitting {}-{}, run {} restart {}'.format(year, month, run, restart),
+                                              to_print=True)
                         # Getting the parcels output file
                         parcels_file = file_dict['parcels'][year][month][run][restart]
                         dataset = Dataset(parcels_file)
