@@ -117,7 +117,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                           month, restart, run)
         else:
             str_format = (advection_data, shore_time, p_frag, lambda_frag, dn, size_class_number, density, input,
-                          year - 1, month, restart - 1, run)
+                          year, month, restart - 1, run)
         if postprocess:
             prefix = self.prefix + '_PP'
         else:
