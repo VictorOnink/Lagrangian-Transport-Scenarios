@@ -26,7 +26,7 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
         # Loading the time axis
         time_list = np.array([], dtype=np.int)
         for restart in range(settings.SIM_LENGTH):
-            parcels_file = file_dict['parcels'][settings.STARTYEAR][0][0][restart]
+            parcels_file = file_dict['parcels'][settings.STARTYEAR][1][0][restart]
             parcels_dataset = Dataset(parcels_file)
             time = parcels_dataset.variables['time'][:, :-1]
             for time_case in np.unique(time):
