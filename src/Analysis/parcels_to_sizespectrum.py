@@ -44,7 +44,7 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
         time_step = 60
         for key in output_dict.keys():
             for index_time in range(0, len(time_list), time_step):
-                output_dict[key][index_time] = np.zeros(bin_number - 1, dtype=float)
+                output_dict[key][index_time] = np.zeros(shape=(bin_number - 1), dtype=float)
 
         pbar = ProgressBar()
         for ind_year, year in pbar(enumerate(range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH))):
