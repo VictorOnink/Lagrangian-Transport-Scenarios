@@ -52,6 +52,7 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                 for run in range(0, settings.RUN_RANGE):
                     # Loop through the restart files
                     for restart in range(0, settings.SIM_LENGTH - ind_year):
+                        print_statement = 'year {}-{}, run {} restart {}'.format(year, month, run, restart)
                         # Load the lon, lat, time, beach and weight data
                         parcels_file = file_dict['parcels'][year][month][run][restart]
                         post_file = file_dict['postprocess'][year][month][run][restart]
