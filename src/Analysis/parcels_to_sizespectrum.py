@@ -69,28 +69,28 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                                 for key in run_restart_dict.keys():
                                     time_sel[key] = run_restart_dict[key][time_selection]
                                 # All particles
-                                output_dict['total'][index_time] += number_per_size_class(time_sel['size'], time_sel['particle_number'], bin_number)
+                                output_dict['total'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number)
                                 # beached particles
                                 selection = time_sel['beach'] == beach_label['beach']
-                                output_dict['beach'][index_time] += number_per_size_class(time_sel['size'], time_sel['particle_number'], bin_number, selection=selection)
+                                output_dict['beach'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number, selection=selection)
                                 # seabed particles
                                 selection = time_sel['beach'] == beach_label['seabed']
-                                output_dict['seabed'][index_time] += number_per_size_class(time_sel['size'], time_sel['particle_number'], bin_number, selection=selection)
+                                output_dict['seabed'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number, selection=selection)
                                 # floating particles
                                 selection = time_sel['beach'] == beach_label['adrift']
-                                output_dict['adrift'][index_time] += number_per_size_class(time_sel['size'], time_sel['particle_number'], bin_number, selection=selection)
+                                output_dict['adrift'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number, selection=selection)
                                 # floating particles within 5m of surface
                                 selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['z'] < 5)
-                                output_dict['adrift_5m'][index_time] += number_per_size_class(time_sel['size'], time_sel['particle_number'], bin_number, selection=selection)
+                                output_dict['adrift_5m'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number, selection=selection)
                                 # floating particles within 2m of surface
                                 selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['z'] < 2)
-                                output_dict['adrift_2m'][index_time] += number_per_size_class(time_sel['size'], time_sel['particle_number'], bin_number, selection=selection)
+                                output_dict['adrift_2m'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number, selection=selection)
                                 # Floating within 10 km of the model coastline
                                 selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['distance2coast'] < 10)
-                                output_dict['adrift_10km'][index_time] += number_per_size_class(time_sel['size'], time_sel['particle_number'], bin_number, selection=selection)
+                                output_dict['adrift_10km'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number, selection=selection)
                                 # Floating within 20 km of the model coastline
                                 selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['distance2coast'] < 20)
-                                output_dict['adrift_20km'][index_time] += number_per_size_class(time_sel['size'], time_sel['particle_number'], bin_number, selection=selection)
+                                output_dict['adrift_20km'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number, selection=selection)
 
         # Adding the index of the final timestep for ease later on
         output_dict['final_index'] = index_time
