@@ -16,8 +16,7 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
         :return:
         """
         # Setting the size bins
-        bin_number = 20
-        size_bins = np.logspace(start=-5, stop=-2, num=20)
+        bin_number = settings.SIZE_CLASS_NUMBER
 
         output_direc = utils.get_output_directory(server=settings.SERVER) + 'size_distribution/{}/'.format(
             settings.SCENARIO_NAME)
@@ -33,18 +32,18 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                 if np.nansum(time_case == time) > 10 and time_case != np.nan:
                     time_list = np.append(time_list, time_case)
 
-        var_list = ['time', 'size', 'beach', 'z', 'distance2coast']
+        var_list = ['time', 'size_class', 'beach', 'z', 'distance2coast']
         for key in var_list:
             assert key in parcels_dataset.variables.keys(), '{} is not in the output file!!!'.format(key)
 
         # Creating the output dict
         beach_label = {'beach': 1, 'afloat': 0, 'seabed': 3, 'removed': 2}
-        output_dict = {'size_bins': size_bins, 'beach': {}, 'adrift': {}, 'adrift_5m': {}, 'adrift_2m': {},
+        output_dict = {'size_bins': range(bin_number), 'beach': {}, 'adrift': {}, 'adrift_5m': {}, 'adrift_2m': {},
                        'adrift_10km': {}, 'adrift_20km': {}, 'seabed': {}, 'total': {}}
         time_step = 60
         for key in output_dict.keys():
             for index_time in range(0, len(time_list), time_step):
-                output_dict[key][index_time] = np.zeros(shape=(bin_number - 1), dtype=float)
+                output_dict[key][index_time] = np.zeros(shape=bin_number, dtype=float)
 
         pbar = ProgressBar()
         for ind_year, year in pbar(enumerate(range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH))):
@@ -65,48 +64,32 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                         for index_time in range(0, len(time_list), time_step):
                             time_selection = time_list[index_time] == time
                             if time_selection.size > 0:
-                                time_selection_dict = {}
+                                time_sel = {}
                                 for key in run_restart_dict.keys():
-                                    time_selection_dict[key] = run_restart_dict[key][time_selection]
+                                    time_sel[key] = run_restart_dict[key][time_selection]
                                 # All particles
-                                size_counts, _ = np.histogram(time_selection_dict['size'], bins=size_bins,
-                                                              weights=time_selection_dict['particle_number'])
-                                output_dict['total'][index_time] += size_counts
+                                output_dict['total'][index_time] += number_per_size_class(time_sel['size'], time_sel['particle_number'], bin_number)
                                 # beached particles
-                                selection = time_selection_dict['beach'] == beach_label['beach']
-                                size_counts, _ = np.histogram(time_selection_dict['size'][selection], bins=size_bins,
-                                                              weights=time_selection_dict['particle_number'][selection])
-                                output_dict['beach'][index_time] += size_counts
+                                selection = time_sel['beach'] == beach_label['beach']
+                                output_dict['beach'][index_time] += number_per_size_class(time_sel['size'], time_sel['particle_number'], bin_number, selection=selection)
                                 # seabed particles
-                                selection = time_selection_dict['beach'] == beach_label['seabed']
-                                size_counts, _ = np.histogram(time_selection_dict['size'][selection], bins=size_bins,
-                                                              weights=time_selection_dict['particle_number'][selection])
-                                output_dict['seabed'][index_time] += size_counts
+                                selection = time_sel['beach'] == beach_label['seabed']
+                                output_dict['seabed'][index_time] += number_per_size_class(time_sel['size'], time_sel['particle_number'], bin_number, selection=selection)
                                 # floating particles
-                                selection = time_selection_dict['beach'] == beach_label['adrift']
-                                size_counts, _ = np.histogram(time_selection_dict['size'][selection], bins=size_bins,
-                                                              weights=time_selection_dict['particle_number'][selection])
-                                output_dict['adrift'][index_time] += size_counts
+                                selection = time_sel['beach'] == beach_label['adrift']
+                                output_dict['adrift'][index_time] += number_per_size_class(time_sel['size'], time_sel['particle_number'], bin_number, selection=selection)
                                 # floating particles within 5m of surface
-                                selection = (time_selection_dict['beach'] == beach_label['adrift']) & (time_selection_dict['z'] < 5)
-                                size_counts, _ = np.histogram(time_selection_dict['size'][selection], bins=size_bins,
-                                                              weights=time_selection_dict['particle_number'][selection])
-                                output_dict['adrift_5m'][index_time] += size_counts
+                                selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['z'] < 5)
+                                output_dict['adrift_5m'][index_time] += number_per_size_class(time_sel['size'], time_sel['particle_number'], bin_number, selection=selection)
                                 # floating particles within 2m of surface
-                                selection = (time_selection_dict['beach'] == beach_label['adrift']) & (time_selection_dict['z'] < 2)
-                                size_counts, _ = np.histogram(time_selection_dict['size'][selection], bins=size_bins,
-                                                              weights=time_selection_dict['particle_number'][selection])
-                                output_dict['adrift_2m'][index_time] += size_counts
+                                selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['z'] < 2)
+                                output_dict['adrift_2m'][index_time] += number_per_size_class(time_sel['size'], time_sel['particle_number'], bin_number, selection=selection)
                                 # Floating within 10 km of the model coastline
-                                selection = (time_selection_dict['beach'] == beach_label['adrift']) & (time_selection_dict['distance2coast'] < 10)
-                                size_counts, _ = np.histogram(time_selection_dict['size'][selection], bins=size_bins,
-                                                              weights=time_selection_dict['particle_number'][selection])
-                                output_dict['adrift_10km'][index_time] += size_counts
+                                selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['distance2coast'] < 10)
+                                output_dict['adrift_10km'][index_time] += number_per_size_class(time_sel['size'], time_sel['particle_number'], bin_number, selection=selection)
                                 # Floating within 20 km of the model coastline
-                                selection = (time_selection_dict['beach'] == beach_label['adrift']) & (time_selection_dict['distance2coast'] < 20)
-                                size_counts, _ = np.histogram(time_selection_dict['size'][selection], bins=size_bins,
-                                                              weights=time_selection_dict['particle_number'][selection])
-                                output_dict['adrift_20km'][index_time] += size_counts
+                                selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['distance2coast'] < 20)
+                                output_dict['adrift_20km'][index_time] += number_per_size_class(time_sel['size'], time_sel['particle_number'], bin_number, selection=selection)
 
         # Adding the index of the final timestep for ease later on
         output_dict['final_index'] = index_time
@@ -173,3 +156,16 @@ else:
         output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
         utils.save_obj(output_name, output_dict)
         utils.print_statement("The size distribution has been saved")
+
+
+def number_per_size_class(size_class_array, particle_number_array, bin_number, selection=None):
+    assert size_class_array.size == particle_number_array.size, 'The size and number arrays must have the same size'
+    output_array = np.zeros(shape=bin_number, dtype=float)
+    if selection is not None:
+        assert selection.size == size_class_array.size, 'The selection and data arrays must have the same size'
+        for size_class in range(bin_number):
+            output_array[size_class] += np.nansum(particle_number_array[size_class_array[selection] == size_class[selection]])
+    else:
+        for size_class in range(bin_number):
+            output_array[size_class] += np.nansum(particle_number_array[size_class_array == size_class])
+    return output_array
