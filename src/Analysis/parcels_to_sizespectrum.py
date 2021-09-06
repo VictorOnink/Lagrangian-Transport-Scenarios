@@ -65,7 +65,7 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                         run_restart_dict['particle_number'] = dataset_post['particle_number'][:, :-1]
                         # Calculating the spectrum every 30 days (note, one output step is 12 hours)
                         for index_time in range(0, len(time_list), time_step):
-                            time_selection = time_list[index_time] == time
+                            time_selection = time_list[index_time] == run_restart_dict['time']
                             if time_selection.size > 0:
                                 time_sel = {}
                                 for key in run_restart_dict.keys():
