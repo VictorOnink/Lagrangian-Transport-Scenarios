@@ -37,7 +37,7 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
             assert key in parcels_dataset.variables.keys(), '{} is not in the output file!!!'.format(key)
 
         # Creating the output dict
-        beach_label = {'beach': 1, 'afloat': 0, 'seabed': 3, 'removed': 2}
+        beach_label = {'beach': 1, 'adrift': 0, 'seabed': 3, 'removed': 2}
         output_dict = {'size_bins': range(bin_number), 'beach': {}, 'adrift': {}, 'adrift_5m': {}, 'adrift_2m': {},
                        'adrift_10km': {}, 'adrift_20km': {}, 'seabed': {}, 'total': {}}
         time_step = 60
