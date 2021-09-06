@@ -172,7 +172,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
                  part5="#SBATCH --output="runOutput/$runname".o%j"
                  part6="#SBATCH --mem-per-cpu=40G"
                  if [ "$DEBUG" -eq "0" ]; then
-                  if [ $POST_PROCESS -eq 1 ]; then
+                  if [ $POST_PROCESS -eq 0 ]; then
                    part7="#SBATCH --time=95:59:00"
                   else
                    part7="#SBATCH --time=1:00:00"
