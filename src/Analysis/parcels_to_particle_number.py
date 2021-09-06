@@ -12,7 +12,7 @@ def parcels_to_particle_number(base_file, output_file):
     var_list = ['parent', 'to_split', 'time']
     base_dict = dict.fromkeys(var_list)
     for variable in var_list:
-        base_dict[variable] = base_dataset.variables[variable][:, :-1]
+        base_dict[variable] = base_dataset.variables[variable][:]
     particle_number = base_dict[variable].shape[0]
 
     # Creating an output dictionary containing an array for the particle number
@@ -27,8 +27,7 @@ def parcels_to_particle_number(base_file, output_file):
         # Getting the index of all cases where a particle is splitting, where we first check if there is a splitting
         # event
         if base_dict['to_split'][p_id, :].max() == 1:
-            split_cases = np.where(base_dict['to_split'][p_id, :] == 1)[0]
-            split_times = base_dict['time'][p_id, :][split_cases]
+            split_cases = np.where(base_dict['to_split'][p_id, :-1] == 1)[0]
             # Looping through all the split cases
             for t_ind in split_cases:
                 # calculating the particle number after each splitting event
