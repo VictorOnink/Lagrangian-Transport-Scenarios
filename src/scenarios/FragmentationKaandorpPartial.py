@@ -99,7 +99,6 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         utils.add_particle_variable(particle_type, 'prob_resus', dtype=np.float32, set_initial=True, to_write=False)
         utils.add_particle_variable(particle_type, 'beach_time', dtype=np.int32, set_initial=True, to_write=True)
         utils.add_particle_variable(particle_type, 'ocean_time', dtype=np.int32, set_initial=True, to_write=True)
-        utils.add_particle_variable(particle_type, 'adrift_time', dtype=np.float32, set_initial=True, to_write=True)
         utils.add_particle_variable(particle_type, 'size_class', dtype=np.int32, set_initial=True, to_write=True)
         utils.add_particle_variable(particle_type, 'potential', dtype=np.float32, set_initial=False, to_write=False)
         utils.add_particle_variable(particle_type, 'at_seafloor', dtype=np.int32, set_initial=True, to_write=True)
@@ -121,6 +120,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         if postprocess:
             prefix = self.prefix + '_PP'
             file_type = '.pkl'
+            odirec += 'post_process/'
         else:
             prefix = self.prefix
             file_type = '.nc'

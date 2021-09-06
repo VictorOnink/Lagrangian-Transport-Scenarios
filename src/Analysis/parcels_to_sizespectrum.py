@@ -3,7 +3,7 @@ import utils
 from advection_scenarios import advection_files
 from netCDF4 import Dataset
 import numpy as np
-import progressbar
+from progressbar import ProgressBar
 from copy import deepcopy
 
 
@@ -37,63 +37,58 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
             assert key in parcels_dataset.variables.keys(), '{} is not in the output file!!!'.format(key)
 
         # Creating the output dict
-        beach_state_dict = {'beach': np.zeros(time_list.shape, dtype=float),
-                            'afloat': np.zeros(time_list.shape, dtype=float),
-                            'seabed': np.zeros(time_list.shape, dtype=float),
-                            'removed': np.zeros(time_list.shape, dtype=float),
-                            'total': np.zeros(time_list.shape, dtype=float),
-                            'time': time_list}
         beach_label = {'beach': 1, 'afloat': 0, 'seabed': 3, 'removed': 2}
+        output_dict = {'size_bins': size_bins, 'beach': {}, 'adrift': {}, 'adrift_5m': {}, 'adrift_2m': {},
+                       'adrift_10km': {}, 'adrift_20km': {}, 'seabed': {}, 'total': {}, }
 
-        output_dict = {'size_bins': size_bins, 'beach': {}, 'afloat': {}, 'afloat_5m': {}, 'afloat_2m': {}, 'seabed': {},
-                       'total': {}}
+        pbar = ProgressBar()
+        for ind_year, year in pbar(enumerate(range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH))):
+            for month in range(1, 13):
+                for run in range(0, settings.RUN_RANGE):
+                    # Loop through the restart files
+                    for restart in range(0, settings.SIM_LENGTH - ind_year):
+                        # Load the lon, lat, time, beach and weight data
+                        parcels_file = file_dict[run][restart]
+                        parcels_dataset = Dataset(parcels_file)
+                        run_restart_dict = {}
+                        for key in var_list:
+                            run_restart_dict[key] = parcels_dataset.variables[key][:, :-1]
 
-        # loop through the runs
-        for run in range(settings.RUN_RANGE):
-            # Loop through the restart files
-            for restart in range(settings.SIM_LENGTH):
-                # Load the lon, lat, time, beach and weight data
-                parcels_file = file_dict[run][restart]
-                parcels_dataset = Dataset(parcels_file)
-                run_restart_dict = {}
-                for key in var_list:
-                    run_restart_dict[key] = parcels_dataset.variables[key][:, :-1]
-
-                # Calculating the spectrum every 30 days (note, one output step is 12 hours)
-                for index_time in range(0, len(time_list), 60):
-                    time_selection = time_list[index_time] == time
-                    time_selection_dict = {}
-                    for key in var_list:
-                        time_selection_dict[key] = run_restart_dict[key][time_selection]
-                    # All particles
-                    size_counts, _ = np.histogram(time_selection_dict['size'], bins=size_bins,
-                                                  weights=time_selection_dict['particle_number'])
-                    output_dict['total'][index_time] = size_counts
-                    # beached particles
-                    beach_selection = time_selection_dict['beach'] == beach_label['beach']
-                    size_counts, _ = np.histogram(time_selection_dict['size'][beach_selection], bins=size_bins,
-                                                  weights=time_selection_dict['particle_number'][beach_selection])
-                    output_dict['beach'][index_time] = size_counts
-                    # seabed particles
-                    seabed_selection = time_selection_dict['beach'] == beach_label['seabed']
-                    size_counts, _ = np.histogram(time_selection_dict['size'][seabed_selection], bins=size_bins,
-                                                  weights=time_selection_dict['particle_number'][seabed_selection])
-                    output_dict['seabed'][index_time] = size_counts
-                    # floating particles
-                    afloat_selection = time_selection_dict['beach'] == beach_label['afloat']
-                    size_counts, _ = np.histogram(time_selection_dict['size'][afloat_selection], bins=size_bins,
-                                                  weights=time_selection_dict['particle_number'][afloat_selection])
-                    output_dict['afloat'][index_time] = size_counts
-                    # floating particles within 5m of surface
-                    afloat5m_selection = (time_selection_dict['beach'] == beach_label['afloat']) & (time_selection_dict['z'] < 5)
-                    size_counts, _ = np.histogram(time_selection_dict['size'][afloat5m_selection], bins=size_bins,
-                                                  weights=time_selection_dict['particle_number'][afloat5m_selection])
-                    output_dict['afloat_5m'][index_time] = size_counts
-                    # floating particles within 2m of surface
-                    afloat5m_selection = (time_selection_dict['beach'] == beach_label['afloat']) & (time_selection_dict['z'] < 2)
-                    size_counts, _ = np.histogram(time_selection_dict['size'][afloat5m_selection], bins=size_bins,
-                                                  weights=time_selection_dict['particle_number'][afloat5m_selection])
-                    output_dict['afloat_2m'][index_time] = size_counts
+                        # Calculating the spectrum every 30 days (note, one output step is 12 hours)
+                        for index_time in range(0, len(time_list), 60):
+                            time_selection = time_list[index_time] == time
+                            time_selection_dict = {}
+                            for key in var_list:
+                                time_selection_dict[key] = run_restart_dict[key][time_selection]
+                            # All particles
+                            size_counts, _ = np.histogram(time_selection_dict['size'], bins=size_bins,
+                                                          weights=time_selection_dict['particle_number'])
+                            output_dict['total'][index_time] = size_counts
+                            # beached particles
+                            beach_selection = time_selection_dict['beach'] == beach_label['beach']
+                            size_counts, _ = np.histogram(time_selection_dict['size'][beach_selection], bins=size_bins,
+                                                          weights=time_selection_dict['particle_number'][beach_selection])
+                            output_dict['beach'][index_time] = size_counts
+                            # seabed particles
+                            seabed_selection = time_selection_dict['beach'] == beach_label['seabed']
+                            size_counts, _ = np.histogram(time_selection_dict['size'][seabed_selection], bins=size_bins,
+                                                          weights=time_selection_dict['particle_number'][seabed_selection])
+                            output_dict['seabed'][index_time] = size_counts
+                            # floating particles
+                            afloat_selection = time_selection_dict['beach'] == beach_label['afloat']
+                            size_counts, _ = np.histogram(time_selection_dict['size'][afloat_selection], bins=size_bins,
+                                                          weights=time_selection_dict['particle_number'][afloat_selection])
+                            output_dict['afloat'][index_time] = size_counts
+                            # floating particles within 5m of surface
+                            afloat5m_selection = (time_selection_dict['beach'] == beach_label['afloat']) & (time_selection_dict['z'] < 5)
+                            size_counts, _ = np.histogram(time_selection_dict['size'][afloat5m_selection], bins=size_bins,
+                                                          weights=time_selection_dict['particle_number'][afloat5m_selection])
+                            output_dict['afloat_5m'][index_time] = size_counts
+                            # floating particles within 2m of surface
+                            afloat5m_selection = (time_selection_dict['beach'] == beach_label['afloat']) & (time_selection_dict['z'] < 2)
+                            size_counts, _ = np.histogram(time_selection_dict['size'][afloat5m_selection], bins=size_bins,
+                                                          weights=time_selection_dict['particle_number'][afloat5m_selection])
+                            output_dict['afloat_2m'][index_time] = size_counts
 
 
         # Adding the index of the final timestep for ease later on
