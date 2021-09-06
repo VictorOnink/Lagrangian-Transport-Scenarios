@@ -99,7 +99,7 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
 
         # Saving the output
         prefix = 'size_distribution'
-        output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
+        output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict['postprocess'][settings.STARTYEAR][1][0][restart], prefix=prefix)
         utils.save_obj(output_name, output_dict)
         utils.print_statement("The size distribution has been saved")
 

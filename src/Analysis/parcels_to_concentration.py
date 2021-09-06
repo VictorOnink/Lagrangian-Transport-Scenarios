@@ -49,6 +49,8 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                 for run in range(0, settings.RUN_RANGE):
                     # Loop through the restart files
                     for restart in range(0, settings.SIM_LENGTH - ind_year):
+                        print_statement = 'year {}-{}, run {} restart {}'.format(year, month, run, restart)
+                        utils.print_statement(print_statement, to_print=True)
                         # Load the lon, lat, weight data
                         parcels_file = file_dict['parcels'][year][month][run][restart]
                         post_file = file_dict['postprocess'][year][month][run][restart]
@@ -98,7 +100,7 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
 
         # Saving the computed concentration
         prefix = 'horizontal_concentration'
-        output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
+        output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict['postprocess'][settings.STARTYEAR][1][0][restart], prefix=prefix)
         utils.save_obj(output_name, output_dict)
         utils.print_statement("The concentration has been saved")
 
