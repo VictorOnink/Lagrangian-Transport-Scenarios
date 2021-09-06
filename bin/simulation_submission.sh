@@ -47,7 +47,7 @@ POST_PROCESS=0
 export POST_PROCESS
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010
-STARTMONTH_list=(1 3 6 9)
+STARTMONTH_list=(1)
 STARTDAY=1
 export STARTYEAR
 export STARTDAY
