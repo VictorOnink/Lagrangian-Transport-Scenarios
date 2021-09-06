@@ -60,7 +60,7 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                         for variable in ['lon', 'lat', 'beach']:
                             full_data_dict[variable] = dataset_parcels.variables[variable][:, :-1]
                         # Adding the particle number data, which we use to weigh the particle concentration
-                        full_data_dict['weights'] = dataset_post['particle_number']
+                        full_data_dict['weights'] = dataset_post['particle_number'][:, :-1]
                         # Saving the number of time steps saved in the data file
                         time_steps = full_data_dict['lon'].shape[1]
                         # Flatten the arrays
