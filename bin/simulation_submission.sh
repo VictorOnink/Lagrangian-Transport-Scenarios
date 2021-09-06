@@ -32,7 +32,7 @@ export SEABED_CRIT
 P=4
 DN=25
 SIZE_CLASS_NUMBER=6
-LAMBDA_FRAG_list=(388)
+LAMBDA_FRAG_list=(388 1000 10000 38000)
 OCEAN_FRAG=0
 LAMBDA_OCEAN_FRAG_LIST=(388)
 export P
@@ -43,7 +43,7 @@ export OCEAN_FRAG
 # to calculate the particle numbers.
 # POST_PROCESS == 0 -> run lagrangian simulation
 # POST_PROCESS == 1 -> run post processing
-POST_PROCESS=0
+POST_PROCESS=1
 export POST_PROCESS
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010
@@ -59,9 +59,9 @@ export INPUT
 ADVECTION_DATA=2
 export ADVECTION_DATA
 #Start year of the simulation. 0 = new simulation, otherwise it picks up from a previous simulation
-START=1
+START=0
 #Number of years the simulation runs
-SIMLEN=2
+SIMLEN=1
 export SIMLEN
 #Inclusion of Stokes drift. 0 = include stokes, 1 = do not include stokes
 STOKES=0
@@ -175,7 +175,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
                   if [ $POST_PROCESS -eq 1 ]; then
                    part7="#SBATCH --time=95:59:00"
                   else
-                   part7="#SBATCH --time=24:00:00"
+                   part7="#SBATCH --time=1:00:00"
                   fi
                   part8="#SBATCH --partition=epyc2"
                   part9='#SBATCH --qos=job_epyc2'
