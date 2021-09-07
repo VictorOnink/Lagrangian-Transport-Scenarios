@@ -19,7 +19,7 @@ def FragmentationKaandorpPartial_SizeSpectrumBeach(figure_direc, scenario, shore
     prefix = 'size_distribution'
     data_dict = vUtils.FragmentationKaandorpPartial_load_data(scenario=scenario, prefix=prefix,
                                                               data_direc=data_direc, shore_time=shore_time,
-                                                              lambda_frag=lambda_frag, rho=density)
+                                                              lambda_frag=lambda_frag, rho=density, postprocess=True)
     time_index = data_dict['final_index']
     size_bins = data_dict['size_bins'][:-1]
     beach_state_list = ['total', 'beach', 'seabed', 'adrift', 'adrift_2m']
