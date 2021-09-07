@@ -42,7 +42,7 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
         # Creating the output dict
         beach_label = {'beach': 1, 'adrift': 0, 'seabed': 3, 'removed': 2}
         output_dict = {'size_bins': range(bin_number), 'beach': {}, 'adrift': {}, 'adrift_5m': {}, 'adrift_2m': {},
-                       'adrift_10km': {}, 'adrift_20km': {}, 'seabed': {}, 'total': {}, 'adrift_open': {},
+                       'adrift_10km': {}, 'adrift_10km_surf': {}, 'seabed': {}, 'total': {}, 'adrift_open': {},
                        'adrift_open_surf': {}}
         time_step = 60
         for key in output_dict.keys():
@@ -95,8 +95,8 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                                 selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['distance2coast'] < 10)
                                 output_dict['adrift_10km'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number, selection=selection)
                                 # Floating within 20 km of the model coastline
-                                selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['distance2coast'] < 20)
-                                output_dict['adrift_20km'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number, selection=selection)
+                                selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['distance2coast'] < 10 & (time_sel['z'] < (min_depth + 0.26)))
+                                output_dict['adrift_10km_surf'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number, selection=selection)
                                 # Floating beyond 10 km of the model coastline
                                 selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['distance2coast'] > 10)
                                 output_dict['adrift_open'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number, selection=selection)
