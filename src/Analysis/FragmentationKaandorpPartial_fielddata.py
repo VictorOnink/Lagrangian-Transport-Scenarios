@@ -81,12 +81,12 @@ def Cozar2015_standardization(output_dict: dict):
     data_pd = data_pd.drop([0, 29]).reset_index(drop=True)
 
     output_dict[prefix]['bin_edges'] = np.append(data_pd['Lower Size (mm)'].values,
-                                                 data_pd['Upper Size (mm)'].values[-1])
-    output_dict[prefix]['bin_midpoint'] = (10 ** data_pd['log Nominal Size']).values
+                                                 data_pd['Upper Size (mm)'].values[-1])[:-1]
+    output_dict[prefix]['bin_midpoint'] = (10 ** data_pd['log Nominal Size']).values[:-1]
 
     pdf_tmp = (10 ** data_pd['MED Log # mm-1']).values
     area = np.trapz(pdf_tmp, output_dict[prefix]['bin_midpoint'])
-    output_dict[prefix]['pdf_counts'] = np.divide(pdf_tmp, area)
+    output_dict[prefix]['pdf_counts'] = np.divide(pdf_tmp, area)[:-1]
 
     return output_dict
 
@@ -99,12 +99,12 @@ def RuizOrejon_standardization(output_dict: dict):
     prefix = 'RuizOrejon'
     output_dict[prefix] = {}
 
-    output_dict[prefix]['bin_edges'] = np.array([0.33, 0.4, 0.5, 0.7, 1.3, 2.5, 4.0, 7.9, 20., 50., 2000.])
+    output_dict[prefix]['bin_edges'] = np.array([0.33, 0.4, 0.5, 0.7, 1.3, 2.5, 4.0, 7.9, 20., 50.])
     output_dict[prefix]['bin_midpoint'] = 10 ** (0.5 * (
             np.log10(output_dict[prefix]['bin_edges'][1:]) + np.log10(output_dict[prefix]['bin_edges'][:-1])))
     output_dict[prefix]['pdf_counts'] = np.array([0.14830720281849377, 0.09912213358752645, 0.1724104775115928,
                                                   0.33945798285129647, 0.18343691233511597, 0.04388754453458474,
                                                   0.021324131252479426, 0.0056738747517556904,
-                                                  0.0004946212353677522, 0.0000891319875335298, 5.599541949072085e-7])[
+                                                  0.0004946212353677522, 0.0000891319875335298])[
                                         1:]
     return output_dict
