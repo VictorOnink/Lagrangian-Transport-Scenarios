@@ -10,7 +10,7 @@ import numpy as np
 def FragmentationKaandorpPartial_FieldDataComp(figure_direc, scenario, shore_time, lambda_frag_list, density,
                                                fig_size=(10, 14), x_label='Size (mm)',
                                                y_label=r'Normalized Particle Number (n mm$^{-1}$)',
-                                               ax_ticklabel_size=12, ax_label_size=14, legend_size=14):
+                                               ax_ticklabel_size=12, ax_label_size=14, legend_size=12):
     # Setting the folder within which we have the output, and where we have the saved data
     output_direc = figure_direc + 'size_distribution/'
     utils.check_direc_exist(output_direc)
@@ -58,7 +58,7 @@ def FragmentationKaandorpPartial_FieldDataComp(figure_direc, scenario, shore_tim
     # Then for coastal waters
     ax[1].plot(field_dict['RuizOrejon']['bin_midpoint'],
                field_dict['RuizOrejon']['pdf_counts'] / field_dict['RuizOrejon']['pdf_counts'][6],
-               marker='x', linestyle='-', color='tab:red', label=r'Ruiz-Orej\`{o}n et al. (2018)')
+               marker='x', linestyle='-', color='tab:red', label=r'Ruiz-Orej\`on et al. (2018)')
     # and finally for on the beach
     ax[2].plot(field_dict['Fok']['bin_midpoint'], field_dict['Fok']['pdf_counts'] / field_dict['Fok']['pdf_counts'][5],
                marker='x', linestyle='-', color='tab:red', label='Fok et al. (2017)')
