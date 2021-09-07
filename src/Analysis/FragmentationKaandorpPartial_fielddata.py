@@ -99,9 +99,9 @@ def RuizOrejon_standardization(output_dict: dict):
     prefix = 'RuizOrejon'
     output_dict[prefix] = {}
 
-    output_dict[prefix]['bin_edges'] = np.array([0.33, 0.4, 0.5, 0.7, 1.3, 2.5, 4.0, 7.9, 20., 50.])[:-1]
+    output_dict[prefix]['bin_edges'] = np.array([0.33, 0.4, 0.5, 0.7, 1.3, 2.5, 4.0, 7.9, 20., 50., 2000])[:-1]
     output_dict[prefix]['bin_midpoint'] = 10 ** (0.5 * (
-            np.log10(output_dict[prefix]['bin_edges'][1:]) + np.log10(output_dict[prefix]['bin_edges'][:-1])))[:-1]
+            np.log10(output_dict[prefix]['bin_edges'][1:]) + np.log10(output_dict[prefix]['bin_edges'][:-1])))
     output_dict[prefix]['pdf_counts'] = np.array([0.14830720281849377, 0.09912213358752645, 0.1724104775115928,
                                                   0.33945798285129647, 0.18343691233511597, 0.04388754453458474,
                                                   0.021324131252479426, 0.0056738747517556904,
