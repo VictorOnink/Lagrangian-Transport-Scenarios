@@ -40,6 +40,11 @@ def FragmentationKaandorpPartial_FieldDataComp(figure_direc, scenario, shore_tim
     for index_ax in range(plot_num):
         ax[index_ax].set_title(subfigure_title(index_ax, beach_state_list[index_ax]), fontsize=ax_label_size)
 
+    # Plotting the model distributions
+    for ax_index, sub_ax in enumerate(ax):
+        sub_ax.plot(sizes_class, data_dict[beach_state_list[ax_index]][time_index], linestyle='-',
+                    color='black')
+
     # Adding the field data
     # First for the open ocean
     ax[0].plot(field_dict['Cozar']['bin_midpoint'], field_dict['Cozar']['pdf_counts'] / field_dict['Cozar']['pdf_counts'][-1],
