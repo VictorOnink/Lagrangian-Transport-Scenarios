@@ -95,7 +95,7 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                                 selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['distance2coast'] < 10)
                                 output_dict['adrift_10km'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number, selection=selection)
                                 # Floating within 20 km of the model coastline
-                                selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['distance2coast'] < 10 & (time_sel['z'] < (min_depth + 0.26)))
+                                selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['distance2coast'] < 10) & (time_sel['z'] < (min_depth + 0.26))
                                 output_dict['adrift_10km_surf'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number, selection=selection)
                                 # Floating beyond 10 km of the model coastline
                                 selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['distance2coast'] > 10)
