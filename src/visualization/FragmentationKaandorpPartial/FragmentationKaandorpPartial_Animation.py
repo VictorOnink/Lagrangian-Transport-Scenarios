@@ -91,8 +91,7 @@ def FragmentationKaandorpPartial_Animation(scenario, figure_direc, shore_time, l
         prefix = 'timeslices_{}'.format(date)
         data_dict = vUtils.FragmentationKaandorpPartial_load_data(scenario=scenario, prefix=prefix,
                                                                   data_direc=data_direc, lambda_frag=lambda_frag,
-                                                                  rho=rho, shore_time=shore_time, ocean_frag=ocean_frag,
-                                                                  year=time_list[frame_index].year)
+                                                                  rho=rho, shore_time=shore_time, ocean_frag=ocean_frag)
         lon, lat, depth, size_class = data_dict['lon'], data_dict['lat'], data_dict['z'].astype(int), data_dict['size_class']
         for ax_index, size in enumerate(ax_list):
             # Selecting just one size class
