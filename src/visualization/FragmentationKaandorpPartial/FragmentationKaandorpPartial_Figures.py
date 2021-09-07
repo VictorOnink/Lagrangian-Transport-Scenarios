@@ -16,10 +16,10 @@ def run(scenario, figure_direc: str):
     # Standardizing field data
     Analysis.FragmentationKaandorpPartial_fielddata(to_overwrite=False)
 
-    SizeSpectrumTime.FragmentationKaandorpPartial_SizeSpectrumTime(figure_direc=figure_direc, scenario=scenario,
-                                                                   shore_time=shore_time,
-                                                                   lambda_frag_list=lambda_frag_list,
-                                                                   density=rho)
+    # SizeSpectrumTime.FragmentationKaandorpPartial_SizeSpectrumTime(figure_direc=figure_direc, scenario=scenario,
+    #                                                                shore_time=shore_time,
+    #                                                                lambda_frag_list=lambda_frag_list,
+    #                                                                density=rho)
 
     # Animation.FragmentationKaandorpPartial_Animation(scenario=scenario, figure_direc=figure_direc, shore_time=20,
     #                                                  lambda_frag=388, rho=rho, simulation_years=1, ocean_frag=False)
