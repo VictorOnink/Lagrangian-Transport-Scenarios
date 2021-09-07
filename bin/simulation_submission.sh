@@ -32,7 +32,7 @@ export SEABED_CRIT
 P=4
 DN=25
 SIZE_CLASS_NUMBER=6
-LAMBDA_FRAG_list=(1000)
+LAMBDA_FRAG_list=(388 1000 10000 38000)
 OCEAN_FRAG=0
 LAMBDA_OCEAN_FRAG_LIST=(388)
 export P
@@ -46,8 +46,8 @@ export OCEAN_FRAG
 POST_PROCESS=1
 export POST_PROCESS
 #the starting year of the simulation, and how many years the simulation will take
-STARTYEAR=2010
-STARTMONTH_list=(9)
+STARTYEAR=2011
+STARTMONTH_list=(1 2 3 4 5 6 7 8 9 10 11 12)
 STARTDAY=1
 export STARTYEAR
 export STARTDAY

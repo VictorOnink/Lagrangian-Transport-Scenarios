@@ -184,3 +184,7 @@ def analysis_simulation_year_key(simulation_years):
 
 def init_size_key(size):
     return 'size_{:.1E}'.format(size)
+
+
+def size_range(size_class_number, init_size):
+    pass
