@@ -48,24 +48,30 @@ def FragmentationKaandorpPartial_FieldDataComp(figure_direc, scenario, shore_tim
             norm_factor = data_dict[lambda_frag][beach_state_list[ax_index]][time_index][0]
             sub_ax.plot(sizes_class, data_dict[lambda_frag][beach_state_list[ax_index]][time_index] / norm_factor,
                         linestyle='-',
-                        color=vUtils.discrete_color_from_cmap(index=lambda_index, subdivisions=len(lambda_frag_list)))
+                        color=vUtils.discrete_color_from_cmap(index=lambda_index, subdivisions=len(lambda_frag_list)),
+                        label=r'$\lambda_f=$' + '{} days'.format(lambda_frag))
 
     # Adding the field data
     # First for the open ocean
     ax[0].plot(field_dict['Cozar']['bin_midpoint'], field_dict['Cozar']['pdf_counts'] / field_dict['Cozar']['pdf_counts'][14],
-               marker='x', linestyle='-', color='tab:red')
+               marker='x', linestyle='-', color='tab:red', label='Cozar et al. (2015)')
     # Then for coastal waters
     ax[1].plot(field_dict['RuizOrejon']['bin_midpoint'],
                field_dict['RuizOrejon']['pdf_counts'] / field_dict['RuizOrejon']['pdf_counts'][6],
-               marker='x', linestyle='-', color='tab:red')
+               marker='x', linestyle='-', color='tab:red', label=r'Ruiz-Orej\`{o}n et al. (2018)')
     # and finally for on the beach
-    ax[2].plot(field_dict['Fok']['bin_midpoint'], field_dict['Fok']['pdf_counts'] / field_dict['Fok']['pdf_counts'][6],
-               marker='x', linestyle='-', color='tab:red')
-    ax[2].plot(field_dict['Constant1']['bin_midpoint'], field_dict['Constant1']['pdf_counts'] / field_dict['Constant1']['pdf_counts'][-1],
-               marker='x', linestyle='-', color='tab:blue')
-    ax[2].plot(field_dict['Constant2']['bin_midpoint'], field_dict['Constant2']['pdf_counts'] / field_dict['Constant2']['pdf_counts'][-1],
-               marker='x', linestyle='-', color='tab:orange')
+    ax[2].plot(field_dict['Fok']['bin_midpoint'], field_dict['Fok']['pdf_counts'] / field_dict['Fok']['pdf_counts'][5],
+               marker='x', linestyle='-', color='tab:red', label='Fok et al. (2017)')
+    ax[2].plot(field_dict['Constant1']['bin_midpoint'], field_dict['Constant1']['pdf_counts'] / field_dict['Constant1']['pdf_counts'][-2],
+               marker='x', linestyle='-', color='tab:blue', label='Constant et al. (2019), site 1')
+    ax[2].plot(field_dict['Constant2']['bin_midpoint'], field_dict['Constant2']['pdf_counts'] / field_dict['Constant2']['pdf_counts'][-2],
+               marker='x', linestyle='-', color='tab:orange', label='Constant et al. (2019), site 2')
 
+    # Adding legends
+    for sub_ax in ax:
+        sub_ax.legend(fontsize=legend_size, loc='upper right')
+
+    # Saving the figure
     file_name = output_direc + 'SizeSpectrumFieldData-ST={}-rho={}-lamf={}.png'.format(shore_time, density, lambda_frag)
     plt.savefig(file_name, bbox_inches='tight')
 
