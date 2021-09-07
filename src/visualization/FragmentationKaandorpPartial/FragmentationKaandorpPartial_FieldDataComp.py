@@ -22,7 +22,7 @@ def FragmentationKaandorpPartial_FieldDataComp(figure_direc, scenario, shore_tim
     prefix = 'size_distribution'
     data_dict = vUtils.FragmentationKaandorpPartial_load_data(scenario=scenario, prefix=prefix,
                                                               data_direc=data_direc, shore_time=shore_time,
-                                                              lambda_frag=lambda_frag, rho=density, )
+                                                              lambda_frag=lambda_frag, rho=density, postprocess=True)
     time_index = data_dict['final_index']
     beach_state_list = ['adrift_open', 'adrift_10km', 'beach']
     field_dict = utils.load_obj(vUtils.FragmentationKaandorpPartial_fielddata_filename())
