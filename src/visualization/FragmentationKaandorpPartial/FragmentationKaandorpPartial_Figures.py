@@ -4,6 +4,7 @@ import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_S
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_Animation as Animation
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_timeseries as timeseries
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_SizeSpectrumBeach as SizeSpectrumBeach
+import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_FieldDataComp as FieldDataComp
 import Analysis
 
 
@@ -44,3 +45,4 @@ def run(scenario, figure_direc: str):
     # SizeSpectrumBeach.FragmentationKaandorpPartial_SizeSpectrumBeach(figure_direc=figure_direc, scenario=scenario,
     #                                                                  shore_time=20, lambda_frag=1000,
     #                                                                  density=rho)
+

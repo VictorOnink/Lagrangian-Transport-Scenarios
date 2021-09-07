@@ -39,7 +39,7 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
         # Creating the output dict
         beach_label = {'beach': 1, 'adrift': 0, 'seabed': 3, 'removed': 2}
         output_dict = {'size_bins': range(bin_number), 'beach': {}, 'adrift': {}, 'adrift_5m': {}, 'adrift_2m': {},
-                       'adrift_10km': {}, 'adrift_20km': {}, 'seabed': {}, 'total': {}}
+                       'adrift_10km': {}, 'adrift_20km': {}, 'seabed': {}, 'total': {}, 'adrift_open': {}}
         time_step = 60
         for key in output_dict.keys():
             if key not in ['size_bins']:
@@ -93,6 +93,9 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                                 # Floating within 20 km of the model coastline
                                 selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['distance2coast'] < 20)
                                 output_dict['adrift_20km'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number, selection=selection)
+                                # Floating beyond 10 km of the model coastline
+                                selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['distance2coast'] > 10)
+                                output_dict['adrift_open'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number, selection=selection)
 
         # Adding the index of the final timestep for ease later on
         output_dict['final_index'] = index_time

@@ -8,8 +8,8 @@ import numpy as np
 
 
 def FragmentationKaandorpPartial_SizeSpectrumBeach(figure_direc, scenario, shore_time, lambda_frag, density,
-                                                  fig_size=(10, 14), x_label='Size (m)', y_label='Number of Particles',
-                                                  ax_ticklabel_size=12, ax_label_size=14, legend_size=14):
+                                                   fig_size=(10, 14), x_label='Size (m)', y_label='Number of Particles',
+                                                   ax_ticklabel_size=12, ax_label_size=14, legend_size=14):
     # Setting the folder within which we have the output, and where we have the saved data
     output_direc = figure_direc + 'size_distribution/'
     utils.check_direc_exist(output_direc)
@@ -22,7 +22,7 @@ def FragmentationKaandorpPartial_SizeSpectrumBeach(figure_direc, scenario, shore
                                                               lambda_frag=lambda_frag, rho=density)
     time_index = data_dict['final_index']
     size_bins = data_dict['size_bins'][:-1]
-    beach_state_list = ['total', 'beach', 'seabed', 'afloat', 'afloat_2m']
+    beach_state_list = ['total', 'beach', 'seabed', 'adrift', 'adrift_2m']
 
     # Creating the figure
     ax_range = 1e-2, 1e-5, 1e5, 1e0
@@ -54,4 +54,3 @@ def subfigure_title(index, beach_state):
     """
     alphabet = string.ascii_lowercase
     return '({}) {}'.format(alphabet[index], beach_state)
-
