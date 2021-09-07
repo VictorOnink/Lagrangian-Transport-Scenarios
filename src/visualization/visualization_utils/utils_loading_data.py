@@ -52,3 +52,10 @@ def FragmentationKaandorpPartial_load_data(scenario, prefix, data_direc, shore_t
                                     lambda_frag=lambda_frag, density=rho, year=year, input=input)
     full_path = data_direc + utils.analysis_save_file_name(input_file=file_name, prefix=prefix)
     return utils.load_obj(full_path)
+
+
+def FragmentationKaandorpPartial_fielddata_filename(with_type=True):
+    file_name = settings.DATA_INPUT_DIR_SERVERS[settings.SERVER] + 'Field_Data/standardized_field_data'
+    if with_type:
+        file_name += '.pkl'
+    return file_name

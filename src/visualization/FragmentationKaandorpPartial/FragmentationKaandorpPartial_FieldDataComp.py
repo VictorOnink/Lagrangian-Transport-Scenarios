@@ -15,8 +15,8 @@ def FragmentationKaandorpPartial_FieldDataComp(figure_direc, scenario, shore_tim
     utils.check_direc_exist(output_direc)
     data_direc = utils.get_output_directory(server=settings.SERVER) + 'size_distribution/FragmentationKaandorpPartial/'
 
-    # Getting the sizes of the size classes
-    sizes_class = utils.size_range(size_class_number=settings.SIZE_CLASS_NUMBER)
+    # Getting the sizes of the size classes, and we convert from meters to mm
+    sizes_class = utils.size_range(size_class_number=settings.SIZE_CLASS_NUMBER) * 1e3
 
     # Loading the data
     prefix = 'size_distribution'
@@ -24,4 +24,33 @@ def FragmentationKaandorpPartial_FieldDataComp(figure_direc, scenario, shore_tim
                                                               data_direc=data_direc, shore_time=shore_time,
                                                               lambda_frag=lambda_frag, rho=density, )
     time_index = data_dict['final_index']
-    beach_state_list = ['total', 'beach', 'seabed', 'adrift', 'adrift_2m']
+    beach_state_list = ['adrift_open', 'adrift_10km', 'beach']
+    field_dict = utils.load_obj(vUtils.FragmentationKaandorpPartial_fielddata_filename())
+
+    # Creating the figure
+    ax_range = 1e-2, 1e1, 1e8, 1e-3
+    plot_num = 5
+    ax = vUtils.base_figure(fig_size=fig_size, ax_range=ax_range, x_label=x_label, y_label=y_label,
+                            ax_ticklabel_size=ax_ticklabel_size, ax_label_size=ax_label_size, shape=(3, 1),
+                            plot_num=plot_num, log_yscale=True, log_xscale=True, all_x_labels=True,
+                            all_y_labels=False)
+
+    # Labelling the subfigures
+    for index_ax in range(plot_num):
+        ax[index_ax].set_title(subfigure_title(index_ax, beach_state_list[index_ax]), fontsize=ax_label_size)
+
+    file_name = output_direc + 'SizeSpectrumFieldData-ST={}-rho={}-lamf={}.png'.format(shore_time, density, lambda_frag)
+    plt.savefig(file_name, bbox_inches='tight')
+
+
+
+def subfigure_title(index, beach_state):
+    """
+    setting the title of the subfigure
+    :param index:
+    :param size:
+    :param rho:
+    :return:
+    """
+    alphabet = string.ascii_lowercase
+    return '({}) {}'.format(alphabet[index], beach_state)

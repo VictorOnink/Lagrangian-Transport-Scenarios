@@ -2,10 +2,11 @@ import settings
 import utils
 import numpy as np
 import pandas as pd
+import visualization.visualization_utils as vUtils
 
 
 def FragmentationKaandorpPartial_fielddata(to_overwrite=False):
-    file_name = settings.DATA_INPUT_DIR_SERVERS[settings.SERVER] + 'Field_Data/standardized_field_data'
+    file_name = vUtils.FragmentationKaandorpPartial_fielddata_filename(with_type=False)
     if not utils.check_file_exist(file_name + '.pkl') or to_overwrite:
         output_dict = {}
         output_dict = Fok2017_standardization(output_dict=output_dict)
