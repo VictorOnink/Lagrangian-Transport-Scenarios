@@ -42,7 +42,8 @@ def FragmentationKaandorpPartial_FieldDataComp(figure_direc, scenario, shore_tim
 
     # Plotting the model distributions
     for ax_index, sub_ax in enumerate(ax):
-        sub_ax.plot(sizes_class, data_dict[beach_state_list[ax_index]][time_index], linestyle='-',
+        norm_factor = data_dict[beach_state_list[ax_index]][time_index][0]
+        sub_ax.plot(sizes_class, data_dict[beach_state_list[ax_index]][time_index] / norm_factor, linestyle='-',
                     color='black')
 
     # Adding the field data
