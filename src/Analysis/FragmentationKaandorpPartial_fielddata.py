@@ -37,7 +37,7 @@ def Fok2017_standardization(output_dict: dict):
     output_dict[prefix]['pdf_counts'] = np.divide(sample_counts, bin_edges[1:] - bin_edges[:-1])
     output_dict[prefix]['pdf_mass'] = np.divide(sample_mass, bin_edges[1:] - bin_edges[:-1])
     output_dict[prefix]['bin_edges'] = bin_edges
-    output_dict[prefix]['bin_midpoint'] = bin_midpoint
+    output_dict[prefix]['bin_midpoint'] = bin_edges[1:] - bin_edges[:-1]
 
     return output_dict
 
@@ -56,14 +56,14 @@ def Constant2019_standardization(output_dict: dict):
     data_pd = pd.read_csv(data_direc + 'Constant2019_1.csv', header=None)
     output_dict[prefix]['pdf_counts'] = data_pd.loc[0::2, 1].values / (bin_edges[1:] - bin_edges[:-1])
     output_dict[prefix]['bin_edges'] = bin_edges
-    output_dict[prefix]['bin_midpoint'] = bin_midpoint
+    output_dict[prefix]['bin_midpoint'] = bin_edges[1:] - bin_edges[:-1]
 
     prefix = 'Constant2'
     output_dict[prefix] = {}
     data_pd = pd.read_csv(data_direc + 'Constant2019_2.csv', header=None)
     output_dict[prefix]['pdf_counts'] = data_pd.loc[0::2, 1].values / (bin_edges[1:] - bin_edges[:-1])
     output_dict[prefix]['bin_edges'] = bin_edges
-    output_dict[prefix]['bin_midpoint'] = bin_midpoint
+    output_dict[prefix]['bin_midpoint'] = bin_edges[1:] - bin_edges[:-1]
 
     return output_dict
 
