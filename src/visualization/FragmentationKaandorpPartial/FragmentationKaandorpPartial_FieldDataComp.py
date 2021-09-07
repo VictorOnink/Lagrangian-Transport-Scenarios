@@ -17,13 +17,14 @@ def FragmentationKaandorpPartial_FieldDataComp(figure_direc, scenario, shore_tim
     data_direc = utils.get_output_directory(server=settings.SERVER) + 'size_distribution/FragmentationKaandorpPartial/'
 
     # Getting the sizes of the size classes, and we convert from meters to mm
-    sizes_class = utils.size_range(size_class_number=settings.SIZE_CLASS_NUMBER) * 1e3
+    sizes_class = utils.size_range(size_class_number=settings.SIZE_CLASS_NUMBER, units='mm')
 
     # Loading the data
     prefix = 'size_distribution'
     data_dict = vUtils.FragmentationKaandorpPartial_load_data(scenario=scenario, prefix=prefix,
                                                               data_direc=data_direc, shore_time=shore_time,
                                                               lambda_frag=lambda_frag, rho=density, postprocess=True)
+    print(data_dict.keys())
     time_index = data_dict['final_index']
     beach_state_list = ['adrift_open', 'adrift_10km', 'beach']
     field_dict = utils.load_obj(vUtils.FragmentationKaandorpPartial_fielddata_filename())

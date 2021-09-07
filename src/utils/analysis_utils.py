@@ -186,12 +186,14 @@ def init_size_key(size):
     return 'size_{:.1E}'.format(size)
 
 
-def size_range(size_class_number, init_size=settings.INIT_SIZE, single_size_class=None):
+def size_range(size_class_number, init_size=settings.INIT_SIZE, single_size_class=None, units='m'):
     if single_size_class is not None:
         assert type(single_size_class) == int, 'The size class number must be an integer'
-        return init_size * 2 ** -single_size_class
+        output = init_size * 2 ** -single_size_class
     else:
-        output_array = np.ones(size_class_number, dtype=float) * init_size
+        output = np.ones(size_class_number, dtype=float) * init_size
         for size_class in range(size_class_number):
-            output_array[size_class] *= 2 ** -size_class
-        return output_array
+            output[size_class] *= 2 ** -size_class
+    if units == 'mm':
+        output * 1e3
+    return output
