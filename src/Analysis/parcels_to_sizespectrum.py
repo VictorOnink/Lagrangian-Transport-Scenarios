@@ -177,7 +177,11 @@ def number_per_size_class(size_class_array, particle_number_array, bin_number, s
     if selection is not None:
         assert selection.size == size_class_array.size, 'The selection and data arrays must have the same size'
         for size_class in range(bin_number):
-            output_array[size_class] += np.nansum(particle_number_array[selection][size_class_array[selection] == size_class])
+            in_size_class = size_class_array[selection] == size_class
+            if np.nansum(in_size_class) > 0:
+                output_array[size_class] += np.nansum(particle_number_array[selection][in_size_class])
+            else:
+                output_array[size_class] += 0
     else:
         for size_class in range(bin_number):
             output_array[size_class] += np.nansum(particle_number_array[size_class_array == size_class])
