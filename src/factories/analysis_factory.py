@@ -29,4 +29,4 @@ class AnalysisFactory():
             Analysis.parcels_to_separation_distance(file_dict=file_dict, scenario=scenario)
         if size_spectrum:
             utils.print_statement("Computing size distribution", to_print=True)
-            Analysis.parcels_to_sizespectrum(file_dict=file_dict)
+            Analysis.parcels_to_sizespectrum(file_dict=file_dict, scenario=scenario)

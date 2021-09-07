@@ -8,7 +8,7 @@ from copy import deepcopy
 
 
 if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
-    def parcels_to_sizespectrum(file_dict: dict):
+    def parcels_to_sizespectrum(file_dict: dict, scenario):
         """
         For the FragmentationKaandorp scenario, getting a histogram of how many particles we have in the various size
         categories, where we distinguish between different beach states
@@ -21,6 +21,9 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
         output_direc = utils.get_output_directory(server=settings.SERVER) + 'size_distribution/{}/'.format(
             settings.SCENARIO_NAME)
         utils.check_direc_exist(output_direc)
+
+        # Getting the minimum depth of the advection scenario
+        min_depth = np.nanmin(scenario.file_dict['DEPTH'])
 
         # Loading the time axis
         time_list = np.array([], dtype=np.int)
@@ -39,7 +42,8 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
         # Creating the output dict
         beach_label = {'beach': 1, 'adrift': 0, 'seabed': 3, 'removed': 2}
         output_dict = {'size_bins': range(bin_number), 'beach': {}, 'adrift': {}, 'adrift_5m': {}, 'adrift_2m': {},
-                       'adrift_10km': {}, 'adrift_20km': {}, 'seabed': {}, 'total': {}, 'adrift_open': {}}
+                       'adrift_10km': {}, 'adrift_20km': {}, 'seabed': {}, 'total': {}, 'adrift_open': {},
+                       'adrift_open_surf': {}}
         time_step = 60
         for key in output_dict.keys():
             if key not in ['size_bins']:
@@ -82,10 +86,10 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                                 selection = time_sel['beach'] == beach_label['adrift']
                                 output_dict['adrift'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number, selection=selection)
                                 # floating particles within 5m of surface
-                                selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['z'] < 5)
+                                selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['z'] < (min_depth + 5))
                                 output_dict['adrift_5m'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number, selection=selection)
                                 # floating particles within 2m of surface
-                                selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['z'] < 2)
+                                selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['z'] < (min_depth + 2))
                                 output_dict['adrift_2m'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number, selection=selection)
                                 # Floating within 10 km of the model coastline
                                 selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['distance2coast'] < 10)
@@ -96,6 +100,9 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                                 # Floating beyond 10 km of the model coastline
                                 selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['distance2coast'] > 10)
                                 output_dict['adrift_open'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number, selection=selection)
+                                # Floating beyond 10 km of the model coastline and within 26cm of the surface
+                                selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['distance2coast'] > 10) & (time_sel['z'] < (min_depth + 0.26))
+                                output_dict['adrift_open_surf'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number, selection=selection)
 
         # Adding the index of the final timestep for ease later on
         output_dict['final_index'] = index_time
@@ -107,7 +114,7 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
         utils.print_statement("The size distribution has been saved")
 
 else:
-    def parcels_to_sizespectrum(file_dict: dict):
+    def parcels_to_sizespectrum(file_dict: dict, scenario):
         """
         For the FragmentationKaandorp scenario, getting a histogram of how many particles we have in the various size
         categories
