@@ -29,7 +29,7 @@ def FragmentationKaandorpPartial_FieldDataComp(figure_direc, scenario, shore_tim
     field_dict = utils.load_obj(vUtils.FragmentationKaandorpPartial_fielddata_filename())
 
     # Creating the figure
-    ax_range = 1e-2, 1e1, 1e8, 1e-3
+    ax_range = 1e1, 1e-2, 1e8, 1e-3
     plot_num = 3
     ax = vUtils.base_figure(fig_size=fig_size, ax_range=ax_range, x_label=x_label, y_label=y_label,
                             ax_ticklabel_size=ax_ticklabel_size, ax_label_size=ax_label_size, shape=(3, 1),
@@ -39,6 +39,10 @@ def FragmentationKaandorpPartial_FieldDataComp(figure_direc, scenario, shore_tim
     # Labelling the subfigures
     for index_ax in range(plot_num):
         ax[index_ax].set_title(subfigure_title(index_ax, beach_state_list[index_ax]), fontsize=ax_label_size)
+
+    # Adding the field data
+    ax[0].plot(field_dict['Fok']['bin_midpoint'], field_dict['Fok']['pdf_counts'] / field_dict['Fok']['pdf_counts'][-1],
+               marker='x', linestyle='-', color='tab:red')
 
     file_name = output_direc + 'SizeSpectrumFieldData-ST={}-rho={}-lamf={}.png'.format(shore_time, density, lambda_frag)
     plt.savefig(file_name, bbox_inches='tight')
