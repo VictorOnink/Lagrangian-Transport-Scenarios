@@ -81,12 +81,12 @@ def Cozar2015_standardization(output_dict: dict):
     data_pd = data_pd.drop([0, 29]).reset_index(drop=True)
 
     output_dict[prefix]['bin_edges'] = np.append(data_pd['Lower Size (mm)'].values,
-                                                 data_pd['Upper Size (mm)'].values[-1])[:-2]
-    output_dict[prefix]['bin_midpoint'] = (10 ** data_pd['log Nominal Size']).values[:-2]
+                                                 data_pd['Upper Size (mm)'].values[-1])[:-1]
+    output_dict[prefix]['bin_midpoint'] = (10 ** data_pd['log Nominal Size']).values[:-1]
 
-    pdf_tmp = (10 ** data_pd['MED Log # mm-1']).values
+    pdf_tmp = (10 ** data_pd['MED Log # mm-1']).values[:-1]
     area = np.trapz(pdf_tmp, output_dict[prefix]['bin_midpoint'])
-    output_dict[prefix]['pdf_counts'] = np.divide(pdf_tmp, area)[:-2]
+    output_dict[prefix]['pdf_counts'] = np.divide(pdf_tmp, area)
 
     return output_dict
 
