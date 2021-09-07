@@ -54,18 +54,18 @@ def FragmentationKaandorpPartial_FieldDataComp(figure_direc, scenario, shore_tim
     # Adding the field data
     # First for the open ocean
     ax[0].plot(field_dict['Cozar']['bin_midpoint'], field_dict['Cozar']['pdf_counts'] / field_dict['Cozar']['pdf_counts'][14],
-               marker='x', linestyle='-', color='tab:red', label='Cozar et al. (2015)')
+               marker='x', linestyle='--', color='tab:red', label='Cozar et al. (2015)')
     # Then for coastal waters
     ax[1].plot(field_dict['RuizOrejon']['bin_midpoint'],
                field_dict['RuizOrejon']['pdf_counts'] / field_dict['RuizOrejon']['pdf_counts'][6],
-               marker='x', linestyle='-', color='tab:red', label=r'Ruiz-Orej\`on et al. (2018)')
+               marker='x', linestyle='--', color='tab:red', label=r'Ruiz-Orej\`on et al. (2018)')
     # and finally for on the beach
     ax[2].plot(field_dict['Fok']['bin_midpoint'], field_dict['Fok']['pdf_counts'] / field_dict['Fok']['pdf_counts'][5],
-               marker='x', linestyle='-', color='tab:red', label='Fok et al. (2017)')
+               marker='x', linestyle='--', color='tab:red', label='Fok et al. (2017)')
     ax[2].plot(field_dict['Constant1']['bin_midpoint'], field_dict['Constant1']['pdf_counts'] / field_dict['Constant1']['pdf_counts'][-2],
-               marker='x', linestyle='-', color='tab:blue', label='Constant et al. (2019), site 1')
+               marker='x', linestyle='--', color='tab:blue', label='Constant et al. (2019), site 1')
     ax[2].plot(field_dict['Constant2']['bin_midpoint'], field_dict['Constant2']['pdf_counts'] / field_dict['Constant2']['pdf_counts'][-2],
-               marker='x', linestyle='-', color='tab:orange', label='Constant et al. (2019), site 2')
+               marker='x', linestyle='--', color='tab:orange', label='Constant et al. (2019), site 2')
 
     # Adding legends
     for sub_ax in ax:
