@@ -48,14 +48,14 @@ def FragmentationKaandorpPartial_FieldDataComp(figure_direc, scenario, shore_tim
 
     # Adding the field data
     # First for the open ocean
-    ax[0].plot(field_dict['Cozar']['bin_midpoint'], field_dict['Cozar']['pdf_counts'] / field_dict['Cozar']['pdf_counts'][-1],
+    ax[0].plot(field_dict['Cozar']['bin_midpoint'], field_dict['Cozar']['pdf_counts'] / field_dict['Cozar']['pdf_counts'][14],
                marker='x', linestyle='-', color='tab:red')
     # Then for coastal waters
     ax[1].plot(field_dict['RuizOrejon']['bin_midpoint'],
-               field_dict['RuizOrejon']['pdf_counts'] / field_dict['RuizOrejon']['pdf_counts'][-1],
+               field_dict['RuizOrejon']['pdf_counts'] / field_dict['RuizOrejon']['pdf_counts'][6],
                marker='x', linestyle='-', color='tab:red')
     # and finally for on the beach
-    ax[2].plot(field_dict['Fok']['bin_midpoint'], field_dict['Fok']['pdf_counts'] / field_dict['Fok']['pdf_counts'][-1],
+    ax[2].plot(field_dict['Fok']['bin_midpoint'], field_dict['Fok']['pdf_counts'] / field_dict['Fok']['pdf_counts'][6],
                marker='x', linestyle='-', color='tab:red')
     ax[2].plot(field_dict['Constant1']['bin_midpoint'], field_dict['Constant1']['pdf_counts'] / field_dict['Constant1']['pdf_counts'][-1],
                marker='x', linestyle='-', color='tab:blue')
