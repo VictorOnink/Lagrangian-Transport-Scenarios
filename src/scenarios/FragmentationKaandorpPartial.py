@@ -24,13 +24,13 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         self.output_dir = utils.get_output_directory(server=self.server)
         self.repeat_dt = None
         self.OCEAN_FRAG = settings.OCEAN_FRAG
-        if settings.SUBMISSION in ['simulation', 'visualization']:
-            advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
-                                                                advection_scenario=settings.ADVECTION_DATA,
-                                                                repeat_dt=self.repeat_dt)
-            self.file_dict = advection_scenario.file_names
-            if settings.SUBMISSION in ['simulation'] and not settings.POST_PROCESS:
-                self.field_set = self.create_fieldset()
+        # if settings.SUBMISSION in ['simulation', 'visualization']:
+        advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
+                                                            advection_scenario=settings.ADVECTION_DATA,
+                                                            repeat_dt=self.repeat_dt)
+        self.file_dict = advection_scenario.file_names
+        if settings.SUBMISSION in ['simulation'] and not settings.POST_PROCESS:
+            self.field_set = self.create_fieldset()
 
     var_list = ['lon', 'lat', 'beach', 'age', 'size', 'parent', 'beach_time', 'size_class', 'ocean_time',
                 'at_seafloor', 'distance2coast']
