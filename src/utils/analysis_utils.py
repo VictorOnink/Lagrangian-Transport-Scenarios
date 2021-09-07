@@ -195,5 +195,5 @@ def size_range(size_class_number, init_size=settings.INIT_SIZE, single_size_clas
         for size_class in range(size_class_number):
             output[size_class] *= 2 ** -size_class
     if units == 'mm':
-        output * 1e3
+        output *= 1e3
     return output
