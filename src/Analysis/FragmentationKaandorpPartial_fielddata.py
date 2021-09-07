@@ -34,10 +34,10 @@ def Fok2017_standardization(output_dict: dict):
     sample_mass = np.array([2.2, 7.5, 10.1, 14.2, 11.0, 7.6, 10.6, 15.2, 9.7, 12.0])
 
     # Normalizing the pdf of the counts and masses by the size of the particles
-    output_dict[prefix]['pdf_counts'] = np.divide(sample_counts, bin_edges[1:] - bin_edges[:-1])
-    output_dict[prefix]['pdf_mass'] = np.divide(sample_mass, bin_edges[1:] - bin_edges[:-1])
+    output_dict[prefix]['pdf_counts'] = np.divide(sample_counts, (bin_edges[1:] + bin_edges[:-1]) / 2)
+    output_dict[prefix]['pdf_mass'] = np.divide(sample_mass, (bin_edges[1:] + bin_edges[:-1]) / 2)
     output_dict[prefix]['bin_edges'] = bin_edges
-    output_dict[prefix]['bin_midpoint'] = bin_edges[1:] - bin_edges[:-1]
+    output_dict[prefix]['bin_midpoint'] = (bin_edges[1:] + bin_edges[:-1]) / 2
 
     return output_dict
 
@@ -54,16 +54,16 @@ def Constant2019_standardization(output_dict: dict):
     prefix = 'Constant1'
     output_dict[prefix] = {}
     data_pd = pd.read_csv(data_direc + 'Constant2019_1.csv', header=None)
-    output_dict[prefix]['pdf_counts'] = data_pd.loc[0::2, 1].values / (bin_edges[1:] - bin_edges[:-1])
+    output_dict[prefix]['pdf_counts'] = data_pd.loc[0::2, 1].values / ((bin_edges[1:] + bin_edges[:-1]) / 2)
     output_dict[prefix]['bin_edges'] = bin_edges
-    output_dict[prefix]['bin_midpoint'] = bin_edges[1:] - bin_edges[:-1]
+    output_dict[prefix]['bin_midpoint'] = (bin_edges[1:] + bin_edges[:-1]) / 2
 
     prefix = 'Constant2'
     output_dict[prefix] = {}
     data_pd = pd.read_csv(data_direc + 'Constant2019_2.csv', header=None)
-    output_dict[prefix]['pdf_counts'] = data_pd.loc[0::2, 1].values / (bin_edges[1:] - bin_edges[:-1])
+    output_dict[prefix]['pdf_counts'] = data_pd.loc[0::2, 1].values / ((bin_edges[1:] + bin_edges[:-1]) / 2)
     output_dict[prefix]['bin_edges'] = bin_edges
-    output_dict[prefix]['bin_midpoint'] = bin_edges[1:] - bin_edges[:-1]
+    output_dict[prefix]['bin_midpoint'] = (bin_edges[1:] + bin_edges[:-1]) / 2
 
     return output_dict
 
