@@ -46,7 +46,7 @@ export OCEAN_FRAG
 POST_PROCESS=1
 export POST_PROCESS
 #the starting year of the simulation, and how many years the simulation will take
-STARTYEAR=2011
+STARTYEAR=2010
 STARTMONTH_list=(1 2 3 4 5 6 7 8 9 10 11 12)
 STARTDAY=1
 export STARTYEAR
@@ -170,11 +170,12 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
                  part3="#SBATCH --mail-user=victor.onink@climate.unibe.ch"
                  part4="#SBATCH --job-name="$runname
                  part5="#SBATCH --output="runOutput/$runname".o%j"
-                 part6="#SBATCH --mem-per-cpu=40G"
                  if [ "$DEBUG" -eq "0" ]; then
                   if [ $POST_PROCESS -eq 0 ]; then
+                   part6="#SBATCH --mem-per-cpu=40G"
                    part7="#SBATCH --time=95:59:00"
                   else
+                   part6="#SBATCH --mem-per-cpu=10G"
                    part7="#SBATCH --time=1:00:00"
                   fi
                   part8="#SBATCH --partition=epyc2"
