@@ -19,7 +19,12 @@ def parcels_to_particle_number(base_file, output_file, restart_file):
     # Creating an output dictionary containing an array for the particle number
     output_dict = {'particle_number': np.ones(base_dict[variable].shape, dtype=np.float32)}
 
-    # if restart =
+    if settings.RESTART > 0:
+        assert utils.check_file_exist(restart_file), "The restart file {} doesn't exist".format(restart_file)
+        restart_dict = utils.load_obj(restart_file)
+        restart_number = restart_dict['particle_number'][:, -1]
+        for p_ind, number in enumerate(restart_number):
+            output_dict['particle_number'][p_ind, :] = number
 
     # Computing the fragmentation variable f
     f = 60 / settings.LAMBDA_FRAG
