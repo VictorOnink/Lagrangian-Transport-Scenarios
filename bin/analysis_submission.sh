@@ -55,7 +55,7 @@ export INPUT
 ADVECTION_DATA=2
 export ADVECTION_DATA
 #Number of years the simulation runs
-SIMLEN=1
+SIMLEN=2
 export SIMLEN
 #Inclusion of Stokes drift. 0 = include stokes, 1 = do not include stokes
 STOKES=0
@@ -69,9 +69,9 @@ export SERVER
 
 #A number of switches to indicate which analysis steps we want to run.
 #0 = off, 1 = on
-CONCENTRATION=0
-VERTICAL_CONCENTRATION=0
-TIMESERIES=0
+CONCENTRATION=1
+VERTICAL_CONCENTRATION=1
+TIMESERIES=1
 MAX_DISTANCE=0
 TIMESLICING=0
 STATISTICS=0
