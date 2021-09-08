@@ -5,7 +5,7 @@ import numpy as np
 from progressbar import ProgressBar
 
 
-def parcels_to_particle_number(base_file, output_file):
+def parcels_to_particle_number(base_file, output_file, restart_file):
     # Load the relevant data from the base_file, which we take as lambda_frag=388. The split event is independent of
     # lambda_frag, and so it doesn't matter what is taken as the base to calculate the
     base_dataset = Dataset(base_file)
@@ -18,6 +18,8 @@ def parcels_to_particle_number(base_file, output_file):
 
     # Creating an output dictionary containing an array for the particle number
     output_dict = {'particle_number': np.ones(base_dict[variable].shape, dtype=np.float32)}
+
+    # if restart =
 
     # Computing the fragmentation variable f
     f = 60 / settings.LAMBDA_FRAG
