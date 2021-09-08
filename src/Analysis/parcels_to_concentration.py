@@ -35,9 +35,13 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
         # Counter for the number of files
         counter = 0
 
-        # Create the output dictionarynp.zeros(GRID.shape)
-        beach_state_dict = {'beach': np.zeros(GRID.shape), 'adrift': np.zeros(GRID.shape), 'seabed': np.zeros(GRID.shape)}
-        beach_label_dict = {'beach': 1, 'adrift': 0, 'seabed': 3}
+        # Create the output dictionary
+        base_grid = np.zeros(GRID.shape)
+        size_dict = dict.fromkeys(range(settings.SIZE_CLASS_NUMBER))
+        for size in size_dict.keys():
+            size_dict[size] = deepcopy(base_grid)
+        beach_state_dict = {'beach': deepcopy(size_dict), 'adrift': deepcopy(size_dict)}
+        beach_label_dict = {'beach': 1, 'adrift': 0}
         output_dict = {'overall_concentration': deepcopy(beach_state_dict), 'lon': LON, 'lat': LAT}
         for simulation_years in range(settings.SIM_LENGTH):
             output_dict[utils.analysis_simulation_year_key(simulation_years)] = deepcopy(beach_state_dict)
@@ -57,7 +61,7 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                         dataset_parcels = Dataset(parcels_file)
                         dataset_post = utils.load_obj(post_file)
                         full_data_dict = {}
-                        for variable in ['lon', 'lat', 'beach']:
+                        for variable in ['lon', 'lat', 'beach', 'size_class']:
                             full_data_dict[variable] = dataset_parcels.variables[variable][:, :-1]
                         # Adding the particle number data, which we use to weigh the particle concentration
                         full_data_dict['weights'] = dataset_post['particle_number'][:, :-1]
@@ -69,34 +73,42 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                         # Now, we sort through the various particle states
                         for beach_state in beach_state_dict.keys():
                             state_data = {}
-                            for variable in ['lon', 'lat', 'weights']:
+                            for variable in ['lon', 'lat', 'weights', 'size_class']:
                                 state_data[variable] = full_data_dict[variable][full_data_dict['beach'] == beach_label_dict[beach_state]]
-                            # Carry out the hex bin operation
-                            hexagon_cumulative_sum, hexagon_coord = hexbin(state_data['lon'], state_data['lat'],
-                                                                           state_data['weights'], hex_grid)
-                            # Get the average per day, so divide by the number of days in the year
-                            hexagon_cumulative_sum /= time_steps
-                            # Get the concentration onto the advection grid
-                            key_year = utils.analysis_simulation_year_key(restart)
-                            output_dict[key_year][beach_state] += utils.histogram(lon_data=hexagon_coord[:, 0],
-                                                                                  lat_data=hexagon_coord[:, 1],
-                                                                                  bins_Lon=LON, bins_Lat=LAT,
-                                                                                  weight_data=hexagon_cumulative_sum
-                                                                                  )
+                            for size_class in range(settings.SIZE_CLASS_NUMBER):
+                                size_class_data = {}
+                                for variable in ['lon', 'lat', 'weights', ]:
+                                    size_class_data[variable] = state_data[variable][state_data['size_class'] == size_class]
+                                    # Carry out the hex bin operation
+                                    hexagon_cumulative_sum, hexagon_coord = hexbin(state_data['lon'], state_data['lat'],
+                                                                                   state_data['weights'], hex_grid)
+                                    # Get the average per day, so divide by the number of days in the year
+                                    hexagon_cumulative_sum /= time_steps
+                                    # Get the concentration onto the advection grid
+                                    key_year = utils.analysis_simulation_year_key(restart)
+                                    output_dict[key_year][beach_state][size_class] += utils.histogram(lon_data=hexagon_coord[:, 0],
+                                                                                                      lat_data=hexagon_coord[:, 1],
+                                                                                                      bins_Lon=LON,
+                                                                                                      bins_Lat=LAT,
+                                                                                                      weight_data=hexagon_cumulative_sum
+                                                                                                      )
 
         # Dividing the end of year concentrations by the number of runs
         for simulation_years in range(settings.SIM_LENGTH):
-            key_year = utils.analysis_simulation_year_key(restart)
+            key_year = utils.analysis_simulation_year_key(simulation_years)
             for beach_state in output_dict[key_year].keys():
-                output_dict[key_year][beach_state] /= settings.RUN_RANGE
+                for size_class in output_dict[key_year][beach_state].keys():
+                    output_dict[key_year][beach_state][size_class] /= settings.RUN_RANGE
 
         # Calculating the average concentrations over the entire length of the simulation from the individual years
+        for simulation_years in range(settings.SIM_LENGTH):
+            key_year = utils.analysis_simulation_year_key(simulation_years)
+            for beach_state in beach_state_dict.keys():
+                for size_class in output_dict[key_year][beach_state].keys():
+                    output_dict['overall_concentration'][beach_state][size_class] += output_dict[key_year][beach_state][size_class]
         for beach_state in beach_state_dict.keys():
-            for simulation_years in range(settings.SIM_LENGTH):
-                key_year = utils.analysis_simulation_year_key(restart)
-                output_dict['overall_concentration'][beach_state] += output_dict[key_year][beach_state]
-        for beach_state in beach_state_dict.keys():
-            output_dict['overall_concentration'][beach_state] /= settings.SIM_LENGTH
+            for size_class in output_dict[key_year][beach_state].keys():
+                output_dict['overall_concentration'][beach_state][size_class] /= settings.SIM_LENGTH
 
         # Saving the computed concentration
         prefix = 'horizontal_concentration'
@@ -141,7 +153,7 @@ else:
             output_dict[utils.analysis_simulation_year_key(simulation_years)] = deepcopy(beach_state_dict)
 
         # loop through the runs
-        pbar = progressbar.ProgressBar()
+        pbar = ProgressBar()
         for run in pbar(range(settings.RUN_RANGE)):
             # Loop through the restart files
             for restart in range(settings.SIM_LENGTH):
