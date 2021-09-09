@@ -40,8 +40,9 @@ def FragmentationKaandorpPartial_vertical_profile(figure_direc, scenario, shore_
     for size_class in range(settings.SIZE_CLASS_NUMBER):
         cmap_list.append(vUtils.discrete_color_from_cmap(size_class, subdivisions=settings.SIZE_CLASS_NUMBER,
                                                          cmap=cmo.algae_r))
-        label_list.append('Size class {}, d = {:.3f} mm'.format(size_class, utils.size_range(single_size_class=size_class)))
-
+        label_list.append('Size class {}, d = {:.3f} mm'.format(size_class, utils.size_range(single_size_class=size_class,
+                                                                                             units='mm')))
+    print(cmap_list)
     size_colors = [plt.plot([], [], c=cmap_list[ind], label=label_list[ind], linestyle='-')[0] for ind in range(cmap_list.__len__())]
     ax[-1].legend(handles=size_colors, fontsize=legend_size)
     ax[-1].axis('off')
