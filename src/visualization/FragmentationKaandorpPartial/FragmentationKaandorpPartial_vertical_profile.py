@@ -57,6 +57,7 @@ def FragmentationKaandorpPartial_vertical_profile(figure_direc, scenario, shore_
                                c=vUtils.discrete_color_from_cmap(size_class, subdivisions=settings.SIZE_CLASS_NUMBER,
                                                                  cmap='viridis'))
         ax[ind_month].plot(depth_bins, total_count, linestyle='-', c='k')
+        print(total_count)
 
     # Saving the figure
     str_format = lambda_frag, shore_time, rho, simulation_year
