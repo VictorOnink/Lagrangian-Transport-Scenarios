@@ -9,8 +9,8 @@ import cmocean.cm as cmo
 
 
 def FragmentationKaandorpPartial_vertical_profile(figure_direc, scenario, shore_time, lambda_frag, rho, simulation_year,
-                                                  fig_size=(14, 10), x_label='Number of Particles', y_label='Depth (m)',
-                                                  ax_ticklabel_size=12, ax_label_size=14, legend_size=14):
+                                                  fig_size=(15, 10), x_label='Number of Particles', y_label='Depth (m)',
+                                                  ax_ticklabel_size=12, ax_label_size=14, legend_size=12):
     # Setting the folder within which we have the output, and where we have the saved data
     output_direc = figure_direc + 'vertical_profile/'
     utils.check_direc_exist(output_direc)
@@ -29,7 +29,7 @@ def FragmentationKaandorpPartial_vertical_profile(figure_direc, scenario, shore_
     ax = vUtils.base_figure(fig_size=fig_size, ax_range=ax_range, x_label=x_label, y_label=y_label,
                             ax_ticklabel_size=ax_ticklabel_size, ax_label_size=ax_label_size, shape=(2, 2),
                             plot_num=plot_num, log_yscale=False, log_xscale=True, all_x_labels=True,
-                            all_y_labels=False, legend_axis=True, width_ratios=[1, 1, 0.3])
+                            all_y_labels=False, legend_axis=True, width_ratios=[1, 1, 0.4])
 
     # Labelling the subfigures
     for index_ax in range(plot_num):
