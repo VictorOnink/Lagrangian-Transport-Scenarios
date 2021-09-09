@@ -30,7 +30,7 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
         time_list = []
         for year in range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH):
             for month in range(1, 13):
-                time_list.append((datetime(year, month, 1, 0, 0) - reference_time).total_seconds())
+                time_list.append(int((datetime(year, month, 1, 0, 0) - reference_time).total_seconds()))
         utils.print_statement(time_list, to_print=True)
 
         # Create the output dictionary, and a dictionary to keep track of particle counts for the normalization
@@ -61,11 +61,12 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                         for key in ['z', 'beach', 'size_class']:
                             run_restart_dict[key] = parcels_dataset.variables[key][:, :-1]
                         run_restart_dict['particle_number'] = post_dataset['particle_number'][:, :-1]
+                        time = parcels_dataset.variables['time'][:, :-1]
 
                         for index_time, time_point in enumerate(time_list):
                             month_index = index_time % 12
                             year_index = index_time // 2
-                            selection = parcels_dataset.variables['time'][:, :-1] = time_point
+                            selection = time == time_point
                             select_dict = {}
                             for key in run_restart_dict.keys():
                                 select_dict[key] = run_restart_dict[key][selection]
