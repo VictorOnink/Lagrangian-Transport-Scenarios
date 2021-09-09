@@ -27,10 +27,11 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
         # Determining the time selections so that we always compute the vertical concentration on the first day of the
         # month
         reference_time = datetime(2010, 1, 1, 12, 0)
-        time_list = []
+        time_list = [-1e6]
         for year in range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH):
             for month in range(1, 13):
-                time_list.append(int((datetime(year, month, 1, 0, 0) - reference_time).total_seconds()))
+                last_of_month = datetime(year, month, 1, 0, 0) - timedelta(seconds=1)
+                time_list.append((last_of_month - reference_time).total_seconds())
 
         # Create the output dictionary, and a dictionary to keep track of particle counts for the normalization
         output_dict = {'depth': depth_bins}
@@ -40,7 +41,9 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
             for month in range(0, 12):
                 output_dict[key_year][month] = {}
                 for size_class in range(settings.SIZE_CLASS_NUMBER):
-                    output_dict[key_year][month][size_class] = {'counts': 0.0, 'concentration': np.zeros(len(depth_bins) - 1, dtype=np.float32)}
+                    output_dict[key_year][month][size_class] = {'counts': 0.0,
+                                                                'concentration': np.zeros(depth_bins.__len__() - 1,
+                                                                                          dtype=np.float32)}
 
         # Looping through all the simulation years and runs
         pbar = progressbar.ProgressBar()
@@ -58,14 +61,14 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                         post_dataset = utils.load_obj(post_file)
                         run_restart_dict = {}
                         for key in ['z', 'beach', 'size_class']:
-                            run_restart_dict[key] = parcels_dataset.variables[key][:, :-1]
-                        run_restart_dict['particle_number'] = post_dataset['particle_number'][:, :-1]
-                        time = parcels_dataset.variables['time'][:, :-1]
+                            run_restart_dict[key] = parcels_dataset.variables[key][:, :-1].flatten()
+                        run_restart_dict['particle_number'] = post_dataset['particle_number'][:, :-1].flatten()
+                        time = parcels_dataset.variables['time'][:, :-1].flatten()
 
-                        for index_time, time_point in enumerate(time_list):
+                        for index_time in range(1, time_list.__len__()):
                             month_index = index_time % 12
                             year_index = index_time // 12
-                            selection = time == time_point
+                            selection = (time > time_list[index_time - 1]) & (time <= time_list[index_time])
                             select_dict = {}
                             for key in run_restart_dict.keys():
                                 select_dict[key] = run_restart_dict[key][selection]
@@ -112,7 +115,7 @@ else:
             output_dict[key_year] = {}
             counts_dict[key_year] = {}
             for month in range(12):
-                output_dict[key_year][month] = np.zeros(len(depth_bins) - 1, dtype=np.float32)
+                output_dict[key_year][month] = np.zeros(depth_bins.__len__() - 1, dtype=np.float32)
                 counts_dict[key_year][month] = 0.0
 
         # Looping through all the simulation years and runs
