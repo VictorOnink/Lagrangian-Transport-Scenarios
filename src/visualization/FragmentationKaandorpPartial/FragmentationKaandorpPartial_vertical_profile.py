@@ -10,7 +10,7 @@ import cmocean.cm as cmo
 
 def FragmentationKaandorpPartial_vertical_profile(figure_direc, scenario, shore_time, lambda_frag, rho, simulation_year,
                                                   fig_size=(15, 10), x_label='Number of Particles', y_label='Depth (m)',
-                                                  ax_ticklabel_size=12, ax_label_size=14, legend_size=12):
+                                                  ax_ticklabel_size=12, ax_label_size=14, legend_size=11):
     # Setting the folder within which we have the output, and where we have the saved data
     output_direc = figure_direc + 'vertical_profile/'
     utils.check_direc_exist(output_direc)
@@ -28,8 +28,8 @@ def FragmentationKaandorpPartial_vertical_profile(figure_direc, scenario, shore_
     plot_num = 4
     ax = vUtils.base_figure(fig_size=fig_size, ax_range=ax_range, x_label=x_label, y_label=y_label,
                             ax_ticklabel_size=ax_ticklabel_size, ax_label_size=ax_label_size, shape=(2, 2),
-                            plot_num=plot_num, log_yscale=False, log_xscale=True, all_x_labels=True,
-                            all_y_labels=False, legend_axis=True, width_ratios=[1, 1, 0.4])
+                            plot_num=plot_num, log_yscale=False, log_xscale=True, all_x_labels=True, all_y_labels=True,
+                            legend_axis=True, width_ratios=[1, 1, 0.45])
 
     # Labelling the subfigures
     for index_ax in range(plot_num):
@@ -39,7 +39,7 @@ def FragmentationKaandorpPartial_vertical_profile(figure_direc, scenario, shore_
     cmap_list, label_list = ['k'], ['Total']
     for size_class in range(settings.SIZE_CLASS_NUMBER):
         cmap_list.append(vUtils.discrete_color_from_cmap(size_class, subdivisions=7,
-                                                         cmap=cmo.algae))
+                                                         cmap=cmo.speed_r))
         label_list.append('Size class {}, d = {:.3f} mm'.format(size_class, utils.size_range(single_size_class=size_class,
                                                                                              units='mm')))
     print(cmap_list)
