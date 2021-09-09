@@ -2,7 +2,7 @@ import settings
 import utils
 import visualization.visualization_utils as vUtils
 import matplotlib.pyplot as plt
-import matplotlib.colors as colors
+from copy import deepcopy
 import string
 import numpy as np
 import cmocean.cm as cmo
