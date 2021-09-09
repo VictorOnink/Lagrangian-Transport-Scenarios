@@ -32,7 +32,7 @@ def FragmentationKaandorpPartial_vertical_profile(figure_direc, scenario, shore_
         for size_class in year_dict[month].keys():
             data_dict[month][size_class] = {'concentration': None, 'counts': 0}
             data_dict[month][size_class]['concentration'] = np.histogram(year_dict[month][size_class]['concentration'],
-                                                                         bins=depth_bins)
+                                                                         bins=depth_bins)[0]
             data_dict[month][size_class]['counts'] = year_dict[month][size_class]['counts']
     depth_bins = -0.5 * (depth_bins[1:] + depth_bins[:-1])
 
