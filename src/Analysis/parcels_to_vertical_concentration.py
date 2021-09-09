@@ -28,9 +28,11 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
         # month
         reference_time = datetime(2010, 1, 1, 12, 0)
         time_list = [-1e6]
+        days_in_month = [1]
         for year in range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH + 1):
             for month in range(1, 13):
                 last_of_month = datetime(year, month, 1, 0, 0) - timedelta(seconds=1)
+                days_in_month.append(last_of_month.day)
                 time_list.append((last_of_month - reference_time).total_seconds())
 
         # Create the output dictionary, and a dictionary to keep track of particle counts for the normalization
@@ -82,6 +84,8 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                                 for variable in ['z', 'particle_number']:
                                     size_dict[variable] = select_dict[variable][select_dict['size_class'] == size_class]
                                 histogram_counts, _ = np.histogram(size_dict['z'], bins=depth_bins, weights=size_dict['particle_number'])
+                                # Divide the counts by the number of days in the month
+                                histogram_counts /= days_in_month[index_time]
                                 key_year = utils.analysis_simulation_year_key(year_index)
                                 output_dict[key_year][month_index][size_class]['concentration'] += histogram_counts
                                 output_dict[key_year][month_index][size_class]['counts'] += np.nansum(histogram_counts)
