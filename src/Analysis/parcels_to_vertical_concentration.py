@@ -104,7 +104,7 @@ else:
                                                             repeat_dt=None)
         adv_file_dict = advection_scenario.file_names
         depth_min, depth_max = np.nanmin(adv_file_dict['DEPTH']), np.nanmax(adv_file_dict['DEPTH'])
-        step = 0.1
+        step = 0.3
         depth_bins = np.arange(depth_min, depth_max + step, step)
 
         # Getting the directory saving the output files
