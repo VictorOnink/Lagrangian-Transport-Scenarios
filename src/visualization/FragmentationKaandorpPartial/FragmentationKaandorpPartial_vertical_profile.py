@@ -22,7 +22,7 @@ def FragmentationKaandorpPartial_vertical_profile(figure_direc, scenario, shore_
                                                               data_direc=data_direc, shore_time=shore_time,
                                                               lambda_frag=lambda_frag, rho=rho, postprocess=True)
     fine_depth_bins = data_dict['depth']
-    year_dict = data_dict[utils.analysis_simulation_year_key(simulation_year)]
+    year_dict = deepcopy(data_dict[utils.analysis_simulation_year_key(simulation_year)])
 
     # Next, we are going to average out the bins, because they are currently too small
     data_dict = {}
