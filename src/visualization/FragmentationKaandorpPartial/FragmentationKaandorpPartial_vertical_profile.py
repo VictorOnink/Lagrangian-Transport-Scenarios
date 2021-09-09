@@ -21,7 +21,7 @@ def FragmentationKaandorpPartial_vertical_profile(figure_direc, scenario, shore_
     data_dict = vUtils.FragmentationKaandorpPartial_load_data(scenario=scenario, prefix=prefix,
                                                               data_direc=data_direc, shore_time=shore_time,
                                                               lambda_frag=lambda_frag, rho=rho, postprocess=True)
-    depth_bins = -0.5 * (data_dict['depth'][:-1] + data_dict['depth'][1:])
+    depth_bins = 0.5 * (data_dict['depth'][:-1] + data_dict['depth'][1:])
     data_dict = data_dict[utils.analysis_simulation_year_key(simulation_year)]
 
     # Creating the figure
