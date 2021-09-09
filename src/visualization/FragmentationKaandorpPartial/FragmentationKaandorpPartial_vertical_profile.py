@@ -57,7 +57,7 @@ def FragmentationKaandorpPartial_vertical_profile(figure_direc, scenario, shore_
             ax[ind_month].plot(depth_bins, data_dict[month][size_class]['concentration'], linestyle='-',
                                c=vUtils.discrete_color_from_cmap(size_class, subdivisions=settings.SIZE_CLASS_NUMBER,
                                                                  cmap='viridis'))
-        ax[ind_month].plot(depth_bins, total_count, linestyle='-', markerstyle='o', c='k', zorder=10000)
+        ax[ind_month].plot(depth_bins, total_count, linestyle='-', c='k', zorder=10000)
         print(total_count)
         print(depth_bins)
 
