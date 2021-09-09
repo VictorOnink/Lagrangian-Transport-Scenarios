@@ -21,8 +21,19 @@ def FragmentationKaandorpPartial_vertical_profile(figure_direc, scenario, shore_
     data_dict = vUtils.FragmentationKaandorpPartial_load_data(scenario=scenario, prefix=prefix,
                                                               data_direc=data_direc, shore_time=shore_time,
                                                               lambda_frag=lambda_frag, rho=rho, postprocess=True)
-    depth_bins = -0.5 * (data_dict['depth'][:-1] + data_dict['depth'][1:])
-    data_dict = data_dict[utils.analysis_simulation_year_key(simulation_year)]
+    fine_depth_bins = data_dict['depth']
+    year_dict = data_dict[utils.analysis_simulation_year_key(simulation_year)]
+
+    # Next, we are going to average out the bins, because they are currently too small
+    data_dict = {}
+    depth_bins = np.arange(start=np.min(fine_depth_bins), stop=np.max(fine_depth_bins), step=0.5)
+    for month in year_dict.keys():
+        data_dict[month] = {'concentration': None, 'counts': 0}
+        for size in year_dict[month].keys():
+            data_dict[month][size]['concentration'] = np.histogram(year_dict[month][size]['concentration'],
+                                                                   bins=depth_bins)
+            data_dict[month][size]['counts'] = year_dict[month][size]['counts']
+    depth_bins = -0.5 * (depth_bins[1:] + depth_bins[:-1])
 
     # Creating the figure
     ax_range = 1e0, 1e-10, 0, -25
