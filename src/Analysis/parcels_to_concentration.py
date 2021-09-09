@@ -83,27 +83,17 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                                 for variable in ['lon', 'lat', 'weights', ]:
                                     size_class_data[variable] = state_data[variable][state_data['size_class'] == size_class]
                                     # Carry out the hex bin operation
-                                    start_time = time.time()
                                     hexagon_cumulative_sum, hexagon_coord = hexbin(state_data['lon'], state_data['lat'],
                                                                                    state_data['weights'], hex_grid)
-                                    end_time = time.time()
-                                    time_diff = end_time - start_time
-                                    utils.print_statement('It takes {}:{} to run hexbin'.format(time_diff // 60, time_diff % 60),
-                                                          to_print=True)
                                     # Get the average per day, so divide by the number of days in the year
                                     hexagon_cumulative_sum /= time_steps
                                     # Get the concentration onto the advection grid
                                     key_year = utils.analysis_simulation_year_key(restart)
-                                    start_time = time.time()
                                     concentration, lat_mid, lon_mid = utils.histogram(lon_data=hexagon_coord[:, 0],
                                                                                       lat_data=hexagon_coord[:, 1],
                                                                                       bins_Lon=LON, bins_Lat=LAT,
                                                                                       weight_data=hexagon_cumulative_sum
                                                                                       )
-                                    end_time = time.time()
-                                    time_diff = end_time - start_time
-                                    utils.print_statement('It takes {}:{} to run histogram'.format(time_diff // 60, time_diff % 60),
-                                                          to_print=True)
                                     output_dict[key_year][beach_state][size_class] += concentration
 
         # Adding the lon/lat arrays
