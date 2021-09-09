@@ -34,14 +34,13 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
 
         # Create the output dictionary, and a dictionary to keep track of particle counts for the normalization
         output_dict = {'depth': depth_bins}
-        counts_dict = {}
         for simulation_year in range(settings.SIM_LENGTH):
             key_year = utils.analysis_simulation_year_key(simulation_year)
             output_dict[key_year] = {}
-            counts_dict[key_year] = {}
             for month in range(0, 12):
-                output_dict[key_year][month] = np.zeros(len(depth_bins) - 1, dtype=np.float32)
-                counts_dict[key_year][month] = 0.0
+                output_dict[key_year][month] = {}
+                for size_class in range(settings.SIZE_CLASS_NUMBER):
+                    output_dict[key_year][month][size_class] = {'counts': 0.0, 'concentration': np.zeros(len(depth_bins) - 1, dtype=np.float32)}
 
         # Looping through all the simulation years and runs
         pbar = progressbar.ProgressBar()
@@ -59,7 +58,7 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                         parcels_dataset = Dataset(parcels_file)
                         post_dataset = utils.load_obj(post_file)
                         run_restart_dict = {}
-                        for key in ['z', 'beach']:
+                        for key in ['z', 'beach', 'size_class']:
                             run_restart_dict[key] = parcels_dataset.variables[key][:, :-1]
                         run_restart_dict['particle_number'] = post_dataset['particle_number'][:, :-1]
 
@@ -72,16 +71,16 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                                 select_dict[key] = run_restart_dict[key][selection]
                             # Picking out the non-beached particles
                             selection = select_dict['beach'] == 0
-                            for key in ['z', 'particle_number']:
+                            for key in ['z', 'particle_number', 'size_class']:
                                 select_dict[key] = run_restart_dict[key][selection]
-                            histogram_counts, _ = np.histogram(select_dict['z'], bins=depth_bins, weights=select_dict['particle_number'])
-                            output_dict[utils.analysis_simulation_year_key(year_index)][month_index] += histogram_counts
-                            counts_dict[key_year][month] += np.nansum(histogram_counts)
-
-        # Now, we loop through all the profiles and normalize them by the number of particles within the profile
-        for key_year in counts_dict.keys():
-            for key_month in counts_dict[key_year].keys():
-                output_dict[key_year][key_month] /= counts_dict[key_year][key_month]
+                            for size_class in range(settings.SIZE_CLASS_NUMBER):
+                                size_dict = {}
+                                for variable in ['z', 'particle_number']:
+                                    size_dict[variable] = select_dict[variable][select_dict['size_class'] == size_class]
+                                histogram_counts, _ = np.histogram(size_dict['z'], bins=depth_bins, weights=size_dict['particle_number'])
+                                key_year = utils.analysis_simulation_year_key(year_index)
+                                output_dict[key_year][month_index][size_class]['concentration'] += histogram_counts
+                                output_dict[key_year][month_index][size_class]['counts'] += np.nansum(histogram_counts)
 
         # Saving the output
         prefix = 'vertical_concentration'

@@ -80,7 +80,7 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                                 state_data[variable] = full_data_dict[variable][full_data_dict['beach'] == beach_label_dict[beach_state]]
                             for size_class in range(settings.SIZE_CLASS_NUMBER):
                                 size_class_data = {}
-                                for variable in ['lon', 'lat', 'weights', ]:
+                                for variable in ['lon', 'lat', 'weights']:
                                     size_class_data[variable] = state_data[variable][state_data['size_class'] == size_class]
                                     # Carry out the hex bin operation
                                     hexagon_cumulative_sum, hexagon_coord = hexbin(state_data['lon'], state_data['lat'],

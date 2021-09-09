@@ -27,7 +27,7 @@ def FragmentationKaandorpPartial_SizeSpectrumTime(figure_direc, scenario, shore_
         for month in data_dict[reservoir].keys():
             size_dict[lambda_frag][month] = data_dict[reservoir][month]
 
-    size_bins = data_dict['size_bins'][:-1]
+    size_bins = utils.size_range(size_class_number=settings.SIZE_CLASS_NUMBER, units='mm')
 
     # Creating the figure
     ax_range = 1e-2, 1e-5, 1e7, 1e-2

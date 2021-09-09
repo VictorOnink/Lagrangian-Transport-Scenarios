@@ -181,7 +181,7 @@ def init_size_key(size):
     return 'size_{:.1E}'.format(size)
 
 
-def size_range(size_class_number, init_size=settings.INIT_SIZE, single_size_class=None, units='m'):
+def size_range(size_class_number=None, init_size=settings.INIT_SIZE, single_size_class=None, units='m'):
     if single_size_class is not None:
         assert type(single_size_class) == int, 'The size class number must be an integer'
         output = init_size * 2 ** -single_size_class
