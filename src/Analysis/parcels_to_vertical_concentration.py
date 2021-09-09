@@ -66,8 +66,8 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                         time = parcels_dataset.variables['time'][:, :-1].flatten()
 
                         for index_time in range(1, time_list.__len__()):
-                            month_index = index_time % 12
-                            year_index = index_time // 12
+                            month_index = (index_time - 1) % 12
+                            year_index = (index_time - 1) // 12
                             selection = (time > time_list[index_time - 1]) & (time <= time_list[index_time])
                             select_dict = {}
                             for key in run_restart_dict.keys():
