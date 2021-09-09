@@ -38,7 +38,7 @@ def FragmentationKaandorpPartial_vertical_profile(figure_direc, scenario, shore_
     # Adding in a legend
     cmap_list, label_list, line_list = ['k'], ['Total'], ['--']
     for size_class in range(settings.SIZE_CLASS_NUMBER):
-        cmap_list.append(vUtils.discrete_color_from_cmap(size_class, subdivisions=settings.SIZE_CLASS_NUMBER, cmap=cmo.tempo_r))
+        cmap_list.append(vUtils.discrete_color_from_cmap(size_class, subdivisions=settings.SIZE_CLASS_NUMBER, cmap='viridis'))
         label_list.append('Size class {}, d = {:.3f} mm'.format(size_class, utils.size_range(single_size_class=size_class,
                                                                                              units='mm')))
         line_list.append('-')
