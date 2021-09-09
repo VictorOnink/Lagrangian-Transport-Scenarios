@@ -28,7 +28,7 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
         # month
         reference_time = datetime(2010, 1, 1, 12, 0)
         time_list = []
-        for year in range(settings.STARTYEAR, settings.STARTYEAR + settings.RESTART):
+        for year in range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH):
             for month in range(0, 12):
                 time_list.append((datetime(year, month, 1, 0, 0) - reference_time).total_seconds())
         utils.print_statement(time_list, to_print=True)
@@ -52,7 +52,6 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                     for restart in range(0, settings.SIM_LENGTH - ind_year):
                         print_statement = 'year {}-{}, run {} restart {}'.format(year, month, run, restart)
                         utils.print_statement(print_statement, to_print=True)
-                        key_year = utils.analysis_simulation_year_key(restart)
                         # Load the depth data, with monthly intervals
                         parcels_file = file_dict['parcels'][year][month][run][restart]
                         post_file = file_dict['postprocess'][year][month][run][restart]
