@@ -68,6 +68,10 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                         # Flatten the arrays
                         for variable in full_data_dict.keys():
                             full_data_dict[variable] = full_data_dict[variable].flatten()
+                        # Remove all nan values
+                        is_nan = ~np.isnan(deepcopy(full_data_dict['lon']))
+                        for variable in full_data_dict.keys():
+                            full_data_dict[variable] = full_data_dict[variable][is_nan]
                         # Now, we sort through the various particle states
                         for beach_state in beach_state_dict.keys():
                             state_data = {}
@@ -171,6 +175,10 @@ else:
                 # Flatten the arrays
                 for variable in full_data_dict.keys():
                     full_data_dict[variable] = full_data_dict[variable].flatten()
+                # Remove all nan values
+                is_nan = ~np.isnan(deepcopy(full_data_dict['lon']))
+                for variable in full_data_dict.keys():
+                    full_data_dict[variable] = full_data_dict[variable][is_nan]
                 # Now, we sort through the various particle states
                 for beach_state in beach_state_dict.keys():
                     state_data = {}
