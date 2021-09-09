@@ -73,7 +73,7 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                             # Picking out the non-beached particles
                             selection = select_dict['beach'] == 0
                             for key in ['z', 'particle_number', 'size_class']:
-                                select_dict[key] = run_restart_dict[key][selection]
+                                select_dict[key] = select_dict[key][selection]
                             for size_class in range(settings.SIZE_CLASS_NUMBER):
                                 size_dict = {}
                                 for variable in ['z', 'particle_number']:
