@@ -279,7 +279,7 @@ def PolyTEOS10_bsq(particle, fieldset, time):
     calculates rho based on the polyTEOS10-bsq algorithm from Appendix A.2 of
     https://www.sciencedirect.com/science/article/pii/S1463500315000566
     requires fieldset.abs_salinity and fieldset.cons_temperature Fields in the fieldset
-    and a particle.rho Variable in the ParticleSet
+    and a particle.density Variable in the ParticleSet
     References:
     Roquet, F., Madec, G., McDougall, T. J., Barker, P. M., 2014: Accurate
     polynomial expressions for the rho and specific volume of

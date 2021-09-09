@@ -83,7 +83,7 @@ class SizeTransport(base_scenario.BaseScenario):
         utils.add_particle_variable(particle_type, 'prev_depth', dtype=np.float32, set_initial=True, to_write=False,
                                     other_name='depth')
         utils.add_particle_variable(particle_type, 'potential', dtype=np.float32, set_initial=False, to_write=False)
-        utils.add_particle_variable(particle_type, 'rho', dtype=np.float32, set_initial=False, to_write=False)
+        utils.add_particle_variable(particle_type, 'density', dtype=np.float32, set_initial=False, to_write=False)
         utils.add_particle_variable(particle_type, 'surface_density', dtype=np.float32, set_initial=False,
                                     to_write=False)
         utils.add_particle_variable(particle_type, 'kinematic_viscosity', dtype=np.float32, set_initial=False,

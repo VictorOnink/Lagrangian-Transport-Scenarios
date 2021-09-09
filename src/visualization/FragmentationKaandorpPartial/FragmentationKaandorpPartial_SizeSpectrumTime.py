@@ -7,7 +7,7 @@ import string
 import numpy as np
 
 
-def FragmentationKaandorpPartial_SizeSpectrumTime(figure_direc, scenario, shore_time, lambda_frag_list, density,
+def FragmentationKaandorpPartial_SizeSpectrumTime(figure_direc, scenario, shore_time, lambda_frag_list, rho,
                                                   reservoir='total', with_legend=False,
                                                   fig_size=(18, 12), x_label='Size (m)', y_label='Number of Particles',
                                                   ax_ticklabel_size=12, ax_label_size=14, legend_size=14):
@@ -22,7 +22,7 @@ def FragmentationKaandorpPartial_SizeSpectrumTime(figure_direc, scenario, shore_
     for lambda_frag in lambda_frag_list:
         data_dict = vUtils.FragmentationKaandorpPartial_load_data(scenario=scenario, prefix=prefix,
                                                                   data_direc=data_direc, shore_time=shore_time,
-                                                                  lambda_frag=lambda_frag, rho=density)
+                                                                  lambda_frag=lambda_frag, rho=rho)
         size_dict[lambda_frag] = {}
         for month in data_dict[reservoir].keys():
             size_dict[lambda_frag][month] = data_dict[reservoir][month]
@@ -61,7 +61,7 @@ def FragmentationKaandorpPartial_SizeSpectrumTime(figure_direc, scenario, shore_
         ax[-1].legend(handles=size_colors, fontsize=legend_size)
         ax[-1].axis('off')
 
-    file_name = output_direc + 'SizeSpectrumTimePartial_{}-ST={}-rho={}.png'.format(reservoir, shore_time, density)
+    file_name = output_direc + 'SizeSpectrumTimePartial_{}-ST={}-rho={}.png'.format(reservoir, shore_time, rho)
     plt.savefig(file_name, bbox_inches='tight')
 
 

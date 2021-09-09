@@ -16,7 +16,7 @@ def run(scenario, figure_direc: str):
     rho = 920
 
     # Standardizing field data
-    # Analysis.FragmentationKaandorpPartial_fielddata(to_overwrite=False)
+    Analysis.FragmentationKaandorpPartial_fielddata(to_overwrite=False)
 
     # SizeSpectrumTime.FragmentationKaandorpPartial_SizeSpectrumTime(figure_direc=figure_direc, scenario=scenario,
     #                                                                shore_time=shore_time,

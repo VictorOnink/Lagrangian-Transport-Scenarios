@@ -7,7 +7,7 @@ import string
 import numpy as np
 
 
-def FragmentationKaandorpPartial_FieldDataComp(figure_direc, scenario, shore_time, lambda_frag_list, density,
+def FragmentationKaandorpPartial_FieldDataComp(figure_direc, scenario, shore_time, lambda_frag_list, rho,
                                                fig_size=(10, 14), x_label='Size (mm)',
                                                y_label=r'Normalized Particle Number (n mm$^{-1}$)',
                                                ax_ticklabel_size=12, ax_label_size=14, legend_size=12):
@@ -25,7 +25,7 @@ def FragmentationKaandorpPartial_FieldDataComp(figure_direc, scenario, shore_tim
     for lambda_frag in lambda_frag_list:
         data_dict[lambda_frag] = vUtils.FragmentationKaandorpPartial_load_data(scenario=scenario, prefix=prefix,
                                                                   data_direc=data_direc, shore_time=shore_time,
-                                                                  lambda_frag=lambda_frag, rho=density, postprocess=True)
+                                                                  lambda_frag=lambda_frag, rho=rho, postprocess=True)
     time_index = data_dict[lambda_frag]['final_index']
     beach_state_list = ['adrift_open_surf', 'adrift_10km_surf', 'beach']
     field_dict = utils.load_obj(vUtils.FragmentationKaandorpPartial_fielddata_filename())
@@ -72,7 +72,7 @@ def FragmentationKaandorpPartial_FieldDataComp(figure_direc, scenario, shore_tim
         sub_ax.legend(fontsize=legend_size, loc='upper right')
 
     # Saving the figure
-    file_name = output_direc + 'SizeSpectrumFieldData-ST={}-rho={}-lamf={}.png'.format(shore_time, density, lambda_frag)
+    file_name = output_direc + 'SizeSpectrumFieldData-ST={}-rho={}-lamf={}.png'.format(shore_time, rho, lambda_frag)
     plt.savefig(file_name, bbox_inches='tight')
 
 

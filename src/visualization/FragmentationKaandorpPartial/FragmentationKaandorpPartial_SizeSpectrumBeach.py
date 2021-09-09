@@ -7,7 +7,7 @@ import string
 import numpy as np
 
 
-def FragmentationKaandorpPartial_SizeSpectrumBeach(figure_direc, scenario, shore_time, lambda_frag, density,
+def FragmentationKaandorpPartial_SizeSpectrumBeach(figure_direc, scenario, shore_time, lambda_frag, rho,
                                                    fig_size=(10, 14), x_label='Size (m)', y_label='Number of Particles',
                                                    ax_ticklabel_size=12, ax_label_size=14, legend_size=14):
     # Setting the folder within which we have the output, and where we have the saved data
@@ -19,7 +19,7 @@ def FragmentationKaandorpPartial_SizeSpectrumBeach(figure_direc, scenario, shore
     prefix = 'size_distribution'
     data_dict = vUtils.FragmentationKaandorpPartial_load_data(scenario=scenario, prefix=prefix,
                                                               data_direc=data_direc, shore_time=shore_time,
-                                                              lambda_frag=lambda_frag, rho=density, postprocess=True)
+                                                              lambda_frag=lambda_frag, rho=rho, postprocess=True)
     time_index = data_dict['final_index']
     size_bins = data_dict['size_bins'][:-1]
     beach_state_list = ['total', 'beach', 'seabed', 'adrift', 'adrift_2m']
@@ -40,7 +40,7 @@ def FragmentationKaandorpPartial_SizeSpectrumBeach(figure_direc, scenario, shore
     for index_ax, beach_state in enumerate(beach_state_list):
         ax[index_ax].plot(size_bins, data_dict[beach_state][time_index], linestyle='-', color='r')
 
-    file_name = output_direc + 'SizeSpectrumBeach-ST={}-rho={}-lamf={}.png'.format(shore_time, density, lambda_frag)
+    file_name = output_direc + 'SizeSpectrumBeach-ST={}-rho={}-lamf={}.png'.format(shore_time, rho, lambda_frag)
     plt.savefig(file_name, bbox_inches='tight')
 
 
