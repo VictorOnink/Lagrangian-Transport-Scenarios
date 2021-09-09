@@ -9,7 +9,7 @@ import cmocean.cm as cmo
 
 
 def FragmentationKaandorpPartial_vertical_profile(figure_direc, scenario, shore_time, lambda_frag, rho, simulation_year,
-                                                  fig_size=(10, 14), x_label='Number of Particles', y_label='Depth (m)',
+                                                  fig_size=(14, 10), x_label='Number of Particles', y_label='Depth (m)',
                                                   ax_ticklabel_size=12, ax_label_size=14, legend_size=14):
     # Setting the folder within which we have the output, and where we have the saved data
     output_direc = figure_direc + 'vertical_profile/'
