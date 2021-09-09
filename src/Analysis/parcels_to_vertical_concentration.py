@@ -80,6 +80,8 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                                 histogram_counts, _ = np.histogram(size_dict['z'], bins=depth_bins, weights=size_dict['particle_number'])
                                 key_year = utils.analysis_simulation_year_key(year_index)
                                 output_dict[key_year][month_index][size_class]['concentration'] += histogram_counts
+                                print(output_dict[key_year][month_index][size_class]['concentration'])
+                                print(histogram_counts)
                                 output_dict[key_year][month_index][size_class]['counts'] += np.nansum(histogram_counts)
 
         # Saving the output
