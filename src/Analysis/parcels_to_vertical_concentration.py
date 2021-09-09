@@ -31,6 +31,7 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
         for year in range(settings.STARTYEAR, settings.STARTYEAR + settings.RESTART):
             for month in range(0, 12):
                 time_list.append((datetime(year, month, 1, 0, 0) - reference_time).total_seconds())
+        print(time_list)
 
         # Create the output dictionary, and a dictionary to keep track of particle counts for the normalization
         output_dict = {'depth': depth_bins}
