@@ -90,8 +90,7 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
                                                                lat_inputs=lat_inputs, plastic_inputs=plastic_inputs)
         utils.print_statement('We have {} input locations'.format(len(lon_inputs)), to_print=True)
         # Get the inputs onto the grid of the advection data
-        inputs_grid = utils.histogram(lon_data=lon_inputs, lat_data=lat_inputs, bins_Lon=lon, bins_Lat=lat,
-                                      weight_data=plastic_inputs, area_correc=False)
+        inputs_grid = histogram(lon_data=lon_inputs, lat_data=lat_inputs, bins_Lon=lon, bins_Lat=lat, weight_data=plastic_inputs)
         if settings.INPUT == 'Jambeck':
             inputs_grid[distance > 50] = 0
         # Get the ocean cells adjacent to coastal ocean cells, as these are the ones in which the particles will
@@ -321,3 +320,27 @@ def number_of_releases(repeat_dt):
     else:
         releases = math.floor(timedelta(days=365) / repeat_dt) + 1
     return releases
+
+
+def histogram(lon_data, lat_data, bins_Lon, bins_Lat, weight_data=0):
+    """
+    operation -> 'sum' = get array with sum of weights per cell, divided by km^2
+                 'mean' = get array with mean of weights per cell, divided by km^2
+                 'count' = get array with counts of occurences within each cell, divided by km^2
+    :param lon_data: Nx1 or (N,) array
+    :param lat_data: Nx1 or (N,) array
+    :param bins_Lon: LONx1 array
+    :param bins_Lat: LATx1 array
+    :param weight_data: 0 if we are only interested in counts, else Nx1 or (N,) array
+    :return:
+    """
+    lon_data, lat_data = lon_data.reshape(np.size(lon_data)), lat_data.reshape(np.size(lat_data))
+    weight_data = weight_data.reshape(np.size(weight_data))
+    masses = np.zeros((len(bins_Lat), len(bins_Lon)))
+    counts = np.zeros((len(bins_Lat), len(bins_Lon)))
+    for i in range(np.array(lon_data).shape[0]):
+        if weight_data[i] > 0:
+            lat_selec, lon_selec = np.argmin(np.abs(lat_data[i] - bins_Lat)), np.argmin(np.abs(lon_data[i] - bins_Lon))
+            masses[lat_selec, lon_selec] += weight_data[i]
+            counts[lat_selec, lon_selec] += 1
+    return masses  # weight / km^2

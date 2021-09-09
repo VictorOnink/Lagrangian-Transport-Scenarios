@@ -110,44 +110,39 @@ def distance_between_points(lon1, lat1, lon2, lat2, units='km'):
         return distance * 1000.0
 
 
-def histogram(lon_data, lat_data, bins_Lon, bins_Lat, weight_data=0,
-              area_correc=True, operation='sum'):
+def histogram(lon_data, lat_data, bins_Lon, bins_Lat, weight_data=None, area_correc=True, operation='sum'):
     """
-    operation -> 'sum' = get array with sum of weights per cell, divided by km^2
-                 'mean' = get array with mean of weights per cell, divided by km^2
-                 'count' = get array with counts of occurences within each cell, divided by km^2
+    :parammoperation: 'sum' = get array with sum of weights per cell, divided by km^2
+                      'mean' = get array with mean of weights per cell, divided by km^2
+                      'count' = get array with counts of occurrences within each cell, divided by km^2
+    :param area_correc: if we want to correct the concentration for the surface area of the cell
     :param lon_data: Nx1 or (N,) array
     :param lat_data: Nx1 or (N,) array
     :param bins_Lon: LONx1 array
     :param bins_Lat: LATx1 array
-    :param weight_data: 0 if we are only interested in counts, else Nx1 or (N,) array
+    :param weight_data: Nx1 or (N,) array
     :return:
     """
-    lon_data, lat_data = lon_data.reshape(np.size(lon_data)), lat_data.reshape(np.size(lat_data))
-    weight_data = weight_data.reshape(np.size(weight_data))
-    masses = np.zeros((len(bins_Lat), len(bins_Lon)))
-    counts = np.zeros((len(bins_Lat), len(bins_Lon)))
+    # Calculating the bin midpoints
+    bin_mid_lon = 0.5 * bins_Lon[1:] + 0.5 * bins_Lon[:-1]
+    bin_mid_lat = 0.5 * bins_Lat[1:] + 0.5 * bins_Lat[:-1]
+
+    # If we only want the counts, then we set the weights to one
     if operation == 'count':
-        for i in range(np.array(lon_data).shape[0]):
-            if weight_data[i] > 0:
-                lat_selec, lon_selec = np.argmin(np.abs(lat_data[i] - bins_Lat)), np.argmin(
-                    np.abs(lon_data[i] - bins_Lon))
-                counts[lat_selec, lon_selec] += 1
-        if area_correc:
-            counts = np.divide(counts, surface_area_grid(bins_Lat, bins_Lon))
-        return counts  # counts / km^2
-    else:
-        for i in range(np.array(lon_data).shape[0]):
-            if weight_data[i] > 0:
-                lat_selec, lon_selec = np.argmin(np.abs(lat_data[i] - bins_Lat)), np.argmin(
-                    np.abs(lon_data[i] - bins_Lon))
-                masses[lat_selec, lon_selec] += weight_data[i]
-                counts[lat_selec, lon_selec] += 1
-        if operation == 'mean':
-            masses[counts > 0] = np.divide(masses[counts > 0], counts[counts > 0])
-        if area_correc:
-            masses = np.divide(masses, surface_area_grid(bins_Lat, bins_Lon))
-        return masses  # weight / km^2
+        weight_data = np.ones(lon_data.shape, dtype=float)
+
+    # Calculating the bin concentration
+    bin_concentrations, _, _ = np.histogram2d(lat_data, lon_data, bins=[bins_Lat, bins_Lon], weights=weight_data)
+
+    # If we want the mean, then we divide the bin_concentrations by the number of instances per bin
+    if operation == 'mean':
+        bin_counts, _, _ = np.histogram2d(lon_data, lat_data, bins=[bins_Lon, bins_Lat], normed=True)
+        bin_concentrations = np.divide(bin_concentrations, bin_counts)
+
+    if area_correc:
+        bin_concentrations = np.divide(bin_concentrations, surface_area_grid(bin_mid_lat, bin_mid_lon))
+
+    return bin_concentrations, bin_mid_lat, bin_mid_lon
 
 
 def analysis_save_file_name(input_file: str, prefix: str, suffix=None):

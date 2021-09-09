@@ -32,17 +32,15 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
         output_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/{}/'.format(settings.SCENARIO_NAME)
         utils.check_direc_exist(output_direc)
 
-        # Counter for the number of files
-        counter = 0
-
         # Create the output dictionary
-        base_grid = np.zeros(GRID.shape)
+        lat_dim, lon_dim = GRID.shape
+        base_grid = np.zeros(shape=(lat_dim - 1, lon_dim - 1), dtype=float)
         size_dict = dict.fromkeys(range(settings.SIZE_CLASS_NUMBER))
         for size in size_dict.keys():
             size_dict[size] = deepcopy(base_grid)
         beach_state_dict = {'beach': deepcopy(size_dict), 'adrift': deepcopy(size_dict)}
         beach_label_dict = {'beach': 1, 'adrift': 0}
-        output_dict = {'overall_concentration': deepcopy(beach_state_dict), 'lon': LON, 'lat': LAT}
+        output_dict = {'overall_concentration': deepcopy(beach_state_dict)}
         for simulation_years in range(settings.SIM_LENGTH):
             output_dict[utils.analysis_simulation_year_key(simulation_years)] = deepcopy(beach_state_dict)
 
@@ -86,12 +84,15 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                                     hexagon_cumulative_sum /= time_steps
                                     # Get the concentration onto the advection grid
                                     key_year = utils.analysis_simulation_year_key(restart)
-                                    output_dict[key_year][beach_state][size_class] += utils.histogram(lon_data=hexagon_coord[:, 0],
-                                                                                                      lat_data=hexagon_coord[:, 1],
-                                                                                                      bins_Lon=LON,
-                                                                                                      bins_Lat=LAT,
-                                                                                                      weight_data=hexagon_cumulative_sum
-                                                                                                      )
+                                    concentration, lat_mid, lon_mid = utils.histogram(lon_data=hexagon_coord[:, 0],
+                                                                                      lat_data=hexagon_coord[:, 1],
+                                                                                      bins_Lon=LON, bins_Lat=LAT,
+                                                                                      weight_data=hexagon_cumulative_sum
+                                                                                      )
+                                    output_dict[key_year][beach_state][size_class] += concentration
+
+        # Adding the lon/lat arrays
+        output_dict['lon'], output_dict['lat'] = lon_mid, lat_mid
 
         # Dividing the end of year concentrations by the number of runs
         for simulation_years in range(settings.SIM_LENGTH):
@@ -106,6 +107,7 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
             for beach_state in beach_state_dict.keys():
                 for size_class in output_dict[key_year][beach_state].keys():
                     output_dict['overall_concentration'][beach_state][size_class] += output_dict[key_year][beach_state][size_class]
+
         for beach_state in beach_state_dict.keys():
             for size_class in output_dict[key_year][beach_state].keys():
                 output_dict['overall_concentration'][beach_state][size_class] /= settings.SIM_LENGTH
@@ -141,14 +143,11 @@ else:
             settings.SCENARIO_NAME)
         utils.check_direc_exist(output_direc)
 
-        # Counter for the number of files
-        counter = 0
-
         # Create the output dictionarynp.zeros(GRID.shape)
         beach_state_dict = {'beach': np.zeros(GRID.shape), 'adrift': np.zeros(GRID.shape),
                             'seabed': np.zeros(GRID.shape)}
         beach_label_dict = {'beach': 1, 'adrift': 0, 'seabed': 3}
-        output_dict = {'overall_concentration': deepcopy(beach_state_dict), 'lon': LON, 'lat': LAT}
+        output_dict = {'overall_concentration': deepcopy(beach_state_dict)}
         for simulation_years in range(settings.SIM_LENGTH):
             output_dict[utils.analysis_simulation_year_key(simulation_years)] = deepcopy(beach_state_dict)
 
@@ -185,11 +184,16 @@ else:
                     hexagon_cumulative_sum /= time_steps
                     # Get the concentration onto the advection grid
                     key_year = utils.analysis_simulation_year_key(restart)
-                    output_dict[key_year][beach_state] += utils.histogram(lon_data=hexagon_coord[:, 0],
-                                                                          lat_data=hexagon_coord[:, 1],
-                                                                          bins_Lon=LON, bins_Lat=LAT,
-                                                                          weight_data=hexagon_cumulative_sum
-                                                                          )
+                    concentration, lat_mid, lon_mid = utils.histogram(lon_data=hexagon_coord[:, 0],
+                                                                      lat_data=hexagon_coord[:, 1],
+                                                                      bins_Lon=LON, bins_Lat=LAT,
+                                                                      weight_data=hexagon_cumulative_sum
+                                                                      )
+
+                    output_dict[key_year][beach_state] += concentration
+
+        # Adding the lon/lat arrays
+        output_dict['lon'], output_dict['lat'] = lon_mid, lat_mid
 
         # Dividing the end of year concentrations by the number of runs
         for simulation_years in range(settings.SIM_LENGTH):
