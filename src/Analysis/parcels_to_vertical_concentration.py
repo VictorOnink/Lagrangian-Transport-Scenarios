@@ -29,7 +29,7 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
         reference_time = datetime(2010, 1, 1, 12, 0)
         time_list = []
         for year in range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH):
-            for month in range(0, 12):
+            for month in range(1, 13):
                 time_list.append((datetime(year, month, 1, 0, 0) - reference_time).total_seconds())
         utils.print_statement(time_list, to_print=True)
 
