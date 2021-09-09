@@ -23,7 +23,7 @@ def FragmentationKaandorpPartial_vertical_profile(figure_direc, scenario, shore_
                                                               lambda_frag=lambda_frag, rho=rho, postprocess=True)
     depth_bins = -0.5 * (data_dict['depth'][:-1] + data_dict['depth'][1:])
     data_dict = data_dict[utils.analysis_simulation_year_key(simulation_year)]
-    print(data_dict)
+    print(data_dict[0])
 
     # Creating the figure
     ax_range = 2e6, 1e0, 0, -200
