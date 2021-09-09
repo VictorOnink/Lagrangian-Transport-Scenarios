@@ -69,6 +69,7 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                             month_index = (index_time - 1) % 12
                             year_index = (index_time - 1) // 12
                             selection = (time > time_list[index_time - 1]) & (time <= time_list[index_time])
+                            utils.print_statement('we have {} in this month'.format(np.nansum(selection*1)), to_print=True)
                             select_dict = {}
                             for key in run_restart_dict.keys():
                                 select_dict[key] = run_restart_dict[key][selection]
