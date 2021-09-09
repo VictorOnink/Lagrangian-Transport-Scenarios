@@ -21,12 +21,11 @@ def FragmentationKaandorpPartial_vertical_profile(figure_direc, scenario, shore_
     data_dict = vUtils.FragmentationKaandorpPartial_load_data(scenario=scenario, prefix=prefix,
                                                               data_direc=data_direc, shore_time=shore_time,
                                                               lambda_frag=lambda_frag, rho=rho, postprocess=True)
-    # depth_bins = -0.5 * (data_dict['depth'][:-1] + data_dict['depth'][1:])
-    depth_bins = data_dict['depth'][:-1]
+    depth_bins = -0.5 * (data_dict['depth'][:-1] + data_dict['depth'][1:])
     data_dict = data_dict[utils.analysis_simulation_year_key(simulation_year)]
 
     # Creating the figure
-    ax_range = 2e10, 1e0, 200, -200
+    ax_range = 2e10, 1e0, 0, -200
     plot_num = 4
     ax = vUtils.base_figure(fig_size=fig_size, ax_range=ax_range, x_label=x_label, y_label=y_label,
                             ax_ticklabel_size=ax_ticklabel_size, ax_label_size=ax_label_size, shape=(2, 2),
@@ -54,10 +53,10 @@ def FragmentationKaandorpPartial_vertical_profile(figure_direc, scenario, shore_
         total_count = np.zeros(data_dict[month][0]['concentration'].shape)
         for size_class in range(settings.SIZE_CLASS_NUMBER):
             total_count += data_dict[month][size_class]['concentration']
-            ax[ind_month].plot(depth_bins, data_dict[month][size_class]['concentration'], linestyle='-',
+            ax[ind_month].plot(data_dict[month][size_class]['concentration'], depth_bins, linestyle='-',
                                c=vUtils.discrete_color_from_cmap(size_class, subdivisions=settings.SIZE_CLASS_NUMBER,
                                                                  cmap='viridis'))
-        ax[ind_month].plot(depth_bins, total_count, linestyle='-', c='k', zorder=10000)
+        ax[ind_month].plot(total_count, depth_bins, linestyle='-', c='k', zorder=10000)
         print(total_count)
         print(depth_bins)
 
