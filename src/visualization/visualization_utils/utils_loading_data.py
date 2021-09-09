@@ -7,7 +7,7 @@ def SizeTransport_load_data(scenario, prefix, data_direc, size, rho, tau=setting
                             run=settings.RUN):
     """
     Loading the data we want for SizeTransport analysis output, which will generally just differ in terms of which
-    particle size and density
+    particle size and rho
     :param run:
     :param restart:
     :param tau:

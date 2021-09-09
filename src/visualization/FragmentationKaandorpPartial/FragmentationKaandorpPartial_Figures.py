@@ -6,6 +6,7 @@ import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_t
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_SizeSpectrumBeach as SizeSpectrumBeach
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_FieldDataComp as FieldDataComp
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_Concentration as concentration
+import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_vertical_profile as vertical_profile
 import Analysis
 
 
@@ -15,12 +16,12 @@ def run(scenario, figure_direc: str):
     rho = 920
 
     # Standardizing field data
-    Analysis.FragmentationKaandorpPartial_fielddata(to_overwrite=False)
+    # Analysis.FragmentationKaandorpPartial_fielddata(to_overwrite=False)
 
     # SizeSpectrumTime.FragmentationKaandorpPartial_SizeSpectrumTime(figure_direc=figure_direc, scenario=scenario,
     #                                                                shore_time=shore_time,
     #                                                                lambda_frag_list=lambda_frag_list,
-    #                                                                density=rho)
+    #                                                                rho=rho)
 
     # Animation.FragmentationKaandorpPartial_Animation(scenario=scenario, figure_direc=figure_direc, shore_time=20,
     #                                                  lambda_frag=388, rho=rho, simulation_years=2, ocean_frag=False)
@@ -40,18 +41,22 @@ def run(scenario, figure_direc: str):
     #
     # SizeSpectrumBeach.FragmentationKaandorpPartial_SizeSpectrumBeach(figure_direc=figure_direc, scenario=scenario,
     #                                                                  shore_time=shore_time, lambda_frag=388,
-    #                                                                  density=rho)
+    #                                                                  rho=rho)
     # SizeSpectrumBeach.FragmentationKaandorpPartial_SizeSpectrumBeach(figure_direc=figure_direc, scenario=scenario,
     #                                                                  shore_time=shore_time, lambda_frag=300,
-    #                                                                  density=rho)
+    #                                                                  rho=rho)
     # SizeSpectrumBeach.FragmentationKaandorpPartial_SizeSpectrumBeach(figure_direc=figure_direc, scenario=scenario,
     #                                                                  shore_time=shore_time, lambda_frag=10000,
-    #                                                                  density=rho)
+    #                                                                  rho=rho)
     # SizeSpectrumBeach.FragmentationKaandorpPartial_SizeSpectrumBeach(figure_direc=figure_direc, scenario=scenario,
     #                                                                  shore_time=shore_time, lambda_frag=1000,
-    #                                                                  density=rho)
+    #                                                                  rho=rho)
 
     # lambda_frag_list = np.array([388, 1000, 10000, 38000])
     # FieldDataComp.FragmentationKaandorpPartial_FieldDataComp(figure_direc=figure_direc, scenario=scenario,
     #                                                          shore_time=shore_time, lambda_frag_list=lambda_frag_list,
-    #                                                          density=rho)
+    #                                                          rho=rho)
+
+    vertical_profile.FragmentationKaandorpPartial_vertical_profile(figure_direc=figure_direc, scenario=scenario,
+                                                                   shore_time=shore_time, lambda_frag=38000, rho=rho,
+                                                                   simulation_year=1)

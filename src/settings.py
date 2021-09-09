@@ -323,5 +323,5 @@ elif SCENARIO_NAME == 'TurrellResuspension':
 elif SCENARIO_NAME in ['FragmentationKaandorp', 'FragmentationKaandorpPartial']:
     os.system('echo "The beaching timescale is {} days "'.format(SHORE_TIME))
     os.system('echo "The fragmentation timescale is {} days "'.format(LAMBDA_FRAG))
-    os.system('echo "The initial particle size is {} m and a density of {} kg/m^3"'.format(INIT_SIZE, INIT_DENSITY))
+    os.system('echo "The initial particle size is {} m and a rho of {} kg/m^3"'.format(INIT_SIZE, INIT_DENSITY))
     os.system('echo "This simulation has {} size classes"'.format(SIZE_CLASS_NUMBER))

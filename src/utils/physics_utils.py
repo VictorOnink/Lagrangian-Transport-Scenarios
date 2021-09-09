@@ -240,7 +240,7 @@ def kooi_rising_velocity(particle, fieldset, time):
     # ------ Profiles from MEDUSA or Kooi theoretical profiles -----
     z = particle.depth  # [m]
     kin_visc = particle.kinematic_viscosity  # kinematic viscosity[m2 s-1]
-    rho_sw = particle.density  # seawater density[kg m-3]
+    rho_sw = particle.density  # seawater rho[kg m-3]
     rise = particle.rise_velocity  # vertical velocity[m s-1]
 
     # ------ Constants -----
@@ -248,11 +248,11 @@ def kooi_rising_velocity(particle, fieldset, time):
 
     # ------ Diffusivity -----
     r_tot = particle.size  # total radius [m]
-    rho_tot = (particle.size ** 3. * particle.rho_plastic) / (particle.size) ** 3.  # total density [kg m-3]
+    rho_tot = (particle.size ** 3. * particle.rho_plastic) / (particle.size) ** 3.  # total rho [kg m-3]
 
     dn = 2. * r_tot  # equivalent spherical diameter [m]
     delta_rho = (
-                        rho_tot - rho_sw) / rho_sw  # normalised difference in density between total plastic+bf and seawater[-]
+                        rho_tot - rho_sw) / rho_sw  # normalised difference in rho between total plastic+bf and seawater[-]
     dstar = ((rho_tot - rho_sw) * g * dn ** 3.) / (rho_sw * kin_visc ** 2.)  # dimensional diameter[-]
 
     # Getting the dimensionless settling velocity
@@ -276,17 +276,17 @@ def kooi_rising_velocity(particle, fieldset, time):
 
 def PolyTEOS10_bsq(particle, fieldset, time):
     '''
-    calculates density based on the polyTEOS10-bsq algorithm from Appendix A.2 of
+    calculates rho based on the polyTEOS10-bsq algorithm from Appendix A.2 of
     https://www.sciencedirect.com/science/article/pii/S1463500315000566
     requires fieldset.abs_salinity and fieldset.cons_temperature Fields in the fieldset
-    and a particle.density Variable in the ParticleSet
+    and a particle.rho Variable in the ParticleSet
     References:
     Roquet, F., Madec, G., McDougall, T. J., Barker, P. M., 2014: Accurate
-    polynomial expressions for the density and specific volume of
+    polynomial expressions for the rho and specific volume of
     seawater using the TEOS-10 standard. Ocean Modelling.
     McDougall, T. J., D. R. Jackett, D. G. Wright and R. Feistel, 2003:
     Accurate and computationally efficient algorithms for potential
-    temperature and density of seawater.  Journal of Atmospheric and
+    temperature and rho of seawater.  Journal of Atmospheric and
     Oceanic Technology, 20, 730-741.
     '''
 
@@ -545,7 +545,7 @@ def initial_estimate_particle_rise_velocity(L=settings.INIT_SIZE, print_rise=Fal
     if type(L) in [float, int, np.float64, np.float32, np.int64, np.int32]:
         def to_optimize(w_rise):
             rho_p = settings.INIT_DENSITY  # Density of plastic particle
-            rho_w = 1027  # density sea water (kg/m^3)
+            rho_w = 1027  # rho sea water (kg/m^3)
             nu = 1.1e-6  # kinematic viscosity of sea water (Enders et al., 2015)
             left = (1. - rho_p / rho_w) * 8. / 3. * L * settings.G
             Re = 2. * L * np.abs(w_rise) / nu
@@ -560,7 +560,7 @@ def initial_estimate_particle_rise_velocity(L=settings.INIT_SIZE, print_rise=Fal
         for index_L, L_size in enumerate(L):
             def to_optimize(w_rise):
                 rho_p = settings.INIT_DENSITY  # Density of plastic particle
-                rho_w = 1027  # density sea water (kg/m^3)
+                rho_w = 1027  # rho sea water (kg/m^3)
                 nu = 1.1e-6  # kinematic viscosity of sea water (Enders et al., 2015)
                 left = (1. - rho_p / rho_w) * 8. / 3. * L_size * settings.G
                 Re = 2. * L_size * np.abs(w_rise) / nu
@@ -619,8 +619,8 @@ def get_rising_velocity(particle, fieldset, time):
     https://doi.org/10.1016/j.marpolbul.2015.09.027
     :return:
     """
-    rho_sw = particle.density  # sea water density (kg m^-3)
-    rho_p = particle.rho_plastic  # plastic particle density (kg m^-3)
+    rho_sw = particle.density  # sea water rho (kg m^-3)
+    rho_p = particle.rho_plastic  # plastic particle rho (kg m^-3)
     left = (1. - rho_p / rho_sw) * 8. / 3. * particle.size * fieldset.G
     right = 24. / particle.reynolds + 5. / math.sqrt(particle.reynolds) + 2. / 5.
     if left > 0:

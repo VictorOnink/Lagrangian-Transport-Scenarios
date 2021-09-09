@@ -20,7 +20,7 @@ export SHOREDEPEN
 #for scenario 4, the minimum wind speed for resuspension. Divide by 10 for actual value
 WMIN=3
 export WMIN
-#for scenario 5 and 6, the initial size of the particle in 1e-6 m and the density of the particle
+#for scenario 5 and 6, the initial size of the particle in 1e-6 m and the rho of the particle
 PARTICLE_SIZE_list=(5000)
 INIT_DENSITY=920
 export INIT_DENSITY
