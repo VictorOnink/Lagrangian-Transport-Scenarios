@@ -43,7 +43,8 @@ def FragmentationKaandorpPartial_vertical_profile(figure_direc, scenario, shore_
         label_list.append('Size class {}, d = {:.3f} mm'.format(size_class, utils.size_range(single_size_class=size_class,
                                                                                              units='mm')))
     print(cmap_list)
-    size_colors = [plt.plot([], [], c=cmap_list[ind], label=label_list[ind], linestyle='-')[0] for ind in range(cmap_list.__len__())]
+    size_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(size_class, subdivisions=settings.SIZE_CLASS_NUMBER, cmap=cmo.speed_r),
+                            label=label_list[ind], linestyle='-')[0] for ind in range(cmap_list.__len__())]
     ax[-1].legend(handles=size_colors, fontsize=legend_size)
     ax[-1].axis('off')
 
