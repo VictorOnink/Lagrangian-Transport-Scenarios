@@ -27,12 +27,10 @@ def FragmentationKaandorpPartial_vertical_profile(figure_direc, scenario, shore_
     # Next, we are going to average out the bins, because they are currently too small
     data_dict = {}
     depth_bins = np.arange(start=np.min(fine_depth_bins), stop=np.max(fine_depth_bins), step=0.5)
-    print('The year_dict keys are {}'.format(year_dict.keys()))
     for month in year_dict.keys():
-        data_dict[month] = {'concentration': None, 'counts': 0}
+        data_dict[month] = {}
         for size_class in year_dict[month].keys():
-            print('The year_dict[month] keys are {}'.format(year_dict[month].keys()))
-            print(year_dict[month][size_class])
+            data_dict[month][size_class] = {'concentration': None, 'counts': 0}
             data_dict[month][size_class]['concentration'] = np.histogram(year_dict[month][size_class]['concentration'],
                                                                          bins=depth_bins)
             data_dict[month][size_class]['counts'] = year_dict[month][size_class]['counts']
