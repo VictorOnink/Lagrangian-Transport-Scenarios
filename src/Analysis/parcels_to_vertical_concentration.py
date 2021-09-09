@@ -37,7 +37,7 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
 
         # Create the output dictionary, and a dictionary to keep track of particle counts for the normalization
         output_dict = {'depth': depth_bins}
-        for simulation_year in range(settings.SIM_LENGTH):
+        for simulation_year in range(settings.SIM_LENGTH + 1):
             key_year = utils.analysis_simulation_year_key(simulation_year)
             output_dict[key_year] = {}
             for month in range(0, 12):
