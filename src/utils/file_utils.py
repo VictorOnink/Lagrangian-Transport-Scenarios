@@ -97,6 +97,12 @@ def remove_directory(direc: str):
         shutil.rmtree(direc)
 
 
+def remove_file(File: str, conduct: bool=True):
+    if conduct:
+        if check_file_exist(File):
+            os.remove(File)
+
+
 def check_file_exist(File: str):
     return os.path.isfile(File)
 

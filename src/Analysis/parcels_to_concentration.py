@@ -134,6 +134,8 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                                 for size_class in range(settings.SIZE_CLASS_NUMBER):
                                     key_year = utils.analysis_simulation_year_key(settings.RESTART)
                                     output_dict[key_year][beach_state][size_class] += dataset_post[key_year][beach_state][size_class]
+                            utils.remove_file(file_name + '.pkl')
+
             # Adding the lon/lat arrays
             output_dict['lon'], output_dict['lat'] = dataset_post['lon'], dataset_post['lat']
 
@@ -155,8 +157,6 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
             utils.save_obj(output_name, output_dict)
             utils.print_statement("The concentration has been saved")
 
-            # Removing the file with the temporary analysis files
-            utils.remove_directory(load_direc)
 
 else:
     if settings.PARALLEL_STEP == 1:
@@ -184,7 +184,7 @@ else:
                 settings.SCENARIO_NAME)
             utils.check_direc_exist(output_direc)
 
-            # Create the output dictionarynp.zeros(GRID.shape)
+            # Create the output dictionary
             beach_label_dict = {'beach': 1, 'adrift': 0, 'seabed': 3}
             output_dict = create_output_file_dict(scenario_name=settings.SCENARIO_NAME, grid=GRID,
                                                   beach_states=beach_label_dict.keys())
