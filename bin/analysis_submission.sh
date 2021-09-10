@@ -2,7 +2,7 @@
 filename="job_id.txt"
 while read name; do
     echo $name
-done < filename
+done < job_id.txt
 ######################################################################################
 ## First we define the general parameters of the run                                 #
 ######################################################################################
