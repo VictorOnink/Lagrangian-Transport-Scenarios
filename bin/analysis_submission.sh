@@ -206,7 +206,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
 
                   # submitting the job
                   jobid=$(sbatch --parsable jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
-                  echo|set /p=":"${jobid} >> job_id.txt
+                  echo ":"${jobid} >> job_id.txt
                   #JOB_TRACKER=${JOB_TRACKER}':'${jobid}
                   #JOB_TRACKER[${#JOB_TRACKER[@]}]=${jobid}
                   scancel ${jobid}
@@ -217,7 +217,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
               RESTART_REMOVE=$((RESTART_REMOVE+1))
             done
           done
-
+          cat job_id.txt | tr -d '\n'
           # Remove character of the JOB_TRACKER so that we don't end with :
           PARALLEL_STEP=2
           export PARALLEL_STEP
