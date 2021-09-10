@@ -218,6 +218,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
           # Remove character of the JOB_TRACKER so that we don't end with :
           echo ${JOB_TRACKER::9}
           echo ${JOB_TRACKER:(-9)}
+          echo ${JOB_TRACKER}
           PARALLEL_STEP=2
           export PARALLEL_STEP
           STARTYEAR=${YEAR}
