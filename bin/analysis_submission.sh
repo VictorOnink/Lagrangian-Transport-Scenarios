@@ -171,12 +171,13 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
             export PARALLEL_STEP
             #First we are going to submit all the jobs for the individual run/restart files, so each runs the analysis
             #code just for that specific parcels output file. We also need to consider the various starting years
+            RESTART_REMOVE=0
             for ((STARTYEAR=${YEAR}; STARTYEAR<$((YEAR+COMBINE_YEARS)); STARTYEAR++)); do
               export STARTYEAR
               for ((RUN=0; RUN<=$runlength; RUN++)); do
                 export RUN
                 # looping over all the simulation years
-                for ((RESTARTNUM=0; RESTARTNUM<$SIMLEN; RESTARTNUM++)); do
+                for ((RESTARTNUM=0; RESTARTNUM<$((SIMLEN-RESTART_REMOVE)); RESTARTNUM++)); do
                   export RESTARTNUM
                   # specifying the parts of the submission file
                   part1="#!/bin/sh"
@@ -208,11 +209,11 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
                   # submitting the job
                   jobid=$(sbatch --parsable jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
                   JOB_TRACKER=${JOB_TRACKER}':'${jobid}
-                  echo ${JOB_TRACKER}
                   # deleting the submission file
                   rm jobsubmissionFile_${RUN}_${RESTARTNUM}.sh
                 done
               done
+              RESTART_REMOVE=$((RESTART_REMOVE+1))
             done
 
             # Remove the last character of the JOB_TRACKER so that we don't end with :
