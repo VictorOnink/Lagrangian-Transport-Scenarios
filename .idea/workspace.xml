@@ -23,7 +23,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="update">
-      <change beforePath="$PROJECT_DIR$/src/visualization/FragmentationKaandorpPartial/FragmentationKaandorpPartial_vertical_profile.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/FragmentationKaandorpPartial/FragmentationKaandorpPartial_vertical_profile.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/analysis_submission.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/analysis_submission.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/settings.py" afterDir="false" />
     </list>
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
     <list id="c5adc810-e024-4e30-b33b-a2709ed2c5b7" name="moving the release repeat timescale to the scenario" comment="" />
@@ -109,20 +111,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-02060" summary="update">
-      <created>1631189460686</created>
-      <option name="number" value="02060" />
-      <option name="presentableId" value="LOCAL-02060" />
-      <option name="project" value="LOCAL" />
-      <updated>1631189460686</updated>
-    </task>
-    <task id="LOCAL-02061" summary="update">
-      <created>1631189582772</created>
-      <option name="number" value="02061" />
-      <option name="presentableId" value="LOCAL-02061" />
-      <option name="project" value="LOCAL" />
-      <updated>1631189582772</updated>
     </task>
     <task id="LOCAL-02062" summary="update">
       <created>1631189692998</created>
@@ -453,7 +441,21 @@
       <option name="project" value="LOCAL" />
       <updated>1631202808403</updated>
     </task>
-    <option name="localTasksCounter" value="2109" />
+    <task id="LOCAL-02109" summary="update">
+      <created>1631202954200</created>
+      <option name="number" value="02109" />
+      <option name="presentableId" value="LOCAL-02109" />
+      <option name="project" value="LOCAL" />
+      <updated>1631202954200</updated>
+    </task>
+    <task id="LOCAL-02110" summary="update">
+      <created>1631203135622</created>
+      <option name="number" value="02110" />
+      <option name="presentableId" value="LOCAL-02110" />
+      <option name="project" value="LOCAL" />
+      <updated>1631203135622</updated>
+    </task>
+    <option name="localTasksCounter" value="2111" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -464,7 +466,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/parallel_analysis" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>

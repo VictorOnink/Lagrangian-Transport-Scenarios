@@ -183,9 +183,15 @@ elif INPUT == 'Uniform':
 #                                                                                                                      #
 ########################################################################################################################
 if SUBMISSION in ['analysis']:
-    # DEFAULTS TO PREVENT ERRORS
-    RUN: int = 0
-    RESTART: int = 0
+    # IF PARALLEL_STEP == 1, THEN WE ARE CALCULATING THE ANALYSIS FOR EACH RUN/RESTART FILE
+    # IF PARALLEL_STEP == 2, THEN WE COMBINE ALL THE INDIVIDUAL RUN/RESTART ANALYSIS OUTPUT FILES INTO ONE FOR THE WHOLE
+    #                        MODEL SETUP
+    PARALLEL_STEP: int = int(os.environ['PARALLEL_STEP'])
+    # WHICH OF THE SUBRUNS (DIVISION OF PARTICLE INPUTS)
+    RUN: int = int(os.environ['RUN'])
+    # RESTART NUMBER OF THE RUN
+    # 0 = NEW RUN, N>0 INDICATES NTH YEAR FROM SIMULATION START
+    RESTART: int = int(os.environ['RESTARTNUM'])
     # PLASTIC CONCENTRATION
     CONCENTRATION = BOOLEAN_DICT[int(os.environ['CONCENTRATION'])]
     # VERTICAL PLASTIC CONCENTRATION
