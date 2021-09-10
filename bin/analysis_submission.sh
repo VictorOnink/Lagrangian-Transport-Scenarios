@@ -223,7 +223,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
           export PARALLEL_STEP
           STARTYEAR=${YEAR}
           export STARTYEAR
-          echo $JOB_TRACKER
+          echo "${JOB_TRACKER[@]}"
           # specifying the parts of the submission file
           part1="#!/bin/sh"
           part2="#SBATCH --mail-type=begin,end,fail"
