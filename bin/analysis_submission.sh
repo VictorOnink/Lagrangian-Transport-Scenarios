@@ -205,8 +205,8 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
                   done
 
                   # submitting the job
-                  jobid=$(sbatch --parsable jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
-                  JOB_TRACKER=${JOB_TRACKER}':'${jobid}
+#                  jobid=$(sbatch --parsable jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
+#                  JOB_TRACKER=${JOB_TRACKER}':'${jobid}
                   # deleting the submission file
                   rm jobsubmissionFile_${RUN}_${RESTARTNUM}.sh
                 done
@@ -217,7 +217,6 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
 
           # Remove the last character of the JOB_TRACKER so that we don't end with :
           JOB_TRACKER=${JOB_TRACKER:1}
-          echo ${JOB_TRACKER}
           PARALLEL_STEP=2
           export PARALLEL_STEP
           STARTYEAR=${YEAR}
