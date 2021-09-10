@@ -251,7 +251,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
             done
 
             # Submitting the job that will join all the various analysis files together
-            echo sbatch --dependency=afterok:${JOB_TRACKER} jobsubmissionFile.sh
+            sbatch --dependency=afterok${JOB_TRACKER} jobsubmissionFile.sh
             rm jobsubmissionFile.sh
           done
         done
