@@ -1,8 +1,8 @@
 #!/bin/sh
 filename="job_id.txt"
-while read name; do
-    echo $name
-done < job_id.txt
+cat job_id.txt | while read LINE; do
+    echo $LINE
+done
 ######################################################################################
 ## First we define the general parameters of the run                                 #
 ######################################################################################
