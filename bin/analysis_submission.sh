@@ -177,8 +177,8 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
               for ((RUN=0; RUN<=$runlength; RUN++)); do
                 export RUN
                 # looping over all the simulation years
-                for ((RESTARTNUM=$START; RESTARTNUM<$SIMLEN; RESTARTNUM++)); do
-                   export RESTARTNUM
+                for ((RESTARTNUM=0; RESTARTNUM<$SIMLEN; RESTARTNUM++)); do
+                  export RESTARTNUM
                   # specifying the parts of the submission file
                   part1="#!/bin/sh"
                   part2="#SBATCH --mail-type=begin,end,fail"
