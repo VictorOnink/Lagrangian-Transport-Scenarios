@@ -105,13 +105,17 @@ if [ "$SCENARIO" -eq "7" -a ${#LAMBDA_OCEAN_FRAG_LIST[@]} -gt 1 -a $OCEAN_FRAG -
   echo 'Without OCEAN_FRAG, do not submit more than one LAMBDA_OCEAN_FRAG value'
   exit
 fi
-if [ "$SCENARIO" -eq "7" -a $POST_PROCESS -eq 0 -a ${LAMBDA_FRAG_list[1]} -ne 388 ]; then
-  echo 'For lagrangian simulations with KaandorpFragmentationPartial, LAMBDA_FRAG must equal 388'
-  exit
+if [ "$SCENARIO" -eq "7" -a $POST_PROCESS -eq 0 ]; then
+  if [ ${#LAMBDA_FRAG_list[1]} -ne 388 ]; then
+    echo 'For lagrangian simulations with KaandorpFragmentationPartial, LAMBDA_FRAG must equal 388'
+    exit
+  fi
 fi
-if [ "$SCENARIO" -eq "7" -a $POST_PROCESS -eq 0 -a ${LAMBDA_OCEAN_FRAG_LIST[1]} -ne 388 ]; then
-  echo 'For lagrangian simulations with KaandorpFragmentationPartial, LAMBDA_OCEAN_FRAG must equal 388'
-  exit
+if [ "$SCENARIO" -eq "7" -a $POST_PROCESS -eq 0 ]; then
+  if [ ${#LAMBDA_OCEAN_FRAG_LIST[1]} -ne 388 ]; then
+    echo 'For lagrangian simulations with KaandorpFragmentationPartial, LAMBDA_OCEAN_FRAG must equal 388'
+    exit
+  fi
 fi
 
 #####################################################################################
