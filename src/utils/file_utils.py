@@ -6,6 +6,8 @@ import numpy as np
 import os
 import shutil
 
+import utils
+
 
 def get_data_directory(server: int) -> str:
     """
@@ -101,6 +103,8 @@ def remove_file(File: str, conduct: bool=True):
     if conduct:
         if check_file_exist(File):
             os.remove(File)
+        else:
+            utils.print_statement('The file {} does not exist.'.format(File), to_print=True)
 
 
 def check_file_exist(File: str):
