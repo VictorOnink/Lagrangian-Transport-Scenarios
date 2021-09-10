@@ -134,7 +134,7 @@ if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                                 for size_class in range(settings.SIZE_CLASS_NUMBER):
                                     key_year = utils.analysis_simulation_year_key(settings.RESTART)
                                     output_dict[key_year][beach_state][size_class] += dataset_post[key_year][beach_state][size_class]
-                            utils.remove_file(file_name + '.pkl')
+                            utils.remove_file(file_name)
 
             # Adding the lon/lat arrays
             output_dict['lon'], output_dict['lat'] = dataset_post['lon'], dataset_post['lat']
