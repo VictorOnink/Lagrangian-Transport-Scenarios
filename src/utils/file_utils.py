@@ -1,11 +1,10 @@
-from operator import attrgetter
 import pickle
 import settings as settings
 from datetime import datetime
 from netCDF4 import Dataset
 import numpy as np
-from parcels import JITParticle, Variable
 import os
+import shutil
 
 
 def get_data_directory(server: int) -> str:
@@ -91,6 +90,11 @@ def restart_nan_removal(dataset: Dataset, variable: str, last_selec: np.array,
 def check_direc_exist(direc: str):
     if not os.path.isdir(direc):
         os.makedirs(direc)
+
+
+def remove_directory(direc: str):
+    if check_direc_exist(direc):
+        shutil.rmtree(direc)
 
 
 def check_file_exist(File: str):

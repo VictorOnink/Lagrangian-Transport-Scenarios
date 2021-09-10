@@ -74,7 +74,7 @@ export SERVER
 
 #A number of switches to indicate which analysis steps we want to run.
 #0 = off, 1 = on
-CONCENTRATION=0
+CONCENTRATION=1
 VERTICAL_CONCENTRATION=0
 TIMESERIES=0
 MAX_DISTANCE=0
@@ -144,27 +144,26 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
 
             #Now, we can set the job name prefix
             if [ "$SCENARIO" -eq "0" ]; then
-              RUNNAMEPREFIX="Analysis_AdvDifOnly_y="${STARTYEAR}"_"
+              RUNNAMEPREFIX="Analysis_AdvDifOnly_y="${YEAR}"_"
             elif [ "$SCENARIO" -eq "1" ]; then
-              RUNNAMEPREFIX="Analysis_Prox_vic="${VICINITY}"_y="${STARTYEAR}"_"
+              RUNNAMEPREFIX="Analysis_Prox_vic="${VICINITY}"_y="${YEAR}"_"
             elif [ "$SCENARIO" -eq "2" ]; then
-              RUNNAMEPREFIX="Analysis_Stochastic_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
+              RUNNAMEPREFIX="Analysis_Stochastic_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${YEAR}"_"
             elif [ "$SCENARIO" -eq "3" ]; then
-              RUNNAMEPREFIX="Analysis_SDResus_SD="${SHOREDEPEN}"_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
+              RUNNAMEPREFIX="Analysis_SDResus_SD="${SHOREDEPEN}"_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${YEAR}"_"
             elif [ "$SCENARIO" -eq "4" ]; then
-              RUNNAMEPREFIX="Analysis_Turrell_Wmin="${WMIN}"_ST="${SHORETIME}"_y="${STARTYEAR}"_"
+              RUNNAMEPREFIX="Analysis_Turrell_Wmin="${WMIN}"_ST="${SHORETIME}"_y="${YEAR}"_"
             elif [ "$SCENARIO" -eq "6" ]; then
-              RUNNAMEPREFIX="Analysis_KaandorpFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
+              RUNNAMEPREFIX="Analysis_KaandorpFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${YEAR}"_"
             elif [ "$SCENARIO" -eq "7" ]; then
-              RUNNAMEPREFIX="Analysis_PartialKaandorpFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
+              RUNNAMEPREFIX="Analysis_PartialKaandorpFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${YEAR}"_lamf="${LAMBDA_FRAG}"_lamfO="${LAMBDA_FRAG_LAMBDA_OCEAN_FRAG}"_"
             elif [ "$SCENARIO" -eq "5" ]; then
-              RUNNAMEPREFIX="Analysis_SizeTransport_SIZE="${PARTICLE_SIZE}"_ST="${SHORETIME}"_y="${STARTYEAR}"_tau="${SEABED_CRIT}"_"
+              RUNNAMEPREFIX="Analysis_SizeTransport_SIZE="${PARTICLE_SIZE}"_ST="${SHORETIME}"_y="${YEAR}"_"
             fi
             if [ "$STOKES" -eq "1" ]; then
               RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
             fi
             RUNNAMEPREFIX=${RUNNAMEPREFIX}"ENSEMBLE="${ENSEMBLE}"_"
-            echo $RUNNAMEPREFIX
 
             #Initializing a string used for keeping track of the job dependencies
             JOB_TRACKER=' '

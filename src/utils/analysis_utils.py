@@ -145,9 +145,10 @@ def histogram(lon_data, lat_data, bins_Lon, bins_Lat, weight_data=None, area_cor
     return bin_concentrations, bin_mid_lat, bin_mid_lon
 
 
-def analysis_save_file_name(input_file: str, prefix: str, suffix=None):
+def analysis_save_file_name(input_file: str, prefix: str, suffix=None, split=None):
     _, file_name = os.path.split(input_file)
-    split = file_name_string_split()
+    if split is None:
+        split = file_name_string_split()
     file_name = prefix + '_' + file_name.split(split)[0]
     if suffix is not None:
         file_name += suffix
