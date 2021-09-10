@@ -57,7 +57,7 @@ SIMLEN=2
 export SIMLEN
 # For the analysis, if we have multiple years that we want to combine into one analysis set (so if we have continuous
 # particle release), then this how many years we want to include
-elif [ "$SCENARIO" -eq "7" ]; then
+if [ "$SCENARIO" -eq "7" ]; then
   COMBINE_YEARS=${SIMLEN}
 else
   COMBINE_YEARS=1
