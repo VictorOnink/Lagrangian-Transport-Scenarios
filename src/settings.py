@@ -309,6 +309,8 @@ os.system('echo "The input scenario is {}"'.format(INPUT))
 if SUBMISSION == 'simulation':
     os.system('echo "The starting year is {}, and this is run {}, restart {}"'.format(STARTYEAR, RUN, RESTART))
     os.system('echo "We are using {} for the plastic advection"'.format(ADVECTION_DATA))
+if SUBMISSION == 'analysis':
+    os.system('echo "We are running analysis parallelization step {}"'.format(PARALLEL_STEP))
 
 if SCENARIO_NAME == 'CoastalProximity':
     os.system('echo "The coastal vicinity time cutoff is {} days "'.format(VICINITY))

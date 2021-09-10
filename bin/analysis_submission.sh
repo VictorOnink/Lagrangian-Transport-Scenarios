@@ -213,45 +213,45 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
               done
               RESTART_REMOVE=$((RESTART_REMOVE+1))
             done
-
-            # Remove the last character of the JOB_TRACKER so that we don't end with :
-            JOB_TRACKER=${JOB_TRACKER:1}
-            echo ${JOB_TRACKER}
-            PARALLEL_STEP=2
-            export PARALLEL_STEP
-            STARTYEAR=${YEAR}
-            export STARTYEAR
-            # specifying the parts of the submission file
-            part1="#!/bin/sh"
-            part2="#SBATCH --mail-type=begin,end,fail"
-            part3="#SBATCH --mail-user=victor.onink@climate.unibe.ch"
-            part4="#SBATCH --job-name="${RUNNAMEPREFIX}
-            part5="#SBATCH --output="runOutput/${RUNNAMEPREFIX}".o%j"
-            part6="#SBATCH --mem-per-cpu=20G"
-            if [ "$DEBUG" -eq "0" ]; then
-              part7="#SBATCH --time=01:30:00"
-              part8="#SBATCH --partition=epyc2"
-              part9='#SBATCH --qos=job_epyc2'
-            else
-              part7="#SBATCH --time=00:19:00"
-              part8="#SBATCH --partition=epyc2"
-              part9='#SBATCH --qos=job_epyc2_debug'
-            fi
-            part10="source /storage/homefs/vo18e689/.bash_profile"
-            part11="source /storage/homefs/vo18e689/anaconda3/bin/activate py3_parcels"
-            part12='cd "/storage/homefs/vo18e689/codes/Next-Stage-Plastic-Beaching/"'
-            part13="python src/main.py -p 10 -v"
-
-            # Putting all the parts into the submission file
-            for i in {1..13}; do
-              partGrab="part"$i
-              echo ${!partGrab} >> jobsubmissionFile.sh
-            done
-
-            # Submitting the job that will join all the various analysis files together
-            sbatch --dependency=afterok${JOB_TRACKER} jobsubmissionFile.sh
-            rm jobsubmissionFile.sh
           done
+
+          # Remove the last character of the JOB_TRACKER so that we don't end with :
+          JOB_TRACKER=${JOB_TRACKER:1}
+          echo ${JOB_TRACKER}
+          PARALLEL_STEP=2
+          export PARALLEL_STEP
+          STARTYEAR=${YEAR}
+          export STARTYEAR
+          # specifying the parts of the submission file
+          part1="#!/bin/sh"
+          part2="#SBATCH --mail-type=begin,end,fail"
+          part3="#SBATCH --mail-user=victor.onink@climate.unibe.ch"
+          part4="#SBATCH --job-name="${RUNNAMEPREFIX}
+          part5="#SBATCH --output="runOutput/${RUNNAMEPREFIX}".o%j"
+          part6="#SBATCH --mem-per-cpu=20G"
+          if [ "$DEBUG" -eq "0" ]; then
+            part7="#SBATCH --time=01:30:00"
+            part8="#SBATCH --partition=epyc2"
+            part9='#SBATCH --qos=job_epyc2'
+          else
+            part7="#SBATCH --time=00:19:00"
+            part8="#SBATCH --partition=epyc2"
+            part9='#SBATCH --qos=job_epyc2_debug'
+          fi
+          part10="source /storage/homefs/vo18e689/.bash_profile"
+          part11="source /storage/homefs/vo18e689/anaconda3/bin/activate py3_parcels"
+          part12='cd "/storage/homefs/vo18e689/codes/Next-Stage-Plastic-Beaching/"'
+          part13="python src/main.py -p 10 -v"
+
+          # Putting all the parts into the submission file
+          for i in {1..13}; do
+            partGrab="part"$i
+            echo ${!partGrab} >> jobsubmissionFile.sh
+          done
+
+          # Submitting the job that will join all the various analysis files together
+          sbatch --dependency=afterok${JOB_TRACKER} jobsubmissionFile.sh
+          rm jobsubmissionFile.sh
         done
       done
     done
