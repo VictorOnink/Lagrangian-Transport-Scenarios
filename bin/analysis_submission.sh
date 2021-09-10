@@ -1,6 +1,6 @@
 #!/bin/sh
 filename="job_id.txt"
-cat job_id.txt | while read LINE; do
+cat ${filename} | while read LINE; do
     echo $LINE
 done
 ######################################################################################
