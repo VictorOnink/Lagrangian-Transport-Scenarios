@@ -175,7 +175,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
             echo $RUNNAMEPREFIX
 
             #Initializing a string used for keeping track of the job dependencies
-            job_tracker=''
+            JOB_TRACKER=''
             PARALLEL_STEP=1
             export PARALLEL_STEP
             #First we are going to submit all the jobs for the individual run/restart files, so each runs the analysis
@@ -216,15 +216,16 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
 
                   # submitting the job
                   jobid=$(sbatch --parsable jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
-                  job_tracker=${job_tracker}':'
+                  JOB_TRACKER=${JOB_TRACKER}':'
                   # deleting the submission file
                   rm jobsubmissionFile_${RUN}_${RESTARTNUM}.sh
                 done
               done
             done
 
-            # Remove the last character of the job_tracker so that we don't end with :
-            job_tracker=${job_tracker: : -1}
+            # Remove the last character of the JOB_TRACKER so that we don't end with :
+            JOB_TRACKER=${JOB_TRACKER::-1}
+            echo ${JOB_TRACKER}
             PARALLEL_STEP=2
             export PARALLEL_STEP
             STARTYEAR=${YEAR}
@@ -257,7 +258,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
             done
 
             # Submitting the job that will join all the various analysis files together
-            sbatch --dependency=afterok:${job_tracker} jobsubmissionFile.sh
+            sbatch --dependency=afterok:${JOB_TRACKER} jobsubmissionFile.sh
             rm jobsubmissionFile.sh
           done
         done
