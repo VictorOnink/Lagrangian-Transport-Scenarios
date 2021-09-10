@@ -216,7 +216,8 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
 
                   # submitting the job
                   jobid=$(sbatch --parsable jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
-                  JOB_TRACKER=${JOB_TRACKER}':'
+                  JOB_TRACKER=${JOB_TRACKER}${jobid}':'
+                  echo ${JOB_TRACKER}
                   # deleting the submission file
                   rm jobsubmissionFile_${RUN}_${RESTARTNUM}.sh
                 done
