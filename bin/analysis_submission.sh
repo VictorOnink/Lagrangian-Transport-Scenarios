@@ -206,7 +206,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
 
                   # submitting the job
                   jobid=$(sbatch --parsable jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
-                  echo ${jobid} >> job_id.txt
+#                  echo ${jobid} >> job_id.txt
                   #JOB_TRACKER=${JOB_TRACKER}':'${jobid}
                   #JOB_TRACKER[${#JOB_TRACKER[@]}]=${jobid}
                   scancel ${jobid}
