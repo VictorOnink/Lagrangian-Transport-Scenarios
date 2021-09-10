@@ -201,12 +201,12 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
                   # Putting all the parts into the submission file
                   for i in {1..13}; do
                     partGrab="part"$i
-                    echo ${!partGrab} >> jobsubmissionFile_${RUN}_${RESTARTNUM}.sh
+                    echo ':'${!partGrab} >> jobsubmissionFile_${RUN}_${RESTARTNUM}.sh
                   done
 
                   # submitting the job
                   jobid=$(sbatch --parsable jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
-                  echo ${jobid} >> job_id.txt
+                  echo $(jobid) >> job_id.txt
                   #JOB_TRACKER=${JOB_TRACKER}':'${jobid}
                   #JOB_TRACKER[${#JOB_TRACKER[@]}]=${jobid}
                   scancel ${jobid}
