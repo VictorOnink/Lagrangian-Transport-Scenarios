@@ -1,5 +1,5 @@
 #!/bin/sh
-filename="job_id.txt"
+filename="/storage/homefs/vo18e689/codes/Next-Stage-Plastic-Beaching/bin/job_id.txt"
 cat ${filename} | while read LINE; do
     echo $LINE
 done
