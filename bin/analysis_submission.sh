@@ -1,8 +1,8 @@
 #!/bin/sh
-while IFS= read -r line; do
-    echo "Text read from file: $line"
-done < "job_id.txt"
-
+filename="job_id.txt"
+while read name; do
+    echo $name
+done < filename
 ######################################################################################
 ## First we define the general parameters of the run                                 #
 ######################################################################################
