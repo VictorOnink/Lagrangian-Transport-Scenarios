@@ -8,7 +8,7 @@ class AnalysisFactory():
                          statistics: bool = False, separation_distance: bool = False, size_spectrum: bool = False):
         if concentration:
             utils.print_statement("Calculating the concentration", to_print=True)
-            Analysis.parcels_to_concentration.run(file_dict=file_dict)
+            Analysis.parcels_to_concentration(file_dict=file_dict).run()
         if vertical_concentration:
             utils.print_statement("Calculating the vertical concentration", to_print=True)
             Analysis.parcels_to_vertical_concentration(file_dict=file_dict)
