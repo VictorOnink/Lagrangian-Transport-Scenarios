@@ -210,7 +210,8 @@ if SUBMISSION in ['analysis']:
     SIZE_SPECTRUM = BOOLEAN_DICT[int(os.environ['SIZE_SPECTRUM'])]
     # FRACTION OF PLASTIC ENTERING THE OCEAN IN 2010 THAT IS CONSIDERED BUOYANT (BASED ON GEYERS ET AL., 2017)
     BUOYANT = 0.54
-
+else:
+    PARALLEL_STEP: int = 1
 
 ########################################################################################################################
 #                                                                                                                      #
