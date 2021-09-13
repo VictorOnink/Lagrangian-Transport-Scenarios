@@ -52,9 +52,10 @@ class parcels_to_concentration():
                         self.output_dict[key_year][beach_state][size_class] = calculate_concentration(lon=size_class_data['lon'],
                                                                                                       lat=size_class_data['lat'],
                                                                                                       weights=size_class_data['weights'],
-                                                                                                      hex_grid=self.hexgrid, time_steps=time_steps,
-                                                                                                      lon_bin=self.LON, lat_bin=self.LAT)
-                        print(np.nanmax(self.output_dict[key_year][beach_state][size_class]))
+                                                                                                      hex_grid=self.hexgrid,
+                                                                                                      time_steps=time_steps,
+                                                                                                      lon_bin=self.LON,
+                                                                                                      lat_bin=self.LAT)
                 else:
                     self.output_dict[key_year][beach_state] = calculate_concentration(lon=state_data['lon'],
                                                                                       lat=state_data['lat'],
@@ -73,10 +74,10 @@ class parcels_to_concentration():
         elif self.parallel_step == 2:
             pbar = ProgressBar()
             for ind_year, year in pbar(enumerate(range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH))):
-                for run in range(0, settings.RUN_RANGE):
-                    for restart in range(0, settings.SIM_LENGTH - ind_year):
-                        if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
-                            for month in range(1, 13):
+                for month in range(1, 13):
+                    for run in range(0, settings.RUN_RANGE):
+                        for restart in range(0, settings.SIM_LENGTH - ind_year):
+                            if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                                 file_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
                                                            directory=self.temp_direc, final=False, year=year, month=month,
                                                            run=run, restart=restart)
@@ -86,16 +87,16 @@ class parcels_to_concentration():
                                         key_year = utils.analysis_simulation_year_key(restart)
                                         self.output_dict[key_year][beach_state][size_class] += dataset_post[key_year][beach_state][size_class]
                                 utils.remove_file(file_name)
-
                         else:
-                            file_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
-                                                       directory=self.temp_direc, final=False, year=year, run=run,
-                                                       restart=restart)
-                            dataset_post = utils.load_obj(filename=file_name)
-                            for beach_state in self.beach_label_dict.keys():
-                                key_year = utils.analysis_simulation_year_key(restart)
-                                self.output_dict[key_year][beach_state] += dataset_post[key_year][beach_state]
-                            utils.remove_file(file_name)
+                            if month == 1:
+                                file_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
+                                                           directory=self.temp_direc, final=False, year=year, run=run,
+                                                           restart=restart)
+                                dataset_post = utils.load_obj(filename=file_name)
+                                for beach_state in self.beach_label_dict.keys():
+                                    key_year = utils.analysis_simulation_year_key(restart)
+                                    self.output_dict[key_year][beach_state] += dataset_post[key_year][beach_state]
+                                utils.remove_file(file_name)
             # Calculating the average concentrations over the entire length of the simulation from the individual years
             for simulation_years in range(settings.SIM_LENGTH):
                 key_year = utils.analysis_simulation_year_key(simulation_years)
