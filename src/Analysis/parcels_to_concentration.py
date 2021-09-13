@@ -86,17 +86,17 @@ class parcels_to_concentration():
                                     for size_class in range(settings.SIZE_CLASS_NUMBER):
                                         key_year = utils.analysis_simulation_year_key(restart)
                                         self.output_dict[key_year][beach_state][size_class] += dataset_post[key_year][beach_state][size_class]
-                                utils.remove_file(file_name)
-                        else:
-                            if month == 1:
-                                file_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
-                                                           directory=self.temp_direc, final=False, year=year, run=run,
-                                                           restart=restart)
-                                dataset_post = utils.load_obj(filename=file_name)
-                                for beach_state in self.beach_label_dict.keys():
-                                    key_year = utils.analysis_simulation_year_key(restart)
-                                    self.output_dict[key_year][beach_state] += dataset_post[key_year][beach_state]
-                                # utils.remove_file(file_name)
+                                 # utils.remove_file(file_name)
+                            else:
+                                if month == 1:
+                                    file_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
+                                                               directory=self.temp_direc, final=False, year=year, run=run,
+                                                               restart=restart)
+                                    dataset_post = utils.load_obj(filename=file_name)
+                                    for beach_state in self.beach_label_dict.keys():
+                                        key_year = utils.analysis_simulation_year_key(restart)
+                                        self.output_dict[key_year][beach_state] += dataset_post[key_year][beach_state]
+                                    utils.remove_file(file_name)
             # Calculating the average concentrations over the entire length of the simulation from the individual years
             for simulation_years in range(settings.SIM_LENGTH):
                 key_year = utils.analysis_simulation_year_key(simulation_years)
