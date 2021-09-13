@@ -42,6 +42,8 @@ class parcels_to_concentration():
                     if variable in full_data_dict.keys():
                         beach_selection = full_data_dict['beach'] == self.beach_label_dict[beach_state]
                         state_data[variable] = full_data_dict[variable][beach_selection]
+                    print(state_data.keys())
+                    print(full_data_dict.keys())
                     if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                         for size_class in range(settings.SIZE_CLASS_NUMBER):
                             size_class_data = {}
