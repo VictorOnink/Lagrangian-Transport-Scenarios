@@ -54,6 +54,7 @@ class parcels_to_concentration():
                                                                                                       weights=size_class_data['weights'],
                                                                                                       hex_grid=self.hexgrid, time_steps=time_steps,
                                                                                                       lon_bin=self.LON, lat_bin=self.LAT)
+                        print(np.nanmax(self.output_dict[key_year][beach_state][size_class]))
                 else:
                     self.output_dict[key_year][beach_state] = calculate_concentration(lon=state_data['lon'],
                                                                                       lat=state_data['lat'],
@@ -223,8 +224,9 @@ def get_file_names(scenario_name, file_dict, directory, final, year=settings.STA
     split = {True: None, False: '.nc'}[final]
     prefix = 'horizontal_concentration'
     if scenario_name in ['FragmentationKaandorpPartial']:
+        print('{} {} {} {} {}'.format(year, month, run, restart, file_dict['postprocess'][year][month][run][restart]))
         output_name = directory + utils.analysis_save_file_name(input_file=file_dict['postprocess'][year][month][run][restart],
-        prefix=prefix, split=split)
+                                                                prefix=prefix, split=split)
     else:
         output_name = directory + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix, split=split)
     return output_name
