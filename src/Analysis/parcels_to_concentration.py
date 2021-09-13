@@ -31,12 +31,10 @@ class parcels_to_concentration():
             full_data_dict = {}
             for variable in ['lon', 'lat', 'beach']:
                 full_data_dict[variable] = parcels_dataset.variables[variable][:, :-1]
-            print(full_data_dict.keys())
             full_data_dict, time_steps = complete_full_data_dict(scenario_name=settings.SCENARIO_NAME,
                                                                  full_data_dict=full_data_dict,
                                                                  parcels_dataset=parcels_dataset,
                                                                  post_dataset=post_dataset)
-            print(full_data_dict.keys())
             # Looping through the beach states
             for beach_state in self.beach_label_dict.keys():
                 state_data = {}
@@ -44,6 +42,7 @@ class parcels_to_concentration():
                     if variable in full_data_dict.keys():
                         beach_selection = full_data_dict['beach'] == self.beach_label_dict[beach_state]
                         state_data[variable] = full_data_dict[variable][beach_selection]
+                    print(state_data.keys())
                     if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                         for size_class in range(settings.SIZE_CLASS_NUMBER):
                             size_class_data = {}
