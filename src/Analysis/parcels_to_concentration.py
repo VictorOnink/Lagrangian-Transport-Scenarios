@@ -15,9 +15,9 @@ class parcels_to_concentration():
         self.LON, self.LAT, self.GRID, self.hexgrid = create_hex_grid()
         self.beach_label_dict = set_beach_label_dict(scenario_name=settings.SCENARIO_NAME)
         self.temp_direc, self.output_direc = get_directories(scenario_name=settings.SCENARIO_NAME)
-        self.output_file_dict = create_output_file_dict(scenario_name=settings.SCENARIO_NAME, grid=self.GRID,
-                                                        beach_states=self.beach_label_dict.keys(), lon=self.LON,
-                                                        lat=self.LAT)
+        self.output_dict = create_output_file_dict(scenario_name=settings.SCENARIO_NAME, grid=self.GRID,
+                                                   beach_states=self.beach_label_dict.keys(), lon=self.LON,
+                                                   lat=self.LAT)
 
     def run(self):
         if self.parallel_step == 1:
