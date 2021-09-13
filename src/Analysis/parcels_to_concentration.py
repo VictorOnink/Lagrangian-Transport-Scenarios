@@ -29,7 +29,7 @@ class parcels_to_concentration():
                                                                      file_dict=self.file_dict)
             # Loading, flattening and removing nan values for necessary data arrays
             full_data_dict = {}
-            for variable in ['lon', 'lat']:
+            for variable in ['lon', 'lat', 'beach']:
                 full_data_dict[variable] = parcels_dataset.variables[variable][:, :-1]
             full_data_dict, time_steps = complete_full_data_dict(scenario_name=settings.SCENARIO_NAME,
                                                                  full_data_dict=full_data_dict,
