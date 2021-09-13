@@ -104,6 +104,10 @@ if [ "$SCENARIO" -eq "5" -a ${#LAMBDA_OCEAN_FRAG_LIST[@]} -gt 1 ]; then
   echo 'For SizeTransport, do not submit multiple LAMBDA_OCEAN_FRAG values.'
   exit
 fi
+if [ "$SCENARIO" -eq "5" -a  "$INPUT" -ne "1" ]; then
+  echo 'For SizeTransport, make sure to use input scenario 1!!!!.'
+  exit
+fi
 if [ "$SCENARIO" -eq "7" -a ${#PARTICLE_SIZE_list[@]} -gt 1 ]; then
   echo 'For KaandorpFragmentationPartial, please only submit one PARTICLE_SIZE.'
   exit
