@@ -4,7 +4,7 @@
 #####################################################################################
 SUBMISSION='analysis'
 export SUBMISSION
-DEBUG=0 # 0 = Not a debug run, 1 = a debug run
+DEBUG=1 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation
 SCENARIO=7
@@ -43,7 +43,7 @@ export OCEAN_FRAG
 #(1 10 100 200 300 388)
 #the starting year of the simulation, and how many years the simulation will take
 YEAR=2010
-STARTMONTH_list=(1 2 3 4 5 6 7 8 9 10 11 12)
+STARTMONTH_list=(1) #(1 2 3 4 5 6 7 8 9 10 11 12)
 STARTDAY=1
 export STARTDAY
 #Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=lebretondivision, 3=point, 4=uniform
@@ -54,7 +54,7 @@ export INPUT
 ADVECTION_DATA=2
 export ADVECTION_DATA
 #Number of years the simulation runs
-SIMLEN=2
+SIMLEN=1
 export SIMLEN
 # For the analysis, if we have multiple years that we want to combine into one analysis set (so if we have continuous
 # particle release), then this how many years we want to include
@@ -123,7 +123,7 @@ if [ "$INPUT" -eq "0" ]; then
 elif [ "$INPUT" -eq "1" ]; then
   runlength=0 #3
 elif [ "$INPUT" -eq "2" ]; then
-  runlength=9
+  runlength=0 #9
 elif [ "$INPUT" -eq "3" ]; then
   runlength=0
 fi
