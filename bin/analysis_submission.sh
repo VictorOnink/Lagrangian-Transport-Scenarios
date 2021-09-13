@@ -4,7 +4,7 @@
 #####################################################################################
 SUBMISSION='analysis'
 export SUBMISSION
-DEBUG=1 # 0 = Not a debug run, 1 = a debug run
+DEBUG=0 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation
 SCENARIO=7
@@ -189,7 +189,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
                   part5="#SBATCH --output="runOutput/${RUNNAMEPREFIX}".o%j"
                   part6="#SBATCH --mem-per-cpu=20G"
                   if [ "$DEBUG" -eq "0" ]; then
-                    part7="#SBATCH --time=01:30:00"
+                    part7="#SBATCH --time=00:20:00"
                     part8="#SBATCH --partition=epyc2"
                     part9='#SBATCH --qos=job_epyc2'
                   else
