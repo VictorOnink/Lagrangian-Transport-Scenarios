@@ -42,7 +42,7 @@ class parcels_to_concentration():
                     if variable in full_data_dict.keys():
                         beach_selection = full_data_dict['beach'] == self.beach_label_dict[beach_state]
                         state_data[variable] = full_data_dict[variable][beach_selection]
-                    if 'size_class' in state_data.keys():
+                    if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                         for size_class in range(settings.SIZE_CLASS_NUMBER):
                             size_class_data = {}
                             for variable in ['lon', 'lat', 'weights']:
@@ -55,11 +55,13 @@ class parcels_to_concentration():
                                                                                                           hex_grid=self.hexgrid, time_steps=time_steps,
                                                                                                           lon_bin=self.LON, lat_bin=self.LAT)
                     else:
-                        self.output_dict[key_year][beach_state] = calculate_concentration(lon=size_class_data['lon'],
-                                                                                          lat=size_class_data['lat'],
-                                                                                          weights=size_class_data['weights'],
-                                                                                          hex_grid=self.hexgrid, time_steps=time_steps,
-                                                                                          lon_bin=self.LON, lat_bin=self.LAT)
+                        self.output_dict[key_year][beach_state] = calculate_concentration(lon=state_data['lon'],
+                                                                                          lat=state_data['lat'],
+                                                                                          weights=state_data['weights'],
+                                                                                          hex_grid=self.hexgrid,
+                                                                                          time_steps=time_steps,
+                                                                                          lon_bin=self.LON,
+                                                                                          lat_bin=self.LAT)
             output_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
                                          directory=self.temp_direc, final=False)
             utils.save_obj(output_name, self.output_dict)
