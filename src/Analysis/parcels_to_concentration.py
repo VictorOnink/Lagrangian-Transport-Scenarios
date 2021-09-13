@@ -39,7 +39,7 @@ class parcels_to_concentration():
             for beach_state in self.beach_label_dict.keys():
                 state_data = {}
                 for variable in ['lon', 'lat', 'weights', 'size_class']:
-                    if variable in full_data_dict[variable].keys():
+                    if variable in full_data_dict.keys():
                         beach_selection = full_data_dict['beach'] == self.beach_label_dict[beach_state]
                         state_data[variable] = full_data_dict[variable][beach_selection]
                     if 'size_class' in state_data.keys():
