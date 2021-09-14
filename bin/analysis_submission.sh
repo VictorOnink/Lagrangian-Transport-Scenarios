@@ -119,13 +119,13 @@ fi
 
 #The number of runs we do, dependent on the input scenario.
 if [ "$INPUT" -eq "0" ]; then
-  runlength=0 #8
+  RUNLENGTH=0 #8
 elif [ "$INPUT" -eq "1" ]; then
-  runlength=0 #3
+  RUNLENGTH=0 #3
 elif [ "$INPUT" -eq "2" ]; then
-  runlength=9
+  RUNLENGTH=9
 elif [ "$INPUT" -eq "3" ]; then
-  runlength=0
+  RUNLENGTH=0
 fi
 
 #####################################################################################
@@ -176,7 +176,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
             RESTART_REMOVE=0
             for ((STARTYEAR=${YEAR}; STARTYEAR<$((YEAR+COMBINE_YEARS)); STARTYEAR++)); do
               export STARTYEAR
-              for ((RUN=0; RUN<=$runlength; RUN++)); do
+              for ((RUN=0; RUN<=$RUNLENGTH; RUN++)); do
                 export RUN
                 # looping over all the simulation years
                 for ((RESTARTNUM=0; RESTARTNUM<$((SIMLEN-RESTART_REMOVE)); RESTARTNUM++)); do
@@ -224,6 +224,8 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
           export PARALLEL_STEP
           STARTYEAR=${YEAR}
           export STARTYEAR
+          RUN=${RUNLENGTH}
+          export RUN
           # specifying the parts of the submission file
           part1="#!/bin/sh"
           part2="#SBATCH --mail-type=begin,end,fail"
