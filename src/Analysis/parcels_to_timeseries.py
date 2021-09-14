@@ -122,8 +122,14 @@ def create_output_dict_time_list(beach_label_dict):
         current_time += time_step
 
     output_dict = {'time': time_list}
+    base_array = np.zeros(time_list.__len__(), dtype=float)
     for beach_state in beach_label_dict.keys():
-        output_dict[beach_state] = np.zeros(time_list.__len__(), dtype=float)
+        if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
+            output_dict[beach_state] = {}
+            for size_class in range(settings.SIZE_CLASS_NUMBER):
+                output_dict[beach_state][size_class] = deepcopy(base_array)
+        else:
+            output_dict[beach_state] = deepcopy(base_array)
     output_dict['total'] = np.zeros(time_list.__len__(), dtype=float)
     return output_dict, time_list
 
