@@ -123,8 +123,8 @@ def create_output_dict_time_list(beach_label_dict):
 
     output_dict = {'time': time_list}
     for beach_state in beach_label_dict.keys():
-        output_dict[beach_state] = np.zeros(time_list.shape, dtype=float)
-    output_dict['total'] = np.zeros(time_list.shape, dtype=float)
+        output_dict[beach_state] = np.zeros(time_list.__len__(), dtype=float)
+    output_dict['total'] = np.zeros(time_list.__len__(), dtype=float)
     return output_dict, time_list
 
 
