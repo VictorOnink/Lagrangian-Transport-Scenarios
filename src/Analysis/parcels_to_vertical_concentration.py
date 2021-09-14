@@ -85,7 +85,7 @@ class parcels_to_vertical_concentration:
                                 dataset_post = utils.load_obj(filename=file_name)
 
                                 for key_year in self.output_dict.keys():
-                                    if key_year != 'depths':
+                                    if key_year != 'depth':
                                         for month_index in self.output_dict[key_year].keys():
                                             for size_class in self.output_dict[key_year][month_index].keys():
                                                 self.output_dict[key_year][month_index][size_class] += dataset_post[key_year][month_index][size_class]
