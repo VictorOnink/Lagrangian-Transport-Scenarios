@@ -37,12 +37,12 @@ class parcels_to_basicstatistics:
 
 
         elif self.parallel_step == 2:
-
+            pass
         else:
             ValueError('settings.PARALLEL_STEP can not have a value of {}'.format(self.parallel_step))
 
 def create_output_dict(dataset, stats_list):
-    base_array = np.zeros(dataset.dimensions['traj'].size,)
+    base_array = np.zeros(dataset.dimensions['traj'].size, dtype=float)
 
 def parcels_to_basicstatistics(file_dict: dict):
     """
