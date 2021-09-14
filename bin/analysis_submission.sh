@@ -76,8 +76,8 @@ export SERVER
 #A number of switches to indicate which analysis steps we want to run.
 #0 = off, 1 = on
 CONCENTRATION=0
-VERTICAL_CONCENTRATION=1
-TIMESERIES=0
+VERTICAL_CONCENTRATION=0
+TIMESERIES=1
 MAX_DISTANCE=0
 TIMESLICING=0
 STATISTICS=0

@@ -4,158 +4,160 @@ from netCDF4 import Dataset
 import numpy as np
 from copy import deepcopy
 from progressbar import ProgressBar
+from datetime import datetime, timedelta
 
 
-if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
-    def parcels_to_timeseries(file_dict: dict, lon_min: float = -180, lon_max: float = 180, lat_min: float = -90,
-                              lat_max: float = 90):
-        """
-        This has the same basic function as the parcels_to_timeseries, but it looks at the particlenumber variable and the
-        various size bins as implemented in the FragmentationKaandorpPartial scenario
-        :param file_dict:
-        :param lon_min:
-        :param lon_max:
-        :param lat_min:
-        :param lat_max:
-        :return:
-        """
-        domain = lon_min, lon_max, lat_min, lat_max
-        output_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/{}/'.format(
-            settings.SCENARIO_NAME)
-        utils.check_direc_exist(output_direc)
-        # Get the time axis
-        time_list = np.array([], dtype=np.int)
-        restart_list = np.array([], dtype=np.int)
-        for restart in range(settings.SIM_LENGTH):
-            parcels_file = file_dict['parcels'][settings.STARTYEAR][1][0][restart]
-            parcels_dataset = Dataset(parcels_file)
-            time = parcels_dataset.variables['time'][0, :-1]
-            time_list = np.append(time_list, time)
+class parcels_to_timeseries:
+    def __init__(self, file_dict: dict):
+        self.parallel_step = settings.PARALLEL_STEP
+        self.file_dict = file_dict
+        self.domain = (-180, 180, -90, 90) # lon_min, lon_max, lat_min, lat_max
+        self.temp_direc, self.output_direc = get_directories(scenario_name=settings.SCENARIO_NAME)
+        self.beach_label_dict = set_beach_label_dict()
+        self.output_dict, self.time_list = create_output_dict_time_list(beach_label_dict=self.beach_label_dict)
 
-        # Initializing the arrays of the timeseries
-        size_dict = {}
-        for size_class in range(settings.SIZE_CLASS_NUMBER):
-            size_dict[size_class] = np.zeros(time_list.shape, dtype=float)
-        beach_state_dict = {'beach': deepcopy(size_dict),
-                            'adrift': deepcopy(size_dict),
-                            'seabed': deepcopy(size_dict),
-                            'removed': deepcopy(size_dict),
-                            'total': deepcopy(size_dict),
-                            'time': time_list}
-        beach_label_dict = {'beach': 1, 'adrift': 0, 'seabed': 3, 'removed': 2}
-
-        # loop through the runs
-        pbar = ProgressBar()
-        for ind_year, year in pbar(enumerate(range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH))):
-            for month in range(1, 13):
-                for run in range(0, settings.RUN_RANGE):
-                    # Loop through the restart files
-                    for restart in range(0, settings.SIM_LENGTH - ind_year):
-                        print_statement = 'year {}-{}, run {} restart {}'.format(year, month, run, restart)
-                        utils.print_statement(print_statement, to_print=True)
-                        # Loading the data output
-                        parcels_file = file_dict['parcels'][year][month][run][restart]
-                        post_file = file_dict['postprocess'][year][month][run][restart]
-                        parcels_dataset = Dataset(parcels_file)
-                        post_dataset = utils.load_obj(post_file)
-                        full_data_dict = {}
-                        for variable in ['lon', 'lat', 'beach', 'time', 'size_class']:
-                            full_data_dict[variable] = parcels_dataset.variables[variable][:, :-1]
-                        full_data_dict['particle_number'] = post_dataset['particle_number'][:, :-1]
-
-                        # Just get the particles within the domain, which we do by setting all values not within the
-                        # domain to nan. These will therefore not be taken into account in the calculations of total
-                        # counts/weights
-                        within_domain = utils.particles_in_domain(domain=domain, lon=full_data_dict['lon'],
-                                                                  lat=full_data_dict['lat'])
-                        for variable in full_data_dict.keys():
-                            full_data_dict[variable][within_domain is not True] = np.nan
-
-                        for time_index, time_value in enumerate(time_list):
-                            time_selection = full_data_dict['time'] == time_value
-                            if np.nansum(time_selection) > 0:
-                                time_dict = {}
-                                for variable in ['beach', 'particle_number', 'size_class']:
-                                    time_dict[variable] = full_data_dict[variable][time_selection]
-                                for beach_state in beach_label_dict.keys():
-                                    beach = time_dict['beach'] == beach_label_dict[beach_state]
-                                    for size_class in range(settings.SIZE_CLASS_NUMBER):
-                                        size = time_dict['size_class'] == size_class
-                                        beach_state_dict[beach_state][size_class][time_index] += np.nansum(time_dict['particle_number'][size & beach])
-                                for size_class in range(settings.SIZE_CLASS_NUMBER):
-                                    selection = time_dict['size_class'] == size_class
-                                    beach_state_dict['total'][size_class][time_index] += np.nansum(time_dict['particle_number'][selection])
-
-        # Saving the output
-        prefix = 'timeseries'
-        output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict['postprocess'][settings.STARTYEAR][1][0][restart],
-                                                                   prefix=prefix)
-        utils.save_obj(output_name, beach_state_dict)
-        utils.print_statement("The timeseries has been saved")
-
-else:
-    def parcels_to_timeseries(file_dict: dict, lon_min: float = -180, lon_max: float = 180, lat_min: float = -90,
-                              lat_max: float = 90):
-        domain = lon_min, lon_max, lat_min, lat_max
-        output_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/{}/'.format(
-            settings.SCENARIO_NAME)
-        utils.check_direc_exist(output_direc)
-        # Get the time axis
-        time_list = np.array([], dtype=np.int)
-        restart_list = np.array([], dtype=np.int)
-        for restart in range(settings.SIM_LENGTH):
-            parcels_file = file_dict[0][restart]
-            parcels_dataset = Dataset(parcels_file)
-            time_list = np.append(time_list, parcels_dataset.variables['time'][0, :-1])
-            restart_list = np.append(restart_list, np.ones(parcels_dataset.variables['time'][0, :-1].shape) * restart)
-
-        # Initializing the arrays of the timeseries
-        beach_state_dict = {'beach': np.zeros(time_list.shape, dtype=float),
-                            'adrift': np.zeros(time_list.shape, dtype=float),
-                            'seabed': np.zeros(time_list.shape, dtype=float),
-                            'removed': np.zeros(time_list.shape, dtype=float),
-                            'total': np.zeros(time_list.shape, dtype=float),
-                            'time': time_list}
-        beach_label_dict = {'beach': 1, 'adrift': 0, 'seabed': 3, 'removed': 2}
-
-        utils.print_statement("Start running through the restart and run files")
-        # loop through the runs
-        for run in range(settings.RUN_RANGE):
-            # Loop through the restart files
-            for restart in range(settings.SIM_LENGTH):
-                # Load the lon, lat, time, beach and weight data
-                parcels_file = file_dict[run][restart]
-                parcels_dataset = Dataset(parcels_file)
-                full_data_dict = {}
-                for variable in ['lon', 'lat', 'beach', 'time']:
-                    full_data_dict[variable] = parcels_dataset.variables[variable][:, :-1]
-                if 'weights' in parcels_dataset.variables.keys():
-                    full_data_dict['weights'] = parcels_dataset.variables['weights'][:, :-1] * settings.BUOYANT
+    def run(self):
+        if self.parallel_step == 1:
+            year, month, run, restart = settings.STARTYEAR, settings.STARTMONTH, settings.RUN, settings.RESTART
+            print_statement = 'year {}-{}, run {} restart {}'.format(year, month, run, restart)
+            utils.print_statement(print_statement, to_print=True)
+            # Loading the data
+            parcels_dataset, post_dataset = load_parcels_post_output(scenario_name=settings.SCENARIO_NAME,
+                                                                     file_dict=self.file_dict)
+            full_data_dict = set_full_data_dict(parcels_dataset, post_dataset)
+            # Just get the particles within the domain, which we do by setting all values not within the
+            # domain to nan. These will therefore not be taken into account in the calculations of total
+            # counts/weights
+            within_domain = utils.particles_in_domain(domain=self.domain, lon=full_data_dict['lon'],
+                                                      lat=full_data_dict['lat'])
+            for variable in full_data_dict.keys():
+                full_data_dict[variable][within_domain is False] = np.nan
+            # Going through the timesteps
+            for time_index, time_value in enumerate(self.time_list):
+                time_selection = full_data_dict['time'] == time_value
+                if np.nansum(time_selection) > 0:
+                    time_dict = {}
+                    for variable in ['beach', 'weights', 'size_class']:
+                        if variable in full_data_dict.keys():
+                            time_dict[variable] = full_data_dict[variable][time_selection]
+                    for beach_state in self.beach_label_dict.keys():
+                        beach = time_dict['beach'] == self.beach_label_dict[beach_state]
+                        if 'size_class' in full_data_dict.keys():
+                            for size_class in range(settings.SIZE_CLASS_NUMBER):
+                                size = time_dict['size_class'] == size_class
+                                self.output_dict[beach_state][size_class][time_index] += np.nansum(time_dict['weights'][size & beach])
+                        else:
+                            self.output_dict[beach_state][time_index] += np.nansum(time_dict['weights'][beach])
+            # Calculating the total over all beach states
+            for beach_state in self.beach_label_dict.keys():
+                if 'size_class' in full_data_dict.keys():
+                    for size_class in range(settings.SIZE_CLASS_NUMBER):
+                        self.output_dict['total'][size_class] += self.output_dict[beach_state][size_class]
                 else:
-                    full_data_dict['weights'] = np.ones(full_data_dict['lon'].shape, dtype=float)
+                    self.output_dict['total'] += self.output_dict[beach_state]
 
-                # Just get the particles within the domain, which we do by setting all values not within the domain to
-                # nan. These will therefore not be taken into account in the calculations of total counts/weights
-                within_domain = utils.particles_in_domain(domain=domain, lon=full_data_dict['lon'],
-                                                          lat=full_data_dict['lat'])
-                for variable in full_data_dict.keys():
-                    full_data_dict[variable][within_domain == False] = np.nan
+            # Saving the output
+            file_name = get_file_names(file_dict=self.file_dict, directory=self.temp_direc, final=False)
+            utils.save_obj(filename=file_name, item=self.output_dict)
+            str_format = settings.STARTYEAR, settings.STARTMONTH, settings.RUN, settings.RESTART
+            print_statement = 'The timeseries for year {}-{}, run {} restart {} has been save'.format(*str_format)
+            utils.print_statement(print_statement, to_print=True)
 
-                # Now, looping through all the time steps and adding up the total weight/counts of particles within each
-                # of the beach state domains at each time step
-                for index, time_value in enumerate(time_list):
-                    if restart_list[index] == restart:
-                        time_selection = full_data_dict['time'] == time_value
-                        if np.nansum(full_data_dict['time'] == time_value) > 0:
-                            time_dict = {}
-                            for variable in ['beach', 'weights']:
-                                time_dict[variable] = full_data_dict[variable][time_selection]
-                            for beach_state in beach_label_dict.keys():
-                                beach_state_dict[beach_state][index] += np.nansum(
-                                    time_dict['weights'][time_dict['beach'] == beach_label_dict[beach_state]])
-                            beach_state_dict['total'][index] += np.nansum(full_data_dict['time'] == time_value)
-        # Saving the output
-        prefix = 'timeseries'
-        output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
-        utils.save_obj(output_name, beach_state_dict)
-        utils.print_statement("The timeseries has been saved")
+        elif self.parallel_step == 2:
+            pbar = ProgressBar()
+            for ind_year, year in pbar(enumerate(range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH))):
+                for month in range(1, 13):
+                    for run in range(0, settings.RUN_RANGE):
+                        for restart in range(0, settings.SIM_LENGTH - ind_year):
+                                file_name = get_file_names(scenario_name=settings.SCENARIO_NAME,
+                                                           file_dict=self.file_dict,
+                                                           directory=self.temp_direc, final=False, year=year,
+                                                           month=month,
+                                                           run=run, restart=restart)
+                                dataset_post = utils.load_obj(filename=file_name)
+                                for beach_state in self.output_dict.keys():
+                                    if beach_state != 'time':
+                                        if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
+                                            for size_class in range(settings.SIZE_CLASS_NUMBER):
+                                                self.output_dict[beach_state][size_class] += dataset_post[beach_state][size_class]
+                                        else:
+                                            if month == 1:
+                                                self.output_dict[beach_state] += dataset_post[beach_state]
+                                utils.remove_file(file_name)
+            # Saving the output
+            file_name = get_file_names(file_dict=self.file_dict, directory=self.output_direc, final=True)
+            utils.save_obj(filename=file_name, item=self.output_dict)
+            str_format = settings.STARTYEAR, settings.STARTMONTH, settings.RUN, settings.RESTART
+            print_statement = 'The timeseries have been saved'.format(*str_format)
+            utils.print_statement(print_statement, to_print=True)
+
+        else:
+            ValueError('settings.PARALLEL_STEP can not have a value of {}'.format(self.parallel_step))
+
+
+########################################################################################################################
+"""
+These following functions are used across all scenarios
+"""
+
+
+def get_directories(scenario_name):
+    temp_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/{}/temporary/'.format(scenario_name)
+    output_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/{}/'.format(scenario_name)
+    utils.check_direc_exist(temp_direc)
+    utils.check_direc_exist(output_direc)
+    return temp_direc, output_direc
+
+
+def set_beach_label_dict():
+    return {'beach': 1, 'adrift': 0, 'seabed': 3, 'removed': 2}
+
+
+def create_output_dict_time_list(beach_label_dict):
+    reference_time = datetime(2010, 1, 1, 12, 0)
+    current_time, end_time = datetime(2010, 1, 1, 0), datetime(2010 + settings.SIM_LENGTH, 1, 1, 0)
+    time_step, time_list = timedelta(hours=12), []
+    while current_time < end_time:
+        time_list.append((current_time - reference_time).total_seconds())
+        current_time += time_step
+
+    output_dict = {'time': time_list}
+    for beach_state in beach_label_dict.keys():
+        output_dict[beach_state] = np.zeros(time_list.shape, dtype=float)
+    output_dict['total'] = np.zeros(time_list.shape, dtype=float)
+    return output_dict, time_list
+
+
+def load_parcels_post_output(scenario_name, file_dict, year=settings.STARTYEAR, month=settings.STARTMONTH,
+                             run=settings.RUN, restart=settings.RESTART):
+    if scenario_name in ['FragmentationKaandorpPartial']:
+        parcels_dataset = Dataset(file_dict['parcels'][year][month][run][restart])
+        post_dataset = utils.load_obj(file_dict['postprocess'][year][month][run][restart])
+    else:
+        parcels_dataset = Dataset(file_dict[run][restart])
+        post_dataset = None
+    return parcels_dataset, post_dataset
+
+
+def set_full_data_dict(parcels_dataset, post_dataset):
+    full_data_dict = {}
+    for variable in ['lon', 'lat', 'beach', 'time', 'size_class']:
+        if variable in parcels_dataset.variables.keys():
+            full_data_dict[variable] = parcels_dataset.variables[variable][:, :-1].flatten()
+    if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
+        full_data_dict['weights'] = post_dataset['particle_number'][:, :-1].flatten()
+    else:
+        full_data_dict['weights'] = np.ones(full_data_dict['lon'].shape, dtype=float)
+    return full_data_dict
+
+
+def get_file_names(file_dict, directory, final, year=settings.STARTYEAR, month=settings.STARTMONTH,
+                   run=settings.RUN, restart=settings.RESTART):
+    split = {True: None, False: '.nc'}[final]
+    prefix = 'timeseries'
+    if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
+        output_name = directory + utils.analysis_save_file_name(input_file=file_dict['postprocess'][year][month][run][restart],
+        prefix=prefix, split=split)
+    else:
+        output_name = directory + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix, split=split)
+    return output_name
