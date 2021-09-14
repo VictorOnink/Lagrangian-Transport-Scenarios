@@ -88,7 +88,8 @@ class parcels_to_vertical_concentration:
                                     if key_year != 'depth':
                                         for month_index in self.output_dict[key_year].keys():
                                             for size_class in self.output_dict[key_year][month_index].keys():
-                                                self.output_dict[key_year][month_index][size_class] += dataset_post[key_year][month_index][size_class]
+                                                self.output_dict[key_year][month_index][size_class]['concentration'] += dataset_post[key_year][month_index][size_class]['concentration']
+                                                self.output_dict[key_year][month_index][size_class]['counts'] += dataset_post[key_year][month_index][size_class]['counts']
                                 utils.remove_file(file_name)
                             else:
                                 if month == 1:
@@ -99,7 +100,8 @@ class parcels_to_vertical_concentration:
                                     for key_year in self.output_dict.keys():
                                         if key_year != 'depth':
                                             for month_index in self.output_dict[key_year].keys():
-                                                self.output_dict[key_year][month_index] += dataset_post[key_year][month_index]
+                                                self.output_dict[key_year][month_index]['concentration'] += dataset_post[key_year][month_index]['concentration']
+                                                self.output_dict[key_year][month_index]['counts'] += dataset_post[key_year][month_index]['counts']
                                     utils.remove_file(file_name)
             # Saving the output
             output_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
