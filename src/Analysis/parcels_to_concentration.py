@@ -225,7 +225,8 @@ def get_file_names(scenario_name, file_dict, directory, final, year=settings.STA
     split = {True: None, False: '.nc'}[final]
     prefix = 'horizontal_concentration'
     if scenario_name in ['FragmentationKaandorpPartial']:
-        print('{} {} {} {} {}'.format(year, month, run, restart, file_dict['postprocess'][year][month][run][restart]))
+        if final:
+            print('{} {} {} {}'.format(year, month, run, restart))
         output_name = directory + utils.analysis_save_file_name(input_file=file_dict['postprocess'][year][month][run][restart],
                                                                 prefix=prefix, split=split)
     else:
