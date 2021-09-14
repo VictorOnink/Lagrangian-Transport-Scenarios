@@ -69,8 +69,7 @@ class parcels_to_timeseries:
                 for month in range(1, 13):
                     for run in range(0, settings.RUN_RANGE):
                         for restart in range(0, settings.SIM_LENGTH - ind_year):
-                                file_name = get_file_names(scenario_name=settings.SCENARIO_NAME,
-                                                           file_dict=self.file_dict,
+                                file_name = get_file_names(file_dict=self.file_dict,
                                                            directory=self.temp_direc, final=False, year=year,
                                                            month=month,
                                                            run=run, restart=restart)
