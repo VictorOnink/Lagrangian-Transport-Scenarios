@@ -17,10 +17,11 @@ class AnalysisFactory():
             Analysis.parcels_to_timeseries(file_dict=file_dict).run()
         if max_distance:
             utils.print_statement("Calculating maximum distance from shore along particle trajectories", to_print=True)
-            Analysis.parcels_to_max_distance(file_dict=file_dict)
+            utils.print_statement("This is currently not rewritten for 2-stage parallel analysis", to_print=True)
+            # Analysis.parcels_to_max_distance(file_dict=file_dict)
         if timeslicing:
             utils.print_statement("Creating time slices of the simulation", to_print=True)
-            Analysis.parcels_to_timeslicing(file_dict=file_dict)
+            Analysis.parcels_to_timeslicing(file_dict=file_dict).run()
         if statistics:
             utils.print_statement("Calculating basic particle trajectory statistics", to_print=True)
             Analysis.parcels_to_basicstatistics(file_dict=file_dict)
