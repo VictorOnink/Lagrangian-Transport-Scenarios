@@ -225,7 +225,9 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
           STARTYEAR=${YEAR}
           export STARTYEAR
           RUN=${RUNLENGTH}
+          RESTART=0
           export RUN
+          export RESTART
           # specifying the parts of the submission file
           part1="#!/bin/sh"
           part2="#SBATCH --mail-type=begin,end,fail"
@@ -234,7 +236,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
           part5="#SBATCH --output="runOutput/${RUNNAMEPREFIX}".o%j"
           part6="#SBATCH --mem-per-cpu=20G"
           if [ "$DEBUG" -eq "0" ]; then
-            part7="#SBATCH --time=01:30:00"
+            part7="#SBATCH --time=00:20:00"
             part8="#SBATCH --partition=epyc2"
             part9='#SBATCH --qos=job_epyc2'
           else
