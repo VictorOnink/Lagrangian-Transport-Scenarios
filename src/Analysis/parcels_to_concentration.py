@@ -72,6 +72,7 @@ class parcels_to_concentration():
             utils.print_statement(print_statement, to_print=True)
 
         elif self.parallel_step == 2:
+            print('run {} restart {}'.format(settings.RUN, settings.RESTART))
             pbar = ProgressBar()
             for ind_year, year in pbar(enumerate(range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH))):
                 for month in range(1, 13):
