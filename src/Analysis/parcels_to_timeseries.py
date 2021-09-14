@@ -52,9 +52,9 @@ class parcels_to_timeseries:
             for beach_state in self.beach_label_dict.keys():
                 if 'size_class' in full_data_dict.keys():
                     for size_class in range(settings.SIZE_CLASS_NUMBER):
-                        self.output_dict['total'][size_class][:] += self.output_dict[beach_state][size_class][:]
+                        self.output_dict['total'][size_class] += self.output_dict[beach_state][size_class]
                 else:
-                    self.output_dict['total'][:] += self.output_dict[beach_state][:]
+                    self.output_dict['total'] += self.output_dict[beach_state]
 
             # Saving the output
             file_name = get_file_names(file_dict=self.file_dict, directory=self.temp_direc, final=False)
@@ -79,7 +79,7 @@ class parcels_to_timeseries:
                                     if beach_state != 'time':
                                         if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                                             for size_class in range(settings.SIZE_CLASS_NUMBER):
-                                                self.output_dict[beach_state][size_class][:] += dataset_post[beach_state][size_class][:]
+                                                self.output_dict[beach_state][size_class] += dataset_post[beach_state][size_class]
                                         else:
                                             if month == 1:
                                                 self.output_dict[beach_state] += dataset_post[beach_state]
