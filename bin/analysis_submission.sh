@@ -225,9 +225,9 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
           STARTYEAR=${YEAR}
           export STARTYEAR
           RUN=${RUNLENGTH}
-          RESTART=0
+          RESTARTNUM=0
           export RUN
-          export RESTART
+          export RESTARTNUM
           # specifying the parts of the submission file
           part1="#!/bin/sh"
           part2="#SBATCH --mail-type=begin,end,fail"
