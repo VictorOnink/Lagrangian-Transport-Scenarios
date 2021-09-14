@@ -8,7 +8,7 @@ from progressbar import ProgressBar
 from copy import deepcopy
 
 
-class parcels_to_concentration():
+class parcels_to_concentration:
     def __init__(self, file_dict: dict):
         self.parallel_step = settings.PARALLEL_STEP
         self.file_dict = file_dict
@@ -72,7 +72,6 @@ class parcels_to_concentration():
             utils.print_statement(print_statement, to_print=True)
 
         elif self.parallel_step == 2:
-            print('run {} restart {}'.format(settings.RUN, settings.RESTART))
             pbar = ProgressBar()
             for ind_year, year in pbar(enumerate(range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH))):
                 for month in range(1, 13):
@@ -87,7 +86,7 @@ class parcels_to_concentration():
                                     for size_class in range(settings.SIZE_CLASS_NUMBER):
                                         key_year = utils.analysis_simulation_year_key(restart)
                                         self.output_dict[key_year][beach_state][size_class] += dataset_post[key_year][beach_state][size_class]
-                                 # utils.remove_file(file_name)
+                                utils.remove_file(file_name)
                             else:
                                 if month == 1:
                                     file_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
@@ -116,7 +115,6 @@ class parcels_to_concentration():
                     self.output_dict['overall_concentration'][beach_state][size_class] /= settings.SIM_LENGTH
 
             # Saving the computed concentration
-            print('run {} restart {}'.format(settings.RUN, settings.RESTART))
             output_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
                                          directory=self.output_direc, final=True)
             utils.save_obj(output_name, self.output_dict)
@@ -227,8 +225,6 @@ def get_file_names(scenario_name, file_dict, directory, final, year=settings.STA
     split = {True: None, False: '.nc'}[final]
     prefix = 'horizontal_concentration'
     if scenario_name in ['FragmentationKaandorpPartial']:
-        if final:
-            print('{} {} {} {}'.format(year, month, run, restart))
         output_name = directory + utils.analysis_save_file_name(input_file=file_dict['postprocess'][year][month][run][restart],
                                                                 prefix=prefix, split=split)
     else:
@@ -275,10 +271,6 @@ def calculate_concentration(lon, lat, weights, hex_grid, time_steps, lon_bin, la
     # Get the average per day, so divide by the number of days in the year
     hexagon_cumulative_sum /= time_steps
     # Get the concentration onto the advection grid
-    key_year = utils.analysis_simulation_year_key(settings.RESTART)
-    concentration, _, _ = utils.histogram(lon_data=hexagon_coord[:, 0],
-                                                      lat_data=hexagon_coord[:, 1],
-                                                      bins_Lon=lon_bin, bins_Lat=lat_bin,
-                                                      weight_data=hexagon_cumulative_sum
-                                                      )
+    concentration, _, _ = utils.histogram(lon_data=hexagon_coord[:, 0], lat_data=hexagon_coord[:, 1],
+                                          bins_Lon=lon_bin, bins_Lat=lat_bin, weight_data=hexagon_cumulative_sum)
     return concentration

@@ -3,182 +3,109 @@ import utils
 from advection_scenarios import advection_files
 from netCDF4 import Dataset
 import numpy as np
-import progressbar
+from progressbar import ProgressBar
 import os
 from copy import deepcopy
 from datetime import datetime, timedelta
 
-if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
-    if settings.PARALLEL_STEP == 1:
-        def parcels_to_vertical_concentration(file_dict: dict):
-            # Set the bins used to calculate the vertical concentration
-            depth_bins = determine_depth_bins()
 
-            # Getting the directory saving the output files
-            temp_direc, _ = get_directories(scenario_name=settings.SCENARIO_NAME)
+class parcels_to_vertical_concentration:
+    def __init__(self, file_dict: dict):
+        self.parallel_step = settings.PARALLEL_STEP
+        self.file_dict = file_dict
+        self.depth_bins = determine_depth_bins()
+        self.temp_direc, self.output_direc = get_directories(scenario_name=settings.SCENARIO_NAME)
+        self.output_dict = create_output_dict(scenario_name=settings.SCENARIO_NAME, depth_bins=self.depth_bins)
 
+    def run(self):
+        if self.parallel_step == 1:
             # Setting the time boundaries so that we can get the time points at the end of each month, which we in turn
             # can use to select all floating particles within a given time period
             time_list, days_in_month = determine_month_boundaries()
 
-            # Create the output dictionary
-            output_dict = create_output_dict(scenario_name=settings.SCENARIO_NAME, depth_bins=depth_bins)
-
-            # Looping through all the simulation years and runs
+            # Loading the data
             year, month, run, restart = settings.STARTYEAR, settings.STARTMONTH, settings.RUN, settings.RESTART
             print_statement = 'year {}-{}, run {} restart {}'.format(year, month, run, restart)
-
             utils.print_statement(print_statement, to_print=True)
-            # Load the depth data, with monthly intervals
-            parcels_file = file_dict['parcels'][year][month][run][restart]
-            post_file = file_dict['postprocess'][year][month][run][restart]
-            parcels_dataset = Dataset(parcels_file)
-            post_dataset = utils.load_obj(post_file)
-            run_restart_dict = {}
-            for key in ['z', 'beach', 'size_class']:
-                run_restart_dict[key] = parcels_dataset.variables[key][:, :-1].flatten()
-            run_restart_dict['particle_number'] = post_dataset['particle_number'][:, :-1].flatten()
-            time = parcels_dataset.variables['time'][:, :-1].flatten()
+            parcels_dataset, post_dataset = load_parcels_post_output(scenario_name=settings.SCENARIO_NAME,
+                                                                     file_dict=self.file_dict)
+            # Load the relevant fields into run_restart_dict and flattening the arrays
+            run_restart_dict = set_run_restart_dict(settings.SCENARIO_NAME, parcels_dataset, post_dataset)
 
+            # Looping through the various months
             for index_time in range(1, time_list.__len__()):
                 month_index = (index_time - 1) % 12
-                year_index = (index_time - 1) // 12
-                selection = (time > time_list[index_time - 1]) & (time <= time_list[index_time])
+                key_year = utils.analysis_simulation_year_key((index_time - 1) // 12)
+                # selecting all points within the month in question
+                selection = (run_restart_dict['time'] > time_list[index_time - 1]) & (run_restart_dict['time'] <= time_list[index_time])
                 select_dict = {}
                 for key in run_restart_dict.keys():
                     select_dict[key] = run_restart_dict[key][selection]
                 # Picking out the non-beached particles
                 selection = select_dict['beach'] == 0
-                for key in ['z', 'particle_number', 'size_class']:
-                    select_dict[key] = select_dict[key][selection]
-                for size_class in range(settings.SIZE_CLASS_NUMBER):
-                    size_dict = {}
-                    for variable in ['z', 'particle_number']:
-                        size_dict[variable] = select_dict[variable][select_dict['size_class'] == size_class]
-                    histogram_counts, _ = np.histogram(size_dict['z'], bins=depth_bins, weights=size_dict['particle_number'])
+                for key in select_dict.keys():
+                    if key != 'beach':
+                        select_dict[key] = select_dict[key][selection]
+                # If size_class is a variable, then we break down the calculation to separate size classes, otherwise
+                # we go straight to calculating the distribution
+                if 'size_class' in select_dict.keys():
+                    for size_class in range(settings.SIZE_CLASS_NUMBER):
+                        size_dict = {}
+                        for variable in ['z', 'weights']:
+                            size_dict[variable] = select_dict[variable][select_dict['size_class'] == size_class]
+                        histogram_counts, _ = np.histogram(size_dict['z'], bins=self.file_dict, weights=size_dict['weights'])
+                        # Divide the counts by the number of days in the month
+                        histogram_counts /= days_in_month[index_time]
+                        self.output_dict[key_year][month_index][size_class]['concentration'] += histogram_counts
+                        self.output_dict[key_year][month_index][size_class]['counts'] += np.nansum(histogram_counts)
+                else:
+                    histogram_counts, _ = np.histogram(select_dict['z'], bins=self.file_dict, weights=select_dict['weights'])
                     # Divide the counts by the number of days in the month
                     histogram_counts /= days_in_month[index_time]
-                    key_year = utils.analysis_simulation_year_key(year_index)
-                    output_dict[key_year][month_index][size_class]['concentration'] += histogram_counts
-                    output_dict[key_year][month_index][size_class]['counts'] += np.nansum(histogram_counts)
+                    self.output_dict[key_year][month_index]['concentration'] += histogram_counts
+                    self.output_dict[key_year][month_index]['counts'] += np.nansum(histogram_counts)
 
-            # Saving the output
-            output_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=file_dict, directory=temp_direc,
-                                         final=False)
-            utils.save_obj(output_name, output_dict)
-            utils.print_statement("The vertical concentration has been saved")
+            output_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
+                                         directory=self.temp_direc, final=False)
+            utils.save_obj(output_name, self.output_dict)
+            str_format = settings.STARTYEAR, settings.STARTMONTH, settings.RUN, settings.RESTART
+            print_statement = 'The vertical concentration for year {}-{}, run {} restart {} has been save'.format(*str_format)
+            utils.print_statement(print_statement, to_print=True)
 
-    if settings.PARALLEL_STEP == 2:
-        def parcels_to_vertical_concentration(file_dict: dict):
-            # Set the bins used to calculate the vertical concentration
-            depth_bins = determine_depth_bins()
-
-            # Getting the directory saving the output files
-            temp_direc, output_direc = get_directories(scenario_name=settings.SCENARIO_NAME)
-
-            # Setting the time boundaries so that we can get the time points at the end of each month, which we in turn
-            # can use to select all floating particles within a given time period
-            time_list, days_in_month = determine_month_boundaries()
-
-            # Create the output dictionary
-            output_dict = create_output_dict(scenario_name=settings.SCENARIO_NAME, depth_bins=depth_bins)
-
-            # Looping through all the simulation years and runs
-            pbar = progressbar.ProgressBar()
+        elif self.parallel_step == 2:
+            pbar = ProgressBar()
             for ind_year, year in pbar(enumerate(range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH))):
                 for month in range(1, 13):
                     for run in range(0, settings.RUN_RANGE):
-                        # Loop through the restart files
                         for restart in range(0, settings.SIM_LENGTH - ind_year):
-                            print_statement = 'year {}-{}, run {} restart {}'.format(year, month, run, restart)
-                            utils.print_statement(print_statement, to_print=True)
-                            # Load the depth data, with monthly intervals
-                            parcels_file = file_dict['parcels'][year][month][run][restart]
-                            post_file = file_dict['postprocess'][year][month][run][restart]
-                            parcels_dataset = Dataset(parcels_file)
-                            post_dataset = utils.load_obj(post_file)
-                            run_restart_dict = {}
-                            for key in ['z', 'beach', 'size_class']:
-                                run_restart_dict[key] = parcels_dataset.variables[key][:, :-1].flatten()
-                            run_restart_dict['particle_number'] = post_dataset['particle_number'][:, :-1].flatten()
-                            time = parcels_dataset.variables['time'][:, :-1].flatten()
+                            if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
+                                file_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
+                                                           directory=self.temp_direc, final=False, year=year, month=month,
+                                                           run=run, restart=restart)
+                                dataset_post = utils.load_obj(filename=file_name)
 
-                            for index_time in range(1, time_list.__len__()):
-                                month_index = (index_time - 1) % 12
-                                year_index = (index_time - 1) // 12
-                                selection = (time > time_list[index_time - 1]) & (time <= time_list[index_time])
-                                select_dict = {}
-                                for key in run_restart_dict.keys():
-                                    select_dict[key] = run_restart_dict[key][selection]
-                                # Picking out the non-beached particles
-                                selection = select_dict['beach'] == 0
-                                for key in ['z', 'particle_number', 'size_class']:
-                                    select_dict[key] = select_dict[key][selection]
-                                for size_class in range(settings.SIZE_CLASS_NUMBER):
-                                    size_dict = {}
-                                    for variable in ['z', 'particle_number']:
-                                        size_dict[variable] = select_dict[variable][
-                                            select_dict['size_class'] == size_class]
-                                    histogram_counts, _ = np.histogram(size_dict['z'], bins=depth_bins,
-                                                                       weights=size_dict['particle_number'])
-                                    # Divide the counts by the number of days in the month
-                                    histogram_counts /= days_in_month[index_time]
-                                    key_year = utils.analysis_simulation_year_key(year_index)
-                                    output_dict[key_year][month_index][size_class]['concentration'] += histogram_counts
-                                    output_dict[key_year][month_index][size_class]['counts'] += np.nansum(
-                                        histogram_counts)
-
+                                for key_year in self.output_dict.keys():
+                                    for month_index in self.output_dict[key_year].keys():
+                                        for size_class in self.output_dict[key_year][month_index].keys():
+                                            self.output_dict[key_year][month_index][size_class] += dataset_post[key_year][month_index][size_class]
+                                utils.remove_file(file_name)
+                            else:
+                                if month == 1:
+                                    file_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
+                                                               directory=self.temp_direc, final=False, year=year, run=run,
+                                                               restart=restart)
+                                    dataset_post = utils.load_obj(filename=file_name)
+                                    for key_year in self.output_dict.keys():
+                                        for month_index in self.output_dict[key_year].keys():
+                                            self.output_dict[key_year][month_index] += dataset_post[key_year][month_index]
+                                    utils.remove_file(file_name)
             # Saving the output
-            output_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=file_dict,
-                                         directory=output_direc, final=True)
-            utils.save_obj(output_name, output_dict)
+            output_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
+                                         directory=self.output_direc, final=True)
+            utils.save_obj(output_name, self.output_dict)
             utils.print_statement("The vertical concentration has been saved")
-
-else:
-    def parcels_to_vertical_concentration(file_dict: dict):
-        # Set the bins used to calculate the vertical concentration
-        depth_bins = determine_depth_bins()
-
-        # Getting the directory saving the output files
-        output_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/{}/'.format(settings.SCENARIO_NAME)
-        utils.check_direc_exist(output_direc)
-
-        # Setting the time boundaries so that we can get the time points at the end of each month, which we in turn can
-        # use to select all floating particles within a given time period
-        time_list, days_in_month = determine_month_boundaries()
-
-        # Create the output dictionary
-        output_dict = create_output_dict(scenario_name=settings.SCENARIO_NAME, depth_bins=depth_bins)
-
-        # Looping through all the simulation years and runs
-        pbar = progressbar.ProgressBar()
-        for run in pbar(range(settings.RUN_RANGE)):
-            # Loop through the restart files
-            for restart in range(settings.SIM_LENGTH):
-                key_year = utils.analysis_simulation_year_key(restart)
-                # Load the depth data, with monthly intervals
-                parcels_file = file_dict[run][restart]
-                dataset = Dataset(parcels_file)
-                depth = dataset.variables['z'][:]
-                beach = dataset.variables['beach'][:]
-                time_interval = depth.shape[1] // 365 * 31
-                depth = depth[:, ::time_interval]
-                beach = beach[:, ::time_interval]
-                # Start looping through the different time intervals
-                for month in range(depth.shape[1]):
-                    # Checking to make sure we don't have any nan values, or particles with beach==2 (indicating a particle
-                    # that was previously removed)
-                    non_nan_values = (~np.isnan(depth[:, month])) & (beach[:, month] != 2)
-                    depth_month = depth[:, month][non_nan_values]
-                    # Now, calculating the vertical histogram
-                    histogram_counts, _ = np.histogram(depth_month, bins=depth_bins)
-                    output_dict[key_year][month] += histogram_counts
-
-        # Saving the output
-        output_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=file_dict, directory=output_direc,
-                                     final=True)
-        utils.save_obj(output_name, output_dict)
-        utils.print_statement("The vertical concentration has been saved")
+        else:
+            ValueError('settings.PARALLEL_STEP can not have a value of {}'.format(self.parallel_step))
 
 
 ########################################################################################################################
@@ -247,3 +174,25 @@ def get_file_names(scenario_name, file_dict, directory, final, year=settings.STA
         output_name = directory + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix, split=split)
     return output_name
 
+
+def load_parcels_post_output(scenario_name, file_dict, year=settings.STARTYEAR, month=settings.STARTMONTH,
+                             run=settings.RUN, restart=settings.RESTART):
+    if scenario_name in ['FragmentationKaandorpPartial']:
+        parcels_dataset = Dataset(file_dict['parcels'][year][month][run][restart])
+        post_dataset = utils.load_obj(file_dict['postprocess'][year][month][run][restart])
+    else:
+        parcels_dataset = Dataset(file_dict[run][restart])
+        post_dataset = None
+    return parcels_dataset, post_dataset
+
+
+def set_run_restart_dict(scenario_name, parcels_dataset, post_dataset):
+    run_restart_dict = {}
+    for variable in ['z', 'beach', 'time']:
+        run_restart_dict[variable] = parcels_dataset.variables[variable][:, :-1].flatten()
+    if scenario_name in ['FragmentationKaandorpPartial']:
+        run_restart_dict['size_class'] = parcels_dataset.variables['size_class'][:, :-1].flatten()
+        run_restart_dict['weights'] = post_dataset['particle_number'][:, :-1].flatten()
+    else:
+        run_restart_dict['weights'] = np.ones(run_restart_dict[variable].shape, dtype=float)
+    return run_restart_dict
