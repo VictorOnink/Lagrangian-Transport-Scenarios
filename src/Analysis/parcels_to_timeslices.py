@@ -52,8 +52,8 @@ class parcels_to_timeslicing:
                                 file_name = get_file_names(file_dict=self.file_dict, directory=self.temp_direc,
                                                            final=False, year=year, month=month, run=run,
                                                            restart=restart, prefix=prefix)
-                                date_dict = utils.load_obj(filename=file_name)
                                 if utils.check_file_exist(file_name):
+                                    date_dict = utils.load_obj(filename=file_name)
                                     output_name = get_file_names(file_dict=self.file_dict, directory=self.output_direc,
                                                                  final=True, prefix=prefix)
                                     if utils.check_file_exist(output_name):

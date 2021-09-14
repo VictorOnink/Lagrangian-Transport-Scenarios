@@ -12,7 +12,7 @@ from copy import deepcopy
 def parcels_to_basicstatistics(file_dict: dict):
     """
     This is a general function that we can use to calculate max, min and mean values of particle values. It won't be
-    equally meaningfun for each variable, but these properties should be relatively cheap to compute
+    equally meaningful for each variable, but these properties should be relatively cheap to compute
     :param file_dict:
     :return:
     """
