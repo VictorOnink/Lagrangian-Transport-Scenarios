@@ -79,7 +79,7 @@ class parcels_to_timeseries:
                                     if beach_state != 'time':
                                         if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                                             for size_class in range(settings.SIZE_CLASS_NUMBER):
-                                                self.output_dict[beach_state][size_class] += dataset_post[beach_state][size_class]
+                                                self.output_dict[beach_state][size_class][:] += dataset_post[beach_state][size_class][:]
                                         else:
                                             if month == 1:
                                                 self.output_dict[beach_state] += dataset_post[beach_state]
@@ -125,12 +125,15 @@ def create_output_dict_time_list(beach_label_dict):
     base_array = np.zeros(time_list.__len__(), dtype=float)
     for beach_state in beach_label_dict.keys():
         if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
+            output_dict['total'] = {}
             output_dict[beach_state] = {}
             for size_class in range(settings.SIZE_CLASS_NUMBER):
                 output_dict[beach_state][size_class] = deepcopy(base_array)
+                output_dict['total'][size_class] = deepcopy(base_array)
+
         else:
             output_dict[beach_state] = deepcopy(base_array)
-    output_dict['total'] = np.zeros(time_list.__len__(), dtype=float)
+            output_dict['total'] = deepcopy(base_array)
     return output_dict, time_list
 
 
