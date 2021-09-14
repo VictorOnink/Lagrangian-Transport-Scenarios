@@ -115,6 +115,7 @@ class parcels_to_concentration():
                     self.output_dict['overall_concentration'][beach_state][size_class] /= settings.SIM_LENGTH
 
             # Saving the computed concentration
+            print('run {} restart {}'.format(settings.RUN, settings.RESTART))
             output_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
                                          directory=self.output_direc, final=True)
             utils.save_obj(output_name, self.output_dict)
@@ -230,7 +231,7 @@ def get_file_names(scenario_name, file_dict, directory, final, year=settings.STA
         output_name = directory + utils.analysis_save_file_name(input_file=file_dict['postprocess'][year][month][run][restart],
                                                                 prefix=prefix, split=split)
     else:
-        output_name = directory + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix, split=split)
+        output_name = directory + utils.analysis_save_file_name(input_file=file_dict[run][restart], prefix=prefix, split=split)
     return output_name
 
 
