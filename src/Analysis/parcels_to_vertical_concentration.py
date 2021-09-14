@@ -85,9 +85,10 @@ class parcels_to_vertical_concentration:
                                 dataset_post = utils.load_obj(filename=file_name)
 
                                 for key_year in self.output_dict.keys():
-                                    for month_index in self.output_dict[key_year].keys():
-                                        for size_class in self.output_dict[key_year][month_index].keys():
-                                            self.output_dict[key_year][month_index][size_class] += dataset_post[key_year][month_index][size_class]
+                                    if key_year != 'depths':
+                                        for month_index in self.output_dict[key_year].keys():
+                                            for size_class in self.output_dict[key_year][month_index].keys():
+                                                self.output_dict[key_year][month_index][size_class] += dataset_post[key_year][month_index][size_class]
                                 utils.remove_file(file_name)
                             else:
                                 if month == 1:
@@ -96,8 +97,9 @@ class parcels_to_vertical_concentration:
                                                                restart=restart)
                                     dataset_post = utils.load_obj(filename=file_name)
                                     for key_year in self.output_dict.keys():
-                                        for month_index in self.output_dict[key_year].keys():
-                                            self.output_dict[key_year][month_index] += dataset_post[key_year][month_index]
+                                        if key_year != 'depths':
+                                            for month_index in self.output_dict[key_year].keys():
+                                                self.output_dict[key_year][month_index] += dataset_post[key_year][month_index]
                                     utils.remove_file(file_name)
             # Saving the output
             output_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
