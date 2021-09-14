@@ -7,7 +7,7 @@ export SUBMISSION
 DEBUG=0 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation
-SCENARIO=7
+SCENARIO=5
 export SCENARIO
 #for scenario 1, the time a particle must be near the coast to beach (in days)
 VICINITY=2
@@ -22,7 +22,7 @@ export SHOREDEPEN
 WMIN=3
 export WMIN
 #for scenario 5 and 6, the initial size of the particle in 1e-6 m and the rho of the particle
-PARTICLE_SIZE_list=(5000)
+PARTICLE_SIZE_list=(20 156 313 78)
 INIT_DENSITY=920
 export INIT_DENSITY
 #for scenarios 5 - 7, the critical bottom shear stress for particle resuspension (x1e-3)
@@ -44,7 +44,7 @@ export OCEAN_FRAG
 # to calculate the particle numbers.
 # POST_PROCESS == 0 -> run lagrangian simulation
 # POST_PROCESS == 1 -> run post processing
-POST_PROCESS=1
+POST_PROCESS=0
 export POST_PROCESS
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010
@@ -122,6 +122,11 @@ if [ "$SCENARIO" -eq "7" -a "$POST_PROCESS" -eq "0" ]; then
     exit
   fi
 fi
+if [ "$SCENARIO" -ne "7" -a  "$POST_PROCESS" -ne "0" ]; then
+  echo 'Postprocessing only applies for KaandorpFragmentationPartial, not any other scenario'
+  exit
+fi
+
 
 #####################################################################################
 # Creating the submission file and submitting the job                               #

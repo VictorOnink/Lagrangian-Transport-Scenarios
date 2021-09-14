@@ -156,6 +156,10 @@ def set_full_data_dict(parcels_dataset, post_dataset):
         full_data_dict['weights'] = post_dataset['particle_number'][:, :-1].flatten()
     else:
         full_data_dict['weights'] = np.ones(full_data_dict['lon'].shape, dtype=float)
+    # Only return the non-nan values
+    is_not_nan = ~np.isnan(full_data_dict['lon'])
+    for variable in full_data_dict.keys():
+        full_data_dict[variable] = full_data_dict[variable][is_not_nan]
     return full_data_dict
 
 

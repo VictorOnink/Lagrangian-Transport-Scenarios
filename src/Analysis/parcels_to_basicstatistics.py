@@ -9,6 +9,41 @@ import os
 from copy import deepcopy
 
 
+class parcels_to_basicstatistics:
+    """
+    This is a general function that we can use to calculate max, min and mean values of particle values. It won't be
+    equally meaningful for each variable, but these properties should be relatively cheap to compute
+    :param file_dict:
+    :return:
+    """
+
+    def __init__(self, file_dict: dict):
+        self.parallel_step = settings.PARALLEL_STEP
+        self.file_dict = file_dict
+        self.temp_direc, self.output_direc = get_directories(scenario_name=settings.SCENARIO_NAME)
+        self.variable_list = ['z', 'horizontal_distance', 'vertical_distance']
+        self.stats_list = ['mean', 'max', 'min', 'std', 'count']
+
+    def run(self):
+        if self.parallel_step == 1:
+            parcels_dataset, _ = load_parcels_post_output(file_dict=self.file_dict)
+            output_dict = create_output_dict(dataset=parcels_dataset, stats_list=self.stats_list)
+            # Loading the data
+            variable_list = set_variable_list(parcels_dataset)
+            data_dict = {}
+            for variable in self.variable_list:
+                if variable in parcels_dataset.variables.keys():
+                    data_dict[variable] = parcels_dataset.variables[variable][:, :-1]
+
+
+        elif self.parallel_step == 2:
+
+        else:
+            ValueError('settings.PARALLEL_STEP can not have a value of {}'.format(self.parallel_step))
+
+def create_output_dict(dataset, stats_list):
+    base_array = np.zeros(dataset.dimensions['traj'].size,)
+
 def parcels_to_basicstatistics(file_dict: dict):
     """
     This is a general function that we can use to calculate max, min and mean values of particle values. It won't be
@@ -103,3 +138,49 @@ def parcels_to_basicstatistics(file_dict: dict):
     output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
     utils.save_obj(output_name, output_dict)
     utils.print_statement("The basic statistics output has been saved")
+
+
+########################################################################################################################
+"""
+These following functions are used across all scenarios
+"""
+
+
+def get_directories(scenario_name):
+    temp_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/{}/temporary/'.format(scenario_name)
+    output_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/{}/'.format(scenario_name)
+    utils.check_direc_exist(temp_direc)
+    utils.check_direc_exist(output_direc)
+    return temp_direc, output_direc
+
+
+def load_parcels_post_output(file_dict, year=settings.STARTYEAR, month=settings.STARTMONTH,
+                             run=settings.RUN, restart=settings.RESTART):
+    if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
+        parcels_dataset = Dataset(file_dict['parcels'][year][month][run][restart])
+        post_dataset = utils.load_obj(file_dict['postprocess'][year][month][run][restart])
+    else:
+        parcels_dataset = Dataset(file_dict[run][restart])
+        post_dataset = None
+    return parcels_dataset, post_dataset
+
+
+def get_file_names(file_dict, directory, final, year=settings.STARTYEAR, month=settings.STARTMONTH,
+                   run=settings.RUN, restart=settings.RESTART):
+    split = {True: None, False: '.nc'}[final]
+    prefix = 'basic_statistics'
+    if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
+        output_name = directory + utils.analysis_save_file_name(input_file=file_dict['postprocess'][year][month][run][restart],
+        prefix=prefix, split=split)
+    else:
+        output_name = directory + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix, split=split)
+    return output_name
+
+
+def set_variable_list(parcels_dataset):
+    variable_list = list(parcels_dataset.variables.keys())
+    for remove_variable in ['time', 'trajectory', 'lat', 'lon', 'beach', 'age', 'reynolds', 'size',
+                            'to_split', 'size_class', 'size', 'parent']:
+        if remove_variable in variable_list:
+            variable_list.remove(remove_variable)
+    return variable_list

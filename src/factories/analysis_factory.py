@@ -24,7 +24,7 @@ class AnalysisFactory():
             Analysis.parcels_to_timeslicing(file_dict=file_dict).run()
         if statistics:
             utils.print_statement("Calculating basic particle trajectory statistics", to_print=True)
-            Analysis.parcels_to_basicstatistics(file_dict=file_dict)
+            Analysis.parcels_to_basicstatistics(file_dict=file_dict).run()
         if separation_distance:
             utils.print_statement("Computing separation distances", to_print=True)
             Analysis.parcels_to_separation_distance(file_dict=file_dict, scenario=scenario)
