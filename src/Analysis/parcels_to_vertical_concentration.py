@@ -53,13 +53,13 @@ class parcels_to_vertical_concentration:
                         size_dict = {}
                         for variable in ['z', 'weights']:
                             size_dict[variable] = select_dict[variable][select_dict['size_class'] == size_class]
-                        histogram_counts, _ = np.histogram(size_dict['z'], bins=self.file_dict, weights=size_dict['weights'])
+                        histogram_counts, _ = np.histogram(size_dict['z'], bins=self.depth_bins, weights=size_dict['weights'])
                         # Divide the counts by the number of days in the month
                         histogram_counts /= days_in_month[index_time]
                         self.output_dict[key_year][month_index][size_class]['concentration'] += histogram_counts
                         self.output_dict[key_year][month_index][size_class]['counts'] += np.nansum(histogram_counts)
                 else:
-                    histogram_counts, _ = np.histogram(select_dict['z'], bins=self.file_dict, weights=select_dict['weights'])
+                    histogram_counts, _ = np.histogram(select_dict['z'], bins=self.depth_bins, weights=select_dict['weights'])
                     # Divide the counts by the number of days in the month
                     histogram_counts /= days_in_month[index_time]
                     self.output_dict[key_year][month_index]['concentration'] += histogram_counts
