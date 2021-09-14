@@ -11,7 +11,7 @@ class AnalysisFactory():
             Analysis.parcels_to_concentration(file_dict=file_dict).run()
         if vertical_concentration:
             utils.print_statement("Calculating the vertical concentration", to_print=True)
-            Analysis.parcels_to_vertical_concentration(file_dict=file_dict)
+            Analysis.parcels_to_vertical_concentration(file_dict=file_dict).run()
         if timeseries:
             utils.print_statement("Calculating timeseries of beached fractions", to_print=True)
             Analysis.parcels_to_timeseries(file_dict=file_dict)

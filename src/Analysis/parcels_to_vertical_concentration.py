@@ -140,7 +140,8 @@ def determine_month_boundaries():
 def create_output_dict(scenario_name, depth_bins):
     # Creating the output dict containing the depth bins, and creating the base_dict, which is lowest dictionary level
     # that will contain the particle counts and the concentration
-    output_dict = {'depth': depth_bins}
+    depth_mid = 0.5 * depth_bins[1:] + 0.5 * depth_bins[:-1]
+    output_dict = {'depth': depth_mid}
     base_dict = {'counts': 0.0, 'concentration': np.zeros(depth_bins.__len__() - 1, dtype=np.float32)}
     for simulation_year in range(settings.SIM_LENGTH + 1):
         key_year = utils.analysis_simulation_year_key(simulation_year)
