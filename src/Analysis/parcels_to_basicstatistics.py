@@ -163,7 +163,7 @@ def concatenate_variable(run_dict, variable, restart, parcels_dataset):
             if variable_array.shape[0] == run_dict[variable].shape[0]:
                 run_dict[variable] = np.concatenate((run_dict[variable], variable_array), axis=1)
             else:
-                additional_row = np.ones(run_dict.shape[1]) * np.nan
+                additional_row = np.ones(run_dict[variable].shape[1]) * np.nan
                 while run_dict[variable].shape[0] < variable_array.shape[0]:
                     run_dict[variable] = np.concatenate((run_dict[variable], [additional_row]), axis=0)
                 run_dict[variable] = np.concatenate((run_dict[variable], variable_array), axis=1)
