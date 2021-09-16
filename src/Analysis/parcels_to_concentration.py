@@ -113,7 +113,7 @@ class parcels_to_concentration:
                     for size_class in self.output_dict[key_year][beach_state].keys():
                         self.output_dict['overall_concentration'][beach_state][size_class] /= settings.SIM_LENGTH
                 else:
-                    self.output_dict['overall_concentration'][beach_state][size_class] /= settings.SIM_LENGTH
+                    self.output_dict['overall_concentration'][beach_state] /= settings.SIM_LENGTH
 
             # Saving the computed concentration
             output_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
