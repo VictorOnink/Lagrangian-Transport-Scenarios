@@ -39,7 +39,7 @@ class parcels_to_basicstatistics:
             pbar = ProgressBar()
             for ind_year, year in pbar(enumerate(range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH))):
                 for month in range(1, 13):
-                    if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial'] or month == 1:
+                    if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial'] or (month == 1) & (year == settings.STARTYEAR):
                         for run in range(0, settings.RUN_RANGE):
                             utils.print_statement('{}-{}, run = {}'.format(year, month, run), to_print=True)
                             run_dict = {}
@@ -67,7 +67,7 @@ class parcels_to_basicstatistics:
                                             for statistic in self.stats_list:
                                                 result = calculate_statistic(statistic=statistic, data=size_data_dict[variable])
                                                 if result is None:
-                                                    result = np.ones(beach_data_dict[variable].shape) * 1e20
+                                                    result = np.ones((beach_data_dict[variable].shape[0], 1)) * 1e20
                                                 self.output_dict[variable][beach_state][size_class][statistic] = np.concatenate((self.output_dict[variable][beach_state][size_class][statistic],
                                                                                                                                  result), axis=0)
                                 else:
@@ -76,9 +76,6 @@ class parcels_to_basicstatistics:
                                             result = calculate_statistic(statistic=statistic, data=beach_data_dict[variable])
                                             if result is None:
                                                 result = np.ones((beach_data_dict[variable].shape[0], 1)) * 1e20
-                                            utils.print_statement(result.shape,
-                                                                  to_print=True)
-
                                             self.output_dict[variable][beach_state][statistic] = np.concatenate(
                                                 (self.output_dict[variable][beach_state][statistic], result), axis=0)
             # remove the first element of each array, as this was a dummy that was just there to initialize the array
