@@ -57,6 +57,7 @@ class parcels_to_concentration:
                                                                                                       lon_bin=self.LON,
                                                                                                       lat_bin=self.LAT)
                 else:
+                    key_year = utils.analysis_simulation_year_key(settings.RESTART)
                     self.output_dict[key_year][beach_state] = calculate_concentration(lon=state_data['lon'],
                                                                                       lat=state_data['lat'],
                                                                                       weights=state_data['weights'],
