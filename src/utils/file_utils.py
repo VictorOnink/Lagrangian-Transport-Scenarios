@@ -132,3 +132,7 @@ def create_list(var, length):
 def print_statement(statement, to_print=False):
     if settings.SUBMISSION in ['simulation'] or to_print is True:
         os.system('echo {}'.format(statement))
+
+
+def flatten_list_of_lists(t):
+    return [item for sublist in t for item in sublist]

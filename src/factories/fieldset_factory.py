@@ -7,9 +7,7 @@ import math
 import utils
 
 
-class FieldSetFactory():
-    """"""
-
+class FieldSetFactory:
     @classmethod
     def create_fieldset(cls, file_dict: dict, stokes: int,
                         stokes_depth: bool = False,

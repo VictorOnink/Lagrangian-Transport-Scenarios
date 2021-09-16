@@ -2,7 +2,7 @@ import Analysis
 import utils
 
 
-class AnalysisFactory():
+class AnalysisFactory:
     def create_procedure(file_dict: dict, scenario, concentration: bool = False, timeseries: bool = False,
                          max_distance: bool = False, vertical_concentration: bool = False, timeslicing: bool = False,
                          statistics: bool = False, separation_distance: bool = False, size_spectrum: bool = False):
@@ -27,7 +27,8 @@ class AnalysisFactory():
             Analysis.parcels_to_basicstatistics(file_dict=file_dict).run()
         if separation_distance:
             utils.print_statement("Computing separation distances", to_print=True)
-            Analysis.parcels_to_separation_distance(file_dict=file_dict, scenario=scenario)
+            utils.print_statement("This is currently not rewritten for 2-stage parallel analysis", to_print=True)
+            # Analysis.parcels_to_separation_distance(file_dict=file_dict, scenario=scenario)
         if size_spectrum:
             utils.print_statement("Computing size distribution", to_print=True)
             Analysis.parcels_to_sizespectrum(file_dict=file_dict, scenario=scenario)
