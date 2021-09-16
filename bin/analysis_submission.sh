@@ -7,7 +7,7 @@ export SUBMISSION
 DEBUG=0 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation
-SCENARIO=7
+SCENARIO=5
 export SCENARIO
 #for scenario 1, the time a particle must be near the coast to beach (in days)
 VICINITY=2
@@ -22,7 +22,7 @@ export SHOREDEPEN
 WMIN=3
 export WMIN
 #for scenario 5 and 6, the initial size of the particle in 1e-6 m and the particle rho
-PARTICLE_SIZE_list=(5000)
+PARTICLE_SIZE_list=(5000 2500 1250 625 313 156 78 39 20 10 5 2)
 INIT_DENSITY=920
 export INIT_DENSITY
 #for scenario 5 and 6, the critical bottom shear stress for particle resuspension (x1e-3)
@@ -43,11 +43,11 @@ export OCEAN_FRAG
 #(1 10 100 200 300 388)
 #the starting year of the simulation, and how many years the simulation will take
 YEAR=2010
-STARTMONTH_list=(1 2 3 4 5 6 7 8 9 10 11 12)
+STARTMONTH_list=(1)
 STARTDAY=1
 export STARTDAY
 #Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=lebretondivision, 3=point, 4=uniform
-INPUT=2
+INPUT=1
 export INPUT
 #Which advection data do we want to use?
 # 0 = Global HYCOM, 1 = Caribbean HYCOM, 2 = Mediterranean CMEMS
@@ -75,14 +75,14 @@ export SERVER
 
 #A number of switches to indicate which analysis steps we want to run.
 #0 = off, 1 = on
-CONCENTRATION=0
-VERTICAL_CONCENTRATION=0
-TIMESERIES=0
+CONCENTRATION=1
+VERTICAL_CONCENTRATION=1
+TIMESERIES=1
 MAX_DISTANCE=0
-TIMESLICING=0
-STATISTICS=0
+TIMESLICING=1
+STATISTICS=1
 SEPARATION=0
-SIZE_SPECTRUM=1
+SIZE_SPECTRUM=0
 
 export CONCENTRATION
 export VERTICAL_CONCENTRATION
@@ -194,7 +194,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
                   part5="#SBATCH --output="runOutput/${RUNNAMEPREFIX}".o%j"
                   part6="#SBATCH --mem-per-cpu=20G"
                   if [ "$DEBUG" -eq "0" ]; then
-                    part7="#SBATCH --time=00:20:00"
+                    part7="#SBATCH --time=02:00:00"
                     part8="#SBATCH --partition=epyc2"
                     part9='#SBATCH --qos=job_epyc2'
                   else
