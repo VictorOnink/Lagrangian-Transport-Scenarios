@@ -155,7 +155,7 @@ def create_output_dict(stats_list, beach_state_list, variable_list):
 
 def concatenate_variable(run_dict, variable, restart, parcels_dataset):
     if variable in parcels_dataset.variables.keys():
-        variable_array = parcels_dataset.variables[:, :-1]
+        variable_array = parcels_dataset.variables[variable][:, :-1]
         if restart == 0:
             run_dict[variable] = variable_array
         else:
