@@ -66,13 +66,16 @@ class parcels_to_basicstatistics:
                                             size_data_dict[variable][size_data_dict['size_class'] != size_class] = np.nan
                                             for statistic in self.stats_list:
                                                 result = calculate_statistic(statistic=statistic, data=size_data_dict[variable])
+                                                if result is None:
+                                                    result = np.ones(beach_data_dict[variable].shape) * 1e20
                                                 self.output_dict[variable][beach_state][size_class][statistic] = np.concatenate((self.output_dict[variable][beach_state][size_class][statistic],
                                                                                                                                  result), axis=0)
                                 else:
                                     for variable in self.variable_list:
                                         for statistic in self.stats_list:
                                             result = calculate_statistic(statistic=statistic, data=beach_data_dict[variable])
-                                            utils.print_statement(result.shape, to_print=True)
+                                            if result is None:
+                                                result = np.ones(beach_data_dict[variable].shape) * 1e20
                                             self.output_dict[variable][beach_state][statistic] = np.concatenate(
                                                 (self.output_dict[variable][beach_state][statistic], result), axis=0)
             # remove the first element of each array, as this was a dummy that was just there to initialize the array
