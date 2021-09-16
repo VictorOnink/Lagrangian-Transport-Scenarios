@@ -38,7 +38,8 @@ class parcels_to_timeslicing:
                     prefix = 'timeslices_{}'.format(date)
                     output_name = get_file_names(file_dict=self.file_dict, prefix=prefix, directory=self.temp_direc,
                                                  final=False)
-                    utils.save_obj(filename=output_name, item=time_dict)
+                    if not utils.check_file_exist(output_name, without_pkl=True):
+                        utils.save_obj(filename=output_name, item=time_dict)
         elif self.parallel_step == 2:
             pbar = ProgressBar()
             for ind_year, year in pbar(enumerate(range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH))):

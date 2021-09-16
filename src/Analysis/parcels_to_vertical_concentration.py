@@ -27,50 +27,52 @@ class parcels_to_vertical_concentration:
             year, month, run, restart = settings.STARTYEAR, settings.STARTMONTH, settings.RUN, settings.RESTART
             print_statement = 'year {}-{}, run {} restart {}'.format(year, month, run, restart)
             utils.print_statement(print_statement, to_print=True)
-            parcels_dataset, post_dataset = load_parcels_post_output(scenario_name=settings.SCENARIO_NAME,
-                                                                     file_dict=self.file_dict)
-            # Load the relevant fields into run_restart_dict and flattening the arrays
-            run_restart_dict = set_run_restart_dict(settings.SCENARIO_NAME, parcels_dataset, post_dataset)
-
-            # Looping through the various months
-            for index_time in range(1, time_list.__len__()):
-                month_index = (index_time - 1) % 12
-                key_year = utils.analysis_simulation_year_key((index_time - 1) // 12)
-                # selecting all points within the month in question
-                selection = (run_restart_dict['time'] > time_list[index_time - 1]) & (run_restart_dict['time'] <= time_list[index_time])
-                select_dict = {}
-                for key in run_restart_dict.keys():
-                    select_dict[key] = run_restart_dict[key][selection]
-                # Picking out the non-beached particles
-                selection = select_dict['beach'] == 0
-                for key in select_dict.keys():
-                    if key != 'beach':
-                        select_dict[key] = select_dict[key][selection]
-                # If size_class is a variable, then we break down the calculation to separate size classes, otherwise
-                # we go straight to calculating the distribution
-                if 'size_class' in select_dict.keys():
-                    for size_class in range(settings.SIZE_CLASS_NUMBER):
-                        size_dict = {}
-                        for variable in ['z', 'weights']:
-                            size_dict[variable] = select_dict[variable][select_dict['size_class'] == size_class]
-                        histogram_counts, _ = np.histogram(size_dict['z'], bins=self.depth_bins, weights=size_dict['weights'])
-                        # Divide the counts by the number of days in the month
-                        histogram_counts /= days_in_month[index_time]
-                        self.output_dict[key_year][month_index][size_class]['concentration'] += histogram_counts
-                        self.output_dict[key_year][month_index][size_class]['counts'] += np.nansum(histogram_counts)
-                else:
-                    histogram_counts, _ = np.histogram(select_dict['z'], bins=self.depth_bins, weights=select_dict['weights'])
-                    # Divide the counts by the number of days in the month
-                    histogram_counts /= days_in_month[index_time]
-                    self.output_dict[key_year][month_index]['concentration'] += histogram_counts
-                    self.output_dict[key_year][month_index]['counts'] += np.nansum(histogram_counts)
-
             output_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
                                          directory=self.temp_direc, final=False)
-            utils.save_obj(output_name, self.output_dict)
-            str_format = settings.STARTYEAR, settings.STARTMONTH, settings.RUN, settings.RESTART
-            print_statement = 'The vertical concentration for year {}-{}, run {} restart {} has been save'.format(*str_format)
-            utils.print_statement(print_statement, to_print=True)
+            if not utils.check_file_exist(output_name, without_pkl=True):
+                parcels_dataset, post_dataset = load_parcels_post_output(scenario_name=settings.SCENARIO_NAME,
+                                                                         file_dict=self.file_dict)
+                # Load the relevant fields into run_restart_dict and flattening the arrays
+                run_restart_dict = set_run_restart_dict(settings.SCENARIO_NAME, parcels_dataset, post_dataset)
+
+                # Looping through the various months
+                for index_time in range(1, time_list.__len__()):
+                    month_index = (index_time - 1) % 12
+                    key_year = utils.analysis_simulation_year_key((index_time - 1) // 12)
+                    # selecting all points within the month in question
+                    selection = (run_restart_dict['time'] > time_list[index_time - 1]) & (run_restart_dict['time'] <= time_list[index_time])
+                    select_dict = {}
+                    for key in run_restart_dict.keys():
+                        select_dict[key] = run_restart_dict[key][selection]
+                    # Picking out the non-beached particles
+                    selection = select_dict['beach'] == 0
+                    for key in select_dict.keys():
+                        if key != 'beach':
+                            select_dict[key] = select_dict[key][selection]
+                    # If size_class is a variable, then we break down the calculation to separate size classes, otherwise
+                    # we go straight to calculating the distribution
+                    if 'size_class' in select_dict.keys():
+                        for size_class in range(settings.SIZE_CLASS_NUMBER):
+                            size_dict = {}
+                            for variable in ['z', 'weights']:
+                                size_dict[variable] = select_dict[variable][select_dict['size_class'] == size_class]
+                            histogram_counts, _ = np.histogram(size_dict['z'], bins=self.depth_bins, weights=size_dict['weights'])
+                            # Divide the counts by the number of days in the month
+                            histogram_counts /= days_in_month[index_time]
+                            self.output_dict[key_year][month_index][size_class]['concentration'] += histogram_counts
+                            self.output_dict[key_year][month_index][size_class]['counts'] += np.nansum(histogram_counts)
+                    else:
+                        histogram_counts, _ = np.histogram(select_dict['z'], bins=self.depth_bins, weights=select_dict['weights'])
+                        # Divide the counts by the number of days in the month
+                        histogram_counts /= days_in_month[index_time]
+                        self.output_dict[key_year][month_index]['concentration'] += histogram_counts
+                        self.output_dict[key_year][month_index]['counts'] += np.nansum(histogram_counts)
+
+
+                utils.save_obj(output_name, self.output_dict)
+                str_format = settings.STARTYEAR, settings.STARTMONTH, settings.RUN, settings.RESTART
+                print_statement = 'The vertical concentration for year {}-{}, run {} restart {} has been save'.format(*str_format)
+                utils.print_statement(print_statement, to_print=True)
 
         elif self.parallel_step == 2:
             pbar = ProgressBar()

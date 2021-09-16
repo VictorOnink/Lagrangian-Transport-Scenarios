@@ -21,47 +21,48 @@ class parcels_to_timeseries:
             year, month, run, restart = settings.STARTYEAR, settings.STARTMONTH, settings.RUN, settings.RESTART
             print_statement = 'year {}-{}, run {} restart {}'.format(year, month, run, restart)
             utils.print_statement(print_statement, to_print=True)
-            # Loading the data
-            parcels_dataset, post_dataset = load_parcels_post_output(scenario_name=settings.SCENARIO_NAME,
-                                                                     file_dict=self.file_dict)
-            full_data_dict = set_full_data_dict(parcels_dataset, post_dataset)
-            # Just get the particles within the domain, which we do by setting all values not within the
-            # domain to nan. These will therefore not be taken into account in the calculations of total
-            # counts/weights
-            within_domain = utils.particles_in_domain(domain=self.domain, lon=full_data_dict['lon'],
-                                                      lat=full_data_dict['lat'])
-            for variable in full_data_dict.keys():
-                full_data_dict[variable][within_domain is False] = np.nan
-            # Going through the timesteps
-            for time_index, time_value in enumerate(self.time_list):
-                time_selection = full_data_dict['time'] == time_value
-                if np.nansum(time_selection) > 0:
-                    time_dict = {}
-                    for variable in ['beach', 'weights', 'size_class']:
-                        if variable in full_data_dict.keys():
-                            time_dict[variable] = full_data_dict[variable][time_selection]
-                    for beach_state in self.beach_label_dict.keys():
-                        beach = time_dict['beach'] == self.beach_label_dict[beach_state]
-                        if 'size_class' in full_data_dict.keys():
-                            for size_class in range(settings.SIZE_CLASS_NUMBER):
-                                size = time_dict['size_class'] == size_class
-                                self.output_dict[beach_state][size_class][time_index] += np.nansum(time_dict['weights'][size & beach])
-                        else:
-                            self.output_dict[beach_state][time_index] += np.nansum(time_dict['weights'][beach])
-            # Calculating the total over all beach states
-            for beach_state in self.beach_label_dict.keys():
-                if 'size_class' in full_data_dict.keys():
-                    for size_class in range(settings.SIZE_CLASS_NUMBER):
-                        self.output_dict['total'][size_class] += self.output_dict[beach_state][size_class]
-                else:
-                    self.output_dict['total'] += self.output_dict[beach_state]
+            output_name = get_file_names(file_dict=self.file_dict, directory=self.temp_direc, final=False)
+            if not utils.check_file_exist(output_name, without_pkl=True):
+                # Loading the data
+                parcels_dataset, post_dataset = load_parcels_post_output(scenario_name=settings.SCENARIO_NAME,
+                                                                         file_dict=self.file_dict)
+                full_data_dict = set_full_data_dict(parcels_dataset, post_dataset)
+                # Just get the particles within the domain, which we do by setting all values not within the
+                # domain to nan. These will therefore not be taken into account in the calculations of total
+                # counts/weights
+                within_domain = utils.particles_in_domain(domain=self.domain, lon=full_data_dict['lon'],
+                                                          lat=full_data_dict['lat'])
+                for variable in full_data_dict.keys():
+                    full_data_dict[variable][within_domain is False] = np.nan
+                # Going through the timesteps
+                for time_index, time_value in enumerate(self.time_list):
+                    time_selection = full_data_dict['time'] == time_value
+                    if np.nansum(time_selection) > 0:
+                        time_dict = {}
+                        for variable in ['beach', 'weights', 'size_class']:
+                            if variable in full_data_dict.keys():
+                                time_dict[variable] = full_data_dict[variable][time_selection]
+                        for beach_state in self.beach_label_dict.keys():
+                            beach = time_dict['beach'] == self.beach_label_dict[beach_state]
+                            if 'size_class' in full_data_dict.keys():
+                                for size_class in range(settings.SIZE_CLASS_NUMBER):
+                                    size = time_dict['size_class'] == size_class
+                                    self.output_dict[beach_state][size_class][time_index] += np.nansum(time_dict['weights'][size & beach])
+                            else:
+                                self.output_dict[beach_state][time_index] += np.nansum(time_dict['weights'][beach])
+                # Calculating the total over all beach states
+                for beach_state in self.beach_label_dict.keys():
+                    if 'size_class' in full_data_dict.keys():
+                        for size_class in range(settings.SIZE_CLASS_NUMBER):
+                            self.output_dict['total'][size_class] += self.output_dict[beach_state][size_class]
+                    else:
+                        self.output_dict['total'] += self.output_dict[beach_state]
 
-            # Saving the output
-            file_name = get_file_names(file_dict=self.file_dict, directory=self.temp_direc, final=False)
-            utils.save_obj(filename=file_name, item=self.output_dict)
-            str_format = settings.STARTYEAR, settings.STARTMONTH, settings.RUN, settings.RESTART
-            print_statement = 'The timeseries for year {}-{}, run {} restart {} has been save'.format(*str_format)
-            utils.print_statement(print_statement, to_print=True)
+                # Saving the output
+                utils.save_obj(filename=output_name, item=self.output_dict)
+                str_format = settings.STARTYEAR, settings.STARTMONTH, settings.RUN, settings.RESTART
+                print_statement = 'The timeseries for year {}-{}, run {} restart {} has been save'.format(*str_format)
+                utils.print_statement(print_statement, to_print=True)
 
         elif self.parallel_step == 2:
             pbar = ProgressBar()

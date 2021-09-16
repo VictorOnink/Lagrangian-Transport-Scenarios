@@ -30,30 +30,31 @@ class parcels_to_sizespectrum:
             year, month, run, restart = settings.STARTYEAR, settings.STARTMONTH, settings.RUN, settings.RESTART
             print_statement = 'year {}-{}, run {} restart {}'.format(year, month, run, restart)
             utils.print_statement(print_statement, to_print=True)
-            # Loading the data
-            parcels_dataset, post_dataset = load_parcels_post_output(scenario_name=settings.SCENARIO_NAME,
-                                                                     file_dict=self.file_dict)
-            full_data_dict = set_full_data_dict(parcels_dataset, post_dataset, self.var_list)
-            # Looping through the time
-            for index_time in range(0, self.time_list.__len__(), self.time_analysis_step):
-                time_selection = self.time_list[index_time] == full_data_dict['time']
-                if time_selection.max():
-                    time_sel_dict = {}
-                    for key in full_data_dict.keys():
-                        time_sel_dict[key] = full_data_dict[key][time_selection]
-                    for reservoir in self.reservoirs:
-                        self.output_dict[reservoir][index_time] += reservoir_calculation(reservoir, time_sel_dict,
-                                                                                         self.beach_label_dict,
-                                                                                         self.surface_depth)
-            # Adding the index of the final timestep for ease later on
-            self.output_dict['final_index'] = index_time
-
-            # Saving everything
             output_name = get_file_names(file_dict=self.file_dict, directory=self.temp_direc, final=False)
-            utils.save_obj(output_name, self.output_dict)
-            str_format = settings.STARTYEAR, settings.STARTMONTH, settings.RUN, settings.RESTART
-            print_statement = 'The size distribution for year {}-{}, run {} restart {} has been save'.format(*str_format)
-            utils.print_statement(print_statement, to_print=True)
+            if not utils.check_file_exist(output_name, without_pkl=True):
+                # Loading the data
+                parcels_dataset, post_dataset = load_parcels_post_output(scenario_name=settings.SCENARIO_NAME,
+                                                                         file_dict=self.file_dict)
+                full_data_dict = set_full_data_dict(parcels_dataset, post_dataset, self.var_list)
+                # Looping through the time
+                for index_time in range(0, self.time_list.__len__(), self.time_analysis_step):
+                    time_selection = self.time_list[index_time] == full_data_dict['time']
+                    if time_selection.max():
+                        time_sel_dict = {}
+                        for key in full_data_dict.keys():
+                            time_sel_dict[key] = full_data_dict[key][time_selection]
+                        for reservoir in self.reservoirs:
+                            self.output_dict[reservoir][index_time] += reservoir_calculation(reservoir, time_sel_dict,
+                                                                                             self.beach_label_dict,
+                                                                                             self.surface_depth)
+                # Adding the index of the final timestep for ease later on
+                self.output_dict['final_index'] = index_time
+
+                # Saving everything
+                utils.save_obj(output_name, self.output_dict)
+                str_format = settings.STARTYEAR, settings.STARTMONTH, settings.RUN, settings.RESTART
+                print_statement = 'The size distribution for year {}-{}, run {} restart {} has been save'.format(*str_format)
+                utils.print_statement(print_statement, to_print=True)
 
         elif self.parallel_step == 2:
             pbar = ProgressBar()

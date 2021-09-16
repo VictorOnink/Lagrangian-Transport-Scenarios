@@ -107,7 +107,9 @@ def remove_file(File: str, conduct: bool=True):
             utils.print_statement('The file {} does not exist.'.format(File), to_print=True)
 
 
-def check_file_exist(File: str):
+def check_file_exist(File: str, without_pkl=False):
+    if without_pkl:
+        File += '.pkl'
     return os.path.isfile(File)
 
 
