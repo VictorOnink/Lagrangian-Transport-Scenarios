@@ -5,170 +5,181 @@ from netCDF4 import Dataset
 import numpy as np
 from progressbar import ProgressBar
 from copy import deepcopy
+from datetime import datetime, timedelta
 
 
-if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
-    def parcels_to_sizespectrum(file_dict: dict, scenario):
-        """
-        For the FragmentationKaandorp scenario, getting a histogram of how many particles we have in the various size
-        categories, where we distinguish between different beach states
-        :param file_dict:
-        :return:
-        """
-        # Setting the size bins
-        bin_number = settings.SIZE_CLASS_NUMBER
+class parcels_to_sizespectrum:
+    def __init__(self, file_dict, scenario):
+        assert settings.SCENARIO_NAME == 'FragmentationKaandorpPartial', 'This analysis only works for FragmentationKaandorpPartial'
+        self.file_dict = file_dict
+        self.parallel_step = settings.PARALLEL_STEP
+        self.scenario = scenario
+        self.temp_direc, self.output_direc = get_directories()
+        self.min_depth = np.nanmin(self.scenario.file_dict['DEPTH'])
+        self.surface_depth = self.min_depth + 0.26
+        self.time_list = create_time_list()
+        self.time_analysis_step = 60
+        self.var_list = set_var_list()
+        self.beach_label_dict = set_beach_label_dict()
+        self.reservoirs = set_reservoirs()
+        self.output_dict = create_output_dict(time_list=self.time_list, time_analysis_step=self.time_analysis_step,
+                                              reservoir_list=self.reservoirs)
 
-        output_direc = utils.get_output_directory(server=settings.SERVER) + 'size_distribution/{}/'.format(
-            settings.SCENARIO_NAME)
-        utils.check_direc_exist(output_direc)
+    def run(self):
+        if self.parallel_step == 1:
+            year, month, run, restart = settings.STARTYEAR, settings.STARTMONTH, settings.RUN, settings.RESTART
+            print_statement = 'year {}-{}, run {} restart {}'.format(year, month, run, restart)
+            utils.print_statement(print_statement, to_print=True)
+            # Loading the data
+            parcels_dataset, post_dataset = load_parcels_post_output(scenario_name=settings.SCENARIO_NAME,
+                                                                     file_dict=self.file_dict)
+            full_data_dict = set_full_data_dict(parcels_dataset, post_dataset, self.var_list)
+            # Looping through the time
+            for index_time in range(0, self.time_list.__len__(), self.time_analysis_step):
+                time_selection = self.time_list[index_time] == full_data_dict['time']
+                if time_selection.max():
+                    time_sel_dict = {}
+                    for key in full_data_dict.keys():
+                        time_sel_dict[key] = full_data_dict[key][time_selection]
+                    for reservoir in self.reservoirs:
+                        self.output_dict[reservoir][index_time] += reservoir_calculation(reservoir, time_sel_dict,
+                                                                                         self.beach_label_dict,
+                                                                                         self.surface_depth)
+            # Adding the index of the final timestep for ease later on
+            self.output_dict['final_index'] = index_time
 
-        # Getting the minimum depth of the advection scenario
-        min_depth = np.nanmin(scenario.file_dict['DEPTH'])
+            # Saving everything
+            output_name = get_file_names(file_dict=self.file_dict, directory=self.temp_direc, final=False)
+            utils.save_obj(output_name, self.output_dict)
+            str_format = settings.STARTYEAR, settings.STARTMONTH, settings.RUN, settings.RESTART
+            print_statement = 'The size distribution for year {}-{}, run {} restart {} has been save'.format(*str_format)
+            utils.print_statement(print_statement, to_print=True)
 
-        # Loading the time axis
-        time_list = np.array([], dtype=np.int)
-        for restart in range(settings.SIM_LENGTH):
-            parcels_file = file_dict['parcels'][settings.STARTYEAR][1][0][restart]
-            parcels_dataset = Dataset(parcels_file)
-            time = parcels_dataset.variables['time'][:, :-1]
-            for time_case in np.unique(time):
-                if np.nansum(time_case == time) > 10 and time_case != np.nan:
-                    time_list = np.append(time_list, time_case)
+        elif self.parallel_step == 2:
+            pbar = ProgressBar()
+            for ind_year, year in pbar(enumerate(range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH))):
+                for month in range(1, 13):
+                    for run in range(0, settings.RUN_RANGE):
+                        for restart in range(0, settings.SIM_LENGTH - ind_year):
+                            file_name = get_file_names(file_dict=self.file_dict, directory=self.temp_direc, final=False,
+                                                       year=year, month=month, run=run, restart=restart)
+                            dataset_post = utils.load_obj(filename=file_name)
+                            for reservoir in self.reservoirs:
+                                for index_time in range(0, self.time_list.__len__(), self.time_analysis_step):
+                                    self.output_dict[reservoir][index_time] += dataset_post[reservoir][index_time]
+            # Adding the index of the final timestep for ease later on
+            self.output_dict['final_index'] = index_time
+            # Saving everything
+            output_name = get_file_names(file_dict=self.file_dict, directory=self.temp_direc, final=True)
+            utils.save_obj(output_name, self.output_dict)
+            print_statement = 'The size distribution has been save'
+            utils.print_statement(print_statement, to_print=True)
 
-        var_list = ['time', 'size_class', 'beach', 'z', 'distance2coast']
-        for key in var_list:
-            assert key in parcels_dataset.variables.keys(), '{} is not in the output file!!!'.format(key)
 
-        # Creating the output dict
-        beach_label = {'beach': 1, 'adrift': 0, 'seabed': 3, 'removed': 2}
-        output_dict = {'size_bins': range(bin_number), 'beach': {}, 'adrift': {}, 'adrift_5m': {}, 'adrift_2m': {},
-                       'adrift_10km': {}, 'adrift_10km_surf': {}, 'seabed': {}, 'total': {}, 'adrift_open': {},
-                       'adrift_open_surf': {}}
-        time_step = 60
-        for key in output_dict.keys():
-            if key not in ['size_bins']:
-                for index_time in range(0, len(time_list), time_step):
-                    output_dict[key][index_time] = np.zeros(shape=bin_number, dtype=float)
 
-        pbar = ProgressBar()
-        for ind_year, year in pbar(enumerate(range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH))):
-            for month in range(1, 13):
-                for run in range(0, settings.RUN_RANGE):
-                    # Loop through the restart files
-                    for restart in range(0, settings.SIM_LENGTH - ind_year):
-                        print_statement = 'year {}-{}, run {} restart {}'.format(year, month, run, restart)
-                        utils.print_statement(print_statement, to_print=True)
-                        # Load the lon, lat, time, beach and weight data
-                        parcels_file = file_dict['parcels'][year][month][run][restart]
-                        post_file = file_dict['postprocess'][year][month][run][restart]
-                        parcels_dataset = Dataset(parcels_file)
-                        dataset_post = utils.load_obj(post_file)
-                        run_restart_dict = {}
-                        for key in var_list:
-                            run_restart_dict[key] = parcels_dataset.variables[key][:, :-1]
-                        run_restart_dict['particle_number'] = dataset_post['particle_number'][:, :-1]
-                        # Calculating the spectrum every 30 days (note, one output step is 12 hours)
-                        for index_time in range(0, len(time_list), time_step):
-                            time_selection = time_list[index_time] == run_restart_dict['time']
-                            if time_selection.size > 0:
-                                time_sel = {}
-                                for key in run_restart_dict.keys():
-                                    time_sel[key] = run_restart_dict[key][time_selection]
-                                # All particles
-                                output_dict['total'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number)
-                                # beached particles
-                                selection = time_sel['beach'] == beach_label['beach']
-                                output_dict['beach'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number, selection=selection)
-                                # seabed particles
-                                selection = time_sel['beach'] == beach_label['seabed']
-                                output_dict['seabed'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number, selection=selection)
-                                # floating particles
-                                selection = time_sel['beach'] == beach_label['adrift']
-                                output_dict['adrift'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number, selection=selection)
-                                # floating particles within 5m of surface
-                                selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['z'] < (min_depth + 5))
-                                output_dict['adrift_5m'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number, selection=selection)
-                                # floating particles within 2m of surface
-                                selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['z'] < (min_depth + 2))
-                                output_dict['adrift_2m'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number, selection=selection)
-                                # Floating within 10 km of the model coastline
-                                selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['distance2coast'] < 10)
-                                output_dict['adrift_10km'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number, selection=selection)
-                                # Floating within 20 km of the model coastline
-                                selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['distance2coast'] < 10) & (time_sel['z'] < (min_depth + 0.26))
-                                output_dict['adrift_10km_surf'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number, selection=selection)
-                                # Floating beyond 10 km of the model coastline
-                                selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['distance2coast'] > 10)
-                                output_dict['adrift_open'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number, selection=selection)
-                                # Floating beyond 10 km of the model coastline and within 26cm of the surface
-                                selection = (time_sel['beach'] == beach_label['adrift']) & (time_sel['distance2coast'] > 10) & (time_sel['z'] < (min_depth + 0.26))
-                                output_dict['adrift_open_surf'][index_time] += number_per_size_class(time_sel['size_class'], time_sel['particle_number'], bin_number, selection=selection)
 
-        # Adding the index of the final timestep for ease later on
-        output_dict['final_index'] = index_time
+        else:
+            ValueError('settings.PARALLEL_STEP can not have a value of {}'.format(self.parallel_step))
 
-        # Saving the output
-        prefix = 'size_distribution'
-        output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict['postprocess'][settings.STARTYEAR][1][0][restart], prefix=prefix)
-        utils.save_obj(output_name, output_dict)
-        utils.print_statement("The size distribution has been saved")
+########################################################################################################################
+"""
+These following functions are used across all scenarios
+"""
 
-else:
-    def parcels_to_sizespectrum(file_dict: dict, scenario):
-        """
-        For the FragmentationKaandorp scenario, getting a histogram of how many particles we have in the various size
-        categories
-        :param file_dict:
-        :return:
-        """
-        # Setting the size bins
-        size_bins = np.logspace(start=-5, stop=-2, num=20)
 
-        output_direc = utils.get_output_directory(server=settings.SERVER) + 'size_distribution/{}/'.format(
-            settings.SCENARIO_NAME)
-        utils.check_direc_exist(output_direc)
+def get_file_names(file_dict, directory, final, year=settings.STARTYEAR, month=settings.STARTMONTH,
+                   run=settings.RUN, restart=settings.RESTART):
+    split = {True: None, False: '.nc'}[final]
+    prefix = 'size_distribution'
+    if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
+        output_name = directory + utils.analysis_save_file_name(input_file=file_dict['postprocess'][year][month][run][restart],
+        prefix=prefix, split=split)
+    else:
+        output_name = directory + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix, split=split)
+    return output_name
 
-        # Loading the time axis
-        time_list = np.array([], dtype=np.int)
-        for restart in range(settings.SIM_LENGTH):
-            parcels_file = file_dict[0][restart]
-            parcels_dataset = Dataset(parcels_file)
-            time = parcels_dataset.variables['time'][:, :-1]
-            for time_case in np.unique(time):
-                if np.nansum(time_case == time) > 10 and time_case != np.nan:
-                    time_list = np.append(time_list, time_case)
 
-        # Creating the output dict
-        output_dict = {'size_bins': size_bins}
+def load_parcels_post_output(scenario_name, file_dict, year=settings.STARTYEAR, month=settings.STARTMONTH,
+                             run=settings.RUN, restart=settings.RESTART):
+    if scenario_name in ['FragmentationKaandorpPartial']:
+        parcels_dataset = Dataset(file_dict['parcels'][year][month][run][restart])
+        post_dataset = utils.load_obj(file_dict['postprocess'][year][month][run][restart])
+    else:
+        parcels_dataset = Dataset(file_dict[run][restart])
+        post_dataset = None
+    return parcels_dataset, post_dataset
 
-        # loop through the runs
-        for run in range(settings.RUN_RANGE):
-            # Loop through the restart files
-            for restart in range(settings.SIM_LENGTH):
-                # Load the lon, lat, time, beach and weight data
-                parcels_file = file_dict[run][restart]
-                parcels_dataset = Dataset(parcels_file)
-                time = parcels_dataset.variables['time'][:, :-1]
-                size = parcels_dataset.variables['size'][:, :-1]
-                if 'particle_number' in parcels_dataset.variables.keys():
-                    particle_number = parcels_dataset.variables['particle_number'][:, :-1]
 
-                # Calculating the spectrum every 30 days (note, one output step is 12 hours)
-                for index_time in range(0, len(time_list), 60):
-                    size_selection = size[time_list[index_time] == time]
-                    utils.print_statement(size_selection.size, to_print=True)
-                    if 'particle_number' in parcels_dataset.variables.keys():
-                        particle_number_selection = particle_number[time_list[index_time] == time]
-                        size_counts, _ = np.histogram(size_selection, bins=size_bins, weights=particle_number_selection)
-                    else:
-                        size_counts, _ = np.histogram(size_selection, bins=size_bins)
-                    output_dict[index_time] = size_counts
+def get_directories():
+    temp_direc = utils.get_output_directory(server=settings.SERVER) + 'size_distribution/{}/temporary/'.format(settings.SCENARIO_NAME)
+    output_direc = utils.get_output_directory(server=settings.SERVER) + 'size_distribution/{}/'.format(settings.SCENARIO_NAME)
+    utils.check_direc_exist(temp_direc)
+    utils.check_direc_exist(output_direc)
+    return temp_direc, output_direc
 
-        # Saving the output
-        prefix = 'size_distribution'
-        output_name = output_direc + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix)
-        utils.save_obj(output_name, output_dict)
-        utils.print_statement("The size distribution has been saved")
+
+def create_time_list():
+    reference_time = datetime(2010, 1, 1, 12, 0)
+    current_time, end_time = datetime(2010, 1, 1, 0), datetime(2010 + settings.SIM_LENGTH + 1, 1, 1, 0)
+    time_step, time_list = timedelta(hours=12), []
+    while current_time < end_time:
+        time_list.append((current_time - reference_time).total_seconds())
+        current_time += time_step
+    return time_list
+
+
+def set_var_list():
+    return ['time', 'size_class', 'beach', 'z', 'distance2coast']
+
+
+def set_beach_label_dict():
+    return {'beach': 1, 'adrift': 0}
+
+
+def set_reservoirs():
+    return ['beach', 'adrift', 'adrift_10km', 'adrift_10km_surf', 'adrift_open', 'adrift_open_surf']
+
+
+def create_output_dict(time_list, time_analysis_step, reservoir_list):
+    output_dict = {'size_bins': np.arange(settings.SIZE_CLASS_NUMBER)}
+    for reservoir in reservoir_list:
+        output_dict[reservoir] = {}
+        for time_index in range(0, time_list.__len__(), time_analysis_step):
+            output_dict[reservoir][time_index] = np.zeros(shape=settings.SIZE_CLASS_NUMBER, dtype=float)
+    return output_dict
+
+
+def set_full_data_dict(parcels_dataset, post_dataset, variable_list):
+    full_data_dict = {}
+    for variable in variable_list:
+        full_data_dict[variable] = parcels_dataset.variables[variable][:, :-1].flatten()
+    full_data_dict['particle_number'] = post_dataset['particle_number'][:, :-1].flatten()
+    # Only return the non-nan values
+    is_not_nan = ~np.isnan(full_data_dict['beach'])
+    for variable in full_data_dict.keys():
+        full_data_dict[variable] = full_data_dict[variable][is_not_nan]
+    return full_data_dict
+
+
+def reservoir_calculation(reservoir, time_sel_dict, beach_label_dict, surface_depth):
+    if reservoir == 'beach':
+        selection = time_sel_dict['beach'] == beach_label_dict['beach']
+    elif reservoir == 'adrift':
+        selection = time_sel_dict['beach'] == beach_label_dict['adrift']
+    elif reservoir == 'adrift_10km':
+        selection = (time_sel_dict['beach'] == beach_label_dict['adrift']) & (time_sel_dict['distance2coast'] < 10)
+    elif reservoir == 'adrift_10km_surf':
+        selection = (time_sel_dict['beach'] == beach_label_dict['adrift']) & (time_sel_dict['distance2coast'] < 10) & \
+                    (time_sel_dict['distance2coast'] < surface_depth)
+    elif reservoir == 'adrift_open':
+        selection = (time_sel_dict['beach'] == beach_label_dict['adrift']) & (time_sel_dict['distance2coast'] > 10)
+    elif reservoir == 'adrift_open_surf':
+        selection = (time_sel_dict['beach'] == beach_label_dict['adrift']) & (time_sel_dict['distance2coast'] > 10) & (
+                    time_sel_dict['distance2coast'] < surface_depth)
+    else:
+        ValueError('What do you mean by {}'.format(reservoir))
+    return number_per_size_class(time_sel_dict['size_class'], time_sel_dict['particle_number'],
+                                 settings.SIZE_CLASS_NUMBER, selection=selection)
 
 
 def number_per_size_class(size_class_array, particle_number_array, bin_number, selection=None):

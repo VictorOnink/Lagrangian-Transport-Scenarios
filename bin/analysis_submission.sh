@@ -4,7 +4,7 @@
 #####################################################################################
 SUBMISSION='analysis'
 export SUBMISSION
-DEBUG=1 # 0 = Not a debug run, 1 = a debug run
+DEBUG=0 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation
 SCENARIO=5
@@ -43,18 +43,18 @@ export OCEAN_FRAG
 #(1 10 100 200 300 388)
 #the starting year of the simulation, and how many years the simulation will take
 YEAR=2010
-STARTMONTH_list=(1)
+STARTMONTH_list=(1 2 3 4 5 6 7 8 9 10 11 12)
 STARTDAY=1
 export STARTDAY
 #Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=lebretondivision, 3=point, 4=uniform
-INPUT=1
+INPUT=2
 export INPUT
 #Which advection data do we want to use?
 # 0 = Global HYCOM, 1 = Caribbean HYCOM, 2 = Mediterranean CMEMS
 ADVECTION_DATA=2
 export ADVECTION_DATA
 #Number of years the simulation runs
-SIMLEN=3
+SIMLEN=2
 export SIMLEN
 # For the analysis, if we have multiple years that we want to combine into one analysis set (so if we have continuous
 # particle release), then this how many years we want to include
@@ -80,9 +80,9 @@ VERTICAL_CONCENTRATION=0
 TIMESERIES=0
 MAX_DISTANCE=0
 TIMESLICING=0
-STATISTICS=1
+STATISTICS=0
 SEPARATION=0
-SIZE_SPECTRUM=0
+SIZE_SPECTRUM=1
 
 export CONCENTRATION
 export VERTICAL_CONCENTRATION
@@ -209,8 +209,8 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
                   done
 
                   # submitting the job
-#                  jobid=$(sbatch --parsable jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
-#                  echo -n ':'${jobid} >> job_id.txt
+                  jobid=$(sbatch --parsable jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
+                  echo -n ':'${jobid} >> job_id.txt
                   # deleting the submission file
                   rm jobsubmissionFile_${RUN}_${RESTARTNUM}.sh
                 done
@@ -257,8 +257,8 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
 
           # Submitting the job that will join all the various analysis files together
           dependence=$( cat job_id.txt )
-#          sbatch --dependency=afterok${dependence} jobsubmissionFile.sh
-          sbatch jobsubmissionFile.sh
+          sbatch --dependency=afterok${dependence} jobsubmissionFile.sh
+#          sbatch jobsubmissionFile.sh
           rm jobsubmissionFile.sh
           rm job_id.txt
         done
