@@ -71,7 +71,7 @@ class parcels_to_basicstatistics:
                                                 self.output_dict[variable][beach_state][size_class][statistic] = np.concatenate((self.output_dict[variable][beach_state][size_class][statistic],
                                                                                                                                  result), axis=0)
                                 else:
-                                    utils.print_statement(beach_data_dict['distance_horizontal'].shape, to_print=True)
+                                    utils.print_statement(beach_data_dict[self.variable_list[0]].shape, to_print=True)
                                     for variable in self.variable_list:
                                         for statistic in self.stats_list:
                                             result = calculate_statistic(statistic=statistic, data=beach_data_dict[variable])
