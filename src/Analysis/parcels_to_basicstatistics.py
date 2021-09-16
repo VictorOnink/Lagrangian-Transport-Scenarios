@@ -48,6 +48,7 @@ class parcels_to_basicstatistics:
                                 parcels_dataset, _ = load_parcels_post_output(self.file_dict, year, month, run, restart)
                                 for variable in utils.flatten_list_of_lists([['beach', 'size_class'], self.variable_list]):
                                     run_dict = concatenate_variable(run_dict, variable, restart, parcels_dataset)
+                            utils.print_statement(run_dict['beach'].shape, to_print=True)
                             # Looping through the beach states
                             # Calculating the statistical values
                             for beach_state in self.beach_label_dict.keys():
@@ -75,7 +76,7 @@ class parcels_to_basicstatistics:
                                         for statistic in self.stats_list:
                                             result = calculate_statistic(statistic=statistic, data=beach_data_dict[variable])
                                             if result is None:
-                                                result = np.ones(beach_data_dict[variable].shape) * 1e20
+                                                result = np.ones(beach_data_dict[variable].shape[0]) * 1e20
                                             self.output_dict[variable][beach_state][statistic] = np.concatenate(
                                                 (self.output_dict[variable][beach_state][statistic], result), axis=0)
             # remove the first element of each array, as this was a dummy that was just there to initialize the array
