@@ -102,8 +102,8 @@ These following functions are used across all scenarios
 
 
 def get_directories(scenario_name):
-    temp_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/{}/temporary/'.format(scenario_name)
-    output_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/{}/'.format(scenario_name)
+    temp_direc = utils.get_output_directory(server=settings.SERVER) + 'statistics/{}/temporary/'.format(scenario_name)
+    output_direc = utils.get_output_directory(server=settings.SERVER) + 'statistics/{}/'.format(scenario_name)
     utils.check_direc_exist(temp_direc)
     utils.check_direc_exist(output_direc)
     return temp_direc, output_direc
