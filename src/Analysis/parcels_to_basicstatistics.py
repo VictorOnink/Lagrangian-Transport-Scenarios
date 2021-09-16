@@ -28,7 +28,7 @@ class parcels_to_basicstatistics:
         self.stats_list = ['mean', 'max', 'min', 'std']
         self.variable_list = compute_variable_list(file_dict)
         self.beach_label_dict = set_beach_label_dict()
-        self.output_dict = create_output_dict(stats_list=self.stats_list, beach_state_list=self.beach_label_dict.keys,
+        self.output_dict = create_output_dict(stats_list=self.stats_list, beach_state_list=self.beach_label_dict.keys(),
                                               variable_list=self.variable_list)
 
     def run(self):
