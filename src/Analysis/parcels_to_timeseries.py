@@ -86,8 +86,7 @@ class parcels_to_timeseries:
             # Saving the output
             file_name = get_file_names(file_dict=self.file_dict, directory=self.output_direc, final=True)
             utils.save_obj(filename=file_name, item=self.output_dict)
-            str_format = settings.STARTYEAR, settings.STARTMONTH, settings.RUN, settings.RESTART
-            print_statement = 'The timeseries have been saved'.format(*str_format)
+            print_statement = 'The timeseries have been saved'
             utils.print_statement(print_statement, to_print=True)
 
         else:

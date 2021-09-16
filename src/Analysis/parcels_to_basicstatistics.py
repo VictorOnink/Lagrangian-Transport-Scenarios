@@ -41,6 +41,7 @@ class parcels_to_basicstatistics:
                 for month in range(1, 13):
                     if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial'] or month == 1:
                         for run in range(0, settings.RUN_RANGE):
+                            utils.print_statement('{}-{}, run = {}'.format(year, month, run), to_print=True)
                             run_dict = {}
                             # Loading the data over all restart files
                             for restart in range(0, settings.SIM_LENGTH - ind_year):
