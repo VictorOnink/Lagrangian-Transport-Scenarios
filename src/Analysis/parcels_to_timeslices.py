@@ -53,7 +53,7 @@ class parcels_to_timeslicing:
                                 file_name = get_file_names(file_dict=self.file_dict, directory=self.temp_direc,
                                                            final=False, year=year, month=month, run=run,
                                                            restart=restart, prefix=prefix)
-                                if utils.check_file_exist(file_name):
+                                if utils.check_file_exist(file_name, without_pkl=True):
                                     date_dict = utils.load_obj(filename=file_name)
                                     output_name = get_file_names(file_dict=self.file_dict, directory=self.output_direc,
                                                                  final=True, prefix=prefix)
@@ -76,8 +76,8 @@ These following functions are used across all scenarios
 
 
 def get_directories(scenario_name):
-    temp_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/{}/temporary/'.format(scenario_name)
-    output_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/{}/'.format(scenario_name)
+    temp_direc = utils.get_output_directory(server=settings.SERVER) + 'timeslices/{}/temporary/'.format(scenario_name)
+    output_direc = utils.get_output_directory(server=settings.SERVER) + 'timeslices/{}/'.format(scenario_name)
     utils.check_direc_exist(temp_direc)
     utils.check_direc_exist(output_direc)
     return temp_direc, output_direc
