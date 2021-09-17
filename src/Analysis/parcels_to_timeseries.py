@@ -57,7 +57,7 @@ class parcels_to_timeseries:
                             self.output_dict['total'][size_class] += self.output_dict[beach_state][size_class]
                     else:
                         self.output_dict['total'] += self.output_dict[beach_state]
-                for index, value in enumerate():
+                for index, value in enumerate(self.output_dict['beach']):
                     print('{} {}'.format(index, value))
                 print(output_name)
                 # Saving the output
