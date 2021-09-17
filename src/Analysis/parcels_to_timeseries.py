@@ -73,7 +73,7 @@ class parcels_to_timeseries:
                                                            directory=self.temp_direc, final=False, year=year,
                                                            month=month,
                                                            run=run, restart=restart)
-                                if utils.check_file_exist(file_name, without_pkl=True):
+                                if month == 1: #utils.check_file_exist(file_name, without_pkl=True):
                                     dataset_post = utils.load_obj(filename=file_name)
                                     for beach_state in self.output_dict.keys():
                                         if beach_state != 'time':
@@ -81,9 +81,8 @@ class parcels_to_timeseries:
                                                 for size_class in range(settings.SIZE_CLASS_NUMBER):
                                                     self.output_dict[beach_state][size_class] += dataset_post[beach_state][size_class]
                                             else:
-                                                if month == 1:
                                                     self.output_dict[beach_state] += dataset_post[beach_state]
-                                    utils.remove_file(file_name + '.pkl')
+                                    # utils.remove_file(file_name + '.pkl')
             for index, value in enumerate(self.output_dict['beach']):
                 print('{} {}'.format(index, value))
             # Saving the output
