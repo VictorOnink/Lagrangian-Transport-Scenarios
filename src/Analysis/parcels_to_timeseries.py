@@ -58,7 +58,7 @@ class parcels_to_timeseries:
                     else:
                         self.output_dict['total'] += self.output_dict[beach_state]
                 for index, value in enumerate(self.output_dict['beach']):
-                    print('{} {}'.format(index, value))
+                    utils.print_statement('{} {}'.format(index, value), to_print=True)
                 # Saving the output
                 utils.save_obj(filename=output_name, item=self.output_dict)
                 str_format = settings.STARTYEAR, settings.STARTMONTH, settings.RUN, settings.RESTART
