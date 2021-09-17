@@ -83,7 +83,9 @@ class parcels_to_timeseries:
                                                 for size_class in range(settings.SIZE_CLASS_NUMBER):
                                                     self.output_dict[beach_state][size_class] += dataset_post[beach_state][size_class]
                                             else:
-                                                    self.output_dict[beach_state] += dataset_post[beach_state]
+                                                MIN, MAX = dataset_post[beach_state].min(), dataset_post[beach_state].max()
+                                                utils.print_statement('run {} restart {}, {} {} {}'.format(run, restart, beach_state, MIN, MAX), to_print=True)
+                                                self.output_dict[beach_state] += dataset_post[beach_state]
                                     # utils.remove_file(file_name + '.pkl')
             for index, value in enumerate(self.output_dict['beach']):
                 print('{} {}'.format(index, value))
