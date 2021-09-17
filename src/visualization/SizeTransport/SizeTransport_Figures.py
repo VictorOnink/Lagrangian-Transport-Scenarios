@@ -54,13 +54,6 @@ def run(scenario, figure_direc: str):
                                                                                 scenario=scenario,
                                                                                 size_list=size_list,
                                                                                 rho_list=rho_list,
-                                                                                time_selection=time_select,
-                                                                                tau_list=tau_list,
-                                                                                beach_state='seabed')
-    SizeTransport_relative_concentrations.SizeTransport_relative_concentrations(figure_direc=figure_direc,
-                                                                                scenario=scenario,
-                                                                                size_list=size_list,
-                                                                                rho_list=rho_list,
                                                                                 tau_list=tau_list,
                                                                                 time_selection=time_select,
                                                                                 beach_state='beach')
