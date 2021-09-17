@@ -76,8 +76,8 @@ class parcels_to_timeseries:
                                                            directory=self.temp_direc, final=False, year=year,
                                                            month=month,
                                                            run=run, restart=restart)
-                                dataset_post = utils.load_obj(filename=file_name)
                                 if utils.check_file_exist(file_name, without_pkl=True):
+                                    dataset_post = utils.load_obj(filename=file_name)
                                     for beach_state in self.output_dict.keys():
                                         if beach_state != 'time':
                                             if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
