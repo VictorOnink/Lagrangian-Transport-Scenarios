@@ -57,7 +57,7 @@ class parcels_to_timeseries:
                             self.output_dict['total'][size_class] += self.output_dict[beach_state][size_class]
                     else:
                         self.output_dict['total'] += self.output_dict[beach_state]
-
+                print(self.output_dict['beach'])
                 # Saving the output
                 utils.save_obj(filename=output_name, item=self.output_dict)
                 str_format = settings.STARTYEAR, settings.STARTMONTH, settings.RUN, settings.RESTART
@@ -85,6 +85,7 @@ class parcels_to_timeseries:
                                                 if month == 1:
                                                     self.output_dict[beach_state] += dataset_post[beach_state]
                                     utils.remove_file(file_name)
+            print(self.output_dict['beach'])
             # Saving the output
             file_name = get_file_names(file_dict=self.file_dict, directory=self.output_direc, final=True)
             utils.save_obj(filename=file_name, item=self.output_dict)
