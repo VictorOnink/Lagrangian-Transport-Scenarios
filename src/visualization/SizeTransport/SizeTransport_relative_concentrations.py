@@ -47,14 +47,14 @@ def SizeTransport_relative_concentrations(scenario, figure_direc, size_list, rho
     Lon, Lat = np.meshgrid(lon, lat)
 
     # Normalizing the concentration by the lowest non-zero concentration over all the sizes
-    normalization_factor = 1e10
-    for size in concentration_dict.keys():
-        concentration = concentration_dict[size]
-        min_non_zero = np.nanmin(concentration[concentration > 0])
-        if min_non_zero < normalization_factor:
-            normalization_factor = min_non_zero
-    for size in concentration_dict.keys():
-        concentration_dict[size] /= normalization_factor
+    # normalization_factor = 1e10
+    # for size in concentration_dict.keys():
+    #     concentration = concentration_dict[size]
+    #     min_non_zero = np.nanmin(concentration[concentration > 0])
+    #     if min_non_zero < normalization_factor:
+    #         normalization_factor = min_non_zero
+    # for size in concentration_dict.keys():
+    #     concentration_dict[size] /= normalization_factor
 
     # Calculating differences relative to the reference particle size
     if difference:
