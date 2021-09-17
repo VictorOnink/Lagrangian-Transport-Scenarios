@@ -64,10 +64,11 @@ class parcels_to_sizespectrum:
                         for restart in range(0, settings.SIM_LENGTH - ind_year):
                             file_name = get_file_names(file_dict=self.file_dict, directory=self.temp_direc, final=False,
                                                        year=year, month=month, run=run, restart=restart)
-                            dataset_post = utils.load_obj(filename=file_name)
-                            for reservoir in self.reservoirs:
-                                for index_time in range(0, self.time_list.__len__(), self.time_analysis_step):
-                                    self.output_dict[reservoir][index_time] += dataset_post[reservoir][index_time]
+                            if utils.check_file_exist(file_name, without_pkl=True):
+                                dataset_post = utils.load_obj(filename=file_name)
+                                for reservoir in self.reservoirs:
+                                    for index_time in range(0, self.time_list.__len__(), self.time_analysis_step):
+                                        self.output_dict[reservoir][index_time] += dataset_post[reservoir][index_time]
             # Adding the index of the final timestep for ease later on
             self.output_dict['final_index'] = index_time
             # Saving everything
