@@ -27,18 +27,18 @@ class parcels_to_timeslicing:
                     full_dict[key] = parcels_dataset.variables[key][:, :-1]
             # Looping through the dates
             for time_value in self.time_difference_list:
-                time_selection = full_dict['time'] == time_value
-                if np.nansum(time_selection) > 0:
-                    time_dict = {}
-                    for variable in self.variable_list[:-1]:
-                        if variable in full_dict.keys():
-                            time_dict[variable] = full_dict[variable][time_selection]
+                date = (self.reference_time + timedelta(seconds=time_value)).strftime("%Y-%m-%d-%H-%M-%S")
+                prefix = 'timeslices_{}'.format(date)
+                output_name = get_file_names(file_dict=self.file_dict, prefix=prefix, directory=self.temp_direc,
+                                             final=False)
+                if not utils.check_file_exist(output_name, without_pkl=True):
+                    time_selection = full_dict['time'] == time_value
                     # Setting the output name
-                    date = (self.reference_time + timedelta(seconds=time_value)).strftime("%Y-%m-%d-%H-%M-%S")
-                    prefix = 'timeslices_{}'.format(date)
-                    output_name = get_file_names(file_dict=self.file_dict, prefix=prefix, directory=self.temp_direc,
-                                                 final=False)
-                    if not utils.check_file_exist(output_name, without_pkl=True):
+                    if np.nansum(time_selection) > 0:
+                        time_dict = {}
+                        for variable in self.variable_list[:-1]:
+                            if variable in full_dict.keys():
+                                time_dict[variable] = full_dict[variable][time_selection]
                         utils.save_obj(filename=output_name, item=time_dict)
         elif self.parallel_step == 2:
             pbar = ProgressBar()
