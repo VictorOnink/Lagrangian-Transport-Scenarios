@@ -9,7 +9,8 @@ import matplotlib.dates as mdates
 
 
 def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, tau_list=[settings.SEABED_CRIT],
-                                   figsize=(12, 10), fontsize=12, simulation_years=1, tau_comp=False):
+                                   figsize=(12, 10), fontsize=12, simulation_years=1, tau_comp=False,
+                                   without_seabed=True):
     # Setting the folder within which we have the output, and where we have the saved timeslices
     output_direc = figure_direc + 'timeseries/'
     data_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/{}/'.format('SizeTransport')
@@ -19,6 +20,8 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
     prefix = 'timeseries'
     timeseries_dict = {}
     beach_state_list = ['beach', 'adrift', 'seabed']
+    if without_seabed:
+        _ = beach_state_list.pop(-1)
     for index, size in enumerate(size_list):
         timeseries_dict[size] = {}
         for tau in tau_list:
@@ -53,7 +56,7 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
 
     # Creating the figure
     fig = plt.figure(figsize=figsize)
-    gs = fig.add_gridspec(nrows=3, ncols=2, width_ratios=[1, 0.2])
+    gs = fig.add_gridspec(nrows=beach_state_list.__len__(), ncols=2, width_ratios=[1, 0.2])
     gs.update(wspace=0.2, hspace=0.2)
 
     ax_list = []
