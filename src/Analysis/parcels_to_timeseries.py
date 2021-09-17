@@ -84,7 +84,7 @@ class parcels_to_timeseries:
                                             else:
                                                 if month == 1:
                                                     self.output_dict[beach_state] += dataset_post[beach_state]
-                                    utils.remove_file(file_name)
+                                    utils.remove_file(file_name + '.pkl')
             print(self.output_dict['beach'])
             # Saving the output
             file_name = get_file_names(file_dict=self.file_dict, directory=self.output_direc, final=True)

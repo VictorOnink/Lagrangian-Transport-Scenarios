@@ -98,7 +98,7 @@ class parcels_to_concentration:
                                     for beach_state in self.beach_label_dict.keys():
                                         key_year = utils.analysis_simulation_year_key(restart)
                                         self.output_dict[key_year][beach_state] += dataset_post[key_year][beach_state]
-                                    utils.remove_file(file_name)
+                                    utils.remove_file(file_name + 'pkl')
             # Calculating the average concentrations over the entire length of the simulation from the individual years
             for simulation_years in range(settings.SIM_LENGTH):
                 key_year = utils.analysis_simulation_year_key(simulation_years)

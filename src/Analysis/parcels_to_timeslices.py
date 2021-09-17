@@ -62,6 +62,7 @@ class parcels_to_timeslicing:
                                         for key in previous_dict.keys():
                                             previous_dict[key] = np.append(previous_dict[key], date_dict[key])
                                         utils.save_obj(filename=output_name, item=previous_dict)
+                                        utils.remove_file(file_name + '.pkl')
                                     else:
                                         utils.save_obj(filename=output_name, item=date_dict)
         else:
