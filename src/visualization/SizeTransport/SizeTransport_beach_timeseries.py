@@ -31,7 +31,7 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
             for beach_state in beach_state_list:
                 timeseries_dict[size][tau][beach_state] = data_dict[beach_state]
             timeseries_dict[size][tau]['time_raw'] = data_dict['time']
-            timeseries_dict[size][tau]['total'] = data_dict['total']
+            timeseries_dict[size][tau]['total'] = data_dict['total'][1]
 
     # Normalizing all the particle counts with the total number of particles, and then multiplying by 100 to get a
     # percentage
