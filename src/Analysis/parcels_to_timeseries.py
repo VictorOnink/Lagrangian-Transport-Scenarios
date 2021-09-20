@@ -22,6 +22,7 @@ class parcels_to_timeseries:
             print_statement = 'year {}-{}, run {} restart {}'.format(year, month, run, restart)
             utils.print_statement(print_statement, to_print=True)
             output_name = get_file_names(file_dict=self.file_dict, directory=self.temp_direc, final=False)
+            utils.print_statement(output_name, to_print=True)
             if 2>1: #not utils.check_file_exist(output_name, without_pkl=True):
                 # Loading the data
                 parcels_dataset, post_dataset = load_parcels_post_output(scenario_name=settings.SCENARIO_NAME,
