@@ -80,7 +80,7 @@ def run(scenario, figure_direc: str):
     SizeTransport_beach_timeseries.SizeTransport_beach_timeseries(figure_direc=figure_direc, scenario=scenario,
                                                                   size_list=size_list, rho_list=rho_list,
                                                                   tau_list=tau_list, simulation_years=3,
-                                                                  tau_comp=False)
+                                                                  tau_comp=False, without_seabed=False)
 
     # A histogram indicating at which depths particles end up beaching
     # SizeTransport_SeaFloorDepthDistribution.SizeTransport_SeaFloorDepthDistribution(figure_direc=figure_direc,
