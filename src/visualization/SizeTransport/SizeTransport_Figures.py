@@ -58,7 +58,7 @@ def run(scenario, figure_direc: str):
     #                                                                             time_selection=time_select,
     #                                                                             beach_state='beach')
 
-    size_list = np.array([5000, 2500, 1250, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
+    size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
     rho_list = np.ones(size_list.shape, dtype=int) * 920
     tau_list = np.array([0])
 
@@ -94,11 +94,11 @@ def run(scenario, figure_direc: str):
     #                                                                                 cumulative=True)
 
     # Cumulative plots for the total distance travelled vertically and horizontally, and the max depth reached
-    # SizeTransport_CumulativeDistance.SizeTransport_CumulativeDistance(figure_direc=figure_direc,
-    #                                                                   scenario=scenario,
-    #                                                                   size_list=size_list,
-    #                                                                   rho_list=rho_list,
-    #                                                                   tau_list=tau_list)
+    SizeTransport_CumulativeDistance.SizeTransport_CumulativeDistance(figure_direc=figure_direc,
+                                                                      scenario=scenario,
+                                                                      size_list=size_list,
+                                                                      rho_list=rho_list,
+                                                                      tau_list=tau_list)
 
     # Plotting the separation distance
     # for size_selection in size_list:
