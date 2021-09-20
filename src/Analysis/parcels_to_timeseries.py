@@ -86,9 +86,10 @@ class parcels_to_timeseries:
                                                 MIN, MAX = dataset_post[beach_state].min(), dataset_post[beach_state].max()
                                                 utils.print_statement('run {} restart {}, {} {} {}'.format(run, restart, beach_state, MIN, MAX), to_print=True)
                                                 self.output_dict[beach_state] += dataset_post[beach_state]
+                                                if beach_state == 'beach':
+                                                    for index, value in enumerate(self.output_dict['beach']):
+                                                        print('{} {}'.format(index, value))
                                     # utils.remove_file(file_name + '.pkl')
-            for index, value in enumerate(self.output_dict['beach']):
-                print('{} {}'.format(index, value))
             # Saving the output
             file_name = get_file_names(file_dict=self.file_dict, directory=self.output_direc, final=True)
             utils.save_obj(filename=file_name, item=self.output_dict)
