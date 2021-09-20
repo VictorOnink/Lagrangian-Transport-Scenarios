@@ -4,7 +4,7 @@
 #####################################################################################
 SUBMISSION='simulation'
 export SUBMISSION
-DEBUG=0 # 0 = Not a debug run, 1 = a debug run
+DEBUG=1 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation
 SCENARIO=5
@@ -22,7 +22,7 @@ export SHOREDEPEN
 WMIN=3
 export WMIN
 #for scenario 5 and 6, the initial size of the particle in 1e-6 m and the rho of the particle
-PARTICLE_SIZE_list=(625)
+PARTICLE_SIZE_list=(2)
 INIT_DENSITY=920
 export INIT_DENSITY
 #for scenarios 5 - 7, the critical bottom shear stress for particle resuspension (x1e-3)
@@ -60,9 +60,9 @@ export INPUT
 ADVECTION_DATA=2
 export ADVECTION_DATA
 #Start year of the simulation. 0 = new simulation, otherwise it picks up from a previous simulation
-START=2
+START=0
 #Number of years the simulation runs
-SIMLEN=3
+SIMLEN=1
 export SIMLEN
 #Inclusion of Stokes drift. 0 = include stokes, 1 = do not include stokes
 STOKES=0
