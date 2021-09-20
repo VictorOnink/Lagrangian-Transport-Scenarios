@@ -178,7 +178,7 @@ def get_file_names(scenario_name, file_dict, directory, final, year=settings.STA
         output_name = directory + utils.analysis_save_file_name(input_file=file_dict['postprocess'][year][month][run][restart],
         prefix=prefix, split=split)
     else:
-        output_name = directory + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix, split=split)
+        output_name = directory + utils.analysis_save_file_name(input_file=file_dict[run][restart], prefix=prefix, split=split)
     return output_name
 
 

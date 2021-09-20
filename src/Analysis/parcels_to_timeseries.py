@@ -21,9 +21,10 @@ class parcels_to_timeseries:
             year, month, run, restart = settings.STARTYEAR, settings.STARTMONTH, settings.RUN, settings.RESTART
             print_statement = 'year {}-{}, run {} restart {}'.format(year, month, run, restart)
             utils.print_statement(print_statement, to_print=True)
-            output_name = get_file_names(file_dict=self.file_dict, directory=self.temp_direc, final=False)
+            output_name = get_file_names(file_dict=self.file_dict, directory=self.temp_direc, final=False,
+                                         run=run, restart=restart)
             utils.print_statement(output_name, to_print=True)
-            if 2>1: #not utils.check_file_exist(output_name, without_pkl=True):
+            if not utils.check_file_exist(output_name, without_pkl=True):
                 # Loading the data
                 parcels_dataset, post_dataset = load_parcels_post_output(scenario_name=settings.SCENARIO_NAME,
                                                                          file_dict=self.file_dict)
@@ -60,9 +61,6 @@ class parcels_to_timeseries:
                         self.output_dict['total'] += self.output_dict[beach_state]
                 # Saving the output
                 utils.save_obj(filename=output_name, item=self.output_dict)
-                load_dict = utils.load_obj(output_name)
-                for index, value in enumerate(self.output_dict['beach']):
-                    utils.print_statement('{} {} {}'.format(index, value, load_dict['beach'][index]), to_print=True)
                 str_format = settings.STARTYEAR, settings.STARTMONTH, settings.RUN, settings.RESTART
                 print_statement = 'The timeseries for year {}-{}, run {} restart {} has been save'.format(*str_format)
                 utils.print_statement(print_statement, to_print=True)
@@ -77,7 +75,7 @@ class parcels_to_timeseries:
                                                            directory=self.temp_direc, final=False, year=year,
                                                            month=month,
                                                            run=run, restart=restart)
-                                if month == 1: #utils.check_file_exist(file_name, without_pkl=True):
+                                if month == 1 and utils.check_file_exist(file_name, without_pkl=True):
                                     dataset_post = utils.load_obj(filename=file_name)
                                     for beach_state in self.output_dict.keys():
                                         if beach_state != 'time':
@@ -88,10 +86,7 @@ class parcels_to_timeseries:
                                                 MIN, MAX = dataset_post[beach_state].min(), dataset_post[beach_state].max()
                                                 utils.print_statement('run {} restart {}, {} {} {}'.format(run, restart, beach_state, MIN, MAX), to_print=True)
                                                 self.output_dict[beach_state] += dataset_post[beach_state]
-                                                if beach_state == 'beach':
-                                                    for index, value in enumerate(dataset_post[beach_state]):
-                                                        print('{} {}'.format(index, value))
-                                    # utils.remove_file(file_name + '.pkl')
+                                    utils.remove_file(file_name + '.pkl')
             # Saving the output
             file_name = get_file_names(file_dict=self.file_dict, directory=self.output_direc, final=True)
             utils.save_obj(filename=file_name, item=self.output_dict)
@@ -179,5 +174,5 @@ def get_file_names(file_dict, directory, final, year=settings.STARTYEAR, month=s
         output_name = directory + utils.analysis_save_file_name(input_file=file_dict['postprocess'][year][month][run][restart],
         prefix=prefix, split=split)
     else:
-        output_name = directory + utils.analysis_save_file_name(input_file=file_dict[0][0], prefix=prefix, split=split)
+        output_name = directory + utils.analysis_save_file_name(input_file=file_dict[run][restart], prefix=prefix, split=split)
     return output_name
