@@ -19,7 +19,7 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
     # Loading in the data
     prefix = 'timeseries'
     timeseries_dict = {}
-    beach_state_list = ['beach', 'adrift', 'seabed']
+    beach_state_list = ['beach', 'adrift', 'total', 'seabed']
     if without_seabed:
         _ = beach_state_list.pop(-1)
     for index, size in enumerate(size_list):
@@ -31,7 +31,7 @@ def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, 
             for beach_state in beach_state_list:
                 timeseries_dict[size][tau][beach_state] = data_dict[beach_state]
             timeseries_dict[size][tau]['time_raw'] = data_dict['time']
-            timeseries_dict[size][tau]['total'] = data_dict['total']
+            timeseries_dict[size][tau]['total'] = data_dict['total'][0]
     for index, value in enumerate(data_dict['total']):
         print('{} {}'.format(index, value))
 
