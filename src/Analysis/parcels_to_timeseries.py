@@ -62,7 +62,7 @@ class parcels_to_timeseries:
                 utils.save_obj(filename=output_name, item=self.output_dict)
                 load_dict = utils.load_obj(output_name)
                 for index, value in enumerate(self.output_dict['beach']):
-                    utils.print_statement('{} {} {}'.format(index, value, load_dict[index]), to_print=True)
+                    utils.print_statement('{} {} {}'.format(index, value, load_dict['beach'][index]), to_print=True)
                 str_format = settings.STARTYEAR, settings.STARTMONTH, settings.RUN, settings.RESTART
                 print_statement = 'The timeseries for year {}-{}, run {} restart {} has been save'.format(*str_format)
                 utils.print_statement(print_statement, to_print=True)
