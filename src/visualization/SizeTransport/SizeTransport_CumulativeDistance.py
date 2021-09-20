@@ -52,7 +52,7 @@ def SizeTransport_CumulativeDistance(scenario, figure_direc, size_list, rho_list
                                                                                           size,
                                                                                           variable))
                 for step in range(len(timeseries_dict[size][tau][variable])):
-                    particle_number = data_dict[variable]['total']['count'].size
+                    particle_number = data_dict[variable]['total']['max'].size
                     cumulative_fraction = np.nansum(var_data < variable_domain[index_var][step]) / particle_number * 100.
                     timeseries_dict[size][tau][variable][step] += cumulative_fraction
 
