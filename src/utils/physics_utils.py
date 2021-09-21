@@ -514,9 +514,13 @@ def vertical_reflecting_boundary(particle, fieldset, time):
     local_bathymetry = fieldset.bathymetry[time, fieldset.SURF_Z, particle.lat, particle.lon]
     if particle.potential < fieldset.SURF_Z:
         particle.depth = fieldset.SURF_Z
-    elif particle.potential > local_bathymetry:
+    elif particle.potential >= local_bathymetry:
         overshoot = math.fabs(local_bathymetry - particle.potential)
-        particle.depth = local_bathymetry - overshoot
+        new_potential = local_bathymetry - overshoot
+        if new_potential < fieldset.SURF_Z:
+            particle.depth = fieldset.SURF_Z
+        else:
+            particle.depth = new_potential
     else:
         particle.depth = particle.potential
     if particle.depth < fieldset.SURF_Z:
