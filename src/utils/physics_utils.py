@@ -523,8 +523,10 @@ def vertical_reflecting_boundary(particle, fieldset, time):
         print('This is where it goes wrong')
         a=fieldset.SURF_Z
         b=particle.potential
+        c=particle.depth
         print(a)
         print(b)
+        print(c)
 
 
 def sticky_seafloor_boundary(particle, fieldset, time):
