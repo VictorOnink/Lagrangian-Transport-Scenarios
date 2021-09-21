@@ -528,6 +528,7 @@ def vertical_reflecting_boundary(particle, fieldset, time):
         print(b)
         print(c)
         print(local_bathymetry)
+        print(overshoot)
 
 
 def sticky_seafloor_boundary(particle, fieldset, time):
