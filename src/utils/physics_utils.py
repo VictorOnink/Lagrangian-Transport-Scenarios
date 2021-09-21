@@ -519,6 +519,8 @@ def vertical_reflecting_boundary(particle, fieldset, time):
         particle.depth = local_bathymetry - overshoot
     else:
         particle.depth = particle.potential
+    if particle.depth < fieldset.SURF_Z:
+        print('This is where it goes wrong')
 
 
 def sticky_seafloor_boundary(particle, fieldset, time):
