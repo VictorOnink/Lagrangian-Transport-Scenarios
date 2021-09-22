@@ -22,16 +22,13 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="5">
+    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="rewriting all FragmentationKaandorpPartial figures as classes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/FragmentationKaandorpPartial/FragmentationKaandorpPartial_Animation.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/FragmentationKaandorpPartial/FragmentationKaandorpPartial_Animation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/FragmentationKaandorpPartial/FragmentationKaandorpPartial_FieldDataComp.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/FragmentationKaandorpPartial/FragmentationKaandorpPartial_FieldDataComp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/FragmentationKaandorpPartial/FragmentationKaandorpPartial_Figures.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/FragmentationKaandorpPartial/FragmentationKaandorpPartial_Figures.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/FragmentationKaandorpPartial/FragmentationKaandorpPartial_SizeSpectrumBeach.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/FragmentationKaandorpPartial/FragmentationKaandorpPartial_SizeSpectrumTime.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/FragmentationKaandorpPartial/FragmentationKaandorpPartial_timeseries.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/FragmentationKaandorpPartial/FragmentationKaandorpPartial_timeseries.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/FragmentationKaandorpPartial/FragmentationKaandorpPartial_vertical_profile.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/FragmentationKaandorpPartial/FragmentationKaandorpPartial_vertical_profile.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/visualization_utils/utils_visual.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/visualization_utils/utils_visual.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_Animation.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_Animation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_Figures.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_Figures.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_SeaFloorDepthDistribution.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_beach_timeseries.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_beach_timeseries.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_relative_concentrations.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_relative_concentrations.py" afterDir="false" />
     </list>
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
     <list id="c5adc810-e024-4e30-b33b-a2709ed2c5b7" name="moving the release repeat timescale to the scenario" comment="" />
@@ -117,13 +114,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-02255" summary="update">
-      <created>1631870510524</created>
-      <option name="number" value="02255" />
-      <option name="presentableId" value="LOCAL-02255" />
-      <option name="project" value="LOCAL" />
-      <updated>1631870510524</updated>
     </task>
     <task id="LOCAL-02256" summary="update">
       <created>1631870873861</created>
@@ -461,7 +451,14 @@
       <option name="project" value="LOCAL" />
       <updated>1632229662496</updated>
     </task>
-    <option name="localTasksCounter" value="2304" />
+    <task id="LOCAL-02304" summary="rewriting all FragmentationKaandorpPartial figures as classes">
+      <created>1632271296586</created>
+      <option name="number" value="02304" />
+      <option name="presentableId" value="LOCAL-02304" />
+      <option name="project" value="LOCAL" />
+      <updated>1632271296586</updated>
+    </task>
+    <option name="localTasksCounter" value="2305" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -492,7 +489,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Starting to add in a structure for figure and animation making" />
     <MESSAGE value="starting to build in some basic visualization functions, and getting started on the animation function for size dependent transport" />
     <MESSAGE value="rewriting the horizontal concentration code to distinguish between particle beaching states" />
     <MESSAGE value="bug fix where we now load the particle depth in the restart files for the SizeTransport simulation" />
@@ -517,6 +513,7 @@
     <MESSAGE value="rewriting the concentration analysis code" />
     <MESSAGE value="update" />
     <MESSAGE value="5" />
-    <option name="LAST_COMMIT_MESSAGE" value="5" />
+    <MESSAGE value="rewriting all FragmentationKaandorpPartial figures as classes" />
+    <option name="LAST_COMMIT_MESSAGE" value="rewriting all FragmentationKaandorpPartial figures as classes" />
   </component>
 </project>

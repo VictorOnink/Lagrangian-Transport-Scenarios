@@ -2,120 +2,91 @@ import settings
 import utils
 import visualization.visualization_utils as vUtils
 import matplotlib.pyplot as plt
-import numpy as np
 import string
-from datetime import datetime, timedelta
-import matplotlib.dates as mdates
+from datetime import datetime
+import seaborn
 
 
-def SizeTransport_beach_timeseries(scenario, figure_direc, size_list, rho_list, tau_list=[settings.SEABED_CRIT],
-                                   figsize=(12, 10), fontsize=12, simulation_years=1, tau_comp=False,
-                                   without_seabed=True):
-    # Setting the folder within which we have the output, and where we have the saved timeslices
-    output_direc = figure_direc + 'timeseries/'
-    data_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/{}/'.format('SizeTransport')
-    utils.check_direc_exist(output_direc)
+class SizeTransport_beach_timeseries:
+    def __int__(self, scenario, figure_direc, size_list, simulation_years, rho=920, without_seabed=True):
+        # Simulation parameters
+        self.scenario = scenario
+        self.rho = rho
+        self.size_list = size_list
+        self.tau = 0.0
+        self.simulation_years = simulation_years
+        self.without_seabed = without_seabed
+        # Data parameters
+        self.output_direc = figure_direc + 'timeseries/'
+        self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/SizeTransport/'
+        utils.check_direc_exist(self.output_direc)
+        self.prefix = 'timeseries'
+        # Figure parameters
+        self.figure_size = (12, 10)
+        self.figure_shape = (2, 1)
+        self.ax_label_size = 12
+        self.ax_ticklabel_size = 12
+        self.xmax, self.xmin = datetime(2010 + self.simulation_years, 1, 1), datetime(2010, 1, 1)
+        self.ymax, self.ymin = 100, 0
+        self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
+        self.beach_state_list = ['beach', 'adrift', 'seabed']
+        self.y_label = 'Fraction of Total (%)'
+        self.x_label = 'Time (yr)'
+        if self.without_seabed:
+            _ = self.beach_state_list.pop(-1)
+        self.number_of_plots = self.beach_state_list.__len__()
 
-    # Loading in the data
-    prefix = 'timeseries'
-    timeseries_dict = {}
-    beach_state_list = ['beach', 'adrift', 'total', 'seabed']
-    if without_seabed:
-        _ = beach_state_list.pop(-1)
-    for index, size in enumerate(size_list):
-        timeseries_dict[size] = {}
-        for tau in tau_list:
-            data_dict = vUtils.SizeTransport_load_data(scenario=scenario, prefix=prefix, data_direc=data_direc,
-                                                       size=size, rho=rho_list[index], tau=tau)
-            timeseries_dict[size][tau] = {}
-            for beach_state in beach_state_list:
-                timeseries_dict[size][tau][beach_state] = data_dict[beach_state]
-            timeseries_dict[size][tau]['time_raw'] = data_dict['time']
-            timeseries_dict[size][tau]['total_divide'] = data_dict['total']
-    for index, value in enumerate(data_dict['total']):
-        print('{} {}'.format(index, value))
+    def plot(self):
+        # Loading the data
+        timeseries_dict = {}
+        for size in self.size_list:
+            timeseries_dict[size] = {}
+            data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix, data_direc=self.data_direc,
+                                                       size=size, rho=self.rho, tau=self.tau)
+            for beach_state in self.beach_state_list:
+                timeseries_dict[size][beach_state] = data_dict[beach_state]
+            timeseries_dict[size]['time_raw'] = data_dict['time']
+            timeseries_dict[size]['total_divide'] = data_dict['total'][0]
 
-    # Normalizing all the particle counts with the total number of particles, and then multiplying by 100 to get a
-    # percentage
-    for size in size_list:
-        for tau in tau_list:
-            for beach_state in beach_state_list:
-                timeseries_dict[size][tau][beach_state] /= timeseries_dict[size][tau]['total_divide']
-                timeseries_dict[size][tau][beach_state] *= 100.
+        # Normalizing all the particle counts with the total number of particles, and then multiplying by 100 to get a
+        # percentage
+        for size in self.size_list:
+            for beach_state in self.beach_state_list:
+                timeseries_dict[size][beach_state] /= timeseries_dict[size]['total_divide']
+                timeseries_dict[size][beach_state] *= 100.
 
-    # Setting parameters for the time axis
-    years = mdates.YearLocator()   # every year
-    months = mdates.MonthLocator()  # every month
-    yearsFmt = mdates.DateFormatter('%Y')
+        # Creating the figure
+        ax = vUtils.base_figure(fig_size=self.figure_size, ax_range=self.ax_range, y_label=self.y_label,
+                                x_label=self.x_label, ax_label_size=self.ax_label_size,
+                                ax_ticklabel_size=self.ax_ticklabel_size, shape=self.figure_shape,
+                                plot_num=self.number_of_plots, legend_axis=True, log_yscale=False, x_time_axis=True,
+                                width_ratios=[1, 0.3], all_x_labels=True)
 
-    # Getting the datetime objects for all of the time arrays
-    startdate = datetime(settings.STARTYEAR, 1, 1, 12, 0)
-    for size in size_list:
-        for tau in tau_list:
-            timeseries_dict[size][tau]['time'] = []
-            for seconds in timeseries_dict[size][tau]['time_raw']:
-                timeseries_dict[size][tau]['time'].append(startdate + timedelta(seconds=seconds))
+        # Adding the subfigure titles
+        for index, beach_state in enumerate(self.beach_state_list):
+            ax[index].set_title(subfigure_title(index, beach_state), fontsize=self.ax_label_size)
 
-    # Creating the figure
-    fig = plt.figure(figsize=figsize)
-    gs = fig.add_gridspec(nrows=beach_state_list.__len__(), ncols=2, width_ratios=[1, 0.2])
-    gs.update(wspace=0.2, hspace=0.2)
+        # Now, adding in the actual data
+        for index_size, size in enumerate(self.size_list):
+            for index_beach, beach_state in enumerate(self.beach_state_list):
+                line_color = vUtils.discrete_color_from_cmap(index_size, subdivisions=len(self.size_list))
+                ax[index_beach].plot(timeseries_dict[size]['time'], timeseries_dict[size][beach_state], linestyle='-',
+                                     color=line_color, label=size_label(size))
+        # Creating a legend
+        size_number = self.size_list.__len__()
+        size_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(index_size, subdivisions=size_number),
+                                label=size_label(size), linestyle='-')[0] for index_size, size in enumerate(self.size_list)]
+        ax[-1].legend(handles= size_colors, fontsize=self.ax_label_size, loc='upper right')
+        ax[-1].axis('off')
 
-    ax_list = []
-    for row in range(gs.nrows):
-        ax = fig.add_subplot(gs[row, 0])
-        ax.xaxis.set_major_locator(years)
-        ax.xaxis.set_minor_locator(months)
-        ax.xaxis.set_major_formatter(yearsFmt)
-        ax.set_ylabel(r'Fraction of Total (%)', fontsize=fontsize)
-        ax.set_xlim(datetime(2010, 1, 1), datetime(2010 + simulation_years, 1, 1))
-        ax.set_ylim([0, 100])
-        ax.tick_params(which='major', length=7)
-        ax.tick_params(which='minor', length=3)
-        if row != (gs.nrows - 1):
-            ax.set_xticklabels([])
-        ax_list.append(ax)
-    ax_list[-1].set_xlabel('Time (yr)', fontsize=fontsize)
-
-    for index, beach_state in enumerate(beach_state_list):
-        ax_list[index].set_title(subfigure_title(index, beach_state), fontsize=fontsize)
-
-    # Now, adding in the actual data
-    for index_size, size in enumerate(size_list):
-        for tau in tau_list:
-            for index_beach, beach_state in enumerate(beach_state_list):
-                ax_list[index_beach].plot(timeseries_dict[size][tau]['time'], timeseries_dict[size][tau][beach_state],
-                                          linestyle=vUtils.SizeTransport_linestyle_SEABED_CRIT(tau=tau),
-                                          color=vUtils.discrete_color_from_cmap(index_size,
-                                                                                subdivisions=len(size_list)),
-                                          label=size_label(size))
-    # Creating a legend
-    linestyles = [plt.plot([], [], c='k', label=r'$\tau_{crit}$ = ' + '{} Pa'.format(tau),
-                           linestyle=vUtils.SizeTransport_linestyle_SEABED_CRIT(tau=tau))[0] for tau in tau_list]
-    size_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(index_size, subdivisions=len(size_list)),
-                            label=size_label(size), linestyle='-')[0] for index_size, size in enumerate(size_list)]
-    ax_legend = fig.add_subplot(gs[:, 1])
-    ax_legend.legend(handles=linestyles + size_colors, fontsize=fontsize, loc='upper right')
-    ax_legend.axis('off')
-
-    if tau_comp:
-        file_name = output_direc + 'SizeTransport_beach_state_timeseries_TAUCOMP.jpg'
-    else:
-        file_name = output_direc + 'SizeTransport_beach_state_timeseries.jpg'
-    plt.savefig(file_name, bbox_inches='tight')
+        file_name = self.output_direc + 'SizeTransport_beach_state_timeseries.jpg'
+        plt.savefig(file_name, bbox_inches='tight')
 
 
 def subfigure_title(index, beach_state):
-    """
-    setting the title of the subfigure
-    :param index:
-    :param size:
-    :param rho:
-    :return:
-    """
-    alphabet = string.ascii_lowercase
-    return '({}) {}'.format(alphabet[index], beach_state)
+    return '({}) {}'.format(string.ascii_lowercase[index], beach_state)
 
 
 def size_label(size):
     return r'r = {:.3f} mm'.format(size * 1e3)
+
