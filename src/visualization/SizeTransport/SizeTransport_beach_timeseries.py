@@ -4,7 +4,7 @@ import visualization.visualization_utils as vUtils
 import matplotlib.pyplot as plt
 import string
 from datetime import datetime, timedelta
-import seaborn
+import seaborn as sns
 
 
 class SizeTransport_beach_timeseries:
@@ -57,6 +57,7 @@ class SizeTransport_beach_timeseries:
                 timeseries_dict[size][beach_state] *= 100.
 
         # Creating the figure
+        sns.set_theme()
         ax = vUtils.base_figure(fig_size=self.figure_size, ax_range=self.ax_range, y_label=self.y_label,
                                 x_label=self.x_label, ax_label_size=self.ax_label_size,
                                 ax_ticklabel_size=self.ax_ticklabel_size, shape=self.figure_shape,
