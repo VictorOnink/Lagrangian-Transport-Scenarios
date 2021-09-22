@@ -8,7 +8,7 @@ import seaborn
 
 
 class SizeTransport_beach_timeseries:
-    def __int__(self, scenario, figure_direc, size_list, simulation_years, rho=920, without_seabed=True):
+    def __init__(self, scenario, figure_direc, size_list, simulation_years, rho=920, without_seabed=True):
         # Simulation parameters
         self.scenario = scenario
         self.rho = rho
