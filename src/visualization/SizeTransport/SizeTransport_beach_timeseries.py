@@ -3,7 +3,7 @@ import utils
 import visualization.visualization_utils as vUtils
 import matplotlib.pyplot as plt
 import string
-from datetime import datetime
+from datetime import datetime, timedelta
 import seaborn
 
 
@@ -47,6 +47,7 @@ class SizeTransport_beach_timeseries:
                 timeseries_dict[size][beach_state] = data_dict[beach_state]
             timeseries_dict[size]['time_raw'] = data_dict['time']
             timeseries_dict[size]['total_divide'] = data_dict['total'][0]
+        time_list = create_time_list(data_dict)
 
         # Normalizing all the particle counts with the total number of particles, and then multiplying by 100 to get a
         # percentage
@@ -70,7 +71,7 @@ class SizeTransport_beach_timeseries:
         for index_size, size in enumerate(self.size_list):
             for index_beach, beach_state in enumerate(self.beach_state_list):
                 line_color = vUtils.discrete_color_from_cmap(index_size, subdivisions=len(self.size_list))
-                ax[index_beach].plot(timeseries_dict[size]['time'], timeseries_dict[size][beach_state], linestyle='-',
+                ax[index_beach].plot(time_list, timeseries_dict[size][beach_state], linestyle='-',
                                      color=line_color, label=size_label(size))
         # Creating a legend
         size_number = self.size_list.__len__()
@@ -89,4 +90,12 @@ def subfigure_title(index, beach_state):
 
 def size_label(size):
     return r'r = {:.3f} mm'.format(size * 1e3)
+
+
+def create_time_list(data_dict):
+    time_list = []
+    for time in data_dict['time']:
+        time_list.append(datetime(settings.STARTYEAR, 1, 1, 12) + timedelta(seconds=time))
+    return time_list
+
 
