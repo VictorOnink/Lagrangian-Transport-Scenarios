@@ -7,83 +7,108 @@ import string
 import numpy as np
 
 
-def FragmentationKaandorpPartial_FieldDataComp(figure_direc, scenario, shore_time, lambda_frag_list, rho,
-                                               fig_size=(10, 14), x_label='Size (mm)',
-                                               y_label=r'Normalized Particle Number (n mm$^{-1}$)',
-                                               ax_ticklabel_size=12, ax_label_size=14, legend_size=12):
-    # Setting the folder within which we have the output, and where we have the saved data
-    output_direc = figure_direc + 'size_distribution/'
-    utils.check_direc_exist(output_direc)
-    data_direc = utils.get_output_directory(server=settings.SERVER) + 'size_distribution/FragmentationKaandorpPartial/'
+class FragmentationKaandorpPartial_FieldDataComp:
+    def __init__(self, figure_direc, scenario, shore_time, lambda_frag_list, rho):
+        # Data parameters
+        self.output_direc = figure_direc + 'size_distribution/'
+        self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'size_distribution/FragmentationKaandorpPartial/'
+        utils.check_direc_exist(self.output_direc)
+        self.prefix = 'size_distribution'
+        self.beach_state_list = ['adrift_open_surf', 'adrift_10km_surf', 'beach']
+        # Simulation parameters
+        self.scenario = scenario
+        self.shore_time = shore_time
+        self.lambda_frag_list = lambda_frag_list
+        self.rho = rho
+        self.class_num = settings.SIZE_CLASS_NUMBER
+        # Figure parameters
+        self.fig_size = (10, 14)
+        self.fig_shape = (self.beach_state_list.__len__(), 1)
+        self.x_label = 'Size (mm)'
+        self.y_label = r'Normalized Particle Number (n mm$^{-1}$)'
+        self.ax_ticklabel_size = 12
+        self.ax_label_size = 14
+        self.legend_size = 12
+        self.xmin, self.xmax = 1e-1, 2e2
+        self.ymin, self.ymax = 1e-4, 2e5
+        self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
+        self.number_of_plots = self.beach_state_list.__len__()
+        self.field_marker = 'x'
+        self.field_line = '--'
 
-    # Getting the sizes of the size classes, and we convert from meters to mm
-    sizes_class = utils.size_range(size_class_number=settings.SIZE_CLASS_NUMBER, units='mm')
+    def plot(self):
+        # Getting the sizes of the size classes, and we convert from meters to mm
+        size_classes = utils.size_range(size_class_number=self.class_num, units='mm')
 
-    # Loading the data
-    prefix = 'size_distribution'
-    data_dict = {}
-    for lambda_frag in lambda_frag_list:
-        data_dict[lambda_frag] = vUtils.FragmentationKaandorpPartial_load_data(scenario=scenario, prefix=prefix,
-                                                                  data_direc=data_direc, shore_time=shore_time,
-                                                                  lambda_frag=lambda_frag, rho=rho, postprocess=True)
-    time_index = data_dict[lambda_frag]['final_index']
-    beach_state_list = ['adrift_open_surf', 'adrift_10km_surf', 'beach']
-    field_dict = utils.load_obj(vUtils.FragmentationKaandorpPartial_fielddata_filename())
+        # Loading the data
+        data_dict = {}
+        for lambda_frag in self.lambda_frag_list:
+            data_dict[lambda_frag] = vUtils.FragmentationKaandorpPartial_load_data(scenario=self.scenario,
+                                                                                   prefix=self.refix,
+                                                                                   data_direc=self.data_direc,
+                                                                                   shore_time=self.shore_time,
+                                                                                   lambda_frag=lambda_frag,
+                                                                                   rho=self.rho, postprocess=True)
+        time_index = data_dict[lambda_frag]['final_index']
+        field_dict = utils.load_obj(vUtils.FragmentationKaandorpPartial_fielddata_filename())
 
-    # Creating the figure
-    ax_range = 2e2, 1e-1, 2e5, 1e-4
-    plot_num = 3
-    ax = vUtils.base_figure(fig_size=fig_size, ax_range=ax_range, x_label=x_label, y_label=y_label,
-                            ax_ticklabel_size=ax_ticklabel_size, ax_label_size=ax_label_size, shape=(3, 1),
-                            plot_num=plot_num, log_yscale=True, log_xscale=True, all_x_labels=True,
-                            all_y_labels=False)
+        # Creating the figure
+        ax = vUtils.base_figure(fig_size=self.fig_size, ax_range=self.ax_range, x_label=self.x_label,
+                                y_label=self.y_label, ax_ticklabel_size=self.ax_ticklabel_size,
+                                ax_label_size=self.ax_label_size, shape=self.fig_shape, plot_num=self.number_of_plots,
+                                log_yscale=True, log_xscale=True, all_x_labels=True, all_y_labels=False)
 
-    # Labelling the subfigures
-    for index_ax in range(plot_num):
-        ax[index_ax].set_title(subfigure_title(index_ax, beach_state_list[index_ax]), fontsize=ax_label_size)
+        # Labelling the subfigures
+        for index_ax in range(self.number_of_plots):
+            ax[index_ax].set_title(subfigure_title(index_ax, self.beach_state_list[index_ax]),
+                                   fontsize=self.ax_label_size)
 
-    # Plotting the model distributions
-    for ax_index, sub_ax in enumerate(ax):
-        for lambda_index, lambda_frag in enumerate(lambda_frag_list):
-            norm_factor = data_dict[lambda_frag][beach_state_list[ax_index]][time_index][0]
-            sub_ax.plot(sizes_class, data_dict[lambda_frag][beach_state_list[ax_index]][time_index] / norm_factor,
-                        linestyle='-',
-                        color=vUtils.discrete_color_from_cmap(index=lambda_index, subdivisions=len(lambda_frag_list)),
-                        label=r'$\lambda_f=$' + '{} days'.format(lambda_frag))
+        # Plotting the model distributions
+        for ax_index, sub_ax in enumerate(ax):
+            for lambda_index, lambda_frag in enumerate(self.lambda_frag_list):
+                norm_factor = data_dict[lambda_frag][self.beach_state_list[ax_index]][time_index][0]
+                c = vUtils.discrete_color_from_cmap(index=lambda_index, subdivisions=self.lambda_frag_list.__len__())
+                sub_ax.plot(size_classes, data_dict[lambda_frag][self.beach_state_list[ax_index]][time_index] / norm_factor,
+                            linestyle='-', color=c, label=label(lambda_frag))
+        # Field data - open ocean
+        norm_factor = field_dict['Cozar']['pdf_counts'][14]
+        ax[0].plot(field_dict['Cozar']['bin_midpoint'], field_dict['Cozar']['pdf_counts'] / norm_factor,
+                   marker=self.field_marker, linestyle=self.field_line, color='tab:red', label='Cozar et al. (2015)')
 
-    # Adding the field data
-    # First for the open ocean
-    ax[0].plot(field_dict['Cozar']['bin_midpoint'], field_dict['Cozar']['pdf_counts'] / field_dict['Cozar']['pdf_counts'][14],
-               marker='x', linestyle='--', color='tab:red', label='Cozar et al. (2015)')
-    # Then for coastal waters
-    ax[1].plot(field_dict['RuizOrejon']['bin_midpoint'],
-               field_dict['RuizOrejon']['pdf_counts'] / field_dict['RuizOrejon']['pdf_counts'][6],
-               marker='x', linestyle='--', color='tab:red', label=r'Ruiz-Orej$\`o$n et al. (2018)')
-    # and finally for on the beach
-    ax[2].plot(field_dict['Fok']['bin_midpoint'], field_dict['Fok']['pdf_counts'] / field_dict['Fok']['pdf_counts'][5],
-               marker='x', linestyle='--', color='tab:red', label='Fok et al. (2017)')
-    ax[2].plot(field_dict['Constant1']['bin_midpoint'], field_dict['Constant1']['pdf_counts'] / field_dict['Constant1']['pdf_counts'][-2],
-               marker='x', linestyle='--', color='tab:blue', label='Constant et al. (2019), site 1')
-    ax[2].plot(field_dict['Constant2']['bin_midpoint'], field_dict['Constant2']['pdf_counts'] / field_dict['Constant2']['pdf_counts'][-2],
-               marker='x', linestyle='--', color='tab:orange', label='Constant et al. (2019), site 2')
+        # Field data - coastal waters
+        norm_factor = field_dict['RuizOrejon']['pdf_counts'][6]
+        ax[1].plot(field_dict['RuizOrejon']['bin_midpoint'], field_dict['RuizOrejon']['pdf_counts'] / norm_factor,
+                   marker=self.field_marker, linestyle=self.field_line, color='tab:red',
+                   label=r'Ruiz-Orej$\`o$n et al. (2018)')
 
-    # Adding legends
-    for sub_ax in ax:
-        sub_ax.legend(fontsize=legend_size, loc='upper right')
+        # Field data - beach
+        norm_factor = field_dict['Fok']['pdf_counts'][5]
+        ax[2].plot(field_dict['Fok']['bin_midpoint'], field_dict['Fok']['pdf_counts'] / norm_factor,
+                   marker=self.field_marker, linestyle=self.field_marker, color='tab:red', label='Fok et al. (2017)')
+        norm_factor = field_dict['Constant1']['pdf_counts'][-2]
+        ax[2].plot(field_dict['Constant1']['bin_midpoint'], field_dict['Constant1']['pdf_counts'] / norm_factor,
+                   marker=self.field_marker, linestyle=self.field_line, color='tab:blue',
+                   label='Constant et al. (2019), site 1')
+        norm_factor = field_dict['Constant2']['pdf_counts'][-2]
+        ax[2].plot(field_dict['Constant2']['bin_midpoint'], field_dict['Constant2']['pdf_counts'] / norm_factor,
+                   marker=self.field_marker, linestyle=self.field_line, color='tab:orange',
+                   label='Constant et al. (2019), site 2')
 
-    # Saving the figure
-    file_name = output_direc + 'SizeSpectrumFieldData-ST={}-rho={}-lamf={}.png'.format(shore_time, rho, lambda_frag)
-    plt.savefig(file_name, bbox_inches='tight')
+        # Adding legends
+        for sub_ax in ax:
+            sub_ax.legend(fontsize=self.legend_size, loc='upper right')
+
+        # Saving the figure
+        str_format = self.shore_time, self.rho
+        file_name = self.output_direc + 'SizeSpectrumFieldData-ST={}-rho={}.png'.format(*str_format)
+        plt.savefig(file_name, bbox_inches='tight')
 
 
 def subfigure_title(index, beach_state):
-    """
-    setting the title of the subfigure
-    :param index:
-    :param size:
-    :param rho:
-    :return:
-    """
     alphabet = string.ascii_lowercase
     title_dict = {'adrift_open_surf': 'Adrift - open ocean', 'adrift_10km_surf': 'Adrift - coastal', 'beach': 'Beach'}
     return '({}) {}'.format(alphabet[index], title_dict[beach_state])
+
+
+def label(lambda_frag):
+    return r'$\lambda_f=$' + '{} days'.format(lambda_frag)

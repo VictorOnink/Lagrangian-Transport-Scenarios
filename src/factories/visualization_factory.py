@@ -1,5 +1,4 @@
 import visualization.SizeTransport.SizeTransport_Figures as SizeTransport
-import visualization.FragmentationKaandorp.FragmentationKaandorp_Figures as FragmentationKaandorp
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_Figures as FragmentationKaandorpPartial
 import factories.scenario_factory as scenario_factory
 import settings
@@ -21,7 +20,5 @@ class VisualizationFactory:
     def run(self):
         if self.scenario_name is 'SizeTransport':
             SizeTransport.run(scenario=self.scenario, figure_direc=self.figure_direc)
-        if self.scenario_name is 'FragmentationKaandorp':
-            FragmentationKaandorp.run(scenario=self.scenario, figure_direc=self.figure_direc)
         if self.scenario_name is 'FragmentationKaandorpPartial':
             FragmentationKaandorpPartial.run(scenario=self.scenario, figure_direc=self.figure_direc)

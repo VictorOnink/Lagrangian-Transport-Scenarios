@@ -8,83 +8,86 @@ import numpy as np
 import cmocean.cm as cmo
 
 
-def FragmentationKaandorpPartial_vertical_profile(figure_direc, scenario, shore_time, lambda_frag, rho, simulation_year,
-                                                  fig_size=(16, 10), x_label='Number of Particles', y_label='Depth (m)',
-                                                  ax_ticklabel_size=12, ax_label_size=14, legend_size=11):
-    # Setting the folder within which we have the output, and where we have the saved data
-    output_direc = figure_direc + 'vertical_profile/'
-    utils.check_direc_exist(output_direc)
-    data_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/FragmentationKaandorpPartial/'
+class FragmentationKaandorpPartial_vertical_profile:
+    def __init__(self, figure_direc, scenario, shore_time, lambda_frag, rho, simulation_year):
+        # Figure Parameters
+        self.fig_size = (16, 10)
+        self.fig_shape = (2, 2)
+        self.x_label = 'Number of Particles'
+        self.y_label = 'Depth (m)'
+        self.ax_ticklabel_size = 12
+        self.ax_label_size = 14
+        self.legend_size = 11
+        self.xmin, self.xmax = 1e-10, 1e0
+        self.ymin, self.ymax = -25, 0
+        self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
+        self.number_of_plots = 4
+        # Data parameters
+        self.output_direc = figure_direc + 'vertical_profile/'
+        self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/FragmentationKaandorpPartial/'
+        utils.check_direc_exist(self.output_direc)
+        self.prefix = 'vertical_concentration'
+        # Simulation parameters
+        self.scenario = scenario
+        self.shore_time = shore_time
+        self.lambda_frag = lambda_frag
+        self.rho = rho
+        self.simulation_year = simulation_year
+        self.size_classes = settings.SIZE_CLASS_NUMBER
 
-    # Loading in the data
-    prefix = 'vertical_concentration'
-    data_dict = vUtils.FragmentationKaandorpPartial_load_data(scenario=scenario, prefix=prefix,
-                                                              data_direc=data_direc, shore_time=shore_time,
-                                                              lambda_frag=lambda_frag, rho=rho, postprocess=True)
-    fine_depth_bins = data_dict['depth']
-    year_dict = deepcopy(data_dict[utils.analysis_simulation_year_key(simulation_year)])
+    def plot(self):
+        # Loading the data
+        data_dict = vUtils.FragmentationKaandorpPartial_load_data(scenario=self.scenario, prefix=self.prefix,
+                                                                  data_direc=self.data_direc,
+                                                                  shore_time=self.shore_time,
+                                                                  lambda_frag=self.lambda_frag,
+                                                                  rho=self.rho, postprocess=True)
+        depth_bins = -0.5 * (data_dict['depth'][1:] + data_dict['depth'][:-1])
 
-    # Next, we are going to average out the bins, because they are currently too small
-    data_dict = {}
-    depth_bins = np.arange(start=np.min(fine_depth_bins), stop=np.max(fine_depth_bins), step=0.5)
-    for month in year_dict.keys():
-        data_dict[month] = {}
-        for size_class in year_dict[month].keys():
-            data_dict[month][size_class] = {'concentration': None, 'counts': 0}
-            data_dict[month][size_class]['concentration'] = np.histogram(year_dict[month][size_class]['concentration'],
-                                                                         bins=depth_bins)[0]
-            data_dict[month][size_class]['counts'] = year_dict[month][size_class]['counts']
-    depth_bins = -0.5 * (depth_bins[1:] + depth_bins[:-1])
+        # Creating the figure
+        ax = vUtils.base_figure(fig_size=self.fig_size, ax_range=self.ax_range, x_label=self.x_label,
+                                y_label=self.y_label, ax_ticklabel_size=self.ax_ticklabel_size,
+                                ax_label_size=self.ax_label_size, shape=self.fig_shape, plot_num=self.number_of_plots,
+                                log_yscale=False, log_xscale=True, all_x_labels=True, all_y_labels=True,
+                                legend_axis=True, width_ratios=[1, 1, 0.5])
 
-    # Creating the figure
-    ax_range = 1e0, 1e-10, 0, -25
-    plot_num = 4
-    ax = vUtils.base_figure(fig_size=fig_size, ax_range=ax_range, x_label=x_label, y_label=y_label,
-                            ax_ticklabel_size=ax_ticklabel_size, ax_label_size=ax_label_size, shape=(2, 2),
-                            plot_num=plot_num, log_yscale=False, log_xscale=True, all_x_labels=True, all_y_labels=True,
-                            legend_axis=True, width_ratios=[1, 1, 0.5])
+        # Labelling the subfigures
+        for index_ax in range(self.number_of_plots):
+            ax[index_ax].set_title(subfigure_title(index_ax, self.simulation_year), fontsize=self.ax_label_size)
 
-    # Labelling the subfigures
-    for index_ax in range(plot_num):
-        ax[index_ax].set_title(subfigure_title(index_ax, simulation_year), fontsize=ax_label_size)
+        # Adding in a legend
+        cmap_list, label_list, line_list = ['k'], ['Total'], ['--']
+        for size_class in range(self.size_classes):
+            cmap_list.append(vUtils.discrete_color_from_cmap(size_class, subdivisions=self.size_classes, cmap='viridis'))
+            label_list.append(legend_label(size_class))
+            line_list.append('-')
+        size_colors = [plt.plot([], [], c=cmap_list[i], label=label_list[i], linestyle=line_list[i])[0] for i in
+                       range(cmap_list.__len__())]
+        ax[-1].legend(handles=size_colors, fontsize=self.legend_size)
+        ax[-1].axis('off')
 
-    # Adding in a legend
-    cmap_list, label_list, line_list = ['k'], ['Total'], ['--']
-    for size_class in range(settings.SIZE_CLASS_NUMBER):
-        cmap_list.append(vUtils.discrete_color_from_cmap(size_class, subdivisions=settings.SIZE_CLASS_NUMBER, cmap='viridis'))
-        label_list.append('Size class {}, d = {:.3f} mm'.format(size_class, utils.size_range(single_size_class=size_class,
-                                                                                             units='mm')))
-        line_list.append('-')
+        # And finally, the actual plotting:
+        for ind_month, month in enumerate(np.arange(0, 12, 3)):
+            total_count = np.zeros(data_dict[month][0]['concentration'].shape)
+            for size_class in range(settings.SIZE_CLASS_NUMBER):
+                total_count += data_dict[month][size_class]['concentration']
+                norm_conc = data_dict[month][size_class]['concentration'] / data_dict[month][size_class]['counts']
+                c = vUtils.discrete_color_from_cmap(size_class, subdivisions=settings.SIZE_CLASS_NUMBER, cmap='viridis')
+                ax[ind_month].plot(norm_conc, depth_bins, linestyle='-', c=c)
+            ax[ind_month].plot(total_count, depth_bins, linestyle='-', c='k', zorder=10000)
 
-    size_colors = [plt.plot([], [], c=cmap_list[ind], label=label_list[ind], linestyle=line_list[ind])[0] for ind in range(cmap_list.__len__())]
-    ax[-1].legend(handles=size_colors, fontsize=legend_size)
-    ax[-1].axis('off')
+        # Saving the figure
+        str_format = self.lambda_frag, self.shore_time, self.rho, self.simulation_year
+        file_name = self.output_direc + 'VerticalProfile-lamf={}-ST={}-rho={}_simyear={}.png'.format(*str_format)
+        plt.savefig(file_name, bbox_inches='tight')
 
-    # And finally, the actual plotting:
-    for ind_month, month in enumerate(np.arange(0, 12, 3)):
-        total_count = np.zeros(data_dict[month][0]['concentration'].shape)
-        for size_class in range(settings.SIZE_CLASS_NUMBER):
-            total_count += data_dict[month][size_class]['concentration']
-            norm_conc = data_dict[month][size_class]['concentration'] / data_dict[month][size_class]['counts']
-            ax[ind_month].plot(norm_conc, depth_bins, linestyle='-',
-                               c=vUtils.discrete_color_from_cmap(size_class, subdivisions=settings.SIZE_CLASS_NUMBER,
-                                                                 cmap='viridis'))
-        # ax[ind_month].plot(total_count, depth_bins, linestyle='-', c='k', zorder=10000)
 
-    # Saving the figure
-    str_format = lambda_frag, shore_time, rho, simulation_year
-    file_name = output_direc + 'VerticalProfile-lamf={}-ST={}-rho={}_simyear={}.png'.format(*str_format)
-    plt.savefig(file_name, bbox_inches='tight')
+def legend_label(size_class):
+    str_format = size_class, utils.size_range(single_size_class=size_class, units='mm')
+    return 'Size class {}, d = {:.3f} mm'.format(*str_format)
 
 
 def subfigure_title(index, simulation_year):
-    """
-    setting the title of the subfigure
-    :param index:
-    :param size:
-    :param rho:
-    :return:
-    """
     alphabet = string.ascii_lowercase
     return '({}) 1-{}-{}'.format(alphabet[index], index * 3 + 1, settings.STARTYEAR + simulation_year)
 

@@ -6,7 +6,6 @@ import matplotlib.ticker as mticker
 import numpy as np
 from matplotlib.gridspec import GridSpec
 import matplotlib.dates as mdates
-
 import utils
 
 
