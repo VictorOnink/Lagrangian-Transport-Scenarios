@@ -4,7 +4,7 @@
 #####################################################################################
 SUBMISSION='simulation'
 export SUBMISSION
-DEBUG=1 # 0 = Not a debug run, 1 = a debug run
+DEBUG=0 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation
 SCENARIO=7
@@ -33,7 +33,7 @@ export SEABED_CRIT
 P=4
 DN=25
 SIZE_CLASS_NUMBER=6
-LAMBDA_FRAG_list=(388)
+LAMBDA_FRAG_list=(300 388 1000 10000 38000)
 OCEAN_FRAG=0
 LAMBDA_OCEAN_FRAG_LIST=(388)
 export P
@@ -48,7 +48,7 @@ POST_PROCESS=1
 export POST_PROCESS
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010
-STARTMONTH_list=(1)
+STARTMONTH_list=(1 2 3 4 5 6 7 8 9 10 11 12)
 STARTDAY=1
 export STARTYEAR
 export STARTDAY
@@ -62,7 +62,7 @@ export ADVECTION_DATA
 #Start year of the simulation. 0 = new simulation, otherwise it picks up from a previous simulation
 START=0
 #Number of years the simulation runs
-SIMLEN=1
+SIMLEN=2
 export SIMLEN
 #Inclusion of Stokes drift. 0 = include stokes, 1 = do not include stokes
 STOKES=0
