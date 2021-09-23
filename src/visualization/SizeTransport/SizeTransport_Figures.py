@@ -3,8 +3,8 @@ from visualization.SizeTransport.SizeTransport_Animation import SizeTransport_An
 from visualization.SizeTransport.SizeTransport_relative_concentrations import SizeTransport_relative_concentrations
 from visualization.SizeTransport.SizeTransport_beach_timeseries import SizeTransport_beach_timeseries
 import visualization.General as General
-import visualization.SizeTransport.SizeTransport_CumulativeDistance as SizeTransport_CumulativeDistance
-import visualization.SizeTransport.SizeTransport_SeparationDistance as SizeTransport_SeparationDistance
+from visualization.SizeTransport.SizeTransport_CumulativeDistance import SizeTransport_CumulativeDistance
+from visualization.SizeTransport.SizeTransport_SeparationDistance import SizeTransport_SeparationDistance
 import os
 import numpy as np
 
@@ -47,20 +47,14 @@ def run(scenario, figure_direc: str):
 
     size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
     # Creating figures of the timeseries of the number of particles that are beached/adrift/seabed
-    SizeTransport_beach_timeseries(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                   simulation_years=3).plot()
+    # SizeTransport_beach_timeseries(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                simulation_years=3).plot()
 
     # Cumulative plots for the total distance travelled vertically and horizontally, and the max depth reached
-    # SizeTransport_CumulativeDistance.SizeTransport_CumulativeDistance(figure_direc=figure_direc,
-    #                                                                   scenario=scenario,
-    #                                                                   size_list=size_list,
-    #                                                                   rho_list=rho_list,
-    #                                                                   tau_list=tau_list)
+    # SizeTransport_CumulativeDistance(figure_direc=figure_direc, scenario=scenario, size_list=size_list).plot()
 
     # Plotting the separation distance
     # for size_selection in size_list:
-    #     SizeTransport_SeparationDistance.SizeTransport_SeparationDistance(scenario=scenario, figure_direc=figure_direc,
-    #                                                                       size_selection=size_selection,
-    #                                                                       rho_selection=920, tau_selection=0.14,
-    #                                                                       size_list=size_list)
+    #     SizeTransport_SeparationDistance(scenario=scenario, figure_direc=figure_direc, size_selection=size_selection,
+    #                                      size_list=size_list).plot()
     pass
