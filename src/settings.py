@@ -270,6 +270,8 @@ BETA, BETA_STAR = 1.21, 35
 PHI = 0.9
 # HORIZONTAL DIFFUSION AT THE SEA BED
 SEABED_KH = 0.2
+# MICROPLASTIC REMOVAL RATE (KAANDORP ET AL., 2020), CONVERT FROM 5.3 X 10**-3 WEEK**-1 TO PER TIMESTEP
+P_SINK = 5.1e-3 / (604800 / TIME_STEP.total_seconds())
 
 ########################################################################################################################
 #                                                                                                                      #
