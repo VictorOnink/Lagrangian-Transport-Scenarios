@@ -19,8 +19,8 @@ def parcels_to_particle_number(base_file, output_file, restart_file):
     final_t = base_dict[variable].shape[1] - 1
 
     # Computing the particle mass if we account for the gradual removal of mass
-    time_step_number = base_dict['age'] // settings.TIME_STEP.total_seconds()
-    mass_removed = np.power(1 - settings.P_SINK, time_step_number)
+    time_step_age = base_dict['age'] // settings.TIME_STEP.total_seconds()
+    mass_removed = np.power(1 - settings.P_SINK, time_step_age)
 
     # Creating an output dictionary containing an array for the particle mass, and for the particle mass when accounting
     # for the gradual mass loss set by P_SINK.
