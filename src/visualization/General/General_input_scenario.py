@@ -9,41 +9,48 @@ import cmocean
 import pandas as pd
 
 
-def General_input_scenario(scenario, figure_direc, figsize=(10, 8), fontsize=14):
-    # Setting the folder within which we have the output
-    output_direc = figure_direc + 'General/'
-    utils.check_direc_exist(output_direc)
+class General_input_scenario:
+    def __init__(self, scenario, figure_direc):
+        # Scenario specific variables
+        self.scenario = scenario
+        self.figure_direc = figure_direc
+        # Data variables
+        self.output_direc = figure_direc + 'General/'
+        utils.check_direc_exist(self.output_direc)
+        self.file_dict = self.scenario.file_dict
+        # Figure variables
+        self.figure_size = (10, 8)
+        self.figure_shape = (1, 1)
+        self.ax_label_size = 14
+        self.ax_ticklabel_size = 12
+        self.spatial_domain = np.nanmin(self.file_dict['LON']), np.nanmax(self.file_dict['LON']), \
+                              np.nanmin(self.file_dict['LAT']), np.nanmax(self.file_dict['LAT'])
 
-    # Getting the input location data
-    file_dict = scenario.file_dict
-    input_dict = file_dict['STARTFILES_filename']
+    def plot(self):
+        # Loading the data
+        input_dict = self.file_dict['STARTFILES_filename']
+        input_lon, input_lat = np.load(input_dict['lon']), np.load(input_dict['lat'])
 
+        print_statement = 'We have {} particles in this release situation'.format(len(input_lon))
+        utils.print_statement(print_statement, to_print=True)
 
-    print_statement = 'We have {} particles in this release situation'.format(len(np.load(input_dict['lat'])))
-    utils.print_statement(print_statement, to_print=True)
+        # Now we have all the unique input locations, and the number of particles that are released there
+        df = pd.DataFrame({'lat': input_lat, 'lon': input_lon})
+        df = df.groupby(['lat', 'lon']).size().reset_index().rename(columns={0: 'count'})
 
-    # Now we have all the unique input locations, and the number of particles that are released there
-    df = pd.DataFrame({'lat': np.load(input_dict['lat']), 'lon': np.load(input_dict['lon'])})
-    df = df.groupby(['lat', 'lon']).size().reset_index().rename(columns={0: 'count'})
+        # Creating the base figure
+        fig = plt.figure(figsize=self.figure_size)
+        gs = fig.add_gridspec(nrows=self.figure_shape[0], ncols=self.figure_shape[1] + 1, width_ratios=[1, 0.1])
 
-    # Getting the spatial domain for the figure
-    spatial_domain = np.nanmin(file_dict['LON']), np.nanmax(file_dict['LON']), \
-                     np.nanmin(file_dict['LAT']), np.nanmax(file_dict['LAT'])
+        ax = []
+        for rows in range(self.figure_shape[0]):
+            for columns in range(self.figure_shape[1]):
+                ax.append(vUtils.cartopy_standard_map(fig=fig, gridspec=gs, row=rows, column=columns,
+                                                      domain=self.spatial_domain, lat_grid_step=5, lon_grid_step=10,
+                                                      resolution='10m'))
 
-    # Creating the base figure
-    gridspec_shape = (1, 1)
-    fig = plt.figure(figsize=figsize)
-    gs = fig.add_gridspec(nrows=gridspec_shape[0], ncols=gridspec_shape[1] + 1, width_ratios=[1, 0.1])
+        # Plotting the data
+        ax[0].scatter(df['lon'], df['lat'], s=df['count'], zorder=1000, edgecolor='r', facecolor='none')
 
-    ax_list = []
-    for rows in range(gridspec_shape[0]):
-        for columns in range(gridspec_shape[1]):
-            ax_list.append(vUtils.cartopy_standard_map(fig=fig, gridspec=gs, row=rows, column=columns,
-                                                       domain=spatial_domain,
-                                                       lat_grid_step=5, lon_grid_step=10, resolution='10m'))
-
-    # Plotting the data
-    plt.scatter(df['lon'], df['lat'], s=df['count'], zorder=1000, edgecolor='r', facecolor='none')
-
-    file_name = output_direc + 'InputScenario.png'
-    plt.savefig(file_name, bbox_inches='tight')
+        file_name = self.output_direc + 'InputScenario.png'
+        plt.savefig(file_name, bbox_inches='tight')

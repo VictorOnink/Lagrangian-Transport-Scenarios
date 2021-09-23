@@ -18,21 +18,19 @@ def run(scenario, figure_direc: str):
     """
     # 5000 2500 1250 625 313 156 78 39 20 10 5 2
     size_list = np.array([5000, 1250, 313, 78, 20, 2]) * settings.SIZE_FACTOR
-    rho_list = np.ones(size_list.shape, dtype=int) * 920
-    tau_list = np.ones(size_list.shape, dtype=float) * 0.0
 
     # Creating a figure of the basin bathymetry
-    # General.General_bathymetry(scenario=scenario, figure_direc=figure_direc)
+    General.General_bathymetry(scenario=scenario, figure_direc=figure_direc).plot()
 
     # Figure of the mean wind speed
-    # General.General_average_wind_speed(scenario=scenario, figure_direc=figure_direc)
+    General.General_average_wind_speed(scenario=scenario, figure_direc=figure_direc).plot()
 
     # Figure of the input scenario
-    # General.General_input_scenario(scenario=scenario, figure_direc=figure_direc)
+    General.General_input_scenario(scenario=scenario, figure_direc=figure_direc).plot()
 
     # Figure of the seasonal average MLD and wind speed
-    # General.General_season_average(scenario=scenario, figure_direc=figure_direc, variable='MLD')
-    # General.General_season_average(scenario=scenario, figure_direc=figure_direc, variable='wind')
+    General.General_season_average(scenario=scenario, figure_direc=figure_direc, variable='MLD').plot()
+    General.General_season_average(scenario=scenario, figure_direc=figure_direc, variable='wind').plot()
 
     # Creating an animation showing how the six different size classes I have simulations for at the moment look like
     # SizeTransport_Animation(scenario=scenario, figure_direc=figure_direc, size_list=size_list, simulation_years=2).animate()
