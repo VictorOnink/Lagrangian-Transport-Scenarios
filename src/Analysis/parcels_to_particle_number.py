@@ -82,3 +82,7 @@ def parcels_to_particle_number(base_file, output_file, restart_file):
     # Saving the output
     utils.save_obj(output_file, output_dict)
 
+    for i in range(particle_number):
+        str_format = output_dict['particle_mass'][i, -1], output_dict['particle_mass_sink'][i, -1], output_dict['particle_number'][i, -1], output_dict['particle_number_sink'][i, -1]
+        print_statement = 'id {}, mass {} mass_sink {}, count {} count_sink {}'.format(*str_format)
+        utils.print_statement(print_statement, to_print=True)
