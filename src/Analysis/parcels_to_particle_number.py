@@ -82,7 +82,7 @@ def parcels_to_particle_number(base_file, output_file, restart_file):
 
     # Masking the output
     for variable in output_dict.keys():
-        output_dict[variable] = np.ma.masked_array(output_dict[variable], mask=var_list['time'].mask)
+        output_dict[variable] = np.ma.masked_array(output_dict[variable], mask=base_dict['time'].mask)
     # Saving the output
     utils.save_obj(output_file, output_dict)
 
