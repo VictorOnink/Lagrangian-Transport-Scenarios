@@ -62,7 +62,7 @@ def parcels_to_particle_number(base_file, output_file, restart_file):
                     output_dict['particle_mass'][p_id, (t_ind + 1):] = output_dict['particle_mass'][p_id, t_ind] * mass_fraction
                     # For the particle_mass_sink, we first account for the loss of mass due to the fragmentation event,
                     # and then we correct for the continued mass loss over time due to P_SINK
-                    remaining_time_steps = np.arange(time_step_number - (t_ind + 1))
+                    remaining_time_steps = np.arange(0, time_step_number - (t_ind + 1))
                     mass_correction = np.power(1 - settings.P_SINK, remaining_time_steps)
                     output_dict['particle_mass_sink'][p_id, (t_ind + 1):] = output_dict['particle_mass_sink'][p_id, t_ind] * mass_fraction
                     output_dict['particle_mass_sink'][p_id, (t_ind + 1):] = np.multiply(output_dict['particle_mass_sink'][p_id, (t_ind + 1):], mass_correction)
