@@ -52,8 +52,6 @@ def parcels_to_particle_number(base_file, output_file, restart_file):
             for t_ind in split_cases:
                 # calculating the particle number after each splitting event
                 mass_fraction = utils.mass_per_size_class(k=0, f=f)
-                if mass_fraction >= 1:
-                    utils.print_statement(mass_fraction)
                 if t_ind == final_t:
                     output_dict['particle_mass'][p_id, -1] = output_dict['particle_mass'][p_id, t_ind] * mass_fraction
                     output_dict['particle_mass_sink'][p_id, -1] = output_dict['particle_mass_sink'][p_id, t_ind] * mass_fraction
@@ -67,14 +65,14 @@ def parcels_to_particle_number(base_file, output_file, restart_file):
                     remaining_time_steps = np.arange(0, time_step_number - (t_ind + 1))
                     sink_correction = np.power(1 - settings.P_SINK, remaining_time_steps)
                     output_dict['particle_mass_sink'][p_id, (t_ind + 1):] = output_dict['particle_mass_sink'][p_id, t_ind] * mass_fraction
-                    # output_dict['particle_mass_sink'][p_id, (t_ind + 1):] *= sink_correction
+                    output_dict['particle_mass_sink'][p_id, (t_ind + 1):] *= sink_correction
                     # Getting the ID of all the new created particles, where we need to add the +1 to the time index since
                     # the new particles are only technically present in the next time step
                     c_id, _ = np.where((base_dict['time'] == base_dict['time'][p_id, t_ind + 1]) & (base_dict['parent'] == p_id))
                 if c_id.size > 0:
                     # Looping through the new particles
                     for index_id in range(1, c_id.size):
-                        new_particle_mass = utils.particle_number_per_size_class(k=index_id, f=f)
+                        new_particle_mass = utils.mass_per_size_class(k=index_id, f=f)
                         output_dict['particle_mass'][c_id[index_id], :] = output_dict['particle_mass'][p_id, t_ind] * new_particle_mass
                         output_dict['particle_mass_sink'][c_id[index_id], :] = output_dict['particle_mass_sink'][p_id, t_ind] * new_particle_mass
 
@@ -89,7 +87,7 @@ def parcels_to_particle_number(base_file, output_file, restart_file):
     utils.save_obj(output_file, output_dict)
 
     for i in range(particle_number):
-        str_format = i, np.ma.max(output_dict['particle_mass'][i, :]), np.ma.max(output_dict['particle_mass_sink'][i, :]), \
-                     np.ma.max(output_dict['particle_number'][i, :]), np.ma.max(output_dict['particle_number'][i, :])
+        str_format = i, np.ma.min(output_dict['particle_mass'][i, :]), np.ma.min(output_dict['particle_mass_sink'][i, :]), \
+                     np.ma.min(output_dict['particle_number'][i, :]), np.ma.min(output_dict['particle_number'][i, :])
         print_statement = 'id {}, mass {} mass_sink {}, count {} count_sink {}'.format(*str_format)
         utils.print_statement(print_statement, to_print=True)
