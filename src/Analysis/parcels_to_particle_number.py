@@ -79,10 +79,15 @@ def parcels_to_particle_number(base_file, output_file, restart_file):
     # Calculating the particle number from the particle masses
     output_dict['particle_number'] = np.multiply(output_dict['particle_mass'], np.power(2, settings.DN * base_dict['size_class']))
     output_dict['particle_number_sink'] = np.multiply(output_dict['particle_mass_sink'], np.power(2, settings.DN * base_dict['size_class']))
+
+    # Masking the output
+    for variable in output_dict.keys():
+        output_dict[variable] = np.ma.masked_array(output_dict[variable], mask=var_list['time'].mask)
     # Saving the output
     utils.save_obj(output_file, output_dict)
 
     for i in range(particle_number):
-        str_format = i, output_dict['particle_mass'][i, -1], output_dict['particle_mass_sink'][i, -1], output_dict['particle_number'][i, -1], output_dict['particle_number_sink'][i, -1]
+        str_format = i, np.ma.max(output_dict['particle_mass'][i, :]), np.ma.max(output_dict['particle_mass_sink'][i, :]), \
+                     np.ma.max(output_dict['particle_number'][i, :]), np.ma.max(output_dict['particle_number'][i, :])
         print_statement = 'id {}, mass {} mass_sink {}, count {} count_sink {}'.format(*str_format)
         utils.print_statement(print_statement, to_print=True)
