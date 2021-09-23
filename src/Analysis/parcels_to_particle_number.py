@@ -63,9 +63,9 @@ def parcels_to_particle_number(base_file, output_file, restart_file):
                     # For the particle_mass_sink, we first account for the loss of mass due to the fragmentation event,
                     # and then we correct for the continued mass loss over time due to P_SINK
                     remaining_time_steps = np.arange(0, time_step_number - (t_ind + 1))
-                    mass_correction = np.power(1 - settings.P_SINK, remaining_time_steps)
+                    sink_correction = np.power(1 - settings.P_SINK, remaining_time_steps)
                     output_dict['particle_mass_sink'][p_id, (t_ind + 1):] = output_dict['particle_mass_sink'][p_id, t_ind] * mass_fraction
-                    output_dict['particle_mass_sink'][p_id, (t_ind + 1):] = np.multiply(output_dict['particle_mass_sink'][p_id, (t_ind + 1):], mass_correction)
+                    # output_dict['particle_mass_sink'][p_id, (t_ind + 1):] *= sink_correction
                     # Getting the ID of all the new created particles, where we need to add the +1 to the time index since
                     # the new particles are only technically present in the next time step
                     c_id, _ = np.where((base_dict['time'] == base_dict['time'][p_id, t_ind + 1]) & (base_dict['parent'] == p_id))
