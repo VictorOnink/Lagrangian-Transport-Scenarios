@@ -24,7 +24,7 @@ def parcels_to_particle_number(base_file, output_file, restart_file):
     # Creating an output dictionary containing an array for the particle number
     base = np.ones(base_dict[variable].shape, dtype=np.float32)
     output_dict = {'particle_mass': deepcopy(base),
-                   'particle_mass_sink': np.multiple(deepcopy(base), mass_removed)}
+                   'particle_mass_sink': np.multiply(deepcopy(base), mass_removed)}
 
     if settings.RESTART > 0:
         assert utils.check_file_exist(restart_file), "The restart file {} doesn't exist".format(restart_file)
@@ -68,8 +68,8 @@ def parcels_to_particle_number(base_file, output_file, restart_file):
                         output_dict['particle_mass_sink'][c_id[index_id], :] = output_dict['particle_mass_sink'][p_id, t_ind] * new_particle_mass
 
     # Calculating the particle number from the particle masses
-    output_dict['particle_number'] = np.multiple(output_dict['particle_mass'], np.power(2, settings.Dn * base_dict['size_class']))
-    output_dict['particle_number_sink'] = np.multiple(output_dict['particle_mass_sink'], np.power(2, settings.Dn * base_dict['size_class']))
+    output_dict['particle_number'] = np.multiply(output_dict['particle_mass'], np.power(2, settings.Dn * base_dict['size_class']))
+    output_dict['particle_number_sink'] = np.multiply(output_dict['particle_mass_sink'], np.power(2, settings.Dn * base_dict['size_class']))
     # Saving the output
     utils.save_obj(output_file, output_dict)
 
