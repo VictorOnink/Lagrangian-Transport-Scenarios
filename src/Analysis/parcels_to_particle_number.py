@@ -52,6 +52,8 @@ def parcels_to_particle_number(base_file, output_file, restart_file):
             for t_ind in split_cases:
                 # calculating the particle number after each splitting event
                 mass_fraction = utils.mass_per_size_class(k=0, f=f)
+                if mass_fraction >= 1:
+                    utils.print_statement(mass_fraction)
                 if t_ind == final_t:
                     output_dict['particle_mass'][p_id, -1] = output_dict['particle_mass'][p_id, t_ind] * mass_fraction
                     output_dict['particle_mass_sink'][p_id, -1] = output_dict['particle_mass_sink'][p_id, t_ind] * mass_fraction
