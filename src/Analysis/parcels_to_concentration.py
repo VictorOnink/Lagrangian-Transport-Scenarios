@@ -98,10 +98,13 @@ class parcels_to_concentration:
                                                 str_format = year, month, run, restart, file_name
                                                 print_statement = '{}-{}, run {} restart {} {}'.format(*str_format)
                                                 utils.print_statement(print_statement, to_print=True)
-                                                utils.print_statement('max {}'.format(np.nanman(self.output_dict[key_year][beach_state][weight][size_class])),
+                                                utils.print_statement('max {}'.format(np.nanmax(self.output_dict[key_year][beach_state][weight][size_class])),
                                                                       to_print=True)
-                                                utils.print_statement('max {}'.format(np.nanman(dataset_post[key_year][beach_state][weight][size_class])),
-                                                                      to_print=True)
+                                                utils.print_statement('{}'.format(dataset_post.keys()), to_print=True)
+                                                utils.print_statement('{}'.format(dataset_post.keys()[key_year]), to_print=True)
+                                                utils.print_statement('{}'.format(dataset_post.keys()[key_year][beach_state]), to_print=True)
+                                                utils.print_statement('{}'.format(dataset_post.keys()[key_year][beach_state][weight]), to_print=True)
+                                                utils.print_statement('{}'.format(dataset_post.keys()[key_year][beach_state][weight][size_class]), to_print=True)
 
                                 utils.remove_file(file_name)
                             else:
@@ -128,10 +131,10 @@ class parcels_to_concentration:
                                     print_statement = '{}-{}, run {} restart {} {}'.format(*str_format)
                                     utils.print_statement(print_statement, to_print=True)
                                     utils.print_statement('max {}'.format(
-                                        np.nanman(self.output_dict['overall_concentration'][beach_state][weight][size_class])),
+                                        np.nanmax(self.output_dict['overall_concentration'][beach_state][weight][size_class])),
                                                           to_print=True)
                                     utils.print_statement('max {}'.format(
-                                        np.nanman(dataset_post[key_year][beach_state][weight][size_class])),
+                                        np.nanmax(dataset_post[key_year][beach_state][weight][size_class])),
                                                           to_print=True)
                     else:
                         self.output_dict['overall_concentration'][beach_state] += self.output_dict[key_year][beach_state]
