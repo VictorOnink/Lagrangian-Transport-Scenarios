@@ -105,7 +105,7 @@ class parcels_to_concentration:
                                                 utils.print_statement('{}'.format(dataset_post[key_year][beach_state].keys()), to_print=True)
                                                 utils.print_statement('{}'.format(dataset_post[key_year][beach_state][weight].keys()), to_print=True)
                                                 utils.print_statement('{}'.format(dataset_post[key_year][beach_state][weight][size_class].keys()), to_print=True)
-
+                                                ValueError('mweh')
                                 # utils.remove_file(file_name)
                             else:
                                 if month == 1:
