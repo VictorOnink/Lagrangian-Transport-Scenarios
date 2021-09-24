@@ -117,8 +117,9 @@ class parcels_to_concentration:
 
             for beach_state in self.beach_label_dict.keys():
                 if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
-                    for size_class in self.output_dict[key_year][beach_state].keys():
-                        self.output_dict['overall_concentration'][beach_state][size_class] /= settings.SIM_LENGTH
+                    for weight in self.weight_list:
+                        for size_class in self.output_dict[key_year][beach_state].keys():
+                            self.output_dict['overall_concentration'][beach_state][weight][size_class] /= settings.SIM_LENGTH
                 else:
                     self.output_dict['overall_concentration'][beach_state] /= settings.SIM_LENGTH
 
