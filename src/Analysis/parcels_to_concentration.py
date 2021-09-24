@@ -106,7 +106,7 @@ class parcels_to_concentration:
                                                 utils.print_statement('{}'.format(dataset_post[key_year][beach_state][weight].keys()), to_print=True)
                                                 utils.print_statement('{}'.format(dataset_post[key_year][beach_state][weight][size_class].keys()), to_print=True)
 
-                                utils.remove_file(file_name)
+                                # utils.remove_file(file_name)
                             else:
                                 if month == 1:
                                     file_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
