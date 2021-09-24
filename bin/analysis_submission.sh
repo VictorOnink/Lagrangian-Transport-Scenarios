@@ -213,10 +213,10 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
                   done
 
                   # submitting the job
-#                  jobid=$(sbatch --parsable jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
+                  jobid=$(sbatch --parsable jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
                   echo -n ':'${jobid} >> job_id.txt
                   # deleting the submission file
-#                  rm jobsubmissionFile_${RUN}_${RESTARTNUM}.sh
+                  rm jobsubmissionFile_${RUN}_${RESTARTNUM}.sh
                 done
               done
               RESTART_REMOVE=$((RESTART_REMOVE+1))
@@ -261,8 +261,8 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
 
           # Submitting the job that will join all the various analysis files together
           dependence=$( cat job_id.txt )
-#          sbatch --dependency=afterok${dependence} jobsubmissionFile.sh
-          sbatch jobsubmissionFile.sh
+          sbatch --dependency=afterok${dependence} jobsubmissionFile.sh
+#          sbatch jobsubmissionFile.sh
           rm jobsubmissionFile.sh
           rm job_id.txt
         done

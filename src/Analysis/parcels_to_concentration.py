@@ -111,7 +111,7 @@ class parcels_to_concentration:
                     if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                         for weight in self.weight_list:
                             for size_class in self.output_dict[key_year][beach_state].keys():
-                                self.output_dict['overall_concentration'][beach_state][weight][size_class] += self.output_dict[key_year][beach_state][size_class]
+                                self.output_dict['overall_concentration'][beach_state][weight][size_class] += self.output_dict[key_year][beach_state][weight][size_class]
                     else:
                         self.output_dict['overall_concentration'][beach_state] += self.output_dict[key_year][beach_state]
 
