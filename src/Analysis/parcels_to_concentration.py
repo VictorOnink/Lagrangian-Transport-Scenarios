@@ -101,10 +101,10 @@ class parcels_to_concentration:
                                                 utils.print_statement('max {}'.format(np.nanmax(self.output_dict[key_year][beach_state][weight][size_class])),
                                                                       to_print=True)
                                                 utils.print_statement('{}'.format(dataset_post.keys()), to_print=True)
-                                                utils.print_statement('{}'.format(dataset_post.keys()[key_year]), to_print=True)
-                                                utils.print_statement('{}'.format(dataset_post.keys()[key_year][beach_state]), to_print=True)
-                                                utils.print_statement('{}'.format(dataset_post.keys()[key_year][beach_state][weight]), to_print=True)
-                                                utils.print_statement('{}'.format(dataset_post.keys()[key_year][beach_state][weight][size_class]), to_print=True)
+                                                utils.print_statement('{}'.format(dataset_post[key_year].keys()), to_print=True)
+                                                utils.print_statement('{}'.format(dataset_post[key_year][beach_state].keys()), to_print=True)
+                                                utils.print_statement('{}'.format(dataset_post[key_year][beach_state][weight].keys()), to_print=True)
+                                                utils.print_statement('{}'.format(dataset_post[key_year][beach_state][weight][size_class].keys()), to_print=True)
 
                                 utils.remove_file(file_name)
                             else:
