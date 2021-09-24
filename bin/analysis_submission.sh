@@ -4,7 +4,7 @@
 #####################################################################################
 SUBMISSION='analysis'
 export SUBMISSION
-DEBUG=1 # 0 = Not a debug run, 1 = a debug run
+DEBUG=0 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation
 SCENARIO=7
@@ -33,7 +33,7 @@ export SEABED_CRIT
 P=4
 DN=25
 SIZE_CLASS_NUMBER=6
-LAMBDA_FRAG_list=(388)
+LAMBDA_FRAG_list=(300 388 1000 10000 38000)
 OCEAN_FRAG=0
 LAMBDA_OCEAN_FRAG_LIST=(388)
 export P
@@ -42,7 +42,7 @@ export SIZE_CLASS_NUMBER
 export OCEAN_FRAG
 #the starting year of the simulation, and how many years the simulation will take
 YEAR=2010
-STARTMONTH_list=(1)
+STARTMONTH_list=(1 2 3 4 5 6 7 8 9 10 11 12)
 STARTDAY=1
 export STARTDAY
 #Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=lebretondivision, 3=point, 4=uniform
@@ -53,7 +53,7 @@ export INPUT
 ADVECTION_DATA=2
 export ADVECTION_DATA
 #Number of years the simulation runs
-SIMLEN=1
+SIMLEN=2
 export SIMLEN
 # For the analysis, if we have multiple years that we want to combine into one analysis set (so if we have continuous
 # particle release), then this how many years we want to include
