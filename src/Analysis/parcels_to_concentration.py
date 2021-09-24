@@ -97,13 +97,11 @@ class parcels_to_concentration:
                                                 str_format = year, month, run, restart, file_name, beach_state
                                                 print_statement = '{}-{}, run {} restart {} {} {}'.format(*str_format)
                                                 utils.print_statement(print_statement, to_print=True)
-                                                utils.print_statement('max {}'.format(np.nanmax(self.output_dict[key_year][beach_state][weight][size_class])),
-                                                                      to_print=True)
-                                                utils.print_statement('{}'.format(dataset_post.keys()), to_print=True)
-                                                utils.print_statement('{}'.format(dataset_post[key_year].keys()), to_print=True)
-                                                utils.print_statement('{}'.format(dataset_post[key_year][beach_state].keys()), to_print=True)
-                                                utils.print_statement('{}'.format(dataset_post[key_year][beach_state][weight].keys()), to_print=True)
-                                                utils.print_statement('{}'.format(dataset_post[key_year][beach_state][weight][size_class].keys()), to_print=True)
+                                                utils.print_statement('{}'.format(self.output_dict.keys()), to_print=True)
+                                                utils.print_statement('{}'.format(self.output_dict[key_year].keys()), to_print=True)
+                                                utils.print_statement('{}'.format(self.output_dict[key_year][beach_state].keys()), to_print=True)
+                                                utils.print_statement('{}'.format(self.output_dict[key_year][beach_state][weight].keys()), to_print=True)
+                                                utils.print_statement('{}'.format(self.output_dict[key_year][beach_state][weight][size_class].keys()), to_print=True)
                                                 ValueError('mweh')
                                 # utils.remove_file(file_name)
                             else:
@@ -123,18 +121,7 @@ class parcels_to_concentration:
                     if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                         for weight in self.weight_list:
                             for size_class in self.output_dict[key_year][beach_state].keys():
-                                try:
-                                    self.output_dict['overall_concentration'][beach_state][weight][size_class] += self.output_dict[key_year][beach_state][weight][size_class]
-                                except:
-                                    str_format = year, month, run, restart, file_name
-                                    print_statement = '{}-{}, run {} restart {} {}'.format(*str_format)
-                                    utils.print_statement(print_statement, to_print=True)
-                                    utils.print_statement('max {}'.format(
-                                        np.nanmax(self.output_dict['overall_concentration'][beach_state][weight][size_class])),
-                                                          to_print=True)
-                                    utils.print_statement('max {}'.format(
-                                        np.nanmax(dataset_post[key_year][beach_state][weight][size_class])),
-                                                          to_print=True)
+                                self.output_dict['overall_concentration'][beach_state][weight][size_class] += self.output_dict[key_year][beach_state][weight][size_class]
                     else:
                         self.output_dict['overall_concentration'][beach_state] += self.output_dict[key_year][beach_state]
 
