@@ -44,7 +44,7 @@ export OCEAN_FRAG
 # to calculate the particle numbers.
 # POST_PROCESS == 0 -> run lagrangian simulation
 # POST_PROCESS == 1 -> run post processing
-POST_PROCESS=1
+POST_PROCESS=0
 export POST_PROCESS
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010
