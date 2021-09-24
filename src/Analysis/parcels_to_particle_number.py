@@ -85,9 +85,3 @@ def parcels_to_particle_number(base_file, output_file, restart_file):
         output_dict[variable] = np.ma.masked_array(output_dict[variable], mask=base_dict['time'].mask)
     # Saving the output
     utils.save_obj(output_file, output_dict)
-
-    for i in range(particle_number):
-        str_format = i, np.ma.min(output_dict['particle_mass'][i, :]), np.ma.min(output_dict['particle_mass_sink'][i, :]), \
-                     np.ma.min(output_dict['particle_number'][i, :]), np.ma.min(output_dict['particle_number'][i, :])
-        print_statement = 'id {}, mass {} mass_sink {}, count {} count_sink {}'.format(*str_format)
-        utils.print_statement(print_statement, to_print=True)

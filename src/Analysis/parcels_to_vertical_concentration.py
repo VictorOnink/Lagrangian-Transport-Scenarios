@@ -15,7 +15,14 @@ class parcels_to_vertical_concentration:
         self.file_dict = file_dict
         self.depth_bins = determine_depth_bins()
         self.temp_direc, self.output_direc = get_directories(scenario_name=settings.SCENARIO_NAME)
-        self.output_dict = create_output_dict(scenario_name=settings.SCENARIO_NAME, depth_bins=self.depth_bins)
+        # Some variables specific to FragmentationKaandorpPartial
+        self.weight_list = ['particle_mass', 'particle_mass_sink', 'particle_number', 'particle_number_sink']
+        self.concentration_list = ['concentration_mass', 'concentration_mass_sink', 'concentration_number',
+                                   'concentration_number_sink']
+        self.counts_list = ['counts_mass', 'counts_mass_sink', 'counts_number', 'counts_number_sink']
+        # Creating the output_dict
+        self.output_dict = create_output_dict(scenario_name=settings.SCENARIO_NAME, depth_bins=self.depth_bins,
+                                              concentration_list=self.concentration_list, counts_list=self.counts_list)
 
     def run(self):
         if self.parallel_step == 1:
@@ -33,7 +40,7 @@ class parcels_to_vertical_concentration:
                 parcels_dataset, post_dataset = load_parcels_post_output(scenario_name=settings.SCENARIO_NAME,
                                                                          file_dict=self.file_dict)
                 # Load the relevant fields into run_restart_dict and flattening the arrays
-                run_restart_dict = set_run_restart_dict(settings.SCENARIO_NAME, parcels_dataset, post_dataset)
+                run_restart_dict = set_run_restart_dict(settings.SCENARIO_NAME, parcels_dataset, post_dataset, self.weight_list)
 
                 # Looping through the various months
                 for index_time in range(1, time_list.__len__()):
@@ -51,16 +58,17 @@ class parcels_to_vertical_concentration:
                             select_dict[key] = select_dict[key][selection]
                     # If size_class is a variable, then we break down the calculation to separate size classes, otherwise
                     # we go straight to calculating the distribution
-                    if 'size_class' in select_dict.keys():
+                    if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                         for size_class in range(settings.SIZE_CLASS_NUMBER):
                             size_dict = {}
-                            for variable in ['z', 'weights']:
+                            for variable in utils.flatten_list_of_lists([['z'], self.weight_list]):
                                 size_dict[variable] = select_dict[variable][select_dict['size_class'] == size_class]
-                            histogram_counts, _ = np.histogram(size_dict['z'], bins=self.depth_bins, weights=size_dict['weights'])
-                            # Divide the counts by the number of days in the month
-                            histogram_counts /= days_in_month[index_time]
-                            self.output_dict[key_year][month_index][size_class]['concentration'] += histogram_counts
-                            self.output_dict[key_year][month_index][size_class]['counts'] += np.nansum(histogram_counts)
+                            for index_weight, weight in enumerate(self.weight_list):
+                                histogram_counts, _ = np.histogram(size_dict['z'], bins=self.depth_bins, weights=size_dict[weight])
+                                # Divide the counts by the number of days in the month
+                                histogram_counts /= days_in_month[index_time]
+                                self.output_dict[key_year][month_index][size_class][self.concentration_list[index_weight]] += histogram_counts
+                                self.output_dict[key_year][month_index][size_class][self.counts_list[index_weight]] += np.nansum(histogram_counts)
                     else:
                         histogram_counts, _ = np.histogram(select_dict['z'], bins=self.depth_bins, weights=select_dict['weights'])
                         # Divide the counts by the number of days in the month
@@ -90,8 +98,9 @@ class parcels_to_vertical_concentration:
                                     if key_year != 'depth':
                                         for month_index in self.output_dict[key_year].keys():
                                             for size_class in self.output_dict[key_year][month_index].keys():
-                                                self.output_dict[key_year][month_index][size_class]['concentration'] += dataset_post[key_year][month_index][size_class]['concentration']
-                                                self.output_dict[key_year][month_index][size_class]['counts'] += dataset_post[key_year][month_index][size_class]['counts']
+                                                for index_conc, concentration in enumerate(self.concentration_list):
+                                                    self.output_dict[key_year][month_index][size_class][concentration] += dataset_post[key_year][month_index][size_class][concentration]
+                                                    self.output_dict[key_year][month_index][size_class][self.counts_list[index_conc]] += dataset_post[key_year][month_index][size_class][self.counts_list[index_conc]]
                                 utils.remove_file(file_name)
                             else:
                                 if month == 1:
@@ -143,12 +152,19 @@ def determine_month_boundaries():
     return time_list, days_in_month
 
 
-def create_output_dict(scenario_name, depth_bins):
+def create_output_dict(scenario_name, depth_bins, concentration_list, counts_list):
     # Creating the output dict containing the depth bins, and creating the base_dict, which is lowest dictionary level
     # that will contain the particle counts and the concentration
     depth_mid = 0.5 * depth_bins[1:] + 0.5 * depth_bins[:-1]
     output_dict = {'depth': depth_mid}
-    base_dict = {'counts': 0.0, 'concentration': np.zeros(depth_bins.__len__() - 1, dtype=np.float32)}
+    if scenario_name in ['FragmentationKaandorpPartial']:
+        base_dict = {}
+        for count in counts_list:
+            base_dict[count] = 0.0
+        for concentration in concentration_list:
+            base_dict[concentration] = np.zeros(depth_bins.__len__() - 1, dtype=np.float32)
+    else:
+        base_dict = {'counts': 0.0, 'concentration': np.zeros(depth_bins.__len__() - 1, dtype=np.float32)}
     for simulation_year in range(settings.SIM_LENGTH + 1):
         key_year = utils.analysis_simulation_year_key(simulation_year)
         output_dict[key_year] = {}
@@ -193,13 +209,14 @@ def load_parcels_post_output(scenario_name, file_dict, year=settings.STARTYEAR, 
     return parcels_dataset, post_dataset
 
 
-def set_run_restart_dict(scenario_name, parcels_dataset, post_dataset):
+def set_run_restart_dict(scenario_name, parcels_dataset, post_dataset, weight_list):
     run_restart_dict = {}
     for variable in ['z', 'beach', 'time']:
         run_restart_dict[variable] = parcels_dataset.variables[variable][:, :-1].flatten()
     if scenario_name in ['FragmentationKaandorpPartial']:
         run_restart_dict['size_class'] = parcels_dataset.variables['size_class'][:, :-1].flatten()
-        run_restart_dict['weights'] = post_dataset['particle_number'][:, :-1].flatten()
+        for weight in weight_list:
+            run_restart_dict[weight] = post_dataset[weight][:, :-1].flatten()
     else:
         run_restart_dict['weights'] = np.ones(run_restart_dict[variable].shape, dtype=float)
     return run_restart_dict

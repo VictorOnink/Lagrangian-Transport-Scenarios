@@ -14,7 +14,12 @@ class parcels_to_timeseries:
         self.domain = (-180, 180, -90, 90) # lon_min, lon_max, lat_min, lat_max
         self.temp_direc, self.output_direc = get_directories(scenario_name=settings.SCENARIO_NAME)
         self.beach_label_dict = set_beach_label_dict()
-        self.output_dict, self.time_list = create_output_dict_time_list(beach_label_dict=self.beach_label_dict)
+        # Some variables specific to FragmentationKaandorpPartial
+        self.weight_list = ['particle_mass', 'particle_mass_sink', 'particle_number', 'particle_number_sink']
+        self.counts_list = ['counts_mass', 'counts_mass_sink', 'counts_number', 'counts_number_sink']
+        # Creating the output dict
+        self.output_dict, self.time_list = create_output_dict_time_list(beach_label_dict=self.beach_label_dict,
+                                                                        weight_list=self.weight_list)
 
     def run(self):
         if self.parallel_step == 1:
@@ -28,7 +33,7 @@ class parcels_to_timeseries:
                 # Loading the data
                 parcels_dataset, post_dataset = load_parcels_post_output(scenario_name=settings.SCENARIO_NAME,
                                                                          file_dict=self.file_dict)
-                full_data_dict = set_full_data_dict(parcels_dataset, post_dataset)
+                full_data_dict = set_full_data_dict(parcels_dataset, post_dataset, self.weight_list)
                 # Just get the particles within the domain, which we do by setting all values not within the
                 # domain to nan. These will therefore not be taken into account in the calculations of total
                 # counts/weights
@@ -49,14 +54,16 @@ class parcels_to_timeseries:
                             if 'size_class' in full_data_dict.keys():
                                 for size_class in range(settings.SIZE_CLASS_NUMBER):
                                     size = time_dict['size_class'] == size_class
-                                    self.output_dict[beach_state][size_class][time_index] += np.nansum(time_dict['weights'][size & beach])
+                                    for weight in self.weight_list:
+                                        self.output_dict[beach_state][size_class][weight][time_index] += np.nansum(time_dict[weight][size & beach])
                             else:
                                 self.output_dict[beach_state][time_index] += np.nansum(time_dict['weights'][beach])
                 # Calculating the total over all beach states
                 for beach_state in self.beach_label_dict.keys():
                     if 'size_class' in full_data_dict.keys():
                         for size_class in range(settings.SIZE_CLASS_NUMBER):
-                            self.output_dict['total'][size_class] += self.output_dict[beach_state][size_class]
+                            for weight in self.weight_list:
+                                self.output_dict['total'][size_class][weight] += self.output_dict[beach_state][size_class][weight]
                     else:
                         self.output_dict['total'] += self.output_dict[beach_state]
                 # Saving the output
@@ -81,10 +88,9 @@ class parcels_to_timeseries:
                                         if beach_state != 'time':
                                             if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                                                 for size_class in range(settings.SIZE_CLASS_NUMBER):
-                                                    self.output_dict[beach_state][size_class] += dataset_post[beach_state][size_class]
+                                                    for weight in self.weight_list:
+                                                        self.output_dict[beach_state][size_class][weight] += dataset_post[beach_state][size_class][weight]
                                             else:
-                                                MIN, MAX = dataset_post[beach_state].min(), dataset_post[beach_state].max()
-                                                utils.print_statement('run {} restart {}, {} {} {}'.format(run, restart, beach_state, MIN, MAX), to_print=True)
                                                 self.output_dict[beach_state] += dataset_post[beach_state]
                                     utils.remove_file(file_name + '.pkl')
             # Saving the output
@@ -115,7 +121,7 @@ def set_beach_label_dict():
     return {'beach': 1, 'adrift': 0, 'seabed': 3, 'removed': 2}
 
 
-def create_output_dict_time_list(beach_label_dict):
+def create_output_dict_time_list(beach_label_dict, weight_list):
     reference_time = datetime(2010, 1, 1, 12, 0)
     current_time, end_time = datetime(2010, 1, 1, 0), datetime(2010 + settings.SIM_LENGTH, 1, 1, 0)
     time_step, time_list = timedelta(hours=12), []
@@ -130,9 +136,11 @@ def create_output_dict_time_list(beach_label_dict):
             output_dict['total'] = {}
             output_dict[beach_state] = {}
             for size_class in range(settings.SIZE_CLASS_NUMBER):
-                output_dict[beach_state][size_class] = deepcopy(base_array)
-                output_dict['total'][size_class] = deepcopy(base_array)
-
+                output_dict[beach_state][size_class] = {}
+                output_dict['total'][size_class] = {}
+                for weight in weight_list:
+                    output_dict[beach_state][size_class][weight] = deepcopy(base_array)
+                    output_dict['total'][size_class][weight] = deepcopy(base_array)
         else:
             output_dict[beach_state] = deepcopy(base_array)
             output_dict['total'] = deepcopy(base_array)
@@ -150,13 +158,14 @@ def load_parcels_post_output(scenario_name, file_dict, year=settings.STARTYEAR, 
     return parcels_dataset, post_dataset
 
 
-def set_full_data_dict(parcels_dataset, post_dataset):
+def set_full_data_dict(parcels_dataset, post_dataset, weight_list):
     full_data_dict = {}
     for variable in ['lon', 'lat', 'beach', 'time', 'size_class']:
         if variable in parcels_dataset.variables.keys():
             full_data_dict[variable] = parcels_dataset.variables[variable][:, :-1].flatten()
     if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
-        full_data_dict['weights'] = post_dataset['particle_number'][:, :-1].flatten()
+        for weight in weight_list:
+            full_data_dict[weight] = post_dataset[weight][:, :-1].flatten()
     else:
         full_data_dict['weights'] = np.ones(full_data_dict['lon'].shape, dtype=float)
     # Only return the non-nan values

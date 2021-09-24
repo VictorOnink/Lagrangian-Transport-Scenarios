@@ -15,9 +15,11 @@ class parcels_to_concentration:
         self.LON, self.LAT, self.GRID, self.hexgrid = create_hex_grid()
         self.beach_label_dict = set_beach_label_dict(scenario_name=settings.SCENARIO_NAME)
         self.temp_direc, self.output_direc = get_directories(scenario_name=settings.SCENARIO_NAME)
+        self.weight_list = ['particle_mass', 'particle_mass_sink', 'particle_number', 'particle_number_sink']
         self.output_dict = create_output_file_dict(scenario_name=settings.SCENARIO_NAME, grid=self.GRID,
                                                    beach_states=self.beach_label_dict.keys(), lon=self.LON,
-                                                   lat=self.LAT)
+                                                   lat=self.LAT, weight_list=self.weight_list)
+
 
     def run(self):
         if self.parallel_step == 1:
@@ -37,28 +39,30 @@ class parcels_to_concentration:
                 full_data_dict, time_steps = complete_full_data_dict(scenario_name=settings.SCENARIO_NAME,
                                                                      full_data_dict=full_data_dict,
                                                                      parcels_dataset=parcels_dataset,
-                                                                     post_dataset=post_dataset)
+                                                                     post_dataset=post_dataset,
+                                                                     weight_list=self.weight_list)
                 # Looping through the beach states
                 for beach_state in self.beach_label_dict.keys():
                     state_data = {}
-                    for variable in ['lon', 'lat', 'weights', 'size_class']:
+                    for variable in utils.flatten_list_of_lists([['lon', 'lat', 'weights', 'size_class'], self.weight_list]):
                         if variable in full_data_dict.keys():
                             beach_selection = full_data_dict['beach'] == self.beach_label_dict[beach_state]
                             state_data[variable] = full_data_dict[variable][beach_selection]
                     if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                         for size_class in range(settings.SIZE_CLASS_NUMBER):
                             size_class_data = {}
-                            for variable in ['lon', 'lat', 'weights']:
+                            for variable in utils.flatten_list_of_lists([['lon', 'lat'], self.weight_list]):
                                 size_selection = state_data['size_class'] == size_class
                                 size_class_data[variable] = state_data[variable][size_selection]
                             key_year = utils.analysis_simulation_year_key(settings.RESTART)
-                            self.output_dict[key_year][beach_state][size_class] = calculate_concentration(lon=size_class_data['lon'],
-                                                                                                          lat=size_class_data['lat'],
-                                                                                                          weights=size_class_data['weights'],
-                                                                                                          hex_grid=self.hexgrid,
-                                                                                                          time_steps=time_steps,
-                                                                                                          lon_bin=self.LON,
-                                                                                                          lat_bin=self.LAT)
+                            for weight in self.weight_class:
+                                self.output_dict[key_year][beach_state][weight][size_class] = calculate_concentration(lon=size_class_data['lon'],
+                                                                                                                      lat=size_class_data['lat'],
+                                                                                                                      weights=size_class_data[weight],
+                                                                                                                      hex_grid=self.hexgrid,
+                                                                                                                      time_steps=time_steps,
+                                                                                                                      lon_bin=self.LON,
+                                                                                                                      lat_bin=self.LAT)
                     else:
                         key_year = utils.analysis_simulation_year_key(settings.RESTART)
                         self.output_dict[key_year][beach_state] = calculate_concentration(lon=state_data['lon'],
@@ -85,9 +89,10 @@ class parcels_to_concentration:
                                                            run=run, restart=restart)
                                 dataset_post = utils.load_obj(filename=file_name)
                                 for beach_state in self.beach_label_dict.keys():
-                                    for size_class in range(settings.SIZE_CLASS_NUMBER):
-                                        key_year = utils.analysis_simulation_year_key(restart)
-                                        self.output_dict[key_year][beach_state][size_class] += dataset_post[key_year][beach_state][size_class]
+                                    for weight in self.weight_list:
+                                        for size_class in range(settings.SIZE_CLASS_NUMBER):
+                                            key_year = utils.analysis_simulation_year_key(restart)
+                                            self.output_dict[key_year][beach_state][weigjt][size_class] += dataset_post[key_year][beach_state][weight][size_class]
                                 utils.remove_file(file_name)
                             else:
                                 if month == 1:
@@ -104,8 +109,9 @@ class parcels_to_concentration:
                 key_year = utils.analysis_simulation_year_key(simulation_years)
                 for beach_state in self.beach_label_dict.keys():
                     if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
-                        for size_class in self.output_dict[key_year][beach_state].keys():
-                            self.output_dict['overall_concentration'][beach_state][size_class] += self.output_dict[key_year][beach_state][size_class]
+                        for weight in self.weight_list:
+                            for size_class in self.output_dict[key_year][beach_state].keys():
+                                self.output_dict['overall_concentration'][beach_state][weight][size_class] += self.output_dict[key_year][beach_state][size_class]
                     else:
                         self.output_dict['overall_concentration'][beach_state] += self.output_dict[key_year][beach_state]
 
@@ -132,7 +138,7 @@ These following functions are general ones that are used by all scenarios to com
 """
 
 
-def create_output_file_dict(scenario_name, grid, beach_states, lon, lat):
+def create_output_file_dict(scenario_name, grid, beach_states, lon, lat, weight_list):
     # Creating the base grid that has the dimensions of the output grid of the histogram
     lat_dim, lon_dim = grid.shape
     base_grid = np.zeros(shape=(lat_dim - 1, lon_dim - 1), dtype=float)
@@ -149,7 +155,9 @@ def create_output_file_dict(scenario_name, grid, beach_states, lon, lat):
     # Creating the beach state dictionary
     for state in beach_state_dict.keys():
         if scenario_name in ['FragmentationKaandorpPartial']:
-            beach_state_dict[state] = deepcopy(size_dict)
+            beach_state_dict[state] = {}
+            for weight in weight_list:
+                beach_state_dict[state][weight] = deepcopy(size_dict)
         else:
             beach_state_dict[state] = deepcopy(base_grid)
 
@@ -252,9 +260,10 @@ def load_parcels_post_output(scenario_name, file_dict, year=settings.STARTYEAR, 
     return parcels_dataset, post_dataset
 
 
-def complete_full_data_dict(scenario_name, full_data_dict, parcels_dataset, post_dataset):
+def complete_full_data_dict(scenario_name, full_data_dict, parcels_dataset, post_dataset, weight_list):
     if scenario_name in ['FragmentationKaandorpPartial']:
-        full_data_dict['weights'] = post_dataset['particle_number'][:, :-1]
+        for weight in weight_list:
+            full_data_dict[weight] = post_dataset[weight][:, :-1]
         full_data_dict['size_class'] = parcels_dataset.variables['size_class'][:, :-1]
     else:
         if 'weights' in parcels_dataset.variables.keys():

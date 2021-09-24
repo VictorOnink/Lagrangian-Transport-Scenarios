@@ -22,8 +22,10 @@ class parcels_to_sizespectrum:
         self.var_list = set_var_list()
         self.beach_label_dict = set_beach_label_dict()
         self.reservoirs = set_reservoirs()
+        self.weight_list = ['particle_mass', 'particle_mass_sink', 'particle_number', 'particle_number_sink']
+        # Create output dict
         self.output_dict = create_output_dict(time_list=self.time_list, time_analysis_step=self.time_analysis_step,
-                                              reservoir_list=self.reservoirs)
+                                              reservoir_list=self.reservoirs, weight_list=self.weight_list)
 
     def run(self):
         if self.parallel_step == 1:
@@ -35,7 +37,7 @@ class parcels_to_sizespectrum:
                 # Loading the data
                 parcels_dataset, post_dataset = load_parcels_post_output(scenario_name=settings.SCENARIO_NAME,
                                                                          file_dict=self.file_dict)
-                full_data_dict = set_full_data_dict(parcels_dataset, post_dataset, self.var_list)
+                full_data_dict = set_full_data_dict(parcels_dataset, post_dataset, self.var_list, self.weight_list)
                 # Looping through the time
                 for index_time in range(0, self.time_list.__len__(), self.time_analysis_step):
                     time_selection = self.time_list[index_time] == full_data_dict['time']
@@ -43,10 +45,13 @@ class parcels_to_sizespectrum:
                         time_sel_dict = {}
                         for key in full_data_dict.keys():
                             time_sel_dict[key] = full_data_dict[key][time_selection]
-                        for reservoir in self.reservoirs:
-                            self.output_dict[reservoir][index_time] += reservoir_calculation(reservoir, time_sel_dict,
-                                                                                             self.beach_label_dict,
-                                                                                             self.surface_depth)
+                        for weight in self.weight_list:
+                            for reservoir in self.reservoirs:
+                                self.output_dict[reservoir][weight][index_time] += reservoir_calculation(reservoir,
+                                                                                                         time_sel_dict,
+                                                                                                         self.beach_label_dict,
+                                                                                                         self.surface_depth,
+                                                                                                         weight)
                 # Adding the index of the final timestep for ease later on
                 self.output_dict['final_index'] = index_time
 
@@ -67,8 +72,9 @@ class parcels_to_sizespectrum:
                             if utils.check_file_exist(file_name, without_pkl=True):
                                 dataset_post = utils.load_obj(filename=file_name)
                                 for reservoir in self.reservoirs:
-                                    for index_time in range(0, self.time_list.__len__(), self.time_analysis_step):
-                                        self.output_dict[reservoir][index_time] += dataset_post[reservoir][index_time]
+                                    for weight in self.weight_list:
+                                        for index_time in range(0, self.time_list.__len__(), self.time_analysis_step):
+                                            self.output_dict[reservoir][weight][index_time] += dataset_post[reservoir][weight][index_time]
             # Adding the index of the final timestep for ease later on
             self.output_dict['final_index'] = index_time
             # Saving everything
@@ -142,20 +148,23 @@ def set_reservoirs():
     return ['beach', 'adrift', 'adrift_10km', 'adrift_10km_surf', 'adrift_open', 'adrift_open_surf']
 
 
-def create_output_dict(time_list, time_analysis_step, reservoir_list):
+def create_output_dict(time_list, time_analysis_step, reservoir_list, weight_list):
     output_dict = {'size_bins': np.arange(settings.SIZE_CLASS_NUMBER)}
     for reservoir in reservoir_list:
         output_dict[reservoir] = {}
-        for time_index in range(0, time_list.__len__(), time_analysis_step):
-            output_dict[reservoir][time_index] = np.zeros(shape=settings.SIZE_CLASS_NUMBER, dtype=float)
+        for weight in weight_list:
+            output_dict[reservoir][weight] = {}
+            for time_index in range(0, time_list.__len__(), time_analysis_step):
+                output_dict[reservoir][weight][time_index] = np.zeros(shape=settings.SIZE_CLASS_NUMBER, dtype=float)
     return output_dict
 
 
-def set_full_data_dict(parcels_dataset, post_dataset, variable_list):
+def set_full_data_dict(parcels_dataset, post_dataset, variable_list, weight_list):
     full_data_dict = {}
     for variable in variable_list:
         full_data_dict[variable] = parcels_dataset.variables[variable][:, :-1].flatten()
-    full_data_dict['particle_number'] = post_dataset['particle_number'][:, :-1].flatten()
+    for weight in weight_list:
+        full_data_dict[weight] = post_dataset[weight][:, :-1].flatten()
     # Only return the non-nan values
     is_not_nan = ~np.isnan(full_data_dict['beach'])
     for variable in full_data_dict.keys():
@@ -163,7 +172,7 @@ def set_full_data_dict(parcels_dataset, post_dataset, variable_list):
     return full_data_dict
 
 
-def reservoir_calculation(reservoir, time_sel_dict, beach_label_dict, surface_depth):
+def reservoir_calculation(reservoir, time_sel_dict, beach_label_dict, surface_depth, weight):
     if reservoir == 'beach':
         selection = time_sel_dict['beach'] == beach_label_dict['beach']
     elif reservoir == 'adrift':
@@ -180,7 +189,7 @@ def reservoir_calculation(reservoir, time_sel_dict, beach_label_dict, surface_de
                     time_sel_dict['distance2coast'] < surface_depth)
     else:
         ValueError('What do you mean by {}'.format(reservoir))
-    return number_per_size_class(time_sel_dict['size_class'], time_sel_dict['particle_number'],
+    return number_per_size_class(time_sel_dict['size_class'], time_sel_dict[weight],
                                  settings.SIZE_CLASS_NUMBER, selection=selection)
 
 
