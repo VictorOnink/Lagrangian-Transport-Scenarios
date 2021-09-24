@@ -121,7 +121,24 @@ class parcels_to_concentration:
                     if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                         for weight in self.weight_list:
                             for size_class in self.output_dict[key_year][beach_state].keys():
-                                self.output_dict['overall_concentration'][beach_state][weight][size_class] += self.output_dict[key_year][beach_state][weight][size_class]
+                                try:
+                                    self.output_dict['overall_concentration'][beach_state][weight][size_class] += self.output_dict[key_year][beach_state][weight][size_class]
+                                except:
+                                    str_format = year, month, run, restart, file_name, beach_state
+                                    print_statement = '{}-{}, run {} restart {} {} {}'.format(*str_format)
+                                    utils.print_statement(print_statement, to_print=True)
+                                    utils.print_statement('{}'.format(self.output_dict.keys()), to_print=True)
+                                    utils.print_statement('{}'.format(self.output_dict['overall_concentration'].keys()), to_print=True)
+                                    utils.print_statement('{}'.format(self.output_dict['overall_concentration'][beach_state].keys()),
+                                                          to_print=True)
+                                    utils.print_statement(
+                                        '{}'.format(self.output_dict['overall_concentration'][beach_state][weight].keys()),
+                                        to_print=True)
+                                    utils.print_statement(
+                                        '{}'.format(self.output_dict['overall_concentration'][beach_state][weight][size_class].keys()),
+                                        to_print=True)
+                                    ValueError('mweh')
+
                     else:
                         self.output_dict['overall_concentration'][beach_state] += self.output_dict[key_year][beach_state]
 
