@@ -46,7 +46,7 @@ class parcels_to_timeseries:
                     time_selection = full_data_dict['time'] == time_value
                     if np.nansum(time_selection) > 0:
                         time_dict = {}
-                        for variable in ['beach', 'weights', 'size_class']:
+                        for variable in utils.flatten_list_of_lists([['beach', 'weights', 'size_class'], self.weight_list]):
                             if variable in full_data_dict.keys():
                                 time_dict[variable] = full_data_dict[variable][time_selection]
                         for beach_state in self.beach_label_dict.keys():
