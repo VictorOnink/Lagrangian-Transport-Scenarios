@@ -121,7 +121,18 @@ class parcels_to_concentration:
                     if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                         for weight in self.weight_list:
                             for size_class in self.output_dict[key_year][beach_state].keys():
-                                self.output_dict['overall_concentration'][beach_state][weight][size_class] += self.output_dict[key_year][beach_state][weight][size_class]
+                                try:
+                                    self.output_dict['overall_concentration'][beach_state][weight][size_class] += self.output_dict[key_year][beach_state][weight][size_class]
+                                except:
+                                    str_format = year, month, run, restart, file_name
+                                    print_statement = '{}-{}, run {} restart {} {}'.format(*str_format)
+                                    utils.print_statement(print_statement, to_print=True)
+                                    utils.print_statement('max {}'.format(
+                                        np.nanman(self.output_dict['overall_concentration'][beach_state][weight][size_class])),
+                                                          to_print=True)
+                                    utils.print_statement('max {}'.format(
+                                        np.nanman(dataset_post[key_year][beach_state][weight][size_class])),
+                                                          to_print=True)
                     else:
                         self.output_dict['overall_concentration'][beach_state] += self.output_dict[key_year][beach_state]
 
