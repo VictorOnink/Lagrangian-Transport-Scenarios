@@ -55,7 +55,7 @@ class parcels_to_concentration:
                                 size_selection = state_data['size_class'] == size_class
                                 size_class_data[variable] = state_data[variable][size_selection]
                             key_year = utils.analysis_simulation_year_key(settings.RESTART)
-                            for weight in self.weight_class:
+                            for weight in self.weight_list:
                                 self.output_dict[key_year][beach_state][weight][size_class] = calculate_concentration(lon=size_class_data['lon'],
                                                                                                                       lat=size_class_data['lat'],
                                                                                                                       weights=size_class_data[weight],
