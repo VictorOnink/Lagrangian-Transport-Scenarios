@@ -92,7 +92,17 @@ class parcels_to_concentration:
                                     for weight in self.weight_list:
                                         for size_class in range(settings.SIZE_CLASS_NUMBER):
                                             key_year = utils.analysis_simulation_year_key(restart)
-                                            self.output_dict[key_year][beach_state][weight][size_class] += dataset_post[key_year][beach_state][weight][size_class]
+                                            try:
+                                                self.output_dict[key_year][beach_state][weight][size_class] += dataset_post[key_year][beach_state][weight][size_class]
+                                            except:
+                                                str_format = settings.STARTYEAR, settings.STARTMONTH, settings.RUN, settings.RESTART
+                                                print_statement = '{}-{}, run {} restart {} '.format(*str_format)
+                                                utils.print_statement(print_statement, to_print=True)
+                                                utils.print_statement('max {}'.format(np.nanman(self.output_dict[key_year][beach_state][weight][size_class])),
+                                                                      to_print=True)
+                                                utils.print_statement('max {}'.format(np.nanman(dataset_post[key_year][beach_state][weight][size_class])),
+                                                                      to_print=True)
+
                                 utils.remove_file(file_name)
                             else:
                                 if month == 1:
