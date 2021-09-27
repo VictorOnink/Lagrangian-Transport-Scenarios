@@ -20,20 +20,20 @@ def run(scenario, figure_direc: str):
     size_list = np.array([5000, 1250, 313, 78, 20, 2]) * settings.SIZE_FACTOR
 
     # Creating a figure of the basin bathymetry
-    General.General_bathymetry(scenario=scenario, figure_direc=figure_direc).plot()
+    # General.General_bathymetry(scenario=scenario, figure_direc=figure_direc).plot()
 
     # Figure of the mean wind speed
-    General.General_average_wind_speed(scenario=scenario, figure_direc=figure_direc).plot()
+    # General.General_average_wind_speed(scenario=scenario, figure_direc=figure_direc).plot()
 
     # Figure of the input scenario
-    General.General_input_scenario(scenario=scenario, figure_direc=figure_direc).plot()
+    # General.General_input_scenario(scenario=scenario, figure_direc=figure_direc).plot()
 
     # Figure of the seasonal average MLD and wind speed
-    General.General_season_average(scenario=scenario, figure_direc=figure_direc, variable='MLD').plot()
-    General.General_season_average(scenario=scenario, figure_direc=figure_direc, variable='wind').plot()
+    # General.General_season_average(scenario=scenario, figure_direc=figure_direc, variable='MLD').plot()
+    # General.General_season_average(scenario=scenario, figure_direc=figure_direc, variable='wind').plot()
 
     # Creating an animation showing how the six different size classes I have simulations for at the moment look like
-    # SizeTransport_Animation(scenario=scenario, figure_direc=figure_direc, size_list=size_list, simulation_years=2).animate()
+    SizeTransport_Animation(scenario=scenario, figure_direc=figure_direc, size_list=size_list, simulation_years=2).animate()
 
     # Creating figures showing the relative distribution, averaged over the entire simulation and time-snapshots at the
     # end of each simulation year
