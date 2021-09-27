@@ -74,7 +74,7 @@ class SizeTransport_Animation:
         plot_list = []
         for ax_index, ax in enumerate(ax_list):
             plot_list.append(ax.scatter(0, 0, c=0, s=7, alpha=1, zorder=1000, cmap=self.cmap, norm=norm))
-            ax.set_title(subfigure_title(ax_index), fontsize=self.ax_label_size)
+            ax.set_title(subfigure_title(ax_index, self.size_list[ax_index], self.rho), fontsize=self.ax_label_size)
 
         # Initialization function
         def init():
