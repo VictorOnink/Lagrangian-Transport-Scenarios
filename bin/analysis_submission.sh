@@ -46,7 +46,7 @@ STARTMONTH_list=(1)
 STARTDAY=1
 export STARTDAY
 #Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=lebretondivision, 3=point, 4=uniform
-INPUT=2
+INPUT=1
 export INPUT
 #Which advection data do we want to use?
 # 0 = Global HYCOM, 1 = Caribbean HYCOM, 2 = Mediterranean CMEMS
