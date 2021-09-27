@@ -58,7 +58,7 @@ class SizeTransport_CumulativeDistance:
         for column in range(gs.ncols):
             ax_sub = fig.add_subplot(gs[0, column])
             if column == 0:
-                ax.set_ylabel(r'Fraction of Total (%)', fontsize=self.ax_label_size)
+                ax_sub.set_ylabel(r'Fraction of Total (%)', fontsize=self.ax_label_size)
             ax_sub.tick_params(axis='both', labelsize=self.ax_ticklabel_size)
             ax_sub.set_ylim([0, 100])
             ax.append(ax_sub)

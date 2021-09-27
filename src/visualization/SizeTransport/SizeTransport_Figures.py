@@ -33,7 +33,7 @@ def run(scenario, figure_direc: str):
     # General.General_season_average(scenario=scenario, figure_direc=figure_direc, variable='wind').plot()
 
     # Creating an animation showing how the six different size classes I have simulations for at the moment look like
-    SizeTransport_Animation(scenario=scenario, figure_direc=figure_direc, size_list=size_list, simulation_years=2).animate()
+    # SizeTransport_Animation(scenario=scenario, figure_direc=figure_direc, size_list=size_list, simulation_years=2).animate()
 
     # Creating figures showing the relative distribution, averaged over the entire simulation and time-snapshots at the
     # end of each simulation year
@@ -49,7 +49,7 @@ def run(scenario, figure_direc: str):
     #                                simulation_years=3).plot()
 
     # Cumulative plots for the total distance travelled vertically and horizontally, and the max depth reached
-    # SizeTransport_CumulativeDistance(figure_direc=figure_direc, scenario=scenario, size_list=size_list).plot()
+    SizeTransport_CumulativeDistance(figure_direc=figure_direc, scenario=scenario, size_list=size_list).plot()
 
     # Plotting the separation distance
     # for size_selection in size_list:
