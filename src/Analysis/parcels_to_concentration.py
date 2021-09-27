@@ -91,19 +91,8 @@ class parcels_to_concentration:
                                     for weight in self.weight_list:
                                         for size_class in range(settings.SIZE_CLASS_NUMBER):
                                             key_year = utils.analysis_simulation_year_key(restart)
-                                            try:
-                                                self.output_dict[key_year][beach_state][weight][size_class] += dataset_post[key_year][beach_state][weight][size_class]
-                                            except:
-                                                str_format = year, month, run, restart, file_name, beach_state
-                                                print_statement = '{}-{}, run {} restart {} {} {}'.format(*str_format)
-                                                utils.print_statement(print_statement, to_print=True)
-                                                utils.print_statement('{}'.format(self.output_dict.keys()), to_print=True)
-                                                utils.print_statement('{}'.format(self.output_dict[key_year].keys()), to_print=True)
-                                                utils.print_statement('{}'.format(self.output_dict[key_year][beach_state].keys()), to_print=True)
-                                                utils.print_statement('{}'.format(self.output_dict[key_year][beach_state][weight].keys()), to_print=True)
-                                                utils.print_statement('{}'.format(self.output_dict[key_year][beach_state][weight][size_class].keys()), to_print=True)
-                                                ValueError('mweh')
-                                # utils.remove_file(file_name)
+                                            self.output_dict[key_year][beach_state][weight][size_class] += dataset_post[key_year][beach_state][weight][size_class]
+                                utils.remove_file(file_name)
                             else:
                                 if month == 1:
                                     file_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
@@ -120,32 +109,15 @@ class parcels_to_concentration:
                 for beach_state in self.beach_label_dict.keys():
                     if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                         for weight in self.weight_list:
-                            for size_class in self.output_dict[key_year][beach_state].keys():
-                                try:
-                                    self.output_dict['overall_concentration'][beach_state][weight][size_class] += self.output_dict[key_year][beach_state][weight][size_class]
-                                except:
-                                    str_format = year, month, run, restart, file_name, beach_state
-                                    print_statement = '{}-{}, run {} restart {} {} {}'.format(*str_format)
-                                    utils.print_statement(print_statement, to_print=True)
-                                    utils.print_statement('{}'.format(self.output_dict.keys()), to_print=True)
-                                    utils.print_statement('{}'.format(self.output_dict['overall_concentration'].keys()), to_print=True)
-                                    utils.print_statement('{}'.format(self.output_dict['overall_concentration'][beach_state].keys()),
-                                                          to_print=True)
-                                    utils.print_statement(
-                                        '{}'.format(self.output_dict['overall_concentration'][beach_state][weight].keys()),
-                                        to_print=True)
-                                    utils.print_statement(
-                                        '{}'.format(self.output_dict['overall_concentration'][beach_state][weight][size_class].keys()),
-                                        to_print=True)
-                                    ValueError('mweh')
-
+                            for size_class in range(settings.SIZE_CLASS_NUMBER):
+                                self.output_dict['overall_concentration'][beach_state][weight][size_class] += self.output_dict[key_year][beach_state][weight][size_class]
                     else:
                         self.output_dict['overall_concentration'][beach_state] += self.output_dict[key_year][beach_state]
 
             for beach_state in self.beach_label_dict.keys():
                 if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                     for weight in self.weight_list:
-                        for size_class in self.output_dict[key_year][beach_state].keys():
+                        for size_class in range(settings.SIZE_CLASS_NUMBER):
                             self.output_dict['overall_concentration'][beach_state][weight][size_class] /= settings.SIM_LENGTH
                 else:
                     self.output_dict['overall_concentration'][beach_state] /= settings.SIM_LENGTH

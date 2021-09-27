@@ -9,7 +9,7 @@ import cmocean.cm as cmo
 
 
 class FragmentationKaandorpPartial_vertical_profile:
-    def __init__(self, figure_direc, scenario, shore_time, lambda_frag, rho, simulation_year):
+    def __init__(self, figure_direc, scenario, shore_time, lambda_frag, rho, simulation_year, weight):
         # Figure Parameters
         self.fig_size = (16, 10)
         self.fig_shape = (2, 2)
@@ -22,6 +22,13 @@ class FragmentationKaandorpPartial_vertical_profile:
         self.ymin, self.ymax = -25, 0
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
         self.number_of_plots = 4
+        self.weight = weight
+        self.concentration = {'particle_mass': 'concentration_mass', 'particle_mass_sink': 'concentration_mass_sink',
+                              'particle_number': 'concentration_number',
+                              'particle_number_sink': 'concentration_number_sink'}[self.weight]
+        self.counts = {'particle_mass': 'counts_mass', 'particle_mass_sink': 'counts_mass_sink',
+                       'particle_number': 'counts_number', 'particle_number_sink': 'counts_number_sink'}[self.weight]
+
         # Data parameters
         self.output_direc = figure_direc + 'vertical_profile/'
         self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/FragmentationKaandorpPartial/'
@@ -68,10 +75,10 @@ class FragmentationKaandorpPartial_vertical_profile:
 
         # And finally, the actual plotting:
         for ind_month, month in enumerate(np.arange(0, 12, 3)):
-            total_count = np.zeros(data_dict[month][0]['concentration'].shape)
+            total_count = np.zeros(data_dict[month][0][self.concentration].shape)
             for size_class in range(settings.SIZE_CLASS_NUMBER):
-                total_count += data_dict[month][size_class]['concentration']
-                norm_conc = data_dict[month][size_class]['concentration'] / data_dict[month][size_class]['counts']
+                total_count += data_dict[month][size_class][self.concentration]
+                norm_conc = data_dict[month][size_class][self.concentration] / data_dict[month][size_class][self.counts]
                 c = vUtils.discrete_color_from_cmap(size_class, subdivisions=settings.SIZE_CLASS_NUMBER, cmap='viridis')
                 ax[ind_month].plot(norm_conc, depth_bins, linestyle='-', c=c)
             ax[ind_month].plot(total_count, depth_bins, linestyle='-', c='k', zorder=10000)
