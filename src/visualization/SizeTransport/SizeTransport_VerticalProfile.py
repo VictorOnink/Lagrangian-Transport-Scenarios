@@ -43,7 +43,7 @@ class SizeTransport_VerticalProfile:
         for size in self.size_list:
             data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix, data_direc=self.data_direc,
                                                        size=size, rho=self.rho, tau=self.tau)
-            output_dict[size] = data_dict[self.time_selection]
+            output_dict[size] = data_dict[utils.analysis_simulation_year_key(self.time_selection)]
         depth_bins = -0.5 * (data_dict['depth'][1:] + data_dict['depth'][:-1])
 
         # Normalizing by the counts
