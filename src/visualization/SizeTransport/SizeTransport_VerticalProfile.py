@@ -92,6 +92,7 @@ class SizeTransport_VerticalProfile:
             for index_size, size in enumerate(self.size_list):
                 c = cmap_list[index_size]
                 ax[ind_month].plot(output_dict[size][month]['concentration'], depth_bins, linestyle='-', c=c)
+                print(output_dict[size][month]['concentration'])
 
         file_name = self.output_direc + 'SizeTransport_vertical_profile_year={}.png'.format(self.time_selection)
         plt.savefig(file_name, bbox_inches='tight')
