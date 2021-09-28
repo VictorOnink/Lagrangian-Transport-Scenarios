@@ -14,7 +14,7 @@ class SizeTransport_VerticalProfile:
         # Figure Parameters
         self.fig_size = (16, 10)
         self.fig_shape = (2, 2)
-        self.x_label = 'Number of Particles'
+        self.x_label = 'Normalized Concentration'
         self.y_label = 'Depth (m)'
         self.ax_ticklabel_size = 12
         self.ax_label_size = 14
@@ -73,6 +73,12 @@ class SizeTransport_VerticalProfile:
                        range(cmap_list.__len__())]
         ax[-1].legend(handles=size_colors, fontsize=self.legend_size)
         ax[-1].axis('off')
+
+        # The actual plotting
+        for ind_month, month in enumerate(np.arange(0, 12, 3)):
+            for index_size, size in enumerate(self.size_list):
+                c = cmap_list[index_size]
+                ax[ind_month].plot(output_dict[size][month]['concentration'], depth_bins, linestyle='-', c=c)
 
         file_name = self.output_direc + 'SizeTransport_vertical_profile_year={}.png'.format(self.time_selection)
         plt.savefig(file_name, bbox_inches='tight')
