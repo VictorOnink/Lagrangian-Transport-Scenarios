@@ -120,14 +120,14 @@ def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabe
     xmax, xmin, ymax, ymin = ax_range
     if log_xscale:
         if xmax < 0 or xmin < 0:
-            log_type = 'symlog'
+            xlog_type = 'symlog'
         else:
-            log_type = 'log'
+            xlog_type = 'log'
     if log_yscale:
         if ymax < 0 or ymin < 0:
-            log_type = 'symlog'
+            ylog_type = 'symlog'
         else:
-            log_type = 'log'
+            ylog_type = 'log'
     # Creating the figure
     fig = plt.figure(figsize=fig_size)
     if legend_axis:
@@ -146,9 +146,9 @@ def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabe
             # Setting the tick parameters and setting the axis scale
             ax_sub.tick_params(axis='both', labelsize=ax_ticklabel_size)
             if log_xscale:
-                ax_sub.set_xscale(log_type)
+                ax_sub.set_xscale(xlog_type)
             if log_yscale:
-                ax_sub.set_yscale(log_type)
+                ax_sub.set_yscale(ylog_type)
             if x_time_axis:
                 years = mdates.YearLocator()
                 months = mdates.MonthLocator()
