@@ -106,5 +106,5 @@ def legend_label(size):
 
 def subfigure_title(index, simulation_year):
     alphabet = string.ascii_lowercase
-    month_dict = {0: 'JFM', 1: 'AMJ', 2: 'JAS', 3: 'OND'}
+    month_dict = {0: 'Winter: JFM', 1: 'Spring: AMJ', 2: 'Summer: JAS', 3: 'Autumn: OND'}
     return '({}) {}-{}'.format(alphabet[index], month_dict[index], settings.STARTYEAR + simulation_year)
