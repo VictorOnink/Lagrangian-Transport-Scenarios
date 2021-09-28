@@ -48,7 +48,7 @@ class SizeTransport_VerticalProfile:
 
         # Normalizing by the counts
         for size in self.size_list:
-            for month in range(1, 13):
+            for month in range(0, 12):
                 output_dict[size][month]['concentration'] /= output_dict[size][month]['counts']
 
         # Creating the figure
