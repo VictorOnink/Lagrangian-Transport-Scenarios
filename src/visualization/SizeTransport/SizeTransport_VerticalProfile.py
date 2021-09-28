@@ -65,9 +65,9 @@ class SizeTransport_VerticalProfile:
 
         # Adding in a legend
         cmap_list, label_list = [], []
-        for size_class in range(self.size_classes):
-            cmap_list.append(vUtils.discrete_color_from_cmap(size_class, subdivisions=self.size_list.__len__()))
-            label_list.append(legend_label(size_class))
+        for index_size, size in enumerate(self.size_list):
+            cmap_list.append(vUtils.discrete_color_from_cmap(index_size, subdivisions=self.size_list.__len__()))
+            label_list.append(legend_label(size))
         size_colors = [plt.plot([], [], c=cmap_list[i], label=label_list[i], linestyle='-')[0] for i in
                        range(cmap_list.__len__())]
         ax[-1].legend(handles=size_colors, fontsize=self.legend_size)
