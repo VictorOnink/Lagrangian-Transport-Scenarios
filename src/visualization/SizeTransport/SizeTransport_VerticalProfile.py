@@ -53,11 +53,6 @@ class SizeTransport_VerticalProfile:
                 month_stack = np.vstack([output_dict[size][month]['concentration'],
                                          output_dict[size][month + 1]['concentration'],
                                          output_dict[size][month + 2]['concentration']])
-                print(month_stack.shape)
-                count_stack = np.vstack([output_dict[size][month]['counts'],
-                                         output_dict[size][month + 1]['counts'],
-                                         output_dict[size][month + 2]['counts']])
-
                 output_dict[size][month]['concentration'] = np.nanmean(month_stack, axis=0)
                 output_dict[size][month]['counts'] = np.sum(output_dict[size][month]['counts'] +
                                                             output_dict[size][month + 1]['counts'] +
@@ -111,6 +106,5 @@ def legend_label(size):
 
 def subfigure_title(index, simulation_year):
     alphabet = string.ascii_lowercase
-    month_dict = {0: 'January', 1: 'February', 2: 'March', 3: 'April', 4: 'May', 5: 'June', 6: 'July', 7: 'August',
-                  8: 'September', 9: 'October', 10: 'November', 11: 'December'}
-    return '({}) {}-{}'.format(alphabet[index], month_dict[index * 3], settings.STARTYEAR + simulation_year)
+    month_dict = {0: 'JFM', 1: 'AMJ', 2: 'JAS', 3: 'OND'}
+    return '({}) {}-{}'.format(alphabet[index], month_dict[index], settings.STARTYEAR + simulation_year)
