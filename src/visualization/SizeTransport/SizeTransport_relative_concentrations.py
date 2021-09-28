@@ -113,7 +113,7 @@ def set_normalization(beach_state):
     if beach_state == 'adrift':
         vmin, vmax = 1, 1e4
     elif beach_state == 'beach':
-        vmin, vmax = 1, 1e5
+        vmin, vmax = 1, 1e4
     return colors.LogNorm(vmin=vmin, vmax=vmax)
 
 
