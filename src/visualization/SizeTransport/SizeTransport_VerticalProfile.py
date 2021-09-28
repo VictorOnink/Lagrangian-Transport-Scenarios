@@ -73,7 +73,7 @@ class SizeTransport_VerticalProfile:
         ax[-1].legend(handles=size_colors, fontsize=self.legend_size)
         ax[-1].axis('off')
 
-        file_name = self.output_direc + 'SizeTransport_vertical_profile_{}.png'.format(self.time_selection)
+        file_name = self.output_direc + 'SizeTransport_vertical_profile_year={}.png'.format(self.time_selection)
         plt.savefig(file_name, bbox_inches='tight')
 
 
