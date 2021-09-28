@@ -19,8 +19,8 @@ class SizeTransport_VerticalProfile:
         self.ax_ticklabel_size = 12
         self.ax_label_size = 14
         self.legend_size = 11
-        self.xmin, self.xmax = 1e-10, 1e0
-        self.ymin, self.ymax = -200, 0
+        self.xmin, self.xmax = 1e-7, 1e0
+        self.ymin, self.ymax = -300, 0
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
         self.number_of_plots = 4
 

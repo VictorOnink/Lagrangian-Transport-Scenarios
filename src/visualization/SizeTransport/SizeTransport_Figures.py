@@ -55,6 +55,8 @@ def run(scenario, figure_direc: str):
     # Plotting the month average vertical profile
     SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
                                   time_selection=0).plot()
+    SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+                                  time_selection=1).plot()
 
     # Plotting the separation distance
     # for size_selection in size_list:
