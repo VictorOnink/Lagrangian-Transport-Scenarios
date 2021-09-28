@@ -41,7 +41,8 @@ class SizeTransport_VerticalProfile:
         # Loading the data
         output_dict = {}
         for size in self.size_list:
-            data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix, data_direc=self.data_direc,
+            data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
+                                                       data_direc=self.data_direc,
                                                        size=size, rho=self.rho, tau=self.tau)
             output_dict[size] = data_dict[utils.analysis_simulation_year_key(self.time_selection)]
         depth_bins = -0.5 * (data_dict['depth'][1:] + data_dict['depth'][:-1])
@@ -57,7 +58,7 @@ class SizeTransport_VerticalProfile:
                                 y_label=self.y_label, ax_ticklabel_size=self.ax_ticklabel_size,
                                 ax_label_size=self.ax_label_size, shape=self.fig_shape, plot_num=self.number_of_plots,
                                 log_yscale=False, log_xscale=True, all_x_labels=True, all_y_labels=True,
-                                legend_axis=True, width_ratios=[1, 1, 0.5])
+                                legend_axis=True, width_ratios=[1, 1, 0.2])
 
         # Labelling the subfigures
         for index_ax in range(self.number_of_plots):
@@ -83,4 +84,6 @@ def legend_label(size):
 
 def subfigure_title(index, simulation_year):
     alphabet = string.ascii_lowercase
-    return '({}) 1-{}-{}'.format(alphabet[index], index * 3 + 1, settings.STARTYEAR + simulation_year)
+    month_dict = {0: 'January', 1: 'February', 2: 'March', 3: 'April', 4: 'May', 5: 'June', 6: 'July', 7: 'August',
+                  8: 'September', 9: 'October', 10: 'November', 11: 'December'}
+    return '({}) {}-{}'.format(alphabet[index], month_dict[index * 3], settings.STARTYEAR + simulation_year)
