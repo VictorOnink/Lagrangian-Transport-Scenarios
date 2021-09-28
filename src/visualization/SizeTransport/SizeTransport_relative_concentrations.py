@@ -91,11 +91,11 @@ class SizeTransport_relative_concentrations:
         # The actual plotting of the figures
         for index, size in enumerate(self.size_list):
             if self.beach_state in ['adrift']:
-                ax_list[index].pcolormesh(Lon, Lat, concentration_dict[index], norm=norm, cmap=self.cmap_name,
+                ax_list[index].pcolormesh(Lon, Lat, concentration_dict[index], norm=norm, cmap=self.cmap,
                                           zorder=200)
             else:
                 ax_list[index].scatter(Lon.flatten(), Lat.flatten(), c=concentration_dict[index], norm=norm,
-                                       cmap=self.cmap_name,
+                                       cmap=self.cmap,
                                        zorder=200)
 
         # Saving the figure
