@@ -52,7 +52,12 @@ class SizeTransport_VerticalProfile:
             for month in range(0, 12):
                 output_dict[size][month]['concentration'] /= output_dict[size][month]['counts']
 
-        # Creating the figure
+        # setting the zero values to nan to clear up the plots
+        for size in self.size_list:
+            for month in range(0, 12):
+                selection = output_dict[size][month]['concentration'] == 0
+                output_dict[size][month]['concentration'][selection] = np.nan
+
         # Creating the figure
         ax = vUtils.base_figure(fig_size=self.fig_size, ax_range=self.ax_range, x_label=self.x_label,
                                 y_label=self.y_label, ax_ticklabel_size=self.ax_ticklabel_size,
