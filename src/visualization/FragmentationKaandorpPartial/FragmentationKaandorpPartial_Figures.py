@@ -16,8 +16,8 @@ def run(scenario, figure_direc: str):
     # Standardizing field data
     # Analysis.FragmentationKaandorpPartial_fielddata(to_overwrite=False)
 
-    # Animation.FragmentationKaandorpPartial_Animation(scenario=scenario, figure_direc=figure_direc, shore_time=20,
-    #                                                  rho=rho, simulation_years=2, ocean_frag=False).animate()
+    Animation.FragmentationKaandorpPartial_Animation(scenario=scenario, figure_direc=figure_direc, shore_time=20,
+                                                     rho=rho, simulation_years=2, ocean_frag=False).animate()
 
     # timeseries.FragmentationKaandorpPartial_timeseries(scenario=scenario, figure_direc=figure_direc,
     #                                                    shore_time=shore_time, lambda_frag=300, rho=rho,
