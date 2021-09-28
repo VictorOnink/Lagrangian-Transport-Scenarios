@@ -20,7 +20,7 @@ class SizeTransport_VerticalProfile:
         self.ax_label_size = 14
         self.legend_size = 11
         self.xmin, self.xmax = 1e-7, 1e0
-        self.ymin, self.ymax = -500, 5
+        self.ymin, self.ymax = -1000, 5
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
         self.number_of_plots = 4
 
@@ -73,7 +73,7 @@ class SizeTransport_VerticalProfile:
         ax = vUtils.base_figure(fig_size=self.fig_size, ax_range=self.ax_range, x_label=self.x_label,
                                 y_label=self.y_label, ax_ticklabel_size=self.ax_ticklabel_size,
                                 ax_label_size=self.ax_label_size, shape=self.fig_shape, plot_num=self.number_of_plots,
-                                log_yscale=False, log_xscale=True, all_x_labels=True, all_y_labels=True,
+                                log_yscale=True, log_xscale=True, all_x_labels=True, all_y_labels=True,
                                 legend_axis=True, width_ratios=[1, 1, 0.2])
 
         # Labelling the subfigures
