@@ -61,7 +61,7 @@ class SizeTransport_VerticalProfile:
 
         # Labelling the subfigures
         for index_ax in range(self.number_of_plots):
-            ax[index_ax].set_title(subfigure_title(index_ax, self.simulation_year), fontsize=self.ax_label_size)
+            ax[index_ax].set_title(subfigure_title(index_ax, self.time_selection), fontsize=self.ax_label_size)
 
         # Adding in a legend
         cmap_list, label_list = [], []
