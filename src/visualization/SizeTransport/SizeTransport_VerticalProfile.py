@@ -58,7 +58,7 @@ class SizeTransport_VerticalProfile:
                                          output_dict[size][month + 1]['counts'],
                                          output_dict[size][month + 2]['counts']])
 
-                output_dict[size][month]['concentration'] = np.nanmean(month_stack, keepdims=True, axis=1)
+                output_dict[size][month]['concentration'] = np.nanmean(month_stack, keepdims=True, axis=0)
                 output_dict[size][month]['counts'] = np.sum(output_dict[size][month]['counts'] +
                                                             output_dict[size][month + 1]['counts'] +
                                                             output_dict[size][month + 2]['counts']) / 3
