@@ -20,7 +20,7 @@ class SizeTransport_VerticalProfile:
         self.ax_label_size = 14
         self.legend_size = 11
         self.xmin, self.xmax = 1e-7, 1e0
-        self.ymin, self.ymax = -1e3, -1e0
+        self.ymin, self.ymax = 1e0, 1e3
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
         self.number_of_plots = 4
 
@@ -45,7 +45,7 @@ class SizeTransport_VerticalProfile:
                                                        data_direc=self.data_direc,
                                                        size=size, rho=self.rho, tau=self.tau)
             output_dict[size] = data_dict[utils.analysis_simulation_year_key(self.time_selection)]
-        depth_bins = -1 * data_dict['depth']
+        depth_bins = data_dict['depth']
 
         # Averaging by season
         for size in self.size_list:
@@ -54,11 +54,8 @@ class SizeTransport_VerticalProfile:
                                          output_dict[size][month + 1]['concentration'],
                                          output_dict[size][month + 2]['concentration']])
                 output_dict[size][month]['concentration'] = np.nanmean(month_stack, axis=0)
-                output_dict[size][month]['counts'] = np.sum(output_dict[size][month]['counts'] +
-                                                            output_dict[size][month + 1]['counts'] +
-                                                            output_dict[size][month + 2]['counts']) / 3
 
-        # Normalizing by the counts
+        # Normalizing the profiles
         for size in self.size_list:
             for month in range(0, 12):
                 output_dict[size][month]['concentration'] /= np.sum(output_dict[size][month]['concentration'])
