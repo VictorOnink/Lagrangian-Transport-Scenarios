@@ -34,6 +34,8 @@ class SizeTransport_VerticalProfile:
         self.scenario = scenario
         self.size_list = size_list
         self.time_selection = time_selection
+        self.rho = 920
+        self.tau = 0.0
 
     def plot(self):
         # Loading the data
