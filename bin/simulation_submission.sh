@@ -116,12 +116,12 @@ fi
 #    exit
 #  fi
 #fi
-if [ "$SCENARIO" -eq "7" -a "$POST_PROCESS" -eq "0" ]; then
-  if [ ${#LAMBDA_OCEAN_FRAG_LIST[1]} -ne 388 ]; then
-    echo 'For lagrangian simulations with KaandorpFragmentationPartial, LAMBDA_OCEAN_FRAG must equal 388'
-    exit
-  fi
-fi
+#if [ "$SCENARIO" -eq "7" -a "$POST_PROCESS" -eq "0" ]; then
+#  if [ ${#LAMBDA_OCEAN_FRAG_LIST[1]} -ne 388 ]; then
+#    echo 'For lagrangian simulations with KaandorpFragmentationPartial, LAMBDA_OCEAN_FRAG must equal 388'
+#    exit
+#  fi
+#fi
 if [ "$SCENARIO" -ne "7" -a  "$POST_PROCESS" -ne "0" ]; then
   echo 'Postprocessing only applies for KaandorpFragmentationPartial, not any other scenario'
   exit
