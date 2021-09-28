@@ -5,6 +5,7 @@ from visualization.SizeTransport.SizeTransport_beach_timeseries import SizeTrans
 import visualization.General as General
 from visualization.SizeTransport.SizeTransport_CumulativeDistance import SizeTransport_CumulativeDistance
 from visualization.SizeTransport.SizeTransport_SeparationDistance import SizeTransport_SeparationDistance
+from visualization.SizeTransport.SizeTransport_VerticalProfile import SizeTransport_VerticalProfile
 import os
 import numpy as np
 
@@ -37,17 +38,11 @@ def run(scenario, figure_direc: str):
 
     # Creating figures showing the relative distribution, averaged over the entire simulation and time-snapshots at the
     # end of each simulation year
-    time_select = 0
-    SizeTransport_relative_concentrations(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                          beach_state='adrift', time_selection=time_select).plot()
-    SizeTransport_relative_concentrations(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                          beach_state='beach', time_selection=time_select).plot()
-    time_select = 1
-    SizeTransport_relative_concentrations(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                          beach_state='adrift', time_selection=time_select).plot()
-    SizeTransport_relative_concentrations(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                          beach_state='beach', time_selection=time_select).plot()
-
+    # time_select = 0
+    # SizeTransport_relative_concentrations(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                       beach_state='adrift', time_selection=time_select).plot()
+    # SizeTransport_relative_concentrations(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                       beach_state='beach', time_selection=time_select).plot()
 
     size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
     # Creating figures of the timeseries of the number of particles that are beached/adrift/seabed
@@ -56,6 +51,10 @@ def run(scenario, figure_direc: str):
 
     # Cumulative plots for the total distance travelled vertically and horizontally, and the max depth reached
     # SizeTransport_CumulativeDistance(figure_direc=figure_direc, scenario=scenario, size_list=size_list).plot()
+
+    # Plotting the month average vertical profile
+    SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+                                  time_selection=0).plot()
 
     # Plotting the separation distance
     # for size_selection in size_list:
