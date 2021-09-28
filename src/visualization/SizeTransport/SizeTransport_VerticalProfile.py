@@ -91,8 +91,12 @@ class SizeTransport_VerticalProfile:
         for ind_month, month in enumerate(np.arange(0, 12, 3)):
             for index_size, size in enumerate(self.size_list):
                 c = cmap_list[index_size]
-                ax[ind_month].plot(output_dict[size][month]['concentration'], depth_bins, linestyle='-', c=c)
-                print(output_dict[size][month]['concentration'])
+                if np.sum(~np.isnan(output_dict[size][month]['concentration'])) < 2:
+                    linestyle, markerstyle = None, 'o'
+                else:
+                    linestyle, markerstyle = '-', None
+                ax[ind_month].plot(output_dict[size][month]['concentration'], depth_bins, linestyle=linestyle, c=c,
+                                   marker=markerstyle)
 
         file_name = self.output_direc + 'SizeTransport_vertical_profile_year={}.png'.format(self.time_selection)
         plt.savefig(file_name, bbox_inches='tight')
