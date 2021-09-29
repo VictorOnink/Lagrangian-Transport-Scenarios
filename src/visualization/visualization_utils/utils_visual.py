@@ -93,7 +93,7 @@ def discrete_color_from_cmap(index, subdivisions, cmap='viridis_r'):
 def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabel_size,
                 shape=(1, 1), plot_num=1, all_x_labels=False, legend_axis=False, log_yscale=False, log_xscale=False,
                 x_time_axis=False, width_ratios=None, height_ratios=None, all_y_labels=True, add_twinx=False,
-                twinx_ax_range=None, twinx_y_label=None, twin_x_all_columns=False):
+                twinx_ax_range=None, twinx_y_label=None, twin_x_all_columns=False, log_twinxscale=False):
     """
     Function creating the base figure that we use as a foundation for almost all figures
     :param twin_x_all_columns:
@@ -137,6 +137,11 @@ def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabe
     if add_twinx:
         assert twinx_ax_range is not None, 'Please specify axis range for twin axis'
         xmax_twin, xmin_twin, ymax_twin, ymin_twin = twinx_ax_range
+        if log_twinxscale:
+            if xmax_twin < 0 or xmin_twin < 0:
+                twinxlog_type = 'symlog'
+            else:
+                twinxlog_type = 'log'
     # Creating the figure
     fig = plt.figure(figsize=fig_size)
     if legend_axis:
@@ -175,6 +180,7 @@ def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabe
                     twin_ax_sub = ax_sub.twinx()
                     twin_ax_sub.set_ylim((ymin_twin, ymax_twin))
                     twin_ax_sub.set_xlim((xmin_twin, xmax_twin))
+                twin_ax_sub.set_yscale(twinxlog_type)
             # Labeling the x and y axes
             # Only add y labels if we are in the first column
             if column == 0:
