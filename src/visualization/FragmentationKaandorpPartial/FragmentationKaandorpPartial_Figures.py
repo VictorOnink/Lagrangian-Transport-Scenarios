@@ -16,8 +16,8 @@ def run(scenario, figure_direc: str):
     # Standardizing field data
     # Analysis.FragmentationKaandorpPartial_fielddata(to_overwrite=False)
 
-    Animation.FragmentationKaandorpPartial_Animation(scenario=scenario, figure_direc=figure_direc, shore_time=20,
-                                                     rho=rho, simulation_years=2, ocean_frag=False).animate()
+    # Animation.FragmentationKaandorpPartial_Animation(scenario=scenario, figure_direc=figure_direc, shore_time=20,
+    #                                                  rho=rho, simulation_years=2, ocean_frag=False).animate()
 
     # timeseries.FragmentationKaandorpPartial_timeseries(scenario=scenario, figure_direc=figure_direc,
     #                                                    shore_time=shore_time, lambda_frag=300, rho=rho,
@@ -33,9 +33,9 @@ def run(scenario, figure_direc: str):
     #                                                    simulation_length=1, weight='particle_number').plot()
 
     # lambda_frag_list = np.array([388, 1000, 10000, 38000])
-    # FieldDataComp.FragmentationKaandorpPartial_FieldDataComp(figure_direc=figure_direc, scenario=scenario,
-    #                                                          shore_time=shore_time, lambda_frag_list=lambda_frag_list,
-    #                                                          rho=rho).plot()
+    FieldDataComp.FragmentationKaandorpPartial_FieldDataComp(figure_direc=figure_direc, scenario=scenario,
+                                                             shore_time=shore_time, lambda_frag_list=lambda_frag_list,
+                                                             rho=rho).plot()
 
     # vertical_profile.FragmentationKaandorpPartial_vertical_profile(figure_direc=figure_direc, scenario=scenario,
     #                                                                shore_time=shore_time, lambda_frag=38000, rho=rho,

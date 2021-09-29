@@ -41,15 +41,15 @@ class FragmentationKaandorpPartial_FieldDataComp:
         size_classes = utils.size_range(size_class_number=self.class_num, units='mm')
 
         # Loading the data
-        data_dict = {}
-        for lambda_frag in self.lambda_frag_list:
-            data_dict[lambda_frag] = vUtils.FragmentationKaandorpPartial_load_data(scenario=self.scenario,
-                                                                                   prefix=self.refix,
-                                                                                   data_direc=self.data_direc,
-                                                                                   shore_time=self.shore_time,
-                                                                                   lambda_frag=lambda_frag,
-                                                                                   rho=self.rho, postprocess=True)
-        time_index = data_dict[lambda_frag]['final_index']
+        # data_dict = {}
+        # for lambda_frag in self.lambda_frag_list:
+        #     data_dict[lambda_frag] = vUtils.FragmentationKaandorpPartial_load_data(scenario=self.scenario,
+        #                                                                            prefix=self.refix,
+        #                                                                            data_direc=self.data_direc,
+        #                                                                            shore_time=self.shore_time,
+        #                                                                            lambda_frag=lambda_frag,
+        #                                                                            rho=self.rho, postprocess=True)
+        # time_index = data_dict[lambda_frag]['final_index']
         field_dict = utils.load_obj(vUtils.FragmentationKaandorpPartial_fielddata_filename())
 
         # Creating the figure
@@ -64,12 +64,12 @@ class FragmentationKaandorpPartial_FieldDataComp:
                                    fontsize=self.ax_label_size)
 
         # Plotting the model distributions
-        for ax_index, sub_ax in enumerate(ax):
-            for lambda_index, lambda_frag in enumerate(self.lambda_frag_list):
-                norm_factor = data_dict[lambda_frag][self.beach_state_list[ax_index]][time_index][0]
-                c = vUtils.discrete_color_from_cmap(index=lambda_index, subdivisions=self.lambda_frag_list.__len__())
-                sub_ax.plot(size_classes, data_dict[lambda_frag][self.beach_state_list[ax_index]][time_index] / norm_factor,
-                            linestyle='-', color=c, label=label(lambda_frag))
+        # for ax_index, sub_ax in enumerate(ax):
+        #     for lambda_index, lambda_frag in enumerate(self.lambda_frag_list):
+        #         norm_factor = data_dict[lambda_frag][self.beach_state_list[ax_index]][time_index][0]
+        #         c = vUtils.discrete_color_from_cmap(index=lambda_index, subdivisions=self.lambda_frag_list.__len__())
+        #         sub_ax.plot(size_classes, data_dict[lambda_frag][self.beach_state_list[ax_index]][time_index] / norm_factor,
+        #                     linestyle='-', color=c, label=label(lambda_frag))
         # Field data - open ocean
         norm_factor = field_dict['Cozar']['pdf_counts'][14]
         ax[0].plot(field_dict['Cozar']['bin_midpoint'], field_dict['Cozar']['pdf_counts'] / norm_factor,
@@ -81,7 +81,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
                    marker=self.field_marker, linestyle=self.field_line, color='tab:red',
                    label=r'Ruiz-Orej$\`o$n et al. (2018)')
 
-        # Field data - beach
+        # Field data - beach, microplastic counts
         norm_factor = field_dict['Fok']['pdf_counts'][5]
         ax[2].plot(field_dict['Fok']['bin_midpoint'], field_dict['Fok']['pdf_counts'] / norm_factor,
                    marker=self.field_marker, linestyle=self.field_marker, color='tab:red', label='Fok et al. (2017)')
@@ -93,6 +93,10 @@ class FragmentationKaandorpPartial_FieldDataComp:
         ax[2].plot(field_dict['Constant2']['bin_midpoint'], field_dict['Constant2']['pdf_counts'] / norm_factor,
                    marker=self.field_marker, linestyle=self.field_line, color='tab:orange',
                    label='Constant et al. (2019), site 2')
+        # Field data - beach, microplastic mass
+        norm_factor = field_dict['Fok']['pdf_mass'][5]
+        ax[5].plot(field_dict['Fok']['bin_midpoint'], field_dict['Fok']['pdf_mass'] / norm_factor,
+                   marker=self.field_marker, linestyle=self.field_marker, color='tab:red', label='Fok et al. (2017)')
 
         # Adding legends
         for sub_ax in ax:
