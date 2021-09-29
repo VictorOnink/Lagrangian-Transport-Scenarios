@@ -180,7 +180,8 @@ def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabe
                     twin_ax_sub = ax_sub.twinx()
                     twin_ax_sub.set_ylim((ymin_twin, ymax_twin))
                     twin_ax_sub.set_xlim((xmin_twin, xmax_twin))
-                twin_ax_sub.set_yscale(twinxlog_type)
+                if log_twinxscale:
+                    twin_ax_sub.set_yscale(twinxlog_type)
             # Labeling the x and y axes
             # Only add y labels if we are in the first column
             if column == 0:
