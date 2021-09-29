@@ -32,7 +32,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
         self.xmin, self.xmax = 1e-1, 2e2
         self.ymin, self.ymax = 1e-4, 2e5
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
-        self.number_of_plots = self.fig_shape[0] * self.fig_size[1]
+        self.number_of_plots = self.fig_shape[0] * self.fig_shape[1]
         self.field_marker = 'x'
         self.field_line = '--'
 
@@ -60,7 +60,6 @@ class FragmentationKaandorpPartial_FieldDataComp:
 
         # Labelling the subfigures
         for index_ax in range(self.number_of_plots):
-            print(self.number_of_plots)
             ax[index_ax].set_title(subfigure_title(index_ax, self.beach_state_list[index_ax % self.beach_state_list.__len__()]),
                                    fontsize=self.ax_label_size)
 
