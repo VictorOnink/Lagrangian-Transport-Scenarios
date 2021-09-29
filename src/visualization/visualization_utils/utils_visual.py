@@ -92,9 +92,14 @@ def discrete_color_from_cmap(index, subdivisions, cmap='viridis_r'):
 
 def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabel_size,
                 shape=(1, 1), plot_num=1, all_x_labels=False, legend_axis=False, log_yscale=False, log_xscale=False,
-                x_time_axis=False, width_ratios=None, height_ratios=None, all_y_labels=True):
+                x_time_axis=False, width_ratios=None, height_ratios=None, all_y_labels=True, add_twinx=False,
+                twinx_ax_range=None, twinx_y_label=None, twin_x_all_columns=False):
     """
     Function creating the base figure that we use as a foundation for almost all figures
+    :param twin_x_all_columns:
+    :param twiny_x_label:
+    :param twiny_ax_range:
+    :param add_twinx:
     :param log_yscale: if True, the y axis has a log scale
     :param log_xscale: if True, the x axis has a log scale
     :param x_time_axis: if True, the x axis is a time axis
@@ -128,6 +133,10 @@ def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabe
             ylog_type = 'symlog'
         else:
             ylog_type = 'log'
+    # Checking if we have the necessary settings for twin_x
+    if add_twinx:
+        assert twinx_ax_range is not None, 'Please specify axis range for twin axis'
+        xmax_twin, xmin_twin, ymax_twin, ymin_twin = twinx_ax_range
     # Creating the figure
     fig = plt.figure(figsize=fig_size)
     if legend_axis:
@@ -156,13 +165,27 @@ def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabe
                 ax_sub.xaxis.set_major_locator(years)
                 ax_sub.xaxis.set_minor_locator(months)
                 ax_sub.xaxis.set_major_formatter(yearsFmt)
+            # Creating the twinx axis
+            if add_twinx:
+                if not twin_x_all_columns and column == (shape[1] - 1):
+                    twin_ax_sub = ax_sub.twinx()
+                    twin_ax_sub.set_ylim((ymin_twin, ymax_twin))
+                    twin_ax_sub.set_xlim((xmin_twin, xmax_twin))
+                else:
+                    twin_ax_sub = ax_sub.twinx()
+                    twin_ax_sub.set_ylim((ymin_twin, ymax_twin))
+                    twin_ax_sub.set_xlim((xmin_twin, xmax_twin))
             # Labeling the x and y axes
             # Only add y labels if we are in the first column
             if column == 0:
                 if all_y_labels or row == shape[0] // 2:
                     ax_sub.set_ylabel(y_label, fontsize=ax_label_size)
+            if column == (shape[1] - 1) and add_twinx:
+                twin_ax_sub.set_ylabel(twinx_y_label, fontsize=ax_label_size)
             else:
                 ax_sub.tick_params(labelleft=False)
+                if add_twinx:
+                    twin_ax_sub.tick_params(labelleft=False)
             # Only add x labels if we are in the bottom row, and only to the middle one unless all_x_labels == True
             if row == (shape[0] - 1):
                 if not all_x_labels and column % 2 is 1:

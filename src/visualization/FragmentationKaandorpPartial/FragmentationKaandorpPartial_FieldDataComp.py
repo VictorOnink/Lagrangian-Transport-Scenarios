@@ -26,6 +26,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
         self.fig_shape = (self.beach_state_list.__len__(), 2)
         self.x_label = 'Size (mm)'
         self.y_label = r'Normalized Particle Number (n mm$^{-1}$)'
+        self.twiny_label = r'Normalized Particle Mass (g mm$^{-1}$)'
         self.ax_ticklabel_size = 12
         self.ax_label_size = 14
         self.legend_size = 12
@@ -56,11 +57,11 @@ class FragmentationKaandorpPartial_FieldDataComp:
         ax = vUtils.base_figure(fig_size=self.fig_size, ax_range=self.ax_range, x_label=self.x_label,
                                 y_label=self.y_label, ax_ticklabel_size=self.ax_ticklabel_size,
                                 ax_label_size=self.ax_label_size, shape=self.fig_shape, plot_num=self.number_of_plots,
-                                log_yscale=True, log_xscale=True, all_x_labels=True, all_y_labels=False)
+                                log_yscale=True, log_xscale=True, all_x_labels=True, all_y_labels=False,
+                                add_twinx=True, twinx_y_label=self.twiny_label, twinx_ax_range=self.ax_range)
 
         # Labelling the subfigures
         for index_ax in range(self.number_of_plots):
-
             ax[index_ax].set_title(subfigure_title(index_ax, self.beach_state_list[index_ax // 2]),
                                    fontsize=self.ax_label_size)
 
