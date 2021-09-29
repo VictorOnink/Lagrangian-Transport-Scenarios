@@ -60,7 +60,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
 
         # Labelling the subfigures
         for index_ax in range(self.number_of_plots):
-            print(self.beach_state_list[index_ax % self.beach_state_list.__len__()])
+            print(self.number_of_plots)
             ax[index_ax].set_title(subfigure_title(index_ax, self.beach_state_list[index_ax % self.beach_state_list.__len__()]),
                                    fontsize=self.ax_label_size)
 
