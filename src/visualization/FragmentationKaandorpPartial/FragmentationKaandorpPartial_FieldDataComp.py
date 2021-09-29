@@ -32,7 +32,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
         self.xmin, self.xmax = 1e-1, 2e2
         self.ymin, self.ymax = 1e-4, 2e5
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
-        self.number_of_plots = self.beach_state_list.__len__()
+        self.number_of_plots = self.fig_shape[0] * self.fig_size[1]
         self.field_marker = 'x'
         self.field_line = '--'
 
