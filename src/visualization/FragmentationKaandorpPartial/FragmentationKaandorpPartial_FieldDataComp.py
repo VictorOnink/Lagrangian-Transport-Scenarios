@@ -60,7 +60,8 @@ class FragmentationKaandorpPartial_FieldDataComp:
 
         # Labelling the subfigures
         for index_ax in range(self.number_of_plots):
-            ax[index_ax].set_title(subfigure_title(index_ax, self.beach_state_list[index_ax % self.beach_state_list.__len__()]),
+
+            ax[index_ax].set_title(subfigure_title(index_ax, self.beach_state_list[index_ax // 2]),
                                    fontsize=self.ax_label_size)
 
         # Plotting the model distributions
@@ -77,20 +78,20 @@ class FragmentationKaandorpPartial_FieldDataComp:
 
         # Field data - coastal waters
         norm_factor = field_dict['RuizOrejon']['pdf_counts'][6]
-        ax[1].plot(field_dict['RuizOrejon']['bin_midpoint'], field_dict['RuizOrejon']['pdf_counts'] / norm_factor,
+        ax[2].plot(field_dict['RuizOrejon']['bin_midpoint'], field_dict['RuizOrejon']['pdf_counts'] / norm_factor,
                    marker=self.field_marker, linestyle=self.field_line, color='tab:red',
                    label=r'Ruiz-Orej$\`o$n et al. (2018)')
 
         # Field data - beach, microplastic counts
         norm_factor = field_dict['Fok']['pdf_counts'][5]
-        ax[2].plot(field_dict['Fok']['bin_midpoint'], field_dict['Fok']['pdf_counts'] / norm_factor,
+        ax[4].plot(field_dict['Fok']['bin_midpoint'], field_dict['Fok']['pdf_counts'] / norm_factor,
                    marker=self.field_marker, linestyle=self.field_line, color='tab:red', label='Fok et al. (2017)')
         norm_factor = field_dict['Constant1']['pdf_counts'][-2]
-        ax[2].plot(field_dict['Constant1']['bin_midpoint'], field_dict['Constant1']['pdf_counts'] / norm_factor,
+        ax[4].plot(field_dict['Constant1']['bin_midpoint'], field_dict['Constant1']['pdf_counts'] / norm_factor,
                    marker=self.field_marker, linestyle=self.field_line, color='tab:blue',
                    label='Constant et al. (2019), site 1')
         norm_factor = field_dict['Constant2']['pdf_counts'][-2]
-        ax[2].plot(field_dict['Constant2']['bin_midpoint'], field_dict['Constant2']['pdf_counts'] / norm_factor,
+        ax[4].plot(field_dict['Constant2']['bin_midpoint'], field_dict['Constant2']['pdf_counts'] / norm_factor,
                    marker=self.field_marker, linestyle=self.field_line, color='tab:orange',
                    label='Constant et al. (2019), site 2')
         # Field data - beach, microplastic mass
