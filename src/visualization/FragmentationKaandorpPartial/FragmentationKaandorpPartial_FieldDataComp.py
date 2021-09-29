@@ -58,7 +58,8 @@ class FragmentationKaandorpPartial_FieldDataComp:
                                 y_label=self.y_label, ax_ticklabel_size=self.ax_ticklabel_size,
                                 ax_label_size=self.ax_label_size, shape=self.fig_shape, plot_num=self.number_of_plots,
                                 log_yscale=True, log_xscale=True, all_x_labels=True, all_y_labels=False,
-                                add_twinx=True, twinx_y_label=self.twiny_label, twinx_ax_range=self.ax_range)
+                                add_twinx=True, twinx_y_label=self.twiny_label, twinx_ax_range=self.ax_range,
+                                log_twinxscale=True)
 
         # Labelling the subfigures
         for index_ax in range(self.number_of_plots):
