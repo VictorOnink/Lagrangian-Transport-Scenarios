@@ -47,7 +47,7 @@ export OCEAN_FRAG
 POST_PROCESS=1
 export POST_PROCESS
 #the starting year of the simulation, and how many years the simulation will take
-STARTYEAR=2010
+STARTYEAR=2011
 STARTMONTH_list=(1 2 3 4 5 6 7 8 9 10 11 12)
 STARTDAY=1
 export STARTYEAR
@@ -60,7 +60,7 @@ export INPUT
 ADVECTION_DATA=2
 export ADVECTION_DATA
 #Start year of the simulation. 0 = new simulation, otherwise it picks up from a previous simulation
-START=0
+START=1
 #Number of years the simulation runs
 SIMLEN=2
 export SIMLEN
