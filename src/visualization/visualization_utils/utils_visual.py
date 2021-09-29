@@ -189,8 +189,6 @@ def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabe
                     ax_sub.set_ylabel(y_label, fontsize=ax_label_size)
             else:
                 ax_sub.tick_params(labelleft=False)
-                if add_twinx:
-                    twin_ax_sub.tick_params(labelleft=False)
             if column == shape[1] - 1 and add_twinx:
                 twin_ax_sub.set_ylabel(twinx_y_label, fontsize=ax_label_size)
             # Only add x labels if we are in the bottom row, and only to the middle one unless all_x_labels == True
