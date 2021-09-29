@@ -23,7 +23,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
         self.class_num = settings.SIZE_CLASS_NUMBER
         # Figure parameters
         self.fig_size = (10, 14)
-        self.fig_shape = (self.beach_state_list.__len__(), 1)
+        self.fig_shape = (self.beach_state_list.__len__(), 2)
         self.x_label = 'Size (mm)'
         self.y_label = r'Normalized Particle Number (n mm$^{-1}$)'
         self.ax_ticklabel_size = 12
