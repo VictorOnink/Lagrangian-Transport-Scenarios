@@ -167,7 +167,7 @@ def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabe
                 ax_sub.xaxis.set_major_formatter(yearsFmt)
             # Creating the twinx axis
             if add_twinx:
-                if not twin_x_all_columns and column == (shape[1] - 1):
+                if not twin_x_all_columns and column == shape[1] - 1:
                     twin_ax_sub = ax_sub.twinx()
                     twin_ax_sub.set_ylim((ymin_twin, ymax_twin))
                     twin_ax_sub.set_xlim((xmin_twin, xmax_twin))
@@ -180,7 +180,7 @@ def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabe
             if column == 0:
                 if all_y_labels or row == shape[0] // 2:
                     ax_sub.set_ylabel(y_label, fontsize=ax_label_size)
-            if column == (shape[1] - 1) and add_twinx:
+            if column == shape[1] - 1 and add_twinx:
                 twin_ax_sub.set_ylabel(twinx_y_label, fontsize=ax_label_size)
             else:
                 ax_sub.tick_params(labelleft=False)
