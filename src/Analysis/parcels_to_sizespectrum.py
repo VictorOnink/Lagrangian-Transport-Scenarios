@@ -76,7 +76,7 @@ class parcels_to_sizespectrum:
                                         for index_time in range(0, self.time_list.__len__(), self.time_analysis_step):
                                             self.output_dict[reservoir][weight][index_time] += dataset_post[reservoir][weight][index_time]
             # Adding the index of the final timestep for ease later on
-            self.output_dict['final_index'] = index_time
+            self.output_dict['final_index'] = dataset_post['final_index']
             # Saving everything
             output_name = get_file_names(file_dict=self.file_dict, directory=self.temp_direc, final=True)
             utils.save_obj(output_name, self.output_dict)
