@@ -69,7 +69,7 @@ class parcels_to_sizespectrum:
                         for restart in range(0, settings.SIM_LENGTH - ind_year):
                             file_name = get_file_names(file_dict=self.file_dict, directory=self.temp_direc, final=False,
                                                        year=year, month=month, run=run, restart=restart)
-                            if utils.check_file_exist(file_name, without_pkl=True):
+                            if utils.check_file_exist(file_name):
                                 dataset_post = utils.load_obj(filename=file_name)
                                 for reservoir in self.reservoirs:
                                     for weight in self.weight_list:
