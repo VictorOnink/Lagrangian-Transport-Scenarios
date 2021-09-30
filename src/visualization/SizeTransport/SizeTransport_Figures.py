@@ -46,8 +46,8 @@ def run(scenario, figure_direc: str):
 
     size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
     # Creating figures of the timeseries of the number of particles that are beached/adrift/seabed
-    SizeTransport_beach_timeseries(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                   simulation_years=3).plot()
+    # SizeTransport_beach_timeseries(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                simulation_years=3).plot()
 
     # Cumulative plots for the total distance travelled vertically and horizontally, and the max depth reached
     # SizeTransport_CumulativeDistance(figure_direc=figure_direc, scenario=scenario, size_list=size_list).plot()
@@ -57,8 +57,8 @@ def run(scenario, figure_direc: str):
     #                               time_selection=0).plot()
     # SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
     #                               time_selection=1).plot()
-    # SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-    #                               time_selection=2).plot()
+    SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+                                  time_selection=2).plot()
 
     # Plotting the separation distance
     # for size_selection in size_list:
