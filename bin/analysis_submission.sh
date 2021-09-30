@@ -187,7 +187,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
                   export RESTARTNUM
                   # specifying the parts of the submission file
                   part1="#!/bin/sh"
-                  part2="#SBATCH --mail-type=begin,end,fail"
+                  part2="#SBATCH --mail-type=fail"
                   part3="#SBATCH --mail-user=victor.onink@climate.unibe.ch"
                   part4="#SBATCH --job-name="${RUNNAMEPREFIX}
                   part5="#SBATCH --output="runOutput/${RUNNAMEPREFIX}".o%j"
