@@ -165,7 +165,7 @@ def create_output_dict(scenario_name, depth_bins, concentration_list, counts_lis
             base_dict[concentration] = np.zeros(depth_bins.__len__() - 1, dtype=np.float32)
     else:
         base_dict = {'counts': 0.0, 'concentration': np.zeros(depth_bins.__len__() - 1, dtype=np.float32)}
-    for simulation_year in range(settings.SIM_LENGTH):
+    for simulation_year in range(settings.SIM_LENGTH + 1):
         key_year = utils.analysis_simulation_year_key(simulation_year)
         output_dict[key_year] = {}
         for month in range(0, 12):
