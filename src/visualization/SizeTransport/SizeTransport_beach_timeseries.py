@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 
 class SizeTransport_beach_timeseries:
     def __init__(self, scenario, figure_direc, size_list, simulation_years, rho=920, without_seabed=True):
-        utils.print_statement('Creating the SizeTransport timeseries figure')
+        utils.print_statement('Creating the SizeTransport timeseries figure', to_print=True)
         # Simulation parameters
         self.scenario = scenario
         self.rho = rho
