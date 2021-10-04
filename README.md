@@ -1,4 +1,4 @@
-# Next-Stage-Plastic-Beaching
+# Lagrangian Transport Scenarios
 Building on the model setup for [Onink et al. (2021)](https://doi.org/10.1088/1748-9326/abecbd),
 this respository contains an updated model setup for running, analyzing and visualizing 
 Lagrangian particle simulations. 
