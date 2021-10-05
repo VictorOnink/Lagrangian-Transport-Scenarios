@@ -57,6 +57,8 @@ class FragmentationKaandorpPartial_FieldDataComp:
                 data_dict[lambda_frag][beach_state] = {}
                 data_dict[lambda_frag][beach_state][self.count] = data[beach_state][self.count]
                 data_dict[lambda_frag][beach_state][self.mass] = data[beach_state][self.mass]
+                print(data[beach_state][self.count][data['final_index']])
+                print(data[beach_state][self.mass][data['final_index']])
         time_index = data['final_index']
         field_dict = utils.load_obj(vUtils.FragmentationKaandorpPartial_fielddata_filename())
 
@@ -75,19 +77,19 @@ class FragmentationKaandorpPartial_FieldDataComp:
                                    fontsize=self.ax_label_size)
 
         # Plotting the model distributions
-        for ax_index, sub_ax in enumerate(ax):
-            for lambda_index, lambda_frag in enumerate(self.lambda_frag_list):
-                c = vUtils.discrete_color_from_cmap(index=lambda_index, subdivisions=self.lambda_frag_list.__len__())
-                if ax_index % 2 == 0:
-                    norm_factor = data_dict[lambda_frag][self.beach_state_list[ax_index // 2]][self.count][time_index][0]
-                    sub_ax.plot(size_classes, data_dict[lambda_frag][self.beach_state_list[ax_index // 2]][self.count][time_index] / norm_factor,
-                                linestyle='-', color=c, label=label(lambda_frag))
-                else:
-                    norm_factor = data_dict[lambda_frag][self.beach_state_list[ax_index // 2]][self.mass][time_index][0]
-                    twin_ax[ax_index].plot(size_classes,
-                                           data_dict[lambda_frag][self.beach_state_list[ax_index // 2]][self.mass][time_index] / norm_factor,
-                                           linestyle='-', color=c, label=label(lambda_frag))
-                print(norm_factor)
+        # for ax_index, sub_ax in enumerate(ax):
+        #     for lambda_index, lambda_frag in enumerate(self.lambda_frag_list):
+        #         c = vUtils.discrete_color_from_cmap(index=lambda_index, subdivisions=self.lambda_frag_list.__len__())
+        #         if ax_index % 2 == 0:
+        #             norm_factor = data_dict[lambda_frag][self.beach_state_list[ax_index // 2]][self.count][time_index][0]
+        #             sub_ax.plot(size_classes, data_dict[lambda_frag][self.beach_state_list[ax_index // 2]][self.count][time_index] / norm_factor,
+        #                         linestyle='-', color=c, label=label(lambda_frag))
+        #         else:
+        #             norm_factor = data_dict[lambda_frag][self.beach_state_list[ax_index // 2]][self.mass][time_index][0]
+        #             twin_ax[ax_index].plot(size_classes,
+        #                                    data_dict[lambda_frag][self.beach_state_list[ax_index // 2]][self.mass][time_index] / norm_factor,
+        #                                    linestyle='-', color=c, label=label(lambda_frag))
+        #         print(norm_factor)
 
         # Field data - open ocean
         norm_factor = field_dict['Cozar']['pdf_counts'][14]
