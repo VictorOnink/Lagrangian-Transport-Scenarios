@@ -36,7 +36,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
         self.ax_label_size = 14
         self.legend_size = 12
         self.xmin, self.xmax = 1e-1, 2e2
-        self.ymin, self.ymax = 1e-3, 2e5
+        self.ymin, self.ymax = 1e-3, 1e5
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
         self.twin_ymin, self.twin_ymax = 1e-4, 1e2
         self.twin_ax_range = self.xmax, self.xmin, self.twin_ymax, self.twin_ymin
