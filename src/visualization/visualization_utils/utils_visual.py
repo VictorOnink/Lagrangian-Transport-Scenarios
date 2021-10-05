@@ -164,10 +164,9 @@ def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabe
                 ax_sub.xaxis.set_major_formatter(yearsFmt)
             # Creating the twinx axis
             if add_twinx:
-                twin_ax = add_twin_axis_to_base_figure(ax_sub, row, column, shape, all_y_labels, twinx_ax_range,
-                                                       twinx_y_label, log_twinxscale, ax_label_size, ax_ticklabel_size)
-                if not twin_x_all_columns or column != shape[1] - 1:
-                    twin_ax.tickparams(labelright=False)
+                if twin_x_all_columns or column == shape[1] - 1:
+                    twin_ax = add_twin_axis_to_base_figure(ax_sub, row, column, shape, all_y_labels, twinx_ax_range,
+                                                           twinx_y_label, log_twinxscale, ax_label_size, ax_ticklabel_size)
             # Labeling the x and y axes. Only add y labels if we are in the first column
             if column == 0:
                 if all_y_labels or row == shape[0] // 2:
