@@ -36,6 +36,9 @@ def run(scenario, figure_direc: str):
     FieldDataComp.FragmentationKaandorpPartial_FieldDataComp(figure_direc=figure_direc, scenario=scenario,
                                                              shore_time=shore_time, lambda_frag_list=lambda_frag_list,
                                                              rho=rho, sink=False).plot()
+    FieldDataComp.FragmentationKaandorpPartial_FieldDataComp(figure_direc=figure_direc, scenario=scenario,
+                                                             shore_time=shore_time, lambda_frag_list=lambda_frag_list,
+                                                             rho=rho, sink=True).plot()
 
     # vertical_profile.FragmentationKaandorpPartial_vertical_profile(figure_direc=figure_direc, scenario=scenario,
     #                                                                shore_time=shore_time, lambda_frag=38000, rho=rho,

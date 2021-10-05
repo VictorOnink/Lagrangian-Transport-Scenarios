@@ -21,7 +21,8 @@ class FragmentationKaandorpPartial_FieldDataComp:
         self.lambda_frag_list = lambda_frag_list
         self.rho = rho
         self.class_num = settings.SIZE_CLASS_NUMBER
-        if sink:
+        self.sink = sink
+        if self.sink:
             self.count, self.mass = 'particle_number', 'particle_mass'
         else:
             self.count, self.mass = 'particle_number_sink', 'particle_mass_sink'
@@ -89,7 +90,6 @@ class FragmentationKaandorpPartial_FieldDataComp:
                     twin_ax[ax_index].plot(size_classes,
                                            data_dict[lambda_frag][self.beach_state_list[ax_index // 2]][self.mass][time_index] / norm_factor,
                                            linestyle='-', color=c, label=label(lambda_frag))
-                print(norm_factor)
 
         # Field data - open ocean
         norm_factor = field_dict['Cozar']['pdf_counts'][14]
@@ -124,8 +124,8 @@ class FragmentationKaandorpPartial_FieldDataComp:
             sub_ax.legend(fontsize=self.legend_size, loc='upper right')
 
         # Saving the figure
-        str_format = self.shore_time, self.rho
-        file_name = self.output_direc + 'SizeSpectrumFieldData-ST={}-rho={}.png'.format(*str_format)
+        str_format = self.shore_time, self.rho, self.sink
+        file_name = self.output_direc + 'SizeSpectrumFieldData-ST={}-rho={}-sink={}.png'.format(*str_format)
         plt.savefig(file_name, bbox_inches='tight')
 
 
