@@ -48,7 +48,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
         # Loading the data
         data_dict = {}
         for lambda_frag in self.lambda_frag_list:
-            data = vUtils.FragmentationKaandorpPartial_load_data(scenario=self.scenario, prefix=self.refix,
+            data = vUtils.FragmentationKaandorpPartial_load_data(scenario=self.scenario, prefix=self.prefix,
                                                                  data_direc=self.data_direc, shore_time=self.shore_time,
                                                                  lambda_frag=lambda_frag, rho=self.rho,
                                                                  postprocess=True)
