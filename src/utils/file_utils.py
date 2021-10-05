@@ -110,7 +110,6 @@ def remove_file(File: str, conduct: bool=True):
 def check_file_exist(File: str, without_pkl=False):
     if without_pkl:
         File += '.pkl'
-    utils.print_statement(File, to_print=True)
     return os.path.isfile(File)
 
 
