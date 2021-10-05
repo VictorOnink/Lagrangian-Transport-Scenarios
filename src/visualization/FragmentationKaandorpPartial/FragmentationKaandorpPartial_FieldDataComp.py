@@ -58,8 +58,6 @@ class FragmentationKaandorpPartial_FieldDataComp:
                 data_dict[lambda_frag][beach_state] = {}
                 data_dict[lambda_frag][beach_state][self.count] = data[beach_state][self.count]
                 data_dict[lambda_frag][beach_state][self.mass] = data[beach_state][self.mass]
-                print(data[beach_state][self.count][data['final_index']])
-                print(data[beach_state][self.mass][data['final_index']])
         time_index = data['final_index']
         field_dict = utils.load_obj(vUtils.FragmentationKaandorpPartial_fielddata_filename())
 
@@ -84,23 +82,25 @@ class FragmentationKaandorpPartial_FieldDataComp:
                 if ax_index % 2 == 0:
                     norm_factor = data_dict[lambda_frag][self.beach_state_list[ax_index // 2]][self.count][time_index][0]
                     sub_ax.plot(size_classes, data_dict[lambda_frag][self.beach_state_list[ax_index // 2]][self.count][time_index] / norm_factor,
-                                linestyle='-', color=c, label=label(lambda_frag))
+                                linestyle='-', color=c)
                 else:
                     norm_factor = data_dict[lambda_frag][self.beach_state_list[ax_index // 2]][self.mass][time_index][0]
                     twin_ax[ax_index].plot(size_classes,
                                            data_dict[lambda_frag][self.beach_state_list[ax_index // 2]][self.mass][time_index] / norm_factor,
-                                           linestyle='-', color=c, label=label(lambda_frag))
+                                           linestyle='-', color=c)
 
         # Field data - open ocean
         norm_factor = field_dict['Cozar']['pdf_counts'][14]
         ax[0].plot(field_dict['Cozar']['bin_midpoint'], field_dict['Cozar']['pdf_counts'] / norm_factor,
                    marker=self.field_marker, linestyle=self.field_line, color='tab:red', label='Cozar et al. (2015)')
+        ax[0].legend(fontsize=self.legend_size, loc='upper right')
 
         # Field data - coastal waters
         norm_factor = field_dict['RuizOrejon']['pdf_counts'][6]
         ax[2].plot(field_dict['RuizOrejon']['bin_midpoint'], field_dict['RuizOrejon']['pdf_counts'] / norm_factor,
                    marker=self.field_marker, linestyle=self.field_line, color='tab:red',
                    label=r'Ruiz-Orej$\`o$n et al. (2018)')
+        ax[2].legend(fontsize=self.legend_size, loc='upper right')
 
         # Field data - beach, microplastic counts
         norm_factor = field_dict['Fok']['pdf_counts'][5]
@@ -114,14 +114,18 @@ class FragmentationKaandorpPartial_FieldDataComp:
         ax[4].plot(field_dict['Constant2']['bin_midpoint'], field_dict['Constant2']['pdf_counts'] / norm_factor,
                    marker=self.field_marker, linestyle=self.field_line, color='tab:orange',
                    label='Constant et al. (2019), site 2')
+        ax[4].legend(fontsize=self.legend_size, loc='upper right')
         # Field data - beach, microplastic mass
         norm_factor = field_dict['Fok']['pdf_mass'][5]
         twin_ax[5].plot(field_dict['Fok']['bin_midpoint'], field_dict['Fok']['pdf_mass'] / norm_factor,
                         marker=self.field_marker, linestyle=self.field_line, color='tab:red', label='Fok et al. (2017)')
+        twin_ax[5].legend(fontsize=self.legend_size, loc='upper right')
 
-        # Adding legends
-        for sub_ax in ax:
-            sub_ax.legend(fontsize=self.legend_size, loc='upper right')
+        # Adding a legend for the model line colors in the top right panel
+        for lambda_index, lambda_frag in enumerate(self.lambda_frag_list):
+            c = vUtils.discrete_color_from_cmap(index=lambda_index, subdivisions=self.lambda_frag_list.__len__())
+            twin_ax[1].plot([], [], color=c, label=label(lambda_frag))
+        twin_ax[1].legend(fontsize=self.legend_size, loc='upper right')
 
         # Saving the figure
         str_format = self.shore_time, self.rho, self.sink
