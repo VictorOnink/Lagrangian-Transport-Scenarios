@@ -38,6 +38,8 @@ class FragmentationKaandorpPartial_FieldDataComp:
         self.xmin, self.xmax = 1e-1, 2e2
         self.ymin, self.ymax = 1e-4, 2e5
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
+        self.twin_ymin, self.twin_ymax = 1e-4, 1e1
+        self.twin_ax_range = self.xmax, self.xmin, self.twin_ymax, self.twin_ymin
         self.number_of_plots = self.fig_shape[0] * self.fig_shape[1]
         self.field_marker = 'x'
         self.field_line = '--'
@@ -67,7 +69,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
                                          ax_label_size=self.ax_label_size, shape=self.fig_shape,
                                          plot_num=self.number_of_plots, log_yscale=True, log_xscale=True,
                                          all_x_labels=True, all_y_labels=False, add_twinx=True,
-                                         twinx_y_label=self.twiny_label, twinx_ax_range=self.ax_range,
+                                         twinx_y_label=self.twiny_label, twinx_ax_range=self.twin_ax_range,
                                          log_twinxscale=True)
 
         # Labelling the subfigures
