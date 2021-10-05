@@ -78,11 +78,7 @@ class parcels_to_sizespectrum:
                             else:
                                 utils.print_statement('The file {} does not exist'.format(file_name), to_print=True)
             # Adding the index of the final timestep for ease later on
-            self.output_dict['final_index'] = dataset_post['final_index'] - 60
-            for reservoir in self.reservoirs:
-                for weight in self.weight_list:
-                    for time_index in self.output_dict[reservoir][weight].keys():
-                        print('{} {}'.format(time_index, self.output_dict[reservoir][weight][time_index]))
+            self.output_dict['final_index'] = dataset_post['final_index']
             # Saving everything
             output_name = get_file_names(file_dict=self.file_dict, directory=self.output_direc, final=True)
             utils.print_statement(output_name, to_print=True)
