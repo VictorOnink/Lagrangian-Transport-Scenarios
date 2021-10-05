@@ -134,15 +134,6 @@ def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabe
             ylog_type = 'symlog'
         else:
             ylog_type = 'log'
-    # Checking if we have the necessary settings for twin_x
-    if add_twinx:
-        assert twinx_ax_range is not None, 'Please specify axis range for twin axis'
-        xmax_twin, xmin_twin, ymax_twin, ymin_twin = twinx_ax_range
-        if log_twinxscale:
-            if xmax_twin < 0 or xmin_twin < 0:
-                twinxlog_type = 'symlog'
-            else:
-                twinxlog_type = 'log'
     # Creating the figure
     fig = plt.figure(figsize=fig_size)
     if legend_axis:
@@ -173,8 +164,10 @@ def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabe
                 ax_sub.xaxis.set_major_formatter(yearsFmt)
             # Creating the twinx axis
             if add_twinx:
-                _ = add_twin_axis_to_base_figure(ax_sub, row, column, shape, all_y_labels, twinx_ax_range, twinx_y_label,
-                                                log_twinxscale, ax_label_size, ax_ticklabel_size)
+                twin_ax = add_twin_axis_to_base_figure(ax_sub, row, column, shape, all_y_labels, twinx_ax_range,
+                                                       twinx_y_label, log_twinxscale, ax_label_size, ax_ticklabel_size)
+                if not twin_x_all_columns or column != shape[1] - 1:
+                    twin_ax.tickparams(labelright=False)
             # Labeling the x and y axes. Only add y labels if we are in the first column
             if column == 0:
                 if all_y_labels or row == shape[0] // 2:
