@@ -96,9 +96,10 @@ def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabe
                 twinx_ax_range=None, twinx_y_label=None, twin_x_all_columns=False, log_twinxscale=False):
     """
     Function creating the base figure that we use as a foundation for almost all figures
+    :param log_twinxscale:
+    :param twinx_y_label:
+    :param twinx_ax_range:
     :param twin_x_all_columns:
-    :param twiny_x_label:
-    :param twiny_ax_range:
     :param add_twinx:
     :param log_yscale: if True, the y axis has a log scale
     :param log_xscale: if True, the x axis has a log scale
@@ -189,8 +190,9 @@ def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabe
                     ax_sub.set_ylabel(y_label, fontsize=ax_label_size)
             else:
                 ax_sub.tick_params(labelleft=False)
-            if column == shape[1] - 1 and add_twinx:
-                twin_ax_sub.set_ylabel(twinx_y_label, fontsize=ax_label_size)
+            if add_twinx:
+                if column == shape[1] - 1 and all_y_labels or row == shape[0] // 2:
+                    twin_ax_sub.set_ylabel(twinx_y_label, fontsize=ax_label_size)
             # Only add x labels if we are in the bottom row, and only to the middle one unless all_x_labels == True
             if row == (shape[0] - 1):
                 if not all_x_labels and column % 2 is 1:
