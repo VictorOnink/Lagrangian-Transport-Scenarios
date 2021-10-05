@@ -99,8 +99,8 @@ class FragmentationKaandorpPartial_FieldDataComp:
                    label='Constant et al. (2019), site 2')
         # Field data - beach, microplastic mass
         norm_factor = field_dict['Fok']['pdf_mass'][5]
-        ax[5].plot(field_dict['Fok']['bin_midpoint'], field_dict['Fok']['pdf_mass'] / norm_factor,
-                   marker=self.field_marker, linestyle=self.field_line, color='tab:red', label='Fok et al. (2017)')
+        twin_ax[5].plot(field_dict['Fok']['bin_midpoint'], field_dict['Fok']['pdf_mass'] / norm_factor,
+                        marker=self.field_marker, linestyle=self.field_line, color='tab:red', label='Fok et al. (2017)')
 
         # Adding legends
         for sub_ax in ax:
