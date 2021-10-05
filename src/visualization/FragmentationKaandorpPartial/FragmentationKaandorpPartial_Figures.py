@@ -10,7 +10,7 @@ import Analysis
 
 def run(scenario, figure_direc: str):
     shore_time = 20
-    lambda_frag_list = np.array([388, 1000, 10000, 38000])
+    lambda_frag_list = np.array([300, 388, 1000, 10000, 38000, 50000])
     rho = 920
 
     # Standardizing field data
@@ -35,7 +35,7 @@ def run(scenario, figure_direc: str):
     # lambda_frag_list = np.array([388, 1000, 10000, 38000])
     FieldDataComp.FragmentationKaandorpPartial_FieldDataComp(figure_direc=figure_direc, scenario=scenario,
                                                              shore_time=shore_time, lambda_frag_list=lambda_frag_list,
-                                                             rho=rho).plot()
+                                                             rho=rho, sink=False).plot()
 
     # vertical_profile.FragmentationKaandorpPartial_vertical_profile(figure_direc=figure_direc, scenario=scenario,
     #                                                                shore_time=shore_time, lambda_frag=38000, rho=rho,

@@ -8,7 +8,7 @@ import numpy as np
 
 
 class FragmentationKaandorpPartial_FieldDataComp:
-    def __init__(self, figure_direc, scenario, shore_time, lambda_frag_list, rho):
+    def __init__(self, figure_direc, scenario, shore_time, lambda_frag_list, rho, sink):
         # Data parameters
         self.output_direc = figure_direc + 'size_distribution/'
         self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'size_distribution/FragmentationKaandorpPartial/'
@@ -21,6 +21,10 @@ class FragmentationKaandorpPartial_FieldDataComp:
         self.lambda_frag_list = lambda_frag_list
         self.rho = rho
         self.class_num = settings.SIZE_CLASS_NUMBER
+        if sink:
+            self.count, self.mass = 'particle_number', 'particle_mass'
+        else:
+            self.count, self.mass = 'particle_number_sink', 'particle_mass_sink'
         # Figure parameters
         self.fig_size = (14, 14)
         self.fig_shape = (self.beach_state_list.__len__(), 2)
@@ -42,15 +46,18 @@ class FragmentationKaandorpPartial_FieldDataComp:
         size_classes = utils.size_range(size_class_number=self.class_num, units='mm')
 
         # Loading the data
-        # data_dict = {}
-        # for lambda_frag in self.lambda_frag_list:
-        #     data_dict[lambda_frag] = vUtils.FragmentationKaandorpPartial_load_data(scenario=self.scenario,
-        #                                                                            prefix=self.refix,
-        #                                                                            data_direc=self.data_direc,
-        #                                                                            shore_time=self.shore_time,
-        #                                                                            lambda_frag=lambda_frag,
-        #                                                                            rho=self.rho, postprocess=True)
-        # time_index = data_dict[lambda_frag]['final_index']
+        data_dict = {}
+        for lambda_frag in self.lambda_frag_list:
+            data = vUtils.FragmentationKaandorpPartial_load_data(scenario=self.scenario, prefix=self.refix,
+                                                                 data_direc=self.data_direc, shore_time=self.shore_time,
+                                                                 lambda_frag=lambda_frag, rho=self.rho,
+                                                                 postprocess=True)
+            data_dict[lambda_frag] = {}
+            for beach_state in self.beach_state_list:
+                data_dict[lambda_frag][beach_state] = {}
+                data_dict[lambda_frag][beach_state][self.count] = data[beach_state][self.count]
+                data_dict[lambda_frag][beach_state][self.mass] = data[beach_state][self.mass]
+        time_index = data_dict[lambda_frag]['final_index']
         field_dict = utils.load_obj(vUtils.FragmentationKaandorpPartial_fielddata_filename())
 
         # Creating the figure
