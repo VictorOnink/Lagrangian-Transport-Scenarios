@@ -224,8 +224,6 @@ def add_twin_axis_to_base_figure(ax, row, column, shape, all_y_labels, twinx_ax_
     if column == shape[1] - 1:
         if all_y_labels or row == shape[0] // 2:
             twin_ax.set_ylabel(twinx_y_label, fontsize=ax_label_size)
-    else:
-        twin_ax.set_tick_params(right=False)
     return twin_ax
 
 
