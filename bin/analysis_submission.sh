@@ -33,7 +33,7 @@ export SEABED_CRIT
 P=4
 DN=25
 SIZE_CLASS_NUMBER=6
-LAMBDA_FRAG_list=(300 388 1000 10000 35000 50000)
+LAMBDA_FRAG_list=(300)  #(300 388 1000 10000 35000 50000)
 OCEAN_FRAG=0
 LAMBDA_OCEAN_FRAG_LIST=(388)
 export P
@@ -213,8 +213,8 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
                   done
 
                   # submitting the job
-#                  jobid=$(sbatch --parsable jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
-#                  echo -n ':'${jobid} >> job_id.txt
+                  jobid=$(sbatch --parsable jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
+                  echo -n ':'${jobid} >> job_id.txt
                   # deleting the submission file
                   rm jobsubmissionFile_${RUN}_${RESTARTNUM}.sh
                 done
@@ -261,8 +261,8 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
 
           # Submitting the job that will join all the various analysis files together
           dependence=$( cat job_id.txt )
-#          sbatch --dependency=afterok${dependence} jobsubmissionFile.sh
-          sbatch jobsubmissionFile.sh
+          sbatch --dependency=afterok${dependence} jobsubmissionFile.sh
+#          sbatch jobsubmissionFile.sh
           rm jobsubmissionFile.sh
           rm job_id.txt
         done

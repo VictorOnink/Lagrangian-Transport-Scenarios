@@ -135,7 +135,7 @@ def get_directories():
 
 def create_time_list():
     reference_time = datetime(2010, 1, 1, 12, 0)
-    current_time, end_time = datetime(2010, 1, 1, 0), datetime(2010 + settings.SIM_LENGTH + 1, 1, 1, 0)
+    current_time, end_time = datetime(2010, 1, 1, 0), datetime(2010 + settings.SIM_LENGTH, 1, 1, 0)
     time_step, time_list = timedelta(hours=12), []
     while current_time < end_time:
         time_list.append((current_time - reference_time).total_seconds())
@@ -208,7 +208,7 @@ def number_per_size_class(size_class_array, particle_number_array, bin_number, s
         for size_class in range(bin_number):
             in_size_class = size_class_array[selection] == size_class
             if np.nansum(in_size_class) > 0:
-                output_array[size_class] += np.nansum(particle_number_array[selection][in_size_class])
+                output_array[size_class] += max(0, np.nansum(particle_number_array[selection][in_size_class]))
             else:
                 output_array[size_class] += 0
     else:
