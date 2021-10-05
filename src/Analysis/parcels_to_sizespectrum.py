@@ -74,6 +74,7 @@ class parcels_to_sizespectrum:
                                 for reservoir in self.reservoirs:
                                     for weight in self.weight_list:
                                         for index_time in range(0, self.time_list.__len__(), self.time_analysis_step):
+                                            print(dataset_post[reservoir][weight][index_time])
                                             self.output_dict[reservoir][weight][index_time] += dataset_post[reservoir][weight][index_time]
                             else:
                                 utils.print_statement('The file {} does not exist'.format(file_name), to_print=True)
