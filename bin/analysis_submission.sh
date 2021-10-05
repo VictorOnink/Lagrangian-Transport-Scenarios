@@ -33,7 +33,7 @@ export SEABED_CRIT
 P=4
 DN=25
 SIZE_CLASS_NUMBER=6
-LAMBDA_FRAG_list=(50000) #(300 388 1000 10000 35000)
+LAMBDA_FRAG_list=(388) #(300 388 1000 10000 35000)
 OCEAN_FRAG=0
 LAMBDA_OCEAN_FRAG_LIST=(388)
 export P
@@ -74,14 +74,14 @@ export SERVER
 
 #A number of switches to indicate which analysis steps we want to run.
 #0 = off, 1 = on
-CONCENTRATION=1
-VERTICAL_CONCENTRATION=1
-TIMESERIES=1
+CONCENTRATION=0
+VERTICAL_CONCENTRATION=0
+TIMESERIES=0
 MAX_DISTANCE=0
-TIMESLICING=0
+TIMESLICING=1
 STATISTICS=0
 SEPARATION=0
-SIZE_SPECTRUM=1
+SIZE_SPECTRUM=0
 
 export CONCENTRATION
 export VERTICAL_CONCENTRATION
@@ -193,7 +193,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
                   part5="#SBATCH --output="runOutput/${RUNNAMEPREFIX}".o%j"
                   part6="#SBATCH --mem-per-cpu=20G"
                   if [ "$DEBUG" -eq "0" ]; then
-                    part7="#SBATCH --time=02:00:00"
+                    part7="#SBATCH --time=06:00:00"
                     part8="#SBATCH --partition=epyc2"
                     part9='#SBATCH --qos=job_epyc2'
                   else
