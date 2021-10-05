@@ -173,24 +173,14 @@ def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabe
                 ax_sub.xaxis.set_major_formatter(yearsFmt)
             # Creating the twinx axis
             if add_twinx:
-                if not twin_x_all_columns and column == shape[1] - 1:
-                    twin_ax_sub = ax_sub.twinx()
-                    twin_ax_sub.set_ylim((ymin_twin, ymax_twin))
-                    twin_ax_sub.set_xlim((xmin_twin, xmax_twin))
-                if log_twinxscale:
-                    twin_ax_sub.set_yscale(twinxlog_type)
-                if column == 0:
-                    twin_ax_sub.set_tick_params(right=False)
-            # Labeling the x and y axes
-            # Only add y labels if we are in the first column
+                _, add_twin_axis_to_base_figure(ax_sub, row, column, shape, all_y_labels, twinx_ax_range, twinx_y_label,
+                                                log_twinxscale, ax_label_size, ax_ticklabel_size)
+            # Labeling the x and y axes. Only add y labels if we are in the first column
             if column == 0:
                 if all_y_labels or row == shape[0] // 2:
                     ax_sub.set_ylabel(y_label, fontsize=ax_label_size)
             else:
                 ax_sub.tick_params(labelleft=False)
-            if add_twinx and column == shape[1] - 1:
-                if all_y_labels or row == shape[0] // 2:
-                    twin_ax_sub.set_ylabel(twinx_y_label, fontsize=ax_label_size)
             # Only add x labels if we are in the bottom row, and only to the middle one unless all_x_labels == True
             if row == (shape[0] - 1):
                 if not all_x_labels and column % 2 is 1:
@@ -212,4 +202,33 @@ def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabe
         ax_legend.set_axis_off()
         ax.append(ax_legend)
     return tuple(ax)
+
+
+def add_twin_axis_to_base_figure(ax, row, column, shape, all_y_labels, twinx_ax_range, twinx_y_label,
+                                 log_twinxscale, ax_label_size, ax_ticklabel_size):
+    # Create the twin axis
+    twin_ax = ax.twinx()
+    # Setting the axis limits
+    assert twinx_ax_range is not None, 'Please specify axis range for twin axis'
+    xmax_twin, xmin_twin, ymax_twin, ymin_twin = twinx_ax_range
+    twin_ax.set_ylim((ymin_twin, ymax_twin))
+    twin_ax.set_xlim((xmin_twin, xmax_twin))
+    # Setting the axis scaling
+    if log_twinxscale:
+        if xmax_twin < 0 or xmin_twin < 0:
+            twinxlog_type = 'symlog'
+        else:
+            twinxlog_type = 'log'
+        twin_ax.set_yscale(twinxlog_type)
+    # Labelling the colums and setting the label size
+    if column == shape[1] - 1:
+        if all_y_labels or row == shape[0] // 2:
+            twin_ax.set_ylabel(twinx_y_label, fontsize=ax_label_size)
+        twin_ax.tick_params(axis='both', labelsize=ax_ticklabel_size)
+    else:
+        twin_ax.set_tick_params(right=False)
+    return twin_ax
+
+
+
 
