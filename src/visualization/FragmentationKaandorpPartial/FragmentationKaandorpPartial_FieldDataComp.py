@@ -87,6 +87,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
                     twin_ax[ax_index].plot(size_classes,
                                            data_dict[lambda_frag][self.beach_state_list[ax_index // 2]][self.mass][time_index] / norm_factor,
                                            linestyle='-', color=c, label=label(lambda_frag))
+                print(norm_factor)
 
         # Field data - open ocean
         norm_factor = field_dict['Cozar']['pdf_counts'][14]
