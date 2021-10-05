@@ -142,7 +142,7 @@ def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabe
     else:
         grid = GridSpec(nrows=shape[0], ncols=shape[1], figure=fig, width_ratios=width_ratios,
                         height_ratios=height_ratios)
-    ax, fig_index = [], 1
+    ax, twin, fig_index = [], [], 1
     for row in range(shape[0]):
         for column in range(shape[1]):
             ax_sub = fig.add_subplot(grid[row, column])
@@ -166,8 +166,12 @@ def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabe
             if add_twinx:
                 if twin_x_all_columns or column == shape[1] - 1:
                     twin_ax = add_twin_axis_to_base_figure(ax_sub, row, column, shape, all_y_labels, twinx_ax_range,
-                                                           twinx_y_label, log_twinxscale, ax_label_size, ax_ticklabel_size)
+                                                           twinx_y_label, log_twinxscale, ax_label_size,
+                                                           ax_ticklabel_size)
                     ax_sub.tick_params(left=False)
+                    twin.append(twin_ax)
+                else:
+                    twin.append(None)
             # Labeling the x and y axes. Only add y labels if we are in the first column
             if column == 0:
                 if all_y_labels or row == shape[0] // 2:
@@ -184,7 +188,7 @@ def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabe
                     ax_sub.tick_params(labelbottom=False)
             else:
                 ax_sub.tick_params(labelbottom=False)
-            # Adding the axis to the list and continuiing to the next plot
+            # Adding the axis to the list and continuing to the next plot
             ax.append(ax_sub)
             fig_index += 1
             if fig_index > plot_num:
@@ -194,7 +198,10 @@ def base_figure(fig_size, ax_range, y_label, x_label, ax_label_size, ax_ticklabe
         ax_legend = fig.add_subplot(grid[:, -1])
         ax_legend.set_axis_off()
         ax.append(ax_legend)
-    return tuple(ax)
+    if add_twinx:
+        return tuple(ax), tuple(twin)
+    else:
+        return tuple(ax)
 
 
 def add_twin_axis_to_base_figure(ax, row, column, shape, all_y_labels, twinx_ax_range, twinx_y_label,
