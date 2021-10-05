@@ -184,12 +184,12 @@ def reservoir_calculation(reservoir, time_sel_dict, beach_label_dict, surface_de
         selection = (time_sel_dict['beach'] == beach_label_dict['adrift']) & (time_sel_dict['distance2coast'] < 10)
     elif reservoir == 'adrift_10km_surf':
         selection = (time_sel_dict['beach'] == beach_label_dict['adrift']) & (time_sel_dict['distance2coast'] < 10) & \
-                    (time_sel_dict['distance2coast'] < surface_depth)
+                    (time_sel_dict['z'] < surface_depth)
     elif reservoir == 'adrift_open':
         selection = (time_sel_dict['beach'] == beach_label_dict['adrift']) & (time_sel_dict['distance2coast'] > 10)
     elif reservoir == 'adrift_open_surf':
         selection = (time_sel_dict['beach'] == beach_label_dict['adrift']) & (time_sel_dict['distance2coast'] > 10) & (
-                    time_sel_dict['distance2coast'] < surface_depth)
+                    time_sel_dict['z'] < surface_depth)
     else:
         ValueError('What do you mean by {}'.format(reservoir))
     return number_per_size_class(time_sel_dict['size_class'], time_sel_dict[weight],
