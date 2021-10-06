@@ -111,6 +111,8 @@ def subfigure_title(index):
     :return:
     """
     particle_size = utils.size_range(size_class_number=index, units='mm')
+    print(string.ascii_lowercase[index])
+    print(particle_size)
     title = '({}) r = {:.3f} mm'.format(string.ascii_lowercase[index], particle_size)
     return title
 
