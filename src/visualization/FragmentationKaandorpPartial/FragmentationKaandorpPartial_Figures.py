@@ -5,6 +5,7 @@ import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_t
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_FieldDataComp as FieldDataComp
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_Concentration as concentration
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_vertical_profile as vertical_profile
+import visualization.General.General_input_scenario as input_scenario
 import Analysis
 
 
@@ -15,6 +16,9 @@ def run(scenario, figure_direc: str):
 
     # Standardizing field data
     # Analysis.FragmentationKaandorpPartial_fielddata(to_overwrite=False)
+
+    # Plotting the input scenario
+    input_scenario.General_input_scenario(scenario=scenario, figure_direc=figure_direc)
 
     # Animation.FragmentationKaandorpPartial_Animation(scenario=scenario, figure_direc=figure_direc, shore_time=20,
     #                                                  rho=rho, simulation_years=2, ocean_frag=False).animate()
@@ -43,13 +47,13 @@ def run(scenario, figure_direc: str):
     # vertical_profile.FragmentationKaandorpPartial_vertical_profile(figure_direc=figure_direc, scenario=scenario,
     #                                                                shore_time=shore_time, lambda_frag=38000, rho=rho,
     #                                                                simulation_year=1, weight='particle_number').plot()
-    for beach_state in ['beach']:
-        for year in [0, 1]:
-            concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc,
-                                                                     rho=rho, shore_time=shore_time,
-                                                                     beach_state=beach_state, simulation_year=year,
-                                                                     lambda_frag=388, mass=False).plot()
-            concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc,
-                                                                     rho=rho, shore_time=shore_time,
-                                                                     beach_state=beach_state, simulation_year=year,
-                                                                     lambda_frag=388, mass=True).plot()
+    # for beach_state in ['beach']:
+    #     for year in [0, 1]:
+    #         concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc,
+    #                                                                  rho=rho, shore_time=shore_time,
+    #                                                                  beach_state=beach_state, simulation_year=year,
+    #                                                                  lambda_frag=388, mass=False).plot()
+    #         concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc,
+    #                                                                  rho=rho, shore_time=shore_time,
+    #                                                                  beach_state=beach_state, simulation_year=year,
+    #                                                                  lambda_frag=388, mass=True).plot()

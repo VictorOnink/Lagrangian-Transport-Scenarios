@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as colors
 import cmocean
 import pandas as pd
+import advection_scenarios.create_input_files as create_input_files
+
 
 
 class General_input_scenario:
@@ -14,6 +16,8 @@ class General_input_scenario:
         # Scenario specific variables
         self.scenario = scenario
         self.figure_direc = figure_direc
+        self.input_file_prefix = create_input_files.create_input_files(prefix=self.advection_scenario, repeat_dt=None,
+                                                                       grid=np.ones(1), lon=np.ones(1), lat=np.ones(1))
         # Data variables
         self.output_direc = figure_direc + 'General/'
         utils.check_direc_exist(self.output_direc)
@@ -28,8 +32,12 @@ class General_input_scenario:
 
     def plot(self):
         # Loading the data
-        input_dict = self.file_dict['STARTFILES_filename']
-        input_lon, input_lat = np.load(input_dict['lon']), np.load(input_dict['lat'])
+        input_lon, input_lat = np.array([]), np.array([])
+        for run in range(settings.RUN_RANGE):
+            lon_file_name = self.input_file_prefix + '{}_run={}.npy'.format('lon', run)
+            lat_file_name = self.input_file_prefix + '{}_run={}.npy'.format('lat', run)
+            input_lon = np.append(input_lon, np.load(lon_file_name))
+            input_lat = np.append(input_lat, np.load(lat_file_name))
 
         print_statement = 'We have {} particles in this release situation'.format(len(input_lon))
         utils.print_statement(print_statement, to_print=True)
@@ -52,5 +60,5 @@ class General_input_scenario:
         # Plotting the data
         ax[0].scatter(df['lon'], df['lat'], s=df['count'], zorder=1000, edgecolor='r', facecolor='none')
 
-        file_name = self.output_direc + 'InputScenario.png'
+        file_name = self.output_direc + 'InputScenario_{}_{}.png'.format(settings.ADVECTION_DATA, settings.INPUT)
         plt.savefig(file_name, bbox_inches='tight')

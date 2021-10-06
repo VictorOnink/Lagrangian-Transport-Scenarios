@@ -1,6 +1,4 @@
 import math
-
-import numpy
 from parcels import ParcelsRandom
 import settings
 import scipy.optimize
