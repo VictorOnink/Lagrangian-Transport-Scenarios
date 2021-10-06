@@ -33,9 +33,9 @@ def run(scenario, figure_direc: str):
     #                                                    simulation_length=1, weight='particle_number').plot()
 
     # lambda_frag_list = np.array([388, 1000, 10000, 38000])
-    FieldDataComp.FragmentationKaandorpPartial_FieldDataComp(figure_direc=figure_direc, scenario=scenario,
-                                                             shore_time=shore_time, lambda_frag_list=lambda_frag_list,
-                                                             rho=rho, sink=False).plot()
+    # FieldDataComp.FragmentationKaandorpPartial_FieldDataComp(figure_direc=figure_direc, scenario=scenario,
+    #                                                          shore_time=shore_time, lambda_frag_list=lambda_frag_list,
+    #                                                          rho=rho, sink=False).plot()
     # FieldDataComp.FragmentationKaandorpPartial_FieldDataComp(figure_direc=figure_direc, scenario=scenario,
     #                                                          shore_time=shore_time, lambda_frag_list=lambda_frag_list,
     #                                                          rho=rho, sink=True).plot()
@@ -43,3 +43,11 @@ def run(scenario, figure_direc: str):
     # vertical_profile.FragmentationKaandorpPartial_vertical_profile(figure_direc=figure_direc, scenario=scenario,
     #                                                                shore_time=shore_time, lambda_frag=38000, rho=rho,
     #                                                                simulation_year=1, weight='particle_number').plot()
+
+    concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc, rho=rho,
+                                                             shore_time=shore_time, beach_state='adrift',
+                                                             simulation_year=0, lambda_frag=388, mass=False)
+    concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc, rho=rho,
+                                                             shore_time=shore_time, beach_state='adrift',
+                                                             simulation_year=0, lambda_frag=388, mass=True)
+
