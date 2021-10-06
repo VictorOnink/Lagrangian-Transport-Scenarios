@@ -125,7 +125,7 @@ def set_normalization(beach_state):
     :return:
     """
     if beach_state == 'adrift':
-        vmin, vmax = 1, 1e20
+        vmin, vmax = 1, 1e16
     elif beach_state == 'beach':
         vmin, vmax = 1, 1e5
     return colors.LogNorm(vmin=vmin, vmax=vmax)
