@@ -5,7 +5,7 @@ import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_t
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_FieldDataComp as FieldDataComp
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_Concentration as concentration
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_vertical_profile as vertical_profile
-import visualization.General.General_input_scenario as input_scenario
+from visualization.General.General_input_scenario import General_input_scenario
 import Analysis
 
 
@@ -18,7 +18,7 @@ def run(scenario, figure_direc: str):
     # Analysis.FragmentationKaandorpPartial_fielddata(to_overwrite=False)
 
     # Plotting the input scenario
-    input_scenario.General_input_scenario(scenario=scenario, figure_direc=figure_direc).plot()
+    General_input_scenario(scenario=scenario, figure_direc=figure_direc).plot()
 
     # Animation.FragmentationKaandorpPartial_Animation(scenario=scenario, figure_direc=figure_direc, shore_time=20,
     #                                                  rho=rho, simulation_years=2, ocean_frag=False).animate()
