@@ -19,7 +19,8 @@ class FragmentationKaandorpPartial_Concentration:
         self.beach_state = beach_state
         self.simulation_year = simulation_year
         self.lambda_frag = lambda_frag
-        self.weight = {False: 'particle_number', True: 'particle_mass'}[mass]
+        self.mass = mass
+        self.weight = {False: 'particle_number', True: 'particle_mass'}[self.mass]
         self.sink = sink
         if self.sink:
             self.weight += '_sink'
@@ -77,7 +78,7 @@ class FragmentationKaandorpPartial_Concentration:
                                                            lon_grid_step=10, resolution='10m'))
         # Setting the colormap and creating the colorbar
         norm = set_normalization(self.beach_state)
-        cbar_label, extend = r"Relative {} Concentration ($C/C_{min}$)".format({True: 'Mass', False:'Count'}[self.weight]), 'max'
+        cbar_label, extend = r"Relative {} Concentration ($C/C_{min}$)".format({True: 'Mass', False: 'Count'}[self.mass]), 'max'
         cmap = plt.cm.ScalarMappable(cmap=self.cmap, norm=norm)
         cax = fig.add_subplot(gs[:, -1])
         cbar = plt.colorbar(cmap, cax=cax, orientation='vertical', extend=extend)
