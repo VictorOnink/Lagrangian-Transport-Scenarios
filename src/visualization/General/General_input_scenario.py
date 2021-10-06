@@ -57,6 +57,10 @@ class General_input_scenario:
                                                       resolution='10m'))
 
         # Plotting the data
+        if settings.INPUT == 'LebretonDivision':
+            sizes = df['count']/df['count'].min() * 100
+        elif settings.INPUT == 'Lebreton':
+            df['count'] / df['count'].min() * 10
         ax[0].scatter(df['lon'], df['lat'], s=df['count']/df['count'].min() * 100, zorder=1000, edgecolor='r', facecolor='none')
 
         file_name = self.output_direc + 'InputScenario_{}_{}.png'.format(settings.ADVECTION_DATA, settings.INPUT)
