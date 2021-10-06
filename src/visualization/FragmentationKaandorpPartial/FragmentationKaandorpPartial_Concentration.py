@@ -91,11 +91,12 @@ class FragmentationKaandorpPartial_Concentration:
 
         # The actual plotting of the figures
         for index, ax in enumerate(ax_list):
-            if beach_state in ['adrift']:
-                ax.pcolormesh(Lon, Lat, concentration_dict[index], norm=norm, cmap=cmap_name, zorder=200)
+            if self.beach_state in ['adrift']:
+                ax.pcolormesh(Lon, Lat, concentration_dict[index], norm=norm, cmap=self.cmap, zorder=200)
             else:
-                ax.scatter(Lon.flatten(), Lat.flatten(), c=concentration_dict[index], norm=norm, cmap=cmap_name,
+                ax.scatter(Lon.flatten(), Lat.flatten(), c=concentration_dict[index], norm=norm, cmap=self.cmap,
                            zorder=200)
+
         str_format = self.beach_state, self.simulation_year, self.lambda_frag, self.shore_time, self.rho, self.weight, self.sink
         file_name = self.output_direc + 'Concentrations_{}_year={}_lambda_f={}_st={}_rho={}_mass={}_sink={}.png'.format(*str_format)
         plt.savefig(file_name, bbox_inches='tight')
