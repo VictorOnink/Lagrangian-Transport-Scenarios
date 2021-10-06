@@ -44,7 +44,7 @@ def run(scenario, figure_direc: str):
     #                                                                shore_time=shore_time, lambda_frag=38000, rho=rho,
     #                                                                simulation_year=1, weight='particle_number').plot()
     for beach_state in ['beach']:
-        for year in range(settings.SIM_LENGTH):
+        for year in range(2):
             concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc,
                                                                      rho=rho, shore_time=shore_time,
                                                                      beach_state=beach_state, simulation_year=year,
