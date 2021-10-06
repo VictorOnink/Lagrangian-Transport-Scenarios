@@ -79,7 +79,7 @@ class FragmentationKaandorpPartial_Concentration:
         # Setting the colormap and creating the colorbar
         norm = set_normalization(self.beach_state)
         cbar_label = "Relative {}".format({True: 'Mass', False: 'Count'}[self.mass]) + r" Concentration ($C/C_{min}$)"
-        extend = 'max'
+        extend = 'both'
         cmap = plt.cm.ScalarMappable(cmap=self.cmap, norm=norm)
         cax = fig.add_subplot(gs[:, -1])
         cbar = plt.colorbar(cmap, cax=cax, orientation='vertical', extend=extend)
@@ -125,7 +125,7 @@ def set_normalization(beach_state):
     :return:
     """
     if beach_state == 'adrift':
-        vmin, vmax = 1, 1e16
+        vmin, vmax = 1e6, 1e16
     elif beach_state == 'beach':
         vmin, vmax = 1, 1e5
     return colors.LogNorm(vmin=vmin, vmax=vmax)
