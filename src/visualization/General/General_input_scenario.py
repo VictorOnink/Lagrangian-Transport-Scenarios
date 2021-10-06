@@ -57,7 +57,7 @@ class General_input_scenario:
                                                       resolution='10m'))
 
         # Plotting the data
-        ax[0].scatter(df['lon'], df['lat'], s=df['count'], zorder=1000, edgecolor='r', facecolor='none')
+        ax[0].scatter(df['lon'], df['lat'], s=df['count']/df['count'].min() * 100, zorder=1000, edgecolor='r', facecolor='none')
 
         file_name = self.output_direc + 'InputScenario_{}_{}.png'.format(settings.ADVECTION_DATA, settings.INPUT)
         plt.savefig(file_name, bbox_inches='tight')
