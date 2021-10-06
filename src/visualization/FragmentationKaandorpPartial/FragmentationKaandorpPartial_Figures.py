@@ -53,11 +53,3 @@ def run(scenario, figure_direc: str):
                                                                      rho=rho, shore_time=shore_time,
                                                                      beach_state=beach_state, simulation_year=year,
                                                                      lambda_frag=388, mass=True).plot()
-            concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc,
-                                                                     rho=rho, shore_time=shore_time,
-                                                                     beach_state=beach_state, simulation_year=year,
-                                                                     lambda_frag=388, mass=False).plot()
-            concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc,
-                                                                     rho=rho, shore_time=shore_time,
-                                                                     beach_state=beach_state, simulation_year=year,
-                                                                     lambda_frag=388, mass=True).plot()
