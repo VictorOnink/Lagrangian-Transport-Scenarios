@@ -15,7 +15,7 @@ class General_input_scenario:
         # Scenario specific variables
         self.scenario = scenario
         self.figure_direc = figure_direc
-        self.input_file_prefix = create_input_files.create_input_files(prefix=self.advection_scenario, repeat_dt=None,
+        self.input_file_prefix = create_input_files.create_input_files(prefix=settings.ADVECTION_DATA, repeat_dt=None,
                                                                        grid=np.ones(1), lon=np.ones(1), lat=np.ones(1))
         # Data variables
         self.output_direc = figure_direc + 'General/'
