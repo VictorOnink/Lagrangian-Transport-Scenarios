@@ -100,7 +100,7 @@ class FragmentationKaandorpPartial_Concentration:
                            zorder=200)
 
         str_format = self.beach_state, self.simulation_year, self.lambda_frag, self.shore_time, self.rho, self.weight, self.sink
-        file_name = self.output_direc + 'Concentrations_{}_year={}_lambda_f={}_st={}_rho={}_mass={}_sink={}.png'.format(*str_format)
+        file_name = self.output_direc + 'Concentrations_{}_year={}_lambda_f={}_st={}_rho={}_{}_sink={}.png'.format(*str_format)
         plt.savefig(file_name, bbox_inches='tight')
 
 
