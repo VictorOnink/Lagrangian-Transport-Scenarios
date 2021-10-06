@@ -128,7 +128,7 @@ def set_normalization(beach_state, simulation_year):
         if simulation_year == 0:
             vmin, vmax = 1e6, 1e15
         elif simulation_year == 1:
-            vmin, vmax = 1e15, 1e30
+            vmin, vmax = 1e15, 1e24
     elif beach_state == 'beach':
         vmin, vmax = 1, 1e5
     return colors.LogNorm(vmin=vmin, vmax=vmax)
