@@ -18,7 +18,7 @@ def run(scenario, figure_direc: str):
     # Analysis.FragmentationKaandorpPartial_fielddata(to_overwrite=False)
 
     # Plotting the input scenario
-    input_scenario.General_input_scenario(scenario=scenario, figure_direc=figure_direc)
+    input_scenario.General_input_scenario(scenario=scenario, figure_direc=figure_direc).plot()
 
     # Animation.FragmentationKaandorpPartial_Animation(scenario=scenario, figure_direc=figure_direc, shore_time=20,
     #                                                  rho=rho, simulation_years=2, ocean_frag=False).animate()

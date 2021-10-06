@@ -10,7 +10,6 @@ import pandas as pd
 import advection_scenarios.create_input_files as create_input_files
 
 
-
 class General_input_scenario:
     def __init__(self, scenario, figure_direc):
         # Scenario specific variables
