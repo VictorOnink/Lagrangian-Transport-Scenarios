@@ -66,8 +66,8 @@ class FragmentationKaandorp_box_model:
             self.T_NB_N += N_NB_dt[index_class] * np.diag(np.ones(self.size_classes - index_class), -index_class)
 
     def get_ocean_probabilities(self):
-        probability_data = utils.load_obj(self.input_direc + 'Stokes_analysis_-06373046_1590')
-        stokes_data = utils.load_obj(self.input_direc + 'Stokes_influence_factor.pickle')
+        probability_data = utils.load_obj(self.input_direc + 'Stokes_analysis_-06373046_1590.pkl')
+        stokes_data = utils.load_obj(self.input_direc + 'Stokes_influence_factor.pkl')
 
         # Determining the stokes influence factor for the particle sizes in self.size_array
         SIF = np.interp(self.size_array, np.flip(stokes_data['l']), np.flip(stokes_data[self.p_shape][self.quantile]))
@@ -91,7 +91,7 @@ class FragmentationKaandorp_box_model:
         '''
         resuspension time scale from Hinata et al. (2017)
         '''
-        data_S = utils.load_obj(settings.input_dir + 'Stokes_influence_factor.pickle')
+        data_S = utils.load_obj(settings.input_dir + 'Stokes_influence_factor.pkl')
         # get stokes influence factor for the l_arr
         wb = np.interp(self.size_array, np.flip(data_S['l']), np.flip(data_S['wb_' + self.p_shape]))
         tau_bc = 2.6e2 * wb + 7.1
