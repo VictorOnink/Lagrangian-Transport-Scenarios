@@ -76,10 +76,10 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
         plt.savefig(file_name, bbox_inches='tight')
 
 
-def subfigure_title(index, beach_state):
+def subfigure_title(index):
     alphabet = string.ascii_lowercase
     subtitle_list = ['Counts', 'Mass']
-    return '({}) {}'.format(alphabet[index], subtitle_list[beach_state])
+    return '({}) {}'.format(alphabet[index], subtitle_list[index])
 
 
 
