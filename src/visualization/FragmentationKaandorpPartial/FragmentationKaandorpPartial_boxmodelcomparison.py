@@ -90,7 +90,8 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
                 twin_ax[1].plot(size_classes, box_mass[time]['total'], linestyle='--', c=c)
 
         # Adding a legend
-        ax[-1].legend(ax[0].get_legend_handles_labels(), fontsize=self.legend_size, loc='upper right')
+        handles = ax[0].get_legend_handles_labels()
+        ax[-1].legend(handles, fontsize=self.legend_size, loc='upper right')
 
         # Saving the figure
         str_format = self.shore_time, self.rho, self.lambda_frag
