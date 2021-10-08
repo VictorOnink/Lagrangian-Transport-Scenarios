@@ -59,7 +59,7 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
             data_dict[self.mass][time] = data['adrift'][self.mass][time] + data['beach'][self.mass][time]
 
         # Loading the box model data
-        box_model_data = FragmentationKaandorp_box_model(sim_length=self.sim_length, lambda_f=388).load_box_model()
+        box_model_data = FragmentationKaandorp_box_model(sim_length=self.sim_length, lambda_f=388).load_box_model(rerun=True)
         box_mass, box_number = box_model_data['mass'], box_model_data['number']
         box_time = box_model_data['mass'].keys()
 
