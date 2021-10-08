@@ -55,7 +55,7 @@ class FragmentationKaandorp_box_model:
         '''
         gamma_ratio = (gamma(self.class_array + self.i_f) / (gamma(self.class_array + 1) * gamma(self.i_f)))
         pmf_m = gamma_ratio * (self.p_frag ** self.class_array) * (1 - self.p_frag) ** self.i_f
-        pmf_N = 2 ** (self.d_N * self.class_array) * pmf_m
+        pmf_N = 2 ** (self.DN * self.class_array) * pmf_m
         return pmf_m, pmf_N
 
     def get_fragmentation_probabilities(self):
