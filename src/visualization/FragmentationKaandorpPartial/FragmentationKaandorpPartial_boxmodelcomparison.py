@@ -47,14 +47,17 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
         size_classes = utils.size_range(size_class_number=self.class_num, units='mm')
 
         # Loading the data
-        data_dict = {}
+        data_dict = {self.count: {}, self.mass: {}}
         data = vUtils.FragmentationKaandorpPartial_load_data(scenario=self.scenario, prefix=self.prefix,
                                                              data_direc=self.data_direc, shore_time=self.shore_time,
                                                              lambda_frag=self.lambda_frag, rho=self.rho,
                                                              postprocess=True)
-        data_dict[self.count] = data[self.beach_state_list[0]][self.count] + data[self.beach_state_list[1]][self.count]
-        data_dict[self.mass] = data[self.beach_state_list[0]][self.mass] + data[self.beach_state_list[1]][self.mass]
         time_indices = data[self.mass].keys()
+        for time in time_indices:
+            data_dict[self.count][time] = data[self.beach_state_list[0]][self.count][time] + \
+                                          data[self.beach_state_list[1]][self.count][time]
+            data_dict[self.mass][time] = data[self.beach_state_list[0]][self.mass][time] + \
+                                         data[self.beach_state_list[1]][self.mass][time]
 
         # Creating the figure
         ax, twin_ax = vUtils.base_figure(fig_size=self.fig_size, ax_range=self.ax_range, x_label=self.x_label,
