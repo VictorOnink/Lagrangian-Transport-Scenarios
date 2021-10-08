@@ -35,9 +35,9 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
         self.ax_label_size = 14
         self.legend_size = 12
         self.xmin, self.xmax = 1e-3, 2e2
-        self.ymin, self.ymax = 1e-3, 1e8
+        self.ymin, self.ymax = 1e1, 1e9
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
-        self.twin_ymin, self.twin_ymax = 1e-3, 1e8
+        self.twin_ymin, self.twin_ymax = 1e-2, 1e6
         self.twin_ax_range = self.xmax, self.xmin, self.twin_ymax, self.twin_ymin
         self.number_of_plots = self.fig_shape[0] * self.fig_shape[1]
 
@@ -72,9 +72,16 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
 
         # Plotting the model distributions by number
         for index_time, time in enumerate(time_indices):
-            c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=len(time_indices))
+            c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=len(time_indices), cmap='viridis')
             ax[0].plot(size_classes, data_dict[self.count][time], linestyle='-', c=c)
             ax[1].plot(size_classes, data_dict[self.mass][time], linestyle='-', c=c)
+
+        # Adding a legend
+        legend_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(index=ind,
+                                                                            subdivisions=len(time_indices),
+                                                                            cmap='viridis'),
+                                  linestyle='-', label='Month {}'.format(ind))[0] for ind in range(len(time_indices))]
+        ax[-1].legend(handles=legend_colors, fontsize=self.legend_size, loc='upper right')
 
         # Saving the figure
         str_format = self.shore_time, self.rho, self.lambda_frag
