@@ -74,7 +74,7 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
         for index_time, time in enumerate(time_indices):
             c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=len(time_indices), cmap='viridis')
             ax[0].plot(size_classes, data_dict[self.count][time], linestyle='-', c=c)
-            ax[1].plot(size_classes, data_dict[self.mass][time], linestyle='-', c=c)
+            twin_ax[1].plot(size_classes, data_dict[self.mass][time], linestyle='-', c=c)
 
         # Adding a legend
         legend_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(index=ind,
