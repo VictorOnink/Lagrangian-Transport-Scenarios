@@ -58,8 +58,8 @@ class FragmentationKaandorpPartial_FieldDataComp:
             data_dict[lambda_frag] = {}
             for beach_state in self.beach_state_list:
                 data_dict[lambda_frag][beach_state] = {}
-                data_dict[lambda_frag][beach_state][self.count] = data[beach_state][self.count]
-                data_dict[lambda_frag][beach_state][self.mass] = data[beach_state][self.mass]
+                data_dict[lambda_frag][beach_state][self.count] = data[beach_state][self.count] / size_classes
+                data_dict[lambda_frag][beach_state][self.mass] = data[beach_state][self.mass] / size_classes
         time_index = data['final_index']
         field_dict = utils.load_obj(vUtils.FragmentationKaandorpPartial_fielddata_filename())
 
@@ -85,13 +85,11 @@ class FragmentationKaandorpPartial_FieldDataComp:
                     norm_factor = data_dict[lambda_frag][self.beach_state_list[ax_index // 2]][self.count][time_index][0]
                     sub_ax.plot(size_classes, data_dict[lambda_frag][self.beach_state_list[ax_index // 2]][self.count][time_index] / norm_factor,
                                 linestyle='-', color=c)
-                    print('count lambda={} {}'.format(lambda_frag, data_dict[lambda_frag][self.beach_state_list[ax_index // 2]][self.count][time_index] / norm_factor))
                 else:
                     norm_factor = data_dict[lambda_frag][self.beach_state_list[ax_index // 2]][self.mass][time_index][0]
                     twin_ax[ax_index].plot(size_classes,
                                            data_dict[lambda_frag][self.beach_state_list[ax_index // 2]][self.mass][time_index] / norm_factor,
                                            linestyle='-', color=c)
-                    print('mass lambda={} {}'.format(lambda_frag, data_dict[lambda_frag][self.beach_state_list[ax_index // 2]][self.mass][time_index] / norm_factor))
 
         # Field data - open ocean
         norm_factor = field_dict['Cozar']['pdf_counts'][14]
