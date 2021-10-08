@@ -37,7 +37,7 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
         self.xmin, self.xmax = 1e-3, 2e2
         self.ymin, self.ymax = 1e1, 1e9
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
-        self.twin_ymin, self.twin_ymax = 1e-2, 1e6
+        self.twin_ymin, self.twin_ymax = 1e-3, 1e3
         self.twin_ax_range = self.xmax, self.xmin, self.twin_ymax, self.twin_ymin
         self.number_of_plots = self.fig_shape[0] * self.fig_shape[1]
 
@@ -63,7 +63,7 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
                                          plot_num=self.number_of_plots, log_yscale=True, log_xscale=True,
                                          all_x_labels=True, all_y_labels=True, add_twinx=True,
                                          twinx_y_label=self.twiny_label, twinx_ax_range=self.twin_ax_range,
-                                         log_twinxscale=True, legend_axis=True, width_ratios=[1, 1, 0.2])
+                                         log_twinxscale=True, legend_axis=True, width_ratios=[1, 1, 0.5])
 
         # Labelling the subfigures
         for index_ax in range(self.number_of_plots):
