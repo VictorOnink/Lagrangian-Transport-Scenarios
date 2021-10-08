@@ -184,8 +184,8 @@ class FragmentationKaandorp_box_model:
             for reservoir, indices in zip(['ocean', 'coastal', 'beach'], [self.index_o, self.index_c, self.index_b]):
                 output_dict_mass[time][reservoir] = mass[indices]
                 output_dict_number[time][reservoir] = number[indices]
-            output_dict_mass[time]['total'] = mass
-            output_dict_number[time]['total'] = number
+            output_dict_mass[time]['total'] = mass[self.index_o] + mass[self.index_b] + mass[self.index_c]
+            output_dict_number[time]['total'] = number[self.index_o] + number[self.index_b] + number[self.index_c]
         output_dict_mass['final_index'], output_dict_number['final_index'] = time, time
 
         self.dict_save['mass'] = output_dict_mass
@@ -193,9 +193,9 @@ class FragmentationKaandorp_box_model:
 
         return self.dict_save
 
-    def load_box_model(self):
+    def load_box_model(self, rerun=False):
         file_name = self.get_file_name()
-        if utils.check_file_exist(file_name, without_pkl=True):
+        if utils.check_file_exist(file_name, without_pkl=True) and not rerun:
             return utils.load_obj(file_name)
         else:
             output_dict = self.calculate_transport()

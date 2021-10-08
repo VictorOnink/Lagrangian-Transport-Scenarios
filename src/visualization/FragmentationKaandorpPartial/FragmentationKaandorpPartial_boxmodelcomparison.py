@@ -84,10 +84,9 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
         # Plotting the model distributions from the box model
         for index_time, time in enumerate(box_time):
             if index_time % 4 == 0 and type(time) == int:
-                print(box_number[time]['total'])
-                # c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=len(box_time) // 4, cmap='viridis')
-                # ax[0].plot(size_classes, box_number[time], linestyle='--', c=c)
-                # twin_ax[1].plot(size_classes, box_mass[time], linestyle='--', c=c)
+                c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=len(box_time) // 4, cmap='viridis')
+                ax[0].plot(size_classes, box_number[time]['total'], linestyle='--', c=c)
+                twin_ax[1].plot(size_classes, box_mass[time]['total'], linestyle='--', c=c)
 
         # Adding a legend
         legend_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(index=ind,
