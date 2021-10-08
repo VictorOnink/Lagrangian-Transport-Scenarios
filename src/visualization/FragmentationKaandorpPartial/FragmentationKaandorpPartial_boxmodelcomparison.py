@@ -77,13 +77,14 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
             ax[index_ax].set_title(subfigure_title(index_ax), fontsize=self.ax_label_size)
 
         # Plotting the model distributions from the parcels analysis
-        # for index_time, time in enumerate(time_indices):
-        #     c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=len(time_indices), cmap='viridis')
-        #     ax[0].plot(size_classes, data_dict[self.count][time], linestyle='-', c=c)
-        #     twin_ax[1].plot(size_classes, data_dict[self.mass][time], linestyle='-', c=c)
+        for index_time, time in enumerate(time_indices):
+            if index_time % 4 == 0:
+                c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=len(time_indices), cmap='viridis')
+                ax[0].plot(size_classes, data_dict[self.count][time], linestyle='-', c=c)
+                twin_ax[1].plot(size_classes, data_dict[self.mass][time], linestyle='-', c=c)
         # Plotting the model distributions from the box model
         for index_time, time in enumerate(box_time):
-            if index_time % 4 == 0 and type(time) == int:
+            if index_time % 12 == 0 and type(time) == int:
                 c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=len(box_time), cmap='viridis')
                 ax[0].plot(size_classes, box_number[time]['total'], linestyle='--', c=c)
                 twin_ax[1].plot(size_classes, box_mass[time]['total'], linestyle='--', c=c)
