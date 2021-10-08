@@ -26,7 +26,7 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
         else:
             self.count, self.mass = 'particle_number_sink', 'particle_mass_sink'
         # Figure parameters
-        self.fig_size = (10, 14)
+        self.fig_size = (14, 10)
         self.fig_shape = (1, 2)
         self.x_label = 'Size (mm)'
         self.y_label = r'Particle Number (n)'
