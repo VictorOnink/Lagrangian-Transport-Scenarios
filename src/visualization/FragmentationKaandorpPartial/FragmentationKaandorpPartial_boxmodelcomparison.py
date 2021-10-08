@@ -83,6 +83,9 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
                 ax[0].plot(size_classes, data_dict[self.count][time], linestyle='-', c=c, label='Month {}'.format(index_time))
                 twin_ax[1].plot(size_classes, data_dict[self.mass][time], linestyle='-', c=c)
         handles = ax[0].get_legend_handles_labels()
+        # Adding a legend
+        ax[-1].legend(handles, fontsize=self.legend_size, loc='upper right')
+        print(handles)
         # Plotting the model distributions from the box model
         for index_time, time in enumerate(box_time):
             if index_time % 12 == 0 and type(time) == int:
@@ -90,8 +93,6 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
                 ax[0].plot(size_classes, box_number[time]['total'], linestyle='--', c=c)
                 twin_ax[1].plot(size_classes, box_mass[time]['total'], linestyle='--', c=c)
 
-        # Adding a legend
-        ax[-1].legend(handles, fontsize=self.legend_size, loc='upper right')
 
         # Saving the figure
         str_format = self.shore_time, self.rho, self.lambda_frag
