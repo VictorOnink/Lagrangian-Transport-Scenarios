@@ -70,6 +70,12 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
             ax[index_ax].set_title(subfigure_title(index_ax),
                                    fontsize=self.ax_label_size)
 
+        # Plotting the model distributions by number
+        for index_time, time in enumerate(time_indices):
+            c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=len(time_indices))
+            ax[0].plot(size_classes, data_dict[self.count][time], linestyle='-', c=c)
+            ax[1].plot(size_classes, data_dict[self.mass][time], linestyle='-', c=c)
+
         # Saving the figure
         str_format = self.shore_time, self.rho, self.lambda_frag
         file_name = self.output_direc + 'boxmodel_comparison-ST={}-rho={}-lambda_f={}.png'.format(*str_format)
