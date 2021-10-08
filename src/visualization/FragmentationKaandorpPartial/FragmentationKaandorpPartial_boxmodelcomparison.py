@@ -63,7 +63,7 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
                                          plot_num=self.number_of_plots, log_yscale=True, log_xscale=True,
                                          all_x_labels=True, all_y_labels=True, add_twinx=True,
                                          twinx_y_label=self.twiny_label, twinx_ax_range=self.twin_ax_range,
-                                         log_twinxscale=True)
+                                         log_twinxscale=True, legend_axis=True, width_ratios=[1, 1, 0.2])
 
         # Labelling the subfigures
         for index_ax in range(self.number_of_plots):
