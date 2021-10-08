@@ -59,7 +59,7 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
             data_dict[self.mass][time] = data['adrift'][self.mass][time] + data['beach'][self.mass][time]
 
         # Loading the box model data
-        box_model_data = FragmentationKaandorp_box_model(sim_length=self.sim_length).load_box_model()
+        box_model_data = FragmentationKaandorp_box_model(sim_length=self.sim_length, lambda_f=388).load_box_model()
         box_mass, box_number = box_model_data['mass'], box_model_data['number']
         box_time = box_model_data['mass'].keys()
 
@@ -74,8 +74,7 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
 
         # Labelling the subfigures
         for index_ax in range(self.number_of_plots):
-            ax[index_ax].set_title(subfigure_title(index_ax),
-                                   fontsize=self.ax_label_size)
+            ax[index_ax].set_title(subfigure_title(index_ax), fontsize=self.ax_label_size)
 
         # Plotting the model distributions from the parcels analysis
         # for index_time, time in enumerate(time_indices):

@@ -60,7 +60,7 @@ class FragmentationKaandorp_box_model:
 
     def get_fragmentation_probabilities(self):
         # Calculating the weekly fragmentation fractions
-        m_NB_dt, N_NB_dt = self.fragmentation_fractions(i_f=self.lambda_f)
+        m_NB_dt, N_NB_dt = self.fragmentation_fractions()
         for index_class in range(self.size_classes):
             self.T_NB_m += m_NB_dt[index_class] * np.diag(np.ones(self.size_classes - index_class), -index_class)
             self.T_NB_N += N_NB_dt[index_class] * np.diag(np.ones(self.size_classes - index_class), -index_class)
