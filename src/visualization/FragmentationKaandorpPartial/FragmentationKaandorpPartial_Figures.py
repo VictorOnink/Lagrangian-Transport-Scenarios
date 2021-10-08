@@ -5,6 +5,7 @@ import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_t
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_FieldDataComp as FieldDataComp
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_Concentration as concentration
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_vertical_profile as vertical_profile
+import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_boxmodelcomparison as box_model
 from visualization.General.General_input_scenario import General_input_scenario
 import Analysis
 
@@ -36,12 +37,15 @@ def run(scenario, figure_direc: str):
     #                                                    shore_time=shore_time, lambda_frag=10000, rho=rho,
     #                                                    simulation_length=1, weight='particle_number').plot()
 
-    FieldDataComp.FragmentationKaandorpPartial_FieldDataComp(figure_direc=figure_direc, scenario=scenario,
-                                                             shore_time=shore_time, lambda_frag_list=lambda_frag_list,
-                                                             rho=rho, sink=False).plot()
+    # FieldDataComp.FragmentationKaandorpPartial_FieldDataComp(figure_direc=figure_direc, scenario=scenario,
+    #                                                          shore_time=shore_time, lambda_frag_list=lambda_frag_list,
+    #                                                          rho=rho, sink=False).plot()
     # FieldDataComp.FragmentationKaandorpPartial_FieldDataComp(figure_direc=figure_direc, scenario=scenario,
     #                                                          shore_time=shore_time, lambda_frag_list=lambda_frag_list,
     #                                                          rho=rho, sink=True).plot()
+    box_model.FragmentationKaandorpPartial_boxmodelcomparison(figure_direc=figure_direc, scenario=scenario,
+                                                              shore_time=shore_time, lambda_frag=388,
+                                                              rho=rho).plot()
 
     # vertical_profile.FragmentationKaandorpPartial_vertical_profile(figure_direc=figure_direc, scenario=scenario,
     #                                                                shore_time=shore_time, lambda_frag=38000, rho=rho,
