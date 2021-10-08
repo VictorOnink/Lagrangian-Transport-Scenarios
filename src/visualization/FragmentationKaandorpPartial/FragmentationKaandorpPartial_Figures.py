@@ -36,7 +36,6 @@ def run(scenario, figure_direc: str):
     #                                                    shore_time=shore_time, lambda_frag=10000, rho=rho,
     #                                                    simulation_length=1, weight='particle_number').plot()
 
-    lambda_frag_list = np.array([388, 1000, 10000, 38000, 50000])
     FieldDataComp.FragmentationKaandorpPartial_FieldDataComp(figure_direc=figure_direc, scenario=scenario,
                                                              shore_time=shore_time, lambda_frag_list=lambda_frag_list,
                                                              rho=rho, sink=False).plot()
