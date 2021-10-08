@@ -14,7 +14,6 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
         self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'size_distribution/FragmentationKaandorpPartial/'
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'size_distribution'
-        self.beach_state_list = ['adrift', 'beach']
         # Simulation parameters
         self.scenario = scenario
         self.shore_time = shore_time
@@ -52,12 +51,10 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
                                                              data_direc=self.data_direc, shore_time=self.shore_time,
                                                              lambda_frag=self.lambda_frag, rho=self.rho,
                                                              postprocess=True)
-        time_indices = data[self.beach_state_list[0]][self.mass].keys()
+        time_indices = data['beach'][self.mass].keys()
         for time in time_indices:
-            data_dict[self.count][time] = data[self.beach_state_list[0]][self.count][time] + \
-                                          data[self.beach_state_list[1]][self.count][time]
-            data_dict[self.mass][time] = data[self.beach_state_list[0]][self.mass][time] + \
-                                         data[self.beach_state_list[1]][self.mass][time]
+            data_dict[self.count][time] = data['adrift'][self.count][time] + data['beach'][self.count][time]
+            data_dict[self.mass][time] = data['adrift'][self.mass][time] + data['beach'][self.mass][time]
 
         # Creating the figure
         ax, twin_ax = vUtils.base_figure(fig_size=self.fig_size, ax_range=self.ax_range, x_label=self.x_label,
