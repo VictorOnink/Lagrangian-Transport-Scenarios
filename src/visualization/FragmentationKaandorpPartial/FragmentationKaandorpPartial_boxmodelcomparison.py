@@ -80,7 +80,7 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
         for index_time, time in enumerate(time_indices):
             if index_time % 4 == 0:
                 c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=len(time_indices), cmap='viridis')
-                ax[0].plot(size_classes, data_dict[self.count][time], linestyle='-', c=c)
+                ax[0].plot(size_classes, data_dict[self.count][time], linestyle='-', c=c, label='Month {}'.format(index_time))
                 twin_ax[1].plot(size_classes, data_dict[self.mass][time], linestyle='-', c=c)
         # Plotting the model distributions from the box model
         for index_time, time in enumerate(box_time):
@@ -90,11 +90,7 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
                 twin_ax[1].plot(size_classes, box_mass[time]['total'], linestyle='--', c=c)
 
         # Adding a legend
-        legend_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(index=ind,
-                                                                            subdivisions=len(time_indices),
-                                                                            cmap='viridis'),
-                                  linestyle='-', label='Month {}'.format(ind))[0] for ind in range(len(time_indices))]
-        ax[-1].legend(handles=legend_colors, fontsize=self.legend_size, loc='upper right')
+        ax[-1].legend(ax[0].get_legend_handles_labels(), fontsize=self.legend_size, loc='upper right')
 
         # Saving the figure
         str_format = self.shore_time, self.rho, self.lambda_frag
