@@ -37,7 +37,7 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
         self.xmin, self.xmax = 1e-3, 2e2
         self.ymin, self.ymax = 1e1, 1e9
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
-        self.twin_ymin, self.twin_ymax = 1e-3, 1e3
+        self.twin_ymin, self.twin_ymax = 1e-2, 1e6
         self.twin_ax_range = self.xmax, self.xmin, self.twin_ymax, self.twin_ymin
         self.number_of_plots = self.fig_shape[0] * self.fig_shape[1]
 
