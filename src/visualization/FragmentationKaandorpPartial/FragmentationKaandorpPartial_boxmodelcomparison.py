@@ -61,7 +61,6 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
         # Loading the box model data
         box_model_data = FragmentationKaandorp_box_model(sim_length=self.sim_length, lambda_f=388).load_box_model()
         box_mass, box_number = box_model_data['mass'], box_model_data['number']
-        print(box_mass.keys())
         box_time = box_model_data['mass'].keys()
 
         # Creating the figure
@@ -85,9 +84,10 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
         # Plotting the model distributions from the box model
         for index_time, time in enumerate(box_time):
             if index_time % 4 == 0 and type(time) == int:
-                c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=len(box_time) // 4, cmap='viridis')
-                ax[0].plot(size_classes, box_number[time], linestyle='--', c=c)
-                twin_ax[1].plot(size_classes, box_mass[time], linestyle='--', c=c)
+                print(box_number[time]['total'])
+                # c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=len(box_time) // 4, cmap='viridis')
+                # ax[0].plot(size_classes, box_number[time], linestyle='--', c=c)
+                # twin_ax[1].plot(size_classes, box_mass[time], linestyle='--', c=c)
 
         # Adding a legend
         legend_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(index=ind,
