@@ -52,7 +52,7 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
                                                              data_direc=self.data_direc, shore_time=self.shore_time,
                                                              lambda_frag=self.lambda_frag, rho=self.rho,
                                                              postprocess=True)
-        time_indices = data[self.mass].keys()
+        time_indices = data[self.beach_state_list[0]][self.mass].keys()
         for time in time_indices:
             data_dict[self.count][time] = data[self.beach_state_list[0]][self.count][time] + \
                                           data[self.beach_state_list[1]][self.count][time]
