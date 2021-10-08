@@ -91,7 +91,7 @@ class FragmentationKaandorp_box_model:
         '''
         resuspension time scale from Hinata et al. (2017)
         '''
-        data_S = utils.load_obj(settings.input_dir + 'Stokes_influence_factor.pkl')
+        data_S = utils.load_obj(self.input_direc + 'Stokes_influence_factor.pkl')
         # get stokes influence factor for the l_arr
         wb = np.interp(self.size_array, np.flip(data_S['l']), np.flip(data_S['wb_' + self.p_shape]))
         tau_bc = 2.6e2 * wb + 7.1
