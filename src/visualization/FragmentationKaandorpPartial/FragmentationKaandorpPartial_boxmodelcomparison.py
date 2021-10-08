@@ -96,8 +96,8 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
         ax[-1].legend(handles=line_colors, fontsize=self.legend_size, loc='upper right')
 
         # Saving the figure
-        str_format = self.shore_time, self.rho, self.lambda_frag
-        file_name = self.output_direc + 'boxmodel_comparison-ST={}-rho={}-lambda_f={}.png'.format(*str_format)
+        str_format = self.shore_time, self.rho, self.lambda_frag, self.sink
+        file_name = self.output_direc + 'boxmodel_comparison-ST={}-rho={}-lambda_f={}_sink={}.png'.format(*str_format)
         plt.savefig(file_name, bbox_inches='tight')
 
 

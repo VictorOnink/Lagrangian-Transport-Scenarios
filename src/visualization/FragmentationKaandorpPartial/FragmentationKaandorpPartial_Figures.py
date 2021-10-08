@@ -45,7 +45,10 @@ def run(scenario, figure_direc: str):
     #                                                          rho=rho, sink=True).plot()
     box_model.FragmentationKaandorpPartial_boxmodelcomparison(figure_direc=figure_direc, scenario=scenario,
                                                               shore_time=shore_time, lambda_frag=388,
-                                                              rho=rho).plot()
+                                                              rho=rho, sink=False).plot()
+    box_model.FragmentationKaandorpPartial_boxmodelcomparison(figure_direc=figure_direc, scenario=scenario,
+                                                              shore_time=shore_time, lambda_frag=388,
+                                                              rho=rho, sink=True).plot()
 
     # vertical_profile.FragmentationKaandorpPartial_vertical_profile(figure_direc=figure_direc, scenario=scenario,
     #                                                                shore_time=shore_time, lambda_frag=38000, rho=rho,
