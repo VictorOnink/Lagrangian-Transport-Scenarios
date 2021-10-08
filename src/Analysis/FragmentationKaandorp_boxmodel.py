@@ -6,9 +6,9 @@ from copy import deepcopy
 
 
 class FragmentationKaandorp_box_model:
-    def __init__(self, start_size=settings.INIT_SIZE, size_classes=settings.SIZE_CLASS_NUMBER, DN=settings.DN,
-                 p_frag=settings.P_FRAG, lambda_f=settings.LAMBDA_FRAG, lambda_b=settings.SHORE_TIME,
-                 sim_length=settings.SIM_LENGTH, rho=settings.INIT_DENSITY):
+    def __init__(self, sim_length, start_size=settings.INIT_SIZE, size_classes=settings.SIZE_CLASS_NUMBER,
+                 DN=settings.DN, p_frag=settings.P_FRAG, lambda_f=settings.LAMBDA_FRAG, lambda_b=settings.SHORE_TIME,
+                 rho=settings.INIT_DENSITY):
         # Data directories
         self.input_direc = settings.DATA_INPUT_DIR_SERVERS[settings.SERVER] + 'box_model/'
         self.output_direc = settings.DATA_OUTPUT_DIR_SERVERS[settings.SERVER] + 'box_model/'
