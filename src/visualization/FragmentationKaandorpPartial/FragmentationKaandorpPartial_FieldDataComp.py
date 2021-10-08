@@ -58,8 +58,8 @@ class FragmentationKaandorpPartial_FieldDataComp:
             data_dict[lambda_frag] = {}
             for beach_state in self.beach_state_list:
                 data_dict[lambda_frag][beach_state] = {}
-                data_dict[lambda_frag][beach_state][self.count] = data[beach_state][self.count] / size_classes
-                data_dict[lambda_frag][beach_state][self.mass] = data[beach_state][self.mass] / size_classes
+                data_dict[lambda_frag][beach_state][self.count] = data[beach_state][self.count]
+                data_dict[lambda_frag][beach_state][self.mass] = data[beach_state][self.mass]
         time_index = data['final_index']
         field_dict = utils.load_obj(vUtils.FragmentationKaandorpPartial_fielddata_filename())
 
@@ -82,14 +82,13 @@ class FragmentationKaandorpPartial_FieldDataComp:
             for lambda_index, lambda_frag in enumerate(self.lambda_frag_list):
                 c = vUtils.discrete_color_from_cmap(index=lambda_index, subdivisions=self.lambda_frag_list.__len__())
                 if ax_index % 2 == 0:
-                    norm_factor = data_dict[lambda_frag][self.beach_state_list[ax_index // 2]][self.count][time_index][0]
-                    sub_ax.plot(size_classes, data_dict[lambda_frag][self.beach_state_list[ax_index // 2]][self.count][time_index] / norm_factor,
-                                linestyle='-', color=c)
+                    bin_norm_data = data_dict[lambda_frag][self.beach_state_list[ax_index // 2]][self.count][time_index] / size_classes
+                    norm_factor = bin_norm_data[0]
+                    sub_ax.plot(size_classes, bin_norm_data / norm_factor, linestyle='-', color=c)
                 else:
-                    norm_factor = data_dict[lambda_frag][self.beach_state_list[ax_index // 2]][self.mass][time_index][0]
-                    twin_ax[ax_index].plot(size_classes,
-                                           data_dict[lambda_frag][self.beach_state_list[ax_index // 2]][self.mass][time_index] / norm_factor,
-                                           linestyle='-', color=c)
+                    bin_norm_data = data_dict[lambda_frag][self.beach_state_list[ax_index // 2]][self.mass][time_index] / size_classes
+                    norm_factor = bin_norm_data[0]
+                    twin_ax[ax_index].plot(size_classes, bin_norm_data / norm_factor, linestyle='-', color=c)
 
         # Field data - open ocean
         norm_factor = field_dict['Cozar']['pdf_counts'][14]
