@@ -88,20 +88,26 @@ class parcels_to_particle_number:
                         c_id, _ = np.where((base_dict['time'] == base_dict['time'][p_id, t_ind + 1]) & (base_dict['parent'] == p_id))
                     # Looping through the newly created particles, where the first is skipped as it is the parent
                     if c_id.size > 0:
-                        if p_id == 55:
-                            print(c_id)
                         for index_id in range(1, c_id.size):
                             new_particle_mass = utils.mass_per_size_class(k=index_id, f=self.f)
                             for variable in self.mass_list:
+                                # if base_dict['size_class'][p_id, 0] != 0:
+                                #     print('{} {} {} {}'.format(p_id, base_dict['size_class'][p_id, 0], self.output_dict[variable][p_id, t_ind], new_particle_mass))
                                 self.output_dict[variable][c_id[index_id], :] = self.output_dict[variable][p_id, t_ind] * new_particle_mass
                             # Accounting again for mass loss
                             self.output_dict['particle_mass_sink'][c_id[index_id], :] *= mass_remainder[c_id[index_id], :]
 
+        # for p_id in range(self.particle_number):
+        #     utils.print_statement('{} {} parent={} {}'.format(p_id,
+        #                                                          base_dict['size_class'][p_id, 0],
+        #                                                          base_dict['parent'][p_id, 0],
+        #                                                          np.unique(self.output_dict['particle_mass'][p_id, :])[::-1]), to_print=True)
         for p_id in range(self.particle_number):
             utils.print_statement('{} {} parent={} {}'.format(p_id,
                                                                  base_dict['size_class'][p_id, 0],
                                                                  base_dict['parent'][p_id, 0],
-                                                                 np.unique(self.output_dict['particle_mass'][p_id, :])[::-1]), to_print=True)
+                                                                 self.output_dict['particle_mass'][p_id, 0], to_print=True))
+
 
         # Calculating the particle number from the particle masses
         mass_to_number = np.power(2, self.DN * base_dict['size_class'])
