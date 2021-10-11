@@ -15,7 +15,7 @@ class FragmentationKaandorpPartial_timeseries:
         self.rho = rho
         self.simulation_length = simulation_length
         self.class_num = settings.SIZE_CLASS_NUMBER
-        self.weight = ['particle_mass', 'particle_mass_sink', 'particle_number', 'particle_number_sink'][weight]
+        self.weight = weight
         # Data parameters
         self.output_direc = figure_direc + 'timeseries/'
         self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/FragmentationKaandorpPartial/'
