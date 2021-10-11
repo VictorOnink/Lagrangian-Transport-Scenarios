@@ -77,7 +77,7 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
             ax[index_ax].set_title(subfigure_title(index_ax), fontsize=self.ax_label_size)
 
         # Plotting the model distributions from the parcels analysis
-        subdivision_number = 12 * self.sim_length // self.month_step
+        subdivision_number = int(12 * self.sim_length // self.month_step)
         for index_time, time in enumerate(time_indices):
             if index_time % self.month_step == 0 and index_time <= 12 * self.sim_length:
                 print('{} {}'.format(index_time, 12 * self.sim_length))
@@ -87,7 +87,7 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
         lines, labels = ax[0].get_legend_handles_labels()
 
         # Plotting the model distributions from the box model
-        subdivision_number = 52 * self.sim_length // self.month_step
+        subdivision_number = int(52 * self.sim_length // self.month_step)
         for index_time, time in enumerate(box_time):
             if index_time % 4 * self.month_step == 0 and index_time <= 52 * self.sim_length and type(time) == int:
                 print('{} {}'.format(index_time, 52 * self.sim_length))
@@ -96,7 +96,7 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
                 twin_ax[1].plot(size_classes, box_mass[time]['total'], linestyle='--', c=c)
 
         # Adding a legend
-        line_number = 12 * self.sim_length // self.month_step
+        line_number = int(12 * self.sim_length // self.month_step)
         line_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(ind, subdivisions=line_number, cmap=self.cmap),
                                 label=label, linestyle='-')[0] for ind, label in enumerate(labels)]
         ax[-1].legend(handles=line_colors, fontsize=self.legend_size, loc='upper right')
