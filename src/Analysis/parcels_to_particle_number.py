@@ -106,7 +106,6 @@ class parcels_to_particle_number:
                                 previous_split.append(c_id[index_id])
                             # Accounting again for mass loss
                             self.output_dict['particle_mass_sink'][c_id[index_id], :] *= mass_remainder[c_id[index_id], :]
-                    print(previous_split)
 
         # for p_id in range(self.particle_number):
         #     utils.print_statement('{} {} parent={} {}'.format(p_id,
