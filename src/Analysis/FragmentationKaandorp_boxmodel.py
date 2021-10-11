@@ -177,7 +177,7 @@ class FragmentationKaandorp_box_model:
         output_dict_mass = {'size': self.size_array}
         output_dict_number = {'size': self.size_array}
 
-        for time in range(0, 52 * self.sim_length):
+        for time in range(0, int(52 * self.sim_length)):
             mass = np.dot(self.T_mat_m, mass + mass_0)
             number = np.dot(self.T_mat_N, number + number_0)
             output_dict_mass[time], output_dict_number[time] = {}, {}
