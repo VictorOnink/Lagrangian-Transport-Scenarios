@@ -91,9 +91,12 @@ class parcels_to_particle_number:
                         for index_id in range(1, c_id.size):
                             new_particle_mass = utils.mass_per_size_class(k=index_id, f=self.f)
                             for variable in self.mass_list:
+                                if base_dict['size_class'][p_id, 0] != 0:
+                                    print('{} {} {} {}'.format(p_id, base_dict['size_class'][p_id, 0], self.output_dict[variable][p_id, t_ind], new_particle_mass))
                                 self.output_dict[variable][c_id[index_id], :] = self.output_dict[variable][p_id, t_ind] * new_particle_mass
                             # Accounting again for mass loss
                             self.output_dict['particle_mass_sink'][c_id[index_id], :] *= mass_remainder[c_id[index_id], :]
+
         for p_id in range(self.particle_number):
             utils.print_statement('{} {} parent={} {}'.format(p_id,
                                                                  base_dict['size_class'][p_id, 0],
