@@ -46,7 +46,8 @@ class FragmentationKaandorpPartial_timeseries:
             data_dict = vUtils.FragmentationKaandorpPartial_load_data(scenario=self.scenario, prefix=self.prefix,
                                                                       data_direc=self.data_direc,
                                                                       shore_time=self.shore_time,
-                                                                      lambda_frag=self.lambda_frag, rho=self.rho)
+                                                                      lambda_frag=self.lambda_frag, rho=self.rho,
+                                                                      postprocess=True)
             for beach_state in self.beach_state_list:
                 timeseries_dict[size_class][beach_state] = data_dict[beach_state][size_class][self.weight]
 
