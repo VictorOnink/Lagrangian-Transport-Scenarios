@@ -2,9 +2,7 @@ import settings
 import utils
 import visualization.visualization_utils as vUtils
 import matplotlib.pyplot as plt
-import matplotlib.colors as colors
 import string
-import numpy as np
 from Analysis.FragmentationKaandorp_boxmodel import FragmentationKaandorp_box_model
 
 
