@@ -92,6 +92,7 @@ class parcels_to_particle_number:
                             new_particle_mass = utils.mass_per_size_class(k=index_id, f=self.f)
                             if p_id == 55:
                                 print('c_id={}'.format(c_id))
+                                print('c_id.size={}'.format(c_id.size))
                                 print('id = {}-{}'.format(p_id, index_id))
                                 print('mass fraction = {}'.format(new_particle_mass))
                                 print('t_ind = {}'.format(t_ind))
