@@ -93,6 +93,7 @@ class parcels_to_particle_number:
                             if p_id == 55:
                                 print('id = {}-{}'.format(p_id, index_id))
                                 print('mass fraction = {}'.format(new_particle_mass))
+                                print('t_ind = {}'.format(t_ind))
                                 print('self.output_dict[variable][p_id, t_ind] = {}'.format(self.output_dict[variable][p_id, t_ind]))
                                 print('self.output_dict[variable][p_id, t_ind + 1] = {}'.format(self.output_dict[variable][p_id, t_ind + 1]))
                             for variable in self.mass_list:
