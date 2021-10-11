@@ -92,9 +92,10 @@ class parcels_to_particle_number:
                             new_particle_mass = utils.mass_per_size_class(k=index_id, f=self.f)
                             for variable in self.mass_list:
                                 self.output_dict[variable][c_id[index_id], :] = self.output_dict[variable][p_id, t_ind] * new_particle_mass
-                                # utils.print_statement('{} {} {}'.format(variable, index_id, self.output_dict[variable][p_id, t_ind] * new_particle_mass), to_print=True)
                             # Accounting again for mass loss
                             self.output_dict['particle_mass_sink'][c_id[index_id], :] *= mass_remainder[c_id[index_id], :]
+        for p_id in range(self.particle_number):
+            utils.print_statement('{} {}'.format(p_id, np.unique(self.output_dict['particle_mass'][p_id, :])), to_print=True)
 
         # Calculating the particle number from the particle masses
         mass_to_number = np.power(2, self.DN * base_dict['size_class'])
