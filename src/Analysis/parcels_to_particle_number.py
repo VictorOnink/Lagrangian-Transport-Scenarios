@@ -67,6 +67,8 @@ class parcels_to_particle_number:
             # Checking if the particle has a split event, and then determining the split events
             if base_dict['to_split'][p_id, :].max() == 1:
                 split_cases = np.where(base_dict['to_split'][p_id, :] == 1)[0]
+                # We make an array that tracks the particles created in previous split events
+                previous_split = []
                 # Looping through the split events, calculating the particle mass after each split event
                 for t_ind in split_cases:
                     mass_fraction = utils.mass_per_size_class(k=0, f=self.f)
@@ -95,26 +97,18 @@ class parcels_to_particle_number:
                     if c_id.size > 0:
                         for index_id in range(1, c_id.size):
                             new_particle_mass = utils.mass_per_size_class(k=index_id, f=self.f)
-                            # if p_id == 55:
-                                # print('c_id={}'.format(c_id))
-                                # print('c_id.size={}'.format(c_id.size))
-                                # print('id = {}-{}'.format(p_id, index_id))
-                                # print('mass fraction = {}'.format(new_particle_mass))
-                                # print('t_ind = {}'.format(t_ind))
-                                # print('self.output_dict[variable][p_id, t_ind] = {}'.format(self.output_dict[variable][p_id, t_ind]))
-                                # print('self.output_dict[variable][p_id, t_ind + 1] = {}'.format(self.output_dict[variable][p_id, t_ind + 1]))
-                            for variable in self.mass_list:
-                                # if base_dict['size_class'][p_id, 0] != 0:
-                                #     print('{} {} {} {}'.format(p_id, base_dict['size_class'][p_id, 0], self.output_dict[variable][p_id, t_ind], new_particle_mass))
-                                self.output_dict[variable][c_id[index_id], :] = self.output_dict[variable][p_id, t_ind] * new_particle_mass
+                            if c_id[index_id] not in previous_split:
+                                for variable in self.mass_list:
+                                    self.output_dict[variable][c_id[index_id], :] = self.output_dict[variable][p_id, t_ind] * new_particle_mass
+                                previous_split.append(c_id[index_id])
                             # Accounting again for mass loss
                             self.output_dict['particle_mass_sink'][c_id[index_id], :] *= mass_remainder[c_id[index_id], :]
 
-        # for p_id in range(self.particle_number):
-        #     utils.print_statement('{} {} parent={} {}'.format(p_id,
-        #                                                          base_dict['size_class'][p_id, 0],
-        #                                                          base_dict['parent'][p_id, 0],
-        #                                                          np.unique(self.output_dict['particle_mass'][p_id, :])[::-1]), to_print=True)
+        for p_id in range(self.particle_number):
+            utils.print_statement('{} {} parent={} {}'.format(p_id,
+                                                                 base_dict['size_class'][p_id, 0],
+                                                                 base_dict['parent'][p_id, 0],
+                                                                 np.unique(self.output_dict['particle_mass'][p_id, :])[::-1]), to_print=True)
         # for p_id in range(self.particle_number):
         #     utils.print_statement('{} {} parent={} {}'.format(p_id,
         #                                                          base_dict['size_class'][p_id, 0],
