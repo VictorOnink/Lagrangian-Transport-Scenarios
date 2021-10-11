@@ -48,6 +48,7 @@ class FragmentationKaandorpPartial_timeseries:
                                                                       postprocess=True)
             for beach_state in self.beach_state_list:
                 timeseries_dict[size_class][beach_state] = data_dict[beach_state][size_class][self.weight]
+                print('{} {} {}'.format(size_class, beach_state, timeseries_dict[size_class][beach_state]))
 
         # creating a time axis
         time_list = []
