@@ -95,7 +95,7 @@ class parcels_to_particle_number:
                             # Accounting again for mass loss
                             self.output_dict['particle_mass_sink'][c_id[index_id], :] *= mass_remainder[c_id[index_id], :]
         for p_id in range(self.particle_number):
-            utils.print_statement('{} {}'.format(p_id, np.unique(self.output_dict['particle_mass'][p_id, :])), to_print=True)
+            utils.print_statement('{} {}'.format(p_id, np.unique(self.output_dict['particle_mass'][p_id, :])[::-1]), to_print=True)
 
         # Calculating the particle number from the particle masses
         mass_to_number = np.power(2, self.DN * base_dict['size_class'])
