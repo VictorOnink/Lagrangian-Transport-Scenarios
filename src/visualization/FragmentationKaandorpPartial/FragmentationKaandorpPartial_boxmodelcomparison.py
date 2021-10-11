@@ -42,6 +42,7 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
         self.twin_ymin, self.twin_ymax = 1e-2, 1e6
         self.twin_ax_range = self.xmax, self.xmin, self.twin_ymax, self.twin_ymin
         self.number_of_plots = self.fig_shape[0] * self.fig_shape[1]
+        self.cmap = 'viridis'
 
     def plot(self):
         # Getting the sizes of the size classes, and we convert from meters to mm
@@ -79,19 +80,19 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
         # Plotting the model distributions from the parcels analysis
         for index_time, time in enumerate(time_indices):
             if index_time % 4 == 0:
-                c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=len(time_indices), cmap='viridis')
+                c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=len(time_indices), cmap=self.cmap)
                 ax[0].plot(size_classes, data_dict[self.count][time], linestyle='-', c=c, label='Month {}'.format(index_time))
                 twin_ax[1].plot(size_classes, data_dict[self.mass][time], linestyle='-', c=c)
         lines, labels = ax[0].get_legend_handles_labels()
         # Plotting the model distributions from the box model
         for index_time, time in enumerate(box_time):
             if index_time % 12 == 0 and type(time) == int:
-                c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=len(box_time), cmap='viridis')
+                c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=len(box_time), cmap=self.cmap)
                 ax[0].plot(size_classes, box_number[time]['total'], linestyle='--', c=c)
                 twin_ax[1].plot(size_classes, box_mass[time]['total'], linestyle='--', c=c)
 
         # Adding a legend
-        line_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(ind, subdivisions=self.class_num),
+        line_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(ind, subdivisions=self.class_num, cmap=self.cmap),
                                 label=label, linestyle='-')[0] for ind, label in enumerate(labels)]
         ax[-1].legend(handles=line_colors, fontsize=self.legend_size, loc='upper right')
 

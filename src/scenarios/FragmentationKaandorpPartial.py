@@ -236,9 +236,8 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         if settings.POST_PROCESS:
             utils.print_statement("Running postprocessing for LAMBDA_FRAG = {}".format(settings.LAMBDA_FRAG))
             base_file = self.file_names(new=True, lambda_frag=388, postprocess=False)
-            output_file = self.file_names(new=True)
-            restart_file = self.file_names(new=False)
-            Analysis.parcels_to_particle_number(base_file=base_file, output_file=output_file, restart_file=restart_file)
+            output_file, restart_file = self.file_names(new=True), self.file_names(new=False)
+            Analysis.parcels_to_particle_number(base_file=base_file, output_file=output_file, restart_file=restart_file).run()
             utils.print_statement("Postprocessing is complete")
         else:
             # Creating the particle set and output file

@@ -6,82 +6,103 @@ from progressbar import ProgressBar
 from copy import deepcopy
 
 
-def parcels_to_particle_number(base_file, output_file, restart_file):
-    # Load the relevant data from the base_file, which we take as lambda_frag=388. The split event is independent of
-    # lambda_frag, and so it doesn't matter what is taken as the base to calculate the
-    base_dataset = Dataset(base_file)
-    var_list = ['parent', 'to_split', 'time', 'age', 'size_class']
-    base_dict = dict.fromkeys(var_list)
-    for variable in var_list:
-        base_dict[variable] = base_dataset.variables[variable][:]
-    particle_number = base_dict[variable].shape[0]
-    time_step_number = base_dict[variable].shape[1]
-    final_t = base_dict[variable].shape[1] - 1
+class parcels_to_particle_number:
+    def __init__(self, base_file, output_file, restart_file):
+        # The names of the parcels base_file, the output file of the analysis and restart particle number file for when
+        # restart > 0
+        self.base_file, self.output_file, self.restart_file = base_file, output_file, restart_file
+        self.restart = settings.RESTART
+        # Model parameters
+        self.dt = settings.TIME_STEP.total_seconds()
+        self.f = 60 / settings.LAMBDA_FRAG
+        self.DN = settings.DN
+        # Analysis parameters
+        self.var_list = ['parent', 'to_split', 'time', 'age', 'size_class']
+        self.mass_list = ['particle_mass', 'particle_mass_sink']
+        self.number_list = ['particle_number', 'particle_number_sink']
+        self.mass_number_list = utils.flatten_list_of_lists([self.mass_list, self.number_list])
+        self.output_dict = {}
+        self.particle_number, self.time_step_number, self.final_t = None, None, None
 
-    # Computing the particle mass if we account for the gradual removal of mass
-    time_step_age = base_dict['age'] // settings.TIME_STEP.total_seconds()
-    mass_removed = np.power(1 - settings.P_SINK, time_step_age)
+    def restart_initialization(self, output_dict):
+        if self.restart > 0:
+            assert utils.check_file_exist(self.restart_file), "Restart file {} doesn't exist".format(self.restart_file)
+            restart_dict = utils.load_obj(self.restart_file)
+            for variable in output_dict.keys():
+                variable_restart = restart_dict[variable][:, -1]
+                for p_ind, number in enumerate(variable_restart):
+                    output_dict[variable][p_ind, :] = number
+        return output_dict
 
-    # Creating an output dictionary containing an array for the particle mass, and for the particle mass when accounting
-    # for the gradual mass loss set by P_SINK.
-    # Note: This accounting for mass loss needs to be updated whenever we have a split event
-    base = np.ones(base_dict[variable].shape, dtype=np.float32)
-    output_dict = {'particle_mass': deepcopy(base),
-                   'particle_mass_sink': np.multiply(deepcopy(base), mass_removed)}
+    def run(self):
+        # Loading the variables from the parcels base file (set to always have lambda_frag=388)
+        base_dataset = Dataset(self.base_file)
+        base_dict = dict.fromkeys(self.var_list)
+        for variable in base_dict.keys():
+            base_dict[variable] = base_dataset.variables[variable][:]
 
-    if settings.RESTART > 0:
-        assert utils.check_file_exist(restart_file), "The restart file {} doesn't exist".format(restart_file)
-        restart_dict = utils.load_obj(restart_file)
-        for variable in output_dict.keys():
-            variable_restart = restart_dict[variable][:, -1]
-            for p_ind, number in enumerate(variable_restart):
-                output_dict[variable][p_ind, :] = number
+        # The number of particles, the number of time steps and the final time index
+        self.particle_number, self.time_step_number = base_dict[variable].shape
+        self.final_t = self.time_step_number - 1
 
-    # Computing the fragmentation variable f
-    f = 60 / settings.LAMBDA_FRAG
+        # Computing the mass removal fraction
+        age_in_timesteps = base_dict['age'] // self.dt
+        mass_fraction = np.power(1 - settings.P_SINK, age_in_timesteps)
 
-    # Looping through all the particles, identifying the split points
-    pbar = ProgressBar()
-    for p_id in pbar(range(particle_number)):
-        # In the case of including the gradual sink, we multiply the initial values in the array by the gradual
-        # Getting the index of all cases where a particle is splitting, where we first check if there is a splitting
-        # event
-        if base_dict['to_split'][p_id, :].max() == 1:
-            split_cases = np.where(base_dict['to_split'][p_id, :] == 1)[0]
-            # Looping through all the split cases
-            for t_ind in split_cases:
-                # calculating the particle number after each splitting event
-                mass_fraction = utils.mass_per_size_class(k=0, f=f)
-                if t_ind == final_t:
-                    output_dict['particle_mass'][p_id, -1] = output_dict['particle_mass'][p_id, t_ind] * mass_fraction
-                    output_dict['particle_mass_sink'][p_id, -1] = output_dict['particle_mass_sink'][p_id, t_ind] * mass_fraction
-                    # Getting the ID of all the new created particles, that would not have been created at the next time
-                    # step since there isn't a next step in the simulation.
-                    c_id, _ = np.where((base_dict['time'] == base_dict['time'][p_id, t_ind]) & (base_dict['parent'] == p_id))
-                else:
-                    output_dict['particle_mass'][p_id, (t_ind + 1):] = output_dict['particle_mass'][p_id, t_ind] * mass_fraction
-                    # For the particle_mass_sink, we first account for the loss of mass due to the fragmentation event,
-                    # and then we correct for the continued mass loss over time due to P_SINK
-                    remaining_time_steps = np.arange(0, time_step_number - (t_ind + 1))
-                    sink_correction = np.power(1 - settings.P_SINK, remaining_time_steps)
-                    output_dict['particle_mass_sink'][p_id, (t_ind + 1):] = output_dict['particle_mass_sink'][p_id, t_ind] * mass_fraction
-                    output_dict['particle_mass_sink'][p_id, (t_ind + 1):] *= sink_correction
-                    # Getting the ID of all the new created particles, where we need to add the +1 to the time index since
-                    # the new particles are only technically present in the next time step
-                    c_id, _ = np.where((base_dict['time'] == base_dict['time'][p_id, t_ind + 1]) & (base_dict['parent'] == p_id))
-                if c_id.size > 0:
-                    # Looping through the new particles
-                    for index_id in range(1, c_id.size):
-                        new_particle_mass = utils.mass_per_size_class(k=index_id, f=f)
-                        output_dict['particle_mass'][c_id[index_id], :] = output_dict['particle_mass'][p_id, t_ind] * new_particle_mass
-                        output_dict['particle_mass_sink'][c_id[index_id], :] = output_dict['particle_mass_sink'][p_id, t_ind] * new_particle_mass
+        # Initializing the output dict with arrays equal in size to the variables in self.base_file
+        # Note: The mass loss accounting needs to be updated whenever we have a split event
+        base_array = np.ones(base_dict[variable].shape, dtype=np.float32)
+        for variable in self.mass_number_list:
+            self.output_dict[variable] = deepcopy(base_array)
 
-    # Calculating the particle number from the particle masses
-    output_dict['particle_number'] = np.multiply(output_dict['particle_mass'], np.power(2, settings.DN * base_dict['size_class']))
-    output_dict['particle_number_sink'] = np.multiply(output_dict['particle_mass_sink'], np.power(2, settings.DN * base_dict['size_class']))
+        # Initializing the particle numbers for when restart > 0
+        self.output_dict = self.restart_initialization(output_dict=self.output_dict)
 
-    # Masking the output
-    for variable in output_dict.keys():
-        output_dict[variable] = np.ma.masked_array(output_dict[variable], mask=base_dict['time'].mask)
-    # Saving the output
-    utils.save_obj(output_file, output_dict)
+        # Adding the age correction to the particle mass array
+        self.output_dict['particle_mass_sink'] = np.multiply(self.output_dict['particle_mass_sink'], mass_fraction)
+
+        # Looping through the particles, identifying the split points
+        pbar = ProgressBar()
+        for p_id in pbar(range(self.particle_number)):
+            # Checking if the particle has a split event, and then determining the split events
+            if base_dict['to_split'][p_id, :].max() == 1:
+                split_cases = np.where(base_dict['to_split'][p_id, :] == 1)[0]
+                # Looping through the split events, calculating the particle mass after each split event
+                for t_ind in split_cases:
+                    mass_fraction = utils.mass_per_size_class(k=0, f=self.f)
+                    if t_ind == self.final_t:
+                        for variable in self.mass_list:
+                            self.output_dict[variable][p_id, -1] = self.output_dict[variable][p_id, t_ind] * mass_fraction
+                        # Getting the ID of all the new created particles at self.final_t
+                        c_id, _ = np.where((base_dict['time'] == base_dict['time'][p_id, t_ind]) &
+                                           (base_dict['parent'] == p_id))
+                    else:
+                        for variable in self.mass_list:
+                            self.output_dict[variable][p_id, (t_ind + 1):] = self.output_dict[variable][p_id, t_ind] * mass_fraction
+                        # For particle_mass_sink, we account for the loss of mass due to the P_sink term after the
+                        # fragmentation event
+                        sink_correction = np.power(1 - settings.P_SINK, np.arange(0, self.time_step_number - (t_ind + 1)))
+                        self.output_dict['particle_mass_sink'][p_id, (t_ind + 1):] *= sink_correction
+                        # Getting the ID of all the new created particles, where we need to add the +1 to the time index
+                        # since the new particles are only technically present in the next time step
+                        c_id, _ = np.where((base_dict['time'] == base_dict['time'][p_id, t_ind + 1]) & (base_dict['parent'] == p_id))
+                    # Looping through the newly created particles, where the first is skipped as it is the parent
+                    if c_id.size > 0:
+                        for index_id in range(1, c_id.size):
+                            new_particle_mass = utils.mass_per_size_class(k=index_id, f=self.f)
+                            for variable in self.mass_list:
+                                self.output_dict[variable][c_id[index_id], :] = self.output_dict[variable][p_id, t_ind] * new_particle_mass
+                            # Accounting again for mass loss
+                            self.output_dict['particle_mass_sink'][c_id[index_id], :] *= mass_fraction[c_id[index_id], :]
+
+        # Calculating the particle number from the particle masses
+        mass_to_number = np.power(2, self.DN * base_dict['size_class'])
+        for number, mass in zip(self.number_list, self.mass_list):
+            self.output_dict[number] = np.multiply(self.output_dict[mass], mass_to_number)
+
+        # Masking the output
+        for variable in self.mass_number_list:
+            self.output_dict[variable] = np.ma.masked_array(self.output_dict[variable], mask=base_dict['time'].mask)
+
+        # Saving the output
+        utils.save_obj(self.output_file, self.output_dict)
