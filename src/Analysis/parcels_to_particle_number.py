@@ -96,7 +96,7 @@ class parcels_to_particle_number:
                             if c_id[index_id] not in previous_split:
                                 if p_id == 55:
                                     print('c_id[index_id] = {}'.format(c_id[index_id]))
-                                    print('size_class = {}'.format(base_dict['size_class'][p_id, 0]))
+                                    print('size_class = {}'.format(base_dict['size_class'][c_id[index_id], 0]))
                                 for variable in self.mass_list:
                                     self.output_dict[variable][c_id[index_id], :] = self.output_dict[variable][p_id, t_ind] * new_particle_mass
                                     if p_id == 55:
@@ -105,11 +105,12 @@ class parcels_to_particle_number:
                             # Accounting again for mass loss
                             self.output_dict['particle_mass_sink'][c_id[index_id], :] *= mass_remainder[c_id[index_id], :]
 
-        # for p_id in range(self.particle_number):
-        #     utils.print_statement('{} {} parent={} {}'.format(p_id,
-        #                                                          base_dict['size_class'][p_id, 0],
-        #                                                          base_dict['parent'][p_id, 0],
-        #                                                          np.unique(self.output_dict['particle_mass'][p_id, :])[::-1]), to_print=True)
+        for p_id in [255, 256]:
+            utils.print_statement('{} {} parent={} {}'.format(p_id,
+                                                                 base_dict['size_class'][p_id, 0],
+                                                                 base_dict['parent'][p_id, 0],
+                                                                 np.unique(self.output_dict['particle_mass'][p_id, :])[::-1]), to_print=True)
+
         # for p_id in range(self.particle_number):
         #     utils.print_statement('{} {} parent={} {}'.format(p_id,
         #                                                          base_dict['size_class'][p_id, 0],
