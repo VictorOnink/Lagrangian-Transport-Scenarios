@@ -90,6 +90,11 @@ class parcels_to_particle_number:
                     if c_id.size > 0:
                         for index_id in range(1, c_id.size):
                             new_particle_mass = utils.mass_per_size_class(k=index_id, f=self.f)
+                            if p_id == 55:
+                                print('id = {}-{}'.format(p_id, index_id))
+                                print('mass fraction = {}'.format(new_particle_mass))
+                                print('self.output_dict[variable][p_id, t_ind] = {}'.format(self.output_dict[variable][p_id, t_ind]))
+                                print('self.output_dict[variable][p_id, t_ind + 1] = {}'.format(self.output_dict[variable][p_id, t_ind + 1]))
                             for variable in self.mass_list:
                                 # if base_dict['size_class'][p_id, 0] != 0:
                                 #     print('{} {} {} {}'.format(p_id, base_dict['size_class'][p_id, 0], self.output_dict[variable][p_id, t_ind], new_particle_mass))
@@ -102,11 +107,11 @@ class parcels_to_particle_number:
         #                                                          base_dict['size_class'][p_id, 0],
         #                                                          base_dict['parent'][p_id, 0],
         #                                                          np.unique(self.output_dict['particle_mass'][p_id, :])[::-1]), to_print=True)
-        for p_id in range(self.particle_number):
-            utils.print_statement('{} {} parent={} {}'.format(p_id,
-                                                                 base_dict['size_class'][p_id, 0],
-                                                                 base_dict['parent'][p_id, 0],
-                                                                 self.output_dict['particle_mass'][p_id, 0], to_print=True))
+        # for p_id in range(self.particle_number):
+        #     utils.print_statement('{} {} parent={} {}'.format(p_id,
+        #                                                          base_dict['size_class'][p_id, 0],
+        #                                                          base_dict['parent'][p_id, 0],
+        #                                                          self.output_dict['particle_mass'][p_id, 0], to_print=True))
 
 
         # Calculating the particle number from the particle masses
