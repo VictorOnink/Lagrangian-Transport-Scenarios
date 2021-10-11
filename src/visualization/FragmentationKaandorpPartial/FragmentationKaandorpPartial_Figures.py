@@ -27,9 +27,9 @@ def run(scenario, figure_direc: str):
     # timeseries.FragmentationKaandorpPartial_timeseries(scenario=scenario, figure_direc=figure_direc,
     #                                                    shore_time=shore_time, lambda_frag=300, rho=rho,
     #                                                    simulation_length=1, weight='particle_number').plot()
-    # timeseries.FragmentationKaandorpPartial_timeseries(scenario=scenario, figure_direc=figure_direc,
-    #                                                    shore_time=shore_time, lambda_frag=388, rho=rho,
-    #                                                    simulation_length=1, weight='particle_number').plot()
+    timeseries.FragmentationKaandorpPartial_timeseries(scenario=scenario, figure_direc=figure_direc,
+                                                       shore_time=shore_time, lambda_frag=388, rho=rho,
+                                                       simulation_length=1, weight='particle_mass').plot()
     # timeseries.FragmentationKaandorpPartial_timeseries(scenario=scenario, figure_direc=figure_direc,
     #                                                    shore_time=shore_time, lambda_frag=1000, rho=rho,
     #                                                    simulation_length=1, weight='particle_number').plot()
