@@ -92,13 +92,16 @@ class parcels_to_particle_number:
                     if p_id == 55:
                         print('t_ind = {}'.format(t_ind))
                         print('self.output_dict[variable][p_id, t_ind] = {}'.format(self.output_dict[variable][p_id, t_ind]))
-                        print('np.unique(p_id) = {}'.format(np.unique(self.output_dict[variable][p_id, :])))
                     if c_id.size > 0:
                         for index_id in range(1, c_id.size):
                             new_particle_mass = utils.mass_per_size_class(k=index_id, f=self.f)
                             if c_id[index_id] not in previous_split:
                                 for variable in self.mass_list:
                                     self.output_dict[variable][c_id[index_id], :] = self.output_dict[variable][p_id, t_ind] * new_particle_mass
+                                print('c_id[index_id] = {}'.format(c_id[index_id]))
+                                print('new_particle_mass = {}'.format(new_particle_mass))
+                                print('self.output_dict[variable][p_id, t_ind] = {}'.format(self.output_dict[variable][p_id, t_ind]))
+                                print('self.output_dict[variable][c_id[index_id], 0]'.format(self.output_dict[variable][c_id[index_id], 0]))
                                 previous_split.append(c_id[index_id])
                             # Accounting again for mass loss
                             self.output_dict['particle_mass_sink'][c_id[index_id], :] *= mass_remainder[c_id[index_id], :]
