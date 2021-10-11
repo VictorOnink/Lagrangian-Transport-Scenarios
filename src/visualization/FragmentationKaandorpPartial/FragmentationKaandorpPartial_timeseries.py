@@ -28,11 +28,11 @@ class FragmentationKaandorpPartial_timeseries:
         self.ax_label_size = 16
         self.ax_ticklabel_size = 14
         self.legend_size = 14
-        self.y_label = 'Particle Number'
+        self.y_label = 'Mass'
         self.x_label = 'Time'
         self.xmin, self.xmax = datetime(settings.STARTYEAR, 1, 1), \
                                datetime(settings.STARTYEAR + self.simulation_length, 1, 1)
-        self.ymin, self.ymax = 1e0, 1e5
+        self.ymin, self.ymax = 1e-10, 1e20
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
         self.number_of_plots = self.beach_state_list.__len__()
 
