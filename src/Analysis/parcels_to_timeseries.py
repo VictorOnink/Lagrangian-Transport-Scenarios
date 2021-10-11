@@ -55,7 +55,7 @@ class parcels_to_timeseries:
                                 for size_class in range(settings.SIZE_CLASS_NUMBER):
                                     size = time_dict['size_class'] == size_class
                                     for weight in self.weight_list:
-                                        self.output_dict[beach_state][size_class][weight][time_index] += np.nansum(time_dict[weight][size & beach])
+                                        self.output_dict[beach_state][size_class][weight][time_index] += max(0, np.nansum(time_dict[weight][size & beach]))
                             else:
                                 self.output_dict[beach_state][time_index] += np.nansum(time_dict['weights'][beach])
                 # Calculating the total over all beach states
