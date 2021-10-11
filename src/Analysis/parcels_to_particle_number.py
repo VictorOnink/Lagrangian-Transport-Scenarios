@@ -98,10 +98,11 @@ class parcels_to_particle_number:
                             if c_id[index_id] not in previous_split:
                                 for variable in self.mass_list:
                                     self.output_dict[variable][c_id[index_id], :] = self.output_dict[variable][p_id, t_ind] * new_particle_mass
-                                print('c_id[index_id] = {}'.format(c_id[index_id]))
-                                print('new_particle_mass = {}'.format(new_particle_mass))
-                                print('self.output_dict[variable][p_id, t_ind] = {}'.format(self.output_dict[variable][p_id, t_ind]))
-                                print('self.output_dict[variable][c_id[index_id], 0] = {}'.format(self.output_dict[variable][c_id[index_id], 0]))
+                                if p_id == 55:
+                                    print('c_id[index_id] = {}'.format(c_id[index_id]))
+                                    print('new_particle_mass = {}'.format(new_particle_mass))
+                                    print('self.output_dict[variable][p_id, t_ind] = {}'.format(self.output_dict[variable][p_id, t_ind]))
+                                    print('self.output_dict[variable][c_id[index_id], 0] = {}'.format(self.output_dict[variable][c_id[index_id], 0]))
                                 previous_split.append(c_id[index_id])
                             # Accounting again for mass loss
                             self.output_dict['particle_mass_sink'][c_id[index_id], :] *= mass_remainder[c_id[index_id], :]
