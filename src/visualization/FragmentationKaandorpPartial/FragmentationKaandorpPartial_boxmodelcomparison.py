@@ -77,18 +77,21 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
             ax[index_ax].set_title(subfigure_title(index_ax), fontsize=self.ax_label_size)
 
         # Plotting the model distributions from the parcels analysis
+        subdivision_number = 12 * self.sim_length // self.month_step
         for index_time, time in enumerate(time_indices):
             if index_time % self.month_step == 0 and index_time <= 12 * self.sim_length:
                 print('{} {}'.format(index_time, 12 * self.sim_length))
-                c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=len(time_indices), cmap=self.cmap)
+                c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=subdivision_number, cmap=self.cmap)
                 ax[0].plot(size_classes, data_dict[self.count][time], linestyle='-', c=c, label='Month {}'.format(index_time))
                 twin_ax[1].plot(size_classes, data_dict[self.mass][time], linestyle='-', c=c)
         lines, labels = ax[0].get_legend_handles_labels()
+
         # Plotting the model distributions from the box model
+        subdivision_number = 52 * self.sim_length // self.month_step
         for index_time, time in enumerate(box_time):
             if index_time % 4 * self.month_step == 0 and index_time <= 52 * self.sim_length and type(time) == int:
                 print('{} {}'.format(index_time, 52 * self.sim_length))
-                c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=len(box_time), cmap=self.cmap)
+                c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=subdivision_number, cmap=self.cmap)
                 ax[0].plot(size_classes, box_number[time]['total'], linestyle='--', c=c)
                 twin_ax[1].plot(size_classes, box_mass[time]['total'], linestyle='--', c=c)
 
