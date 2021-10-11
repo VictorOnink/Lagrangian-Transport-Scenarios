@@ -90,6 +90,7 @@ class parcels_to_particle_number:
                         print('splitevents={}'.format(base_dict['to_split'][p_id, :].sum()))
                         print('c_id={}'.format(c_id))
                         print('c_id.size={}'.format(c_id.size))
+                        print('t_id={}'.format(t_ind))
                     # Looping through the newly created particles, where the first is skipped as it is the parent
                     if c_id.size > 0:
                         for index_id in range(1, c_id.size):
