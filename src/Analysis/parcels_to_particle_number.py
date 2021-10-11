@@ -28,7 +28,7 @@ class parcels_to_particle_number:
         if self.restart > 0:
             assert utils.check_file_exist(self.restart_file), "Restart file {} doesn't exist".format(self.restart_file)
             restart_dict = utils.load_obj(self.restart_file)
-            for variable in output_dict.keys():
+            for variable in self.mass_list:
                 variable_restart = restart_dict[variable][:, -1]
                 for p_ind, number in enumerate(variable_restart):
                     output_dict[variable][p_ind, :] = number
@@ -95,7 +95,7 @@ class parcels_to_particle_number:
                             # Accounting again for mass loss
                             self.output_dict['particle_mass_sink'][c_id[index_id], :] *= mass_remainder[c_id[index_id], :]
         for p_id in range(self.particle_number):
-            utils.print_statement('{} {}'.format(p_id, np.unique(self.output_dict['particle_mass'][p_id, :])[::-1]), to_print=True)
+            utils.print_statement('{} {} {}'.format(p_id, base_dict['size_class'][p_id, 0], np.unique(self.output_dict['particle_mass'][p_id, :])[::-1]), to_print=True)
 
         # Calculating the particle number from the particle masses
         mass_to_number = np.power(2, self.DN * base_dict['size_class'])
