@@ -91,7 +91,8 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
                 twin_ax[1].plot(size_classes, box_mass[time]['total'], linestyle='--', c=c)
 
         # Adding a legend
-        line_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(ind, subdivisions=self.class_num, cmap=self.cmap),
+        line_number = 12 * self.sim_length / self.month_step
+        line_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(ind, subdivisions=line_number, cmap=self.cmap),
                                 label=label, linestyle='-')[0] for ind, label in enumerate(labels)]
         ax[-1].legend(handles=line_colors, fontsize=self.legend_size, loc='upper right')
 
