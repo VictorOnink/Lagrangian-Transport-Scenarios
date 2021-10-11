@@ -88,11 +88,6 @@ class parcels_to_particle_number:
                         # Getting the ID of all the new created particles, where we need to add the +1 to the time index
                         # since the new particles are only technically present in the next time step
                         c_id, _ = np.where((base_dict['time'] == base_dict['time'][p_id, t_ind + 1]) & (base_dict['parent'] == p_id))
-                    if p_id == 55:
-                        print('splitevents={}'.format(base_dict['to_split'][p_id, :].sum()))
-                        print('c_id={}'.format(c_id))
-                        print('c_id.size={}'.format(c_id.size))
-                        print('t_id={}'.format(t_ind))
                     # Looping through the newly created particles, where the first is skipped as it is the parent
                     if c_id.size > 0:
                         for index_id in range(1, c_id.size):
@@ -103,6 +98,7 @@ class parcels_to_particle_number:
                                 previous_split.append(c_id[index_id])
                             # Accounting again for mass loss
                             self.output_dict['particle_mass_sink'][c_id[index_id], :] *= mass_remainder[c_id[index_id], :]
+                    print(previous_split)
 
         for p_id in range(self.particle_number):
             utils.print_statement('{} {} parent={} {}'.format(p_id,
