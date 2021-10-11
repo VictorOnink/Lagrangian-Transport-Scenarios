@@ -21,7 +21,7 @@ class FragmentationKaandorpPartial_timeseries:
         self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/FragmentationKaandorpPartial/'
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'timeseries'
-        self.beach_state_list = ['beach', 'afloat', 'total']
+        self.beach_state_list = ['beach', 'adrift', 'total']
         # Figure parameters
         self.figure_size = (20, 14)
         self.figure_shape = (self.beach_state_list.__len__(), 1)
