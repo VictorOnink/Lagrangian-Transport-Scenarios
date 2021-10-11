@@ -55,7 +55,7 @@ class FragmentationKaandorpPartial_timeseries:
             time_list.append(datetime(settings.STARTYEAR, 1, 1, 12) + timedelta(seconds=time))
 
         # Creating figure
-        ax = vUtils.base_figure(fig_size=self.fig_size, ax_range=self.ax_range, y_label=self.y_label,
+        ax = vUtils.base_figure(fig_size=self.figure_size, ax_range=self.ax_range, y_label=self.y_label,
                                 x_label=self.x_label, ax_label_size=self.ax_label_size,
                                 ax_ticklabel_size=self.ax_ticklabel_size, shape=self.figure_shape,
                                 plot_num=self.number_of_plots, legend_axis=True, log_yscale=True, x_time_axis=True,
