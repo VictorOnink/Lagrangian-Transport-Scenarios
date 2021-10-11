@@ -9,7 +9,7 @@ from Analysis.FragmentationKaandorp_boxmodel import FragmentationKaandorp_box_mo
 
 
 class FragmentationKaandorpPartial_boxmodelcomparison:
-    def __init__(self, figure_direc, scenario, shore_time, lambda_frag, rho, sink=True, sim_length=2):
+    def __init__(self, figure_direc, scenario, shore_time, lambda_frag, rho, sink=True, sim_length=2, month_step=4):
         # Data parameters
         self.output_direc = figure_direc + 'size_distribution/'
         self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'size_distribution/FragmentationKaandorpPartial/'
@@ -27,6 +27,7 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
         else:
             self.count, self.mass = 'particle_number_sink', 'particle_mass_sink'
         self.sim_length = sim_length
+        self.month_step = month_step
         # Figure parameters
         self.fig_size = (14, 10)
         self.fig_shape = (1, 2)
@@ -79,14 +80,14 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
 
         # Plotting the model distributions from the parcels analysis
         for index_time, time in enumerate(time_indices):
-            if index_time % 4 == 0:
+            if index_time % self.month_step == 0:
                 c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=len(time_indices), cmap=self.cmap)
                 ax[0].plot(size_classes, data_dict[self.count][time], linestyle='-', c=c, label='Month {}'.format(index_time))
                 twin_ax[1].plot(size_classes, data_dict[self.mass][time], linestyle='-', c=c)
         lines, labels = ax[0].get_legend_handles_labels()
         # Plotting the model distributions from the box model
         for index_time, time in enumerate(box_time):
-            if index_time % 12 == 0 and type(time) == int:
+            if index_time % 4 * self.month_step == 0 and type(time) == int:
                 c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=len(box_time), cmap=self.cmap)
                 ax[0].plot(size_classes, box_number[time]['total'], linestyle='--', c=c)
                 twin_ax[1].plot(size_classes, box_mass[time]['total'], linestyle='--', c=c)
