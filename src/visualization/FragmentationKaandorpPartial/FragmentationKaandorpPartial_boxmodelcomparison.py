@@ -79,6 +79,7 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
         # Plotting the model distributions from the parcels analysis
         for index_time, time in enumerate(time_indices):
             if index_time % self.month_step == 0 and index_time <= 12 * self.sim_length:
+                print('{} {}'.format(index_time, 12 * self.sim_length))
                 c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=len(time_indices), cmap=self.cmap)
                 ax[0].plot(size_classes, data_dict[self.count][time], linestyle='-', c=c, label='Month {}'.format(index_time))
                 twin_ax[1].plot(size_classes, data_dict[self.mass][time], linestyle='-', c=c)
@@ -86,6 +87,7 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
         # Plotting the model distributions from the box model
         for index_time, time in enumerate(box_time):
             if index_time % 4 * self.month_step == 0 and index_time <= 52 * self.sim_length and type(time) == int:
+                print('{} {}'.format(index_time, 52 * self.sim_length))
                 c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=len(box_time), cmap=self.cmap)
                 ax[0].plot(size_classes, box_number[time]['total'], linestyle='--', c=c)
                 twin_ax[1].plot(size_classes, box_mass[time]['total'], linestyle='--', c=c)
