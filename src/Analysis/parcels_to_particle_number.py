@@ -96,7 +96,7 @@ class parcels_to_particle_number:
                             if c_id[index_id] not in previous_split:
                                 if p_id == 55:
                                     print('c_id[index_id] = {}'.format(c_id[index_id]))
-                                    print('size_class = {}'.format(base_dict['size_class']))
+                                    print('size_class = {}'.format(base_dict['size_class'][p_id, 0]))
                                 for variable in self.mass_list:
                                     self.output_dict[variable][c_id[index_id], :] = self.output_dict[variable][p_id, t_ind] * new_particle_mass
                                     if p_id == 55:
