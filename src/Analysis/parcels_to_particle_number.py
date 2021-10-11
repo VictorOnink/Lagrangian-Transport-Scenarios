@@ -47,7 +47,7 @@ class parcels_to_particle_number:
 
         # Computing the mass removal fraction
         age_in_timesteps = base_dict['age'] // self.dt
-        mass_fraction = np.power(1 - settings.P_SINK, age_in_timesteps)
+        mass_remainder = np.power(1 - settings.P_SINK, age_in_timesteps)
 
         # Initializing the output dict with arrays equal in size to the variables in self.base_file
         # Note: The mass loss accounting needs to be updated whenever we have a split event
@@ -59,7 +59,7 @@ class parcels_to_particle_number:
         self.output_dict = self.restart_initialization(output_dict=self.output_dict)
 
         # Adding the age correction to the particle mass array
-        self.output_dict['particle_mass_sink'] = np.multiply(self.output_dict['particle_mass_sink'], mass_fraction)
+        self.output_dict['particle_mass_sink'] = np.multiply(self.output_dict['particle_mass_sink'], mass_remainder)
 
         # Looping through the particles, identifying the split points
         pbar = ProgressBar()
@@ -93,7 +93,7 @@ class parcels_to_particle_number:
                             for variable in self.mass_list:
                                 self.output_dict[variable][c_id[index_id], :] = self.output_dict[variable][p_id, t_ind] * new_particle_mass
                             # Accounting again for mass loss
-                            self.output_dict['particle_mass_sink'][c_id[index_id], :] *= mass_fraction[c_id[index_id], :]
+                            self.output_dict['particle_mass_sink'][c_id[index_id], :] *= mass_remainder[c_id[index_id], :]
 
         # Calculating the particle number from the particle masses
         mass_to_number = np.power(2, self.DN * base_dict['size_class'])
