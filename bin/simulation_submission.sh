@@ -62,7 +62,7 @@ export ADVECTION_DATA
 #Start year of the simulation. 0 = new simulation, otherwise it picks up from a previous simulation
 START=0
 #Number of years the simulation runs
-SIMLEN=2
+SIMLEN=1
 export SIMLEN
 #Inclusion of Stokes drift. 0 = include stokes, 1 = do not include stokes
 STOKES=0
