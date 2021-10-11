@@ -88,10 +88,11 @@ class parcels_to_particle_number:
                         # Getting the ID of all the new created particles, where we need to add the +1 to the time index
                         # since the new particles are only technically present in the next time step
                         c_id, _ = np.where((base_dict['time'] == base_dict['time'][p_id, t_ind + 1]) & (base_dict['parent'] == p_id))
-
+                    if p_id in c_id:
+                        c_id = np.delete(c_id, np.where(c_id == p_id))
                     # Looping through the newly created particles, where the first is skipped as it is the parent
                     if c_id.size > 0:
-                        for index_id in range(1, c_id.size):
+                        for index_id in range(0, c_id.size):
                             new_particle_mass = utils.mass_per_size_class(k=index_id, f=self.f)
                             if c_id[index_id] not in previous_split:
                                 if p_id == 55:
