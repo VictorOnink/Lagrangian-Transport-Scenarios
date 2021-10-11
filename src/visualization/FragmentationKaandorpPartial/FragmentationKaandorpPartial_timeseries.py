@@ -32,7 +32,7 @@ class FragmentationKaandorpPartial_timeseries:
         self.x_label = 'Time'
         self.xmin, self.xmax = datetime(settings.STARTYEAR, 1, 1), \
                                datetime(settings.STARTYEAR + self.simulation_length, 1, 1)
-        self.ymin, self.ymax = 1e-10, 1e20
+        self.ymin, self.ymax = 1e-10, 6000
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
         self.number_of_plots = self.beach_state_list.__len__()
 
