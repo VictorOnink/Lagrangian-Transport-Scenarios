@@ -89,6 +89,10 @@ class parcels_to_particle_number:
                         # since the new particles are only technically present in the next time step
                         c_id, _ = np.where((base_dict['time'] == base_dict['time'][p_id, t_ind + 1]) & (base_dict['parent'] == p_id))
                     # Looping through the newly created particles, where the first is skipped as it is the parent
+                    if p_id == 55:
+                        print('t_ind = {}'.format(t_ind))
+                        print('self.output_dict[variable][p_id, t_ind] = {}'.format(self.output_dict[variable][p_id, t_ind]))
+                        print('np.unique(p_id) = {}'.format(np.unique(self.output_dict[variable][p_id, :])))
                     if c_id.size > 0:
                         for index_id in range(1, c_id.size):
                             new_particle_mass = utils.mass_per_size_class(k=index_id, f=self.f)
