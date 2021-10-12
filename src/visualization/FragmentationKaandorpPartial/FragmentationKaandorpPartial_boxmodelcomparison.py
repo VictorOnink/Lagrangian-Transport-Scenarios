@@ -89,11 +89,11 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
                 ax[0].plot(size_classes, data_dict['total'][self.count][time], linestyle='-', c=c, label='Month {}'.format(index_time))
                 twin_ax[1].plot(size_classes, data_dict['total'][self.mass][time], linestyle='-', c=c)
 
-        for index_time, time in enumerate(time_indices):
-            if index_time % self.month_step == 0 and index_time <= 12 * self.sim_length:
-                c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=subdivision_number, cmap=self.cmap)
-                ax[2].plot(size_classes, data_dict['beach'][self.count][time], linestyle='-', c=c)
-                twin_ax[3].plot(size_classes, data_dict['beach'][self.mass][time], linestyle='-', c=c)
+        # for index_time, time in enumerate(time_indices):
+        #     if index_time % self.month_step == 0 and index_time <= 12 * self.sim_length:
+        #         c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=subdivision_number, cmap=self.cmap)
+        #         ax[2].plot(size_classes, data_dict['beach'][self.count][time], linestyle='-', c=c)
+        #         twin_ax[3].plot(size_classes, data_dict['beach'][self.mass][time], linestyle='-', c=c)
 
         for index_time, time in enumerate(time_indices):
             if index_time % self.month_step == 0 and index_time <= 12 * self.sim_length:
