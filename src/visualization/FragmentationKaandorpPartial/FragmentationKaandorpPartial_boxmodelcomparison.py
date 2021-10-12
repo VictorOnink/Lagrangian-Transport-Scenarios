@@ -62,6 +62,7 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
             data_dict['total'][self.mass][time] = data['adrift'][self.mass][time] + data['beach'][self.mass][time]
             for variable in ['adrift', 'beach']:
                 data_dict[variable][self.count][time] = data[variable][self.count][time]
+                data_dict[variable][self.mass][time] = data[variable][self.mass][time]
 
         # Loading the box model data
         box_model_data = FragmentationKaandorp_box_model(sim_length=self.sim_length, lambda_f=388).load_box_model(rerun=True)
@@ -89,11 +90,11 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
                 ax[0].plot(size_classes, data_dict['total'][self.count][time], linestyle='-', c=c, label='Month {}'.format(index_time))
                 twin_ax[1].plot(size_classes, data_dict['total'][self.mass][time], linestyle='-', c=c)
 
-        # for index_time, time in enumerate(time_indices):
-        #     if index_time % self.month_step == 0 and index_time <= 12 * self.sim_length:
-        #         c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=subdivision_number, cmap=self.cmap)
-        #         ax[2].plot(size_classes, data_dict['beach'][self.count][time], linestyle='-', c=c)
-        #         twin_ax[3].plot(size_classes, data_dict['beach'][self.mass][time], linestyle='-', c=c)
+        for index_time, time in enumerate(time_indices):
+            if index_time % self.month_step == 0 and index_time <= 12 * self.sim_length:
+                c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=subdivision_number, cmap=self.cmap)
+                ax[2].plot(size_classes, data_dict['beach'][self.count][time], linestyle='-', c=c)
+                twin_ax[3].plot(size_classes, data_dict['beach'][self.mass][time], linestyle='-', c=c)
 
         for index_time, time in enumerate(time_indices):
             if index_time % self.month_step == 0 and index_time <= 12 * self.sim_length:
