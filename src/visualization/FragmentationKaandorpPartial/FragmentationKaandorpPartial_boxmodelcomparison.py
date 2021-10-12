@@ -121,7 +121,7 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
         # Saving the figure
         str_format = self.shore_time, self.rho, self.lambda_frag, self.sink
         file_name = self.output_direc + 'boxmodel_comparison-ST={}-rho={}-lambda_f={}_sink={}.png'.format(*str_format)
-        plt.savefig(file_name, bbox_inches='tight')
+        plt.savefig(file_name, bbox_inches='tight', dpi=300)
 
 
 def subfigure_title(index):
