@@ -110,7 +110,8 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
 def subfigure_title(index):
     alphabet = string.ascii_lowercase
     subtitle_list = ['Counts', 'Mass']
-    return '({}) {}'.format(alphabet[index], subtitle_list[index])
+    reservoir_list = ['Total', 'Beach', 'Adrift']
+    return '({}) {} - {}'.format(alphabet[index], reservoir_list[index // 2], subtitle_list[index % 2])
 
 
 
