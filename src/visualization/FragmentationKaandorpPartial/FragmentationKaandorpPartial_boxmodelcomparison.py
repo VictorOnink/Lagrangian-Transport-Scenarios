@@ -4,6 +4,7 @@ import visualization.visualization_utils as vUtils
 import matplotlib.pyplot as plt
 import string
 from Analysis.FragmentationKaandorp_boxmodel import FragmentationKaandorp_box_model
+from copy import deepcopy
 
 
 class FragmentationKaandorpPartial_boxmodelcomparison:
@@ -26,6 +27,7 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
             self.count, self.mass = 'particle_number_sink', 'particle_mass_sink'
         self.sim_length = sim_length
         self.month_step = month_step
+        self.reservoir_list = ['total', 'beach', 'adrift']
         # Figure parameters
         self.fig_size = (14, 10)
         self.fig_shape = (3, 2)
@@ -48,15 +50,18 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
         size_classes = utils.size_range(size_class_number=self.class_num, units='mm')
 
         # Loading the parcels data
-        data_dict = {self.count: {}, self.mass: {}}
+        base_dict = {self.count: {}, self.mass: {}}
+        data_dict = {'total': deepcopy(base_dict), 'adrift': deepcopy(base_dict), 'beach': deepcopy(base_dict)}
         data = vUtils.FragmentationKaandorpPartial_load_data(scenario=self.scenario, prefix=self.prefix,
                                                              data_direc=self.data_direc, shore_time=self.shore_time,
                                                              lambda_frag=self.lambda_frag, rho=self.rho,
                                                              postprocess=True)
         time_indices = data['beach'][self.mass].keys()
         for time in time_indices:
-            data_dict[self.count][time] = data['adrift'][self.count][time] + data['beach'][self.count][time]
-            data_dict[self.mass][time] = data['adrift'][self.mass][time] + data['beach'][self.mass][time]
+            data_dict['total'][self.count][time] = data['adrift'][self.count][time] + data['beach'][self.count][time]
+            data_dict['total'][self.mass][time] = data['adrift'][self.mass][time] + data['beach'][self.mass][time]
+            for variable in ['adrift', 'beach']:
+                data_dict[variable][self.count][time] = data[variable][self.count][time]
 
         # Loading the box model data
         box_model_data = FragmentationKaandorp_box_model(sim_length=self.sim_length, lambda_f=388).load_box_model(rerun=True)
@@ -80,17 +85,28 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
         subdivision_number = int(12 * self.sim_length // self.month_step)
         for index_time, time in enumerate(time_indices):
             if index_time % self.month_step == 0 and index_time <= 12 * self.sim_length:
-                print('{} {}'.format(index_time, 12 * self.sim_length))
                 c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=subdivision_number, cmap=self.cmap)
-                ax[0].plot(size_classes, data_dict[self.count][time], linestyle='-', c=c, label='Month {}'.format(index_time))
-                twin_ax[1].plot(size_classes, data_dict[self.mass][time], linestyle='-', c=c)
+                ax[0].plot(size_classes, data_dict['total'][self.count][time], linestyle='-', c=c, label='Month {}'.format(index_time))
+                twin_ax[1].plot(size_classes, data_dict['total'][self.mass][time], linestyle='-', c=c)
+
+        for index_time, time in enumerate(time_indices):
+            if index_time % self.month_step == 0 and index_time <= 12 * self.sim_length:
+                c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=subdivision_number, cmap=self.cmap)
+                ax[2].plot(size_classes, data_dict['beach'][self.count][time], linestyle='-', c=c)
+                twin_ax[3].plot(size_classes, data_dict['beach'][self.mass][time], linestyle='-', c=c)
+
+        for index_time, time in enumerate(time_indices):
+            if index_time % self.month_step == 0 and index_time <= 12 * self.sim_length:
+                c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=subdivision_number, cmap=self.cmap)
+                ax[4].plot(size_classes, data_dict['adrift'][self.count][time], linestyle='-', c=c)
+                twin_ax[5].plot(size_classes, data_dict['adrift'][self.mass][time], linestyle='-', c=c)
+
         lines, labels = ax[0].get_legend_handles_labels()
 
         # Plotting the model distributions from the box model
         subdivision_number = int(52 * self.sim_length // self.month_step)
         for index_time, time in enumerate(box_time):
             if index_time % 4 * self.month_step == 0 and index_time <= 52 * self.sim_length and type(time) == int:
-                print('{} {}'.format(index_time, 52 * self.sim_length))
                 c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=subdivision_number, cmap=self.cmap)
                 ax[0].plot(size_classes, box_number[time]['total'], linestyle='--', c=c)
                 twin_ax[1].plot(size_classes, box_mass[time]['total'], linestyle='--', c=c)
