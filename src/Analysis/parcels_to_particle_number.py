@@ -68,7 +68,7 @@ class parcels_to_particle_number:
             if base_dict['to_split'][p_id, :].max() == 1:
                 split_cases = np.where(base_dict['to_split'][p_id, :] == 1)[0]
                 # We make an array that tracks the particles created in previous split events
-                previous_split = []
+                previous_split = [p_id]
                 # Looping through the split events, calculating the particle mass after each split event
                 for t_ind in split_cases:
                     mass_fraction = utils.mass_per_size_class(k=0, f=self.f)
@@ -88,8 +88,11 @@ class parcels_to_particle_number:
                         # Getting the ID of all the new created particles, where we need to add the +1 to the time index
                         # since the new particles are only technically present in the next time step
                         c_id, _ = np.where((base_dict['time'] == base_dict['time'][p_id, t_ind + 1]) & (base_dict['parent'] == p_id))
-                    if p_id in c_id:
-                        c_id = np.delete(c_id, np.where(c_id == p_id))
+                    # Removing all particles that were already involved in a previous split so that we only consider
+                    # newly created particles
+                    for prospect_p in c_id:
+                        if prospect_p in previous_split:
+                            c_id = np.delete(c_id, np.where(c_id == prospect_p))
                     # Looping through the newly created particles, where the first is skipped as it is the parent
                     if c_id.size > 0:
                         for index_id in range(0, c_id.size):
