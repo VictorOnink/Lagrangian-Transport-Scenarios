@@ -27,9 +27,9 @@ def run(scenario, figure_direc: str):
     # timeseries.FragmentationKaandorpPartial_timeseries(scenario=scenario, figure_direc=figure_direc,
     #                                                    shore_time=shore_time, lambda_frag=300, rho=rho,
     #                                                    simulation_length=1, weight='particle_number').plot()
-    timeseries.FragmentationKaandorpPartial_timeseries(scenario=scenario, figure_direc=figure_direc,
-                                                       shore_time=shore_time, lambda_frag=388, rho=rho,
-                                                       simulation_length=1, weight='particle_mass').plot()
+    # timeseries.FragmentationKaandorpPartial_timeseries(scenario=scenario, figure_direc=figure_direc,
+    #                                                    shore_time=shore_time, lambda_frag=388, rho=rho,
+    #                                                    simulation_length=1, weight='particle_mass').plot()
     # timeseries.FragmentationKaandorpPartial_timeseries(scenario=scenario, figure_direc=figure_direc,
     #                                                    shore_time=shore_time, lambda_frag=1000, rho=rho,
     #                                                    simulation_length=1, weight='particle_number').plot()
@@ -46,9 +46,9 @@ def run(scenario, figure_direc: str):
     # box_model.FragmentationKaandorpPartial_boxmodelcomparison(figure_direc=figure_direc, scenario=scenario,
     #                                                           shore_time=shore_time, lambda_frag=388,
     #                                                           rho=rho, sink=False, sim_length=0.5, month_step=1).plot()
-    # box_model.FragmentationKaandorpPartial_boxmodelcomparison(figure_direc=figure_direc, scenario=scenario,
-    #                                                           shore_time=shore_time, lambda_frag=388,
-    #                                                           rho=rho, sink=True, sim_length=0.5, month_step=1).plot()
+    box_model.FragmentationKaandorpPartial_boxmodelcomparison(figure_direc=figure_direc, scenario=scenario,
+                                                              shore_time=shore_time, lambda_frag=388,
+                                                              rho=rho, sink=True, sim_length=0.5, month_step=1).plot()
 
     # vertical_profile.FragmentationKaandorpPartial_vertical_profile(figure_direc=figure_direc, scenario=scenario,
     #                                                                shore_time=shore_time, lambda_frag=38000, rho=rho,
