@@ -28,7 +28,7 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
         self.month_step = month_step
         # Figure parameters
         self.fig_size = (14, 10)
-        self.fig_shape = (1, 2)
+        self.fig_shape = (3, 2)
         self.x_label = 'Size (mm)'
         self.y_label = r'Particle Number (n)'
         self.twiny_label = r'Particle Mass (g)'
