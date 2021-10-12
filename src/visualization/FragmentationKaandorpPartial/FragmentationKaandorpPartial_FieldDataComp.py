@@ -60,7 +60,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
                 data_dict[lambda_frag][beach_state] = {}
                 data_dict[lambda_frag][beach_state][self.count] = data[beach_state][self.count]
                 data_dict[lambda_frag][beach_state][self.mass] = data[beach_state][self.mass]
-        time_index = data['final_index']
+        time_index = data['final_index'] // 2
         field_dict = utils.load_obj(vUtils.FragmentationKaandorpPartial_fielddata_filename())
 
         # Creating the figure
