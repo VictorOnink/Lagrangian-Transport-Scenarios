@@ -86,14 +86,8 @@ class parcels_to_timeseries:
                                          dataset_post = utils.load_obj(filename=file_name)
                                          for beach_state in self.output_dict.keys():
                                              if beach_state != 'time':
-                                                 if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
-                                                     for size_class in range(settings.SIZE_CLASS_NUMBER):
-                                                         for weight in self.weight_list:
-                                                             self.output_dict[beach_state][size_class][weight] += \
-                                                             dataset_post[beach_state][size_class][weight]
-                                                 else:
-                                                     self.output_dict[beach_state] += dataset_post[beach_state]
-                                         utils.remove_file(file_name + '.pkl')
+                                                self.output_dict[beach_state] += dataset_post[beach_state]
+                                         # utils.remove_file(file_name + '.pkl')
                                 else:
                                     dataset_post = utils.load_obj(filename=file_name)
                                     for beach_state in self.output_dict.keys():
@@ -102,8 +96,6 @@ class parcels_to_timeseries:
                                                 for size_class in range(settings.SIZE_CLASS_NUMBER):
                                                     for weight in self.weight_list:
                                                         self.output_dict[beach_state][size_class][weight] += dataset_post[beach_state][size_class][weight]
-                                            else:
-                                                self.output_dict[beach_state] += dataset_post[beach_state]
                                     utils.remove_file(file_name)
             # Saving the output
             file_name = get_file_names(file_dict=self.file_dict, directory=self.output_direc, final=True)
