@@ -7,11 +7,11 @@ from datetime import datetime, timedelta
 
 
 class SizeTransport_beach_timeseries:
-    def __init__(self, scenario, figure_direc, size_list, simulation_years, rho=920, without_seabed=True):
+    def __init__(self, scenario, figure_direc, size_list, simulation_years, rho_list=[920], without_seabed=True):
         utils.print_statement('Creating the SizeTransport timeseries figure', to_print=True)
         # Simulation parameters
         self.scenario = scenario
-        self.rho = rho
+        self.rho_list = rho_list
         self.size_list = size_list
         self.tau = 0.0
         self.simulation_years = simulation_years
@@ -32,29 +32,33 @@ class SizeTransport_beach_timeseries:
         self.beach_state_list = ['beach', 'adrift', 'seabed']
         self.y_label = 'Fraction of Total (%)'
         self.x_label = 'Time (yr)'
+        self.rho_line_dict = {920: '-', 980: '.'}
         if self.without_seabed:
             _ = self.beach_state_list.pop(-1)
         self.number_of_plots = self.beach_state_list.__len__()
 
     def plot(self):
         # Loading the data
-        timeseries_dict = {}
-        for size in self.size_list:
-            timeseries_dict[size] = {}
-            data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix, data_direc=self.data_direc,
-                                                       size=size, rho=self.rho, tau=self.tau)
-            for beach_state in self.beach_state_list:
-                timeseries_dict[size][beach_state] = data_dict[beach_state]
-            timeseries_dict[size]['time_raw'] = data_dict['time']
-            timeseries_dict[size]['total_divide'] = data_dict['total'][0]
-        time_list = create_time_list(data_dict)
+        timeseries_dict = dict.fromkeys(self.rho_list)
+        for rho in self.rho_list:
+            timeseries_dict[rho] = {}
+            for size in self.size_list:
+                timeseries_dict[rho][size] = {}
+                data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix, data_direc=self.data_direc,
+                                                           size=size, rho=rho, tau=self.tau)
+                for beach_state in self.beach_state_list:
+                    timeseries_dict[rho][size][beach_state] = data_dict[beach_state]
+                timeseries_dict[rho][size]['time_raw'] = data_dict['time']
+                timeseries_dict[rho][size]['total_divide'] = data_dict['total'][0]
+            time_list = create_time_list(data_dict)
 
         # Normalizing all the particle counts with the total number of particles, and then multiplying by 100 to get a
         # percentage
-        for size in self.size_list:
-            for beach_state in self.beach_state_list:
-                timeseries_dict[size][beach_state] /= timeseries_dict[size]['total_divide']
-                timeseries_dict[size][beach_state] *= 100.
+        for rho in self.rho_list:
+            for size in self.size_list:
+                for beach_state in self.beach_state_list:
+                    timeseries_dict[rho][size][beach_state] /= timeseries_dict[rho][size]['total_divide']
+                    timeseries_dict[rho][size][beach_state] *= 100.
 
         # Creating the figure
         ax = vUtils.base_figure(fig_size=self.figure_size, ax_range=self.ax_range, y_label=self.y_label,
@@ -68,16 +72,19 @@ class SizeTransport_beach_timeseries:
             ax[index].set_title(subfigure_title(index, beach_state), fontsize=self.ax_label_size)
 
         # Now, adding in the actual data
-        for index_size, size in enumerate(self.size_list):
-            for index_beach, beach_state in enumerate(self.beach_state_list):
-                line_color = vUtils.discrete_color_from_cmap(index_size, subdivisions=len(self.size_list))
-                ax[index_beach].plot(time_list, timeseries_dict[size][beach_state], linestyle='-',
-                                     color=line_color, label=size_label(size))
+        for rho in self.rho_list:
+            for index_size, size in enumerate(self.size_list):
+                for index_beach, beach_state in enumerate(self.beach_state_list):
+                    line_color = vUtils.discrete_color_from_cmap(index_size, subdivisions=len(self.size_list))
+                    ax[index_beach].plot(time_list, timeseries_dict[rho][size][beach_state], linestyle=self.rho_line_dict[rho],
+                                         color=line_color, label=size_label(size))
         # Creating a legend
+        rho_lines = [plt.plot([], [], c='k', label=r'$\rho=$' + str(rho) + r'kg m$^{-3}$', linestyle=self.rho_line_dict[rho])[0]
+                     for rho in self.rho_list]
         size_number = self.size_list.__len__()
         size_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(index_size, subdivisions=size_number),
                                 label=size_label(size), linestyle='-')[0] for index_size, size in enumerate(self.size_list)]
-        ax[-1].legend(handles= size_colors, fontsize=self.ax_label_size, loc='upper right')
+        ax[-1].legend(handles=rho_lines + size_colors, fontsize=self.ax_label_size, loc='upper right')
         ax[-1].axis('off')
 
         file_name = self.output_direc + 'SizeTransport_beach_state_timeseries.jpg'
