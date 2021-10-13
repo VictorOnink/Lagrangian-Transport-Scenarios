@@ -79,7 +79,7 @@ class SizeTransport_beach_timeseries:
                     ax[index_beach].plot(time_list, timeseries_dict[rho][size][beach_state], linestyle=self.rho_line_dict[rho],
                                          color=line_color, label=size_label(size))
         # Creating a legend
-        rho_lines = [plt.plot([], [], c='k', label=r'$\rho=$' + str(rho) + r'kg m$^{-3}$', linestyle=self.rho_line_dict[rho])[0]
+        rho_lines = [plt.plot([], [], c='k', label=r'$\rho=$' + str(rho) + r' kg m$^{-3}$', linestyle=self.rho_line_dict[rho])[0]
                      for rho in self.rho_list]
         size_number = self.size_list.__len__()
         size_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(index_size, subdivisions=size_number),
