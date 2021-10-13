@@ -166,7 +166,7 @@ def create_output_dict(scenario_name, depth_bins, concentration_list, counts_lis
         simulation_range = settings.SIM_LENGTH + 1
     else:
         base_dict = {'counts': 0.0, 'concentration': np.zeros(depth_bins.__len__() - 1, dtype=np.float32)}
-        simulation_range = settings.SIM_LENGTH
+        simulation_range = settings.SIM_LENGTH + 1
     for simulation_year in range(simulation_range):
         key_year = utils.analysis_simulation_year_key(simulation_year)
         output_dict[key_year] = {}
