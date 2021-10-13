@@ -547,7 +547,7 @@ def sticky_seafloor_boundary(particle, fieldset, time):
         particle.depth = particle.potential
 
 
-def initial_estimate_particle_rise_velocity(L=settings.INIT_SIZE, print_rise=False):
+def initial_estimate_particle_rise_velocity(L=settings.INIT_SIZE, print_rise=False, rho_p=settings.INIT_DENSITY):
     """
     Here we make an initial estimate of what the particle rise velocity is based on Enders et al. (2015)
     https://doi.org/10.1016/j.marpolbul.2015.09.027
@@ -556,7 +556,6 @@ def initial_estimate_particle_rise_velocity(L=settings.INIT_SIZE, print_rise=Fal
     """
     if type(L) in [float, int, np.float64, np.float32, np.int64, np.int32]:
         def to_optimize(w_rise):
-            rho_p = settings.INIT_DENSITY  # Density of plastic particle
             rho_w = 1027  # rho sea water (kg/m^3)
             nu = 1.1e-6  # kinematic viscosity of sea water (Enders et al., 2015)
             left = (1. - rho_p / rho_w) * 8. / 3. * L * settings.G
@@ -584,14 +583,14 @@ def initial_estimate_particle_rise_velocity(L=settings.INIT_SIZE, print_rise=Fal
         print_statement("the input type is {}, and the value is {}".format(type(L), L), to_print=True)
 
 
-def initial_reynolds_number(L=settings.INIT_SIZE, rise_velocity=None):
+def initial_reynolds_number(L=settings.INIT_SIZE, rise_velocity=None, rho_p=settings.INIT_DENSITY):
     if rise_velocity is None:
-        rise_velocity = initial_estimate_particle_rise_velocity(L=L)
+        rise_velocity = initial_estimate_particle_rise_velocity(L=L, rho_p=rho_p)
     nu = 1.1e-6  # kinematic viscosity of sea water (Enders et al., 2015)
     return L * np.abs(rise_velocity) / nu
 
 
-def get_resuspension_timescale(L=settings.INIT_SIZE, w_rise=None, print_size=False):
+def get_resuspension_timescale(L=settings.INIT_SIZE, w_rise=None, print_size=False, rho_p=settings.INIT_DENSITY):
     """
     This follows equation 9 from Hinata et al. (2017)
     https://doi.org/10.1016/j.marpolbul.2017.05.012
@@ -600,7 +599,7 @@ def get_resuspension_timescale(L=settings.INIT_SIZE, w_rise=None, print_size=Fal
     :return:
     """
     if w_rise is None:
-        w_rise = initial_estimate_particle_rise_velocity(L=L)
+        w_rise = initial_estimate_particle_rise_velocity(L=L, rho_p=rho_p)
     lambda_R = 2.6e2 * np.abs(w_rise) + 7.1
     print_statement("The resuspension timescale for a particle of size {} is {:.6f} days".format(settings.INIT_SIZE, np.mean(lambda_R)), to_print=print_size)
     return lambda_R
