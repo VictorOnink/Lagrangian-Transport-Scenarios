@@ -71,11 +71,6 @@ class parcels_to_timeseries:
             print_statement = 'The timeseries for year {}-{}, run {} restart {} has been save'.format(*str_format)
             utils.print_statement(print_statement, to_print=True)
 
-            for time_index, time_value in enumerate(self.time_list):
-                print_statement = '{}, {}, {}, {}, {}'.format(time_index, time_value, self.output_dict['beach'][time_index],
-                                                              self.output_dict['adrift'][time_index], self.output_dict['removed'][time_index])
-                utils.print_statement(print_statement, to_print=True)
-
         elif self.parallel_step == 2:
             pbar = ProgressBar()
             for ind_year, year in pbar(enumerate(range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH))):
@@ -107,6 +102,12 @@ class parcels_to_timeseries:
             utils.save_obj(filename=file_name, item=self.output_dict)
             print_statement = 'The timeseries have been saved'
             utils.print_statement(print_statement, to_print=True)
+
+            for time_index, time_value in enumerate(self.time_list):
+                print_statement = '{}, {}, {}, {}, {}'.format(time_index, time_value, self.output_dict['beach'][time_index],
+                                                              self.output_dict['adrift'][time_index], self.output_dict['removed'][time_index])
+                utils.print_statement(print_statement, to_print=True)
+
 
         else:
             ValueError('settings.PARALLEL_STEP can not have a value of {}'.format(self.parallel_step))
