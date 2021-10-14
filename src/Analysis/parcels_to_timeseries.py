@@ -82,7 +82,8 @@ class parcels_to_timeseries:
                 for month in range(1, 13):
                     month_count = 0
                     for run in range(0, settings.RUN_RANGE):
-                        for restart in range(0, settings.SIM_LENGTH - ind_year):
+                        # for restart in range(0, settings.SIM_LENGTH - ind_year):
+                        for restart in range(0, 1):
                                 file_name = get_file_names(file_dict=self.file_dict,
                                                            directory=self.temp_direc, final=False, year=year,
                                                            month=month,
@@ -111,8 +112,8 @@ class parcels_to_timeseries:
             utils.print_statement(print_statement, to_print=True)
 
             for time_index, time_value in enumerate(self.time_list):
-                print_statement = '{}, {}, {}, {}, {}'.format(time_index, time_value, self.output_dict['beach'][time_index],
-                                                              self.output_dict['adrift'][time_index], self.output_dict['removed'][time_index])
+                print_statement = '{}, {}, {}, {}, {}'.format(time_index, time_value, dataset_post['beach'][time_index],
+                                                              dataset_post['adrift'][time_index], dataset_post['removed'][time_index])
                 utils.print_statement(print_statement, to_print=True)
 
 
