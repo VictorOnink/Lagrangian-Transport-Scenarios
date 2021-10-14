@@ -126,7 +126,7 @@ def set_normalization(beach_state, simulation_year):
     """
     if beach_state == 'adrift':
         if simulation_year == 0:
-            vmin, vmax = 1e6, 1e15
+            vmin, vmax = 1e0, 1e7
         elif simulation_year == 1:
             vmin, vmax = 1e15, 1e24
     elif beach_state == 'beach':
