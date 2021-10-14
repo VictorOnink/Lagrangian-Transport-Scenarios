@@ -107,7 +107,7 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
         # Plotting the model distributions from the box model
         subdivision_number = int(52 * self.sim_length // self.month_step)
         for index_time, time in enumerate(box_time):
-            if index_time % 4 * self.month_step == 0 and index_time <= 52 * self.sim_length and type(time) == int:
+            if index_time % (4 * self.month_step) == 0 and index_time <= 52 * self.sim_length and type(time) == int:
                 c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=subdivision_number, cmap=self.cmap)
                 ax[0].plot(size_classes, box_number[time]['total'], linestyle='--', c=c)
                 twin_ax[1].plot(size_classes, box_mass[time]['total'], linestyle='--', c=c)
@@ -125,8 +125,8 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
                 twin_ax[5].plot(size_classes, box_mass[time]['ocean'] + box_mass[time]['coastal'], linestyle='--', c=c)
 
         # Adding a legend
-        line_number = int(12 * self.sim_length // self.month_step)
-        line_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(ind, subdivisions=line_number, cmap=self.cmap),
+        subdivision_number = int(12 * self.sim_length // self.month_step)
+        line_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(ind, subdivisions=subdivision_number, cmap=self.cmap),
                                 label=label, linestyle='-')[0] for ind, label in enumerate(labels)]
         ax[-1].legend(handles=line_colors, fontsize=self.legend_size, loc='upper right')
 
