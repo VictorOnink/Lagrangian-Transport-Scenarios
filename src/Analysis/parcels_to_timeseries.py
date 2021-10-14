@@ -86,6 +86,7 @@ class parcels_to_timeseries:
                                 if month == 1:
                                     dataset_post = utils.load_obj(filename=file_name)
                                     print(file_name)
+                                    print('{} {} {} {}'.format(year, month, run, restart))
                                     for beach_state in self.output_dict.keys():
                                         if beach_state != 'time':
                                             for time_index in range(dataset_post[beach_state].size):
