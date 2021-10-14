@@ -10,7 +10,7 @@ import cmocean.cm as cmo
 
 
 class SizeTransport_VerticalProfile:
-    def __init__(self, scenario, figure_direc, size_list, time_selection):
+    def __init__(self, scenario, figure_direc, size_list, time_selection, rho_list=[920]):
         # Figure Parameters
         self.fig_size = (16, 10)
         self.fig_shape = (2, 2)
@@ -23,7 +23,7 @@ class SizeTransport_VerticalProfile:
         self.ymin, self.ymax = 3e3, 1e0
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
         self.number_of_plots = 4
-
+        self.rho_line_dict = {920: '-', 980: 'dotted'}
         # Data parameters
         self.output_direc = figure_direc + 'vertical_profile/'
         self.data_direc = utils.get_output_directory(
@@ -34,37 +34,42 @@ class SizeTransport_VerticalProfile:
         self.scenario = scenario
         self.size_list = size_list
         self.time_selection = time_selection
-        self.rho = 920
+        self.rho_list = rho_list
         self.tau = 0.0
 
     def plot(self):
         # Loading the data
         output_dict = {}
-        for size in self.size_list:
-            data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
-                                                       data_direc=self.data_direc,
-                                                       size=size, rho=self.rho, tau=self.tau)
-            output_dict[size] = data_dict[utils.analysis_simulation_year_key(self.time_selection)]
+        for rho in self.rho_list:
+            output_dict[rho] = {}
+            for size in self.size_list:
+                data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
+                                                           data_direc=self.data_direc,
+                                                           size=size, rho=self.rho, tau=self.tau)
+                output_dict[rho][size] = data_dict[utils.analysis_simulation_year_key(self.time_selection)]
         depth_bins = data_dict['depth']
 
         # Averaging by season
-        for size in self.size_list:
-            for month in np.arange(0, 12, 3):
-                month_stack = np.vstack([output_dict[size][month]['concentration'],
-                                         output_dict[size][month + 1]['concentration'],
-                                         output_dict[size][month + 2]['concentration']])
-                output_dict[size][month]['concentration'] = np.nanmean(month_stack, axis=0)
+        for rho in self.rho_list:
+            for size in self.size_list:
+                for month in np.arange(0, 12, 3):
+                    month_stack = np.vstack([output_dict[rho][size][month]['concentration'],
+                                             output_dict[rho][size][month + 1]['concentration'],
+                                             output_dict[rho][size][month + 2]['concentration']])
+                    output_dict[rho][size][month]['concentration'] = np.nanmean(month_stack, axis=0)
 
         # Normalizing the profiles
-        for size in self.size_list:
-            for month in range(0, 12):
-                output_dict[size][month]['concentration'] /= np.sum(output_dict[size][month]['concentration'])
+        for rho in self.rho_list:
+            for size in self.size_list:
+                for month in range(0, 12):
+                    output_dict[rho][size][month]['concentration'] /= np.sum(output_dict[rho][size][month]['concentration'])
 
         # setting the zero values to nan to clear up the plots
-        for size in self.size_list:
-            for month in range(0, 12):
-                selection = output_dict[size][month]['concentration'] == 0
-                output_dict[size][month]['concentration'][selection] = np.nan
+        for rho in self.rho_list:
+            for size in self.size_list:
+                for month in range(0, 12):
+                    selection = output_dict[rho][size][month]['concentration'] == 0
+                    output_dict[rho][size][month]['concentration'][selection] = np.nan
 
         # Creating the figure
         ax = vUtils.base_figure(fig_size=self.fig_size, ax_range=self.ax_range, x_label=self.x_label,
@@ -84,19 +89,22 @@ class SizeTransport_VerticalProfile:
             label_list.append(legend_label(size))
         size_colors = [plt.plot([], [], c=cmap_list[i], label=label_list[i], linestyle='-')[0] for i in
                        range(cmap_list.__len__())]
-        ax[-1].legend(handles=size_colors, fontsize=self.legend_size)
+        rho_lines = [plt.plot([], [], c='k', label=r'$\rho=$' + str(rho) + r' kg m$^{-3}$', linestyle=self.rho_line_dict[rho])[0]
+                     for rho in self.rho_list]
+        ax[-1].legend(handles=rho_lines + size_colors, fontsize=self.legend_size)
         ax[-1].axis('off')
 
         # The actual plotting
         for ind_month, month in enumerate(np.arange(0, 12, 3)):
-            for index_size, size in enumerate(self.size_list):
-                c = cmap_list[index_size]
-                if np.sum(~np.isnan(output_dict[size][month]['concentration'])) < 2:
-                    linestyle, markerstyle = None, 'o'
-                else:
-                    linestyle, markerstyle = '-', None
-                ax[ind_month].plot(output_dict[size][month]['concentration'], depth_bins, linestyle=linestyle, c=c,
-                                   marker=markerstyle)
+            for rho in self.rho_list:
+                for index_size, size in enumerate(self.size_list):
+                    c = cmap_list[index_size]
+                    if np.sum(~np.isnan(output_dict[rho][size][month]['concentration'])) < 2:
+                        linestyle, markerstyle = None, 'o'
+                    else:
+                        linestyle, markerstyle = self.rho_line_dict[rho], None
+                    ax[ind_month].plot(output_dict[rho][size][month]['concentration'], depth_bins, linestyle=linestyle,
+                                       c=c, marker=markerstyle)
 
         file_name = self.output_direc + 'SizeTransport_vertical_profile_year={}.png'.format(self.time_selection)
         plt.savefig(file_name, bbox_inches='tight')

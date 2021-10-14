@@ -37,12 +37,12 @@ def run(scenario, figure_direc: str):
     #                                                    shore_time=shore_time, lambda_frag=10000, rho=rho,
     #                                                    simulation_length=1, weight='particle_number').plot()
 
-    FieldDataComp.FragmentationKaandorpPartial_FieldDataComp(figure_direc=figure_direc, scenario=scenario,
-                                                             shore_time=shore_time, lambda_frag_list=lambda_frag_list,
-                                                             rho=rho, sink=False).plot()
-    FieldDataComp.FragmentationKaandorpPartial_FieldDataComp(figure_direc=figure_direc, scenario=scenario,
-                                                             shore_time=shore_time, lambda_frag_list=lambda_frag_list,
-                                                             rho=rho, sink=True).plot()
+    # FieldDataComp.FragmentationKaandorpPartial_FieldDataComp(figure_direc=figure_direc, scenario=scenario,
+    #                                                          shore_time=shore_time, lambda_frag_list=lambda_frag_list,
+    #                                                          rho=rho, sink=False).plot()
+    # FieldDataComp.FragmentationKaandorpPartial_FieldDataComp(figure_direc=figure_direc, scenario=scenario,
+    #                                                          shore_time=shore_time, lambda_frag_list=lambda_frag_list,
+    #                                                          rho=rho, sink=True).plot()
     # box_model.FragmentationKaandorpPartial_boxmodelcomparison(figure_direc=figure_direc, scenario=scenario,
     #                                                           shore_time=shore_time, lambda_frag=388,
     #                                                           rho=rho, sink=False, sim_length=1, month_step=1).plot()
