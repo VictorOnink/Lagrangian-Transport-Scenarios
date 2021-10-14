@@ -108,8 +108,8 @@ class parcels_to_timeseries:
             utils.save_obj(filename=file_name, item=self.output_dict)
             print_statement = 'The timeseries have been saved'
             utils.print_statement(print_statement, to_print=True)
-            # for time_index in range(dataset_post[beach_state].size):
-            #     print('{} {} {}'.format(time_index, self.output_dict['beach'][time_index], self.output_dict['adrift'][time_index]))
+            for time_index in range(dataset_post[beach_state].size):
+                print('{} {} {}'.format(time_index, self.output_dict['beach'][time_index], self.output_dict['adrift'][time_index]))
 
         else:
             ValueError('settings.PARALLEL_STEP can not have a value of {}'.format(self.parallel_step))
