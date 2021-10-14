@@ -106,21 +106,22 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
 
         # Plotting the model distributions from the box model
         subdivision_number = int(52 * self.sim_length // self.month_step)
+        step_div = 4 * self.month_step
         for index_time, time in enumerate(box_time):
             if index_time % (4 * self.month_step) == 0 and index_time <= 52 * self.sim_length and type(time) == int:
-                c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=subdivision_number, cmap=self.cmap)
+                c = vUtils.discrete_color_from_cmap(index=index_time // step_div, subdivisions=subdivision_number, cmap=self.cmap)
                 ax[0].plot(size_classes, box_number[time]['total'], linestyle='--', c=c)
                 twin_ax[1].plot(size_classes, box_mass[time]['total'], linestyle='--', c=c)
 
         for index_time, time in enumerate(box_time):
             if index_time % 4 * self.month_step == 0 and index_time <= 52 * self.sim_length and type(time) == int:
-                c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=subdivision_number, cmap=self.cmap)
+                c = vUtils.discrete_color_from_cmap(index=index_time // step_div, subdivisions=subdivision_number, cmap=self.cmap)
                 ax[2].plot(size_classes, box_number[time]['beach'], linestyle='--', c=c)
                 twin_ax[3].plot(size_classes, box_mass[time]['beach'], linestyle='--', c=c)
 
         for index_time, time in enumerate(box_time):
             if index_time % 4 * self.month_step == 0 and index_time <= 52 * self.sim_length and type(time) == int:
-                c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=subdivision_number, cmap=self.cmap)
+                c = vUtils.discrete_color_from_cmap(index=index_time // step_div, subdivisions=subdivision_number, cmap=self.cmap)
                 ax[4].plot(size_classes, box_number[time]['ocean'] + box_number[time]['coastal'], linestyle='--', c=c)
                 twin_ax[5].plot(size_classes, box_mass[time]['ocean'] + box_mass[time]['coastal'], linestyle='--', c=c)
 
