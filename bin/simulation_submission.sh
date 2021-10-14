@@ -190,7 +190,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
                    part7="#SBATCH --time=95:59:00"
                   else
                    part6="#SBATCH --mem-per-cpu=10G"
-                   part7="#SBATCH --time=24:00:00"
+                   part7="#SBATCH --time=72:00:00"
                   fi
                   part8="#SBATCH --partition=epyc2"
                   part9='#SBATCH --qos=job_epyc2'
