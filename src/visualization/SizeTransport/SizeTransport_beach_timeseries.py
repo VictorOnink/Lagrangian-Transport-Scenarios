@@ -52,10 +52,6 @@ class SizeTransport_beach_timeseries:
                 timeseries_dict[rho][size]['total_divide'] = data_dict['total'][0]
             time_list = create_time_list(data_dict)
 
-        for time_index in range(timeseries_dict[980][self.size_list[0]][beach_state].size):
-            print('{} {} {}'.format(time_index, timeseries_dict[980][self.size_list[0]]['beach'][time_index],
-                                    timeseries_dict[980][self.size_list[0]]['adrift'][time_index]))
-
         # Normalizing all the particle counts with the total number of particles, and then multiplying by 100 to get a
         # percentage
         for rho in self.rho_list:
@@ -63,6 +59,11 @@ class SizeTransport_beach_timeseries:
                 for beach_state in self.beach_state_list:
                     timeseries_dict[rho][size][beach_state] /= timeseries_dict[rho][size]['total_divide']
                     timeseries_dict[rho][size][beach_state] *= 100.
+
+        for time_index in range(timeseries_dict[980][self.size_list[0]][beach_state].size):
+            print('{} {} {}'.format(time_index, timeseries_dict[980][self.size_list[0]]['beach'][time_index],
+                                    timeseries_dict[980][self.size_list[0]]['adrift'][time_index]))
+
 
         # Creating the figure
         ax = vUtils.base_figure(fig_size=self.figure_size, ax_range=self.ax_range, y_label=self.y_label,
