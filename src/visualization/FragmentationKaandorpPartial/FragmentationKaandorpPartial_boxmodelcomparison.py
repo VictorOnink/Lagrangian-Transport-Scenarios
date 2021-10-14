@@ -83,45 +83,45 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
             ax[index_ax].set_title(subfigure_title(index_ax), fontsize=self.ax_label_size)
 
         # Plotting the model distributions from the parcels analysis
-        subdivision_number = int(12 * self.sim_length // self.month_step)
-        for index_time, time in enumerate(time_indices):
-            if index_time % self.month_step == 0 and index_time <= 12 * self.sim_length:
-                c = vUtils.discrete_color_from_cmap(index=index_time // self.month_step, subdivisions=subdivision_number, cmap=self.cmap)
-                ax[0].plot(size_classes, data_dict['total'][self.count][time], linestyle='-', c=c, label='Month {}'.format(index_time))
-                twin_ax[1].plot(size_classes, data_dict['total'][self.mass][time], linestyle='-', c=c)
-
-        for index_time, time in enumerate(time_indices):
-            if index_time % self.month_step == 0 and index_time <= 12 * self.sim_length:
-                c = vUtils.discrete_color_from_cmap(index=index_time // self.month_step, subdivisions=subdivision_number, cmap=self.cmap)
-                ax[2].plot(size_classes, data_dict['beach'][self.count][time], linestyle='-', c=c)
-                twin_ax[3].plot(size_classes, data_dict['beach'][self.mass][time], linestyle='-', c=c)
-
-        for index_time, time in enumerate(time_indices):
-            if index_time % self.month_step == 0 and index_time <= 12 * self.sim_length:
-                c = vUtils.discrete_color_from_cmap(index=index_time // self.month_step, subdivisions=subdivision_number, cmap=self.cmap)
-                ax[4].plot(size_classes, data_dict['adrift'][self.count][time], linestyle='-', c=c)
-                twin_ax[5].plot(size_classes, data_dict['adrift'][self.mass][time], linestyle='-', c=c)
+        # subdivision_number = int(12 * self.sim_length // self.month_step)
+        # for index_time, time in enumerate(time_indices):
+        #     if index_time % self.month_step == 0 and index_time <= 12 * self.sim_length:
+        #         c = vUtils.discrete_color_from_cmap(index=index_time // self.month_step, subdivisions=subdivision_number, cmap=self.cmap)
+        #         ax[0].plot(size_classes, data_dict['total'][self.count][time], linestyle='-', c=c, label='Month {}'.format(index_time))
+        #         twin_ax[1].plot(size_classes, data_dict['total'][self.mass][time], linestyle='-', c=c)
+        #
+        # for index_time, time in enumerate(time_indices):
+        #     if index_time % self.month_step == 0 and index_time <= 12 * self.sim_length:
+        #         c = vUtils.discrete_color_from_cmap(index=index_time // self.month_step, subdivisions=subdivision_number, cmap=self.cmap)
+        #         ax[2].plot(size_classes, data_dict['beach'][self.count][time], linestyle='-', c=c)
+        #         twin_ax[3].plot(size_classes, data_dict['beach'][self.mass][time], linestyle='-', c=c)
+        #
+        # for index_time, time in enumerate(time_indices):
+        #     if index_time % self.month_step == 0 and index_time <= 12 * self.sim_length:
+        #         c = vUtils.discrete_color_from_cmap(index=index_time // self.month_step, subdivisions=subdivision_number, cmap=self.cmap)
+        #         ax[4].plot(size_classes, data_dict['adrift'][self.count][time], linestyle='-', c=c)
+        #         twin_ax[5].plot(size_classes, data_dict['adrift'][self.mass][time], linestyle='-', c=c)
 
         lines, labels = ax[0].get_legend_handles_labels()
 
         # Plotting the model distributions from the box model
-        subdivision_number = int(52 * self.sim_length // self.month_step)
-        step_div = 4 * self.month_step / subdivision_number
+        step_div = 4 * self.month_step
+        subdivision_number = int(52 * self.sim_length // step_div)
         for index_time, time in enumerate(box_time):
             if index_time % (4 * self.month_step) == 0 and index_time <= 52 * self.sim_length and type(time) == int:
-                c = vUtils.discrete_color_from_cmap(index=index_time * step_div, subdivisions=subdivision_number, cmap=self.cmap)
+                c = vUtils.discrete_color_from_cmap(index=index_time // step_div, subdivisions=subdivision_number, cmap=self.cmap)
                 ax[0].plot(size_classes, box_number[time]['total'], linestyle='--', c=c)
                 twin_ax[1].plot(size_classes, box_mass[time]['total'], linestyle='--', c=c)
 
         for index_time, time in enumerate(box_time):
             if index_time % 4 * self.month_step == 0 and index_time <= 52 * self.sim_length and type(time) == int:
-                c = vUtils.discrete_color_from_cmap(index=index_time * step_div, subdivisions=subdivision_number, cmap=self.cmap)
+                c = vUtils.discrete_color_from_cmap(index=index_time // step_div, subdivisions=subdivision_number, cmap=self.cmap)
                 ax[2].plot(size_classes, box_number[time]['beach'], linestyle='--', c=c)
                 twin_ax[3].plot(size_classes, box_mass[time]['beach'], linestyle='--', c=c)
 
         for index_time, time in enumerate(box_time):
             if index_time % 4 * self.month_step == 0 and index_time <= 52 * self.sim_length and type(time) == int:
-                c = vUtils.discrete_color_from_cmap(index=index_time * step_div, subdivisions=subdivision_number, cmap=self.cmap)
+                c = vUtils.discrete_color_from_cmap(index=index_time // step_div, subdivisions=subdivision_number, cmap=self.cmap)
                 ax[4].plot(size_classes, box_number[time]['ocean'] + box_number[time]['coastal'], linestyle='--', c=c)
                 twin_ax[5].plot(size_classes, box_mass[time]['ocean'] + box_mass[time]['coastal'], linestyle='--', c=c)
 
