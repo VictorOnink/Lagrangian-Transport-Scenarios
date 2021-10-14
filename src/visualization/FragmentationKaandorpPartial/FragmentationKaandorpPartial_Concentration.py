@@ -129,9 +129,12 @@ def set_normalization(beach_state, simulation_year, weight):
             if weight == 'particle_number':
                 vmin, vmax = 1e0, 1e5
             elif weight == 'particle_mass':
-                vmin, vmax = 1e2, 1e9
+                vmin, vmax = 1e0, 1e9
         elif simulation_year == 1:
-            vmin, vmax = 1e15, 1e24
+            if weight == 'particle_number':
+                vmin, vmax = 1e0, 1e5
+            elif weight == 'particle_mass':
+                vmin, vmax = 1e0, 1e9
     elif beach_state == 'beach':
         if simulation_year == 0:
             vmin, vmax = 1e6, 1e15
