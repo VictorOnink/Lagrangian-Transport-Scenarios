@@ -11,7 +11,7 @@ class parcels_to_timeseries:
     def __init__(self, file_dict: dict):
         self.parallel_step = settings.PARALLEL_STEP
         self.file_dict = file_dict
-        self.domain = (-180, 180, -90, 90) # lon_min, lon_max, lat_min, lat_max
+        self.domain = (-180, 180, -90, 90)  # lon_min, lon_max, lat_min, lat_max
         self.temp_direc, self.output_direc = get_directories(scenario_name=settings.SCENARIO_NAME)
         self.beach_label_dict = set_beach_label_dict()
         # Some variables specific to FragmentationKaandorpPartial
@@ -83,14 +83,14 @@ class parcels_to_timeseries:
                                                        month=month,
                                                        run=run, restart=restart)
                             if settings.SCENARIO_NAME in ['SizeTransport']:
-                                 if month == 1:
-                                     dataset_post = utils.load_obj(filename=file_name)
-                                     print(file_name)
-                                     for beach_state in self.output_dict.keys():
-                                         if beach_state != 'time':
+                                if month == 1:
+                                    dataset_post = utils.load_obj(filename=file_name)
+                                    print(file_name)
+                                    for beach_state in self.output_dict.keys():
+                                        if beach_state != 'time':
                                             for time_index in range(dataset_post[beach_state].size):
                                                 self.output_dict[beach_state][time_index] += dataset_post[beach_state][time_index]
-                                     # utils.remove_file(file_name + '.pkl')
+                                    # utils.remove_file(file_name + '.pkl')
                             else:
                                 dataset_post = utils.load_obj(filename=file_name)
                                 for beach_state in self.output_dict.keys():
@@ -98,7 +98,8 @@ class parcels_to_timeseries:
                                         if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                                             for size_class in range(settings.SIZE_CLASS_NUMBER):
                                                 for weight in self.weight_list:
-                                                    self.output_dict[beach_state][size_class][weight] += dataset_post[beach_state][size_class][weight]
+                                                    self.output_dict[beach_state][size_class][weight] += \
+                                                    dataset_post[beach_state][size_class][weight]
                                 utils.remove_file(file_name)
 
             # Saving the output
@@ -190,8 +191,10 @@ def get_file_names(file_dict, directory, final, year=settings.STARTYEAR, month=s
     split = {True: None, False: '.nc'}[final]
     prefix = 'timeseries'
     if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
-        output_name = directory + utils.analysis_save_file_name(input_file=file_dict['postprocess'][year][month][run][restart],
-        prefix=prefix, split=split)
+        output_name = directory + utils.analysis_save_file_name(
+            input_file=file_dict['postprocess'][year][month][run][restart],
+            prefix=prefix, split=split)
     else:
-        output_name = directory + utils.analysis_save_file_name(input_file=file_dict[run][restart], prefix=prefix, split=split)
+        output_name = directory + utils.analysis_save_file_name(input_file=file_dict[run][restart], prefix=prefix,
+                                                                split=split)
     return output_name
