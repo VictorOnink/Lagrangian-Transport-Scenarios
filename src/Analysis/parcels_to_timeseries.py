@@ -82,31 +82,31 @@ class parcels_to_timeseries:
                 for month in range(1, 13):
                     month_count = 0
                     for run in range(0, settings.RUN_RANGE):
-                        # for restart in range(0, settings.SIM_LENGTH - ind_year):
-                        for restart in range(0, 1):
-                                file_name = get_file_names(file_dict=self.file_dict,
-                                                           directory=self.temp_direc, final=False, year=year,
-                                                           month=month,
-                                                           run=run, restart=restart)
-                                if settings.SCENARIO_NAME in ['SizeTransport']:
-                                     if month_count < 1:
-                                         dataset_post = utils.load_obj(filename=file_name)
-                                         for beach_state in self.output_dict.keys():
-                                             if beach_state != 'time':
-                                                for time_index in range(dataset_post[beach_state].size):
-                                                    self.output_dict[beach_state][time_index] += dataset_post[beach_state][time_index]
+                        for restart in range(0, settings.SIM_LENGTH - ind_year):
+                            file_name = get_file_names(file_dict=self.file_dict,
+                                                       directory=self.temp_direc, final=False, year=year,
+                                                       month=month,
+                                                       run=run, restart=restart)
+                            if settings.SCENARIO_NAME in ['SizeTransport']:
+                                 if month_count < 1:
+                                     dataset_post = utils.load_obj(filename=file_name)
+                                     for beach_state in self.output_dict.keys():
+                                         if beach_state != 'time':
+                                            for time_index in range(dataset_post[beach_state].size):
+                                                self.output_dict[beach_state][time_index] += dataset_post[beach_state][time_index]
+                                                if beach_state == 'beach':
                                                     print('{} {} {}'.format(time_index, self.output_dict[beach_state][time_index],
                                                                             dataset_post[beach_state][time_index]))
-                                         # utils.remove_file(file_name + '.pkl')
-                                else:
-                                    dataset_post = utils.load_obj(filename=file_name)
-                                    for beach_state in self.output_dict.keys():
-                                        if beach_state != 'time':
-                                            if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
-                                                for size_class in range(settings.SIZE_CLASS_NUMBER):
-                                                    for weight in self.weight_list:
-                                                        self.output_dict[beach_state][size_class][weight] += dataset_post[beach_state][size_class][weight]
-                                    utils.remove_file(file_name)
+                                     # utils.remove_file(file_name + '.pkl')
+                            else:
+                                dataset_post = utils.load_obj(filename=file_name)
+                                for beach_state in self.output_dict.keys():
+                                    if beach_state != 'time':
+                                        if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
+                                            for size_class in range(settings.SIZE_CLASS_NUMBER):
+                                                for weight in self.weight_list:
+                                                    self.output_dict[beach_state][size_class][weight] += dataset_post[beach_state][size_class][weight]
+                                utils.remove_file(file_name)
                     month_count += 1
 
             # Saving the output
