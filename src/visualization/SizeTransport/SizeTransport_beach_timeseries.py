@@ -52,6 +52,10 @@ class SizeTransport_beach_timeseries:
                 timeseries_dict[rho][size]['total_divide'] = data_dict['total'][0]
             time_list = create_time_list(data_dict)
 
+        for time_index in range(timeseries_dict[980][self.size_list[0]][beach_state].size):
+            print('{} {} {}'.format(time_index, timeseries_dict[980][self.size_list[0]]['beach'][time_index],
+                                    timeseries_dict[980][self.size_list[0]]['adrift'][time_index]))
+
         # Normalizing all the particle counts with the total number of particles, and then multiplying by 100 to get a
         # percentage
         for rho in self.rho_list:
