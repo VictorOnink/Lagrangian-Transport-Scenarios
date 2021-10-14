@@ -94,7 +94,7 @@ class parcels_to_concentration:
                                             self.output_dict[key_year][beach_state][weight][size_class] += dataset_post[key_year][beach_state][weight][size_class]
                                 utils.remove_file(file_name)
                             else:
-                                if month == 1:
+                                if month == 1 and year == settings.STARTYEAR:
                                     file_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
                                                                directory=self.temp_direc, final=False, year=year, run=run,
                                                                restart=restart)
