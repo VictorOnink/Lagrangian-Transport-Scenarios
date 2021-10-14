@@ -45,7 +45,7 @@ class SizeTransport_VerticalProfile:
             for size in self.size_list:
                 data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
                                                            data_direc=self.data_direc,
-                                                           size=size, rho=self.rho, tau=self.tau)
+                                                           size=size, rho=rho, tau=self.tau)
                 output_dict[rho][size] = data_dict[utils.analysis_simulation_year_key(self.time_selection)]
         depth_bins = data_dict['depth']
 
