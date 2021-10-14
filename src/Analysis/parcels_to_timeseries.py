@@ -71,6 +71,11 @@ class parcels_to_timeseries:
             print_statement = 'The timeseries for year {}-{}, run {} restart {} has been save'.format(*str_format)
             utils.print_statement(print_statement, to_print=True)
 
+            for time_index, time_value in enumerate(self.time_list):
+                print_statement = '{}, {}, {}, {}, {}'.format(time_index, time_value, self.output_dict['beach'],
+                                                              self.output_dict['adrift'], self.output_dict['removed'])
+                utils.print_statement(print_statement, to_print=True)
+
         elif self.parallel_step == 2:
             pbar = ProgressBar()
             for ind_year, year in pbar(enumerate(range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH))):
