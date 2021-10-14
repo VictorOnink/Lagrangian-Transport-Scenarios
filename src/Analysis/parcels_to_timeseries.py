@@ -71,16 +71,10 @@ class parcels_to_timeseries:
             print_statement = 'The timeseries for year {}-{}, run {} restart {} has been save'.format(*str_format)
             utils.print_statement(print_statement, to_print=True)
 
-            for time_index, time_value in enumerate(self.time_list):
-                print_statement = '{}, {}, {}, {}, {}'.format(time_index, time_value, self.output_dict['beach'][time_index],
-                                                              self.output_dict['adrift'][time_index], self.output_dict['removed'][time_index])
-                utils.print_statement(print_statement, to_print=True)
-
         elif self.parallel_step == 2:
             pbar = ProgressBar()
             for ind_year, year in pbar(enumerate(range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH))):
                 for month in range(1, 13):
-                    month_count = 0
                     for run in range(0, settings.RUN_RANGE):
                         for restart in range(0, settings.SIM_LENGTH - ind_year):
                             file_name = get_file_names(file_dict=self.file_dict,
@@ -88,7 +82,7 @@ class parcels_to_timeseries:
                                                        month=month,
                                                        run=run, restart=restart)
                             if settings.SCENARIO_NAME in ['SizeTransport']:
-                                 if month_count < 1:
+                                 if month == 1:
                                      dataset_post = utils.load_obj(filename=file_name)
                                      for beach_state in self.output_dict.keys():
                                          if beach_state != 'time':
@@ -97,7 +91,7 @@ class parcels_to_timeseries:
                                                 if beach_state == 'beach':
                                                     print('{} {} {}'.format(time_index, self.output_dict[beach_state][time_index],
                                                                             dataset_post[beach_state][time_index]))
-                                     # utils.remove_file(file_name + '.pkl')
+                                     utils.remove_file(file_name + '.pkl')
                             else:
                                 dataset_post = utils.load_obj(filename=file_name)
                                 for beach_state in self.output_dict.keys():
@@ -107,7 +101,6 @@ class parcels_to_timeseries:
                                                 for weight in self.weight_list:
                                                     self.output_dict[beach_state][size_class][weight] += dataset_post[beach_state][size_class][weight]
                                 utils.remove_file(file_name)
-                    month_count += 1
 
             # Saving the output
             file_name = get_file_names(file_dict=self.file_dict, directory=self.output_direc, final=True)
