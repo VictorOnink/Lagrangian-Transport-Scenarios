@@ -83,7 +83,7 @@ class parcels_to_timeseries:
                                                        month=month,
                                                        run=run, restart=restart)
                             if settings.SCENARIO_NAME in ['SizeTransport']:
-                                if month == 1:
+                                if month == 1 and year == settings.STARTYEAR:
                                     dataset_post = utils.load_obj(filename=file_name)
                                     print(file_name)
                                     print('{} {} {} {}'.format(year, month, run, restart))
