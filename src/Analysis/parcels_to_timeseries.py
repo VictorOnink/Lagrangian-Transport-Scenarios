@@ -91,7 +91,7 @@ class parcels_to_timeseries:
                                                 if beach_state == 'beach':
                                                     print('{} {} {}'.format(time_index, self.output_dict[beach_state][time_index],
                                                                             dataset_post[beach_state][time_index]))
-                                     utils.remove_file(file_name + '.pkl')
+                                     # utils.remove_file(file_name + '.pkl')
                             else:
                                 dataset_post = utils.load_obj(filename=file_name)
                                 for beach_state in self.output_dict.keys():
