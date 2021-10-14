@@ -21,7 +21,7 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
         self.rho = rho
         self.class_num = settings.SIZE_CLASS_NUMBER
         self.sink = sink
-        if self.sink:
+        if not self.sink:
             self.count, self.mass = 'particle_number', 'particle_mass'
         else:
             self.count, self.mass = 'particle_number_sink', 'particle_mass_sink'
@@ -105,24 +105,24 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
         lines, labels = ax[0].get_legend_handles_labels()
 
         # Plotting the model distributions from the box model
-        # subdivision_number = int(52 * self.sim_length // self.month_step)
-        # for index_time, time in enumerate(box_time):
-        #     if index_time % (4 * self.month_step) == 0 and index_time <= 52 * self.sim_length and type(time) == int:
-        #         c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=subdivision_number, cmap=self.cmap)
-        #         ax[0].plot(size_classes, box_number[time]['total'], linestyle='--', c=c)
-        #         twin_ax[1].plot(size_classes, box_mass[time]['total'], linestyle='--', c=c)
-        #
-        # for index_time, time in enumerate(box_time):
-        #     if index_time % 4 * self.month_step == 0 and index_time <= 52 * self.sim_length and type(time) == int:
-        #         c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=subdivision_number, cmap=self.cmap)
-        #         ax[2].plot(size_classes, box_number[time]['beach'], linestyle='--', c=c)
-        #         twin_ax[3].plot(size_classes, box_mass[time]['beach'], linestyle='--', c=c)
-        #
-        # for index_time, time in enumerate(box_time):
-        #     if index_time % 4 * self.month_step == 0 and index_time <= 52 * self.sim_length and type(time) == int:
-        #         c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=subdivision_number, cmap=self.cmap)
-        #         ax[4].plot(size_classes, box_number[time]['ocean'] + box_number[time]['coastal'], linestyle='--', c=c)
-        #         twin_ax[5].plot(size_classes, box_mass[time]['ocean'] + box_mass[time]['coastal'], linestyle='--', c=c)
+        subdivision_number = int(52 * self.sim_length // self.month_step)
+        for index_time, time in enumerate(box_time):
+            if index_time % (4 * self.month_step) == 0 and index_time <= 52 * self.sim_length and type(time) == int:
+                c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=subdivision_number, cmap=self.cmap)
+                ax[0].plot(size_classes, box_number[time]['total'], linestyle='--', c=c)
+                twin_ax[1].plot(size_classes, box_mass[time]['total'], linestyle='--', c=c)
+
+        for index_time, time in enumerate(box_time):
+            if index_time % 4 * self.month_step == 0 and index_time <= 52 * self.sim_length and type(time) == int:
+                c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=subdivision_number, cmap=self.cmap)
+                ax[2].plot(size_classes, box_number[time]['beach'], linestyle='--', c=c)
+                twin_ax[3].plot(size_classes, box_mass[time]['beach'], linestyle='--', c=c)
+
+        for index_time, time in enumerate(box_time):
+            if index_time % 4 * self.month_step == 0 and index_time <= 52 * self.sim_length and type(time) == int:
+                c = vUtils.discrete_color_from_cmap(index=index_time, subdivisions=subdivision_number, cmap=self.cmap)
+                ax[4].plot(size_classes, box_number[time]['ocean'] + box_number[time]['coastal'], linestyle='--', c=c)
+                twin_ax[5].plot(size_classes, box_mass[time]['ocean'] + box_mass[time]['coastal'], linestyle='--', c=c)
 
         # Adding a legend
         subdivision_number = int(12 * self.sim_length // self.month_step)
