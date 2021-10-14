@@ -72,8 +72,8 @@ class parcels_to_timeseries:
             utils.print_statement(print_statement, to_print=True)
 
             for time_index, time_value in enumerate(self.time_list):
-                print_statement = '{}, {}, {}, {}, {}'.format(time_index, time_value, self.output_dict['beach'],
-                                                              self.output_dict['adrift'], self.output_dict['removed'])
+                print_statement = '{}, {}, {}, {}, {}'.format(time_index, time_value, self.output_dict['beach'][time_index],
+                                                              self.output_dict['adrift'][time_index], self.output_dict['removed'][time_index])
                 utils.print_statement(print_statement, to_print=True)
 
         elif self.parallel_step == 2:
