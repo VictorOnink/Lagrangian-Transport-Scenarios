@@ -38,12 +38,12 @@ def run(scenario, figure_direc: str):
 
     # Creating figures showing the relative distribution, averaged over the entire simulation and time-snapshots at the
     # end of each simulation year
-    time_select = 2
-    for rho in [920, 980]:
-        SizeTransport_relative_concentrations(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                              beach_state='adrift', time_selection=time_select, rho=rho).plot()
-        SizeTransport_relative_concentrations(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                              beach_state='beach', time_selection=time_select, rho=rho).plot()
+    for time_select in [0, 1, 2]:
+        for rho in [920, 980]:
+            SizeTransport_relative_concentrations(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+                                                  beach_state='adrift', time_selection=time_select, rho=rho).plot()
+            SizeTransport_relative_concentrations(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+                                                  beach_state='beach', time_selection=time_select, rho=rho).plot()
 
     size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
     # Creating figures of the timeseries of the number of particles that are beached/adrift/seabed
