@@ -29,7 +29,7 @@ def run(scenario, figure_direc: str):
     #                                                    simulation_length=1, weight='particle_number').plot()
     timeseries.FragmentationKaandorpPartial_timeseries(scenario=scenario, figure_direc=figure_direc,
                                                        shore_time=shore_time, lambda_frag=388, rho=rho,
-                                                       simulation_length=1, weight='particle_mass').plot()
+                                                       simulation_length=2, weight='particle_mass').plot()
     # timeseries.FragmentationKaandorpPartial_timeseries(scenario=scenario, figure_direc=figure_direc,
     #                                                    shore_time=shore_time, lambda_frag=1000, rho=rho,
     #                                                    simulation_length=1, weight='particle_number').plot()
@@ -45,14 +45,14 @@ def run(scenario, figure_direc: str):
                                                              rho=rho, sink=True).plot()
     box_model.FragmentationKaandorpPartial_boxmodelcomparison(figure_direc=figure_direc, scenario=scenario,
                                                               shore_time=shore_time, lambda_frag=388,
-                                                              rho=rho, sink=False, sim_length=1, month_step=1).plot()
+                                                              rho=rho, sink=False, sim_length=2).plot()
     box_model.FragmentationKaandorpPartial_boxmodelcomparison(figure_direc=figure_direc, scenario=scenario,
                                                               shore_time=shore_time, lambda_frag=388,
-                                                              rho=rho, sink=True, sim_length=1, month_step=1).plot()
+                                                              rho=rho, sink=True, sim_length=2).plot()
 
     vertical_profile.FragmentationKaandorpPartial_vertical_profile(figure_direc=figure_direc, scenario=scenario,
                                                                    shore_time=shore_time, lambda_frag=388, rho=rho,
-                                                                   simulation_year=1, weight='particle_number').plot()
+                                                                   simulation_year=2, weight='particle_number').plot()
     for beach_state in ['adrift', 'beach']:
         for year in [0, 1]:
             concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc,
