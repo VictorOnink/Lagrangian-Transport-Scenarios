@@ -19,7 +19,7 @@ class FragmentationKaandorpPartial_vertical_profile:
         self.ax_label_size = 14
         self.legend_size = 11
         self.xmin, self.xmax = 1e-10, 1e0
-        self.ymin, self.ymax = -100, 0
+        self.ymin, self.ymax = -500, 1e0
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
         self.number_of_plots = 4
         self.weight = weight
@@ -70,7 +70,7 @@ class FragmentationKaandorpPartial_vertical_profile:
         ax = vUtils.base_figure(fig_size=self.fig_size, ax_range=self.ax_range, x_label=self.x_label,
                                 y_label=self.y_label, ax_ticklabel_size=self.ax_ticklabel_size,
                                 ax_label_size=self.ax_label_size, shape=self.fig_shape, plot_num=self.number_of_plots,
-                                log_yscale=False, log_xscale=True, all_x_labels=True, all_y_labels=True,
+                                log_yscale=True, log_xscale=True, all_x_labels=True, all_y_labels=True,
                                 legend_axis=True, width_ratios=[1, 1, 0.5])
 
         # Labelling the subfigures
@@ -78,7 +78,7 @@ class FragmentationKaandorpPartial_vertical_profile:
             ax[index_ax].set_title(subfigure_title(index_ax, self.simulation_year), fontsize=self.ax_label_size)
 
         # Adding in a legend
-        cmap_list, label_list, line_list = ['k'], ['Total'], ['--']
+        cmap_list, label_list, line_list = [], [], []
         for size_class in range(self.size_classes):
             cmap_list.append(vUtils.discrete_color_from_cmap(size_class, subdivisions=self.size_classes))
             label_list.append(legend_label(size_class))
@@ -107,5 +107,5 @@ def legend_label(size_class):
 
 def subfigure_title(index, simulation_year):
     alphabet = string.ascii_lowercase
-    return '({}) 1-{}-{}'.format(alphabet[index], index * 3 + 1, settings.STARTYEAR + simulation_year)
-
+    month_dict = {0: 'Winter: JFM', 1: 'Spring: AMJ', 2: 'Summer: JAS', 3: 'Autumn: OND'}
+    return '({}) {}-{}'.format(alphabet[index], month_dict[index], settings.STARTYEAR + simulation_year)
