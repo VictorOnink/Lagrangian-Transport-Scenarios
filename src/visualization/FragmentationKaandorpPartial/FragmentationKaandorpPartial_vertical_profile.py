@@ -67,7 +67,7 @@ class FragmentationKaandorpPartial_vertical_profile:
         # Adding in a legend
         cmap_list, label_list, line_list = ['k'], ['Total'], ['--']
         for size_class in range(self.size_classes):
-            cmap_list.append(vUtils.discrete_color_from_cmap(size_class, subdivisions=self.size_classes, cmap='viridis'))
+            cmap_list.append(vUtils.discrete_color_from_cmap(size_class, subdivisions=self.size_classes))
             label_list.append(legend_label(size_class))
             line_list.append('-')
         size_colors = [plt.plot([], [], c=cmap_list[i], label=label_list[i], linestyle=line_list[i])[0] for i in
@@ -83,7 +83,7 @@ class FragmentationKaandorpPartial_vertical_profile:
             for size_class in range(settings.SIZE_CLASS_NUMBER):
                 total_count += data_dict[month][size_class][self.concentration]
                 norm_conc = data_dict[month][size_class][self.concentration] / data_dict[month][size_class][self.counts]
-                c = vUtils.discrete_color_from_cmap(size_class, subdivisions=settings.SIZE_CLASS_NUMBER, cmap='viridis')
+                c = vUtils.discrete_color_from_cmap(size_class, subdivisions=settings.SIZE_CLASS_NUMBER)
                 ax[ind_month].plot(norm_conc, depth_bins, linestyle='-', c=c)
             ax[ind_month].plot(total_count, depth_bins, linestyle='-', c='k', zorder=10000)
 
