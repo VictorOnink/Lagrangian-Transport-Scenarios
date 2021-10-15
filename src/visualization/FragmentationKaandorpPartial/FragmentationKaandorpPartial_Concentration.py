@@ -126,14 +126,14 @@ def set_normalization(beach_state, simulation_year, weight):
     """
     if beach_state == 'adrift':
         if simulation_year == 0:
-            if weight == 'particle_number':
+            if weight in ['particle_number', 'particle_number_sink']:
                 vmin, vmax = 1e0, 1e5
-            elif weight == 'particle_mass':
+            elif weight in ['particle_mass', 'particle_mass_sink']:
                 vmin, vmax = 1e0, 1e9
         elif simulation_year == 1:
-            if weight == 'particle_number':
+            if weight in ['particle_number', 'particle_number_sink']:
                 vmin, vmax = 1e1, 1e5
-            elif weight == 'particle_mass':
+            elif weight in ['particle_mass', 'particle_mass_sink']:
                 vmin, vmax = 1e2, 1e9
     elif beach_state == 'beach':
         if simulation_year == 0:
