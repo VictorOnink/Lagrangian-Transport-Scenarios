@@ -19,7 +19,7 @@ class FragmentationKaandorpPartial_vertical_profile:
         self.ax_label_size = 14
         self.legend_size = 11
         self.xmin, self.xmax = 1e-10, 1e0
-        self.ymin, self.ymax = -500, 1e0
+        self.ymin, self.ymax = 3e3, 1e0
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
         self.number_of_plots = 4
         self.weight = weight
@@ -50,7 +50,7 @@ class FragmentationKaandorpPartial_vertical_profile:
                                                                   shore_time=self.shore_time,
                                                                   lambda_frag=self.lambda_frag,
                                                                   rho=self.rho, postprocess=True)
-        depth_bins = -1 * data_dict['depth']
+        depth_bins = data_dict['depth']
         data_dict = data_dict[year_key]
 
         # Averaging by season
