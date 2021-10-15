@@ -53,6 +53,19 @@ class FragmentationKaandorpPartial_vertical_profile:
         depth_bins = -1 * data_dict['depth']
         data_dict = data_dict[year_key]
 
+        # Averaging by season
+        for size_class in range(settings.SIZE_CLASS_NUMBER):
+            for month in np.arange(0, 12, 3):
+                month_stack = np.vstack([data_dict[month][size_class][self.concentration],
+                                         data_dict[month + 1][size_class][self.concentration],
+                                         data_dict[month + 2][size_class][self.concentration]])
+                data_dict[month][size_class][self.concentration] = np.nanmean(month_stack, axis=0)
+
+        # Normalizing the profiles
+        for size_class in range(settings.SIZE_CLASS_NUMBER):
+            for month in range(0, 12):
+                data_dict[month][size_class][self.concentration] /= np.sum(data_dict[month][size_class][self.concentration])
+
         # Creating the figure
         ax = vUtils.base_figure(fig_size=self.fig_size, ax_range=self.ax_range, x_label=self.x_label,
                                 y_label=self.y_label, ax_ticklabel_size=self.ax_ticklabel_size,
@@ -76,16 +89,10 @@ class FragmentationKaandorpPartial_vertical_profile:
         ax[-1].axis('off')
 
         # And finally, the actual plotting:
-        print(data_dict.keys())
-        print(data_dict[0].keys())
         for ind_month, month in enumerate(np.arange(0, 12, 3)):
-            total_count = np.zeros(data_dict[month][0][self.concentration].shape)
             for size_class in range(settings.SIZE_CLASS_NUMBER):
-                total_count += data_dict[month][size_class][self.concentration]
-                norm_conc = data_dict[month][size_class][self.concentration] / data_dict[month][size_class][self.counts]
                 c = vUtils.discrete_color_from_cmap(size_class, subdivisions=settings.SIZE_CLASS_NUMBER)
-                ax[ind_month].plot(norm_conc, depth_bins, linestyle='-', c=c)
-            ax[ind_month].plot(total_count, depth_bins, linestyle='-', c='k', zorder=10000)
+                ax[ind_month].plot(data_dict[month][size_class][self.concentration], depth_bins, linestyle='-', c=c)
 
         # Saving the figure
         str_format = self.lambda_frag, self.shore_time, self.rho, self.simulation_year
