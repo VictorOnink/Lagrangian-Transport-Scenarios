@@ -88,7 +88,7 @@ class parcels_to_timeseries:
                                         if beach_state != 'time':
                                             for time_index in range(dataset_post[beach_state].size):
                                                 self.output_dict[beach_state][time_index] += dataset_post[beach_state][time_index]
-                                    # utils.remove_file(file_name + '.pkl')
+                                    utils.remove_file(file_name)
                             else:
                                 dataset_post = utils.load_obj(filename=file_name)
                                 for beach_state in self.output_dict.keys():
@@ -117,7 +117,8 @@ These following functions are used across all scenarios
 
 
 def get_directories(scenario_name):
-    temp_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/{}/temporary/'.format(scenario_name)
+    # temp_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/{}/temporary/'.format(scenario_name)
+    temp_direc = settings.SCRATCH_DIR
     output_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/{}/'.format(scenario_name)
     utils.check_direc_exist(temp_direc)
     utils.check_direc_exist(output_direc)

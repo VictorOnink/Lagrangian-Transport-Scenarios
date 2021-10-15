@@ -62,7 +62,7 @@ class parcels_to_timeslicing:
                                         for key in previous_dict.keys():
                                             previous_dict[key] = np.append(previous_dict[key], date_dict[key])
                                         utils.save_obj(filename=output_name, item=previous_dict)
-                                        utils.remove_file(file_name + '.pkl')
+                                        utils.remove_file(file_name)
                                     else:
                                         utils.save_obj(filename=output_name, item=date_dict)
         else:
@@ -76,7 +76,8 @@ These following functions are used across all scenarios
 
 
 def get_directories(scenario_name):
-    temp_direc = utils.get_output_directory(server=settings.SERVER) + 'timeslices/{}/temporary/'.format(scenario_name)
+    # temp_direc = utils.get_output_directory(server=settings.SERVER) + 'timeslices/{}/temporary/'.format(scenario_name)
+    temp_direc = settings.SCRATCH_DIR
     output_direc = utils.get_output_directory(server=settings.SERVER) + 'timeslices/{}/'.format(scenario_name)
     utils.check_direc_exist(temp_direc)
     utils.check_direc_exist(output_direc)

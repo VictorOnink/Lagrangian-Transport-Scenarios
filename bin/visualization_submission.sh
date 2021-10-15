@@ -3,7 +3,7 @@
 # First we define the general parameters of the run                                 #
 #####################################################################################
 SUBMISSION='visualization'
-DEBUG=1 # 0 = Not a debug run, 1 = a debug run
+DEBUG=0 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation
 SCENARIO=7
@@ -88,7 +88,7 @@ elif [ "$SERVER" -eq "0" ]; then
   part5="#SBATCH --output="runOutput/$runname".o%j"
   part6="#SBATCH --mem-per-cpu=20G"
   if [ "$DEBUG" -eq "0" ]; then
-    part7="#SBATCH --time=20:00:00"
+    part7="#SBATCH --time=48:00:00"
     part8="#SBATCH --partition=long"
   else
     part7="#SBATCH --time=00:29:59"

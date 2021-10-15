@@ -223,7 +223,8 @@ def hexbin(x, y, c, hexgrid):
 
 
 def get_directories(scenario_name):
-    temp_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/{}/temporary/'.format(scenario_name)
+    # temp_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/{}/temporary/'.format(scenario_name)
+    temp_direc = settings.SCRATCH_DIR
     output_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/{}/'.format(scenario_name)
     utils.check_direc_exist(temp_direc)
     utils.check_direc_exist(output_direc)

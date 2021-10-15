@@ -30,6 +30,8 @@ INPUT_DIREC_DICT = {0: DATA_INPUT_DIR_SERVERS[SERVER] + 'Jambeck_Inputs/',
                     2: DATA_INPUT_DIR_SERVERS[SERVER] + 'LebretonDivision_Inputs/',
                     3: DATA_INPUT_DIR_SERVERS[SERVER] + 'Point_Release/',
                     4: DATA_INPUT_DIR_SERVERS[SERVER] + 'Uniform/'}
+SCRATCH_DIR = {0: None,
+               1: "/storage/scratch/users/vo18e689/"}
 
 if SUBMISSION in ['simulation', 'analysis']:
     # STARTING YEAR, MONTH AND DAY OF THE SIMULATION
