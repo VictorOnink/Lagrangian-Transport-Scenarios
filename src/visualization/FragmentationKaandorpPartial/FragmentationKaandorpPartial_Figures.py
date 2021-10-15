@@ -50,9 +50,9 @@ def run(scenario, figure_direc: str):
     #                                                           shore_time=shore_time, lambda_frag=388,
     #                                                           rho=rho, sink=True, sim_length=2).plot()
 
-    vertical_profile.FragmentationKaandorpPartial_vertical_profile(figure_direc=figure_direc, scenario=scenario,
-                                                                   shore_time=shore_time, lambda_frag=388, rho=rho,
-                                                                   simulation_year=2, weight='particle_number').plot()
+    # vertical_profile.FragmentationKaandorpPartial_vertical_profile(figure_direc=figure_direc, scenario=scenario,
+    #                                                                shore_time=shore_time, lambda_frag=388, rho=rho,
+    #                                                                simulation_year=2, weight='particle_number').plot()
     for beach_state in ['adrift']:
         for year in [0, 1]:
             concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc,
