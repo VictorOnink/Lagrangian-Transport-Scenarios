@@ -19,7 +19,7 @@ class FragmentationKaandorpPartial_vertical_profile:
         self.ax_label_size = 14
         self.legend_size = 11
         self.xmin, self.xmax = 1e-10, 1e0
-        self.ymin, self.ymax = -25, 0
+        self.ymin, self.ymax = -100, 0
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
         self.number_of_plots = 4
         self.weight = weight
