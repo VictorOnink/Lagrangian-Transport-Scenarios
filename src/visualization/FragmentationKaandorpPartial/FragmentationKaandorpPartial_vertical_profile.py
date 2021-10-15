@@ -49,8 +49,9 @@ class FragmentationKaandorpPartial_vertical_profile:
                                                                   data_direc=self.data_direc,
                                                                   shore_time=self.shore_time,
                                                                   lambda_frag=self.lambda_frag,
-                                                                  rho=self.rho, postprocess=True)[year_key]
+                                                                  rho=self.rho, postprocess=True)
         depth_bins = -1 * data_dict['depth']
+        data_dict = data_dict[year_key]
 
         # Creating the figure
         ax = vUtils.base_figure(fig_size=self.fig_size, ax_range=self.ax_range, x_label=self.x_label,
