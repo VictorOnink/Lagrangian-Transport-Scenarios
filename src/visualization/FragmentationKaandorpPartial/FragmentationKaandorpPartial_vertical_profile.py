@@ -74,6 +74,8 @@ class FragmentationKaandorpPartial_vertical_profile:
         ax[-1].axis('off')
 
         # And finally, the actual plotting:
+        print(data_dict.keys())
+        print(data_dict[0].keys())
         for ind_month, month in enumerate(np.arange(0, 12, 3)):
             total_count = np.zeros(data_dict[month][0][self.concentration].shape)
             for size_class in range(settings.SIZE_CLASS_NUMBER):
