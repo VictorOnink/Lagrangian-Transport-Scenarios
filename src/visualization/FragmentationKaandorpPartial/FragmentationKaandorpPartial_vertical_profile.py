@@ -44,11 +44,12 @@ class FragmentationKaandorpPartial_vertical_profile:
 
     def plot(self):
         # Loading the data
+        year_key = utils.analysis_simulation_year_key(simulation_years=self.simulation_year)
         data_dict = vUtils.FragmentationKaandorpPartial_load_data(scenario=self.scenario, prefix=self.prefix,
                                                                   data_direc=self.data_direc,
                                                                   shore_time=self.shore_time,
                                                                   lambda_frag=self.lambda_frag,
-                                                                  rho=self.rho, postprocess=True)
+                                                                  rho=self.rho, postprocess=True)[year_key]
         depth_bins = -1 * data_dict['depth']
 
         # Creating the figure
