@@ -20,7 +20,7 @@ class parcels_to_timeslicing:
             year, month, run, restart = settings.STARTYEAR, settings.STARTMONTH, settings.RUN, settings.RESTART
             utils.print_statement('Splitting {}-{}, run {} restart {}'.format(year, month, run, restart), to_print=True)
             # Loading the data
-            parcels_dataset, _ = load_parcels_post_output(file_dict=self.file_dict)
+            parcels_dataset = load_parcels_post_output(file_dict=self.file_dict)
             full_dict = {}
             for key in self.variable_list:
                 if key in parcels_dataset.variables.keys():
@@ -84,14 +84,12 @@ def get_directories(scenario_name):
 
 
 def load_parcels_post_output(file_dict, year=settings.STARTYEAR, month=settings.STARTMONTH,
-                             run=settings.RUN, restart=settings.RESTART):
+                             run=settings.RUN, restart=settings.RESTART, with_post=True):
     if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
         parcels_dataset = Dataset(file_dict['parcels'][year][month][run][restart])
-        post_dataset = utils.load_obj(file_dict['postprocess'][year][month][run][restart])
     else:
         parcels_dataset = Dataset(file_dict[run][restart])
-        post_dataset = None
-    return parcels_dataset, post_dataset
+    return parcels_dataset
 
 
 def get_file_names(file_dict, directory, final, prefix, year=settings.STARTYEAR, month=settings.STARTMONTH,
