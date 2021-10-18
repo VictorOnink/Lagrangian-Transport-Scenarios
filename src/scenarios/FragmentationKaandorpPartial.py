@@ -119,7 +119,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         if postprocess:
             prefix = self.prefix + '_PP'
             file_type = '.pkl'
-            odirec += 'post_process/'
+            odirec += 'post_process/lambda_f={}/'.format(lambda_frag)
         else:
             prefix = self.prefix
             file_type = '.nc'

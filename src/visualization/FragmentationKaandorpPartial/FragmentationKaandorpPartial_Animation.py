@@ -93,7 +93,7 @@ class FragmentationKaandorpPartial_Animation:
                                                                       data_direc=self.data_direc,
                                                                       lambda_frag=self.lambda_frag,
                                                                       rho=self.rho, shore_time=self.shore_time,
-                                                                      ocean_frag=self.ocean_frag)
+                                                                      ocean_frag=self.ocean_frag, postprocess=True)
             lon, lat, depth = data_dict['lon'], data_dict['lat'], data_dict['z'].astype(int)
             size_class = data_dict['size_class']
             # Looping through the axes corresponding to the different size classes
