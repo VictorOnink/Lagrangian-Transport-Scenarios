@@ -110,20 +110,6 @@
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
     </task>
-    <task id="LOCAL-02745" summary="update">
-      <created>1634224305415</created>
-      <option name="number" value="02745" />
-      <option name="presentableId" value="LOCAL-02745" />
-      <option name="project" value="LOCAL" />
-      <updated>1634224305415</updated>
-    </task>
-    <task id="LOCAL-02746" summary="update">
-      <created>1634224399229</created>
-      <option name="number" value="02746" />
-      <option name="presentableId" value="LOCAL-02746" />
-      <option name="project" value="LOCAL" />
-      <updated>1634224399229</updated>
-    </task>
     <task id="LOCAL-02747" summary="update">
       <created>1634286077260</created>
       <option name="number" value="02747" />
@@ -453,7 +439,21 @@
       <option name="project" value="LOCAL" />
       <updated>1634657489033</updated>
     </task>
-    <option name="localTasksCounter" value="2794" />
+    <task id="LOCAL-02794" summary="update">
+      <created>1634657660804</created>
+      <option name="number" value="02794" />
+      <option name="presentableId" value="LOCAL-02794" />
+      <option name="project" value="LOCAL" />
+      <updated>1634657660804</updated>
+    </task>
+    <task id="LOCAL-02795" summary="update">
+      <created>1634657869202</created>
+      <option name="number" value="02795" />
+      <option name="presentableId" value="LOCAL-02795" />
+      <option name="project" value="LOCAL" />
+      <updated>1634657869203</updated>
+    </task>
+    <option name="localTasksCounter" value="2796" />
     <servers />
   </component>
   <component name="UnknownFeatures">
