@@ -20,7 +20,6 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
         self.shore_time = shore_time
         self.lambda_frag = lambda_frag
         self.rho = rho
-        self.class_num = settings.SIZE_CLASS_NUMBER
         self.sim_length = sim_length
         self.ocean_frag = ocean_frag
         self.reservoir_list = ['ocean', 'coastal', 'beach']
@@ -45,7 +44,7 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
 
     def plot(self):
         # Getting the sizes of the size classes, and we convert from meters to mm
-        size_classes = utils.size_range(size_class_number=self.class_num, units='mm')
+        size_classes = utils.size_range(size_class_number=self.size_class_number, units='mm')
 
         # Loading the box model data, first the base model without ocean fragmentation
         base_box_data = FragmentationKaandorp_box_model(sim_length=self.sim_length, lambda_f=388,

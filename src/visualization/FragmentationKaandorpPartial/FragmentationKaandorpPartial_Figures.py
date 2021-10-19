@@ -52,7 +52,7 @@ def run(scenario, figure_direc: str):
     #                                                           shore_time=shore_time, lambda_frag=388,
     #                                                           rho=rho, sink=True, sim_length=2).plot()
 
-    box_model_ocean.FragmentationKaandorpPartial_boxmodel_ocean(figure_direc=figure_direc).plot()
+    box_model_ocean.FragmentationKaandorpPartial_boxmodel_ocean(figure_direc=figure_direc, size_class_number=10).plot()
 
     # vertical_profile.FragmentationKaandorpPartial_vertical_profile(figure_direc=figure_direc, scenario=scenario,
     #                                                                shore_time=shore_time, lambda_frag=388, rho=rho,
