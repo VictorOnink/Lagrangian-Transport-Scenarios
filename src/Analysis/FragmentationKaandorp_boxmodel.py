@@ -8,7 +8,7 @@ from copy import deepcopy
 class FragmentationKaandorp_box_model:
     def __init__(self, sim_length, start_size=settings.INIT_SIZE, size_classes=settings.SIZE_CLASS_NUMBER,
                  DN=settings.DN, p_frag=settings.P_FRAG, lambda_f=settings.LAMBDA_FRAG, lambda_b=settings.SHORE_TIME,
-                 rho=settings.INIT_DENSITY):
+                 rho=settings.INIT_DENSITY, lambda_f_ocean=settings.LAMBDA_OCEAN_FRAG, ocean_frag=False):
         # Data directories
         self.input_direc = settings.DATA_INPUT_DIR_SERVERS[settings.SERVER] + 'box_model/'
         self.output_direc = settings.DATA_OUTPUT_DIR_SERVERS[settings.SERVER] + 'box_model/'
@@ -27,7 +27,10 @@ class FragmentationKaandorp_box_model:
         self.tau_cb = np.ones(self.class_array.shape) * self.lambda_b  # beaching timescale (days)
         self.p_sink = 5.6e-4  # Sink probability for size dependent resuspension
         self.lambda_f = lambda_f
-        self.i_f = self.lambda_f_to_i_f()
+        self.i_f = lambda_f_to_i_f(timescale=self.lambda_f)
+        self.lambda_f_ocean = lambda_f_ocean
+        self.i_f_ocean = lambda_f_to_i_f(timescale=self.lambda_f_ocean)
+        self.ocean_frag = ocean_frag
         self.p_frag = p_frag  # fragmentation probability
         # The transition matrices for mass and particle number, matrices for the fragmentation, and a dictionary to save
         # the model parameters
@@ -35,15 +38,13 @@ class FragmentationKaandorp_box_model:
         self.T_mat_m = None
         self.T_NB_m = np.zeros((self.size_classes, self.size_classes))
         self.T_NB_N = np.zeros((self.size_classes, self.size_classes))
+        self.T_NB_mO = np.zeros((self.size_classes, self.size_classes))
+        self.T_NB_NO = np.zeros((self.size_classes, self.size_classes))
         self.dict_save = {}
         # Indices for the transition matrices
         self.index_o = np.arange(self.size_classes)
         self.index_c = np.arange(self.size_classes, 2 * self.size_classes)
         self.index_b = np.arange(2 * self.size_classes, 3 * self.size_classes)
-
-    def lambda_f_to_i_f(self):
-        # Convert fragmentation timescale (days) to f / week
-        return 1 / (self.lambda_f / 7)
 
     def fragmentation_fractions(self):
         '''
@@ -53,17 +54,24 @@ class FragmentationKaandorp_box_model:
         p: fragmentation probability
         d_N: spatial dimensionality
         '''
+        # Beach fragmentation variables
         gamma_ratio = (gamma(self.class_array + self.i_f) / (gamma(self.class_array + 1) * gamma(self.i_f)))
         pmf_m = gamma_ratio * (self.p_frag ** self.class_array) * (1 - self.p_frag) ** self.i_f
         pmf_N = 2 ** (self.DN * self.class_array) * pmf_m
-        return pmf_m, pmf_N
+        # Ocean fragmentation variables
+        gamma_ratio_ocean = (gamma(self.class_array + self.i_f_ocean) / (gamma(self.class_array + 1) * gamma(self.i_f_ocean)))
+        pmf_mO = gamma_ratio_ocean * (self.p_frag ** self.class_array) * (1 - self.p_frag) ** self.i_f_ocean
+        pmf_NO = 2 ** (self.DN * self.class_array) * pmf_mO
+        return pmf_m, pmf_N, pmf_mO, pmf_NO
 
     def get_fragmentation_probabilities(self):
         # Calculating the weekly fragmentation fractions
-        m_NB_dt, N_NB_dt = self.fragmentation_fractions()
+        m_NB_dt, N_NB_dt, m_NB_dt_O, N_NB_dt_O = self.fragmentation_fractions()
         for index_class in range(self.size_classes):
             self.T_NB_m += m_NB_dt[index_class] * np.diag(np.ones(self.size_classes - index_class), -index_class)
             self.T_NB_N += N_NB_dt[index_class] * np.diag(np.ones(self.size_classes - index_class), -index_class)
+            self.T_NB_mO += m_NB_dt_O[index_class] * np.diag(np.ones(self.size_classes - index_class), -index_class)
+            self.T_NB_NO += N_NB_dt_O[index_class] * np.diag(np.ones(self.size_classes - index_class), -index_class)
 
     def get_ocean_probabilities(self):
         probability_data = utils.load_obj(self.input_direc + 'Stokes_analysis_-06373046_1590.pkl')
@@ -134,27 +142,46 @@ class FragmentationKaandorp_box_model:
                                   ['oo', 'oc', 'co', 'cc', 'cb', 'bc', 'bb']):
             P_mat[name] = np.diag(variable)
         self.get_fragmentation_probabilities()
+        # Beach fragmentation
         for variable, name in zip([P_bc, P_bb], ['bc', 'bb']):
             P_mat[name + '_N'] = (np.ones(self.T_NB_N.shape) * variable).T * self.T_NB_N
             P_mat[name + '_m'] = (np.ones(self.T_NB_N.shape) * variable).T * self.T_NB_m
+        # Ocean
+        if self.ocean_frag:
+            for variable, name in zip([P_oo, P_oc, P_co, P_cc, P_cb], ['oo', 'oc', 'co', 'cc', 'cb']):
+                P_mat[name + '_N'] = (np.ones(self.T_NB_N.shape) * variable).T * self.T_NB_NO
+                P_mat[name + '_m'] = (np.ones(self.T_NB_N.shape) * variable).T * self.T_NB_mO
 
         # Finally, finishing the transition matrix
         self.T_mat_N = np.zeros([3 * self.size_classes, 3 * self.size_classes])
         self.T_mat_m = np.zeros([3 * self.size_classes, 3 * self.size_classes])
-
-        self.T_mat_m[self.index_o[0]:self.index_o[-1] + 1, self.index_o[0]:self.index_o[-1] + 1] = P_mat['oo']
-        self.T_mat_m[self.index_o[0]:self.index_o[-1] + 1, self.index_c[0]:self.index_c[-1] + 1] = P_mat['co']
-        self.T_mat_m[self.index_c[0]:self.index_c[-1] + 1, self.index_o[0]:self.index_o[-1] + 1] = P_mat['oc']
-        self.T_mat_m[self.index_c[0]:self.index_c[-1] + 1, self.index_c[0]:self.index_c[-1] + 1] = P_mat['cc']
-        self.T_mat_m[self.index_b[0]:self.index_b[-1] + 1, self.index_c[0]:self.index_c[-1] + 1] = P_mat['cb']
+        if self.ocean_frag:
+            self.T_mat_m[self.index_o[0]:self.index_o[-1] + 1, self.index_o[0]:self.index_o[-1] + 1] = P_mat['oo_m']
+            self.T_mat_m[self.index_o[0]:self.index_o[-1] + 1, self.index_c[0]:self.index_c[-1] + 1] = P_mat['co_m']
+            self.T_mat_m[self.index_c[0]:self.index_c[-1] + 1, self.index_o[0]:self.index_o[-1] + 1] = P_mat['oc_m']
+            self.T_mat_m[self.index_c[0]:self.index_c[-1] + 1, self.index_c[0]:self.index_c[-1] + 1] = P_mat['cc_m']
+            self.T_mat_m[self.index_b[0]:self.index_b[-1] + 1, self.index_c[0]:self.index_c[-1] + 1] = P_mat['cb_m']
+        else:
+            self.T_mat_m[self.index_o[0]:self.index_o[-1] + 1, self.index_o[0]:self.index_o[-1] + 1] = P_mat['oo']
+            self.T_mat_m[self.index_o[0]:self.index_o[-1] + 1, self.index_c[0]:self.index_c[-1] + 1] = P_mat['co']
+            self.T_mat_m[self.index_c[0]:self.index_c[-1] + 1, self.index_o[0]:self.index_o[-1] + 1] = P_mat['oc']
+            self.T_mat_m[self.index_c[0]:self.index_c[-1] + 1, self.index_c[0]:self.index_c[-1] + 1] = P_mat['cc']
+            self.T_mat_m[self.index_b[0]:self.index_b[-1] + 1, self.index_c[0]:self.index_c[-1] + 1] = P_mat['cb']
         self.T_mat_m[self.index_c[0]:self.index_c[-1] + 1, self.index_b[0]:self.index_b[-1] + 1] = P_mat['bc_m']
         self.T_mat_m[self.index_b[0]:self.index_b[-1] + 1, self.index_b[0]:self.index_b[-1] + 1] = P_mat['bb_m']
 
-        self.T_mat_N[self.index_o[0]:self.index_o[-1] + 1, self.index_o[0]:self.index_o[-1] + 1] = P_mat['oo']
-        self.T_mat_N[self.index_o[0]:self.index_o[-1] + 1, self.index_c[0]:self.index_c[-1] + 1] = P_mat['co']
-        self.T_mat_N[self.index_c[0]:self.index_c[-1] + 1, self.index_o[0]:self.index_o[-1] + 1] = P_mat['oc']
-        self.T_mat_N[self.index_c[0]:self.index_c[-1] + 1, self.index_c[0]:self.index_c[-1] + 1] = P_mat['cc']
-        self.T_mat_N[self.index_b[0]:self.index_b[-1] + 1, self.index_c[0]:self.index_c[-1] + 1] = P_mat['cb']
+        if self.ocean_frag:
+            self.T_mat_N[self.index_o[0]:self.index_o[-1] + 1, self.index_o[0]:self.index_o[-1] + 1] = P_mat['oo_N']
+            self.T_mat_N[self.index_o[0]:self.index_o[-1] + 1, self.index_c[0]:self.index_c[-1] + 1] = P_mat['co_N']
+            self.T_mat_N[self.index_c[0]:self.index_c[-1] + 1, self.index_o[0]:self.index_o[-1] + 1] = P_mat['oc_N']
+            self.T_mat_N[self.index_c[0]:self.index_c[-1] + 1, self.index_c[0]:self.index_c[-1] + 1] = P_mat['cc_N']
+            self.T_mat_N[self.index_b[0]:self.index_b[-1] + 1, self.index_c[0]:self.index_c[-1] + 1] = P_mat['cb_N']
+        else:
+            self.T_mat_N[self.index_o[0]:self.index_o[-1] + 1, self.index_o[0]:self.index_o[-1] + 1] = P_mat['oo']
+            self.T_mat_N[self.index_o[0]:self.index_o[-1] + 1, self.index_c[0]:self.index_c[-1] + 1] = P_mat['co']
+            self.T_mat_N[self.index_c[0]:self.index_c[-1] + 1, self.index_o[0]:self.index_o[-1] + 1] = P_mat['oc']
+            self.T_mat_N[self.index_c[0]:self.index_c[-1] + 1, self.index_c[0]:self.index_c[-1] + 1] = P_mat['cc']
+            self.T_mat_N[self.index_b[0]:self.index_b[-1] + 1, self.index_c[0]:self.index_c[-1] + 1] = P_mat['cb']
         self.T_mat_N[self.index_c[0]:self.index_c[-1] + 1, self.index_b[0]:self.index_b[-1] + 1] = P_mat['bc_N']
         self.T_mat_N[self.index_b[0]:self.index_b[-1] + 1, self.index_b[0]:self.index_b[-1] + 1] = P_mat['bb_N']
 
@@ -162,6 +189,9 @@ class FragmentationKaandorp_box_model:
         for name, variable in zip(['oo', 'oc', 'co', 'cc', 'cb', 'bb', 'bc', 'p_sink', 'lambda_frag', 'lambda_b'],
                                   [P_oo, P_oc, P_co, P_cc, P_cb, P_bb, P_bc, self.p_sink, self.lambda_f, self.lambda_b]):
             self.dict_save[name] = variable
+        if self.ocean_frag:
+            self.dict_save['lambda_frag_ocean'] = self.lambda_f_ocean
+
         return self.T_mat_m, self.T_mat_N, self.dict_save
 
     def calculate_transport(self):
@@ -205,8 +235,15 @@ class FragmentationKaandorp_box_model:
     def get_file_name(self):
         str_format = self.lambda_b, self.p_frag, self.lambda_f, self.DN, self.size_classes, self.rho
         file_name = self.output_direc + 'box_model_st={}_pfrag={}_lambdafrag={}_dn={}_sizeclasses={}_rho={}'.format(*str_format)
+        if self.ocean_frag:
+            file_name += 'lambda_f_ocean={}'.format(self.lambda_f_ocean)
         return file_name
 
 
 def tau_to_lambda(tau):
     return 1 - np.exp(-1 / tau)
+
+
+def lambda_f_to_i_f(timescale):
+    # Convert fragmentation timescale (days) to f / week
+    return 1 / (timescale / 7)

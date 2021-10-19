@@ -21,8 +21,8 @@ def run(scenario, figure_direc: str):
     # Plotting the input scenario
     # General_input_scenario(scenario=scenario, figure_direc=figure_direc).plot()
 
-    Animation.FragmentationKaandorpPartial_Animation(scenario=scenario, figure_direc=figure_direc, shore_time=20,
-                                                     rho=rho, simulation_years=3, ocean_frag=False).animate()
+    # Animation.FragmentationKaandorpPartial_Animation(scenario=scenario, figure_direc=figure_direc, shore_time=20,
+    #                                                  rho=rho, simulation_years=3, ocean_frag=False).animate()
 
     # timeseries.FragmentationKaandorpPartial_timeseries(scenario=scenario, figure_direc=figure_direc,
     #                                                    shore_time=shore_time, lambda_frag=300, rho=rho,
