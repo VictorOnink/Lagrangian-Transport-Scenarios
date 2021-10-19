@@ -50,7 +50,7 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
         # Loading the box model data, first the base model without ocean fragmentation
         base_box_data = FragmentationKaandorp_box_model(sim_length=self.sim_length, lambda_f=388,
                                                         size_classes=self.size_class_number).load_box_model()
-        time_index = base_box_data['final_index']
+        time_index = base_box_data['mass']['final_index']
         base_mass, base_number = base_box_data['mass'][time_index], base_box_data['number'][time_index]
         # Next the ocean fragmentation cases
         lambda_fO_mass, lambda_fO_number = {}
