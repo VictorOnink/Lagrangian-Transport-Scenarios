@@ -77,12 +77,12 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
         # Plotting the model distributions from the box model
         for index_reservoir, reservoir in enumerate(self.reservoir_list):
             ax[2 * index_reservoir].plot(size_classes, base_number[reservoir], linestyle='-', c='k')
-            ax[2 * index_reservoir + 1].plot(size_classes, base_mass[reservoir], linestyle='-', c='k')
+            twin_ax[2 * index_reservoir + 1].plot(size_classes, base_mass[reservoir], linestyle='-', c='k')
             for index_fO, lambda_fO in enumerate(self.lambda_fO_list):
                 c = vUtils.discrete_color_from_cmap(index=index_fO, subdivisions=self.lambda_fO_list.size,
                                                     cmap=self.cmap)
                 ax[2 * index_reservoir].plot(size_classes, lambda_fO_number[lambda_fO][reservoir], linestyle='-', c=c)
-                ax[2 * index_reservoir + 1].plot(size_classes, lambda_fO_mass[lambda_fO][reservoir], linestyle='-', c=c)
+                twin_ax[2 * index_reservoir + 1].plot(size_classes, lambda_fO_mass[lambda_fO][reservoir], linestyle='-', c=c)
 
         # Adding a legend
         line_base = [plt.plot([], [], c='k', label='base', linestyle='-')[0]]
@@ -103,4 +103,4 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
 
 
 def label(lambda_fO):
-    return r"$\lambda_{f,O}$ = " + '{:.3f} days'.format(lambda_fO)
+    return r"$\lambda_{f,O}$ = " + '{:.3d} days'.format(lambda_fO)
