@@ -85,7 +85,7 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
                 ax[2 * index_reservoir + 1].plot(size_classes, lambda_fO_mass[lambda_fO][reservoir], linestyle='-', c=c)
 
         # Adding a legend
-        line_base = plt.plot([], [], c='k', label='base', linestyle='-')[0]
+        line_base = [plt.plot([], [], c='k', label='base', linestyle='-')[0]]
         line_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(index_fO, subdivisions=self.lambda_fO_list.size, cmap=self.cmap),
                                 label=label(fO), linestyle='-')[0] for index_fO, fO in enumerate(self.lambda_fO_list)]
         ax[-1].legend(handles=line_base + line_colors, fontsize=self.legend_size, loc='upper right')
