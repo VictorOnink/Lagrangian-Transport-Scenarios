@@ -24,7 +24,7 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
         self.sim_length = sim_length
         self.ocean_frag = ocean_frag
         self.reservoir_list = ['ocean', 'coastal', 'beach']
-        self.lambda_fO_list = self.lambda_frag * np.array([1000000, 100000, 10000, 1000, 100, 10, 1])
+        self.lambda_fO_list = np.array([1000000, 100000, 10000, 1000, 100, 10, 1])
         self.size_class_number = size_class_number
         # Figure parameters
         self.fig_size = (16, 10)
@@ -57,7 +57,7 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
         for lambda_fO in self.lambda_fO_list:
             box_model_data = FragmentationKaandorp_box_model(sim_length=self.sim_length, lambda_f=388,
                                                              size_classes=self.size_class_number, ocean_frag=True,
-                                                             lambda_f_ocean=lambda_fO).load_box_model()
+                                                             lambda_f_ocean=self.lambda_frag * lambda_fO).load_box_model()
             lambda_fO_mass[lambda_fO], lambda_fO_number[lambda_fO] = box_model_data['mass'][time_index], \
                                                                      box_model_data['number'][time_index]
 
@@ -85,7 +85,7 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
                 twin_ax[2 * index_reservoir + 1].plot(size_classes, lambda_fO_mass[lambda_fO][reservoir], linestyle='-', c=c)
 
         # Adding a legend
-        line_base = [plt.plot([], [], c='k', label='base', linestyle='-')[0]]
+        line_base = [plt.plot([], [], c='k', label=r"$\lambda_{f}$ = 388 days", linestyle='-')[0]]
         line_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(index_fO, subdivisions=self.lambda_fO_list.size, cmap=self.cmap),
                                 label=label(fO), linestyle='-')[0] for index_fO, fO in enumerate(self.lambda_fO_list)]
         ax[-1].legend(handles=line_base + line_colors, fontsize=self.legend_size, loc='upper right')
@@ -103,4 +103,4 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
 
 
 def label(lambda_fO):
-    return r"$\lambda_{f,O}$ = " + '{:.2E} days'.format(lambda_fO)
+    return r"$\lambda_{f,O}$ = " + '{} '.format(lambda_fO) + r'$\times\lambda_{f,O}$'
