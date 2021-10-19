@@ -103,4 +103,4 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
 
 
 def label(lambda_fO):
-    return r"$\lambda_{f,O}$ = " + '{:.3d} days'.format(lambda_fO)
+    return r"$\lambda_{f,O}$ = " + '{:.2e} days'.format(lambda_fO)
