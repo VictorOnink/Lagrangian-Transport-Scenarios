@@ -36,9 +36,9 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
         self.ax_label_size = 14
         self.legend_size = 12
         self.xmin, self.xmax = 1e-3, 2e2
-        self.ymin, self.ymax = 1e1, 1e6
+        self.ymin, self.ymax = 1e2, 1e6
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
-        self.twin_ymin, self.twin_ymax = 1e-2, 1e5
+        self.twin_ymin, self.twin_ymax = 1e-4, 1e2
         self.twin_ax_range = self.xmax, self.xmin, self.twin_ymax, self.twin_ymin
         self.number_of_plots = self.fig_shape[0] * self.fig_shape[1]
         self.cmap = 'viridis'
@@ -72,7 +72,7 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
 
         # Labelling the subfigures
         for index_ax in range(self.number_of_plots):
-            ax[index_ax].set_title(subfigure_title(index_ax), fontsize=self.ax_label_size)
+            ax[index_ax].set_title(self.subfigure_title(index_ax), fontsize=self.ax_label_size)
 
         # Plotting the model distributions from the box model
         for index_reservoir, reservoir in enumerate(self.reservoir_list):
@@ -96,11 +96,10 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
         plt.savefig(file_name, bbox_inches='tight', dpi=300)
 
 
-def subfigure_title(index):
-    alphabet = string.ascii_lowercase
-    subtitle_list = ['Counts', 'Mass']
-    reservoir_list = ['Total', 'Beach', 'Adrift']
-    return '({}) {} - {}'.format(alphabet[index], reservoir_list[index // 2], subtitle_list[index % 2])
+    def subfigure_title(self, index):
+        alphabet = string.ascii_lowercase
+        subtitle_list = ['Counts', 'Mass']
+        return '({}) {} - {}'.format(alphabet[index], self.reservoir_list[index // 2], subtitle_list[index % 2])
 
 
 def label(lambda_fO):
