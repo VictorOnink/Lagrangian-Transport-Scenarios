@@ -18,8 +18,8 @@ class parcels_to_particle_number:
         self.DN = settings.DN
         # Analysis parameters
         self.var_list = ['parent', 'to_split', 'time', 'age', 'size_class']
-        self.mass_list = ['particle_mass', 'particle_mass_sink']
-        self.number_list = ['particle_number', 'particle_number_sink']
+        self.mass_list = ['particle_mass_sink']
+        self.number_list = ['particle_number_sink']
         self.mass_number_list = utils.flatten_list_of_lists([self.mass_list, self.number_list])
         self.output_dict = {}
         self.particle_number, self.time_step_number, self.final_t = None, None, None
