@@ -9,7 +9,7 @@ import numpy as np
 
 
 class FragmentationKaandorpPartial_boxmodel_ocean:
-    def __init__(self, figure_direc, scenario, shore_time, lambda_frag, rho, ocean_frag=True, sim_length=10,
+    def __init__(self, figure_direc, shore_time=20, lambda_frag=388, rho=920, ocean_frag=True, sim_length=10,
                  size_class_number=settings.SIZE_CLASS_NUMBER):
         # Data parameters
         self.output_direc = figure_direc + 'size_distribution/'
@@ -17,7 +17,6 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'size_distribution'
         # Simulation parameters
-        self.scenario = scenario
         self.shore_time = shore_time
         self.lambda_frag = lambda_frag
         self.rho = rho

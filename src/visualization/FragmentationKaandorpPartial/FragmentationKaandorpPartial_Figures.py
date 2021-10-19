@@ -6,6 +6,7 @@ import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_F
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_Concentration as concentration
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_vertical_profile as vertical_profile
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_boxmodelcomparison as box_model
+import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_boxmodel_ocean as box_model_ocean
 from visualization.General.General_input_scenario import General_input_scenario
 import Analysis
 
@@ -50,6 +51,8 @@ def run(scenario, figure_direc: str):
     # box_model.FragmentationKaandorpPartial_boxmodelcomparison(figure_direc=figure_direc, scenario=scenario,
     #                                                           shore_time=shore_time, lambda_frag=388,
     #                                                           rho=rho, sink=True, sim_length=2).plot()
+
+    box_model_ocean.FragmentationKaandorpPartial_boxmodel_ocean(figure_direc=figure_direc).plot()
 
     # vertical_profile.FragmentationKaandorpPartial_vertical_profile(figure_direc=figure_direc, scenario=scenario,
     #                                                                shore_time=shore_time, lambda_frag=388, rho=rho,
