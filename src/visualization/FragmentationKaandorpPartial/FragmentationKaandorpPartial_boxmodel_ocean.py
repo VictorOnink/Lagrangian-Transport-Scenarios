@@ -103,4 +103,4 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
 
 
 def label(lambda_fO):
-    return r"$\lambda_{f,O}$ = " + '{} '.format(lambda_fO) + r'$\times\lambda_{f,O}$'
+    return r"$\lambda_{f,O}$ = " + '{} '.format(lambda_fO) + r'$\times \lambda_{f,O}$'
