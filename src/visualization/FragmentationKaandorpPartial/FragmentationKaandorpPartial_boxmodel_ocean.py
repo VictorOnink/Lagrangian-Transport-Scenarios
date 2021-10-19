@@ -27,7 +27,7 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
         self.lambda_fO_list = self.lambda_frag * np.array([1000000])
         self.size_class_number = size_class_number
         # Figure parameters
-        self.fig_size = (14, 10)
+        self.fig_size = (16, 10)
         self.fig_shape = (3, 2)
         self.x_label = 'Size (mm)'
         self.y_label = r'Particle Number (n)'
@@ -103,4 +103,4 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
 
 
 def label(lambda_fO):
-    return r"$\lambda_{f,O}$ = " + '{} days'.format(lambda_fO)
+    return r"$\lambda_{f,O}$ = " + '{:.3f} days'.format(lambda_fO)
