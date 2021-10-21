@@ -22,7 +22,7 @@ class parcels_to_sizespectrum:
         self.var_list = set_var_list()
         self.beach_label_dict = set_beach_label_dict()
         self.reservoirs = set_reservoirs()
-        self.weight_list = ['particle_mass', 'particle_mass_sink', 'particle_number', 'particle_number_sink']
+        self.weight_list = ['particle_mass_sink', 'particle_number_sink']
         # Create output dict
         self.output_dict = create_output_dict(time_list=self.time_list, time_analysis_step=self.time_analysis_step,
                                               reservoir_list=self.reservoirs, weight_list=self.weight_list)

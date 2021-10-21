@@ -16,10 +16,10 @@ class parcels_to_vertical_concentration:
         self.depth_bins = determine_depth_bins()
         self.temp_direc, self.output_direc = get_directories(scenario_name=settings.SCENARIO_NAME)
         # Some variables specific to FragmentationKaandorpPartial
-        self.weight_list = ['particle_mass', 'particle_mass_sink', 'particle_number', 'particle_number_sink']
-        self.concentration_list = ['concentration_mass', 'concentration_mass_sink', 'concentration_number',
+        self.weight_list = ['particle_mass_sink', 'particle_number_sink']
+        self.concentration_list = ['concentration_mass_sink',
                                    'concentration_number_sink']
-        self.counts_list = ['counts_mass', 'counts_mass_sink', 'counts_number', 'counts_number_sink']
+        self.counts_list = ['counts_mass_sink', 'counts_number_sink']
         # Creating the output_dict
         self.output_dict = create_output_dict(scenario_name=settings.SCENARIO_NAME, depth_bins=self.depth_bins,
                                               concentration_list=self.concentration_list, counts_list=self.counts_list)
