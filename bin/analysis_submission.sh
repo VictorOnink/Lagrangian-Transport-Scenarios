@@ -182,14 +182,13 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
             export PARALLEL_STEP
             #First we are going to submit all the jobs for the individual run/restart files, so each runs the analysis
             #code just for that specific parcels output file. We also need to consider the various starting years
-            RESTART_REMOVE=1
+            RESTART_REMOVE=0
             for ((STARTYEAR=${YEAR}; STARTYEAR<$((YEAR+COMBINE_YEARS)); STARTYEAR++)); do
               export STARTYEAR
               for ((RUN=0; RUN<=$RUNLENGTH; RUN++)); do
                 export RUN
                 # looping over all the simulation years
-                echo $((SIMLEN-RESTART_REMOVE))
-                for ((RESTARTNUM=0; $RESTARTNUM<=$((SIMLEN-RESTART_REMOVE)); RESTARTNUM++)); do
+                for ((RESTARTNUM=0; RESTARTNUM<$((SIMLEN-RESTART_REMOVE)); RESTARTNUM++)); do
                   export RESTARTNUM
                   # specifying the parts of the submission file
                   part1="#!/bin/sh"
