@@ -182,7 +182,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
             export PARALLEL_STEP
             #First we are going to submit all the jobs for the individual run/restart files, so each runs the analysis
             #code just for that specific parcels output file. We also need to consider the various starting years
-            RESTART_REMOVE=0
+            RESTART_REMOVE=1
             for ((STARTYEAR=${YEAR}; STARTYEAR<$((YEAR+COMBINE_YEARS)); STARTYEAR++)); do
               export STARTYEAR
               for ((RUN=0; RUN<=$RUNLENGTH; RUN++)); do
