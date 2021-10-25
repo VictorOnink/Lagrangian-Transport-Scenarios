@@ -128,7 +128,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         else:
             str_format = (advection_data, shore_time, p_frag, lambda_frag, dn, size_class_number, density, input,
                           year, month, restart - 1, run)
-        prefix = {True: self.prefix + '_PP', False: self.prefix}
+        prefix = {True: self.prefix + '_PP', False: self.prefix}[postprocess]
         if ocean_frag:
             prefix += '_OFRAG_{}'.format(ocean_lambda)
         file_type = {True: '.pkl', False: '.nc'}[postprocess]
