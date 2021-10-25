@@ -124,19 +124,18 @@ fi
 
 #The number of runs we do, dependent on the input scenario.
 if [ "$INPUT" -eq "0" ]; then
-  runlength=0 #8
+  RUNLENGTH=0 #8
 elif [ "$INPUT" -eq "1" ]; then
-  runlength=0 #3
+  RUNLENGTH=0 #3
 elif [ "$INPUT" -eq "2" ]; then
-  runlength=9
+  RUNLENGTH=9
 elif [ "$INPUT" -eq "3" ]; then
-  runlength=9
+  RUNLENGTH=9
 elif [ "$INPUT" -eq "4" ]; then
-  runlength=0
+  RUNLENGTH=0
 elif [ "$INPUT" -eq "5" ]; then
-  runlength=0
+  RUNLENGTH=0
 fi
-echo $runlength
 #####################################################################################
 # Now the part where we create the submission file and submit the job               #
 #####################################################################################
