@@ -11,7 +11,7 @@ import cmocean.cm as cmo
 
 class FragmentationKaandorpPartial_Concentration:
     def __init__(self, scenario, figure_direc, rho, shore_time, beach_state, simulation_year, lambda_frag, mass,
-                 sink=False):
+                 sink=True):
         # Simulation parameters
         self.scenario = scenario
         self.shore_time = shore_time
