@@ -189,7 +189,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
                 export RUN
                 # looping over all the simulation years
                 echo $((SIMLEN-RESTART_REMOVE))
-                for ((RESTARTNUM=0; "$RESTARTNUM"<"$((SIMLEN-RESTART_REMOVE))"; RESTARTNUM++)); do
+                for ((RESTARTNUM=0; $RESTARTNUM<=$((SIMLEN-RESTART_REMOVE)); RESTARTNUM++)); do
                   export RESTARTNUM
                   # specifying the parts of the submission file
                   part1="#!/bin/sh"
