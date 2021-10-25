@@ -57,7 +57,7 @@ class parcels_to_timeslicing:
                                     date_dict = utils.load_obj(filename=file_name)
                                     output_name = get_file_names(file_dict=self.file_dict, directory=self.output_direc,
                                                                  final=True, prefix=prefix)
-                                    if utils.check_file_exist(output_name):
+                                    if utils.check_file_exist(output_name) or utils.check_file_exist(output_name, without_pkl=True):
                                         previous_dict = utils.load_obj(filename=output_name)
                                         for key in previous_dict.keys():
                                             previous_dict[key] = np.append(previous_dict[key], date_dict[key])
