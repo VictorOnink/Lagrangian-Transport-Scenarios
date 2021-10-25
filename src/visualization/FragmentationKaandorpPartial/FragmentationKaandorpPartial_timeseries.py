@@ -81,12 +81,6 @@ class FragmentationKaandorpPartial_timeseries:
         # Saving the figure
         plt.savefig(file_name(self.output_direc, self.shore_time, self.lambda_frag), bbox_inches='tight')
 
-        import numpy as np
-        total_array = np.zeros(timeseries_dict[size_class]['total'].shape)
-        for i in range(settings.SIZE_CLASS_NUMBER):
-            total_array += timeseries_dict[i]['total']
-        print(total_array)
-
 
 def file_name(output_direc, shore_time, lambda_frag):
     str_format = shore_time, lambda_frag
