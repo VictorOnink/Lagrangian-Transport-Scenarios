@@ -8,7 +8,7 @@ import numpy as np
 
 
 class FragmentationKaandorpPartial_FieldDataComp:
-    def __init__(self, figure_direc, scenario, shore_time, lambda_frag_list, rho, sink):
+    def __init__(self, figure_direc, scenario, shore_time, lambda_frag_list, rho, sink=True):
         # Data parameters
         self.output_direc = figure_direc + 'size_distribution/'
         self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'size_distribution/FragmentationKaandorpPartial/'
@@ -23,9 +23,9 @@ class FragmentationKaandorpPartial_FieldDataComp:
         self.class_num = settings.SIZE_CLASS_NUMBER
         self.sink = sink
         if self.sink:
-            self.count, self.mass = 'particle_number', 'particle_mass'
-        else:
             self.count, self.mass = 'particle_number_sink', 'particle_mass_sink'
+        else:
+            self.count, self.mass = 'particle_number', 'particle_mass'
         # Figure parameters
         self.fig_size = (14, 14)
         self.fig_shape = (self.beach_state_list.__len__(), 2)
