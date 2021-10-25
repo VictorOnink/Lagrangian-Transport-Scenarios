@@ -28,8 +28,9 @@ FIGURE_OUTPUT_SERVER: dict = {0: "/storage/climatestor/Bern3dLPX/onink/alphadata
 INPUT_DIREC_DICT = {0: DATA_INPUT_DIR_SERVERS[SERVER] + 'Jambeck_Inputs/',
                     1: DATA_INPUT_DIR_SERVERS[SERVER] + 'Lebreton_Inputs/',
                     2: DATA_INPUT_DIR_SERVERS[SERVER] + 'LebretonDivision_Inputs/',
-                    3: DATA_INPUT_DIR_SERVERS[SERVER] + 'Point_Release/',
-                    4: DATA_INPUT_DIR_SERVERS[SERVER] + 'Uniform/'}
+                    3: DATA_INPUT_DIR_SERVERS[SERVER] + 'Lebreton_Kaandorp_init_Inputs/',
+                    4: DATA_INPUT_DIR_SERVERS[SERVER] + 'Point_Release/',
+                    5: DATA_INPUT_DIR_SERVERS[SERVER] + 'Uniform/'}
 SCRATCH_DIR = {0: None,
                1: "/storage/scratch/users/vo18e689/"}[SERVER]
 
@@ -120,7 +121,8 @@ if SUBMISSION in ['simulation', 'analysis']:
 #                                                                                                                      #
 ########################################################################################################################
 # THE INPUT SCENARIO
-INPUT_NAMES = {0: 'Jambeck', 1: 'Lebreton', 2: 'LebretonDivision', 3: 'Point_Release', 4: 'Uniform'}
+INPUT_NAMES = {0: 'Jambeck', 1: 'Lebreton', 2: 'LebretonDivision', 3: 'LebretonKaandorpInit', 4: 'Point_Release',
+               5: 'Uniform'}
 INPUT = INPUT_NAMES[int(os.environ['INPUT'])]
 # DIRECTORY CONTAINING INITIAL INPUTS FOR RESTART == 0
 INPUT_DIREC = INPUT_DIREC_DICT[int(os.environ['INPUT'])]
@@ -144,6 +146,15 @@ elif INPUT == 'Lebreton':
     # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
     INPUT_MIN = 0.00001  # Minimum plastic mass input for a cell in order to be considered for the input
 elif INPUT == 'LebretonDivision':
+    # THE NUMBER OF PARTICLES PER RELEASE STEP PER RUN
+    INPUT_DIV = 50
+    # NUMBER OF RUNS
+    RUN_RANGE: int = 10
+    # MAXIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
+    INPUT_MAX = 5
+    # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
+    INPUT_MIN = 0.01  # Minimum plastic mass input for a cell in order to be considered for the input
+elif INPUT == 'LebretonKaandorpInit':
     # THE NUMBER OF PARTICLES PER RELEASE STEP PER RUN
     INPUT_DIV = 50
     # NUMBER OF RUNS

@@ -45,7 +45,8 @@ YEAR=2010
 STARTMONTH_list=(1 2 3 4 5 6 7 8 9 10 11 12)
 STARTDAY=1
 export STARTDAY
-#Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=lebretondivision, 3=point, 4=uniform
+# Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=lebretondivision, 3=lebretonKaandorpInit,
+# 4=point, 5=uniform
 INPUT=2
 export INPUT
 #Which advection data do we want to use?
@@ -123,13 +124,17 @@ fi
 
 #The number of runs we do, dependent on the input scenario.
 if [ "$INPUT" -eq "0" ]; then
-  RUNLENGTH=0 #8
+  runlength=0 #8
 elif [ "$INPUT" -eq "1" ]; then
-  RUNLENGTH=0 #3
+  runlength=0 #3
 elif [ "$INPUT" -eq "2" ]; then
-  RUNLENGTH=9
+  runlength=9
 elif [ "$INPUT" -eq "3" ]; then
-  RUNLENGTH=0
+  runlength=9
+elif [ "$INPUT" -eq "4" ]; then
+  runlength=0
+elif [ "$INPUT" -eq "5" ]; then
+  runlength=0
 fi
 
 #####################################################################################

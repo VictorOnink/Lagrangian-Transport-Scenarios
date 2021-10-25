@@ -10,7 +10,16 @@ import Analysis
 from parcels import ParcelsRandom
 import math
 
-from utils.physics_utils import particle_number_per_size_class
+
+def var_dict_expansion(var_dict: dict):
+    if settings.INPUT in ['LebretonKaandorpInit']:
+        for variable in var_dict.keys():
+            if variable == 'size_class':
+                for size_class in range(1, settings.SIZE_CLASS_NUMBER):
+                    var_dict[variable] = np.append(var_dict[variable], np.ones(var_dict['lon'].size, dtype=np.float32) * size_class)
+            else:
+                var_dict[variable] = np.tile(var_dict[variable], settings.SIZE_CLASS_NUMBER)
+    return var_dict
 
 
 class FragmentationKaandorpPartial(base_scenario.BaseScenario):
@@ -54,6 +63,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         """
         utils.print_statement("Creating the particle set")
         if settings.RESTART == 0:
+            var_dict = var_dict_expansion(var_dict=var_dict)
             rise_velocity = utils.initial_estimate_particle_rise_velocity(L=var_dict['size'])
             rho_plastic = np.ones(rise_velocity.shape, dtype=np.float32) * settings.INIT_DENSITY
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
@@ -62,7 +72,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                                rho_plastic=rho_plastic, parent=range(len(rise_velocity)),
                                rise_velocity=rise_velocity, beach_time=np.zeros(rise_velocity.shape, dtype=np.int32),
                                prob_resus=utils.resuspension_probability(w_rise=rise_velocity),
-                               size_class=np.zeros(rise_velocity.shape, dtype=np.float32),
+                               size_class=var_dict['size_class'],
                                ocean_time=np.zeros(rise_velocity.shape, dtype=np.int32),
                                at_seafloor=np.zeros(rise_velocity.shape, dtype=np.int32),
                                distance2coast=np.zeros(rise_velocity.shape, dtype=np.float32),
@@ -110,21 +120,18 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                    p_frag=settings.P_FRAG, dn=settings.DN, size_class_number=settings.SIZE_CLASS_NUMBER,
                    lambda_frag=settings.LAMBDA_FRAG, density=settings.INIT_DENSITY, postprocess=settings.POST_PROCESS):
         odirec = self.output_dir + "Kaandorp_Fragmentation_Partial/st_{}_e_{}/".format(shore_time, ensemble)
+        if postprocess:
+            odirec += 'post_process/lambda_f={}/'.format(lambda_frag)
         if new:
             str_format = (advection_data, shore_time, p_frag, lambda_frag, dn, size_class_number, density, input, year,
                           month, restart, run)
         else:
             str_format = (advection_data, shore_time, p_frag, lambda_frag, dn, size_class_number, density, input,
                           year, month, restart - 1, run)
-        if postprocess:
-            prefix = self.prefix + '_PP'
-            file_type = '.pkl'
-            odirec += 'post_process/lambda_f={}/'.format(lambda_frag)
-        else:
-            prefix = self.prefix
-            file_type = '.nc'
+        prefix = {True: self.prefix + '_PP', False: self.prefix}
         if ocean_frag:
             prefix += '_OFRAG_{}'.format(ocean_lambda)
+        file_type = {True: '.pkl', False: '.nc'}[postprocess]
         return odirec + prefix + '_{}_st={}_pfrag={}_lambdafrag={}_dn={}_sizeclasses={}_rho={}_I={}_y={}-{}_r={}_run={}'.format(*str_format) + file_type
 
     def beaching_kernel(particle, fieldset, time):

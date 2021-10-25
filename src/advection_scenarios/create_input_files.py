@@ -21,7 +21,7 @@ from parcels import Field
 def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array, repeat_dt):
     utils.check_direc_exist(settings.INPUT_DIREC)
     # Create the output prefix and then check if any files with such prefixes exist
-    if settings.INPUT in ['Jambeck', 'Lebreton', 'LebretonDivision']:
+    if settings.INPUT in ['Jambeck', 'Lebreton', 'LebretonDivision', 'LebretonKaandorpInit']:
         output_prefix = settings.INPUT_DIREC + settings.INPUT + '_{}_{}_'.format(prefix, settings.STARTYEAR)
     elif settings.INPUT == 'Point_Release':
         str_format = (prefix, settings.STARTYEAR, settings.INPUT_LAT, settings.INPUT_LON)
@@ -60,7 +60,7 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
             lon_inputs = Lon_population[mismanaged_total > 0].flatten()
             lat_inputs = Lat_population[mismanaged_total > 0].flatten()
             plastic_inputs = mismanaged_total[mismanaged_total > 0].flatten()
-        elif settings.INPUT in ['Lebreton', 'LebretonDivision']:
+        elif settings.INPUT in ['Lebreton', 'LebretonDivision', 'LebretonKaandorpInit']:
             utils.print_statement("Loading the lebreton data")
             lebData = pd.read_csv(settings.INPUT_DIREC + 'PlasticRiverInputs.csv')
             lon_inputs, lat_inputs = np.array(lebData['X']), np.array(lebData['Y'])
