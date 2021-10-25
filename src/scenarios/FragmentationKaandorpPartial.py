@@ -121,7 +121,9 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                    lambda_frag=settings.LAMBDA_FRAG, density=settings.INIT_DENSITY, postprocess=settings.POST_PROCESS):
         odirec = self.output_dir + "Kaandorp_Fragmentation_Partial/st_{}_e_{}/".format(shore_time, ensemble)
         if postprocess:
-            odirec += 'post_process/lambda_f={}/'.format(lambda_frag)
+            odirec += 'lambda_f={}/'.format(lambda_frag)
+        else:
+            odirec += 'parcels_output/'
         if new:
             str_format = (advection_data, shore_time, p_frag, lambda_frag, dn, size_class_number, density, input, year,
                           month, restart, run)
