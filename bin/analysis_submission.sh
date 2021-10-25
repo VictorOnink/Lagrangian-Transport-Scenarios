@@ -185,7 +185,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
             RESTART_REMOVE=0
             for ((STARTYEAR=${YEAR}; STARTYEAR<$((YEAR+COMBINE_YEARS)); STARTYEAR++)); do
               export STARTYEAR
-              for ((RUN=0; RUN<${RUNLENGTH}; RUN++)); do
+              for ((RUN=0; RUN>=${RUNLENGTH}; RUN++)); do
                 export RUN
                 # looping over all the simulation years
                 for ((RESTARTNUM=0; RESTARTNUM<$((SIMLEN-RESTART_REMOVE)); RESTARTNUM++)); do
