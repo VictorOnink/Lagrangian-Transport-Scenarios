@@ -64,7 +64,8 @@ class parcels_to_timeslicing:
                                         utils.save_obj(filename=output_name, item=previous_dict)
                                         utils.remove_file(file_name)
                                     else:
-
+                                        str_format = file_name, year, month, run, restart
+                                        utils.print_statement("{} does not exist for {} {} {} {}".format(*str_format), to_print=True)
                                         utils.save_obj(filename=output_name, item=date_dict)
                                 else:
                                     utils.print_statement("{} does not exist".format(file_name), to_print=True)
