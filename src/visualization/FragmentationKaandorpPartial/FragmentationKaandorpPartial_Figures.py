@@ -27,10 +27,10 @@ def run(scenario, figure_direc: str):
 
     timeseries.FragmentationKaandorpPartial_timeseries(scenario=scenario, figure_direc=figure_direc,
                                                        shore_time=shore_time, lambda_frag=10000, rho=rho,
-                                                       simulation_length=3, weight='particle_number').plot()
+                                                       simulation_length=3, weight='particle_number_sink').plot()
     timeseries.FragmentationKaandorpPartial_timeseries(scenario=scenario, figure_direc=figure_direc,
                                                        shore_time=shore_time, lambda_frag=35000, rho=rho,
-                                                       simulation_length=3, weight='particle_number').plot()
+                                                       simulation_length=3, weight='particle_number_sink').plot()
 
     FieldDataComp.FragmentationKaandorpPartial_FieldDataComp(figure_direc=figure_direc, scenario=scenario,
                                                              shore_time=shore_time, lambda_frag_list=lambda_frag_list,
