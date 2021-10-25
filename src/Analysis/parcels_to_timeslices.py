@@ -65,6 +65,8 @@ class parcels_to_timeslicing:
                                         utils.remove_file(file_name)
                                     else:
                                         utils.save_obj(filename=output_name, item=date_dict)
+                                else:
+                                    utils.print_statement("{} does not exist".format(file_name))
         else:
             ValueError('settings.PARALLEL_STEP can not have a value of {}'.format(self.parallel_step))
 
