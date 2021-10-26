@@ -57,10 +57,10 @@ class parcels_to_timeslicing:
                 file_list = glob.glob(self.temp_direc + prefix + '*')
                 for file_name in file_list:
                     time_file = utils.load_obj(file_name)
-                    for keys in output_dict.keys():
+                    for key in output_dict.keys():
                         output_dict[key] = np.append(output_dict[key], time_file[key])
                     utils.remove_file(file_name)
-                utils.save_obj(output_name)
+                utils.save_obj(output_name, output_dict)
         else:
             ValueError('settings.PARALLEL_STEP can not have a value of {}'.format(self.parallel_step))
 
