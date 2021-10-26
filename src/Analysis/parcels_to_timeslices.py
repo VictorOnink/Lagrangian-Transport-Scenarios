@@ -49,7 +49,7 @@ class parcels_to_timeslicing:
                 # Setting the output name
                 output_name = get_file_names(file_dict=self.file_dict, directory=self.output_direc, final=True,
                                              prefix=prefix)
-                if not utils.check_file_exist(output_name):
+                if not utils.check_file_exist(output_name + '.pkl'):
                     # Creating an output dict
                     output_dict = {}
                     for key in self.variable_list[:-1]:
