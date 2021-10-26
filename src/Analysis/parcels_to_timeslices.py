@@ -64,6 +64,7 @@ class parcels_to_timeslicing:
                         utils.print_statement("At {} we have {} particles".format(date, output_dict['lon'].size), to_print=True)
                         utils.save_obj(output_name, output_dict)
                 else:
+                    file_list = glob.glob(self.temp_direc + prefix + '*')
                     for file_name in file_list:
                         utils.remove_file(file_name + '.pkl')
         else:
