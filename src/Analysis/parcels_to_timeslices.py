@@ -49,7 +49,7 @@ class parcels_to_timeslicing:
                 # Setting the output name
                 output_name = get_file_names(file_dict=self.file_dict, directory=self.output_direc, final=True,
                                              prefix=prefix)
-                if not utils.check_file_exist(output_name, without_pkl=True):
+                if not utils.check_file_exist(output_name):
                     # Creating an output dict
                     output_dict = {}
                     for key in self.variable_list[:-1]:
@@ -60,13 +60,13 @@ class parcels_to_timeslicing:
                         time_file = utils.load_obj(file_name)
                         for key in output_dict.keys():
                             output_dict[key] = np.append(output_dict[key], time_file[key])
-                        utils.remove_file(file_name + '.pkl')
+                        utils.remove_file(file_name)
                         utils.print_statement("At {} we have {} particles".format(date, output_dict['lon'].size), to_print=True)
                         utils.save_obj(output_name, output_dict)
                 else:
                     file_list = glob.glob(self.temp_direc + prefix + '*')
                     for file_name in file_list:
-                        utils.remove_file(file_name + '.pkl')
+                        utils.remove_file(file_name)
         else:
             ValueError('settings.PARALLEL_STEP can not have a value of {}'.format(self.parallel_step))
 
