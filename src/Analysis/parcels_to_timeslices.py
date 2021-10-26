@@ -49,19 +49,23 @@ class parcels_to_timeslicing:
                 # Setting the output name
                 output_name = get_file_names(file_dict=self.file_dict, directory=self.output_direc, final=True,
                                              prefix=prefix)
-                # Creating an output dict
-                output_dict = {}
-                for key in self.variable_list[:-1]:
-                    output_dict[key] = np.array([], dtype=float)
-                # Getting all the timeslice files for this date, and looping through them
-                file_list = glob.glob(self.temp_direc + prefix + '*')
-                for file_name in file_list:
-                    time_file = utils.load_obj(file_name)
-                    for key in output_dict.keys():
-                        output_dict[key] = np.append(output_dict[key], time_file[key])
-                    utils.remove_file(file_name)
-                utils.print_statement("At {} we have {} particles".format(date, output_dict['lon'].size), to_print=True)
-                utils.save_obj(output_name, output_dict)
+                if not utils.check_file_exist(output_name, without_pkl=True):
+                    # Creating an output dict
+                    output_dict = {}
+                    for key in self.variable_list[:-1]:
+                        output_dict[key] = np.array([], dtype=float)
+                    # Getting all the timeslice files for this date, and looping through them
+                    file_list = glob.glob(self.temp_direc + prefix + '*')
+                    for file_name in file_list:
+                        time_file = utils.load_obj(file_name)
+                        for key in output_dict.keys():
+                            output_dict[key] = np.append(output_dict[key], time_file[key])
+                        utils.remove_file(file_name + '.pkl')
+                        utils.print_statement("At {} we have {} particles".format(date, output_dict['lon'].size), to_print=True)
+                        utils.save_obj(output_name, output_dict)
+                else:
+                    for file_name in file_list:
+                        utils.remove_file(file_name + '.pkl')
         else:
             ValueError('settings.PARALLEL_STEP can not have a value of {}'.format(self.parallel_step))
 

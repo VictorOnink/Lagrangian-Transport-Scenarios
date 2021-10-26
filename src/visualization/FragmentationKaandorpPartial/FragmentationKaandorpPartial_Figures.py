@@ -54,7 +54,7 @@ def run(scenario, figure_direc: str):
     #                                                                        simulation_year=year, weight=weight).plot()
 
     for beach_state in ['adrift']:
-        for year in [0, 1, 2]:
+        for year in [0]:
             concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc,
                                                                      rho=rho, shore_time=shore_time,
                                                                      beach_state=beach_state, simulation_year=year,
