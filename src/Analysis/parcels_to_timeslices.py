@@ -60,6 +60,7 @@ class parcels_to_timeslicing:
                     for key in output_dict.keys():
                         output_dict[key] = np.append(output_dict[key], time_file[key])
                     utils.remove_file(file_name)
+                utils.print_statement("At {} we have {} particles".format(date, output_dict['lon'].size), to_print=True)
                 utils.save_obj(output_name, output_dict)
         else:
             ValueError('settings.PARALLEL_STEP can not have a value of {}'.format(self.parallel_step))
