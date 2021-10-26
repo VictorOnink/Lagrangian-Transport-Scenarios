@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from progressbar import ProgressBar
 import settings
 import utils
+import glob
 
 
 class parcels_to_timeslicing:
@@ -12,7 +13,7 @@ class parcels_to_timeslicing:
         self.file_dict = file_dict
         self.temp_direc, self.output_direc = get_directories(scenario_name=settings.SCENARIO_NAME)
         self.reference_time = datetime(2010, 1, 1, 12, 0)
-        self.time_difference_list = set_time_difference_list(ref_time=self.reference_time)
+        self.time_difference_list = set_time_difference_list(ref_time=self.reference_time, parallel_step=self.parallel_step)
         self.variable_list = ['lon', 'lat', 'z', 'beach', 'size_class', 'time']
 
     def run(self):
@@ -42,33 +43,24 @@ class parcels_to_timeslicing:
                         utils.save_obj(filename=output_name, item=time_dict)
         elif self.parallel_step == 2:
             pbar = ProgressBar()
-            for ind_year, year in pbar(enumerate(range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH))):
-                for month in range(1, 13):
-                    for run in range(0, settings.RUN_RANGE):
-                        for restart in range(0, settings.SIM_LENGTH - ind_year):
-                            for time_value in self.time_difference_list:
-                                date = (self.reference_time + timedelta(seconds=time_value)).strftime(
-                                    "%Y-%m-%d-%H-%M-%S")
-                                prefix = 'timeslices_{}'.format(date)
-                                file_name = get_file_names(file_dict=self.file_dict, directory=self.temp_direc,
-                                                           final=False, year=year, month=month, run=run,
-                                                           restart=restart, prefix=prefix)
-                                if utils.check_file_exist(file_name):
-                                    date_dict = utils.load_obj(filename=file_name)
-                                    output_name = get_file_names(file_dict=self.file_dict, directory=self.output_direc,
-                                                                 final=True, prefix=prefix)
-                                    if utils.check_file_exist(output_name) or utils.check_file_exist(output_name, without_pkl=True):
-                                        previous_dict = utils.load_obj(filename=output_name)
-                                        for key in previous_dict.keys():
-                                            previous_dict[key] = np.append(previous_dict[key], date_dict[key])
-                                        utils.save_obj(filename=output_name, item=previous_dict)
-                                        utils.remove_file(file_name)
-                                    else:
-                                        str_format = file_name, year, month, run, restart
-                                        utils.print_statement("{} does not exist for {} {} {} {}".format(*str_format), to_print=True)
-                                        utils.save_obj(filename=output_name, item=date_dict)
-                                else:
-                                    utils.print_statement("{} does not exist".format(file_name), to_print=True)
+            for time_value in pbar(self.time_difference_list):
+                date = (self.reference_time + timedelta(seconds=time_value)).strftime("%Y-%m-%d-%H-%M-%S")
+                prefix = 'timeslices_{}'.format(date)
+                # Setting the output name
+                output_name = get_file_names(file_dict=self.file_dict, directory=self.output_direc, final=True,
+                                             prefix=prefix)
+                # Creating an output dict
+                output_dict = {}
+                for key in self.variable_list[:-1]:
+                    output_dict[key] = np.array([], dtype=float)
+                # Getting all the timeslice files for this date, and looping through them
+                file_list = glob.glob(self.temp_direc + prefix + '*')
+                for file_name in file_list:
+                    time_file = utils.load_obj(file_name)
+                    for keys in output_dict.keys():
+                        output_dict[key] = np.append(output_dict[key], time_file[key])
+                    utils.remove_file(file_name)
+                utils.save_obj(output_name)
         else:
             ValueError('settings.PARALLEL_STEP can not have a value of {}'.format(self.parallel_step))
 
@@ -108,9 +100,12 @@ def get_file_names(file_dict, directory, final, prefix, year=settings.STARTYEAR,
     return output_name
 
 
-def set_time_difference_list(ref_time):
-    current_time, end_time = datetime(2010, 1, 1, 0), datetime(2010 + settings.SIM_LENGTH, 1, 1, 0)
-    time_step, time_list = timedelta(hours=12), []
+def set_time_difference_list(ref_time, parallel_step):
+    if parallel_step == 1:
+        current_time, end_time = datetime(2010 + settings.RESTART, 1, 1, 0), datetime(2010 + settings.RESTART + 1, 1, 1, 0)
+    elif parallel_step == 2:
+        current_time, end_time = datetime(2010, 1, 1, 0), datetime(2010 + settings.SIM_LENGTH, 1, 1, 0)
+    time_step, time_list = timedelta(hours=24), []
     while current_time < end_time:
         time_list.append((current_time - ref_time).total_seconds())
         current_time += time_step
