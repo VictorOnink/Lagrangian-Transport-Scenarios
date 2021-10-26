@@ -75,11 +75,11 @@ export SERVER
 
 #A number of switches to indicate which analysis steps we want to run.
 #0 = off, 1 = on
-CONCENTRATION=1
+CONCENTRATION=0
 VERTICAL_CONCENTRATION=0
 TIMESERIES=0
 MAX_DISTANCE=0
-TIMESLICING=0
+TIMESLICING=1
 STATISTICS=0
 SEPARATION=0
 SIZE_SPECTRUM=0
@@ -244,7 +244,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
           part5="#SBATCH --output="runOutput/${RUNNAMEPREFIX}".o%j"
           part6="#SBATCH --mem-per-cpu=20G"
           if [ "$DEBUG" -eq "0" ]; then
-            part7="#SBATCH --time=06:00:00"
+            part7="#SBATCH --time=48:00:00"
             part8="#SBATCH --partition=epyc2"
             part9='#SBATCH --qos=job_epyc2'
           else
