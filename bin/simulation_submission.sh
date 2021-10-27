@@ -33,7 +33,7 @@ export SEABED_CRIT
 P=4
 DN=25
 SIZE_CLASS_NUMBER=6
-LAMBDA_FRAG_list=(1000 10000 50000)  # (300 388 1000 10000 35000)
+LAMBDA_FRAG_list=(388)  # (300 388 1000 10000 35000)
 OCEAN_FRAG=0
 LAMBDA_OCEAN_FRAG_LIST=(388)
 export P
@@ -44,17 +44,17 @@ export OCEAN_FRAG
 # to calculate the particle numbers.
 # POST_PROCESS == 0 -> run lagrangian simulation
 # POST_PROCESS == 1 -> run post processing
-POST_PROCESS=1
+POST_PROCESS=0
 export POST_PROCESS
 #the starting year of the simulation, and how many years the simulation will take
-STARTYEAR=2012
-STARTMONTH_list=(1 2 3 4 5 6 7 8 9 10 11 12)
+STARTYEAR=2010
+STARTMONTH_list=(12)
 STARTDAY=1
 export STARTYEAR
 export STARTDAY
 # Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=lebretondivision, 3=lebretonKaandorpInit,
 # 4=point, 5=uniform
-INPUT=2
+INPUT=3
 export INPUT
 #Which advection data do we want to use?
 # 0 = Global HYCOM, 1 = Caribbean HYCOM, 2 = Mediterranean CMEMS
@@ -83,7 +83,7 @@ elif [ "$INPUT" -eq "1" ]; then
 elif [ "$INPUT" -eq "2" ]; then
   runlength=9
 elif [ "$INPUT" -eq "3" ]; then
-  runlength=9
+  runlength=0
 elif [ "$INPUT" -eq "4" ]; then
   runlength=0
 elif [ "$INPUT" -eq "5" ]; then
