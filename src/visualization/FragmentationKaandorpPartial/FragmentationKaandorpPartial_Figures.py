@@ -23,7 +23,7 @@ def run(scenario, figure_direc: str):
     # General_input_scenario(scenario=scenario, figure_direc=figure_direc).plot()
 
     Animation.FragmentationKaandorpPartial_Animation(scenario=scenario, figure_direc=figure_direc, shore_time=20,
-                                                     rho=rho, simulation_years=2, ocean_frag=False).animate()
+                                                     rho=rho, simulation_years=3, ocean_frag=False).animate()
 
     # timeseries.FragmentationKaandorpPartial_timeseries(scenario=scenario, figure_direc=figure_direc,
     #                                                    shore_time=shore_time, lambda_frag=10000, rho=rho,
