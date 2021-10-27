@@ -5,13 +5,17 @@ import utils
 class AnalysisFactory:
     def create_procedure(file_dict: dict, scenario, concentration: bool = False, timeseries: bool = False,
                          max_distance: bool = False, vertical_concentration: bool = False, timeslicing: bool = False,
-                         statistics: bool = False, separation_distance: bool = False, size_spectrum: bool = False):
+                         statistics: bool = False, separation_distance: bool = False, size_spectrum: bool = False,
+                         lonlat_average: bool = False):
         if concentration:
             utils.print_statement("Calculating the concentration", to_print=True)
             Analysis.parcels_to_concentration(file_dict=file_dict).run()
         if vertical_concentration:
             utils.print_statement("Calculating the vertical concentration", to_print=True)
             Analysis.parcels_to_vertical_concentration(file_dict=file_dict).run()
+        if lonlat_average:
+            utils.print_statement("Calculating the lonlat concentration averages", to_print=True)
+            Analysis.parcels_to_lonlat_average(file_dict=file_dict)
         if timeseries:
             utils.print_statement("Calculating timeseries of beached fractions", to_print=True)
             Analysis.parcels_to_timeseries(file_dict=file_dict).run()

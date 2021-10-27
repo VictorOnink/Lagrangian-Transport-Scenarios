@@ -31,7 +31,8 @@ def run():
                                                           timeslicing=settings.TIMESLICING,
                                                           statistics=settings.STATISTICS,
                                                           separation_distance=settings.SEPARATION,
-                                                          size_spectrum=settings.SIZE_SPECTRUM)
+                                                          size_spectrum=settings.SIZE_SPECTRUM,
+                                                          lonlat_average=settings.LONLAT_CONCENTRATION)
     elif settings.SUBMISSION == 'visualization':
         os.system('echo "Generating all visualizations"')
         scenario_name = settings.SCENARIO_NAME

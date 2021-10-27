@@ -92,7 +92,7 @@ class parcels_to_concentration:
                                         for size_class in range(settings.SIZE_CLASS_NUMBER):
                                             key_year = utils.analysis_simulation_year_key(restart + ind_year)
                                             self.output_dict[key_year][beach_state][weight][size_class] += dataset_post[key_year][beach_state][weight][size_class]
-                                utils.remove_file(file_name)
+                                utils.remove_file(file_name + '.pkl')
                             else:
                                 if month == 1 and year == settings.STARTYEAR:
                                     file_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
