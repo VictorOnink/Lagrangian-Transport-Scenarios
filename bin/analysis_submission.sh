@@ -4,7 +4,7 @@
 #####################################################################################
 SUBMISSION='analysis'
 export SUBMISSION
-DEBUG=1 # 0 = Not a debug run, 1 = a debug run
+DEBUG=0 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation
 SCENARIO=5
@@ -22,7 +22,7 @@ export SHOREDEPEN
 WMIN=3
 export WMIN
 #for scenario 5 and 6, the initial size of the particle in 1e-6 m and the particle rho
-PARTICLE_SIZE_list=(5000) # (5000 2500 1250 625 313 156 78 39 20 10 5 2)
+PARTICLE_SIZE_list=(5000 2500 1250 625 313 156 78 39 20 10 5 2)
 INIT_DENSITY=920
 export INIT_DENSITY
 #for scenario 5 and 6, the critical bottom shear stress for particle resuspension (x1e-3)
@@ -54,7 +54,7 @@ export INPUT
 ADVECTION_DATA=2
 export ADVECTION_DATA
 #Number of years the simulation runs
-SIMLEN=1
+SIMLEN=3
 export SIMLEN
 # For the analysis, if we have multiple years that we want to combine into one analysis set (so if we have continuous
 # particle release), then this how many years we want to include
@@ -219,9 +219,9 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
                   done
 
                   # submitting the job
-#                  jobid=$(sbatch --parsable jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
-#                  echo -n ':'${jobid} >> job_id.txt
-#                  # deleting the submission file
+                  jobid=$(sbatch --parsable jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
+                  echo -n ':'${jobid} >> job_id.txt
+                  # deleting the submission file
                   rm jobsubmissionFile_${RUN}_${RESTARTNUM}.sh
                 done
               done
@@ -267,8 +267,8 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
 
           # Submitting the job that will join all the various analysis files together
           dependence=$( cat job_id.txt )
-#          sbatch --dependency=afterok${dependence} jobsubmissionFile.sh
-          sbatch jobsubmissionFile.sh
+          sbatch --dependency=afterok${dependence} jobsubmissionFile.sh
+#          sbatch jobsubmissionFile.sh
           rm jobsubmissionFile.sh
           rm job_id.txt
         done
