@@ -13,10 +13,11 @@ import math
 
 def var_dict_expansion(var_dict: dict):
     if settings.INPUT in ['LebretonKaandorpInit']:
+        array_size = var_dict['lon'].size
         for variable in var_dict.keys():
             if variable == 'size_class':
                 for size_class in range(1, settings.SIZE_CLASS_NUMBER):
-                    var_dict[variable] = np.append(var_dict[variable], np.ones(var_dict['lon'].size, dtype=np.float32) * size_class)
+                    var_dict[variable] = np.append(var_dict[variable], np.ones(array_size, dtype=np.float32) * size_class)
             else:
                 var_dict[variable] = np.tile(var_dict[variable], settings.SIZE_CLASS_NUMBER)
     for var in var_dict.keys():
