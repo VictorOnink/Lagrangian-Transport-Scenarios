@@ -19,7 +19,7 @@ def var_dict_expansion(var_dict: dict):
                     var_dict[variable] = np.append(var_dict[variable], np.ones(var_dict['lon'].size, dtype=np.float32) * size_class)
             else:
                 var_dict[variable] = np.tile(var_dict[variable], settings.SIZE_CLASS_NUMBER)
-    for var in var_dict.keys:
+    for var in var_dict.keys():
         utils.print_statement('{} {} {}'.format(var, var_dict[var].size, var_dict[var].shape))
     return var_dict
 
