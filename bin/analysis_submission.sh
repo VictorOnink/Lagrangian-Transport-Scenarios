@@ -4,7 +4,7 @@
 #####################################################################################
 SUBMISSION='analysis'
 export SUBMISSION
-DEBUG=0 # 0 = Not a debug run, 1 = a debug run
+DEBUG=1 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation
 SCENARIO=5
@@ -54,7 +54,7 @@ export INPUT
 ADVECTION_DATA=2
 export ADVECTION_DATA
 #Number of years the simulation runs
-SIMLEN=3
+SIMLEN=1
 export SIMLEN
 # For the analysis, if we have multiple years that we want to combine into one analysis set (so if we have continuous
 # particle release), then this how many years we want to include
