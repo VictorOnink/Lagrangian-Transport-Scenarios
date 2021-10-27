@@ -130,7 +130,7 @@ def calculate_concentration(lon, lat, weights, hex_grid, time_steps, lon_bin, la
 
 def create_output_file_dict(scenario_name, beach_states, lon, lat, weight_list):
     # Creating the base grid that has the dimensions of the output grid of the histogram
-    lon_dim, lat_dim = lon.shape, lat.shape
+    lon_dim, lat_dim = lon.size, lat.size
     base_dict = {"lon_counts": np.zeros(shape=(lon_dim - 1), dtype=float),
                  "lat_counts": np.zeros(shape=(lat_dim - 1), dtype=float)}
     beach_state_dict = dict.fromkeys(beach_states)
