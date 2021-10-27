@@ -83,7 +83,7 @@ elif [ "$INPUT" -eq "1" ]; then
 elif [ "$INPUT" -eq "2" ]; then
   runlength=9
 elif [ "$INPUT" -eq "3" ]; then
-  runlength=0
+  runlength=9
 elif [ "$INPUT" -eq "4" ]; then
   runlength=0
 elif [ "$INPUT" -eq "5" ]; then
