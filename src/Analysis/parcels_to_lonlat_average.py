@@ -134,7 +134,7 @@ def create_output_file_dict(scenario_name, beach_states, lon, lat, weight_list):
     lon_dim, lat_dim = lon.size, lat.size
     base_dict = {"lon_counts": np.zeros(shape=(lon_dim - 1), dtype=float),
                  "lat_counts": np.zeros(shape=(lat_dim - 1), dtype=float)}
-    utils.print_statement("lon_counts shape {}".format(base_dict['lon_counts'].shape), to_print=True)
+
     beach_state_dict = dict.fromkeys(beach_states)
     if scenario_name in ['FragmentationKaandorpPartial']:
         size_dict = dict.fromkeys(range(settings.SIZE_CLASS_NUMBER))
