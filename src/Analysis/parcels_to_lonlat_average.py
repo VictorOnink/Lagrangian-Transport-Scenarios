@@ -70,6 +70,8 @@ class parcels_to_lonlat_average:
                                                             weights=state_data["weights"], hex_grid=self.hexgrid,
                                                             time_steps=time_steps, lon_bin=self.LON, lat_bin=self.LAT)
                         for key in conc_dict.keys():
+                            utils.print_statement("{} shape {}".format(key, conc_dict[key].shape),
+                                                  to_print=True)
                             self.output_dict[key_year][beach_state][key] = conc_dict[key]
 
                 utils.save_obj(output_name, self.output_dict)
@@ -134,6 +136,7 @@ def create_output_file_dict(scenario_name, beach_states, lon, lat, weight_list):
     lon_dim, lat_dim = lon.size, lat.size
     base_dict = {"lon_counts": np.zeros(shape=(lon_dim - 1), dtype=float),
                  "lat_counts": np.zeros(shape=(lat_dim - 1), dtype=float)}
+    utils.print_statement("lon_counts shape {}".format(base_dict['lon_counts'].shape), to_print=True)
     beach_state_dict = dict.fromkeys(beach_states)
     if scenario_name in ['FragmentationKaandorpPartial']:
         size_dict = dict.fromkeys(range(settings.SIZE_CLASS_NUMBER))
