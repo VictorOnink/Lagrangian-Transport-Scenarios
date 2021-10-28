@@ -27,6 +27,7 @@ class parcels_to_lonlat_average:
             utils.print_statement(print_statement, to_print=True)
             output_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
                                          directory=self.temp_direc, final=False)
+            utils.print_statement(output_name, to_print=True)
 
             if not utils.check_file_exist(output_name, without_pkl=True):
                 # Loading the data
