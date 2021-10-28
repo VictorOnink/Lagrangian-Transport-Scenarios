@@ -41,7 +41,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         if settings.SUBMISSION in ['simulation'] and not settings.POST_PROCESS:
             self.field_set = self.create_fieldset()
 
-    var_list = ['lon', 'lat', 'beach', 'age', 'size', 'parent', 'beach_time', 'size_class', 'ocean_time',
+    var_list = ['lon', 'lat', 'beach', 'age', 'parent', 'beach_time', 'size_class', 'ocean_time',
                 'at_seafloor', 'distance2coast']
 
     def create_fieldset(self) -> FieldSet:
@@ -65,11 +65,12 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         utils.print_statement("Creating the particle set")
         if settings.RESTART == 0:
             var_dict = var_dict_expansion(var_dict=var_dict)
-            rise_velocity = utils.initial_estimate_particle_rise_velocity(L=var_dict['size'])
+            particle_size = settings.INIT_SIZE * np.power(2, -1 * var_dict['size_class'])
+            rise_velocity = utils.initial_estimate_particle_rise_velocity(L=particle_size)
             rho_plastic = np.ones(rise_velocity.shape, dtype=np.float32) * settings.INIT_DENSITY
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
                                lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
-                               age=var_dict['age'], size=var_dict['size'],
+                               age=var_dict['age'], size=particle_size,
                                rho_plastic=rho_plastic, parent=range(len(rise_velocity)),
                                rise_velocity=rise_velocity, beach_time=np.zeros(rise_velocity.shape, dtype=np.int32),
                                prob_resus=utils.resuspension_probability(w_rise=rise_velocity),
