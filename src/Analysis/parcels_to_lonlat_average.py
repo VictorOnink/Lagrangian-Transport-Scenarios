@@ -63,14 +63,14 @@ class parcels_to_lonlat_average:
                                                                     weights=size_class_data[weight], hex_grid=self.hexgrid,
                                                                     time_steps=time_steps, lon_bin=self.LON, lat_bin=self.LAT)
                                 for key in conc_dict.keys():
-                                    self.output_dict[key_year][beach_state][weight][size_class][key] += conc_dict[key]
+                                    self.output_dict[key_year][beach_state][weight][size_class][key] = conc_dict[key]
                     else:
                         key_year = utils.analysis_simulation_year_key(settings.RESTART)
                         conc_dict = calculate_concentration(lon=state_data['lon'], lat=state_data['lat'],
                                                             weights=state_data["weights"], hex_grid=self.hexgrid,
                                                             time_steps=time_steps, lon_bin=self.LON, lat_bin=self.LAT)
                         for key in conc_dict.keys():
-                            self.output_dict[key_year][beach_state][key] += conc_dict[key]
+                            self.output_dict[key_year][beach_state][key] = conc_dict[key]
 
                 utils.save_obj(output_name, self.output_dict)
                 str_format = settings.STARTYEAR, settings.STARTMONTH, settings.RUN, settings.RESTART
