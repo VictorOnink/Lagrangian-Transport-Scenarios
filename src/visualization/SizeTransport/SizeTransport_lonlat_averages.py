@@ -138,14 +138,14 @@ class SizeTransport_lonlat_averages:
         # Selecting just the specified year of the data
         coordinate = {"lon_counts": data_dict['lon'], "lat_counts": data_dict['lat']}
         bin = {"lon_counts": bins_lon, "lat_counts": bins_lat}
-        data_dict = data_dict[self.key_concentration]
+        year_data = data_dict[self.key_concentration]
         for size in data_dict.keys():
             output_dict[size] = {}
             for beach_state in self.beach_state_list:
                 output_dict[size][beach_state] = {}
                 for lonlat in self.dimension_list:
                     output_dict[size][beach_state][lonlat], _ = np.histogram(a=coordinate[lonlat], bins=bin[lonlat],
-                                                                             weights=data_dict[size][beach_state][lonlat])
+                                                                             weights=year_data[size][beach_state][lonlat])
         # Calculate the bin edge midpointw
         bin_mid_lon = 0.5 * bins_lon[1:] + 0.5 * bins_lon[:-1]
         bin_mid_lat = 0.5 * bins_lat[1:] + 0.5 * bins_lat[:-1]
