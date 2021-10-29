@@ -98,7 +98,7 @@ class SizeTransport_lonlat_averages:
 
         size_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(index_size, subdivisions=self.size_list.__len__()),
                                 label=size_label(size), linestyle='-')[0] for index_size, size in enumerate(self.size_list)]
-        ax_legend.legend(handles=beach_lines + size_colors, fontsize=self.ax_label_size, loc='upper left', ncol=2)
+        ax_legend.legend(handles=beach_lines + size_colors, fontsize=self.ax_label_size, loc='lower right', ncol=2)
         ax_legend.axis('off')
 
 
