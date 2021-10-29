@@ -44,7 +44,6 @@ class SizeTransport_lonlat_averages:
     def plot(self):
         # Loading the data
         concentration_dict = {}
-        key_concentration = utils.analysis_simulation_year_key(self.time_selection)
         for index, size in enumerate(self.size_list):
             data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
                                                        data_direc=self.data_direc,
@@ -54,9 +53,11 @@ class SizeTransport_lonlat_averages:
         # Normalizing the concentrations by the total number of particles in the simulation
         for size in concentration_dict.keys():
             for beach_state in self.beach_state_list:
+                total = np.zeros(concentration_dict[size][beach_state]["lon_counts"].shape, dtype=float)
                 for lonlat in self.dimension_list:
-                    concentration_dict[size][beach_state][lonlat] /= np.nansum(
-                        concentration_dict[size][beach_state][lonlat])
+                    total += concentration_dict[size][beach_state][lonlat]
+                for lonlat in self.dimension_list:
+                    concentration_dict[size][beach_state][lonlat] /= np.nansum(total)
 
         # Setting zero values to NAN
         for size in concentration_dict.keys():
