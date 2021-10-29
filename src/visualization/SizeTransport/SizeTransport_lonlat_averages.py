@@ -53,13 +53,13 @@ class SizeTransport_lonlat_averages:
         # Normalizing the concentrations by the total number of particles in the simulation
         for size in concentration_dict.keys():
             for beach_state in self.beach_state_list:
-                total = {"lon_counts": np.zeros(concentration_dict[size][beach_state]["lon_counts"].shape, dtype=float),
-                         "lat_counts": np.zeros(concentration_dict[size][beach_state]["lat_counts"].shape, dtype=float)}
+                total = {"lon_counts": 0.0,
+                         "lat_counts": 0.0}
                 for lonlat in self.dimension_list:
-                    total[lonlat] += concentration_dict[size][beach_state][lonlat]
+                    total[lonlat] += np.nansum(concentration_dict[size][beach_state][lonlat])
             for beach_state in self.beach_state_list:
                 for lonlat in self.dimension_list:
-                    concentration_dict[size][beach_state][lonlat] /= np.nansum(total[lonlat])
+                    concentration_dict[size][beach_state][lonlat] /= total[lonlat]
 
         # Creating the map
         fig = plt.figure(figsize=self.figure_size)
