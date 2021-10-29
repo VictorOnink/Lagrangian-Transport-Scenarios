@@ -109,14 +109,14 @@ class SizeTransport_lonlat_averages:
         # Plotting the longitudes
         for index_size, size in enumerate(self.size_list):
             for beach_state in self.beach_state_list:
-                ax_lon.plot(lon, concentration_dict[size][beach_state]["lon_counts"],
+                ax_lon.plot(lon, concentration_dict[index_size][beach_state]["lon_counts"],
                             linestyle=self.line_types[beach_state],
                             c=vUtils.discrete_color_from_cmap(index_size, subdivisions=self.size_list.__len__()))
 
         # Plotting the latitudes
         for index_size, size in enumerate(self.size_list):
             for beach_state in self.beach_state_list:
-                ax_lat.plot(concentration_dict[size][beach_state]["lat_counts"], lat,
+                ax_lat.plot(concentration_dict[index_size][beach_state]["lat_counts"], lat,
                             linestyle=self.line_types[beach_state],
                             c=vUtils.discrete_color_from_cmap(index_size, subdivisions=self.size_list.__len__()))
 
