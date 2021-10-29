@@ -60,6 +60,9 @@ class SizeTransport_lonlat_averages:
                 for lonlat in self.dimension_list:
                     concentration_dict[size][beach_state][lonlat] /= np.nansum(total[lonlat])
 
+        print(concentration_dict[size]["beach"]["lat_counts"])
+        print(concentration_dict[size]["adrift"]["lat_counts"])
+
         # Setting zero values to NAN
         for size in concentration_dict.keys():
             for beach_state in self.beach_state_list:
