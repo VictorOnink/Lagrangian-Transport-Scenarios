@@ -70,6 +70,6 @@ def run(scenario, figure_direc: str):
     # Plotting the lon lat concentration averages
     SizeTransport_lonlat_averages(scenario=scenario, figure_direc=figure_direc, size_list=size_list[:6],
                                   time_selection=2, beach_state='beach').plot()
-    SizeTransport_lonlat_averages(scenario=scenario, figure_direc=figure_direc, size_list=size_list[:6],
-                                  time_selection=2, beach_state='adrift').plot()
+    # SizeTransport_lonlat_averages(scenario=scenario, figure_direc=figure_direc, size_list=size_list[:6],
+    #                               time_selection=2, beach_state='adrift').plot()
     pass
