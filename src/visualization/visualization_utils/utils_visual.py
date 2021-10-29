@@ -61,7 +61,7 @@ def cartopy_standard_map(fig, gridspec, row, column, domain, resolution='50m', a
         # Here we can choose along which axes we want to have the labels included
         grid.top_labels = False
         grid.right_labels = False
-        if column == 0:
+        if column == 0 and add_gridlabels:
             grid.left_labels = True
         else:
             grid.left_labels = False

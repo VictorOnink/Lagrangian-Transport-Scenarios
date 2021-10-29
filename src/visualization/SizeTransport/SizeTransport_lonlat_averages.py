@@ -69,16 +69,18 @@ class SizeTransport_lonlat_averages:
 
         ax_map = vUtils.cartopy_standard_map(fig=fig, gridspec=gs, row=0, column=0, add_gridlabels=False,
                                              domain=self.spatial_domain, label_size=self.ax_label_size,
-                                             lat_grid_step=5, lon_grid_step=10, resolution='10m', land_color='grey',
+                                             lat_grid_step=2, lon_grid_step=5, resolution='10m', land_color='grey',
                                              border_color='white')
         # Creating the axis for the longitudes
         ax_lon = fig.add_subplot(gs[1, 0])
         ax_lon.set_ylim((0, 1))
         ax_lon.set_xlim((self.spatial_domain[0], self.spatial_domain[1]))
+        ax_lon.grid(which='major', axis='x', linestyle='-')
         # Creating the axis for the latitudes
         ax_lat = fig.add_subplot(gs[0, 1])
         ax_lat.set_ylim((self.spatial_domain[2], self.spatial_domain[3]))
         ax_lat.set_xlim((0, 1))
+        ax_lat.grid(which='major', axis='y', linestyle='-')
 
         # Saving the figure
         str_format = self.time_selection, self.rho
