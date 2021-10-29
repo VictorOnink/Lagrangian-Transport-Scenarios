@@ -50,6 +50,9 @@ class SizeTransport_lonlat_averages:
                                                        size=size, rho=self.rho, tau=self.tau)
             concentration_dict[index], lon, lat = self.histogram_reduction(data_dict=data_dict)
 
+        print(concentration_dict[size]["beach"]["lat_counts"])
+        print(concentration_dict[size]["adrift"]["lat_counts"])
+
         # Normalizing the concentrations by the total number of particles in the simulation
         for size in concentration_dict.keys():
             for beach_state in self.beach_state_list:
@@ -59,9 +62,6 @@ class SizeTransport_lonlat_averages:
                     total[lonlat] += concentration_dict[size][beach_state][lonlat]
                 for lonlat in self.dimension_list:
                     concentration_dict[size][beach_state][lonlat] /= np.nansum(total[lonlat])
-
-        print(concentration_dict[size]["beach"]["lat_counts"])
-        print(concentration_dict[size]["adrift"]["lat_counts"])
 
         # Setting zero values to NAN
         for size in concentration_dict.keys():
