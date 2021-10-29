@@ -21,7 +21,7 @@ class SizeTransport_lonlat_averages:
         self.beach_state_list = ['beach', 'adrift']
         self.dimension_list = ["lon_counts", "lat_counts"]
         self.key_concentration = utils.analysis_simulation_year_key(self.time_selection)
-        self.step = 1
+        self.step = 0.5
         # Data parameters
         self.output_direc = figure_direc + 'concentrations/'
         self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/SizeTransport/'
@@ -50,9 +50,6 @@ class SizeTransport_lonlat_averages:
                                                        size=size, rho=self.rho, tau=self.tau)
             concentration_dict[index], lon, lat = self.histogram_reduction(data_dict=data_dict)
 
-        print(concentration_dict[index]["beach"]["lat_counts"])
-        print(concentration_dict[index]["adrift"]["lat_counts"])
-
         # Normalizing the concentrations by the total number of particles in the simulation
         for size in concentration_dict.keys():
             for beach_state in self.beach_state_list:
@@ -63,13 +60,6 @@ class SizeTransport_lonlat_averages:
             for beach_state in self.beach_state_list:
                 for lonlat in self.dimension_list:
                     concentration_dict[size][beach_state][lonlat] /= np.nansum(total[lonlat])
-
-        # Setting zero values to NAN
-        for size in concentration_dict.keys():
-            for beach_state in self.beach_state_list:
-                for lonlat in self.dimension_list:
-                    zero = concentration_dict[size][beach_state][lonlat] == 0
-                    concentration_dict[size][beach_state][lonlat][zero] = np.nan
 
         # Creating the map
         fig = plt.figure(figsize=self.figure_size)
