@@ -20,7 +20,8 @@ def SizeTransport_linestyle_SEABED_CRIT(tau):
 
 def cartopy_standard_map(fig, gridspec, row, column, domain, resolution='50m', add_gridlines=True, add_gridlabels=True,
                          lat_grid_step=20, lon_grid_step=30, label_size=14, land_zorder=1, ocean_zorder=1,
-                         line_zorder=101, border_color='black', land_color='lightgray', ocean_color='white'):
+                         line_zorder=101, border_color='black', land_color='lightgray', ocean_color='white',
+                         x_grid_locator=None, y_grid_locator=None):
     """
     A nice basic function that can be used to create standardized maps
     :param fig:
@@ -74,8 +75,12 @@ def cartopy_standard_map(fig, gridspec, row, column, domain, resolution='50m', a
         grid.yformatter = LATITUDE_FORMATTER
 
         # Determine where we want labels
-        grid.xlocator = mticker.FixedLocator(np.arange(int(lon_min), int(lon_max) + lon_grid_step, lon_grid_step))
-        grid.ylocator = mticker.FixedLocator(np.arange(int(lat_min), int(lat_max) + lat_grid_step, lat_grid_step))
+        if x_grid_locator is None:
+            x_grid_locator = np.arange(int(lon_min), int(lon_max) + lon_grid_step, lon_grid_step)
+        grid.xlocator = mticker.FixedLocator(x_grid_locator)
+        if y_grid_locator is None:
+            y_grid_locator = np.arange(int(lat_min), int(lat_max) + lat_grid_step, lat_grid_step)
+        grid.ylocator = mticker.FixedLocator(y_grid_locator)
         # Here we can change the appearances of the labels
         grid.xlabel_style = {'size': label_size, 'color': 'black', 'weight': 'normal'}
         grid.ylabel_style = {'size': label_size, 'color': 'black', 'weight': 'normal'}
