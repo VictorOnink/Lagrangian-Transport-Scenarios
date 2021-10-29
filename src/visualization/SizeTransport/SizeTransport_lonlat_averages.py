@@ -10,13 +10,14 @@ import cmocean.cm as cmo
 
 
 class SizeTransport_lonlat_averages:
-    def __init__(self, scenario, figure_direc, size_list, time_selection, rho=920, tau=0):
+    def __init__(self, scenario, figure_direc, size_list, time_selection, beach_state, rho=920, tau=0):
         # Simulation parameters
         self.scenario = scenario
         self.rho = rho
         self.time_selection = time_selection
         self.size_list = size_list
         self.tau = tau
+        self.beach_state = beach_state
         self.beach_state_list = ['beach', 'adrift']
         self.dimension_list = ["lon_counts", "lat_counts"]
         # Data parameters
@@ -100,31 +101,29 @@ class SizeTransport_lonlat_averages:
 
         # Adding a legend
         ax_legend = fig.add_subplot(gs[1, 1])
-        beach_lines = [plt.plot([], [], c='k', label=beach_state, linestyle=self.line_types[beach_state])[0]
-                       for beach_state in self.beach_state_list]
+        # beach_lines = [plt.plot([], [], c='k', label=beach_state, linestyle=self.line_types[beach_state])[0]
+        #                for beach_state in self.beach_state_list]
 
         size_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(index_size, subdivisions=self.size_list.__len__()),
                                 label=size_label(size), linestyle='-')[0] for index_size, size in enumerate(self.size_list)]
-        ax_legend.legend(handles=beach_lines + size_colors, fontsize=self.ax_label_size, loc='lower right', ncol=2)
+        ax_legend.legend(handles=size_colors, fontsize=self.ax_label_size, loc='lower right', ncol=2)
         ax_legend.axis('off')
 
         # Plotting the longitudes
         for index_size, size in enumerate(self.size_list):
-            for beach_state in self.beach_state_list:
-                ax_lon.plot(lon, concentration_dict[index_size][beach_state]["lon_counts"],
-                            linestyle=self.line_types[beach_state],
-                            c=vUtils.discrete_color_from_cmap(index_size, subdivisions=self.size_list.__len__()))
+            ax_lon.plot(lon, concentration_dict[index_size][self.beach_state]["lon_counts"],
+                        linestyle=self.line_types[self.beach_state],
+                        c=vUtils.discrete_color_from_cmap(index_size, subdivisions=self.size_list.__len__()))
 
         # Plotting the latitudes
         for index_size, size in enumerate(self.size_list):
-            for beach_state in self.beach_state_list:
-                ax_lat.plot(concentration_dict[index_size][beach_state]["lat_counts"], lat,
-                            linestyle=self.line_types[beach_state],
-                            c=vUtils.discrete_color_from_cmap(index_size, subdivisions=self.size_list.__len__()))
+            ax_lat.plot(concentration_dict[index_size][self.beach_state]["lat_counts"], lat,
+                        linestyle=self.line_types[self.beach_state],
+                        c=vUtils.discrete_color_from_cmap(index_size, subdivisions=self.size_list.__len__()))
 
         # Saving the figure
-        str_format = self.time_selection, self.rho
-        fig_name = self.output_direc + "lon_lat_year={}__rho={}.png".format(*str_format)
+        str_format = self.time_selection, self.beach_state, self.rho
+        fig_name = self.output_direc + "lon_lat_year={}_beach_state={}_rho={}.png".format(*str_format)
         plt.savefig(fig_name, bbox_inches='tight')
 
 
