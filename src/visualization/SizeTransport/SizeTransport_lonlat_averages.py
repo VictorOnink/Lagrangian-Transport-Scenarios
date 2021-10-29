@@ -37,7 +37,7 @@ class SizeTransport_lonlat_averages:
         self.spatial_domain = np.nanmin(self.adv_file_dict['LON']), np.nanmax(self.adv_file_dict['LON']), \
                               np.nanmin(self.adv_file_dict['LAT']), np.nanmax(self.adv_file_dict['LAT'])
         self.cmap = 'viridis_r'
-        self.line_types = {'beach': '-', 'adrift': '--'}
+        self.line_types = {'beach': '-', 'adrift': '-'}
 
     def plot(self):
         # Loading the data
@@ -108,7 +108,7 @@ class SizeTransport_lonlat_averages:
 
         size_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(index_size, subdivisions=self.size_list.__len__()),
                                 label=size_label(size), linestyle='-')[0] for index_size, size in enumerate(self.size_list)]
-        ax_legend.legend(handles=size_colors, fontsize=self.ax_label_size, loc='lower right', ncol=2)
+        ax_legend.legend(handles=size_colors, fontsize=self.ax_label_size, loc='upper left', ncol=2)
         ax_legend.axis('off')
 
         # Plotting the longitudes
