@@ -74,7 +74,7 @@ class SizeTransport_lonlat_averages:
                                              lat_grid_step=2, lon_grid_step=5, resolution='10m', land_color='grey',
                                              border_color='white',
                                              x_grid_locator=np.arange(start=-5, stop=40, step=5))
-        ax_map.set_title(beach_state, fontsize=self.ax_label_size + 2, fontweight='bold')
+        ax_map.set_title(self.beach_state, fontsize=self.ax_label_size + 2, fontweight='bold')
 
         # Creating the axis for the longitudes
         ax_lon = fig.add_subplot(gs[1, 0])
@@ -83,9 +83,8 @@ class SizeTransport_lonlat_averages:
         ax_lon.set_xlabel(r'Longitude ($^{\circ}$)', fontsize=self.ax_label_size)
         ax_lon.set_ylabel(r'Particle Fraction', fontsize=self.ax_label_size)
         ax_lon.tick_params(axis='both', labelsize=self.ax_ticklabel_size)
-        # ax_lon.set_yscale('log')
-        # ax_lon.set_ylim((1e-4, 1e0))
-        ax_lon.set_ylim((0, 0.1))
+        ax_lon.set_yscale('log')
+        ax_lon.set_ylim((1e-5, 1e0))
 
         # Creating the axis for the latitudes
         ax_lat = fig.add_subplot(gs[0, 1])
@@ -98,9 +97,8 @@ class SizeTransport_lonlat_averages:
         ax_lat.set_xlabel(r'Particle Fraction', fontsize=self.ax_label_size)
         ax_lat.set_ylabel(r'Latitude ($^{\circ}$)', fontsize=self.ax_label_size)
         ax_lat.tick_params(axis='both', labelsize=self.ax_ticklabel_size)
-        # ax_lat.set_xscale('log')
-        # ax_lat.set_xlim((1e-4, 1e0))
-        ax_lat.set_xlim((0, 0.1))
+        ax_lat.set_xscale('log')
+        ax_lat.set_xlim((1e-5, 1e0))
 
 
         # Adding a legend
