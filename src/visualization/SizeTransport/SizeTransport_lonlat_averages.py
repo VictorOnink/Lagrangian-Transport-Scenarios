@@ -136,9 +136,9 @@ class SizeTransport_lonlat_averages:
         # The output dictionary with the new concentrations
         output_dict = {}
         # Selecting just the specified year of the data
-        data_dict = data_dict[self.key_concentration]
         coordinate = {"lon_counts": data_dict['lon'], "lat_counts": data_dict['lat']}
         bin = {"lon_counts": bins_lon, "lat_counts": bins_lat}
+        data_dict = data_dict[self.key_concentration]
         for size in data_dict.keys():
             output_dict[size] = {}
             for beach_state in self.beach_state_list:
