@@ -20,6 +20,7 @@ class SizeTransport_lonlat_averages:
         self.beach_state = beach_state
         self.beach_state_list = ['beach', 'adrift']
         self.dimension_list = ["lon_counts", "lat_counts"]
+        self.key_concentration = utils.analysis_simulation_year_key(self.time_selection)
         # Data parameters
         self.output_direc = figure_direc + 'concentrations/'
         self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/SizeTransport/'
@@ -47,8 +48,7 @@ class SizeTransport_lonlat_averages:
             data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
                                                        data_direc=self.data_direc,
                                                        size=size, rho=self.rho, tau=self.tau)
-            concentration_dict[index] = data_dict[key_concentration]
-        lon, lat = data_dict['lon'], data_dict['lat']
+            concentration_dict[index], lon, lat = self.histogram_reduction(data_dict=data_dict)
 
         # Normalizing the concentrations by the total number of particles in the simulation
         for size in concentration_dict.keys():
@@ -128,6 +128,32 @@ class SizeTransport_lonlat_averages:
         fig_name = self.output_direc + "lon_lat_year={}_beach_state={}_rho={}.png".format(*str_format)
         plt.savefig(fig_name, bbox_inches='tight')
 
+    def histogram_reduction(self, data_dict):
+        # The new bin edges
+        bins_lon = np.arange(self.spatial_domain[0], self.spatial_domain[1] + 1, step=1)
+        bins_lat = np.arange(self.spatial_domain[2], self.spatial_domain[3] + 1, step=1)
+        # The output dictionary with the new concentrations
+        output_dict = {}
+        # Selecting just the specified year of the data
+        data_dict = data_dict[self.key_concentration]
+        coordinate = {"lon_counts": data_dict['lon'], "lat_counts": data_dict['lat']}
+        bin = {"lon_counts": bins_lon, "lat_counts": bins_lat}
+        for size in data_dict.keys():
+            output_dict[size] = {}
+            for beach_state in self.beach_state_list:
+                output_dict[size][beach_state] = {}
+                for lonlat in self.dimension_list:
+                    output_dict[size][beach_state][lonlat], _ = np.histogram(a=coordinate[lonlat], bins=bin[lonlat],
+                                                                             weights=data_dict[size][beach_state][lonlat])
+        # Calculate the bin edge midpointw
+        bin_mid_lon = 0.5 * bins_lon[1:] + 0.5 * bins_lon[:-1]
+        bin_mid_lat = 0.5 * bins_lat[1:] + 0.5 * bins_lat[:-1]
+
+        return output_dict, bin_mid_lon, bin_mid_lat
+
 
 def size_label(size):
     return r'r = {:.3f} mm'.format(size * 1e3)
+
+
+
