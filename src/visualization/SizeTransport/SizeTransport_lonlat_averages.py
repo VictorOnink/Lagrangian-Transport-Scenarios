@@ -21,6 +21,7 @@ class SizeTransport_lonlat_averages:
         self.beach_state_list = ['beach', 'adrift']
         self.dimension_list = ["lon_counts", "lat_counts"]
         self.key_concentration = utils.analysis_simulation_year_key(self.time_selection)
+        self.step = 1
         # Data parameters
         self.output_direc = figure_direc + 'concentrations/'
         self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/SizeTransport/'
@@ -130,8 +131,8 @@ class SizeTransport_lonlat_averages:
 
     def histogram_reduction(self, data_dict):
         # The new bin edges
-        bins_lon = np.arange(self.spatial_domain[0], self.spatial_domain[1] + 1, step=1)
-        bins_lat = np.arange(self.spatial_domain[2], self.spatial_domain[3] + 1, step=1)
+        bins_lon = np.arange(self.spatial_domain[0], self.spatial_domain[1] + self.step, step=self.step)
+        bins_lat = np.arange(self.spatial_domain[2], self.spatial_domain[3] + self.step, step=self.step)
         # The output dictionary with the new concentrations
         output_dict = {}
         # Selecting just the specified year of the data
