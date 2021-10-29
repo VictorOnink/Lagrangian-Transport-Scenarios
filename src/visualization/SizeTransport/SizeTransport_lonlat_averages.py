@@ -60,6 +60,7 @@ class SizeTransport_lonlat_averages:
                          "lat_counts": np.zeros(concentration_dict[size][beach_state]["lat_counts"].shape, dtype=float)}
                 for lonlat in self.dimension_list:
                     total[lonlat] += concentration_dict[size][beach_state][lonlat]
+            for beach_state in self.beach_state_list:
                 for lonlat in self.dimension_list:
                     concentration_dict[size][beach_state][lonlat] /= np.nansum(total[lonlat])
 
