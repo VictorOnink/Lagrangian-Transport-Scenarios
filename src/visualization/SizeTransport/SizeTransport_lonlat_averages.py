@@ -89,6 +89,8 @@ class SizeTransport_lonlat_averages:
         ax_lat.grid(which='major', axis='y', linestyle='-')
         ax_lat.yaxis.set_label_position("right")
         ax_lat.yaxis.tick_right()
+        ax_lat.xaxis.set_label_position("top")
+        ax_lat.xaxis.tick_top()
         ax_lat.set_xlabel(r'Particle Fraction', fontsize=self.ax_label_size)
         ax_lat.set_ylabel(r'Latitude ($^{\circ}$)', fontsize=self.ax_label_size)
         ax_lat.tick_params(axis='both', labelsize=self.ax_ticklabel_size)
