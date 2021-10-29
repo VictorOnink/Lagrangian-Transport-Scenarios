@@ -6,6 +6,7 @@ import visualization.General as General
 from visualization.SizeTransport.SizeTransport_CumulativeDistance import SizeTransport_CumulativeDistance
 from visualization.SizeTransport.SizeTransport_SeparationDistance import SizeTransport_SeparationDistance
 from visualization.SizeTransport.SizeTransport_VerticalProfile import SizeTransport_VerticalProfile
+from visualization.SizeTransport.SizeTransport_lonlat_averages import SizeTransport_lonlat_averages
 import os
 import numpy as np
 
@@ -38,12 +39,12 @@ def run(scenario, figure_direc: str):
 
     # Creating figures showing the relative distribution, averaged over the entire simulation and time-snapshots at the
     # end of each simulation year
-    for time_select in [0, 1, 2]:
-        for rho in [920, 980]:
-            SizeTransport_relative_concentrations(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                                  beach_state='adrift', time_selection=time_select, rho=rho).plot()
-            SizeTransport_relative_concentrations(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                                  beach_state='beach', time_selection=time_select, rho=rho).plot()
+    # for time_select in [0, 1, 2]:
+    #     for rho in [920, 980]:
+    #         SizeTransport_relative_concentrations(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                               beach_state='adrift', time_selection=time_select, rho=rho).plot()
+    #         SizeTransport_relative_concentrations(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                               beach_state='beach', time_selection=time_select, rho=rho).plot()
 
     size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
     # Creating figures of the timeseries of the number of particles that are beached/adrift/seabed
@@ -65,4 +66,7 @@ def run(scenario, figure_direc: str):
     # for size_selection in size_list:
     #     SizeTransport_SeparationDistance(scenario=scenario, figure_direc=figure_direc, size_selection=size_selection,
     #                                      size_list=size_list).plot()
+
+    # Plotting the lon lat concentration averages
+    SizeTransport_lonlat_averages(scenario=scenario, figure_direc=figure_direc, size_list=size_list, time_selection=2).plot()
     pass
