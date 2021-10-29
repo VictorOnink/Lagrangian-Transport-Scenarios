@@ -36,6 +36,7 @@ class SizeTransport_lonlat_averages:
         self.spatial_domain = np.nanmin(self.adv_file_dict['LON']), np.nanmax(self.adv_file_dict['LON']), \
                               np.nanmin(self.adv_file_dict['LAT']), np.nanmax(self.adv_file_dict['LAT'])
         self.cmap = 'viridis_r'
+        self.line_types = {'beach': '-', 'adrift': '--'}
 
     def plot(self):
         # Loading the data
@@ -62,7 +63,7 @@ class SizeTransport_lonlat_averages:
                     zero = concentration_dict[size][beach_state][lonlat] == 0
                     concentration_dict[size][beach_state][lonlat][zero] = np.nan
 
-        # Creating the base figure
+        # Creating the map
         fig = plt.figure(figsize=self.figure_size)
         gs = fig.add_gridspec(nrows=self.figure_shape[0], ncols=self.figure_shape[1], width_ratios=[1, 0.5],
                               height_ratios=[1, 0.5], wspace=0.1, hspace=0.1)
@@ -72,11 +73,14 @@ class SizeTransport_lonlat_averages:
                                              lat_grid_step=2, lon_grid_step=5, resolution='10m', land_color='grey',
                                              border_color='white',
                                              x_grid_locator=np.arange(start=-5, stop=40, step=5))
+
         # Creating the axis for the longitudes
         ax_lon = fig.add_subplot(gs[1, 0])
         ax_lon.set_ylim((0, 1))
         ax_lon.set_xlim((self.spatial_domain[0], self.spatial_domain[1]))
         ax_lon.grid(which='major', axis='x', linestyle='-')
+        ax_lon.set_xlabel(r'Longitude ($^{\circ}$)')
+        ax_lon.set_ylabel(r'Particle Fraction')
         # Creating the axis for the latitudes
         ax_lat = fig.add_subplot(gs[0, 1])
         ax_lat.set_ylim((self.spatial_domain[2], self.spatial_domain[3]))
@@ -84,6 +88,20 @@ class SizeTransport_lonlat_averages:
         ax_lat.grid(which='major', axis='y', linestyle='-')
         ax_lat.yaxis.set_label_position("right")
         ax_lat.yaxis.tick_right()
+        ax_lat.set_xlabel(r'Particle Fraction')
+        ax_lat.set_ylabel(r'Latitude ($^{\circ}$)')
+
+        # Adding a legend
+        ax_legend = fig.add_subplot(gs[1, 1])
+        beach_lines = [plt.plot([], [], c='k', label=beach_state, linestyle=self.line_types[beach_state])[0]
+                       for beach_state in self.beach_state_list]
+
+        size_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(index_size, subdivisions=self.size_list.__len__()),
+                                label=size_label(size), linestyle='-')[0] for index_size, size in enumerate(self.size_list)]
+        ax_legend.legend(handles=beach_lines + size_colors, fontsize=self.ax_label_size, loc='upper right')
+        ax_legend.axis('off')
+
+
 
         # Saving the figure
         str_format = self.time_selection, self.rho
@@ -91,3 +109,5 @@ class SizeTransport_lonlat_averages:
         plt.savefig(fig_name, bbox_inches='tight')
 
 
+def size_label(size):
+    return r'r = {:.3f} mm'.format(size * 1e3)
