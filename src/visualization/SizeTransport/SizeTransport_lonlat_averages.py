@@ -82,6 +82,7 @@ class SizeTransport_lonlat_averages:
         ax_lon.set_xlabel(r'Longitude ($^{\circ}$)', fontsize=self.ax_label_size)
         ax_lon.set_ylabel(r'Particle Fraction', fontsize=self.ax_label_size)
         ax_lon.tick_params(axis='both', labelsize=self.ax_ticklabel_size)
+
         # Creating the axis for the latitudes
         ax_lat = fig.add_subplot(gs[0, 1])
         ax_lat.set_ylim((self.spatial_domain[2], self.spatial_domain[3]))
@@ -104,6 +105,17 @@ class SizeTransport_lonlat_averages:
                                 label=size_label(size), linestyle='-')[0] for index_size, size in enumerate(self.size_list)]
         ax_legend.legend(handles=beach_lines + size_colors, fontsize=self.ax_label_size, loc='lower right', ncol=2)
         ax_legend.axis('off')
+
+        # Plotting the longitudes
+        for index_size, size in enumerate(self.size_list):
+            for beach_state in self.beach_state_list:
+                ax_lon.plot(lon, concentration_dict[size][beach_state]["lon_counts"],
+                            linestyle=self.line_types[beach_state])
+        # Plotting the latitudes
+        for index_size, size in enumerate(self.size_list):
+            for beach_state in self.beach_state_list:
+                ax_lat.plot(concentration_dict[size][beach_state]["lat_counts"], lat,
+                            linestyle=self.line_types[beach_state])
 
 
 
