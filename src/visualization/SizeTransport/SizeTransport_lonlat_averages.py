@@ -145,7 +145,7 @@ class SizeTransport_lonlat_averages:
                 output_dict[size][beach_state] = {}
                 for lonlat in self.dimension_list:
                     output_dict[size][beach_state][lonlat], _ = np.histogram(a=coordinate[lonlat], bins=bin[lonlat],
-                                                                             weights=year_data[size][beach_state][lonlat])
+                                                                             weights=year_data[beach_state][lonlat])
         # Calculate the bin edge midpointw
         bin_mid_lon = 0.5 * bins_lon[1:] + 0.5 * bins_lon[:-1]
         bin_mid_lat = 0.5 * bins_lat[1:] + 0.5 * bins_lat[:-1]
