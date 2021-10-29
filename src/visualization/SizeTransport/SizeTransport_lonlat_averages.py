@@ -76,17 +76,18 @@ class SizeTransport_lonlat_averages:
 
         # Creating the axis for the longitudes
         ax_lon = fig.add_subplot(gs[1, 0])
-        ax_lon.set_ylim((0, 1))
+        ax_lon.set_ylim((1e-4, 1e0))
         ax_lon.set_xlim((self.spatial_domain[0], self.spatial_domain[1]))
         ax_lon.grid(which='major', axis='x', linestyle='-')
         ax_lon.set_xlabel(r'Longitude ($^{\circ}$)', fontsize=self.ax_label_size)
         ax_lon.set_ylabel(r'Particle Fraction', fontsize=self.ax_label_size)
         ax_lon.tick_params(axis='both', labelsize=self.ax_ticklabel_size)
+        ax_lon.set_yscale('log')
 
         # Creating the axis for the latitudes
         ax_lat = fig.add_subplot(gs[0, 1])
         ax_lat.set_ylim((self.spatial_domain[2], self.spatial_domain[3]))
-        ax_lat.set_xlim((0, 1))
+        ax_lat.set_xlim((1e-4, 1e0))
         ax_lat.grid(which='major', axis='y', linestyle='-')
         ax_lat.yaxis.set_label_position("right")
         ax_lat.yaxis.tick_right()
@@ -95,6 +96,7 @@ class SizeTransport_lonlat_averages:
         ax_lat.set_xlabel(r'Particle Fraction', fontsize=self.ax_label_size)
         ax_lat.set_ylabel(r'Latitude ($^{\circ}$)', fontsize=self.ax_label_size)
         ax_lat.tick_params(axis='both', labelsize=self.ax_ticklabel_size)
+        ax_lat.set_xscale('log')
 
         # Adding a legend
         ax_legend = fig.add_subplot(gs[1, 1])
