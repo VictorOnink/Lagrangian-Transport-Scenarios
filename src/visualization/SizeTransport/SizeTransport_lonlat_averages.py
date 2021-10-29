@@ -82,6 +82,8 @@ class SizeTransport_lonlat_averages:
         ax_lat.set_ylim((self.spatial_domain[2], self.spatial_domain[3]))
         ax_lat.set_xlim((0, 1))
         ax_lat.grid(which='major', axis='y', linestyle='-')
+        ax_lat.yaxis.set_label_position("right")
+        ax_lat.yaxis.tick_right()
 
         # Saving the figure
         str_format = self.time_selection, self.rho
