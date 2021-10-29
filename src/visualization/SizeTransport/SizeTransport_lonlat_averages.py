@@ -65,7 +65,7 @@ class SizeTransport_lonlat_averages:
         # Creating the base figure
         fig = plt.figure(figsize=self.figure_size)
         gs = fig.add_gridspec(nrows=self.figure_shape[0], ncols=self.figure_shape[1], width_ratios=[1, 0.5],
-                              height_ratios=[1, 0.5])
+                              height_ratios=[1, 0.5], wspace=0.2, hspace=0.2)
 
         ax_map = vUtils.cartopy_standard_map(fig=fig, gridspec=gs, row=0, column=0, add_gridlabels=False,
                                              domain=self.spatial_domain, label_size=self.ax_label_size,
