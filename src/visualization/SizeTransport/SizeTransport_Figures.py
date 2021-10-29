@@ -71,5 +71,5 @@ def run(scenario, figure_direc: str):
     SizeTransport_lonlat_averages(scenario=scenario, figure_direc=figure_direc, size_list=size_list, time_selection=2,
                                   beach_state='beach').plot()
     SizeTransport_lonlat_averages(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                  time_selection='adrift').plot()
+                                  time_selection=2, beach_state='adrift').plot()
     pass
