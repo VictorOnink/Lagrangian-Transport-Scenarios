@@ -53,11 +53,12 @@ class SizeTransport_lonlat_averages:
         # Normalizing the concentrations by the total number of particles in the simulation
         for size in concentration_dict.keys():
             for beach_state in self.beach_state_list:
-                total = np.zeros(concentration_dict[size][beach_state]["lon_counts"].shape, dtype=float)
+                total = {"lon_counts": np.zeros(concentration_dict[size][beach_state]["lon_counts"].shape, dtype=float),
+                         "lat_counts": np.zeros(concentration_dict[size][beach_state]["lat_counts"].shape, dtype=float)}
                 for lonlat in self.dimension_list:
-                    total += concentration_dict[size][beach_state][lonlat]
+                    total[lonlat] += concentration_dict[size][beach_state][lonlat]
                 for lonlat in self.dimension_list:
-                    concentration_dict[size][beach_state][lonlat] /= np.nansum(total)
+                    concentration_dict[size][beach_state][lonlat] /= np.nansum(total[lonlat])
 
         # Setting zero values to NAN
         for size in concentration_dict.keys():
@@ -105,9 +106,6 @@ class SizeTransport_lonlat_averages:
 
         # Adding a legend
         ax_legend = fig.add_subplot(gs[1, 1])
-        # beach_lines = [plt.plot([], [], c='k', label=beach_state, linestyle=self.line_types[beach_state])[0]
-        #                for beach_state in self.beach_state_list]
-
         size_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(index_size, subdivisions=self.size_list.__len__()),
                                 label=size_label(size), linestyle='-')[0] for index_size, size in enumerate(self.size_list)]
         ax_legend.legend(handles=size_colors, fontsize=self.ax_label_size, loc='upper left', ncol=2)
