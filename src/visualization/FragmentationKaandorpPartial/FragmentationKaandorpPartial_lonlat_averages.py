@@ -139,6 +139,7 @@ class FragmentationKaandorpPartial_lonlat_averages:
                     output_dict[beach_state][size_class][lonlat], _ = np.histogram(a=coordinate[lonlat],
                                                                                    bins=bin[lonlat],
                                                                                    weights=year_data[beach_state][self.weight][size_class][lonlat])
+        print(year_data.keys())
         for key in self.total_list:
             output_dict[key] = year_data[key]
         # Calculate the bin edge midpoints
