@@ -55,8 +55,6 @@ class SizeTransport_lonlat_averages:
             for beach_state in self.beach_state_list:
                 concentration_dict[size][beach_state]["lon_counts"] /= concentration_dict[size]['total_lon']
                 concentration_dict[size][beach_state]["lat_counts"] /= concentration_dict[size]['total_lat']
-            print("size {} lon_counts {} lat_counts {}".format(size, concentration_dict[size]['total_lon'],
-                                                               concentration_dict[size]['total_lat']))
 
         # Creating the map
         fig = plt.figure(figsize=self.figure_size)
