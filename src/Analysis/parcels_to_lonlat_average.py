@@ -107,20 +107,26 @@ class parcels_to_lonlat_average:
                                     utils.remove_file(file_name + '.pkl')
 
             # Calculating the total number of particles
-            for ind_year, year in pbar(enumerate(range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH))):
-                key_year = utils.analysis_simulation_year_key(restart + ind_year)
-                total_lon, total_lat = 0, 0
-                for beach_state in self.beach_label_dict.keys():
-                    if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
-                        for weight in self.weight_list:
+            if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
+                for ind_year, year in enumerate(range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH)):
+                    key_year = utils.analysis_simulation_year_key(ind_year)
+                    for weight in self.weight_list:
+                        total_lon, total_lat = 0, 0
+                        for beach_state in self.beach_label_dict.keys():
                             for size_class in range(settings.SIZE_CLASS_NUMBER):
                                 total_lon += np.nansum(self.output_dict[key_year][beach_state][weight][size_class]["lon_counts"])
                                 total_lat += np.nansum(self.output_dict[key_year][beach_state][weight][size_class]["lat_counts"])
-                    else:
+                        self.output_dict[key_year]['total_lon_'.format(weight)] = total_lon
+                        self.output_dict[key_year]['total_lat_'.format(weight)] = total_lat
+            else:
+                for ind_year, year in enumerate(range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH)):
+                    key_year = utils.analysis_simulation_year_key(ind_year)
+                    total_lon, total_lat = 0, 0
+                    for beach_state in self.beach_label_dict.keys():
                         total_lon += np.nansum(self.output_dict[key_year][beach_state]["lon_counts"])
                         total_lat += np.nansum(self.output_dict[key_year][beach_state]["lat_counts"])
-                self.output_dict[key_year]['total_lon'] = total_lon
-                self.output_dict[key_year]['total_lat'] = total_lat
+                    self.output_dict[key_year]['total_lon'] = total_lon
+                    self.output_dict[key_year]['total_lat'] = total_lat
 
             # Saving the computed concentration
             output_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
