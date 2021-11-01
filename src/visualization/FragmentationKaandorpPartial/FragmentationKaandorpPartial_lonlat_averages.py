@@ -82,7 +82,7 @@ class FragmentationKaandorpPartial_lonlat_averages:
                           fontsize=self.ax_label_size)
         ax_lon.tick_params(axis='both', labelsize=self.ax_ticklabel_size)
         ax_lon.set_yscale('log')
-        limit_dict = {0: {'beach': {False: (1e-6, 1e-1), True: (1e-7, 1e-1)}, 'adrift': {False: (1e-7, 1e-1), True: (1e-7, 1e-1)}},
+        limit_dict = {0: {'beach': {False: (1e-6, 1e-1), True: (1e-8, 1e-1)}, 'adrift': {False: (1e-7, 1e-1), True: (1e-8, 1e-1)}},
                       1: {'beach': {False: (1e-5, 1e-1), True: (1e-7, 1e-1)}, 'adrift': {False: (1e-6, 1e-1), True: (1e-7, 1e-1)}},
                       2: {'beach': {False: (1e-6, 1e-1), True: (1e-7, 1e-1)}, 'adrift': {False: (1e-7, 1e-1), True: (1e-7, 1e-1)}}}
         ax_lon.set_ylim(limit_dict[self.time_selection][self.beach_state][self.mass])
