@@ -69,7 +69,7 @@ class FragmentationKaandorpPartial_lonlat_averages:
                                              lat_grid_step=2, lon_grid_step=5, resolution='10m', land_color='grey',
                                              border_color='white',
                                              x_grid_locator=np.arange(start=-5, stop=40, step=5))
-        ax_map.set_title(self.beach_state, fontsize=self.ax_label_size + 2, fontweight='bold')
+        ax_map.set_title("{} - {}".format(self.beach_state), fontsize=self.ax_label_size + 2, fontweight='bold')
 
         # Creating the axis for the longitudes
         ax_lon = fig.add_subplot(gs[1, 0])
