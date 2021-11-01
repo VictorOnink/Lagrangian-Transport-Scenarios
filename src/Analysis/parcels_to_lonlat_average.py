@@ -116,8 +116,8 @@ class parcels_to_lonlat_average:
                             for size_class in range(settings.SIZE_CLASS_NUMBER):
                                 total_lon += np.nansum(self.output_dict[key_year][beach_state][weight][size_class]["lon_counts"])
                                 total_lat += np.nansum(self.output_dict[key_year][beach_state][weight][size_class]["lat_counts"])
-                        self.output_dict[key_year]['total_lon_'.format(weight)] = total_lon
-                        self.output_dict[key_year]['total_lat_'.format(weight)] = total_lat
+                        self.output_dict[key_year]['total_lon_{}'.format(weight)] = total_lon
+                        self.output_dict[key_year]['total_lat_{}'.format(weight)] = total_lat
             else:
                 for ind_year, year in enumerate(range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH)):
                     key_year = utils.analysis_simulation_year_key(ind_year)
