@@ -36,7 +36,6 @@ class FragmentationKaandorpPartial_lonlat_averages:
         self.figure_shape = (2, 2)
         self.ax_label_size = 14
         self.ax_ticklabel_size = 14
-        self.number_of_plots = self.size_list.__len__()
         self.adv_file_dict = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
                                                             advection_scenario='CMEMS_MEDITERRANEAN',
                                                             repeat_dt=None).file_names
