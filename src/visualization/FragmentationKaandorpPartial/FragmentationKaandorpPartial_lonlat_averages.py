@@ -20,7 +20,8 @@ class FragmentationKaandorpPartial_lonlat_averages:
         self.beach_state = beach_state
         self.beach_state_list = ['beach', 'adrift']
         self.dimension_list = ["lon_counts", "lat_counts"]
-        self.weight = {False: 'particle_number_sink', True: 'particle_mass_sink'}[mass]
+        self.mass = mass
+        self.weight = {False: 'particle_number_sink', True: 'particle_mass_sink'}[self.mass]
         self.total_list = ['total_lon_{}'.format(self.weight), 'total_lat_{}'.format(self.weight)]
         self.size_class_list = np.arange(0, settings.SIZE_CLASS_NUMBER)
         self.key_concentration = utils.analysis_simulation_year_key(self.time_selection)
@@ -69,15 +70,16 @@ class FragmentationKaandorpPartial_lonlat_averages:
                                              lat_grid_step=2, lon_grid_step=5, resolution='10m', land_color='grey',
                                              border_color='white',
                                              x_grid_locator=np.arange(start=-5, stop=40, step=5))
-        ax_map.set_title("{} - {}".format(self.beach_state, self.weight), fontsize=self.ax_label_size + 2,
-                         fontweight='bold')
+        ax_map.set_title("{} - {}".format(self.beach_state, {False: 'counts', True: 'mass'}[self.mass]),
+                         fontsize=self.ax_label_size + 2, fontweight='bold')
 
         # Creating the axis for the longitudes
         ax_lon = fig.add_subplot(gs[1, 0])
         ax_lon.set_xlim((self.spatial_domain[0], self.spatial_domain[1]))
         ax_lon.grid(which='major', axis='x', linestyle='-')
         ax_lon.set_xlabel(r'Longitude ($^{\circ}$)', fontsize=self.ax_label_size)
-        ax_lon.set_ylabel(r'Particle Fraction', fontsize=self.ax_label_size)
+        ax_lon.set_ylabel('{} Fraction'.format({False: "Number", True: "Mass"}[self.mass]),
+                          fontsize=self.ax_label_size)
         ax_lon.tick_params(axis='both', labelsize=self.ax_ticklabel_size)
         ax_lon.set_yscale('log')
         ax_lon.set_ylim((1e-5, 1e0))
@@ -90,7 +92,7 @@ class FragmentationKaandorpPartial_lonlat_averages:
         ax_lat.yaxis.tick_right()
         ax_lat.xaxis.set_label_position("top")
         ax_lat.xaxis.tick_top()
-        ax_lat.set_xlabel(r'Particle Fraction', fontsize=self.ax_label_size)
+        ax_lat.set_xlabel('{} Fraction'.format({False: "Number", True: "Mass"}[self.mass]), fontsize=self.ax_label_size)
         ax_lat.set_ylabel(r'Latitude ($^{\circ}$)', fontsize=self.ax_label_size)
         ax_lat.tick_params(axis='both', labelsize=self.ax_ticklabel_size)
         ax_lat.set_xscale('log')
