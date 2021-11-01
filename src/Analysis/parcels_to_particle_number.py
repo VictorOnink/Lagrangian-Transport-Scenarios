@@ -4,6 +4,7 @@ from netCDF4 import Dataset
 import numpy as np
 from progressbar import ProgressBar
 from copy import deepcopy
+import visualization.visualization_utils as vUtils
 
 
 class parcels_to_particle_number:
@@ -37,7 +38,9 @@ class parcels_to_particle_number:
         # The second case is
         else:
             if settings.INPUT == 'LebretonKaandorpInit':
-                pass
+                field_dict = utils.load_obj(vUtils.FragmentationKaandorpPartial_fielddata_filename())
+                size_bins = field_dict['RuizOrejon']['bin_midpoint']
+                size_distribution = field_dict['RuizOrejon']['pdf_counts'] * size_bins
         return output_dict
 
     def run(self):
