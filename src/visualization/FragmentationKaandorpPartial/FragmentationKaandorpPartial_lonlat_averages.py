@@ -82,7 +82,10 @@ class FragmentationKaandorpPartial_lonlat_averages:
                           fontsize=self.ax_label_size)
         ax_lon.tick_params(axis='both', labelsize=self.ax_ticklabel_size)
         ax_lon.set_yscale('log')
-        ax_lon.set_ylim((1e-6, 1e-1))
+        limit_dict = {0: {'beach': {False: (1e-6, 1e-1), True: (1e-7, 1e-1)}, 'adrift': {False: (1e-7, 1e-1), True: (1e-7, 1e-1)}},
+                      1: {'beach': {False: (1e-5, 1e-1), True: (1e-7, 1e-1)}, 'adrift': {False: (1e-6, 1e-1), True: (1e-7, 1e-1)}},
+                      2: {'beach': {False: (1e-6, 1e-1), True: (1e-7, 1e-1)}, 'adrift': {False: (1e-7, 1e-1), True: (1e-7, 1e-1)}}}
+        ax_lon.set_ylim(limit_dict[self.time_selection][self.beach_state][self.mass])
 
         # Creating the axis for the latitudes
         ax_lat = fig.add_subplot(gs[0, 1])
@@ -96,7 +99,10 @@ class FragmentationKaandorpPartial_lonlat_averages:
         ax_lat.set_ylabel(r'Latitude ($^{\circ}$)', fontsize=self.ax_label_size)
         ax_lat.tick_params(axis='both', labelsize=self.ax_ticklabel_size)
         ax_lat.set_xscale('log')
-        ax_lat.set_xlim((1e-6, 1e-1))
+        limit_dict = {0: {'beach': {False: (1e-5, 1e-1), True: (1e-7, 1e-1)}, 'adrift': {False: (1e-5, 1e-1), True: (1e-7, 1e-1)}},
+                      1: {'beach': {False: (1e-5, 1e-1), True: (1e-6, 1e-1)}, 'adrift': {False: (1e-5, 1e-1), True: (1e-6, 1e-1)}},
+                      2: {'beach': {False: (1e-5, 1e-1), True: (1e-6, 1e-1)}, 'adrift': {False: (1e-5, 1e-1), True: (1e-6, 1e-1)}}}
+        ax_lat.set_xlim(limit_dict[self.time_selection][self.beach_state][self.mass])
 
         # Adding a legend
         ax_legend = fig.add_subplot(gs[1, 1])
