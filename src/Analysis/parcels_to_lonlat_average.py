@@ -124,8 +124,6 @@ class parcels_to_lonlat_average:
                                          directory=self.output_direc, final=True)
             utils.save_obj(output_name, self.output_dict)
             utils.print_statement("The concentration has been saved")
-
-
         else:
             ValueError('settings.PARALLEL_STEP can not have a value of {}'.format(self.parallel_step))
 
