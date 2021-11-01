@@ -25,6 +25,8 @@ class parcels_to_particle_number:
         self.particle_number, self.time_step_number, self.final_t = None, None, None
 
     def restart_initialization(self, output_dict):
+        # Case number 1: if restart > 0 then we need to use the particle numbers/weights calculated in the previous
+        # restart file
         if self.restart > 0:
             assert utils.check_file_exist(self.restart_file), "Restart file {} doesn't exist".format(self.restart_file)
             restart_dict = utils.load_obj(self.restart_file)
@@ -32,6 +34,10 @@ class parcels_to_particle_number:
                 variable_restart = restart_dict[variable][:, -1]
                 for p_ind, number in enumerate(variable_restart):
                     output_dict[variable][p_ind, :] = number
+        # The second case is
+        else:
+            if settings.INPUT == 'LebretonKaandorpInit':
+                pass
         return output_dict
 
     def run(self):
@@ -55,7 +61,8 @@ class parcels_to_particle_number:
         for variable in self.mass_number_list:
             self.output_dict[variable] = deepcopy(base_array)
 
-        # Initializing the particle numbers for when restart > 0
+        # Initializing the particle numbers. This can occur when restart > 0 so that we use the previous particle
+        # numbers, but in the case of
         self.output_dict = self.restart_initialization(output_dict=self.output_dict)
 
         # Adding the age correction to the particle mass array
