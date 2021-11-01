@@ -106,13 +106,13 @@ class FragmentationKaandorpPartial_lonlat_averages:
         for index_size, size_class in enumerate(self.size_class_list):
             ax_lon.plot(lon, concentration_dict[self.beach_state][size_class]["lon_counts"],
                         linestyle=self.line_types[self.beach_state],
-                        c=vUtils.discrete_color_from_cmap(index_size, subdivisions=self.size_list.__len__()))
+                        c=vUtils.discrete_color_from_cmap(index_size, subdivisions=settings.SIZE_CLASS_NUMBER))
 
         # Plotting the latitudes
         for index_size, size_class in enumerate(self.size_class_list):
             ax_lat.plot(concentration_dict[self.beach_state][size_class]["lat_counts"], lat,
                         linestyle=self.line_types[self.beach_state],
-                        c=vUtils.discrete_color_from_cmap(index_size, subdivisions=self.size_list.__len__()))
+                        c=vUtils.discrete_color_from_cmap(index_size, subdivisions=settings.SIZE_CLASS_NUMBER))
 
         # Saving the figure
         str_format = self.time_selection, self.beach_state, self.rho, self.lambda_frag, self.weight
