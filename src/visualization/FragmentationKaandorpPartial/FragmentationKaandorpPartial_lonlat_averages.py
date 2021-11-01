@@ -21,6 +21,7 @@ class FragmentationKaandorpPartial_lonlat_averages:
         self.beach_state_list = ['beach', 'adrift']
         self.dimension_list = ["lon_counts", "lat_counts"]
         self.weight = {False: 'particle_number_sink', True: 'particle_mass_sink'}[mass]
+        print(self.weight)
         self.total_list = ['total_lon_{}'.format(self.weight), 'total_lat_{}'.format(self.weight)]
         self.size_class_list = np.arange(0, settings.SIZE_CLASS_NUMBER)
         self.key_concentration = utils.analysis_simulation_year_key(self.time_selection)
