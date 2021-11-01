@@ -105,6 +105,20 @@ class parcels_to_lonlat_average:
                                         for key in self.output_dict[key_year][beach_state].keys():
                                             self.output_dict[key_year][beach_state][key] += dataset_post[key_year][beach_state][key]
                                     utils.remove_file(file_name + '.pkl')
+
+            # Calculating the total number of particles
+            for ind_year, year in pbar(enumerate(range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH))):
+                key_year = utils.analysis_simulation_year_key(restart + ind_year)
+                total_lon, total_lat = 0, 0
+                for beach_state in self.beach_label_dict.keys():
+                    if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
+                        pass
+                    else:
+                        total_lon += np.nansum(self.output_dict[key_year][beach_state]["lon_counts"])
+                        total_lat += np.nansum(self.output_dict[key_year][beach_state]["lat_counts"])
+                self.output_dict[key_year]['total_lon'] = total_lon
+                self.output_dict[key_year]['total_lat'] = total_lat
+
             # Saving the computed concentration
             output_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
                                          directory=self.output_direc, final=True)
