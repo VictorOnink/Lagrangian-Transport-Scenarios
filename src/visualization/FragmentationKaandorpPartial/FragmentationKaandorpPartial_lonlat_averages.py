@@ -20,7 +20,8 @@ class FragmentationKaandorpPartial_lonlat_averages:
         self.beach_state = beach_state
         self.beach_state_list = ['beach', 'adrift']
         self.dimension_list = ["lon_counts", "lat_counts"]
-        self.weight = {False: 'particle_number_sink', True: 'particle_mass_sink'}[self.mass]
+        self.weight = {False: 'particle_number_sink', True: 'particle_mass_sink'}[mass]
+        self.total_list = ['total_lon_{}'.format(self.weight), 'total_lat_{}'.format(self.weight)]
         self.size_class_list = np.arange(0, settings.SIZE_CLASS_NUMBER)
         self.key_concentration = utils.analysis_simulation_year_key(self.time_selection)
         self.step = 0.5
@@ -54,10 +55,10 @@ class FragmentationKaandorpPartial_lonlat_averages:
         concentration_dict, lon, lat = self.histogram_reduction(data_dict=data_dict)
 
         # Normalizing the concentrations by the total number of particles in the simulation
-        for size in concentration_dict.keys():
-            for beach_state in self.beach_state_list:
-                concentration_dict[size][beach_state]["lon_counts"] /= concentration_dict[size]['total_lon']
-                concentration_dict[size][beach_state]["lat_counts"] /= concentration_dict[size]['total_lat']
+        for beach_state in self.beach_state_list:
+            for size_class in self.size_class_list:
+                concentration_dict[beach_state][size_class]["lon_counts"] /= concentration_dict[self.total_list[0]]
+                concentration_dict[beach_state][size_class]["lat_counts"] /= concentration_dict[self.total_list[1]]
 
         # Creating the map
         fig = plt.figure(figsize=self.figure_size)
@@ -95,29 +96,28 @@ class FragmentationKaandorpPartial_lonlat_averages:
         ax_lat.set_xscale('log')
         ax_lat.set_xlim((1e-5, 1e0))
 
-
         # Adding a legend
         ax_legend = fig.add_subplot(gs[1, 1])
-        size_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(index_size, subdivisions=self.size_list.__len__()),
-                                label=size_label(size), linestyle='-')[0] for index_size, size in enumerate(self.size_list)]
+        size_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(index_size, subdivisions=settings.SIZE_CLASS_NUMBER),
+                                label=size_label(size_class), linestyle='-')[0] for index_size, size_class in enumerate(self.size_class_list)]
         ax_legend.legend(handles=size_colors, fontsize=self.ax_label_size, loc='upper left', ncol=2)
         ax_legend.axis('off')
 
         # Plotting the longitudes
-        for index_size, size in enumerate(self.size_list):
-            ax_lon.plot(lon, concentration_dict[index_size][self.beach_state]["lon_counts"],
+        for index_size, size_class in enumerate(self.size_class_list):
+            ax_lon.plot(lon, concentration_dict[self.beach_state][size_class]["lon_counts"],
                         linestyle=self.line_types[self.beach_state],
                         c=vUtils.discrete_color_from_cmap(index_size, subdivisions=self.size_list.__len__()))
 
         # Plotting the latitudes
-        for index_size, size in enumerate(self.size_list):
-            ax_lat.plot(concentration_dict[index_size][self.beach_state]["lat_counts"], lat,
+        for index_size, size_class in enumerate(self.size_class_list):
+            ax_lat.plot(concentration_dict[self.beach_state][size_class]["lat_counts"], lat,
                         linestyle=self.line_types[self.beach_state],
                         c=vUtils.discrete_color_from_cmap(index_size, subdivisions=self.size_list.__len__()))
 
         # Saving the figure
-        str_format = self.time_selection, self.beach_state, self.rho
-        fig_name = self.output_direc + "lon_lat_year={}_beach_state={}_rho={}.png".format(*str_format)
+        str_format = self.time_selection, self.beach_state, self.rho, self.lambda_frag, self.weight
+        fig_name = self.output_direc + "lon_lat_year={}_beach_state={}_rho={}_lambda_f={}_weight={}.png".format(*str_format)
         plt.savefig(fig_name, bbox_inches='tight')
 
     def histogram_reduction(self, data_dict):
@@ -134,21 +134,22 @@ class FragmentationKaandorpPartial_lonlat_averages:
         for beach_state in self.beach_state_list:
             output_dict[beach_state] = {}
             for size_class in self.size_class_list:
+                output_dict[beach_state][size_class] = {}
                 for lonlat in self.dimension_list:
-                    output_dict[beach_state][self.weight][size_class][lonlat], _ = np.histogram(a=coordinate[lonlat],
-                                                                                                bins=bin[lonlat],
-                                                                                                weights=year_data[beach_state][self.weight][size_class][lonlat])
-        for key in ['total_lon', 'total_lat']:
+                    output_dict[beach_state][size_class][lonlat], _ = np.histogram(a=coordinate[lonlat],
+                                                                                   bins=bin[lonlat],
+                                                                                   weights=year_data[beach_state][self.weight][size_class][lonlat])
+        for key in self.total_list:
             output_dict[key] = year_data[key]
-        # Calculate the bin edge midpointw
+        # Calculate the bin edge midpoints
         bin_mid_lon = 0.5 * bins_lon[1:] + 0.5 * bins_lon[:-1]
         bin_mid_lat = 0.5 * bins_lat[1:] + 0.5 * bins_lat[:-1]
 
         return output_dict, bin_mid_lon, bin_mid_lat
 
 
-def size_label(size):
-    return r'r = {:.3f} mm'.format(size * 1e3)
-
+def size_label(size_class):
+    particle_size = settings.INIT_SIZE * settings.P_FRAG ** size_class
+    return 'Size class {}, d = {:.2f} mm'.format(size_class, particle_size * 1e3)
 
 
