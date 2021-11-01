@@ -112,7 +112,10 @@ class parcels_to_lonlat_average:
                 total_lon, total_lat = 0, 0
                 for beach_state in self.beach_label_dict.keys():
                     if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
-                        pass
+                        for weight in self.weight_list:
+                            for size_class in range(settings.SIZE_CLASS_NUMBER):
+                                total_lon += np.nansum(self.output_dict[key_year][beach_state][weight][size_class]["lon_counts"])
+                                total_lat += np.nansum(self.output_dict[key_year][beach_state][weight][size_class]["lat_counts"])
                     else:
                         total_lon += np.nansum(self.output_dict[key_year][beach_state]["lon_counts"])
                         total_lat += np.nansum(self.output_dict[key_year][beach_state]["lat_counts"])
