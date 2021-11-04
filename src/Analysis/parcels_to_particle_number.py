@@ -26,7 +26,7 @@ class parcels_to_particle_number:
         self.output_dict = {}
         self.particle_number, self.time_step_number, self.final_t = None, None, None
 
-    def restart_initialization(self, output_dict):
+    def restart_initialization(self, output_dict, base_dict):
         # Case number 1: if restart > 0 then we need to use the particle numbers/weights calculated in the previous
         # restart file
         if self.restart > 0:
@@ -50,11 +50,15 @@ class parcels_to_particle_number:
                 number_inter = interpolation_function(utils.size_range(units='mm', size_class_number=settings.SIZE_CLASS_NUMBER))
                 # Converting the particle number to the particle mass
                 mass_inter = np.zeros(number_inter.shape, dtype=float)
-                for k in range(mass_inter.size):
-                    mass_inter[k] = number_inter[k] / (2 ** (settings.DN * k))
+                for size_class in range(mass_inter.size):
+                    mass_inter[size_class] = number_inter[size_class] / (2 ** (settings.DN * size_class))
                 # Normalize by the particle mass in size class k = 0
                 mass_inter /= mass_inter[0]
-                print(mass_inter)
+                # Initialize the mass arrays by size class
+                for size_class in range(mass_inter.size):
+                    size_class_selection = base_dict['size_class'] == size_class
+                    for variable in self.mass_number_list:
+                        output_dict[variable][size_class_selection] = mass_inter[size_class]
         return output_dict
 
     def run(self):
@@ -80,7 +84,7 @@ class parcels_to_particle_number:
 
         # Initializing the particle numbers. This can occur when restart > 0 so that we use the previous particle
         # numbers, but in the case of
-        self.output_dict = self.restart_initialization(output_dict=self.output_dict)
+        self.output_dict = self.restart_initialization(output_dict=self.output_dict, base_dict=base_dict)
 
         # # Adding the age correction to the particle mass array
         # self.output_dict['particle_mass_sink'] = np.multiply(self.output_dict['particle_mass_sink'], mass_remainder)
