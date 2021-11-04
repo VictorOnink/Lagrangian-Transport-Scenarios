@@ -50,7 +50,7 @@ class parcels_to_particle_number:
                 number_inter = interpolation_function(utils.size_range(units='mm', size_class_number=settings.SIZE_CLASS_NUMBER))
                 # Converting the particle number to the particle mass
                 mass_inter = np.zeros(number_inter.shape, dtype=float)
-                for k in range(mass_inter):
+                for k in range(mass_inter.size):
                     mass_inter[k] = number_inter[k] / (2 ** (settings.DN * k))
                 # Normalize by the particle mass in size class k = 0
                 mass_inter /= mass_inter[0]
