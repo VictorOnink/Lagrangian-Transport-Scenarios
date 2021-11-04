@@ -41,7 +41,7 @@ class parcels_to_particle_number:
             if settings.INPUT == 'LebretonKaandorpInit':
                 # Loading the field data
                 field_dict = utils.load_obj(vUtils.FragmentationKaandorpPartial_fielddata_filename())
-                size_bins = np.append(0, field_dict['RuizOrejon']['bin_medges'])
+                size_bins = np.append(0, field_dict['RuizOrejon']['bin_edges'])
                 size_bins = 10 ** (0.5 * (np.log10(size_bins[1:]) + np.log10(size_bins[:-1])))
                 # Creating the interpolation function from the bin sizes and the uncorrected field data
                 size_distribution = np.append(1.48307203e-01, field_dict['RuizOrejon']['pdf_counts']) * size_bins
