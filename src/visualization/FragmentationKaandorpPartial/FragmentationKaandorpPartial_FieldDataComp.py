@@ -38,7 +38,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
         self.ax_ticklabel_size = 12
         self.ax_label_size = 14
         self.legend_size = 12
-        self.xmin, self.xmax = 1e-1, 2e1
+        self.xmin, self.xmax = 1e-1, 2e2
         self.ymin, self.ymax = 1e-3, 1e5
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
         self.twin_ymin, self.twin_ymax = 1e-5, 1e1
@@ -46,7 +46,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
         self.number_of_plots = self.fig_shape[0] * self.fig_shape[1]
         self.field_marker = 'x'
         self.field_line = '--'
-        self.legend_loc = 'lower left'
+        self.legend_loc = 'upper right'
 
     def plot(self):
         # Getting the sizes of the size classes, and we convert from meters to mm
