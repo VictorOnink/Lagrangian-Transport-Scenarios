@@ -46,6 +46,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
         self.number_of_plots = self.fig_shape[0] * self.fig_shape[1]
         self.field_marker = 'x'
         self.field_line = '--'
+        self.legend_loc = 'lower left'
 
     def plot(self):
         # Getting the sizes of the size classes, and we convert from meters to mm
@@ -101,14 +102,14 @@ class FragmentationKaandorpPartial_FieldDataComp:
         norm_factor = field_dict['Cozar']['pdf_counts'][14]
         ax[0].plot(field_dict['Cozar']['bin_midpoint'], field_dict['Cozar']['pdf_counts'] / norm_factor,
                    marker=self.field_marker, linestyle=self.field_line, color='tab:red', label='Cozar et al. (2015)')
-        ax[0].legend(fontsize=self.legend_size, loc='lower left')
+        ax[0].legend(fontsize=self.legend_size, loc=self.legend_loc)
 
         # Field data - coastal waters
         norm_factor = field_dict['RuizOrejon']['pdf_counts'][6]
         ax[2].plot(field_dict['RuizOrejon']['bin_midpoint'], field_dict['RuizOrejon']['pdf_counts'] / norm_factor,
                    marker=self.field_marker, linestyle=self.field_line, color='tab:red',
                    label=r'Ruiz-Orej$\`o$n et al. (2018)')
-        ax[2].legend(fontsize=self.legend_size, loc='lower left')
+        ax[2].legend(fontsize=self.legend_size, loc=self.legend_loc)
 
         # Field data - beach, microplastic counts
         norm_factor = field_dict['Fok']['pdf_counts'][5]
@@ -122,12 +123,12 @@ class FragmentationKaandorpPartial_FieldDataComp:
         ax[4].plot(field_dict['Constant2']['bin_midpoint'], field_dict['Constant2']['pdf_counts'] / norm_factor,
                    marker=self.field_marker, linestyle=self.field_line, color='tab:orange',
                    label='Constant et al. (2019), site 2')
-        ax[4].legend(fontsize=self.legend_size, loc='lower left')
+        ax[4].legend(fontsize=self.legend_size, loc=self.legend_loc)
         # Field data - beach, microplastic mass
         norm_factor = field_dict['Fok']['pdf_mass'][5]
         twin_ax[5].plot(field_dict['Fok']['bin_midpoint'], field_dict['Fok']['pdf_mass'] / norm_factor,
                         marker=self.field_marker, linestyle=self.field_line, color='tab:red', label='Fok et al. (2017)')
-        twin_ax[5].legend(fontsize=self.legend_size, loc='lower right')
+        twin_ax[5].legend(fontsize=self.legend_size, loc=self.legend_loc)
 
         # Adding a legend for the model line colors in the top right panel
         input_names = ["Size class k = 0 input", r'Ruiz-Orej$\`o$n et al. (2018) input']
@@ -137,7 +138,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
         for lambda_index, lambda_frag in enumerate(self.lambda_frag_list):
             c = vUtils.discrete_color_from_cmap(index=lambda_index, subdivisions=self.lambda_frag_list.__len__())
             twin_ax[1].plot([], [], color=c, label=label(lambda_frag), linestyle='-')
-        twin_ax[1].legend(fontsize=self.legend_size, loc='lower left')
+        twin_ax[1].legend(fontsize=self.legend_size, loc=self.legend_loc)
 
         # Saving the figure
         str_format = self.shore_time, self.rho, self.sink
