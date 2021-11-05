@@ -26,12 +26,12 @@ def run(scenario, figure_direc: str):
     # Animation.FragmentationKaandorpPartial_Animation(scenario=scenario, figure_direc=figure_direc, shore_time=20,
     #                                                  rho=rho, simulation_years=3, ocean_frag=False).animate()
 
-    timeseries.FragmentationKaandorpPartial_timeseries(scenario=scenario, figure_direc=figure_direc,
-                                                       shore_time=shore_time, lambda_frag=10000, rho=rho,
-                                                       simulation_length=3, weight='particle_number_sink').plot()
-    timeseries.FragmentationKaandorpPartial_timeseries(scenario=scenario, figure_direc=figure_direc,
-                                                       shore_time=shore_time, lambda_frag=35000, rho=rho,
-                                                       simulation_length=3, weight='particle_number_sink').plot()
+    # timeseries.FragmentationKaandorpPartial_timeseries(scenario=scenario, figure_direc=figure_direc,
+    #                                                    shore_time=shore_time, lambda_frag=10000, rho=rho,
+    #                                                    simulation_length=3, weight='particle_number_sink').plot()
+    # timeseries.FragmentationKaandorpPartial_timeseries(scenario=scenario, figure_direc=figure_direc,
+    #                                                    shore_time=shore_time, lambda_frag=35000, rho=rho,
+    #                                                    simulation_length=3, weight='particle_number_sink').plot()
 
     FieldDataComp.FragmentationKaandorpPartial_FieldDataComp(figure_direc=figure_direc, scenario=scenario,
                                                              shore_time=shore_time, lambda_frag_list=lambda_frag_list,
