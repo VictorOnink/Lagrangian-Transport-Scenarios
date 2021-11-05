@@ -177,7 +177,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
 
             #Looping over all the runs based on the input scenario
             for ((RUN=0; RUN<=$runlength; RUN++)); do
-              RUN=7
+              RUN=1
               export RUN
               # looping over all the simulation years
               for ((RESTARTNUM=$START; RESTARTNUM<$SIMLEN; RESTARTNUM++)); do
