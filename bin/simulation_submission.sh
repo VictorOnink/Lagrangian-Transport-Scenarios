@@ -44,7 +44,7 @@ export OCEAN_FRAG
 # to calculate the particle numbers.
 # POST_PROCESS == 0 -> run lagrangian simulation
 # POST_PROCESS == 1 -> run post processing
-POST_PROCESS=1
+POST_PROCESS=0
 export POST_PROCESS
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010
@@ -61,9 +61,9 @@ export INPUT
 ADVECTION_DATA=2
 export ADVECTION_DATA
 #Start year of the simulation. 0 = new simulation, otherwise it picks up from a previous simulation
-START=1
+START=2
 #Number of years the simulation runs
-SIMLEN=2
+SIMLEN=3
 export SIMLEN
 #Inclusion of Stokes drift. 0 = include stokes, 1 = do not include stokes
 STOKES=0
@@ -83,7 +83,7 @@ elif [ "$INPUT" -eq "1" ]; then
 elif [ "$INPUT" -eq "2" ]; then
   runlength=9
 elif [ "$INPUT" -eq "3" ]; then
-  runlength=9
+  runlength=0
 elif [ "$INPUT" -eq "4" ]; then
   runlength=0
 elif [ "$INPUT" -eq "5" ]; then
@@ -177,6 +177,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
 
             #Looping over all the runs based on the input scenario
             for ((RUN=0; RUN<=$runlength; RUN++)); do
+              RUN=7
               export RUN
               # looping over all the simulation years
               for ((RESTARTNUM=$START; RESTARTNUM<$SIMLEN; RESTARTNUM++)); do
