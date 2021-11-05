@@ -137,7 +137,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
         for lambda_index, lambda_frag in enumerate(self.lambda_frag_list):
             c = vUtils.discrete_color_from_cmap(index=lambda_index, subdivisions=self.lambda_frag_list.__len__())
             twin_ax[1].plot([], [], color=c, label=label(lambda_frag), linestyle='-')
-        twin_ax[1].legend(fontsize=self.legend_size, loc='upper right')
+        twin_ax[1].legend(fontsize=self.legend_size, loc='bottom right')
 
         # Saving the figure
         str_format = self.shore_time, self.rho, self.sink
