@@ -110,10 +110,10 @@ if [ "$SCENARIO" -eq "5" -a  "$INPUT" -ne "1" ]; then
   echo 'For SizeTransport, make sure to use input scenario 1!!!!.'
   exit
 fi
-if [ "$SCENARIO" -eq "7" ] && [ "$INPUT" -ne "2" ] || [ "$INPUT" -ne "3" ]; then
-  echo 'For KaandorpFragmentationPartial, make sure to use input scenario 2!!!!.'
-  exit
-fi
+#if [ "$SCENARIO" -eq "7" ] && [[ "$INPUT" -ne "2" ] || [ "$INPUT" -ne "3" ]]; then
+#  echo 'For KaandorpFragmentationPartial, make sure to use input scenario 2!!!!.'
+#  exit
+#fi
 
 if [ "$SCENARIO" -eq "7" -a ${#PARTICLE_SIZE_list[@]} -gt 1 ]; then
   echo 'For KaandorpFragmentationPartial, please only submit one PARTICLE_SIZE.'
