@@ -130,7 +130,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
         twin_ax[5].legend(fontsize=self.legend_size, loc='upper right')
 
         # Adding a legend for the model line colors in the top right panel
-        input_names = ["Size class k = 0 input", r'Ruiz-Orej$\`o$n et al. (2018) weighed input']
+        input_names = ["Size class k = 0 input", r'Ruiz-Orej$\`o$n et al. (2018) input']
         for index_input, input_scenario in enumerate(self.input_list):
             twin_ax[1].plot([], [], color='k', label=input_names[index_input],
                             linestyle=self.input_line_style[input_scenario])
