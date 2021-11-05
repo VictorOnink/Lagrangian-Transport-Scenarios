@@ -47,7 +47,7 @@ export OCEAN_FRAG
 POST_PROCESS=0
 export POST_PROCESS
 #the starting year of the simulation, and how many years the simulation will take
-STARTYEAR=2010
+STARTYEAR=2011
 STARTMONTH_list=(1 2 3 4 5 6 7 8 9 10 11 12)
 STARTDAY=1
 export STARTYEAR
@@ -61,9 +61,9 @@ export INPUT
 ADVECTION_DATA=2
 export ADVECTION_DATA
 #Start year of the simulation. 0 = new simulation, otherwise it picks up from a previous simulation
-START=2
+START=1
 #Number of years the simulation runs
-SIMLEN=3
+SIMLEN=2
 export SIMLEN
 #Inclusion of Stokes drift. 0 = include stokes, 1 = do not include stokes
 STOKES=0
@@ -83,7 +83,7 @@ elif [ "$INPUT" -eq "1" ]; then
 elif [ "$INPUT" -eq "2" ]; then
   runlength=9
 elif [ "$INPUT" -eq "3" ]; then
-  runlength=0
+  runlength=9
 elif [ "$INPUT" -eq "4" ]; then
   runlength=0
 elif [ "$INPUT" -eq "5" ]; then
@@ -177,7 +177,6 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
 
             #Looping over all the runs based on the input scenario
             for ((RUN=0; RUN<=$runlength; RUN++)); do
-              RUN=1
               export RUN
               # looping over all the simulation years
               for ((RESTARTNUM=$START; RESTARTNUM<$SIMLEN; RESTARTNUM++)); do
