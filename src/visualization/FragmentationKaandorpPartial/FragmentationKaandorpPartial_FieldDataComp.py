@@ -127,7 +127,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
         norm_factor = field_dict['Fok']['pdf_mass'][5]
         twin_ax[5].plot(field_dict['Fok']['bin_midpoint'], field_dict['Fok']['pdf_mass'] / norm_factor,
                         marker=self.field_marker, linestyle=self.field_line, color='tab:red', label='Fok et al. (2017)')
-        twin_ax[5].legend(fontsize=self.legend_size, loc='upper right')
+        twin_ax[5].legend(fontsize=self.legend_size, loc='lower right')
 
         # Adding a legend for the model line colors in the top right panel
         input_names = ["Size class k = 0 input", r'Ruiz-Orej$\`o$n et al. (2018) input']
