@@ -44,34 +44,34 @@ def run(scenario, figure_direc: str):
 
     # box_model_ocean.FragmentationKaandorpPartial_boxmodel_ocean(figure_direc=figure_direc, size_class_number=10).plot()
 
-    for year in [0, 1, 2]:
-        for weight in ['particle_number_sink', 'particle_mass_sink']:
-            vertical_profile.FragmentationKaandorpPartial_vertical_profile(figure_direc=figure_direc, scenario=scenario,
-                                                                           shore_time=shore_time, lambda_frag=388,
-                                                                           rho=rho,
-                                                                           simulation_year=year, weight=weight).plot()
-            vertical_profile.FragmentationKaandorpPartial_vertical_profile(figure_direc=figure_direc, scenario=scenario,
-                                                                           shore_time=shore_time, lambda_frag=388,
-                                                                           rho=rho,
-                                                                           simulation_year=year, weight=weight).plot()
+    # for year in [0, 1, 2]:
+    #     for weight in ['particle_number_sink', 'particle_mass_sink']:
+    #         vertical_profile.FragmentationKaandorpPartial_vertical_profile(figure_direc=figure_direc, scenario=scenario,
+    #                                                                        shore_time=shore_time, lambda_frag=388,
+    #                                                                        rho=rho,
+    #                                                                        simulation_year=year, weight=weight).plot()
+    #         vertical_profile.FragmentationKaandorpPartial_vertical_profile(figure_direc=figure_direc, scenario=scenario,
+    #                                                                        shore_time=shore_time, lambda_frag=388,
+    #                                                                        rho=rho,
+    #                                                                        simulation_year=year, weight=weight).plot()
 
-    for beach_state in ['adrift']:
-        for year in [0]:
-            concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc,
-                                                                     rho=rho, shore_time=shore_time,
-                                                                     beach_state=beach_state, simulation_year=year,
-                                                                     lambda_frag=388, mass=False).plot()
-            concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc,
-                                                                     rho=rho, shore_time=shore_time,
-                                                                     beach_state=beach_state, simulation_year=year,
-                                                                     lambda_frag=388, mass=True).plot()
+    # for beach_state in ['adrift']:
+    #     for year in [0]:
+    #         concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc,
+    #                                                                  rho=rho, shore_time=shore_time,
+    #                                                                  beach_state=beach_state, simulation_year=year,
+    #                                                                  lambda_frag=388, mass=False).plot()
+    #         concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc,
+    #                                                                  rho=rho, shore_time=shore_time,
+    #                                                                  beach_state=beach_state, simulation_year=year,
+    #                                                                  lambda_frag=388, mass=True).plot()
 
-    for beach_state in ['adrift', 'beach']:
-        for year in [0, 1, 2]:
-            lonlat_average.FragmentationKaandorpPartial_lonlat_averages(scenario=scenario, figure_direc=figure_direc,
-                                                                        lambda_frag=388, time_selection=year,
-                                                                        beach_state=beach_state, mass=False).plot()
-            lonlat_average.FragmentationKaandorpPartial_lonlat_averages(scenario=scenario, figure_direc=figure_direc,
-                                                                        lambda_frag=388, time_selection=year,
-                                                                        beach_state=beach_state, mass=True).plot()
+    # for beach_state in ['adrift', 'beach']:
+    #     for year in [0, 1, 2]:
+    #         lonlat_average.FragmentationKaandorpPartial_lonlat_averages(scenario=scenario, figure_direc=figure_direc,
+    #                                                                     lambda_frag=388, time_selection=year,
+    #                                                                     beach_state=beach_state, mass=False).plot()
+    #         lonlat_average.FragmentationKaandorpPartial_lonlat_averages(scenario=scenario, figure_direc=figure_direc,
+    #                                                                     lambda_frag=388, time_selection=year,
+    #                                                                     beach_state=beach_state, mass=True).plot()
 

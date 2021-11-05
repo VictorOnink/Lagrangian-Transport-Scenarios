@@ -130,9 +130,13 @@ class FragmentationKaandorpPartial_FieldDataComp:
         twin_ax[5].legend(fontsize=self.legend_size, loc='upper right')
 
         # Adding a legend for the model line colors in the top right panel
+        input_names = ["Size class k = 0 input", r'Ruiz-Orej$\`o$n et al. (2018) weighed input']
+        for index_input, input_scenario in enumerate(self.input_list):
+            twin_ax[1].plot([], [], color='k', label=input_names[index_input],
+                            linestyle=self.input_line_style[input_scenario])
         for lambda_index, lambda_frag in enumerate(self.lambda_frag_list):
             c = vUtils.discrete_color_from_cmap(index=lambda_index, subdivisions=self.lambda_frag_list.__len__())
-            twin_ax[1].plot([], [], color=c, label=label(lambda_frag))
+            twin_ax[1].plot([], [], color=c, label=label(lambda_frag), linestyle='-')
         twin_ax[1].legend(fontsize=self.legend_size, loc='upper right')
 
         # Saving the figure
