@@ -325,7 +325,8 @@ if SUBMISSION in ['visualization']:
 os.system('echo "This is the {} for the {} scenario"'.format(SUBMISSION, SCENARIO_NAME))
 os.system('echo "The input scenario is {}"'.format(INPUT))
 if SUBMISSION == 'simulation':
-    os.system('echo "The starting year is {}, and this is run {}, restart {}"'.format(STARTYEAR, RUN, RESTART))
+    os.system('echo "The starting year is {}-{}, and this is run {}, restart {}"'.format(STARTYEAR, STARTMONTH, RUN,
+                                                                                         RESTART))
     os.system('echo "We are using {} for the plastic advection"'.format(ADVECTION_DATA))
 if SUBMISSION == 'analysis':
     os.system('echo "We are running analysis parallelization step {}"'.format(PARALLEL_STEP))
