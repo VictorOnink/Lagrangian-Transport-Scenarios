@@ -110,7 +110,7 @@ if [ "$SCENARIO" -eq "5" -a  "$INPUT" -ne "1" ]; then
   echo 'For SizeTransport, make sure to use input scenario 1!!!!.'
   exit
 fi
-if [ "$SCENARIO" -eq "7" -a  "$INPUT" -ne "2" ]; then
+if [ "$SCENARIO" -eq "7" -a  "$INPUT" -ne "2" -o  "$INPUT" -ne "3" ]; then
   echo 'For KaandorpFragmentationPartial, make sure to use input scenario 2!!!!.'
   exit
 fi
