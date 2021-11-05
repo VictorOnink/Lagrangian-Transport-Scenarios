@@ -14,7 +14,7 @@ import Analysis
 
 def run(scenario, figure_direc: str):
     shore_time = 20
-    lambda_frag_list = np.array([388])  # np.array([388, 1000, 10000, 35000, 50000])
+    lambda_frag_list = np.array([388, 1000, 10000, 35000, 50000])
     rho = 920
 
     # Standardizing field data
