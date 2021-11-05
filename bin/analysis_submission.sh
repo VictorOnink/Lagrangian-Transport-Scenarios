@@ -47,14 +47,14 @@ STARTDAY=1
 export STARTDAY
 # Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=lebretondivision, 3=lebretonKaandorpInit,
 # 4=point, 5=uniform
-INPUT=2
+INPUT=3
 export INPUT
 #Which advection data do we want to use?
 # 0 = Global HYCOM, 1 = Caribbean HYCOM, 2 = Mediterranean CMEMS
 ADVECTION_DATA=2
 export ADVECTION_DATA
 #Number of years the simulation runs
-SIMLEN=3
+SIMLEN=2
 export SIMLEN
 # For the analysis, if we have multiple years that we want to combine into one analysis set (so if we have continuous
 # particle release), then this how many years we want to include
@@ -75,15 +75,15 @@ export SERVER
 
 #A number of switches to indicate which analysis steps we want to run.
 #0 = off, 1 = on
-CONCENTRATION=0
-VERTICAL_CONCENTRATION=0
+CONCENTRATION=1
+VERTICAL_CONCENTRATION=1
 LONLAT_CONCENTRATION=1
-TIMESERIES=0
+TIMESERIES=1
 MAX_DISTANCE=0
 TIMESLICING=0
 STATISTICS=0
 SEPARATION=0
-SIZE_SPECTRUM=0
+SIZE_SPECTRUM=1
 
 export CONCENTRATION
 export VERTICAL_CONCENTRATION
