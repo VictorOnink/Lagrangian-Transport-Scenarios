@@ -101,6 +101,7 @@ class FragmentationKaandorpPartial_vertical_profile:
         str_format = self.input, self.lambda_frag, self.shore_time, self.rho, self.simulation_year
         file_name = self.output_direc + 'VerticalProfile-{}-lamf={}-ST={}-rho={}_simyear={}.png'.format(*str_format)
         plt.savefig(file_name, bbox_inches='tight')
+        plt.close()
 
 
 def legend_label(size_class):

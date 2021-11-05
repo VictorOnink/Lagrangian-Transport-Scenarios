@@ -101,6 +101,7 @@ class FragmentationKaandorpPartial_Concentration:
                            zorder=200)
 
         plt.savefig(self.file_name(), bbox_inches='tight')
+        plt.close()
 
     def file_name(self):
         str_format = self.input, self.beach_state, self.simulation_year, self.lambda_frag, self.shore_time, self.rho, \

@@ -139,6 +139,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
         str_format = self.shore_time, self.rho, self.sink
         file_name = self.output_direc + 'SizeSpectrumFieldData-ST={}-rho={}-sink={}.png'.format(*str_format)
         plt.savefig(file_name, bbox_inches='tight')
+        plt.close()
 
 
 def subfigure_title(index, beach_state):

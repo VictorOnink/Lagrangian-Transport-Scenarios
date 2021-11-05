@@ -127,6 +127,7 @@ class FragmentationKaandorpPartial_lonlat_averages:
 
         # Saving the figure
         plt.savefig(self.file_name(), bbox_inches='tight')
+        plt.close()
 
     def file_name(self):
         str_format = self.input, self.time_selection, self.beach_state, self.rho, self.lambda_frag, self.weight
