@@ -9,7 +9,8 @@ import cmocean.cm as cmo
 
 
 class FragmentationKaandorpPartial_vertical_profile:
-    def __init__(self, figure_direc, scenario, shore_time, lambda_frag, rho, simulation_year, weight):
+    def __init__(self, figure_direc, scenario, shore_time, lambda_frag, rho, simulation_year, weight,
+                 input='LebretonDivision'):
         # Figure Parameters
         self.fig_size = (16, 10)
         self.fig_shape = (2, 2)
@@ -41,6 +42,7 @@ class FragmentationKaandorpPartial_vertical_profile:
         self.rho = rho
         self.simulation_year = simulation_year
         self.size_classes = settings.SIZE_CLASS_NUMBER
+        self.input = input
 
     def plot(self):
         # Loading the data
@@ -49,7 +51,8 @@ class FragmentationKaandorpPartial_vertical_profile:
                                                                   data_direc=self.data_direc,
                                                                   shore_time=self.shore_time,
                                                                   lambda_frag=self.lambda_frag,
-                                                                  rho=self.rho, postprocess=True)
+                                                                  rho=self.rho, postprocess=True,
+                                                                  input=self.input)
         depth_bins = data_dict['depth']
         data_dict = data_dict[year_key]
 
@@ -95,8 +98,8 @@ class FragmentationKaandorpPartial_vertical_profile:
                 ax[ind_month].plot(data_dict[month][size_class][self.concentration], depth_bins, linestyle='-', c=c)
 
         # Saving the figure
-        str_format = self.lambda_frag, self.shore_time, self.rho, self.simulation_year
-        file_name = self.output_direc + 'VerticalProfile-lamf={}-ST={}-rho={}_simyear={}.png'.format(*str_format)
+        str_format = self.input, self.lambda_frag, self.shore_time, self.rho, self.simulation_year
+        file_name = self.output_direc + 'VerticalProfile-{}-lamf={}-ST={}-rho={}_simyear={}.png'.format(*str_format)
         plt.savefig(file_name, bbox_inches='tight')
 
 

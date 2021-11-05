@@ -7,7 +7,8 @@ from datetime import datetime, timedelta
 
 
 class FragmentationKaandorpPartial_timeseries:
-    def __init__(self, scenario, figure_direc, shore_time, lambda_frag, rho, simulation_length, weight):
+    def __init__(self, scenario, figure_direc, shore_time, lambda_frag, rho, simulation_length, weight,
+                 input='LebretonDivision'):
         # Simulation parameters
         self.scenario = scenario
         self.shore_time = shore_time
@@ -16,6 +17,7 @@ class FragmentationKaandorpPartial_timeseries:
         self.simulation_length = simulation_length
         self.class_num = settings.SIZE_CLASS_NUMBER
         self.weight = weight
+        self.input = input
         # Data parameters
         self.output_direc = figure_direc + 'timeseries/'
         self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/FragmentationKaandorpPartial/'
@@ -45,7 +47,7 @@ class FragmentationKaandorpPartial_timeseries:
                                                                       data_direc=self.data_direc,
                                                                       shore_time=self.shore_time,
                                                                       lambda_frag=self.lambda_frag, rho=self.rho,
-                                                                      postprocess=True)
+                                                                      postprocess=True, input=self.input)
             for beach_state in self.beach_state_list:
                 timeseries_dict[size_class][beach_state] = data_dict[beach_state][size_class][self.weight]
 
@@ -79,12 +81,12 @@ class FragmentationKaandorpPartial_timeseries:
                                      c=color_size)
 
         # Saving the figure
-        plt.savefig(file_name(self.output_direc, self.shore_time, self.lambda_frag), bbox_inches='tight')
+        plt.savefig(file_name(self.input, self.output_direc, self.shore_time, self.lambda_frag), bbox_inches='tight')
 
 
-def file_name(output_direc, shore_time, lambda_frag):
-    str_format = shore_time, lambda_frag
-    return output_direc + 'FragmentationKaandorpPartial_beach_state_timeseries_ST={}_lamf={}.png'.format(*str_format)
+def file_name(output_direc, shore_time, lambda_frag, input):
+    str_format = input, shore_time, lambda_frag
+    return output_direc + 'FragmentationKaandorpPartial_beach_state_timeseries-{}_ST={}_lamf={}.png'.format(*str_format)
 
 
 def subfigure_title(index, beach_state):

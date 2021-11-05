@@ -11,7 +11,7 @@ import cmocean.cm as cmo
 
 class FragmentationKaandorpPartial_Concentration:
     def __init__(self, scenario, figure_direc, rho, shore_time, beach_state, simulation_year, lambda_frag, mass,
-                 sink=True):
+                 sink=True, input='LebretonDivision'):
         # Simulation parameters
         self.scenario = scenario
         self.shore_time = shore_time
@@ -24,6 +24,7 @@ class FragmentationKaandorpPartial_Concentration:
         self.sink = sink
         if self.sink:
             self.weight += '_sink'
+        self.input = input
         # Data parameters
         self.output_direc = figure_direc + 'concentrations/'
         self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/FragmentationKaandorpPartial/'
@@ -48,7 +49,7 @@ class FragmentationKaandorpPartial_Concentration:
         data_dict = vUtils.FragmentationKaandorpPartial_load_data(scenario=self.scenario, prefix=self.prefix,
                                                                   data_direc=self.data_direc, shore_time=self.shore_time,
                                                                   lambda_frag=self.lambda_frag, rho=self.rho,
-                                                                  postprocess=True)
+                                                                  postprocess=True, input=self.input)
         concentration_dict = data_dict[self.key_concentration][self.beach_state][self.weight]
         Lon, Lat = np.meshgrid(data_dict['lon'], data_dict['lat'])
 
@@ -99,9 +100,13 @@ class FragmentationKaandorpPartial_Concentration:
                 ax.scatter(Lon.flatten(), Lat.flatten(), c=concentration_dict[index], norm=norm, cmap=self.cmap,
                            zorder=200)
 
-        str_format = self.beach_state, self.simulation_year, self.lambda_frag, self.shore_time, self.rho, self.weight, self.sink
-        file_name = self.output_direc + 'Concentrations_{}_year={}_lambda_f={}_st={}_rho={}_{}_sink={}.png'.format(*str_format)
-        plt.savefig(file_name, bbox_inches='tight')
+        plt.savefig(self.file_name(), bbox_inches='tight')
+
+    def file_name(self):
+        str_format = self.input, self.beach_state, self.simulation_year, self.lambda_frag, self.shore_time, self.rho, \
+                     self.weight, self.sink
+        prefix = self.output_direc + 'Concentrations_'
+        return prefix + '{}_{}_year={}_lambda_f={}_st={}_rho={}_{}_sink={}.png'.format(*str_format)
 
 
 def subfigure_title(index):

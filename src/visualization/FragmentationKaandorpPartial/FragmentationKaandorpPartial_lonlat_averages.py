@@ -10,7 +10,8 @@ import cmocean.cm as cmo
 
 
 class FragmentationKaandorpPartial_lonlat_averages:
-    def __init__(self, scenario, figure_direc, lambda_frag, time_selection, beach_state, mass, rho=920, shore_time=20):
+    def __init__(self, scenario, figure_direc, lambda_frag, time_selection, beach_state, mass, rho=920, shore_time=20,
+                 input='LebretonDivision'):
         # Simulation parameters
         self.scenario = scenario
         self.rho = rho
@@ -27,6 +28,7 @@ class FragmentationKaandorpPartial_lonlat_averages:
         self.key_concentration = utils.analysis_simulation_year_key(self.time_selection)
         self.step = 0.5
         self.shore_time = shore_time
+        self.input = input
         # Data parameters
         self.output_direc = figure_direc + 'concentrations/'
         self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/FragmentationKaandorpPartial/'
@@ -51,7 +53,7 @@ class FragmentationKaandorpPartial_lonlat_averages:
                                                                   data_direc=self.data_direc,
                                                                   shore_time=self.shore_time,
                                                                   lambda_frag=self.lambda_frag, rho=self.rho,
-                                                                  postprocess=True)
+                                                                  postprocess=True, input=self.input)
         concentration_dict, lon, lat = self.histogram_reduction(data_dict=data_dict)
 
         # Normalizing the concentrations by the total number of particles in the simulation
@@ -124,9 +126,11 @@ class FragmentationKaandorpPartial_lonlat_averages:
                         c=vUtils.discrete_color_from_cmap(index_size, subdivisions=settings.SIZE_CLASS_NUMBER))
 
         # Saving the figure
-        str_format = self.time_selection, self.beach_state, self.rho, self.lambda_frag, self.weight
-        fig_name = self.output_direc + "lon_lat_year={}_beach_state={}_rho={}_lambda_f={}_weight={}.png".format(*str_format)
-        plt.savefig(fig_name, bbox_inches='tight')
+        plt.savefig(self.file_name(), bbox_inches='tight')
+
+    def file_name(self):
+        str_format = self.input, self.time_selection, self.beach_state, self.rho, self.lambda_frag, self.weight
+        return self.output_direc + "lon_lat_{}_year={}_beach_state={}_rho={}_lambda_f={}_weight={}.png".format(*str_format)
 
     def histogram_reduction(self, data_dict):
         # The new bin edges
