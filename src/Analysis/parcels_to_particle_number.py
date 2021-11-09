@@ -6,6 +6,7 @@ from progressbar import ProgressBar
 from copy import deepcopy
 import visualization.visualization_utils as vUtils
 from scipy.interpolate import interp1d
+import pandas as pd
 
 
 class parcels_to_particle_number:
@@ -41,8 +42,14 @@ class parcels_to_particle_number:
             if settings.INPUT == 'LebretonKaandorpInit':
                 # The field data from Simon Sanchez et al. (2019)
                 # https://doi.org/10.1016/j.scitotenv.2019.06.168
-                size_bins = [0.05, 0.075, 0.15, 0.35, 0.75, 1.5, 2.5, 5]
-                field_data = [0.1065, 0.1463, 0.237, 0.2611, 0.1630, 0.0620, 0.0157, 0.0157]
+                # size_bins = [0.05, 0.075, 0.15, 0.35, 0.75, 1.5, 2.5, 5]
+                # field_data = [0.1065, 0.1463, 0.237, 0.2611, 0.1630, 0.0620, 0.0157, 0.0157]
+                # The field data from Zeri et al. (2021) https://doi.org/10.3390/su13105328
+                size_bins = np.arange(0, 5.2, 0.1)
+                lengths = pd.read_excel(settings.DATA_DIR_SERVERS[settings.SERVER] + "Zeri_Sustainability_MP_sizes.xlsx",
+                                        sheet_name='Combined')['LENGTH']
+                field_data, _ = np.histogram(lengths, size_bins)
+                size_bins = (size_bins[1:] + size_bins[:-1]) / 2
                 # Creating the interpolation function from the bin sizes and the uncorrected field data
                 interpolation_function = interp1d(size_bins, field_data)
                 # Calculating the particle number at the sizes equivalent to the size class
