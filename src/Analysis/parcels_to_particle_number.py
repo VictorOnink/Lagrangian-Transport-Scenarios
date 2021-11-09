@@ -39,13 +39,12 @@ class parcels_to_particle_number:
         # The second case is
         else:
             if settings.INPUT == 'LebretonKaandorpInit':
-                # Loading the field data
-                field_dict = utils.load_obj(vUtils.FragmentationKaandorpPartial_fielddata_filename())
-                size_bins = np.append(0, field_dict['RuizOrejon']['bin_edges'])
-                size_bins = 10 ** (0.5 * (np.log10(size_bins[1:]) + np.log10(size_bins[:-1])))
+                # The field data from Simon Sanchez et al. (2019)
+                # https://doi.org/10.1016/j.scitotenv.2019.06.168
+                size_bins = [0.05, 0.075, 0.15, 0.35, 0.75, 1.5, 2.5, 5]
+                field_data = [0.1065, 0.1463, 0.237, 0.2611, 0.1630, 0.0620, 0.0157, 0.0157]
                 # Creating the interpolation function from the bin sizes and the uncorrected field data
-                size_distribution = np.append(1.48307203e-01, field_dict['RuizOrejon']['pdf_counts']) * size_bins
-                interpolation_function = interp1d(size_bins, size_distribution)
+                interpolation_function = interp1d(size_bins, field_data)
                 # Calculating the particle number at the sizes equivalent to the size class
                 number_inter = interpolation_function(utils.size_range(units='mm', size_class_number=settings.SIZE_CLASS_NUMBER))
                 # Converting the particle number to the particle mass
