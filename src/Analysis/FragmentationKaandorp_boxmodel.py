@@ -266,7 +266,7 @@ class FragmentationKaandorp_box_model:
         number_steady_state = np.dot(n1, n2)
 
         # Saving the steady state distribution for each reservoir
-        self.dict_save['mass']. self.dict_save['number'] = {}, {}
+        self.dict_save['mass'], self.dict_save['number'] = {}, {}
         for reservoir, indices in zip(['ocean', 'coastal', 'beach'], [self.index_o, self.index_c, self.index_b]):
             self.dict_save['mass'][reservoir] = mass_steady_state[indices]
             self.dict_save['number'][reservoir] = number_steady_state[indices]
