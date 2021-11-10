@@ -20,6 +20,7 @@ animations, as for large simulations loading all particle trajectory data is too
 - `parcels_to_particle_number.py`: Calculates the particle number for a given `LAMBDA_FRAG` value for parcels output
 in the `KaandorpFragmentationPartial` scenario.
 - `FragmentationKaandorp_boxmodel.py`: Contains code to run the box model of fragmentation and size dependent transport from Kaandorp et al. (2020).
+- `parcels_to_lonlat_average.py`: Calculates lon lat averages of the particle concentrations, averaged over each simulation year.
 
 We also include code for standardizing field data so that it can be easily plotted
 - `FragmentationKaandorpPartial_fielddata.py`: standardizing field data of microplastic size distributions
