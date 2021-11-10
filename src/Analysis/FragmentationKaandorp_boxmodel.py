@@ -257,11 +257,11 @@ class FragmentationKaandorp_box_model:
         mass_input, number_input = self.weekly_input()
         # Now following the approach at, first for the mass and then the numbers.
         # https://github.com/OceanParcels/ContinuousCascadingFragmentation/blob/main/box_model_Mediterranean.py#L317-L341
-        m1 = np.linalg.inv(np.eye(mass_input.size * 3) - self.T_mat_m)
+        m1 = np.linalg.inv(np.eye(mass_input.size) - self.T_mat_m)
         m2 = np.dot(self.T_mat_m, mass_input)
         mass_steady_state = np.dot(m1, m2)
 
-        n1 = np.linalg.inv(np.eye(number_input.size * 3) - self.T_mat_N)
+        n1 = np.linalg.inv(np.eye(number_input.size) - self.T_mat_N)
         n2 = np.dot(self.T_mat_m, number_input)
         number_steady_state = np.dot(n1, n2)
 
