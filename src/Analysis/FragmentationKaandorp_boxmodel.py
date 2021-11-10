@@ -246,6 +246,8 @@ class FragmentationKaandorp_box_model:
         file_name = self.output_direc + 'box_model_st={}_pfrag={}_lambdafrag={}_dn={}_sizeclasses={}_rho={}'.format(*str_format)
         if self.ocean_frag:
             file_name += 'lambda_f_ocean={}'.format(self.lambda_f_ocean)
+        if self.steady_state:
+            file_name += '_steady_state'
         return file_name
 
     def steady_state_distribution(self):
