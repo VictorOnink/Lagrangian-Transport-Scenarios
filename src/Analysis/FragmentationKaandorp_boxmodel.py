@@ -8,7 +8,8 @@ from copy import deepcopy
 class FragmentationKaandorp_box_model:
     def __init__(self, sim_length, start_size=settings.INIT_SIZE, size_classes=settings.SIZE_CLASS_NUMBER,
                  DN=settings.DN, p_frag=settings.P_FRAG, lambda_f=settings.LAMBDA_FRAG, lambda_b=settings.SHORE_TIME,
-                 rho=settings.INIT_DENSITY, lambda_f_ocean=settings.LAMBDA_OCEAN_FRAG, ocean_frag=False):
+                 rho=settings.INIT_DENSITY, lambda_f_ocean=settings.LAMBDA_OCEAN_FRAG, ocean_frag=False,
+                 steady_state=False):
         # Data directories
         self.input_direc = settings.DATA_INPUT_DIR_SERVERS[settings.SERVER] + 'box_model/'
         self.output_direc = settings.DATA_OUTPUT_DIR_SERVERS[settings.SERVER] + 'box_model/'
@@ -20,6 +21,7 @@ class FragmentationKaandorp_box_model:
         self.DN = DN
         self.rho = rho
         self.sim_length = sim_length
+        self.steady_state = steady_state
         # Stokes drift dependence parameters
         self.p_shape = 'sp'
         self.quantile = 0.5
@@ -194,13 +196,17 @@ class FragmentationKaandorp_box_model:
 
         return self.T_mat_m, self.T_mat_N, self.dict_save
 
+    def weekly_input(self):
+        mass_0, number_0 = np.zeros(3 * self.size_classes), np.zeros(3 * self.size_classes)
+        input_week = 453 * 12 / 365 * 7
+        mass_0[self.index_b[0]], number_0[self.index_b[0]] = input_week, input_week
+        return mass_0, number_0
+
     def calculate_transport(self):
         self.T_mat_m, self.T_mat_N, self.dict_save = self.create_transition_matrix()
 
         # Create an input array, with input in the biggest size class
-        mass_0, number_0 = np.zeros(3 * self.size_classes), np.zeros(3 * self.size_classes)
-        input_week = 453 * 12 / 365 * 7  # 453 particles released per month
-        mass_0[self.index_b[0]], number_0[self.index_b[0]] = input_week, input_week
+        mass_0, number_0 = self.weekly_input()
         mass, number = deepcopy(mass_0), deepcopy(number_0)
 
         # Creating an output dictionary
@@ -228,7 +234,10 @@ class FragmentationKaandorp_box_model:
         if utils.check_file_exist(file_name, without_pkl=True) and not rerun:
             return utils.load_obj(file_name)
         else:
-            output_dict = self.calculate_transport()
+            if self.steady_state:
+                output_dict = self.steady_state_distribution()
+            else:
+                output_dict = self.calculate_transport()
             utils.save_obj(filename=file_name, item=output_dict)
             return output_dict
 
@@ -238,6 +247,28 @@ class FragmentationKaandorp_box_model:
         if self.ocean_frag:
             file_name += 'lambda_f_ocean={}'.format(self.lambda_f_ocean)
         return file_name
+
+    def steady_state_distribution(self):
+        # Obtain the transition matrix
+        self.T_mat_m, self.T_mat_N, self.dict_save = self.create_transition_matrix()
+        # Setting the weekly input
+        mass_input, number_input = self.weekly_input()
+        # Now following the approach at, first for the mass and then the numbers.
+        # https://github.com/OceanParcels/ContinuousCascadingFragmentation/blob/main/box_model_Mediterranean.py#L317-L341
+        m1 = np.linalg.inv(np.eye(mass_input.size * 3) - self.T_mat_m)
+        m2 = np.dot(self.T_mat_m, mass_input)
+        mass_steady_state = np.dot(m1, m2)
+
+        n1 = np.linalg.inv(np.eye(number_input.size * 3) - self.T_mat_N)
+        n2 = np.dot(self.T_mat_m, number_input)
+        number_steady_state = np.dot(n1, n2)
+
+        # Saving the steady state distribution for each reservoir
+        self.dict_save['mass']. self.dict_save['number'] = {}, {}
+        for reservoir, indices in zip(['ocean', 'coastal', 'beach'], [self.index_o, self.index_c, self.index_b]):
+            self.dict_save['mass'][reservoir] = mass_steady_state[indices]
+            self.dict_save['number'][reservoir] = number_steady_state[indices]
+        return self.dict_save
 
 
 def tau_to_lambda(tau):

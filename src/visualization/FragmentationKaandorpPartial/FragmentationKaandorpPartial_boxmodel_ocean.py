@@ -47,18 +47,18 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
         size_classes = utils.size_range(size_class_number=self.size_class_number, units='mm')
 
         # Loading the box model data, first the base model without ocean fragmentation
-        base_box_data = FragmentationKaandorp_box_model(sim_length=self.sim_length, lambda_f=388,
-                                                        size_classes=self.size_class_number).load_box_model()
-        time_index = base_box_data['mass']['final_index']
-        base_mass, base_number = base_box_data['mass'][time_index], base_box_data['number'][time_index]
+        base_box_data = FragmentationKaandorp_box_model(sim_length=self.sim_length, lambda_f=self.lambda_frag,
+                                                        size_classes=self.size_class_number,
+                                                        steady_state=True).load_box_model()
+        base_mass, base_number = base_box_data['mass'], base_box_data['number']
         # Next the ocean fragmentation cases
         lambda_fO_mass, lambda_fO_number = {}, {}
         for lambda_fO in self.lambda_fO_list:
-            box_model_data = FragmentationKaandorp_box_model(sim_length=self.sim_length, lambda_f=388,
+            box_model_data = FragmentationKaandorp_box_model(sim_length=self.sim_length, lambda_f=self.lambda_frag,
                                                              size_classes=self.size_class_number, ocean_frag=True,
-                                                             lambda_f_ocean=self.lambda_frag * lambda_fO).load_box_model()
-            lambda_fO_mass[lambda_fO], lambda_fO_number[lambda_fO] = box_model_data['mass'][time_index], \
-                                                                     box_model_data['number'][time_index]
+                                                             lambda_f_ocean=self.lambda_frag * lambda_fO,
+                                                             steady_state=True).load_box_model()
+            lambda_fO_mass[lambda_fO], lambda_fO_number[lambda_fO] = box_model_data['mass'], box_model_data['number']
 
         # Creating the figure
         ax, twin_ax = vUtils.base_figure(fig_size=self.fig_size, ax_range=self.ax_range, x_label=self.x_label,
@@ -94,7 +94,6 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
         str_format = self.shore_time, self.lambda_frag, self.size_class_number
         file_name = self.output_direc + 'boxmodel_ocean_frag-ST={}-lambda_f={}_size_classes={}.png'.format(*str_format)
         plt.savefig(file_name, bbox_inches='tight', dpi=300)
-
 
     def subfigure_title(self, index):
         alphabet = string.ascii_lowercase
