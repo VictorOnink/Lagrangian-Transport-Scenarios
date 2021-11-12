@@ -75,7 +75,7 @@ def run(scenario, figure_direc: str):
 
     for beach_state in ['adrift', 'beach']:
         for year in [0, 1, 2]:
-            for input in ['LebretonDivision', 'LebretonKaandorpInit']:
+            for input in ['LebretonKaandorpInit']:
                 lonlat_average.FragmentationKaandorpPartial_lonlat_averages(scenario=scenario, figure_direc=figure_direc,
                                                                             lambda_frag=35000, time_selection=year,
                                                                             beach_state=beach_state, mass=False,
