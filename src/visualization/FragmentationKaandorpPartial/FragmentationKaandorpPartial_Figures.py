@@ -58,24 +58,27 @@ def run(scenario, figure_direc: str):
     #                                                                        rho=rho,
     #                                                                        simulation_year=year, weight=weight).plot()
 
-    for beach_state in ['adrift']:
-        for year in [0, 1]:
-            for input in ['LebretonDivision', 'LebretonKaandorpInit']:
-                concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc,
-                                                                         rho=rho, shore_time=shore_time,
-                                                                         beach_state=beach_state, simulation_year=year,
-                                                                         lambda_frag=388, mass=False, input=input).plot()
-                concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc,
-                                                                         rho=rho, shore_time=shore_time,
-                                                                         beach_state=beach_state, simulation_year=year,
-                                                                         lambda_frag=388, mass=True, input=input).plot()
+    # for beach_state in ['adrift']:
+    #     for year in [0, 1]:
+    #         for input in ['LebretonDivision', 'LebretonKaandorpInit']:
+    #             concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc,
+    #                                                                      rho=rho, shore_time=shore_time,
+    #                                                                      beach_state=beach_state, simulation_year=year,
+    #                                                                      lambda_frag=388, mass=False, input=input).plot()
+    #             concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc,
+    #                                                                      rho=rho, shore_time=shore_time,
+    #                                                                      beach_state=beach_state, simulation_year=year,
+    #                                                                      lambda_frag=388, mass=True, input=input).plot()
 
-    # for beach_state in ['adrift', 'beach']:
-    #     for year in [0, 1, 2]:
-    #         lonlat_average.FragmentationKaandorpPartial_lonlat_averages(scenario=scenario, figure_direc=figure_direc,
-    #                                                                     lambda_frag=388, time_selection=year,
-    #                                                                     beach_state=beach_state, mass=False).plot()
-    #         lonlat_average.FragmentationKaandorpPartial_lonlat_averages(scenario=scenario, figure_direc=figure_direc,
-    #                                                                     lambda_frag=388, time_selection=year,
-    #                                                                     beach_state=beach_state, mass=True).plot()
+    for beach_state in ['adrift', 'beach']:
+        for year in [0, 1, 2]:
+            for input in ['LebretonDivision', 'LebretonKaandorpInit']:
+                lonlat_average.FragmentationKaandorpPartial_lonlat_averages(scenario=scenario, figure_direc=figure_direc,
+                                                                            lambda_frag=388, time_selection=year,
+                                                                            beach_state=beach_state, mass=False,
+                                                                            input=input).plot()
+                lonlat_average.FragmentationKaandorpPartial_lonlat_averages(scenario=scenario, figure_direc=figure_direc,
+                                                                            lambda_frag=388, time_selection=year,
+                                                                            beach_state=beach_state, mass=True,
+                                                                            input=input).plot()
 
