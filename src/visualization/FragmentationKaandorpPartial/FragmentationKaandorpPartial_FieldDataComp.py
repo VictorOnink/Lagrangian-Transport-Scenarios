@@ -111,7 +111,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
                    label=r'Ruiz-Orej$\`o$n et al. (2018)')
         ax[2].legend(fontsize=self.legend_size, loc=self.legend_loc)
 
-        norm_factor = field_dict['Gundogdu2017']['pdf_counts'][6]
+        norm_factor = field_dict['Gundogdu2017']['pdf_counts'][14]
         ax[2].plot(field_dict['Gundogdu2017']['bin_midpoint'], field_dict['Gundogdu2017']['pdf_counts'] / norm_factor,
                    marker=self.field_marker, linestyle=self.field_line, color='tab:blue',
                    label=r'Gundogdu & Cem (2017)')
