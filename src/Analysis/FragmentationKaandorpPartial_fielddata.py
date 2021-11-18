@@ -119,6 +119,8 @@ def Gundogdu_2017_standardization(output_dict: dict):
     :return:
     """
     prefix = 'Gundogdu2017'
+    output_dict[prefix] = {}
+
     data_direc = settings.DATA_INPUT_DIR_SERVERS[settings.SERVER] + 'Field_Data/'
     data_pd = pd.read_excel(data_direc + 'Gundogdu_2017_field_data.xls', sheet_name='Sayfa1')
     size = data_pd['SIZE (MM)'].values
