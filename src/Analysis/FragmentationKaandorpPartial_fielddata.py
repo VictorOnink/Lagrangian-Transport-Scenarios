@@ -139,6 +139,7 @@ def Gundogdu_2017_standardization(output_dict: dict):
 
     # Normalize the pdf with the particle sizes
     output_dict[prefix]['pdf_counts'] = np.divide(concentrations, output_dict[prefix]['bin_midpoint'])
+    output_dict[prefix]['pdf_counts'][output_dict[prefix]['pdf_counts'] == 0] = np.nan
 
     return output_dict
 
