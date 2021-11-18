@@ -129,6 +129,10 @@ class FragmentationKaandorpPartial_FieldDataComp:
         ax[4].plot(field_dict['Constant2']['bin_midpoint'], field_dict['Constant2']['pdf_counts'] / norm_factor,
                    marker=self.field_marker, linestyle=self.field_line, color='tab:orange',
                    label='Constant et al. (2019), site 2')
+        norm_factor = field_dict['Merlino2020']['pdf_counts'][-1]
+        ax[4].plot(field_dict['Merlino2020']['bin_midpoint'], field_dict['Merlino2020']['pdf_counts'] / norm_factor,
+                   marker=self.field_marker, linestyle=self.field_line, color='tab:green',
+                   label='Merlino et al. (2020)')
         ax[4].legend(fontsize=self.legend_size, loc=self.legend_loc)
         # Field data - beach, microplastic mass
         norm_factor = field_dict['Fok']['pdf_mass'][5]

@@ -144,4 +144,23 @@ def Gundogdu_2017_standardization(output_dict: dict):
     return output_dict
 
 
+def Merlino_2020_standardization(output_dict: dict):
+    """
+    Data for Merlino et al. (2020), with the pdf normalized by the particle size
+    http://dx.doi.org/10.3390/w12123389
+    :param output_dict:
+    :return:
+    """
+    prefix = 'Merlino2020'
+    output_dict[prefix] = {}
 
+    size = np.array([138, 432, 622, 2073])
+
+    # Set the size bins
+    output_dict[prefix]['bin_edges'] = np.array([1, 2, 3, 4, 5])
+    output_dict[prefix]['bin_midpoint'] = np.array([1.5, 2.5, 3.5, 4.5])
+
+    # Normalize the pdf with the particle sizes
+    output_dict[prefix]['pdf_counts'] = np.divide(size, output_dict[prefix]['bin_midpoint'])
+
+    return output_dict
