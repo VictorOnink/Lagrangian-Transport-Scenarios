@@ -18,7 +18,7 @@ def run(scenario, figure_direc: str):
     rho = 920
 
     # Standardizing field data
-    # Analysis.FragmentationKaandorpPartial_fielddata(to_overwrite=False)
+    Analysis.FragmentationKaandorpPartial_fielddata(to_overwrite=True)
 
     # Plotting the input scenario
     # General_input_scenario(scenario=scenario, figure_direc=figure_direc).plot()
@@ -73,15 +73,15 @@ def run(scenario, figure_direc: str):
     #                                                                      beach_state=beach_state, simulation_year=year,
     #                                                                      lambda_frag=388, mass=True, input=input).plot()
 
-    for beach_state in ['adrift', 'beach']:
-        for year in [0, 1, 2]:
-            for input in ['LebretonKaandorpInit']:
-                lonlat_average.FragmentationKaandorpPartial_lonlat_averages(scenario=scenario, figure_direc=figure_direc,
-                                                                            lambda_frag=35000, time_selection=year,
-                                                                            beach_state=beach_state, mass=False,
-                                                                            input=input).plot()
-                lonlat_average.FragmentationKaandorpPartial_lonlat_averages(scenario=scenario, figure_direc=figure_direc,
-                                                                            lambda_frag=35000, time_selection=year,
-                                                                            beach_state=beach_state, mass=True,
-                                                                            input=input).plot()
+    # for beach_state in ['adrift', 'beach']:
+    #     for year in [0, 1, 2]:
+    #         for input in ['LebretonKaandorpInit']:
+    #             lonlat_average.FragmentationKaandorpPartial_lonlat_averages(scenario=scenario, figure_direc=figure_direc,
+    #                                                                         lambda_frag=35000, time_selection=year,
+    #                                                                         beach_state=beach_state, mass=False,
+    #                                                                         input=input).plot()
+    #             lonlat_average.FragmentationKaandorpPartial_lonlat_averages(scenario=scenario, figure_direc=figure_direc,
+    #                                                                         lambda_frag=35000, time_selection=year,
+    #                                                                         beach_state=beach_state, mass=True,
+    #                                                                         input=input).plot()
 

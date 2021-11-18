@@ -13,6 +13,7 @@ def FragmentationKaandorpPartial_fielddata(to_overwrite=False):
         output_dict = Constant2019_standardization(output_dict=output_dict)
         output_dict = Cozar2015_standardization(output_dict=output_dict)
         output_dict = RuizOrejon_standardization(output_dict=output_dict)
+        output_dict = Gundogdu_2017_standardization(output_dict=output_dict)
         utils.save_obj(filename=file_name, item=output_dict)
         utils.print_statement('The standardized field data has been saved.', to_print=True)
 
@@ -108,3 +109,36 @@ def RuizOrejon_standardization(output_dict: dict):
                                                   0.0004946212353677522, 0.0000891319875335298, 5.599541949072085e-7])[
                                         1:-1]
     return output_dict
+
+
+def Gundogdu_2017_standardization(output_dict: dict):
+    """
+    Data for Gundogdu & Cem (2017), with the pdf normalized by the particle size
+    http://dx.doi.org/10.1016/j.marpolbul.2017.03.002
+    :param output_dict:
+    :return:
+    """
+    prefix = 'Gundogdu2017'
+    data_direc = settings.DATA_INPUT_DIR_SERVERS[settings.SERVER] + 'Field_Data/'
+    data_pd = pd.read_excel(data_direc + 'Gundogdu_2017_field_data.xls', sheet_name='Sayfa1')
+    size = data_pd['SIZE (MM)'].values
+
+    # Get the size bins from the Cozar paper
+    cozar_pd = pd.read_excel(data_direc + 'Cozar_MedData_SizeSpectra.xls', sheet_name=1)
+    output_dict[prefix]['bin_edges'] = np.append(cozar_pd['Lower Size (mm)'].values,
+                                                 cozar_pd['Upper Size (mm)'].values[-1])[:-1]
+    output_dict[prefix]['bin_midpoint'] = (10 ** cozar_pd['log Nominal Size']).values[:-1]
+
+    # Calculate the pdf/concentrations in the bins
+    concentrations, _ = np.histogram(size, bins=output_dict[prefix]['bin_edges'])
+
+    assert concentrations.size == output_dict[prefix]['bin_midpoint'].size, \
+        'The concentration size {} is not {}'.format(concentrations.size, output_dict[prefix]['bin_midpoint'].size)
+
+    # Normalize the pdf with the particle sizes
+    output_dict[prefix]['pdf_counts'] = np.divide(concentrations, output_dict[prefix]['bin_midpoint'])
+
+    return output_dict
+
+
+
