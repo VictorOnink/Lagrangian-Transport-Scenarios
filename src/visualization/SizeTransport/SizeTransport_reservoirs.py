@@ -75,7 +75,7 @@ class SizeTransport_reservoirs:
         rho_lines = [plt.plot([], [], c='k', label=r'$\rho=$' + str(rho) + r' kg m$^{-3}$', linestyle=None,
                               marker=self.rho_marker_dict[rho])[0] for rho in self.rho_list]
         size_colors = [plt.plot([], [], c='k', label=beach_label(state), linestyle=None, marker='o')[0] for
-                       state in enumerate(self.beach_state_list)]
+                       state in self.beach_state_list]
         ax[-1].legend(handles=rho_lines + size_colors, fontsize=self.ax_label_size, loc='upper right')
         ax[-1].axis('off')
 
