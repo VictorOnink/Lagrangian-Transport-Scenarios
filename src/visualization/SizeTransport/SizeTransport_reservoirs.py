@@ -72,9 +72,9 @@ class SizeTransport_reservoirs:
                                   c=self.state_color[beach_state], facecolors=None, s=40)
 
         # Creating a legend
-        rho_lines = [plt.scatter([], [], c='k', label=r'$\rho=$' + str(rho) + r' kg m$^{-3}$',
-                                 marker=self.rho_marker_dict[rho])[0] for rho in self.rho_list]
-        size_colors = [plt.plot([], [], c='k', label=beach_label(state), marker='o')[0] for
+        rho_lines = [plt.plot([], [], c='k', label=r'$\rho=$' + str(rho) + r' kg m$^{-3}$',
+                              marker=self.rho_marker_dict[rho])[0] for rho in self.rho_list]
+        size_colors = [plt.plot([], [], c=self.state_color[state], label=beach_label(state), marker='o')[0] for
                        state in self.beach_state_list]
         ax[-1].legend(handles=rho_lines + size_colors, fontsize=self.ax_label_size, loc='upper right')
         ax[-1].axis('off')
