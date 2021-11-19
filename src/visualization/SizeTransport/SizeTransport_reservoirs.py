@@ -20,7 +20,7 @@ class SizeTransport_reservoirs:
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'timeseries'
         # Figure parameters
-        self.figure_size = (12, 12)
+        self.figure_size = (12, 10)
         self.figure_shape = (1, 1)
         self.ax_label_size = 16
         self.ax_ticklabel_size = 14
@@ -69,7 +69,7 @@ class SizeTransport_reservoirs:
             for index_size, size in enumerate(self.size_list):
                 for beach_state in self.beach_state_list:
                     ax[0].scatter(size * 1e3, timeseries_dict[rho][size][beach_state], marker=self.rho_marker_dict[rho],
-                                  c=self.state_color[beach_state], facecolors=None, s=40)
+                                  edgecolors=self.state_color[beach_state], facecolors=None, s=80)
 
         # Creating a legend
         rho_lines = [plt.plot([], [], c='k', label=r'$\rho=$' + str(rho) + r' kg m$^{-3}$',
