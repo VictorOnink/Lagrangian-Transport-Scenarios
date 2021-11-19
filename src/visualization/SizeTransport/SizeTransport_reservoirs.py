@@ -62,28 +62,31 @@ class SizeTransport_reservoirs:
                                 x_label=self.x_label, ax_label_size=self.ax_label_size,
                                 ax_ticklabel_size=self.ax_ticklabel_size, shape=self.figure_shape,
                                 plot_num=self.number_of_plots, legend_axis=True, log_yscale=False, log_xscale=True,
-                                all_x_labels=True)
+                                width_ratios=[1, 0.3], all_x_labels=True)
 
         # Now, adding in the actual data
         for rho in self.rho_list:
             for index_size, size in enumerate(self.size_list):
                 for beach_state in self.beach_state_list:
                     ax[0].scatter(size * 1e3, timeseries_dict[rho][size][beach_state], marker=self.rho_marker_dict[rho],
-                                  c=self.state_color[beach_state], facecolors=None, s=20)
+                                  c=self.state_color[beach_state], facecolors=None, s=40)
+
         # Creating a legend
-        # rho_lines = [plt.plot([], [], c='k', label=r'$\rho=$' + str(rho) + r' kg m$^{-3}$', linestyle=self.rho_line_dict[rho])[0]
-        #              for rho in self.rho_list]
-        # size_number = self.size_list.__len__()
-        # size_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(index_size, subdivisions=size_number),
-        #                         label=size_label(size), linestyle='-')[0] for index_size, size in enumerate(self.size_list)]
-        # ax[-1].legend(handles=rho_lines + size_colors, fontsize=self.ax_label_size, loc='upper right')
-        # ax[-1].axis('off')
+        rho_lines = [plt.plot([], [], c='k', label=r'$\rho=$' + str(rho) + r' kg m$^{-3}$', linestyle=None,
+                              marker=self.rho_marker_dict[rho])[0] for rho in self.rho_list]
+        size_colors = [plt.plot([], [], c='k', label=beach_label(state), linestyle=None, marker='o')[0] for
+                       state in enumerate(self.beach_state_list)]
+        ax[-1].legend(handles=rho_lines + size_colors, fontsize=self.ax_label_size, loc='upper right')
+        ax[-1].axis('off')
 
         file_name = self.output_direc + 'SizeTransport_reservoirs.jpg'
         plt.savefig(file_name, bbox_inches='tight')
 
 
-def size_label(size):
-    return r'r = {:.3f} mm'.format(size * 1e3)
+def beach_label(beach_state):
+    if beach_state == 'beach':
+        return 'Beach'
+    elif beach_state == 'adrift':
+        return 'Adrift'
 
 
