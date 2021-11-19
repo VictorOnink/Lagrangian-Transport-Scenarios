@@ -22,9 +22,9 @@ class SizeTransport_reservoirs:
         # Figure parameters
         self.figure_size = (12, 12)
         self.figure_shape = (1, 1)
-        self.ax_label_size = 12
-        self.ax_ticklabel_size = 12
-        self.xmax, self.xmin = 1e-3, 1e1
+        self.ax_label_size = 16
+        self.ax_ticklabel_size = 14
+        self.xmax, self.xmin = 1e1, 1e-3
         self.ymax, self.ymin = 100, 0
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
         self.beach_state_list = ['beach', 'adrift']
@@ -72,9 +72,9 @@ class SizeTransport_reservoirs:
                                   c=self.state_color[beach_state], facecolors=None, s=40)
 
         # Creating a legend
-        rho_lines = [plt.plot([], [], c='k', label=r'$\rho=$' + str(rho) + r' kg m$^{-3}$', linestyle=None,
-                              marker=self.rho_marker_dict[rho])[0] for rho in self.rho_list]
-        size_colors = [plt.plot([], [], c='k', label=beach_label(state), linestyle=None, marker='o')[0] for
+        rho_lines = [plt.scatter([], [], c='k', label=r'$\rho=$' + str(rho) + r' kg m$^{-3}$',
+                                 marker=self.rho_marker_dict[rho])[0] for rho in self.rho_list]
+        size_colors = [plt.plot([], [], c='k', label=beach_label(state), marker='o')[0] for
                        state in self.beach_state_list]
         ax[-1].legend(handles=rho_lines + size_colors, fontsize=self.ax_label_size, loc='upper right')
         ax[-1].axis('off')
