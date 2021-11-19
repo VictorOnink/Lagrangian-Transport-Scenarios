@@ -48,7 +48,7 @@ POST_PROCESS=1
 export POST_PROCESS
 #the starting year of the simulation, and how many years the simulation will take
 STARTYEAR=2010
-STARTMONTH_list=(6)
+STARTMONTH_list=(1)
 STARTDAY=1
 export STARTYEAR
 export STARTDAY
@@ -177,7 +177,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
 
             #Looping over all the runs based on the input scenario
 #            for ((RUN=0; RUN<=$runlength; RUN++)); do
-            for RUN in [0 2 3 7]; do
+            for RUN in [5]; do
               export RUN
               # looping over all the simulation years
               for ((RESTARTNUM=$START; RESTARTNUM<$SIMLEN; RESTARTNUM++)); do
