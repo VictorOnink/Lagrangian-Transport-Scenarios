@@ -68,10 +68,9 @@ class SizeTransport_reservoirs:
         for rho in self.rho_list:
             for index_size, size in enumerate(self.size_list):
                 for index_beach, beach_state in enumerate(self.beach_state_list):
-                    line_color = vUtils.discrete_color_from_cmap(index_size, subdivisions=len(self.size_list))
-                    ax[index_beach].plot(size * 1e3, timeseries_dict[rho][size][beach_state],
-                                         linestyle=None, marker=self.rho_marker_dict[rho], facecolor=None,
-                                         color=line_color, label=size_label(size))
+                    ax[index_beach].scatter(size * 1e3, timeseries_dict[rho][size][beach_state],
+                                            marker=self.rho_marker_dict[rho], facecolors=None,
+                                            c=self.state_color[beach_state])
         # Creating a legend
         # rho_lines = [plt.plot([], [], c='k', label=r'$\rho=$' + str(rho) + r' kg m$^{-3}$', linestyle=self.rho_line_dict[rho])[0]
         #              for rho in self.rho_list]
