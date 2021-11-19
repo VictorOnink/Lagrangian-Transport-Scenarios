@@ -24,6 +24,7 @@ class SizeTransport_reservoirs:
         self.figure_shape = (1, 1)
         self.ax_label_size = 16
         self.ax_ticklabel_size = 14
+        self.legend_size = 12
         self.xmax, self.xmin = 1e1, 1e-3
         self.ymax, self.ymin = 100, 0
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
@@ -76,7 +77,7 @@ class SizeTransport_reservoirs:
                               marker=self.rho_marker_dict[rho])[0] for rho in self.rho_list]
         size_colors = [plt.plot([], [], c=self.state_color[state], label=beach_label(state), marker='o')[0] for
                        state in self.beach_state_list]
-        ax[-1].legend(handles=rho_lines + size_colors, fontsize=self.ax_label_size, loc='upper right')
+        ax[-1].legend(handles=rho_lines + size_colors, fontsize=self.legend_size, loc='upper right')
         ax[-1].axis('off')
 
         file_name = self.output_direc + 'SizeTransport_reservoirs.jpg'
