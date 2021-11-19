@@ -67,10 +67,9 @@ class SizeTransport_reservoirs:
         # Now, adding in the actual data
         for rho in self.rho_list:
             for index_size, size in enumerate(self.size_list):
-                for index_beach, beach_state in enumerate(self.beach_state_list):
-                    ax[index_beach].scatter(size * 1e3, timeseries_dict[rho][size][beach_state],
-                                            marker=self.rho_marker_dict[rho], facecolors=None,
-                                            c=self.state_color[beach_state])
+                for beach_state in self.beach_state_list:
+                    ax[0].scatter(size * 1e3, timeseries_dict[rho][size][beach_state], marker=self.rho_marker_dict[rho],
+                                  c=self.state_color[beach_state], facecolors=None)
         # Creating a legend
         # rho_lines = [plt.plot([], [], c='k', label=r'$\rho=$' + str(rho) + r' kg m$^{-3}$', linestyle=self.rho_line_dict[rho])[0]
         #              for rho in self.rho_list]
