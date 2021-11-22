@@ -23,7 +23,7 @@ WMIN=3
 export WMIN
 #for scenario 5 and 6, the initial size of the particle in 1e-6 m and the rho of the particle
 PARTICLE_SIZE_list=(5000 2500 1250 625 313 156 78 39 20 10 5 2)
-INIT_DENSITY=920
+INIT_DENSITY=980
 export INIT_DENSITY
 #for scenarios 5 - 7, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=0
