@@ -31,7 +31,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         super().__init__(server, stokes)
         self.prefix = "Frag_Kaandorp"
         self.input_dir = utils.get_input_directory(server=self.server)
-        self.output_dir = utils.get_output_directory(server=self.server)
+        self.output_dir = settings.DATA_WORKSPACE_OUTPUT_DIR[self.server]
         self.repeat_dt = None
         self.OCEAN_FRAG = settings.OCEAN_FRAG
         advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
