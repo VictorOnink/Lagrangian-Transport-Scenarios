@@ -209,6 +209,12 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                 particle.at_seafloor += particle.dt
 
     def particle_splitter(self, fieldset, pset):
+        # Initialize the dictionary containing the new particles
+        new_dict = {'count': 0, 'lon': np.array([]), 'lat': np.array([]), 'depth': np.array([]), 'size': np.array([]),
+                    'parent': np.array([]), 'age': np.array([]), 'beach': np.array([]), 'time': np.array([]),
+                    'rho_plastic': np.array([]), 'rise_velocity': np.array([]), 'reynolds': np.array([]),
+                    'prob_resus': np.array([]), 'size_class': np.array([]), 'beach_time': np.array([]),
+                    'ocean_time': np.array([]), 'at_seafloor': np.array([])}
         for particle in pset:
             if particle.to_split > 0:
                 # First, we set the split condition statement back to 0
@@ -221,27 +227,35 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                 remaining_classes = settings.SIZE_CLASS_NUMBER - parent_size_class - 1
                 if remaining_classes > 0:
                     for k in range(0, remaining_classes):
-                        new_particle_size = parent_size * 0.5 ** (k + 1)
-                        particle_w_rise = utils.initial_estimate_particle_rise_velocity(L=new_particle_size)
-                        pset_new = ParticleSet(fieldset=fieldset, pclass=self.particle,
-                                               lon=particle.lon,
-                                               lat=particle.lat,
-                                               depth=particle.depth,
-                                               size=new_particle_size,
-                                               parent=particle.id,
-                                               age=0,
-                                               beach=particle.beach,
-                                               time=particle.time,
-                                               rho_plastic=particle.rho_plastic,
-                                               rise_velocity=particle_w_rise,
-                                               reynolds=0,
-                                               prob_resus=utils.resuspension_probability(w_rise=particle_w_rise),
-                                               size_class=parent_size_class + (k + 1),
-                                               beach_time=0,
-                                               ocean_time=0,
-                                               at_seafloor=0,
-                                               repeatdt=None)
-                        pset.add(pset_new)
+                        new_dict['count'] += 1
+                        new_dict['lon'] = np.append(new_dict['lon'], particle.lon)
+                        new_dict['lat'] = np.append(new_dict['lat'], particle.lat)
+                        new_dict['depth'] = np.append(new_dict['depth'], particle.depth)
+                        new_dict['size'] = np.append(new_dict['size'], parent_size * 0.5 ** (k + 1))
+                        new_dict['parent'] = np.append(new_dict['parent'], particle.id)
+                        new_dict['age'] = np.append(new_dict['age'], 0)
+                        new_dict['beach'] = np.append(new_dict['beach'], particle.beach)
+                        new_dict['time'] = np.append(new_dict['time'], particle.time)
+                        new_dict['rho_plastic'] = np.append(new_dict['rho_plastic'], particle.id)
+                        new_dict['rise_velocity'] = np.append(new_dict['rise_velocity'], utils.initial_estimate_particle_rise_velocity(L=new_dict['size'][-1]))
+                        new_dict['reynolds'] = np.append(new_dict['reynolds'], 0)
+                        new_dict['prob_resus'] = np.append(new_dict['prob_resus'], utils.resuspension_probability(w_rise=new_dict['rise_velocity'][-1]))
+                        new_dict['size_class'] = np.append(new_dict['size_class'], parent_size_class + (k + 1))
+                        new_dict['beach_time'] = np.append(new_dict['beach_time'], 0)
+                        new_dict['ocean_time'] = np.append(new_dict['ocean_time'], 0)
+                        new_dict['at_seafloor'] = np.append(new_dict['at_seafloor'], 0)
+
+        # if there are new particles, create a new particle set and add this to the pset object
+        if new_dict['count'] > 0:
+            pset_new = ParticleSet(fieldset=fieldset, pclass=self.particle, lon=new_dict['lon'], lat=new_dict['lat'],
+                                   depth=new_dict['depth'], size=new_dict['size'], parent=new_dict['parent'],
+                                   age=new_dict['age'], beach=new_dict['beach'], time=new_dict['time'],
+                                   rho_plastic=new_dict['rho_plastic'], rise_velocity=new_dict['rise_velocity'],
+                                   reynolds=new_dict['reynolds'], prob_resus=new_dict['prob_resus'],
+                                   size_class=new_dict['size_class'], beach_time=new_dict['beach_time'],
+                                   ocean_time=new_dict['ocean_time'], at_seafloor=new_dict['at_seafloor'],
+                                   repeatdt=None)
+            pset.add(pset_new)
         return pset
 
     def run(self):
