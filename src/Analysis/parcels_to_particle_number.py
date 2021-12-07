@@ -17,7 +17,7 @@ class parcels_to_particle_number:
         self.restart = settings.RESTART
         # Model parameters
         self.dt = settings.TIME_STEP.total_seconds()
-        self.f = 60 / settings.LAMBDA_FRAG
+        self.f = 90 / settings.LAMBDA_FRAG
         self.DN = settings.DN
         # Analysis parameters
         self.var_list = ['parent', 'to_split', 'time', 'age', 'size_class']
