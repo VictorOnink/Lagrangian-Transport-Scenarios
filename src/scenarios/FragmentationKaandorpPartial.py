@@ -198,7 +198,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
     else:
         def fragmentation_kernel(particle, fieldset, time):
             if particle.beach == 1:
-                if particle.beach_time >= (60 * 86400):
+                if particle.beach_time >= (90 * 86400):
                     particle.to_split += 1
                     particle.beach_time = 0
 
