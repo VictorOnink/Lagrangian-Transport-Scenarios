@@ -31,7 +31,7 @@ class SizeTransport_reservoirs:
         self.beach_state_list = ['beach', 'adrift']
         self.y_label = 'Fraction of Total (%)'
         self.x_label = 'Size (mm)'
-        self.rho_marker_dict = {920: 'o', 980: 's'}
+        self.rho_marker_dict = {30: 'X', 920: 'o', 980: 's', 1020: 'D'}
         self.state_color = {'beach': 'r', 'adrift': 'b'}
         self.number_of_plots = 1
 

@@ -53,7 +53,9 @@ def run(scenario, figure_direc: str):
     #                                simulation_years=3, rho_list=[920, 980]).plot()
 
     # Figure showing the beached/adrift fractions of each size class
-    SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, size_list=size_list).plot()
+    rho_list = [30, 920, 980, 1020]
+    SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+                             rho_list=rho_list).plot()
 
     # Cumulative plots for the total distance travelled vertically and horizontally, and the max depth reached
     # SizeTransport_CumulativeDistance(figure_direc=figure_direc, scenario=scenario, size_list=size_list).plot()
@@ -77,4 +79,5 @@ def run(scenario, figure_direc: str):
     #                                   time_selection=time, beach_state='beach').plot()
     #     SizeTransport_lonlat_averages(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
     #                                   time_selection=time, beach_state='adrift').plot()
-    # pass
+
+    pass
