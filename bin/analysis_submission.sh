@@ -14,7 +14,7 @@ export SCENARIO
 VICINITY=2
 export VICINITY
 #for scenario 2, the beaching and resuspension timescales (in days)
-SHORETIME_list=(20)
+SHORETIME_list=(26)
 RESUSTIME_list=(69)
 #for scenario 3, the shore dependence scenario.
 SHOREDEPEN=0
