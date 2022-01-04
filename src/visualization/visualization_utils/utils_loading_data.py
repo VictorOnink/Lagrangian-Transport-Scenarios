@@ -3,7 +3,7 @@ import utils
 
 
 def SizeTransport_load_data(scenario, prefix, data_direc, size, rho, tau=settings.SEABED_CRIT, restart=settings.RESTART,
-                            advection_data='CMEMS_MEDITERRANEAN', shore_time=20, start_year=2010, input='Lebreton',
+                            advection_data='CMEMS_MEDITERRANEAN', shore_time=26, start_year=2010, input='Lebreton',
                             run=settings.RUN):
     """
     Loading the data we want for SizeTransport analysis output, which will generally just differ in terms of which
