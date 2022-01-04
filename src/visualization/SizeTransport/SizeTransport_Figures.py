@@ -53,7 +53,7 @@ def run(scenario, figure_direc: str):
     #                                simulation_years=3, rho_list=[920, 980]).plot()
 
     # Figure showing the beached/adrift fractions of each size class
-    rho_list = [30, 920, 980, 1020]
+    rho_list = [30, 920, 980]
     SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
                              rho_list=rho_list).plot()
 
