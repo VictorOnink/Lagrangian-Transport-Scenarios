@@ -134,9 +134,13 @@ def determine_depth_bins():
                                                         advection_scenario=settings.ADVECTION_DATA,
                                                         repeat_dt=None)
     adv_file_dict = advection_scenario.file_names
-    depth_min, depth_max = np.nanmin(adv_file_dict['DEPTH']), np.nanmax(adv_file_dict['DEPTH'])
-    step = 1.0
-    depth_bins = np.arange(depth_min - 0.1, depth_max + step, step)
+    depth_min, depth_max = np.nanmin(adv_file_dict['DEPTH']) - 0.1, np.nanmax(adv_file_dict['DEPTH'])
+    if depth_min > 0:
+        log_min, log_max = np.log10(depth_min), np.log10(depth_max)
+    else:
+        log_min, log_max = -1, np.log10(depth_max)
+    num = 100
+    depth_bins = np.logspace(log_min, log_max, num=num)
     return depth_bins
 
 
