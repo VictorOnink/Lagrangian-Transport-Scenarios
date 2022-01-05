@@ -126,6 +126,6 @@ def subfigure_title(index, size, rho_list):
 def plot_save_name(output_direc, size, time_selection, beach_state, flowdata='CMEMS_MEDITERRANEAN', startyear=2010):
     selection_dict = {'average': 'TotalAverage', 0: 'year_0', 1: 'year_1', 2: 'year_2'}
     str_format = flowdata, beach_state, selection_dict[time_selection], size * 1E6, startyear
-    return output_direc + 'SizeTransport_RHO_{}_{}_{}_size_{}_y_{}.png'.format(*str_format)
+    return output_direc + 'rho/SizeTransport_RHO_{}_{}_{}_size_{:.3f}_y_{}.png'.format(*str_format)
 
 
