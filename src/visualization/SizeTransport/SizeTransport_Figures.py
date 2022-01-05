@@ -49,11 +49,11 @@ def run(scenario, figure_direc: str):
     #                                               beach_state='beach', time_selection=time_select, rho=rho).plot()
 
     # Plotting the relative distributions for fixed particle sizes, but with different particle densities
-    for time_select in [2]:
-        for size in np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR:
-            SizeTransport_rho_concentrations(scenario=scenario, figure_direc=figure_direc, size=size,
-                                             beach_state='adrift', time_selection=time_select,
-                                             rho_list=[30, 920, 980, 1020]).plot()
+    # for time_select in [2]:
+    #     for size in np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR:
+    #         SizeTransport_rho_concentrations(scenario=scenario, figure_direc=figure_direc, size=size,
+    #                                          beach_state='adrift', time_selection=time_select,
+    #                                          rho_list=[30, 920, 980, 1020]).plot()
 
     size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
     # Creating figures of the timeseries of the number of particles that are beached/adrift/seabed
@@ -69,12 +69,12 @@ def run(scenario, figure_direc: str):
     # SizeTransport_CumulativeDistance(figure_direc=figure_direc, scenario=scenario, size_list=size_list).plot()
 
     # Plotting the month average vertical profile
-    # SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-    #                               time_selection=0, rho_list=[920, 980]).plot()
-    # SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-    #                               time_selection=1, rho_list=[920, 980]).plot()
-    # SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-    #                               time_selection=2, rho_list=[920, 980]).plot()
+    SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+                                  time_selection=0, rho_list=[920, 980]).plot()
+    SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+                                  time_selection=1, rho_list=[920, 980]).plot()
+    SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+                                  time_selection=2, rho_list=[920, 980]).plot()
 
     # Plotting the separation distance
     # for size_selection in size_list:
