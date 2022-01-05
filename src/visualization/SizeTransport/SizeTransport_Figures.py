@@ -49,8 +49,8 @@ def run(scenario, figure_direc: str):
 
     size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
     # Creating figures of the timeseries of the number of particles that are beached/adrift/seabed
-    # SizeTransport_beach_timeseries(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-    #                                simulation_years=3, rho_list=[920, 980]).plot()
+    SizeTransport_beach_timeseries(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+                                   simulation_years=3, rho_list=[30, 920, 980]).plot()
 
     # Figure showing the beached/adrift fractions of each size class
     rho_list = [30, 920, 980]

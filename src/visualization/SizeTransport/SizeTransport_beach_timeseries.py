@@ -32,7 +32,7 @@ class SizeTransport_beach_timeseries:
         self.beach_state_list = ['beach', 'adrift', 'seabed']
         self.y_label = 'Fraction of Total (%)'
         self.x_label = 'Time (yr)'
-        self.rho_line_dict = {920: '-', 980: 'dotted'}
+        self.rho_line_dict = {30: 'dashdot', 920: '-', 980: 'dotted', 1020: 'dashdotdotted'}
         if self.without_seabed:
             _ = self.beach_state_list.pop(-1)
         self.number_of_plots = self.beach_state_list.__len__()
