@@ -9,14 +9,14 @@ import string
 import cmocean.cm as cmo
 
 
-class SizeTransport_relative_concentrations:
-    def __init__(self, scenario, figure_direc, size_list, beach_state, time_selection, rho=920, tau=0):
+class SizeTransport_rho_concentrations:
+    def __init__(self, scenario, figure_direc, size, beach_state, time_selection, rho_list, tau=0):
         # Simulation parameters
         self.scenario = scenario
-        self.rho = rho
+        self.rho_list = rho_list
         self.time_selection = time_selection
         self.beach_state = beach_state
-        self.size_list = size_list
+        self.size = size
         self.tau = tau
         # Data parameters
         self.output_direc = figure_direc + 'concentrations/'
@@ -25,10 +25,10 @@ class SizeTransport_relative_concentrations:
         self.prefix = 'horizontal_concentration'
         # Figure parameters
         self.figure_size = (20, 10)
-        self.figure_shape = (2, 3)
+        self.figure_shape = (2, 2)
         self.ax_label_size = 14
         self.ax_ticklabel_size = 14
-        self.number_of_plots = self.size_list.__len__()
+        self.number_of_plots = self.rho_list.__len__()
         self.adv_file_dict = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
                                                             advection_scenario='CMEMS_MEDITERRANEAN',
                                                             repeat_dt=None).file_names
@@ -43,10 +43,10 @@ class SizeTransport_relative_concentrations:
             key_concentration = "overall_concentration"
         else:
             key_concentration = utils.analysis_simulation_year_key(self.time_selection)
-        for index, size in enumerate(self.size_list):
+        for index, rho in enumerate(self.rho_list):
             data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
                                                        data_direc=self.data_direc,
-                                                       size=size, rho=self.rho, tau=self.tau)
+                                                       size=self.size, rho=rho, tau=self.tau)
             concentration_dict[index] = data_dict[key_concentration][self.beach_state]
         Lon, Lat = np.meshgrid(data_dict['lon'], data_dict['lat'])
 
@@ -66,7 +66,7 @@ class SizeTransport_relative_concentrations:
 
         # Creating the base figure
         fig = plt.figure(figsize=self.figure_size)
-        gs = fig.add_gridspec(nrows=self.figure_shape[0], ncols=self.figure_shape[1] + 1, width_ratios=[1, 1, 1, 0.1])
+        gs = fig.add_gridspec(nrows=self.figure_shape[0], ncols=self.figure_shape[1] + 1, width_ratios=[1, 1, 0.1])
 
         ax_list = []
         for rows in range(self.figure_shape[0]):
@@ -87,10 +87,10 @@ class SizeTransport_relative_concentrations:
 
         # Adding subfigure titles
         for index, ax in enumerate(ax_list):
-            ax.set_title(subfigure_title(index, self.size_list), weight='bold', fontsize=self.ax_label_size)
+            ax.set_title(subfigure_title(index, self.size, self.rho_list), weight='bold', fontsize=self.ax_label_size)
 
         # The actual plotting of the figures
-        for index, size in enumerate(self.size_list):
+        for index in range(self.rho_list.__len__()):
             if self.beach_state in ['adrift']:
                 ax_list[index].pcolormesh(Lon, Lat, concentration_dict[index], norm=norm, cmap=self.cmap,
                                           zorder=200)
@@ -100,7 +100,7 @@ class SizeTransport_relative_concentrations:
                                        zorder=200)
 
         # Saving the figure
-        file_name = plot_save_name(output_direc=self.output_direc, rho=self.rho, time_selection=self.time_selection,
+        file_name = plot_save_name(output_direc=self.output_direc, size=self.size, time_selection=self.time_selection,
                                    beach_state=self.beach_state)
         plt.savefig(file_name, bbox_inches='tight')
 
@@ -118,17 +118,14 @@ def set_normalization(beach_state):
     return colors.LogNorm(vmin=vmin, vmax=vmax)
 
 
-def subfigure_title(index, size_list):
-    return '({}) r = {:.3f} mm'.format(string.ascii_lowercase[index], size_list[index] * 1e3)
+def subfigure_title(index, size, rho_list):
+    return '({}) r = {:.3f} mm, '.format(string.ascii_lowercase[index], size * 1e3) + r'$\rho=$' + \
+           '{} kg m'.format(rho_list[index]) + r'$^{-3}$'
 
 
-def plot_save_name(output_direc, rho, time_selection, beach_state, flowdata='CMEMS_MEDITERRANEAN', startyear=2010):
+def plot_save_name(output_direc, size, time_selection, beach_state, flowdata='CMEMS_MEDITERRANEAN', startyear=2010):
     selection_dict = {'average': 'TotalAverage', 0: 'year_0', 1: 'year_1', 2: 'year_2'}
-    str_format = flowdata, beach_state, selection_dict[time_selection], rho, startyear
-    return output_direc + 'SizeTransport_{}_{}_{}_rho_{}_y_{}.png'.format(*str_format)
-
-
-
-
+    str_format = flowdata, beach_state, selection_dict[time_selection], size * 1E6, startyear
+    return output_direc + 'SizeTransport_RHO_{}_{}_{}_size_{}_y_{}.png'.format(*str_format)
 
 

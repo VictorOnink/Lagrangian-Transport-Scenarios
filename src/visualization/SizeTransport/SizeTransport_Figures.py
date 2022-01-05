@@ -8,6 +8,7 @@ from visualization.SizeTransport.SizeTransport_SeparationDistance import SizeTra
 from visualization.SizeTransport.SizeTransport_VerticalProfile import SizeTransport_VerticalProfile
 from visualization.SizeTransport.SizeTransport_lonlat_averages import SizeTransport_lonlat_averages
 from visualization.SizeTransport.SizeTransport_reservoirs import SizeTransport_reservoirs
+from visualization.SizeTransport.SizeTransport_rho_concentrations import SizeTransport_rho_concentrations
 import os
 import numpy as np
 
@@ -47,6 +48,13 @@ def run(scenario, figure_direc: str):
     #         SizeTransport_relative_concentrations(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
     #                                               beach_state='beach', time_selection=time_select, rho=rho).plot()
 
+    # Plotting the relative distributions for fixed particle sizes, but with different particle densities
+    for time_select in [2]:
+        for size in np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR:
+            SizeTransport_rho_concentrations(scenario=scenario, figure_direc=figure_direc, size=size,
+                                             beach_state='adrift', time_selection=time_select,
+                                             rho_list=[30, 920, 980, 1020]).plot()
+
     size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
     # Creating figures of the timeseries of the number of particles that are beached/adrift/seabed
     # SizeTransport_beach_timeseries(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
@@ -54,8 +62,8 @@ def run(scenario, figure_direc: str):
 
     # Figure showing the beached/adrift fractions of each size class
     rho_list = [30, 920, 980, 1020]
-    SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                             rho_list=rho_list).plot()
+    # SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                          rho_list=rho_list).plot()
 
     # Cumulative plots for the total distance travelled vertically and horizontally, and the max depth reached
     # SizeTransport_CumulativeDistance(figure_direc=figure_direc, scenario=scenario, size_list=size_list).plot()

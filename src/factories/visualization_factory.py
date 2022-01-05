@@ -1,3 +1,4 @@
+import utils
 import visualization.SizeTransport.SizeTransport_Figures as SizeTransport
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_Figures as FragmentationKaandorpPartial
 import factories.scenario_factory as scenario_factory
@@ -22,3 +23,5 @@ class VisualizationFactory:
             SizeTransport.run(scenario=self.scenario, figure_direc=self.figure_direc)
         if self.scenario_name is 'FragmentationKaandorpPartial':
             FragmentationKaandorpPartial.run(scenario=self.scenario, figure_direc=self.figure_direc)
+        else:
+            utils.print_statement('No figures for {} have been generated yet'.format(self.scenario_name), to_print=True)
