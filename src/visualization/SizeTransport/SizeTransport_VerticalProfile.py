@@ -7,6 +7,7 @@ from advection_scenarios import advection_files
 import numpy as np
 import string
 import cmocean.cm as cmo
+from Analysis.CMEMS_mediterranean_mean_MLD import CMEMS_mediterranean_mean_MLD
 
 
 class SizeTransport_VerticalProfile:
@@ -24,6 +25,7 @@ class SizeTransport_VerticalProfile:
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
         self.number_of_plots = 4
         self.rho_line_dict = {30: 'dashed', 920: '-', 980: 'dashed', 1020: '-'}
+        self.seasons = ['JFM', 'AMJ', 'JAS', 'OND']
         # Data parameters
         self.output_direc = figure_direc + 'vertical_profile/'
         self.data_direc = utils.get_output_directory(
@@ -34,6 +36,7 @@ class SizeTransport_VerticalProfile:
         self.scenario = scenario
         self.size_list = size_list
         self.time_selection = time_selection
+        self.year = 2010 + self.time_selection
         self.rho_list = rho_list
         self.tau = 0.0
 
@@ -48,6 +51,12 @@ class SizeTransport_VerticalProfile:
                                                            size=size, rho=rho, tau=self.tau)
                 output_dict[rho][size] = data_dict[utils.analysis_simulation_year_key(self.time_selection)]
         depth_bins = data_dict['depth']
+
+        # Get the mean MLD depth data
+        MLD_data = CMEMS_mediterranean_mean_MLD.calculate_seasonal_mean()[self.year]
+        MLD_mean = dict.fromkeys(self.seasons)
+        for season in self.seasons:
+            MLD_mean[season] = np.nanmean(MLD_data[season])
 
         # Averaging by season
         for rho in self.rho_list:
