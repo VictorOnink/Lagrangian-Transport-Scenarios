@@ -5,7 +5,7 @@ module load Workspace
 #####################################################################################
 SUBMISSION='simulation'
 export SUBMISSION
-DEBUG=0 # 0 = Not a debug run, 1 = a debug run
+DEBUG=1 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation
 SCENARIO=7
@@ -23,7 +23,7 @@ export SHOREDEPEN
 WMIN=3
 export WMIN
 #for scenario 5 and 6, the initial size of the particle in 1e-6 m and the rho of the particle
-PARTICLE_SIZE_list=(5000) # (5000 2500 1250 625 313 156 78 39 20 10 5 2)
+PARTICLE_SIZE_list=(5000 2500 1250 625 313 156 78 39 20 10 5 2) # (5000 2500 1250 625 313 156 78 39 20 10 5 2)
 INIT_DENSITY=920
 export INIT_DENSITY
 #for scenarios 5 - 7, the critical bottom shear stress for particle resuspension (x1e-3)
@@ -31,7 +31,7 @@ SEABED_CRIT=0
 export SEABED_CRIT
 #for scenarios 5 - 7, if fixed == 1 we have size-independent resuspension, otherwise the resuspension timescale is a
 #function of the particle rise velocity
-FIXED_RESUS=0
+FIXED_RESUS=1
 export FIXED_RESUS
 # For scenario 7, the fragmentation parameters p (x1e-1), DN (x1e-1), the number of size classes and the fragmentation
 # timescale (DAYS). Also, the option of including ocean fragmentation or not. Finally, the sink removal rate
@@ -52,8 +52,8 @@ export OCEAN_FRAG
 POST_PROCESS=0
 export POST_PROCESS
 #the starting year of the simulation, and how many years the simulation will take
-STARTYEAR=2012
-STARTMONTH_list=(1 2 3 4 5 6 7 8 9 10 11 12)
+STARTYEAR=2010
+STARTMONTH_list=(1)
 STARTDAY=1
 export STARTYEAR
 export STARTDAY
@@ -68,7 +68,7 @@ export ADVECTION_DATA
 #Start year of the simulation. 0 = new simulation, otherwise it picks up from a previous simulation
 START=0
 #Number of years the simulation runs
-SIMLEN=1
+SIMLEN=3
 export SIMLEN
 #Inclusion of Stokes drift. 0 = include stokes, 1 = do not include stokes
 STOKES=0
