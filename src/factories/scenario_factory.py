@@ -7,11 +7,12 @@ import scenarios.Turrel_Beaching_scenario as Turrell
 import scenarios.FragmentationKaandorp as FragmentationKaandorp
 import scenarios.FragmentationKaandorpPartial as FragmentationKaandorpPartial
 import scenarios.SizeTransport as SizeTransport
+from settings import SCENARIO_NAME, STOKES, SERVER
 
 
 class ScenarioFactory:
     @staticmethod
-    def create_scenario(scenario_name, server, stokes) -> base_scenario.BaseScenario:
+    def create_scenario(scenario_name=SCENARIO_NAME, stokes=STOKES, server=SERVER) -> base_scenario.BaseScenario:
         if scenario_name == "AdvectionDiffusionOnly":
             return AdvDifOnly.AdvectionDiffusionOnly(server=server, stokes=stokes)
         elif scenario_name == "CoastalProximity":

@@ -1,44 +1,22 @@
 import os
 import settings
-import factories.scenario_factory as scenario_factory
-import factories.analysis_factory as analysis_factory
-import factories.visualization_factory as visualization_factory
+from factories.scenario_factory import ScenarioFactory
+from factories.analysis_factory import AnalysisFactory
+from factories.visualization_factory import VisualizationFactory
 
 
 def run():
     if settings.SUBMISSION == 'simulation':
         os.system('echo "Running the simulation"')
-        scenario_name = settings.SCENARIO_NAME
-        stokes = settings.STOKES
-        server = settings.SERVER
-        scenario = scenario_factory.ScenarioFactory.create_scenario(scenario_name=scenario_name, stokes=stokes,
-                                                                    server=server)
-        scenario.run()
+        ScenarioFactory().create_scenario().run()
+
     elif settings.SUBMISSION == 'analysis':
         os.system('echo "Running the analysis"')
-        scenario_name = settings.SCENARIO_NAME
-        stokes = settings.STOKES
-        server = settings.SERVER
-        scenario = scenario_factory.ScenarioFactory.create_scenario(scenario_name=scenario_name, stokes=stokes,
-                                                                    server=server)
-        file_dict = scenario.return_full_run_directory()
-        analysis_factory.AnalysisFactory.create_procedure(file_dict=file_dict,
-                                                          scenario=scenario,
-                                                          concentration=settings.CONCENTRATION,
-                                                          vertical_concentration=settings.VERTICAL_CONCENTRATION,
-                                                          timeseries=settings.TIMESERIES,
-                                                          max_distance=settings.MAX_DISTANCE,
-                                                          timeslicing=settings.TIMESLICING,
-                                                          statistics=settings.STATISTICS,
-                                                          separation_distance=settings.SEPARATION,
-                                                          size_spectrum=settings.SIZE_SPECTRUM,
-                                                          lonlat_average=settings.LONLAT_CONCENTRATION)
+        AnalysisFactory().run_analysis_procedure()
+
     elif settings.SUBMISSION == 'visualization':
         os.system('echo "Generating all visualizations"')
-        scenario_name = settings.SCENARIO_NAME
-        stokes = settings.STOKES
-        server = settings.SERVER
-        visualization_factory.VisualizationFactory(scenario=scenario_name, stokes=stokes, server=server).run()
+        VisualizationFactory().run()
 
 
 if __name__ == "__main__":

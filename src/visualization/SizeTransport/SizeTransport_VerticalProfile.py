@@ -23,7 +23,7 @@ class SizeTransport_VerticalProfile:
         self.ymin, self.ymax = 3e3, 1e0
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
         self.number_of_plots = 4
-        self.rho_line_dict = {30: 'dashdot', 920: '-', 980: 'dotted', 1020: (0, (3, 5, 1, 5, 1, 5))}
+        self.rho_line_dict = {30: 'dashdot', 920: '-', 980: 'dotted', 1020: 'dashed'}
         # Data parameters
         self.output_direc = figure_direc + 'vertical_profile/'
         self.data_direc = utils.get_output_directory(
@@ -106,7 +106,8 @@ class SizeTransport_VerticalProfile:
                     ax[ind_month].plot(output_dict[rho][size][month]['concentration'], depth_bins, linestyle=linestyle,
                                        c=c, marker=markerstyle)
 
-        file_name = self.output_direc + 'SizeTransport_vertical_profile_year={}.png'.format(self.time_selection)
+        file_name = self.output_direc + 'SizeTransport_vertical_profile_year={}_rho={}.png'.format(self.time_selection,
+                                                                                                   self.rho_list)
         plt.savefig(file_name, bbox_inches='tight')
 
 

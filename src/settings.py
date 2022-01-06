@@ -352,6 +352,15 @@ elif SCENARIO_NAME == 'TurrellResuspension':
     os.system('echo "The beaching timescale is {} days "'.format(SHORE_TIME))
     os.system('echo "The minimum offshore wind for resuspension is {} m / s"'.format(WMIN/10.))
 
+elif SCENARIO_NAME == 'SizeTransport':
+    os.system('echo "The particle size is {:.3f} mm"'.format(INIT_SIZE * 1e3))
+    os.system('echo "The particle density is {} kg/m3 "'.format(INIT_DENSITY))
+    os.system('echo "The beaching timescale is {} days "'.format(SHORE_TIME))
+    if FIXED_RESUS:
+        os.system('echo "The resuspension timescale is fixed at {} days "'.format(RESUS_TIME))
+    else:
+        os.system('echo "The resuspension timescale is size dependent"')
+
 elif SCENARIO_NAME in ['FragmentationKaandorp', 'FragmentationKaandorpPartial']:
     os.system('echo "The beaching timescale is {} days "'.format(SHORE_TIME))
     os.system('echo "The fragmentation timescale is {} days "'.format(LAMBDA_FRAG))
