@@ -19,7 +19,7 @@ class VisualizationFactory:
     def run(self):
         if self.scenario_name is 'SizeTransport':
             SizeTransport.run(scenario=self.scenario, figure_direc=self.figure_direc)
-        if self.scenario_name is 'FragmentationKaandorpPartial':
+        elif self.scenario_name is 'FragmentationKaandorpPartial':
             FragmentationKaandorpPartial.run(scenario=self.scenario, figure_direc=self.figure_direc)
         else:
             utils.print_statement('No figures for {} have been generated yet'.format(self.scenario_name), to_print=True)

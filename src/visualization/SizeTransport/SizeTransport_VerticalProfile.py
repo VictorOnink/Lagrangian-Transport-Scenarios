@@ -52,12 +52,6 @@ class SizeTransport_VerticalProfile:
                 output_dict[rho][size] = data_dict[utils.analysis_simulation_year_key(self.time_selection)]
         depth_bins = data_dict['depth']
 
-        # Get the mean MLD depth data
-        MLD_data = CMEMS_mediterranean_mean_MLD().calculate_seasonal_mean()[self.year]
-        MLD_mean = dict.fromkeys(self.seasons)
-        for season in self.seasons:
-            MLD_mean[season] = np.nanmean(MLD_data[season])
-
         # Averaging by season
         for rho in self.rho_list:
             for size in self.size_list:
@@ -79,6 +73,12 @@ class SizeTransport_VerticalProfile:
                 for month in range(0, 12):
                     selection = output_dict[rho][size][month]['concentration'] == 0
                     output_dict[rho][size][month]['concentration'][selection] = np.nan
+
+        # Get the mean MLD depth data
+        MLD_data = CMEMS_mediterranean_mean_MLD().calculate_seasonal_mean()[self.year]
+        MLD_mean = dict.fromkeys(self.seasons)
+        for season in self.seasons:
+            MLD_mean[season] = np.nanmean(MLD_data[season])
 
         # Creating the figure
         ax = vUtils.base_figure(fig_size=self.fig_size, ax_range=self.ax_range, x_label=self.x_label,
@@ -114,6 +114,8 @@ class SizeTransport_VerticalProfile:
                         linestyle, markerstyle = self.rho_line_dict[rho], None
                     ax[ind_month].plot(output_dict[rho][size][month]['concentration'], depth_bins, linestyle=linestyle,
                                        c=c, marker=markerstyle)
+                    # Adding in a horizontal line for the MLD
+                    ax[ind_month].axhline(y=MLD_mean[self.seasons[ind_month]], color='r', linestyle='-')
 
         file_name = self.output_direc + 'SizeTransport_vertical_profile_year={}_rho={}.png'.format(self.time_selection,
                                                                                                    self.rho_list)
