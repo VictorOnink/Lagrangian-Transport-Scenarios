@@ -1,4 +1,5 @@
 import settings
+import utils
 from visualization.SizeTransport.SizeTransport_Animation import SizeTransport_Animation
 from visualization.SizeTransport.SizeTransport_relative_concentrations import SizeTransport_relative_concentrations
 from visualization.SizeTransport.SizeTransport_beach_timeseries import SizeTransport_beach_timeseries
@@ -89,4 +90,4 @@ def run(scenario, figure_direc: str):
     #     SizeTransport_lonlat_averages(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
     #                                   time_selection=time, beach_state='adrift').plot()
 
-    pass
+    utils.print_statement("That's all folks!", to_print=True)

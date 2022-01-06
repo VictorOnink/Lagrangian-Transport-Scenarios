@@ -22,16 +22,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="update">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/factories/analysis_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/factories/analysis_factory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/factories/scenario_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/factories/scenario_factory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/factories/visualization_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/factories/visualization_factory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/settings.py" afterDir="false" />
+    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="Cleanup of the main file and the associated analysis, scenario and visualization factories">
+      <change beforePath="$PROJECT_DIR$/src/visualization/FragmentationKaandorpPartial/FragmentationKaandorpPartial_Figures.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/FragmentationKaandorpPartial/FragmentationKaandorpPartial_Figures.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_Figures.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_Figures.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_VerticalProfile.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_VerticalProfile.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/visualization_utils/utils_loading_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/visualization_utils/utils_loading_data.py" afterDir="false" />
     </list>
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
     <list id="c5adc810-e024-4e30-b33b-a2709ed2c5b7" name="moving the release repeat timescale to the scenario" comment="" />
@@ -117,13 +110,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-03075" summary="update">
-      <created>1640273832654</created>
-      <option name="number" value="03075" />
-      <option name="presentableId" value="LOCAL-03075" />
-      <option name="project" value="LOCAL" />
-      <updated>1640273832654</updated>
     </task>
     <task id="LOCAL-03076" summary="update">
       <created>1640273903398</created>
@@ -461,7 +447,14 @@
       <option name="project" value="LOCAL" />
       <updated>1641476784950</updated>
     </task>
-    <option name="localTasksCounter" value="3124" />
+    <task id="LOCAL-03124" summary="Cleanup of the main file and the associated analysis, scenario and visualization factories">
+      <created>1641481501047</created>
+      <option name="number" value="03124" />
+      <option name="presentableId" value="LOCAL-03124" />
+      <option name="project" value="LOCAL" />
+      <updated>1641481501047</updated>
+    </task>
+    <option name="localTasksCounter" value="3125" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -492,7 +485,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="bug fix where we now load the particle depth in the restart files for the SizeTransport simulation" />
     <MESSAGE value="bug fix" />
     <MESSAGE value="adding basic statistics calculation process" />
     <MESSAGE value="bugfix" />
@@ -517,6 +509,7 @@
     <MESSAGE value="Update all general figures to classes" />
     <MESSAGE value="Basic corrections of the resuspension timescales" />
     <MESSAGE value="update" />
-    <option name="LAST_COMMIT_MESSAGE" value="update" />
+    <MESSAGE value="Cleanup of the main file and the associated analysis, scenario and visualization factories" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cleanup of the main file and the associated analysis, scenario and visualization factories" />
   </component>
 </project>

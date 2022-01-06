@@ -10,6 +10,7 @@ import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_b
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_lonlat_averages as lonlat_average
 from visualization.General.General_input_scenario import General_input_scenario
 import Analysis
+import utils
 
 
 def run(scenario, figure_direc: str):
@@ -84,4 +85,6 @@ def run(scenario, figure_direc: str):
     #                                                                         lambda_frag=35000, time_selection=year,
     #                                                                         beach_state=beach_state, mass=True,
     #                                                                         input=input).plot()
+
+    utils.print_statement("That's all folks!", to_print=True)
 
