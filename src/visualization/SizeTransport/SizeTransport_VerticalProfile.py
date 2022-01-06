@@ -53,7 +53,7 @@ class SizeTransport_VerticalProfile:
         depth_bins = data_dict['depth']
 
         # Get the mean MLD depth data
-        MLD_data = CMEMS_mediterranean_mean_MLD.calculate_seasonal_mean()[self.year]
+        MLD_data = CMEMS_mediterranean_mean_MLD().calculate_seasonal_mean()[self.year]
         MLD_mean = dict.fromkeys(self.seasons)
         for season in self.seasons:
             MLD_mean[season] = np.nanmean(MLD_data[season])
