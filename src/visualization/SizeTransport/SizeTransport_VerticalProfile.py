@@ -23,7 +23,7 @@ class SizeTransport_VerticalProfile:
         self.ymin, self.ymax = 3e3, 1e0
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
         self.number_of_plots = 4
-        self.rho_line_dict = {30: 'dashdot', 920: '-', 980: 'dotted', 1020: 'dashed'}
+        self.rho_line_dict = {30: 'dotted', 920: '-', 980: 'dotted', 1020: '-'}
         # Data parameters
         self.output_direc = figure_direc + 'vertical_profile/'
         self.data_direc = utils.get_output_directory(
