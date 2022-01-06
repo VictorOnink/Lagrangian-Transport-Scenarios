@@ -53,6 +53,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                                                                       distance=True, salinity=True, temperature=True,
                                                                       bathymetry=True, beach_timescale=True,
                                                                       resus_timescale=True,
+                                                                      fixed_resus=settings.FIXED_RESUS,
                                                                       MLD=True, physics_constants=True, wind=True,
                                                                       TIDAL_mixing=True,
                                                                       fragmentation_period=self.T_frag
