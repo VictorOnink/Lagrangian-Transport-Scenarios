@@ -31,8 +31,8 @@ SEABED_CRIT=0
 export SEABED_CRIT
 #for scenarios 5 - 7, if fixed == 1 we have size-independent resuspension, otherwise the resuspension timescale is a
 #function of the particle rise velocity
-FIXED=0
-export FIXED
+FIXED_RESUS=0
+export FIXED_RESUS
 # For scenario 7, the fragmentation parameters p (x1e-1), DN (x1e-1), the number of size classes and the fragmentation
 # timescale (DAYS). Also, the option of including ocean fragmentation or not. Finally, the sink removal rate
 P=4
