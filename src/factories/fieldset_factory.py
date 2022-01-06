@@ -24,7 +24,7 @@ class FieldSetFactory:
                         beach_timescale: bool = False,
                         resus_timescale: bool = False,
                         fixed_resus: bool = True,
-                        fragmentation_timescale: bool = False,
+                        fragmentation_period=None,
                         MLD: bool = False,
                         TIDAL_mixing: bool = False,
                         physics_constants: bool = False,
@@ -52,7 +52,8 @@ class FieldSetFactory:
         :param resus_timescale: if True, add resuspension timescale
         :param fixed_resus: if True, use resuspension timescale from src/settings.py, otherwise rise velocity dependent
                             resuspension timescale
-        :param fragmentation_timescale: if True, add fragmentation timescale
+        :param fragmentation_period: if not None, this sets how many days a particle must cumulatively be beached
+                                     until fragmentation can start to occur
         :param MLD: if True, add Mixed Layer Depth fields
         :param TIDAL_mixing: if True, add vertical Tidal diffusion fields
         :param physics_constants: if True, add a range of physical constants
@@ -92,8 +93,8 @@ class FieldSetFactory:
             add_beach_timescale_field(fieldset=fieldset)
         if resus_timescale:
             add_resus_timescale_field(fieldset=fieldset, file_dict=file_dict, fixed_resus=fixed_resus)
-        if fragmentation_timescale:
-            add_fragmentation_timescale(fieldset=fieldset)
+        if fragmentation_period is not None:
+            add_fragmentation_period(fieldset=fieldset, fragmentation_period=fragmentation_period)
         if MLD:
             add_MLD_field(fieldset=fieldset, file_dict=file_dict)
         if TIDAL_mixing:
@@ -413,9 +414,7 @@ def add_physics_constants(fieldset: FieldSet, file_dict: dict):
                           np.nanmin(np.abs(file_dict['DEPTH'])))  # Correction in case the surface depth is not z=0
 
 
-def add_fragmentation_timescale(fieldset: FieldSet):
-    # We add the fragmentation timescale, similar to beaching and resuspension.
-    p_f = math.exp(-settings.TIME_STEP.total_seconds() / (settings.LAMBDA_FRAG * 86400.))
-    fieldset.add_constant('p_frag', p_f)
+def add_fragmentation_period(fieldset: FieldSet, fragmentation_period):
+    fieldset.add_constant('T_frag', fragmentation_period)
 
 

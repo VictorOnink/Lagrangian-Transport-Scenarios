@@ -34,6 +34,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         self.output_dir = settings.DATA_WORKSPACE_OUTPUT_DIR[self.server]
         self.repeat_dt = None
         self.OCEAN_FRAG = settings.OCEAN_FRAG
+        self.T_frag = 90
         advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
                                                             advection_scenario=settings.ADVECTION_DATA,
                                                             repeat_dt=self.repeat_dt)
@@ -53,7 +54,8 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
                                                                       bathymetry=True, beach_timescale=True,
                                                                       resus_timescale=True,
                                                                       MLD=True, physics_constants=True, wind=True,
-                                                                      TIDAL_mixing=True, fragmentation_timescale=True
+                                                                      TIDAL_mixing=True,
+                                                                      fragmentation_period=self.T_frag
                                                                       )
         return fieldset
 
@@ -189,17 +191,17 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
     if settings.OCEAN_FRAG:
         def fragmentation_kernel(particle, fieldset, time):
             if particle.beach == 0:
-                if particle.ocean_time >= (90 * 86400):
+                if particle.ocean_time >= (fieldset.T_frag * 86400):
                     particle.to_split += 2
                     particle.ocean_time = 0
             elif particle.beach == 1:
-                if particle.beach_time >= (90 * 86400):
+                if particle.beach_time >= (fieldset.T_frag * 86400):
                     particle.to_split += 1
                     particle.beach_time = 0
     else:
         def fragmentation_kernel(particle, fieldset, time):
             if particle.beach == 1:
-                if particle.beach_time >= (90 * 86400):
+                if particle.beach_time >= (fieldset.T_frag * 86400):
                     particle.to_split += 1
                     particle.beach_time = 0
 
