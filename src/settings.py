@@ -106,7 +106,7 @@ if SUBMISSION in ['simulation', 'analysis']:
     # RESUSPENSION TIMESCALE
     RESUS_TIME: int = int(os.environ['RESUSTIME'])  # days
     # FIXED_RESUS OR SIZE DEPENDENT RESUSPENSION TIMESCALE
-    FIXED_RESUS: bool = BOOLEAN_DICT[os.environ['FIXED_RESUS']]
+    FIXED_RESUS: bool = BOOLEAN_DICT[int(os.environ['FIXED_RESUS'])]
 
     # FOR 'ShoreDependentResuspension': 0 -> SAMARAS ET AL (2015) RESUSPENSION DEPENDENCE,
     #                                   1 -> 1:4 RESUSPENSION DEPENDENCE
