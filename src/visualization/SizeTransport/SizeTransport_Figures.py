@@ -90,4 +90,4 @@ def run(scenario, figure_direc: str):
     #     SizeTransport_lonlat_averages(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
     #                                   time_selection=time, beach_state='adrift').plot()
 
-    utils.print_statement("That's all folks!", to_print=True)
+    utils.print_statement("That is all folks!", to_print=True)
