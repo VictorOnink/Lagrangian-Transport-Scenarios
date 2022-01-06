@@ -15,7 +15,7 @@ VICINITY=2
 export VICINITY
 #for scenario 2, the beaching and resuspension timescales (in days)
 SHORETIME_list=(26)
-RESUSTIME_list=(7 50) # (7 50)
+RESUSTIME_list=(69) # (7 50)
 #for scenario 3, the shore dependence scenario.
 SHOREDEPEN=0
 export SHOREDEPEN
@@ -24,14 +24,13 @@ WMIN=3
 export WMIN
 #for scenario 5 and 6, the initial size of the particle in 1e-6 m and the rho of the particle
 PARTICLE_SIZE_list=(5000 2500 1250 625 313 156 78 39 20 10 5 2) # (5000 2500 1250 625 313 156 78 39 20 10 5 2)
-INIT_DENSITY=920
-export INIT_DENSITY
+INIT_DENSITY_list=(30 920 980 1020)
 #for scenarios 5 - 7, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=0
 export SEABED_CRIT
 #for scenarios 5 - 7, if fixed == 1 we have size-independent resuspension, otherwise the resuspension timescale is a
 #function of the particle rise velocity
-FIXED_RESUS=1
+FIXED_RESUS=0
 export FIXED_RESUS
 # For scenario 7, the fragmentation parameters p (x1e-1), DN (x1e-1), the number of size classes and the fragmentation
 # timescale (DAYS). Also, the option of including ocean fragmentation or not. Finally, the sink removal rate
@@ -145,92 +144,95 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
     export RESUSTIME
     for PARTICLE_SIZE in "${PARTICLE_SIZE_list[@]}"; do
       export PARTICLE_SIZE
-      for LAMBDA_FRAG in "${LAMBDA_FRAG_list[@]}"; do
-        export LAMBDA_FRAG
-        for LAMBDA_OCEAN_FRAG in "${LAMBDA_OCEAN_FRAG_LIST[@]}"; do
-          export LAMBDA_OCEAN_FRAG
-          for STARTMONTH in "${STARTMONTH_list[@]}"; do
-            export STARTMONTH
+      for INIT_DENSITY in "${INIT_DENSITY_list[@]}"; do
+        export INIT_DENSITY
+        for LAMBDA_FRAG in "${LAMBDA_FRAG_list[@]}"; do
+          export LAMBDA_FRAG
+          for LAMBDA_OCEAN_FRAG in "${LAMBDA_OCEAN_FRAG_LIST[@]}"; do
+            export LAMBDA_OCEAN_FRAG
+            for STARTMONTH in "${STARTMONTH_list[@]}"; do
+              export STARTMONTH
 
-            #Setting the name of the job
-            if [ "$SCENARIO" -eq "0" ]; then
-              RUNNAMEPREFIX="AdvDifOnly_y="${STARTYEAR}"_"
-            elif [ "$SCENARIO" -eq "1" ]; then
-              RUNNAMEPREFIX="Prox_vic="${VICINITY}"_y="${STARTYEAR}"_"
-            elif [ "$SCENARIO" -eq "2" ]; then
-              RUNNAMEPREFIX="Stochastic_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
-            elif [ "$SCENARIO" -eq "3" ]; then
-              RUNNAMEPREFIX="SDResus_SD="${SHOREDEPEN}"_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
-            elif [ "$SCENARIO" -eq "4" ]; then
-              RUNNAMEPREFIX="Turrell_Wmin="${WMIN}"_ST="${SHORETIME}"_y="${STARTYEAR}"_"
-            elif [ "$SCENARIO" -eq "6" ]; then
-              RUNNAMEPREFIX="KaandorpFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
-            elif [ "$SCENARIO" -eq "7" ]; then
-              RUNNAMEPREFIX="PartialKaandorpFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
-              if [ "$POST_PROCESS" -eq "1" ]; then
-                RUNNAMEPREFIX='PP_'${RUNNAMEPREFIX}
+              #Setting the name of the job
+              if [ "$SCENARIO" -eq "0" ]; then
+                RUNNAMEPREFIX="AdvDifOnly_y="${STARTYEAR}"_"
+              elif [ "$SCENARIO" -eq "1" ]; then
+                RUNNAMEPREFIX="Prox_vic="${VICINITY}"_y="${STARTYEAR}"_"
+              elif [ "$SCENARIO" -eq "2" ]; then
+                RUNNAMEPREFIX="Stochastic_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
+              elif [ "$SCENARIO" -eq "3" ]; then
+                RUNNAMEPREFIX="SDResus_SD="${SHOREDEPEN}"_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
+              elif [ "$SCENARIO" -eq "4" ]; then
+                RUNNAMEPREFIX="Turrell_Wmin="${WMIN}"_ST="${SHORETIME}"_y="${STARTYEAR}"_"
+              elif [ "$SCENARIO" -eq "6" ]; then
+                RUNNAMEPREFIX="KaandorpFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
+              elif [ "$SCENARIO" -eq "7" ]; then
+                RUNNAMEPREFIX="PartialKaandorpFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
+                if [ "$POST_PROCESS" -eq "1" ]; then
+                  RUNNAMEPREFIX='PP_'${RUNNAMEPREFIX}
+                fi
+              elif [ "$SCENARIO" -eq "5" ]; then
+                RUNNAMEPREFIX="SizeTransport_SIZE="${PARTICLE_SIZE}"_ST="${SHORETIME}"_y="${STARTYEAR}"_tau="${SEABED_CRIT}"_"
               fi
-            elif [ "$SCENARIO" -eq "5" ]; then
-              RUNNAMEPREFIX="SizeTransport_SIZE="${PARTICLE_SIZE}"_ST="${SHORETIME}"_y="${STARTYEAR}"_tau="${SEABED_CRIT}"_"
-            fi
-            if [ "$STOKES" -eq "1" ]; then
-              RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
-            fi
+              if [ "$STOKES" -eq "1" ]; then
+                RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
+              fi
 
-            RUNNAMEPREFIX=${RUNNAMEPREFIX}"ENSEMBLE="${ENSEMBLE}"_"
-            echo $RUNNAMEPREFIX
+              RUNNAMEPREFIX=${RUNNAMEPREFIX}"ENSEMBLE="${ENSEMBLE}"_"
+              echo $RUNNAMEPREFIX
 
-            #Looping over all the runs based on the input scenario
-            for ((RUN=0; RUN<=$runlength; RUN++)); do
-              export RUN
-              # looping over all the simulation years
-              for ((RESTARTNUM=$START; RESTARTNUM<$SIMLEN; RESTARTNUM++)); do
-                 export RESTARTNUM
-                 runname=$RUNNAMEPREFIX"_run="$RUN"_restart="$RESTARTNUM
-                 part1="#!/bin/sh"
-                 part2="#SBATCH --mail-type=begin,end,fail"
-                 part3="#SBATCH --mail-user=victor.onink@climate.unibe.ch"
-                 part4="#SBATCH --job-name="$runname
-                 part5="#SBATCH --output="runOutput/$runname".o%j"
-                 if [ "$DEBUG" -eq "0" ]; then
-                  if [ $POST_PROCESS -eq 0 ]; then
-                   part6="#SBATCH --mem-per-cpu=40G"
-                   part7="#SBATCH --time=95:59:00"
-                  else
-                   part6="#SBATCH --mem-per-cpu=40G"
-                   part7="#SBATCH --time=95:59:00"
-                  fi
-                  part8="#SBATCH --partition=epyc2"
-                  part9='#SBATCH --qos=job_epyc2'
-                 else
-                  part6="#SBATCH --mem-per-cpu=40G"
-                  part7="#SBATCH --time=00:20:00"
-                  part8="#SBATCH --partition=epyc2"
-                  part9='#SBATCH --qos=job_epyc2_debug'
-                 fi
-                 part10="source /storage/homefs/vo18e689/.bash_profile"
-                 part11="source /storage/homefs/vo18e689/anaconda3/bin/activate py3_parcels"
-                 part12='cd "/storage/homefs/vo18e689/codes/Next-Stage-Plastic-Beaching/"'
-                 part13="python src/main.py -p 10 -v"
+              #Looping over all the runs based on the input scenario
+              for ((RUN=0; RUN<=$runlength; RUN++)); do
+                export RUN
+                # looping over all the simulation years
+                for ((RESTARTNUM=$START; RESTARTNUM<$SIMLEN; RESTARTNUM++)); do
+                   export RESTARTNUM
+                   runname=$RUNNAMEPREFIX"_run="$RUN"_restart="$RESTARTNUM
+                   part1="#!/bin/sh"
+                   part2="#SBATCH --mail-type=begin,end,fail"
+                   part3="#SBATCH --mail-user=victor.onink@climate.unibe.ch"
+                   part4="#SBATCH --job-name="$runname
+                   part5="#SBATCH --output="runOutput/$runname".o%j"
+                   if [ "$DEBUG" -eq "0" ]; then
+                    if [ $POST_PROCESS -eq 0 ]; then
+                     part6="#SBATCH --mem-per-cpu=40G"
+                     part7="#SBATCH --time=95:59:00"
+                    else
+                     part6="#SBATCH --mem-per-cpu=40G"
+                     part7="#SBATCH --time=95:59:00"
+                    fi
+                    part8="#SBATCH --partition=epyc2"
+                    part9='#SBATCH --qos=job_epyc2'
+                   else
+                    part6="#SBATCH --mem-per-cpu=40G"
+                    part7="#SBATCH --time=00:20:00"
+                    part8="#SBATCH --partition=epyc2"
+                    part9='#SBATCH --qos=job_epyc2_debug'
+                   fi
+                   part10="source /storage/homefs/vo18e689/.bash_profile"
+                   part11="source /storage/homefs/vo18e689/anaconda3/bin/activate py3_parcels"
+                   part12='cd "/storage/homefs/vo18e689/codes/Next-Stage-Plastic-Beaching/"'
+                   part13="python src/main.py -p 10 -v"
 
-                 #and now the creation of the submission file
-                 for i in {1..13}; do
-                    partGrab="part"$i
-                    echo ${!partGrab} >> jobsubmissionFile_${RUN}_${RESTARTNUM}.sh
+                   #and now the creation of the submission file
+                   for i in {1..13}; do
+                      partGrab="part"$i
+                      echo ${!partGrab} >> jobsubmissionFile_${RUN}_${RESTARTNUM}.sh
+                   done
+
+                   #Submitting the job
+                   if [ "$RESTARTNUM" -eq "$START" ]; then
+                      jobid=$(sbatch --parsable jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
+                   else
+                      jobid=$(sbatch --parsable --dependency=afterok:${jobid} jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
+                   fi
+
+                   #Removing the used submission file
+                   rm jobsubmissionFile_${RUN}_${RESTARTNUM}.sh
                  done
-
-                 #Submitting the job
-                 if [ "$RESTARTNUM" -eq "$START" ]; then
-                    jobid=$(sbatch --parsable jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
-                 else
-                    jobid=$(sbatch --parsable --dependency=afterok:${jobid} jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
-                 fi
-
-                 #Removing the used submission file
-                 rm jobsubmissionFile_${RUN}_${RESTARTNUM}.sh
                done
              done
-           done
+          done
         done
       done
     done
