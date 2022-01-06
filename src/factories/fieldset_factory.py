@@ -23,6 +23,7 @@ class FieldSetFactory:
                         vicinity: bool = False,
                         beach_timescale: bool = False,
                         resus_timescale: bool = False,
+                        fixed_resus: bool = True,
                         fragmentation_timescale: bool = False,
                         MLD: bool = False,
                         TIDAL_mixing: bool = False,
@@ -32,6 +33,35 @@ class FieldSetFactory:
                         halo: bool = True,
                         velocity_interpolation: str = 'linear'
                         ):
+        """
+        Creating the fieldset object containing all the oceanographic and other fields for the parcels simulations
+        :param file_dict: dictionary object containing all file paths for the given advection scenario
+        :param stokes: if True, add stokes drift field
+        :param stokes_depth: if True, add data fields for computing depth dependence of stokes drift
+        :param border_current: if True, add border current field
+        :param diffusion: if True, add diffusion field
+        :param landID: if True, add land identification field
+        :param distance: if True, add distance to nearest land cell field
+        :param wind: if True, add surface wind fields
+        :param sea_elev: if True, add sea surface elevation fields
+        :param salinity: if True, add ocean salinity fields
+        :param temperature: if True, add temperature fields
+        :param bathymetry: if True, add bathymetry fields
+        :param vicinity: if True, add vicinity to shore constant
+        :param beach_timescale: if True, add beaching timescale
+        :param resus_timescale: if True, add resuspension timescale
+        :param fixed_resus: if True, use resuspension timescale from src/settings.py, otherwise rise velocity dependent
+                            resuspension timescale
+        :param fragmentation_timescale: if True, add fragmentation timescale
+        :param MLD: if True, add Mixed Layer Depth fields
+        :param TIDAL_mixing: if True, add vertical Tidal diffusion fields
+        :param physics_constants: if True, add a range of physical constants
+        :param coastal_zone: if True, set the distance to shore within which beaching occurs
+        :param grid_spacing: if True, add field containing the grid spacing
+        :param halo: if True, add a zonal halo on all fields
+        :param velocity_interpolation: set the interpolation type
+        :return:
+        """
         fieldset = get_base_fieldset(file_dict=file_dict, velocity_interpolation=velocity_interpolation)
         if stokes is 0:
             fieldset = add_stokes_drift(fieldset=fieldset, file_dict=file_dict,
@@ -61,7 +91,7 @@ class FieldSetFactory:
         if beach_timescale:
             add_beach_timescale_field(fieldset=fieldset)
         if resus_timescale:
-            add_resus_timescale_field(fieldset=fieldset, file_dict=file_dict)
+            add_resus_timescale_field(fieldset=fieldset, file_dict=file_dict, fixed_resus=fixed_resus)
         if fragmentation_timescale:
             add_fragmentation_timescale(fieldset=fieldset)
         if MLD:
@@ -289,7 +319,7 @@ def add_beach_timescale_field(fieldset: FieldSet):
     fieldset.add_constant('p_beach', p_b)
 
 
-def _compute_shore_resus_Field(file_dict: dict):
+def compute_shore_resus_Field(file_dict: dict):
     """
 
     :param input_dir:
@@ -305,22 +335,20 @@ def _compute_shore_resus_Field(file_dict: dict):
         return resus_field
 
 
-def add_resus_timescale_field(fieldset: FieldSet, file_dict: dict):
+def add_resus_timescale_field(fieldset: FieldSet, file_dict: dict, fixed_resus: bool):
     """
-
     :param fieldset:
-    :param input_dir:
     :return:
     """
     if settings.SCENARIO_NAME == 'ShoreDependentResuspension':
-        p_r = np.exp(-settings.TIME_STEP.total_seconds() / (_compute_shore_resus_Field(file_dict) * 86400.))
+        p_r = np.exp(-settings.TIME_STEP.total_seconds() / (compute_shore_resus_Field(file_dict) * 86400.))
         fieldset.add_field(Field('p_resus', p_r, lon=file_dict['LON'], lat=file_dict['LAT'], mesh='spherical'))
-    if settings.SCENARIO_NAME == 'SizeTransport':
-        lambda_R = utils.get_resuspension_timescale()
-        p_r = math.exp(-settings.TIME_STEP.total_seconds() / (lambda_R * 86400.))
-        fieldset.add_constant('p_resus', p_r)
     else:
-        p_r = math.exp(-settings.TIME_STEP.total_seconds() / (settings.RESUS_TIME * 86400.))
+        if fixed_resus:
+            lambda_R = settings.LAMBDA_FRAG
+        else:
+            lambda_R = utils.get_resuspension_timescale()
+        p_r = math.exp(-settings.TIME_STEP.total_seconds() / (lambda_R * 86400.))
         fieldset.add_constant('p_resus', p_r)
 
 

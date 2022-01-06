@@ -39,6 +39,7 @@ class SizeTransport(base_scenario.BaseScenario):
                                                                       diffusion=True,
                                                                       distance=True, salinity=True, temperature=True,
                                                                       bathymetry=True, beach_timescale=True,
+                                                                      fixed_resus=settings.FIXED_RESUS,
                                                                       resus_timescale=True, MLD=True,
                                                                       physics_constants=True,
                                                                       wind=True, TIDAL_mixing=True,
@@ -101,16 +102,18 @@ class SizeTransport(base_scenario.BaseScenario):
                    shore_time: int = settings.SHORE_TIME, init_size: float = settings.INIT_SIZE,
                    init_density: int = settings.INIT_DENSITY, start_year: int = settings.STARTYEAR,
                    input: str = settings.INPUT, run: int = settings.RUN, restart: int = settings.RESTART,
-                   seabed_crit: float = settings.SEABED_CRIT):
+                   seabed_crit: float = settings.SEABED_CRIT, fixed_resus: bool = settings.FIXED_RESUS):
         odirec = self.output_dir + "SizeTransport/size_{:.1E}/".format(init_size)
-        if new:
-            str_format = (
-                advection_data, shore_time, utils.get_resuspension_timescale(L=init_size, rho_p=init_density),
-                init_size, init_density, seabed_crit, start_year, input, restart, run)
+        if settings.FIXED_RESUS:
+            resus_time = settings.RESUS_TIME
         else:
-            str_format = (
-                advection_data, shore_time, utils.get_resuspension_timescale(L=init_size, rho_p=init_density),
-                init_size, init_density, seabed_crit, start_year, input, restart - 1, run)
+            resus_time = utils.get_resuspension_timescale(L=init_size, rho_p=init_density)
+        if new:
+            str_format = (advection_data, shore_time, resus_time, init_size, init_density, seabed_crit, start_year,
+                          input, restart, run)
+        else:
+            str_format = (advection_data, shore_time, resus_time, init_size, init_density, seabed_crit, start_year,
+                          input, restart - 1, run)
         return odirec + self.prefix + '_{}_st={}_rt={:.6f}_size={:.1E}_rho={}_taubss={:.2E}_y={}_I={}_r={}_run={}.nc'.format(*str_format)
 
     def beaching_kernel(particle, fieldset, time):

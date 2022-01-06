@@ -29,7 +29,11 @@ export INIT_DENSITY
 #for scenario 5 and 6, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=0
 export SEABED_CRIT
-# For scenario 5, the fragmentation parameters p (x1e-1), DN (x1e-1), the number of size classes and fragmentation
+#for scenarios 5 - 7, if fixed == 1 we have size-independent resuspension, otherwise the resuspension timescale is a
+#function of the particle rise velocity
+FIXED=1
+export FIXED
+# For scenario 7, the fragmentation parameters p (x1e-1), DN (x1e-1), the number of size classes and fragmentation
 # timescale (days). Also, the option of including ocean fragmentation or not
 P=4
 DN=25

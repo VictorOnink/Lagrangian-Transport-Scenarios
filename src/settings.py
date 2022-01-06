@@ -105,6 +105,8 @@ if SUBMISSION in ['simulation', 'analysis']:
     SHORE_TIME: int = int(os.environ['SHORETIME'])  # days
     # RESUSPENSION TIMESCALE
     RESUS_TIME: int = int(os.environ['RESUSTIME'])  # days
+    # FIXED_RESUS OR SIZE DEPENDENT RESUSPENSION TIMESCALE
+    FIXED_RESUS: bool = BOOLEAN_DICT[os.environ['FIXED_RESUS']]
 
     # FOR 'ShoreDependentResuspension': 0 -> SAMARAS ET AL (2015) RESUSPENSION DEPENDENCE,
     #                                   1 -> 1:4 RESUSPENSION DEPENDENCE
@@ -249,7 +251,7 @@ K_HOR = 10
 # VERTICAL (DIAPYCNAL) DIFFUSION (M^2/S) BELOW THE MLD (WATERHOUSE ET AL, 2014)
 K_Z_BULK = 3e-5
 # WIDTH OF THE BEACHING ZONE (KM) WITHIN WHICH BEACHING CAN OCCUR
-COAST_D = 10
+COAST_D = {'HYCOM_GLOBAL': 10, 'HYCOM_CARIBBEAN': 4, 'CMEMS_MEDITERRANEAN': 6}[ADVECTION_DATA]
 # SIZE SCALING FACTOR FOR INIT_SIZE
 SIZE_FACTOR = 1E-6
 
@@ -317,6 +319,7 @@ if SUBMISSION in ['visualization']:
     ENSEMBLE: int = 1
     OCEAN_FRAG: bool = False
     LAMBDA_OCEAN_FRAG: int = 388
+    FIXED_RESUS: bool = False
 
 
 ########################################################################################################################

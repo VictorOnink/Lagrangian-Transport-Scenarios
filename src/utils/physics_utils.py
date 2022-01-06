@@ -611,7 +611,10 @@ def resuspension_probability(w_rise):
     :param L:
     :return:
     """
-    lambda_resus = get_resuspension_timescale(L=0, w_rise=w_rise)
+    if settings.FIXED_RESUS:
+        lambda_resus = settings.RESUS_TIME
+    else:
+        lambda_resus = get_resuspension_timescale(L=0, w_rise=w_rise)
     prob_resus = np.exp(-settings.TIME_STEP.total_seconds() / (np.array(lambda_resus) * 86400.))
     return prob_resus
 
