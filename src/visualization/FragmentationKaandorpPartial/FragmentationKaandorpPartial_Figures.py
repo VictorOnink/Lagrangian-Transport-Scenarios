@@ -36,8 +36,7 @@ def run(scenario, figure_direc: str):
 
     FieldDataComp.FragmentationKaandorpPartial_FieldDataComp(figure_direc=figure_direc, scenario=scenario,
                                                              shore_time=shore_time, lambda_frag_list=lambda_frag_list,
-                                                             rho=rho, input_list=['LebretonDivision',
-                                                                                  'LebretonKaandorpInit']).plot()
+                                                             rho=rho, input_list=['LebretonKaandorpInit']).plot()
 
     box_model.FragmentationKaandorpPartial_boxmodelcomparison(figure_direc=figure_direc, scenario=scenario,
                                                               shore_time=shore_time, lambda_frag=388,
