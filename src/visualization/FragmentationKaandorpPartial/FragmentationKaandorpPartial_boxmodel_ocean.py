@@ -26,7 +26,7 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
         self.lambda_fO_list = np.array([10000, 1000, 100, 10, 5, 1])
         self.size_class_number = size_class_number
         # Figure parameters
-        self.fig_size = (16, 10)
+        self.fig_size = (17, 10)
         self.fig_shape = (3, 2)
         self.x_label = 'Size (mm)'
         self.y_label = r'Particle Number (n)'
