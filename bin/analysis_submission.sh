@@ -8,7 +8,7 @@ export SUBMISSION
 DEBUG=0 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation
-SCENARIO=7
+SCENARIO=5
 export SCENARIO
 #for scenario 1, the time a particle must be near the coast to beach (in days)
 VICINITY=2
@@ -23,8 +23,8 @@ export SHOREDEPEN
 WMIN=3
 export WMIN
 #for scenario 5 and 6, the initial size of the particle in 1e-6 m and the particle rho
-PARTICLE_SIZE_list=(5000)  #(5000 2500 1250 625 313 156 78 39 20 10 5 2)
-INIT_DENSITY=920
+PARTICLE_SIZE_list=(5000 2500 1250 625 313 156 78 39 20 10 5 2)  #(5000 2500 1250 625 313 156 78 39 20 10 5 2)
+INIT_DENSITY_list=(30 920 980 1020)
 export INIT_DENSITY
 #for scenario 5 and 6, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=0
@@ -38,7 +38,7 @@ export FIXED_RESUS
 P=4
 DN=25
 SIZE_CLASS_NUMBER=6
-LAMBDA_FRAG_list=(388 1000 10000 35000 50000)
+LAMBDA_FRAG_list=(388)
 OCEAN_FRAG=0
 LAMBDA_OCEAN_FRAG_LIST=(388)
 export P
@@ -47,19 +47,19 @@ export SIZE_CLASS_NUMBER
 export OCEAN_FRAG
 #the starting year of the simulation, and how many years the simulation will take
 YEAR=2010
-STARTMONTH_list=(1 2 3 4 5 6 7 8 9 10 11 12)
+STARTMONTH_list=(1)
 STARTDAY=1
 export STARTDAY
 # Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=lebretondivision, 3=lebretonKaandorpInit,
 # 4=point, 5=uniform
-INPUT=3
+INPUT=1
 export INPUT
 #Which advection data do we want to use?
 # 0 = Global HYCOM, 1 = Caribbean HYCOM, 2 = Mediterranean CMEMS
 ADVECTION_DATA=2
 export ADVECTION_DATA
 #Number of years the simulation runs
-SIMLEN=3
+SIMLEN=1
 export SIMLEN
 # For the analysis, if we have multiple years that we want to combine into one analysis set (so if we have continuous
 # particle release), then this how many years we want to include
@@ -88,7 +88,7 @@ MAX_DISTANCE=0
 TIMESLICING=0
 STATISTICS=0
 SEPARATION=0
-SIZE_SPECTRUM=1
+SIZE_SPECTRUM=0
 
 export CONCENTRATION
 export VERTICAL_CONCENTRATION
@@ -153,129 +153,132 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
     export RESUSTIME
     for PARTICLE_SIZE in "${PARTICLE_SIZE_list[@]}"; do
       export PARTICLE_SIZE
-      for LAMBDA_FRAG in "${LAMBDA_FRAG_list[@]}"; do
-        export LAMBDA_FRAG
-        for LAMBDA_OCEAN_FRAG in "${LAMBDA_OCEAN_FRAG_LIST[@]}"; do
-          export LAMBDA_OCEAN_FRAG
-          for STARTMONTH in "${STARTMONTH_list[@]}"; do
-            export STARTMONTH
+      for INIT_DENSITY in "${INIT_DENSITY_list[@]}"; do
+        export INIT_DENSITY
+        for LAMBDA_FRAG in "${LAMBDA_FRAG_list[@]}"; do
+          export LAMBDA_FRAG
+          for LAMBDA_OCEAN_FRAG in "${LAMBDA_OCEAN_FRAG_LIST[@]}"; do
+            export LAMBDA_OCEAN_FRAG
+            for STARTMONTH in "${STARTMONTH_list[@]}"; do
+              export STARTMONTH
 
-            #Now, we can set the job name prefix
-            if [ "$SCENARIO" -eq "0" ]; then
-              RUNNAMEPREFIX="Analysis_AdvDifOnly_y="${YEAR}"_"
-            elif [ "$SCENARIO" -eq "1" ]; then
-              RUNNAMEPREFIX="Analysis_Prox_vic="${VICINITY}"_y="${YEAR}"_"
-            elif [ "$SCENARIO" -eq "2" ]; then
-              RUNNAMEPREFIX="Analysis_Stochastic_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${YEAR}"_"
-            elif [ "$SCENARIO" -eq "3" ]; then
-              RUNNAMEPREFIX="Analysis_SDResus_SD="${SHOREDEPEN}"_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${YEAR}"_"
-            elif [ "$SCENARIO" -eq "4" ]; then
-              RUNNAMEPREFIX="Analysis_Turrell_Wmin="${WMIN}"_ST="${SHORETIME}"_y="${YEAR}"_"
-            elif [ "$SCENARIO" -eq "6" ]; then
-              RUNNAMEPREFIX="Analysis_KaandorpFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${YEAR}"_"
-            elif [ "$SCENARIO" -eq "7" ]; then
-              RUNNAMEPREFIX="Analysis_PartialKaandorpFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${YEAR}"_lamf="${LAMBDA_FRAG}"_lamfO="${LAMBDA_FRAG_LAMBDA_OCEAN_FRAG}"_"
-            elif [ "$SCENARIO" -eq "5" ]; then
-              RUNNAMEPREFIX="Analysis_SizeTransport_SIZE="${PARTICLE_SIZE}"_ST="${SHORETIME}"_y="${YEAR}"_"
-            fi
-            if [ "$STOKES" -eq "1" ]; then
-              RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
-            fi
-            RUNNAMEPREFIX=${RUNNAMEPREFIX}"ENSEMBLE="${ENSEMBLE}"_"
+              #Now, we can set the job name prefix
+              if [ "$SCENARIO" -eq "0" ]; then
+                RUNNAMEPREFIX="Analysis_AdvDifOnly_y="${YEAR}"_"
+              elif [ "$SCENARIO" -eq "1" ]; then
+                RUNNAMEPREFIX="Analysis_Prox_vic="${VICINITY}"_y="${YEAR}"_"
+              elif [ "$SCENARIO" -eq "2" ]; then
+                RUNNAMEPREFIX="Analysis_Stochastic_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${YEAR}"_"
+              elif [ "$SCENARIO" -eq "3" ]; then
+                RUNNAMEPREFIX="Analysis_SDResus_SD="${SHOREDEPEN}"_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${YEAR}"_"
+              elif [ "$SCENARIO" -eq "4" ]; then
+                RUNNAMEPREFIX="Analysis_Turrell_Wmin="${WMIN}"_ST="${SHORETIME}"_y="${YEAR}"_"
+              elif [ "$SCENARIO" -eq "6" ]; then
+                RUNNAMEPREFIX="Analysis_KaandorpFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${YEAR}"_"
+              elif [ "$SCENARIO" -eq "7" ]; then
+                RUNNAMEPREFIX="Analysis_PartialKaandorpFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${YEAR}"_lamf="${LAMBDA_FRAG}"_lamfO="${LAMBDA_FRAG_LAMBDA_OCEAN_FRAG}"_"
+              elif [ "$SCENARIO" -eq "5" ]; then
+                RUNNAMEPREFIX="Analysis_SizeTransport_SIZE="${PARTICLE_SIZE}"_ST="${SHORETIME}"_y="${YEAR}"_"
+              fi
+              if [ "$STOKES" -eq "1" ]; then
+                RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
+              fi
+              RUNNAMEPREFIX=${RUNNAMEPREFIX}"ENSEMBLE="${ENSEMBLE}"_"
 
-            #Initializing a string used for keeping track of the job dependencies
-            PARALLEL_STEP=1
-            export PARALLEL_STEP
-            #First we are going to submit all the jobs for the individual run/restart files, so each runs the analysis
-            #code just for that specific parcels output file. We also need to consider the various starting years
-            RESTART_REMOVE=0
-            for ((STARTYEAR=${YEAR}; STARTYEAR<$((YEAR+COMBINE_YEARS)); STARTYEAR++)); do
-              export STARTYEAR
-              for ((RUN=0; RUN<=${RUNLENGTH}; RUN++)); do
-                export RUN
-                # looping over all the simulation years
-                for ((RESTARTNUM=0; RESTARTNUM<$((SIMLEN-RESTART_REMOVE)); RESTARTNUM++)); do
-                  export RESTARTNUM
-                  # specifying the parts of the submission file
-                  part1="#!/bin/sh"
-                  part2="#SBATCH --mail-type=fail"
-                  part3="#SBATCH --mail-user=victor.onink@climate.unibe.ch"
-                  part4="#SBATCH --job-name="${RUNNAMEPREFIX}
-                  part5="#SBATCH --output="runOutput/${RUNNAMEPREFIX}".o%j"
-                  part6="#SBATCH --mem-per-cpu=20G"
-                  if [ "$DEBUG" -eq "0" ]; then
-                    part7="#SBATCH --time=02:00:00"
-                    part8="#SBATCH --partition=epyc2"
-                    part9='#SBATCH --qos=job_epyc2'
-                  else
-                    part7="#SBATCH --time=00:19:00"
-                    part8="#SBATCH --partition=epyc2"
-                    part9='#SBATCH --qos=job_epyc2_debug'
-                  fi
-                  part10="source /storage/homefs/vo18e689/.bash_profile"
-                  part11="source /storage/homefs/vo18e689/anaconda3/bin/activate py3_parcels"
-                  part12='cd "/storage/homefs/vo18e689/codes/Next-Stage-Plastic-Beaching/"'
-                  part13="python src/main.py -p 10 -v"
+              #Initializing a string used for keeping track of the job dependencies
+              PARALLEL_STEP=1
+              export PARALLEL_STEP
+              #First we are going to submit all the jobs for the individual run/restart files, so each runs the analysis
+              #code just for that specific parcels output file. We also need to consider the various starting years
+              RESTART_REMOVE=0
+              for ((STARTYEAR=${YEAR}; STARTYEAR<$((YEAR+COMBINE_YEARS)); STARTYEAR++)); do
+                export STARTYEAR
+                for ((RUN=0; RUN<=${RUNLENGTH}; RUN++)); do
+                  export RUN
+                  # looping over all the simulation years
+                  for ((RESTARTNUM=0; RESTARTNUM<$((SIMLEN-RESTART_REMOVE)); RESTARTNUM++)); do
+                    export RESTARTNUM
+                    # specifying the parts of the submission file
+                    part1="#!/bin/sh"
+                    part2="#SBATCH --mail-type=fail"
+                    part3="#SBATCH --mail-user=victor.onink@climate.unibe.ch"
+                    part4="#SBATCH --job-name="${RUNNAMEPREFIX}
+                    part5="#SBATCH --output="runOutput/${RUNNAMEPREFIX}".o%j"
+                    part6="#SBATCH --mem-per-cpu=20G"
+                    if [ "$DEBUG" -eq "0" ]; then
+                      part7="#SBATCH --time=02:00:00"
+                      part8="#SBATCH --partition=epyc2"
+                      part9='#SBATCH --qos=job_epyc2'
+                    else
+                      part7="#SBATCH --time=00:19:00"
+                      part8="#SBATCH --partition=epyc2"
+                      part9='#SBATCH --qos=job_epyc2_debug'
+                    fi
+                    part10="source /storage/homefs/vo18e689/.bash_profile"
+                    part11="source /storage/homefs/vo18e689/anaconda3/bin/activate py3_parcels"
+                    part12='cd "/storage/homefs/vo18e689/codes/Next-Stage-Plastic-Beaching/"'
+                    part13="python src/main.py -p 10 -v"
 
-                  # Putting all the parts into the submission file
-                  for i in {1..13}; do
-                    partGrab="part"$i
-                    echo ${!partGrab} >> jobsubmissionFile_${RUN}_${RESTARTNUM}.sh
+                    # Putting all the parts into the submission file
+                    for i in {1..13}; do
+                      partGrab="part"$i
+                      echo ${!partGrab} >> jobsubmissionFile_${RUN}_${RESTARTNUM}.sh
+                    done
+
+                    # submitting the job
+                    jobid=$(sbatch --parsable jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
+                    echo -n ':'${jobid} >> job_id.txt
+                    # deleting the submission file
+                    rm jobsubmissionFile_${RUN}_${RESTARTNUM}.sh
                   done
-
-                  # submitting the job
-                  jobid=$(sbatch --parsable jobsubmissionFile_${RUN}_${RESTARTNUM}.sh)
-                  echo -n ':'${jobid} >> job_id.txt
-                  # deleting the submission file
-                  rm jobsubmissionFile_${RUN}_${RESTARTNUM}.sh
                 done
+                RESTART_REMOVE=$((RESTART_REMOVE+1))
               done
-              RESTART_REMOVE=$((RESTART_REMOVE+1))
             done
+
+            # Remove character of the JOB_TRACKER so that we don't end with :
+            PARALLEL_STEP=2
+            export PARALLEL_STEP
+            STARTYEAR=${YEAR}
+            export STARTYEAR
+            RUN=${RUNLENGTH}
+            RESTARTNUM=0
+            export RUN
+            export RESTARTNUM
+            # specifying the parts of the submission file
+            part1="#!/bin/sh"
+            part2="#SBATCH --mail-type=fail"
+            part3="#SBATCH --mail-user=victor.onink@climate.unibe.ch"
+            part4="#SBATCH --job-name="${RUNNAMEPREFIX}
+            part5="#SBATCH --output="runOutput/${RUNNAMEPREFIX}".o%j"
+            part6="#SBATCH --mem-per-cpu=20G"
+            if [ "$DEBUG" -eq "0" ]; then
+              part7="#SBATCH --time=04:00:00"
+              part8="#SBATCH --partition=epyc2"
+              part9='#SBATCH --qos=job_epyc2'
+            else
+              part7="#SBATCH --time=00:19:00"
+              part8="#SBATCH --partition=epyc2"
+              part9='#SBATCH --qos=job_epyc2_debug'
+            fi
+            part10="source /storage/homefs/vo18e689/.bash_profile"
+            part11="source /storage/homefs/vo18e689/anaconda3/bin/activate py3_parcels"
+            part12='cd "/storage/homefs/vo18e689/codes/Next-Stage-Plastic-Beaching/"'
+            part13="python src/main.py -p 10 -v"
+
+            # Putting all the parts into the submission file
+            for i in {1..13}; do
+              partGrab="part"$i
+              echo ${!partGrab} >> jobsubmissionFile.sh
+            done
+
+            # Submitting the job that will join all the various analysis files together
+            dependence=$( cat job_id.txt )
+            sbatch --dependency=afterok${dependence} jobsubmissionFile.sh
+  #          sbatch jobsubmissionFile.sh
+            rm jobsubmissionFile.sh
+            rm job_id.txt
           done
-
-          # Remove character of the JOB_TRACKER so that we don't end with :
-          PARALLEL_STEP=2
-          export PARALLEL_STEP
-          STARTYEAR=${YEAR}
-          export STARTYEAR
-          RUN=${RUNLENGTH}
-          RESTARTNUM=0
-          export RUN
-          export RESTARTNUM
-          # specifying the parts of the submission file
-          part1="#!/bin/sh"
-          part2="#SBATCH --mail-type=fail"
-          part3="#SBATCH --mail-user=victor.onink@climate.unibe.ch"
-          part4="#SBATCH --job-name="${RUNNAMEPREFIX}
-          part5="#SBATCH --output="runOutput/${RUNNAMEPREFIX}".o%j"
-          part6="#SBATCH --mem-per-cpu=20G"
-          if [ "$DEBUG" -eq "0" ]; then
-            part7="#SBATCH --time=04:00:00"
-            part8="#SBATCH --partition=epyc2"
-            part9='#SBATCH --qos=job_epyc2'
-          else
-            part7="#SBATCH --time=00:19:00"
-            part8="#SBATCH --partition=epyc2"
-            part9='#SBATCH --qos=job_epyc2_debug'
-          fi
-          part10="source /storage/homefs/vo18e689/.bash_profile"
-          part11="source /storage/homefs/vo18e689/anaconda3/bin/activate py3_parcels"
-          part12='cd "/storage/homefs/vo18e689/codes/Next-Stage-Plastic-Beaching/"'
-          part13="python src/main.py -p 10 -v"
-
-          # Putting all the parts into the submission file
-          for i in {1..13}; do
-            partGrab="part"$i
-            echo ${!partGrab} >> jobsubmissionFile.sh
-          done
-
-          # Submitting the job that will join all the various analysis files together
-          dependence=$( cat job_id.txt )
-          sbatch --dependency=afterok${dependence} jobsubmissionFile.sh
-#          sbatch jobsubmissionFile.sh
-          rm jobsubmissionFile.sh
-          rm job_id.txt
         done
       done
     done
