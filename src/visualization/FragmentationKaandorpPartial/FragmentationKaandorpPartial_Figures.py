@@ -47,7 +47,7 @@ def run(scenario, figure_direc: str):
     box_model_ocean.FragmentationKaandorpPartial_boxmodel_ocean(figure_direc=figure_direc, size_class_number=10,
                                                                 lambda_frag=35000).plot()
 
-    for year in [0, 1, 3]:
+    for year in [0, 1, 2]:
         for weight in ['particle_number_sink', 'particle_mass_sink']:
             for input in ['LebretonKaandorpInit']:
                 vertical_profile.FragmentationKaandorpPartial_vertical_profile(figure_direc=figure_direc,
