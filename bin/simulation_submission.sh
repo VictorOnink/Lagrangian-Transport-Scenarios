@@ -8,7 +8,7 @@ export SUBMISSION
 DEBUG=0 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation
-SCENARIO=7
+SCENARIO=5
 export SCENARIO
 #for scenario 1, the time a particle must be near the coast to beach (in days)
 VICINITY=2
@@ -23,8 +23,8 @@ export SHOREDEPEN
 WMIN=3
 export WMIN
 #for scenario 5 and 6, the initial size of the particle in 1e-6 m and the rho of the particle
-PARTICLE_SIZE_list=(5000) # (5000 2500 1250 625 313 156 78 39 20 10 5 2)
-INIT_DENSITY_list=(920) # (30 920 980 1020)
+PARTICLE_SIZE_list=(5000 2500 1250 625 313 156 78 39 20 10 5 2) # (5000 2500 1250 625 313 156 78 39 20 10 5 2)
+INIT_DENSITY_list=(30 920 980 1020) # (30 920 980 1020)
 #for scenarios 5 - 7, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=0
 export SEABED_CRIT
@@ -37,7 +37,7 @@ export FIXED_RESUS
 P=4
 DN=25
 SIZE_CLASS_NUMBER=6
-LAMBDA_FRAG_list=(388 1000 10000 35000 50000)  # (388 1000 10000 35000 50000)
+LAMBDA_FRAG_list=(388)  # (388 1000 10000 35000 50000)
 OCEAN_FRAG=0
 LAMBDA_OCEAN_FRAG_LIST=(388)
 export P
@@ -48,26 +48,26 @@ export OCEAN_FRAG
 # to calculate the particle numbers.
 # POST_PROCESS == 0 -> run lagrangian simulation
 # POST_PROCESS == 1 -> run post processing
-POST_PROCESS=1
+POST_PROCESS=0
 export POST_PROCESS
 #the starting year of the simulation, and how many years the simulation will take
-STARTYEAR=2012
-STARTMONTH_list=(1 2 3 4 5 6 7 8 9 10 11 12)
+STARTYEAR=2010
+STARTMONTH_list=(1)
 STARTDAY=1
 export STARTYEAR
 export STARTDAY
 # Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=lebretondivision, 3=lebretonKaandorpInit,
 # 4=point, 5=uniform
-INPUT=3
+INPUT=1
 export INPUT
 #Which advection data do we want to use?
 # 0 = Global HYCOM, 1 = Caribbean HYCOM, 2 = Mediterranean CMEMS
 ADVECTION_DATA=2
 export ADVECTION_DATA
 #Start year of the simulation. 0 = new simulation, otherwise it picks up from a previous simulation
-START=0
+START=1
 #Number of years the simulation runs
-SIMLEN=1
+SIMLEN=3
 export SIMLEN
 #Inclusion of Stokes drift. 0 = include stokes, 1 = do not include stokes
 STOKES=0

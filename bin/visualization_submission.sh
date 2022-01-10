@@ -55,7 +55,7 @@ runname=$RUNNAMEPREFIX
 if [ "$SERVER" -eq "1" ]; then
   #Submission for ubelix
   part1="#!/bin/sh"
-  part2="#SBATCH --mail-type=begin,end,fail"
+  part2="#SBATCH --mail-type=fail"
   part3="#SBATCH --mail-user=victor.onink@climate.unibe.ch"
   part4="#SBATCH --job-name="$runname
   part5="#SBATCH --output="runOutput/$runname".o%j"
