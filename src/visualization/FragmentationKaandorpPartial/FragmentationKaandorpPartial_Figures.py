@@ -63,7 +63,7 @@ def run(scenario, figure_direc: str):
 
     for beach_state in ['adrift']:
         for year in [0, 1, 2]:
-            for input in ['LebretonDivision', 'LebretonKaandorpInit']:
+            for input in ['LebretonKaandorpInit']:
                 concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc,
                                                                          rho=rho, shore_time=shore_time,
                                                                          beach_state=beach_state, simulation_year=year,
