@@ -85,5 +85,5 @@ def run(scenario, figure_direc: str):
                                                                             beach_state=beach_state, mass=True,
                                                                             input=input).plot()
 
-    utils.print_statement("That's all folks!", to_print=True)
+    utils.print_statement("That is all folks!", to_print=True)
 
