@@ -187,6 +187,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
         print(number_norm)
         number_norm /= number_inter[0]
         print(number_norm)
+        print(utils.size_range(units='mm', size_class_number=settings.SIZE_CLASS_NUMBER))
         # Plotting the normalized count and mass inputs
         ax[2].plot(utils.size_range(units='mm', size_class_number=settings.SIZE_CLASS_NUMBER),
                    number_norm, marker=self.field_marker, linestyle=self.field_line, color='tab:cyan',
