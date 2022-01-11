@@ -47,8 +47,6 @@ class SizeTransport_reservoirs:
                 for beach_state in self.beach_state_list:
                     timeseries_dict[rho][size][beach_state] = data_dict[beach_state]
                 timeseries_dict[rho][size]['total_divide'] = data_dict['total'][-1]
-                print(data_dict['total'])
-
 
         # Normalizing all the particle counts with the total number of particles, and then multiplying by 100 to get a
         # percentage
@@ -83,6 +81,7 @@ class SizeTransport_reservoirs:
 
         file_name = self.output_direc + 'SizeTransport_reservoirs.jpg'
         plt.savefig(file_name, bbox_inches='tight', dpi=400)
+        plt.close('all')
 
 
 def beach_label(beach_state):

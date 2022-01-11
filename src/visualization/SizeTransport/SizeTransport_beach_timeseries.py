@@ -89,6 +89,7 @@ class SizeTransport_beach_timeseries:
 
         file_name = self.output_direc + 'SizeTransport_beach_state_timeseries.jpg'
         plt.savefig(file_name, bbox_inches='tight')
+        plt.close('all')
 
 
 def subfigure_title(index, beach_state):

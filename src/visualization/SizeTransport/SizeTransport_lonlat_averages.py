@@ -116,6 +116,8 @@ class SizeTransport_lonlat_averages:
         str_format = self.time_selection, self.beach_state, self.rho
         fig_name = self.output_direc + "lon_lat_year={}_beach_state={}_rho={}.png".format(*str_format)
         plt.savefig(fig_name, bbox_inches='tight')
+        plt.close('all')
+
 
     def histogram_reduction(self, data_dict):
         # The new bin edges

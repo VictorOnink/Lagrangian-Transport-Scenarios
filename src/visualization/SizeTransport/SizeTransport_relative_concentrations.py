@@ -103,6 +103,7 @@ class SizeTransport_relative_concentrations:
         file_name = plot_save_name(output_direc=self.output_direc, rho=self.rho, time_selection=self.time_selection,
                                    beach_state=self.beach_state)
         plt.savefig(file_name, bbox_inches='tight')
+        plt.close('all')
 
 
 def set_normalization(beach_state):

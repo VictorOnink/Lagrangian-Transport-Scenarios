@@ -120,6 +120,7 @@ class SizeTransport_VerticalProfile:
         file_name = self.output_direc + 'SizeTransport_vertical_profile_year={}_rho={}.png'.format(self.time_selection,
                                                                                                    self.rho_list)
         plt.savefig(file_name, bbox_inches='tight')
+        plt.close('all')
 
 
 def legend_label(size):
