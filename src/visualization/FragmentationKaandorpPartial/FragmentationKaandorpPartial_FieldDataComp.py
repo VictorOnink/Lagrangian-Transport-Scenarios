@@ -182,11 +182,8 @@ class FragmentationKaandorpPartial_FieldDataComp:
         interpolation_function = interp1d(size_bins, field_data)
         # Calculating the particle number at the sizes equivalent to the size class
         number_inter = interpolation_function(utils.size_range(units='mm', size_class_number=settings.SIZE_CLASS_NUMBER))
-        print(number_inter)
         number_norm = number_inter / utils.size_range(units='mm', size_class_number=settings.SIZE_CLASS_NUMBER)
         number_norm = number_norm / number_norm[0]
-        print(number_norm)
-        print(utils.size_range(units='mm', size_class_number=settings.SIZE_CLASS_NUMBER))
         # Plotting the normalized count and mass inputs
         ax[2].plot(utils.size_range(units='mm', size_class_number=settings.SIZE_CLASS_NUMBER),
                    number_norm, marker=self.field_marker, linestyle=self.field_line, color='tab:cyan',

@@ -30,7 +30,7 @@ class SizeTransport(base_scenario.BaseScenario):
             if settings.SUBMISSION in ['simulation']:
                 self.field_set = self.create_fieldset()
 
-    var_list = ['lon', 'lat', 'beach', 'age', 'distance_horizontal', 'distance_vertical', 'z']
+    var_list = ['lon', 'lat', 'beach', 'age', 'distance2coast', 'z']
 
     def create_fieldset(self) -> FieldSet:
         utils.print_statement("Creating the fieldset")
@@ -61,8 +61,7 @@ class SizeTransport(base_scenario.BaseScenario):
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
                                lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'],
                                age=var_dict['age'], time=start_time,
-                               distance_horizontal=var_dict['distance_horizontal'],
-                               distance_vertical=var_dict['distance_vertical'], depth=var_dict['z'],
+                               distance2coast=var_dict['distance2coast'], depth=var_dict['z'],
                                repeatdt=repeat_dt)
         return pset
 
@@ -70,13 +69,10 @@ class SizeTransport(base_scenario.BaseScenario):
         utils.print_statement("Creating the particle class")
         particle_type = utils.BaseParticle
         if settings.RESTART == 0:
-            utils.add_particle_variable(particle_type, 'distance_horizontal', dtype=np.float32, set_initial=False,
-                                        to_write=True)
-            utils.add_particle_variable(particle_type, 'distance_vertical', dtype=np.float32, set_initial=False,
+            utils.add_particle_variable(particle_type, 'distance2coast', dtype=np.float32, set_initial=False,
                                         to_write=True)
         else:
-            utils.add_particle_variable(particle_type, 'distance_horizontal', dtype=np.float32, set_initial=True)
-            utils.add_particle_variable(particle_type, 'distance_vertical', dtype=np.float32, set_initial=True)
+            utils.add_particle_variable(particle_type, 'distance2coast', dtype=np.float32, set_initial=True)
         utils.add_particle_variable(particle_type, 'prev_lon', dtype=np.float32, set_initial=True, to_write=False,
                                     other_name='lon')
         utils.add_particle_variable(particle_type, 'prev_lat', dtype=np.float32, set_initial=True, to_write=False,
@@ -90,7 +86,7 @@ class SizeTransport(base_scenario.BaseScenario):
         utils.add_particle_variable(particle_type, 'kinematic_viscosity', dtype=np.float32, set_initial=False,
                                     to_write=False)
         utils.add_particle_variable(particle_type, 'rise_velocity', dtype=np.float32, set_initial=True,
-                                    other_value=utils.initial_estimate_particle_rise_velocity())
+                                    other_value=utils.initial_estimate_particle_rise_velocity(), to_write=False)
         utils.add_particle_variable(particle_type, 'reynolds', dtype=np.float32, set_initial=False, to_write=False)
         utils.add_particle_variable(particle_type, 'rho_plastic', dtype=np.float32, set_initial=True, to_write=False,
                                     other_value=settings.INIT_DENSITY)
@@ -124,8 +120,8 @@ class SizeTransport(base_scenario.BaseScenario):
         """
         # First, the beaching of particles on the coastline
         if particle.beach == 0:
-            dist = fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
-            if dist < fieldset.Coastal_Boundary:
+            particle.distance2coast = fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
+            if particle.distance2coast < fieldset.Coastal_Boundary:
                 if ParcelsRandom.uniform(0, 1) > fieldset.p_beach:
                     particle.beach = 1
         # Next the resuspension of particles on the coastline
@@ -145,6 +141,5 @@ class SizeTransport(base_scenario.BaseScenario):
                         pset.Kernel(utils.get_rising_velocity) + \
                         pset.Kernel(utils.KPP_TIDAL_mixing) + \
                         pset.Kernel(utils.vertical_reflecting_boundary) + \
-                        pset.Kernel(utils.TotalDistance) + \
                         pset.Kernel(self.beaching_kernel)
         return base_behavior
