@@ -11,7 +11,7 @@ from Analysis.CMEMS_mediterranean_mean_MLD import CMEMS_mediterranean_mean_MLD
 
 
 class SizeTransport_VerticalProfile:
-    def __init__(self, scenario, figure_direc, size_list, time_selection, rho_list=[920]):
+    def __init__(self, scenario, figure_direc, size_list, time_selection, rho_list=[920], with_mld=True):
         # Figure Parameters
         self.fig_size = (16, 10)
         self.fig_shape = (2, 2)
@@ -26,6 +26,7 @@ class SizeTransport_VerticalProfile:
         self.number_of_plots = 4
         self.rho_line_dict = {30: 'dashed', 920: '-', 980: 'dashed', 1020: '-'}
         self.seasons = ['JFM', 'AMJ', 'JAS', 'OND']
+        self.with_mld = with_mld
         # Data parameters
         self.output_direc = figure_direc + 'vertical_profile/'
         self.data_direc = utils.get_output_directory(
@@ -75,10 +76,11 @@ class SizeTransport_VerticalProfile:
                     output_dict[rho][size][month]['concentration'][selection] = np.nan
 
         # Get the mean MLD depth data
-        MLD_data = CMEMS_mediterranean_mean_MLD().calculate_seasonal_mean()[self.year]
-        MLD_mean = dict.fromkeys(self.seasons)
-        for season in self.seasons:
-            MLD_mean[season] = np.nanmean(MLD_data[season])
+        if self.with_mld:
+            MLD_data = CMEMS_mediterranean_mean_MLD().calculate_seasonal_mean()[self.year]
+            MLD_mean = dict.fromkeys(self.seasons)
+            for season in self.seasons:
+                MLD_mean[season] = np.nanmean(MLD_data[season])
 
         # Creating the figure
         ax = vUtils.base_figure(fig_size=self.fig_size, ax_range=self.ax_range, x_label=self.x_label,
@@ -100,7 +102,11 @@ class SizeTransport_VerticalProfile:
                        range(cmap_list.__len__())]
         rho_lines = [plt.plot([], [], c='k', label=r'$\rho=$' + str(rho) + r' kg m$^{-3}$', linestyle=self.rho_line_dict[rho])[0]
                      for rho in self.rho_list]
-        ax[-1].legend(handles=rho_lines + size_colors, fontsize=self.legend_size)
+        if self.with_mld:
+            mld_line = [plt.plot([], [], c='r', label=r'Mean MLD', linestyle='-')[0]]
+            ax[-1].legend(handles=rho_lines + mld_line + size_colors, fontsize=self.legend_size)
+        else:
+            ax[-1].legend(handles=rho_lines + size_colors, fontsize=self.legend_size)
         ax[-1].axis('off')
 
         # The actual plotting
@@ -115,7 +121,8 @@ class SizeTransport_VerticalProfile:
                     ax[ind_month].plot(output_dict[rho][size][month]['concentration'], depth_bins, linestyle=linestyle,
                                        c=c, marker=markerstyle)
                     # Adding in a horizontal line for the MLD
-                    ax[ind_month].axhline(y=MLD_mean[self.seasons[ind_month]], color='r', linestyle='-')
+                    if self.with_mld:
+                        ax[ind_month].axhline(y=MLD_mean[self.seasons[ind_month]], color='r', linestyle='-')
 
         file_name = self.output_direc + 'SizeTransport_vertical_profile_year={}_rho={}.png'.format(self.time_selection,
                                                                                                    self.rho_list)

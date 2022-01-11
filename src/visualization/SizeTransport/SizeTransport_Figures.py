@@ -42,29 +42,29 @@ def run(scenario, figure_direc: str):
 
     # Creating figures showing the relative distribution, averaged over the entire simulation and time-snapshots at the
     # end of each simulation year
-    for time_select in [0]:
-        for rho in [30, 920, 980, 1020]:
-            SizeTransport_relative_concentrations(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                                  beach_state='adrift', time_selection=time_select, rho=rho).plot()
-            SizeTransport_relative_concentrations(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                                  beach_state='beach', time_selection=time_select, rho=rho).plot()
+    # for time_select in [0]:
+    #     for rho in [30, 920, 980, 1020]:
+    #         SizeTransport_relative_concentrations(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                               beach_state='adrift', time_selection=time_select, rho=rho).plot()
+    #         SizeTransport_relative_concentrations(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                               beach_state='beach', time_selection=time_select, rho=rho).plot()
 
     # Plotting the relative distributions for fixed particle sizes, but with different particle densities
-    for time_select in [0]:
-        for size in np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR:
-            SizeTransport_rho_concentrations(scenario=scenario, figure_direc=figure_direc, size=size,
-                                             beach_state='adrift', time_selection=time_select,
-                                             rho_list=[30, 920, 980, 1020]).plot()
+    # for time_select in [0]:
+    #     for size in np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR:
+    #         SizeTransport_rho_concentrations(scenario=scenario, figure_direc=figure_direc, size=size,
+    #                                          beach_state='adrift', time_selection=time_select,
+    #                                          rho_list=[30, 920, 980, 1020]).plot()
 
     size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
     # Creating figures of the timeseries of the number of particles that are beached/adrift/seabed
-    SizeTransport_beach_timeseries(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                   simulation_years=3, rho_list=[30, 920, 980, 1020]).plot()
+    # SizeTransport_beach_timeseries(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                simulation_years=3, rho_list=[30, 920, 980, 1020]).plot()
 
     # Figure showing the beached/adrift fractions of each size class
     rho_list = [30, 920, 980, 1020]
-    SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                             rho_list=rho_list).plot()
+    # SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                          rho_list=rho_list).plot()
 
     # Cumulative plots for the total distance travelled vertically and horizontally, and the max depth reached
     # SizeTransport_CumulativeDistance(figure_direc=figure_direc, scenario=scenario, size_list=size_list).plot()
@@ -84,10 +84,10 @@ def run(scenario, figure_direc: str):
     #                                      size_list=size_list).plot()
 
     # Plotting the lon lat concentration averages
-    for time in [0]:
-        SizeTransport_lonlat_averages(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                      time_selection=time, beach_state='beach').plot()
-        SizeTransport_lonlat_averages(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                      time_selection=time, beach_state='adrift').plot()
+    # for time in [0]:
+    #     SizeTransport_lonlat_averages(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                   time_selection=time, beach_state='beach').plot()
+    #     SizeTransport_lonlat_averages(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                   time_selection=time, beach_state='adrift').plot()
 
     utils.print_statement("That is all folks!", to_print=True)
