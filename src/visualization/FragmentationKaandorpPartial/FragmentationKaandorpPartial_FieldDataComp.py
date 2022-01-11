@@ -5,10 +5,13 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as colors
 import string
 import numpy as np
+from scipy.interpolate import interp1d
+import pandas as pd
+
 
 
 class FragmentationKaandorpPartial_FieldDataComp:
-    def __init__(self, figure_direc, scenario, shore_time, lambda_frag_list, rho, sink=True,
+    def __init__(self, figure_direc, scenario, shore_time, lambda_frag_list, rho, sink=True, with_input=True,
                  input_list=['LebretonDivision']):
         # Data parameters
         self.output_direc = figure_direc + 'size_distribution/'
@@ -47,6 +50,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
         self.field_marker = 'x'
         self.field_line = '--'
         self.legend_loc = 'upper right'
+        self.with_input = with_input
 
     def plot(self):
         # Getting the sizes of the size classes, and we convert from meters to mm
@@ -123,6 +127,33 @@ class FragmentationKaandorpPartial_FieldDataComp:
                    label=r'de Haan et al. (submitted)')
         ax[2].legend(fontsize=self.legend_size, loc=self.legend_loc)
 
+        if self.with_input:
+            # The field data from Zeri et al. (2021) https://doi.org/10.3390/su13105328
+            size_bins = np.arange(0, 5.2, 0.1)
+            lengths = pd.read_excel(settings.DATA_INPUT_DIR_SERVERS[settings.SERVER] + "Zeri_Sustainability_MP_sizes.xls",
+                                    sheet_name='Combined')['LENGTH']
+            field_data, _ = np.histogram(lengths, size_bins)
+            size_bins = (size_bins[1:] + size_bins[:-1]) / 2
+            # Creating the interpolation function from the bin sizes and the uncorrected field data
+            interpolation_function = interp1d(size_bins, field_data)
+            # Calculating the particle number at the sizes equivalent to the size class
+            number_inter = interpolation_function(utils.size_range(units='mm', size_class_number=settings.SIZE_CLASS_NUMBER))
+            number_norm = number_inter / number_inter[0]
+            # Converting the particle number to the particle mass
+            mass_inter = np.zeros(number_inter.shape, dtype=float)
+            for size_class in range(mass_inter.size):
+                mass_inter[size_class] = number_inter[size_class] / (2 ** (settings.DN * size_class))
+            # Normalize by the particle mass in size class k = 0
+            mass_inter /= mass_inter[0]
+            # Plotting the normalized count and mass inputs
+            ax[2].plot(utils.size_range(units='mm', size_class_number=settings.SIZE_CLASS_NUMBER),
+                       number_norm, marker=self.field_marker, linestyle=self.field_line, color='tab:cyan',
+                       label=r'Zeri et al. (2021) Input')
+            ax[2].legend(fontsize=self.legend_size, loc=self.legend_loc)
+            ax[3].plot(utils.size_range(units='mm', size_class_number=settings.SIZE_CLASS_NUMBER),
+                       mass_inter, marker=self.field_marker, linestyle=self.field_line, color='tab:cyan',
+                       label=r'Zeri et al. (2021) Input')
+            ax[3].legend(fontsize=self.legend_size, loc=self.legend_loc)
 
         # Field data - beach, microplastic counts
         norm_factor = field_dict['Fok']['pdf_counts'][5]

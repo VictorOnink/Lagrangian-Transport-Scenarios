@@ -4,7 +4,6 @@ from netCDF4 import Dataset
 import numpy as np
 from progressbar import ProgressBar
 from copy import deepcopy
-import visualization.visualization_utils as vUtils
 from scipy.interpolate import interp1d
 import pandas as pd
 
