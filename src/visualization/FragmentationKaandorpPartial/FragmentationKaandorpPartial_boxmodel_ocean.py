@@ -9,7 +9,7 @@ import numpy as np
 
 
 class FragmentationKaandorpPartial_boxmodel_ocean:
-    def __init__(self, figure_direc, shore_time=26, lambda_frag=35000, rho=920, ocean_frag=True, sim_length=10,
+    def __init__(self, figure_direc, shore_time=26, lambda_frag_list=[388, 35000], rho=920, ocean_frag=True, sim_length=10,
                  size_class_number=settings.SIZE_CLASS_NUMBER):
         # Data parameters
         self.output_direc = figure_direc + 'size_distribution/'
@@ -18,7 +18,7 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
         self.prefix = 'size_distribution'
         # Simulation parameters
         self.shore_time = shore_time
-        self.lambda_frag = lambda_frag
+        self.lambda_frag_list = lambda_frag_list
         self.rho = rho
         self.sim_length = sim_length
         self.ocean_frag = ocean_frag
@@ -41,24 +41,31 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
         self.twin_ax_range = self.xmax, self.xmin, self.twin_ymax, self.twin_ymin
         self.number_of_plots = self.fig_shape[0] * self.fig_shape[1]
         self.cmap = 'viridis'
+        self.line_style = {388: '-', 35000: '--'}
 
     def plot(self):
         # Getting the sizes of the size classes, and we convert from meters to mm
         size_classes = utils.size_range(size_class_number=self.size_class_number, units='mm')
 
         # Loading the box model data, first the base model without ocean fragmentation
-        base_box_data = FragmentationKaandorp_box_model(sim_length=self.sim_length, lambda_f=self.lambda_frag,
-                                                        size_classes=self.size_class_number,
-                                                        steady_state=True).load_box_model()
-        base_mass, base_number = base_box_data['mass'], base_box_data['number']
+        base_mass, base_number = {}, {}
+        for lambda_frag in self.lambda_frag_list:
+            base_box_data = FragmentationKaandorp_box_model(sim_length=self.sim_length, lambda_f=lambda_frag,
+                                                            size_classes=self.size_class_number,
+                                                            steady_state=True).load_box_model()
+            base_mass[lambda_frag], base_number[lambda_frag] = base_box_data['mass'], base_box_data['number']
+
         # Next the ocean fragmentation cases
         lambda_fO_mass, lambda_fO_number = {}, {}
-        for lambda_fO in self.lambda_fO_list:
-            box_model_data = FragmentationKaandorp_box_model(sim_length=self.sim_length, lambda_f=self.lambda_frag,
-                                                             size_classes=self.size_class_number, ocean_frag=True,
-                                                             lambda_f_ocean=self.lambda_frag * lambda_fO,
-                                                             steady_state=True).load_box_model()
-            lambda_fO_mass[lambda_fO], lambda_fO_number[lambda_fO] = box_model_data['mass'], box_model_data['number']
+        for lambda_frag in self.lambda_frag_list:
+            lambda_fO_mass[lambda_frag], lambda_fO_number[lambda_frag] = {}, {}
+            for lambda_fO in self.lambda_fO_list:
+                box_model_data = FragmentationKaandorp_box_model(sim_length=self.sim_length, lambda_f=self.lambda_frag,
+                                                                 size_classes=self.size_class_number, ocean_frag=True,
+                                                                 lambda_f_ocean=self.lambda_frag * lambda_fO,
+                                                                 steady_state=True).load_box_model()
+                lambda_fO_mass[lambda_frag][lambda_fO] = box_model_data['mass']
+                lambda_fO_number[lambda_frag][lambda_fO] = box_model_data['number']
 
         # Creating the figure
         ax, twin_ax = vUtils.base_figure(fig_size=self.fig_size, ax_range=self.ax_range, x_label=self.x_label,
@@ -74,21 +81,26 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
             ax[index_ax].set_title(self.subfigure_title(index_ax), fontsize=self.ax_label_size)
 
         # Plotting the model distributions from the box model
-        for index_reservoir, reservoir in enumerate(self.reservoir_list):
-            ax[2 * index_reservoir].plot(size_classes, base_number[reservoir], linestyle='-', c='k')
-            twin_ax[2 * index_reservoir + 1].plot(size_classes, base_mass[reservoir], linestyle='-', c='k')
-            for index_fO, lambda_fO in enumerate(self.lambda_fO_list):
-                c = vUtils.discrete_color_from_cmap(index=index_fO, subdivisions=self.lambda_fO_list.size,
-                                                    cmap=self.cmap)
-                ax[2 * index_reservoir].plot(size_classes, lambda_fO_number[lambda_fO][reservoir], linestyle='-', c=c)
-                twin_ax[2 * index_reservoir + 1].plot(size_classes, lambda_fO_mass[lambda_fO][reservoir], linestyle='-', c=c)
+        for lambda_frag in self.lambda_frag_list:
+            line = self.line_style[lambda_frag]
+            for index_reservoir, reservoir in enumerate(self.reservoir_list):
+                ax[2 * index_reservoir].plot(size_classes, base_number[lambda_frag][reservoir], linestyle=line, c='k')
+                twin_ax[2 * index_reservoir + 1].plot(size_classes, base_mass[lambda_frag][reservoir],
+                                                      linestyle=line, c='k')
+                for index_fO, lambda_fO in enumerate(self.lambda_fO_list):
+                    c = vUtils.discrete_color_from_cmap(index=index_fO, subdivisions=self.lambda_fO_list.size,
+                                                        cmap=self.cmap)
+                    ax[2 * index_reservoir].plot(size_classes, lambda_fO_number[lambda_frag][lambda_fO][reservoir],
+                                                 linestyle=line, c=c)
+                    twin_ax[2 * index_reservoir + 1].plot(size_classes, lambda_fO_mass[lambda_frag][lambda_fO][reservoir],
+                                                          linestyle=line, c=c)
 
         # Adding a legend
-        line_base = [plt.plot([], [], c='k', label=r"$\lambda_{f}$ = " + "{} days".format(self.lambda_frag),
-                              linestyle='-')[0]]
+        line_base_1 = [plt.plot([], [], c='k', label=r"$\lambda_{f, B}$ = 388 days", linestyle='-')[0]]
+        line_base_2 = [plt.plot([], [], c='k', label=r"$\lambda_{f, B}$ = 35000 days", linestyle='--')[0]]
         line_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(index_fO, subdivisions=self.lambda_fO_list.size, cmap=self.cmap),
                                 label=label(fO), linestyle='-')[0] for index_fO, fO in enumerate(self.lambda_fO_list)]
-        ax[-1].legend(handles=line_base + line_colors, fontsize=self.legend_size, loc='upper right')
+        ax[-1].legend(handles=line_base_1 + line_base_2 + line_colors, fontsize=self.legend_size, loc='upper right')
 
         # Saving the figure
         str_format = self.shore_time, self.lambda_frag, self.size_class_number
@@ -102,4 +114,4 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
 
 
 def label(lambda_fO):
-    return r"$\lambda_{f,O}$ = " + '{} '.format(lambda_fO) + r'$\times$ $\lambda_{f,O}$'
+    return r"$\lambda_{f,O}$ = " + '{} '.format(lambda_fO) + r'$\times$ $\lambda_{f, B}$'
