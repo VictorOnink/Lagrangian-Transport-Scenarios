@@ -15,6 +15,7 @@ def FragmentationKaandorpPartial_fielddata(to_overwrite=False):
         output_dict = RuizOrejon_standardization(output_dict=output_dict)
         output_dict = Gundogdu_2017_standardization(output_dict=output_dict)
         output_dict = Merlino_2020_standardization(output_dict=output_dict)
+        output_dict = DeHaanSanchez_standardization(output_dict=output_dict)
         utils.save_obj(filename=file_name, item=output_dict)
         utils.print_statement('The standardized field data has been saved.', to_print=True)
 
@@ -165,3 +166,42 @@ def Merlino_2020_standardization(output_dict: dict):
     output_dict[prefix]['pdf_counts'] = np.divide(size, output_dict[prefix]['bin_midpoint'])
 
     return output_dict
+
+
+def DeHaanSanchez_standardization(output_dict: dict):
+    """
+    Data shared by William De Haan & Anna Sanchez-Vidal, collected close to the spanish coast
+    It has not been published yet, although a publication has been submitted already
+    :param output_dict:
+    :return:
+    """
+    prefix = 'DeHaanSanchez'
+    output_dict[prefix] = {}
+
+    data_direc = settings.DATA_INPUT_DIR_SERVERS[settings.SERVER] + 'Field_Data/'
+    data_pd = pd.read_csv(data_direc + 'SSC_data_LiamAnna.csv')
+    size = data_pd['Feret'].values
+    group = data_pd['Group'].values
+    size = size[group == 'Fragment']
+
+    # Get the size bins from the Cozar paper
+    cozar_pd = pd.read_excel(data_direc + 'Cozar_MedData_SizeSpectra.xls', sheet_name=1)
+    output_dict[prefix]['bin_edges'] = np.append(cozar_pd['Lower Size (mm)'].values,
+                                                 cozar_pd['Upper Size (mm)'].values[-1])[:-1]
+    output_dict[prefix]['bin_midpoint'] = (10 ** cozar_pd['log Nominal Size']).values[:-1]
+
+    # Calculate the pdf/concentrations in the bins
+    concentrations, _ = np.histogram(size, bins=output_dict[prefix]['bin_edges'])
+
+    assert concentrations.size == output_dict[prefix]['bin_midpoint'].size, \
+        'The concentration size {} is not {}'.format(concentrations.size, output_dict[prefix]['bin_midpoint'].size)
+
+    # Normalize the pdf with the particle sizes
+    output_dict[prefix]['pdf_counts'] = np.divide(concentrations, output_dict[prefix]['bin_midpoint'])
+    output_dict[prefix]['pdf_counts'][output_dict[prefix]['pdf_counts'] == 0] = np.nan
+
+    return output_dict
+
+
+
+
