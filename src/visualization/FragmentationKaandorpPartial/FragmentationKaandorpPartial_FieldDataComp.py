@@ -182,7 +182,8 @@ class FragmentationKaandorpPartial_FieldDataComp:
         interpolation_function = interp1d(size_bins, field_data)
         # Calculating the particle number at the sizes equivalent to the size class
         number_inter = interpolation_function(utils.size_range(units='mm', size_class_number=settings.SIZE_CLASS_NUMBER))
-        number_norm = number_inter / number_inter[0]
+        number_norm = number_inter / utils.size_range(units='mm', size_class_number=settings.SIZE_CLASS_NUMBER)
+        number_norm /= number_inter[0]
         # Converting the particle number to the particle mass
         mass_inter = np.zeros(number_inter.shape, dtype=float)
         for size_class in range(mass_inter.size):
@@ -190,11 +191,11 @@ class FragmentationKaandorpPartial_FieldDataComp:
         # Normalize by the particle mass in size class k = 0
         mass_inter /= mass_inter[0]
         # Plotting the normalized count and mass inputs
+        norm_factor = utils.size_range(units='mm', size_class_number=settings.SIZE_CLASS_NUMBER)
         ax[2].plot(utils.size_range(units='mm', size_class_number=settings.SIZE_CLASS_NUMBER),
                    number_norm, marker=self.field_marker, linestyle=self.field_line, color='tab:cyan',
                    label=r'Zeri et al. (2021) Input')
         ax[2].legend(fontsize=self.legend_size, loc=self.legend_loc)
-        norm_factor = utils.size_range(units='mm', size_class_number=settings.SIZE_CLASS_NUMBER)
         ax[3].plot(utils.size_range(units='mm', size_class_number=settings.SIZE_CLASS_NUMBER),
                    mass_inter / norm_factor, marker=self.field_marker, linestyle=self.field_line, color='tab:cyan',
                    label=r'Zeri et al. (2021) Input')
