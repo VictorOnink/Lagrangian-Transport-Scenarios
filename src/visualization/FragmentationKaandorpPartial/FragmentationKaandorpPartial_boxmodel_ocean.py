@@ -62,9 +62,9 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
         for lambda_frag in self.lambda_frag_list:
             lambda_fO_mass[lambda_frag], lambda_fO_number[lambda_frag] = {}, {}
             for lambda_fO in self.lambda_fO_list:
-                box_model_data = FragmentationKaandorp_box_model(sim_length=self.sim_length, lambda_f=self.lambda_frag,
+                box_model_data = FragmentationKaandorp_box_model(sim_length=self.sim_length, lambda_f=lambda_frag,
                                                                  size_classes=self.size_class_number, ocean_frag=True,
-                                                                 lambda_f_ocean=self.lambda_frag * lambda_fO,
+                                                                 lambda_f_ocean=lambda_frag * lambda_fO,
                                                                  steady_state=True).load_box_model()
                 lambda_fO_mass[lambda_frag][lambda_fO] = box_model_data['mass']
                 lambda_fO_number[lambda_frag][lambda_fO] = box_model_data['number']
@@ -105,8 +105,8 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
         ax[-1].legend(handles=line_base_1 + line_base_2 + line_colors, fontsize=self.legend_size, loc='upper right')
 
         # Saving the figure
-        str_format = self.shore_time, self.lambda_frag, self.size_class_number
-        file_name = self.output_direc + 'boxmodel_ocean_frag-ST={}-lambda_f={}_size_classes={}.png'.format(*str_format)
+        str_format = self.shore_time, lambda_frag, self.size_class_number
+        file_name = self.output_direc + 'boxmodel_ocean_frag-ST={}_size_classes={}.png'.format(*str_format)
         plt.savefig(file_name, bbox_inches='tight', dpi=300)
 
     def subfigure_title(self, index):
