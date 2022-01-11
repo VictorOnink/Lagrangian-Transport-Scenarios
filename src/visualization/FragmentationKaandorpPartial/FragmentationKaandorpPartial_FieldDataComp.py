@@ -194,8 +194,9 @@ class FragmentationKaandorpPartial_FieldDataComp:
                    number_norm, marker=self.field_marker, linestyle=self.field_line, color='tab:cyan',
                    label=r'Zeri et al. (2021) Input')
         ax[2].legend(fontsize=self.legend_size, loc=self.legend_loc)
+        norm_factor = utils.size_range(units='mm', size_class_number=settings.SIZE_CLASS_NUMBER)
         ax[3].plot(utils.size_range(units='mm', size_class_number=settings.SIZE_CLASS_NUMBER),
-                   mass_inter, marker=self.field_marker, linestyle=self.field_line, color='tab:cyan',
+                   mass_inter / norm_factor, marker=self.field_marker, linestyle=self.field_line, color='tab:cyan',
                    label=r'Zeri et al. (2021) Input')
         ax[3].legend(fontsize=self.legend_size, loc=self.legend_loc)
 
