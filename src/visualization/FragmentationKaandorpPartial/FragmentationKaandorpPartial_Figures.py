@@ -42,7 +42,7 @@ def run(scenario, figure_direc: str):
     #                                                           shore_time=shore_time, lambda_frag=388,
     #                                                           rho=rho, sim_length=2).plot()
 
-    box_model_ocean.FragmentationKaandorpPartial_boxmodel_ocean(figure_direc=figure_direc, size_class_number=10).plot()
+    box_model_ocean.FragmentationKaandorpPartial_boxmodel_ocean(figure_direc=figure_direc).plot()
 
     # for year in [0, 1, 2]:
     #     for weight in ['particle_number_sink', 'particle_mass_sink']:

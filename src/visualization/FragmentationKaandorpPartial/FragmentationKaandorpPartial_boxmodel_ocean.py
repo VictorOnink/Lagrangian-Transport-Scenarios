@@ -9,8 +9,8 @@ import numpy as np
 
 
 class FragmentationKaandorpPartial_boxmodel_ocean:
-    def __init__(self, figure_direc, shore_time=26, lambda_frag_list=[388, 35000], rho=920, ocean_frag=True, sim_length=10,
-                 size_class_number=settings.SIZE_CLASS_NUMBER):
+    def __init__(self, figure_direc, shore_time=26, lambda_frag_list=[388, 35000], rho=920, ocean_frag=True,
+                 sim_length=10, size_class_number=10):
         # Data parameters
         self.output_direc = figure_direc + 'size_distribution/'
         self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'size_distribution/FragmentationKaandorpPartial/'
@@ -35,9 +35,11 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
         self.ax_label_size = 14
         self.legend_size = 12
         self.xmin, self.xmax = 1e-3, 2e2
-        self.ymin, self.ymax = {388: (1e2, 1e11), 35000: (1e3, 1e8)}[self.lambda_frag]
+        # self.ymin, self.ymax = {388: (1e2, 1e11), 35000: (1e3, 1e8)}[self.lambda_frag]
+        self.ymin, self.ymax = 1e2, 1e11
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
-        self.twin_ymin, self.twin_ymax = {388: (1e2, 1e5), 35000: (1e-1, 1e6)}[self.lambda_frag]
+        # self.twin_ymin, self.twin_ymax = {388: (1e2, 1e5), 35000: (1e-1, 1e6)}[self.lambda_frag]
+        self.twin_ymin, self.twin_ymax = 1e-1, 1e6
         self.twin_ax_range = self.xmax, self.xmin, self.twin_ymax, self.twin_ymin
         self.number_of_plots = self.fig_shape[0] * self.fig_shape[1]
         self.cmap = 'viridis'
