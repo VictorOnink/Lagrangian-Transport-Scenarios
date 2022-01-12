@@ -43,7 +43,7 @@ def run(scenario, figure_direc: str):
     # Creating figures showing the relative distribution, averaged over the entire simulation and time-snapshots at the
     # end of each simulation year
     for time_select in [0]:
-        for rho in [920]:
+        for rho in [30, 920, 980, 1020]:
             SizeTransport_relative_concentrations(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
                                                   beach_state='adrift', time_selection=time_select, rho=rho).plot()
             # SizeTransport_relative_concentrations(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
