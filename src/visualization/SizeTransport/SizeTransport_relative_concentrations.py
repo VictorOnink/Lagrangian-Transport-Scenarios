@@ -53,19 +53,19 @@ class SizeTransport_relative_concentrations:
 
         # Normalizing the concentration by the lowest non-zero concentration over all the sizes
         normalization_factor = 1e10
-        for size in concentration_dict.keys():
-            for beach_state in concentration_dict.keys():
+        for beach_state in concentration_dict.keys():
+            for size in concentration_dict[beach_state].keys():
                 concentration = concentration_dict[beach_state][size]
                 min_non_zero = np.nanmin(concentration[concentration > 0])
                 if min_non_zero < normalization_factor:
                     normalization_factor = min_non_zero
-        for size in concentration_dict.keys():
-            for beach_state in concentration_dict.keys():
+        for beach_state in concentration_dict.keys():
+            for size in concentration_dict[beach_state].keys():
                 concentration_dict[beach_state][size] /= normalization_factor
 
         # Setting zero values to nan
-        for size in concentration_dict.keys():
-            for beach_state in concentration_dict.keys():
+        for beach_state in concentration_dict.keys():
+            for size in concentration_dict[beach_state].keys():
                 concentration_dict[beach_state][size][concentration_dict[beach_state][size] == 0] = np.nan
 
         # Creating the base figure
