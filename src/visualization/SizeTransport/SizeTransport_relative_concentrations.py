@@ -38,31 +38,35 @@ class SizeTransport_relative_concentrations:
 
     def plot(self):
         # Loading the data
-        concentration_dict = {}
+        concentration_dict = {'beach': {}, 'adrift': {}}
         if self.time_selection == 'average':
             key_concentration = "overall_concentration"
         else:
             key_concentration = utils.analysis_simulation_year_key(self.time_selection)
         for index, size in enumerate(self.size_list):
-            data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
-                                                       data_direc=self.data_direc,
-                                                       size=size, rho=self.rho, tau=self.tau)
-            concentration_dict[index] = data_dict[key_concentration][self.beach_state]
+            for beach_state in concentration_dict.keys():
+                data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
+                                                           data_direc=self.data_direc,
+                                                           size=size, rho=self.rho, tau=self.tau)
+                concentration_dict[beach_state][index] = data_dict[key_concentration][beach_state]
         Lon, Lat = np.meshgrid(data_dict['lon'], data_dict['lat'])
 
         # Normalizing the concentration by the lowest non-zero concentration over all the sizes
         normalization_factor = 1e10
         for size in concentration_dict.keys():
-            concentration = concentration_dict[size]
-            min_non_zero = np.nanmin(concentration[concentration > 0])
-            if min_non_zero < normalization_factor:
-                normalization_factor = min_non_zero
+            for beach_state in concentration_dict.keys():
+                concentration = concentration_dict[size][beach_state]
+                min_non_zero = np.nanmin(concentration[concentration > 0])
+                if min_non_zero < normalization_factor:
+                    normalization_factor = min_non_zero
         for size in concentration_dict.keys():
-            concentration_dict[size] /= normalization_factor
+            for beach_state in concentration_dict.keys():
+                concentration_dict[beach_state][size] /= normalization_factor
 
         # Setting zero values to nan
         for size in concentration_dict.keys():
-            concentration_dict[size][concentration_dict[size] == 0] = np.nan
+            for beach_state in concentration_dict.keys():
+                concentration_dict[beach_state][size][concentration_dict[beach_state][size] == 0] = np.nan
 
         # Creating the base figure
         fig = plt.figure(figsize=self.figure_size)
@@ -92,14 +96,13 @@ class SizeTransport_relative_concentrations:
         # The actual plotting of the figures
         for index, size in enumerate(self.size_list):
             if self.beach_state in ['adrift']:
-                # ax_list[index].pcolormesh(Lon, Lat, concentration_dict[index], norm=norm, cmap=self.cmap,
-                #                           zorder=200)
-
-                ax_list[index].scatter(Lon.flatten(), Lat.flatten(), c=concentration_dict[index].flatten(), norm=norm,
-                                       cmap=self.cmap, zorder=200, s=10)
+                ax_list[index].pcolormesh(Lon, Lat, concentration_dict['beach'][index], norm=norm, cmap=self.cmap,
+                                          zorder=200)
+                ax_list[index].scatter(Lon.flatten(), Lat.flatten(), c=concentration_dict['adrift'][index].flatten(),
+                                       norm=norm, cmap=self.cmap, zorder=200, s=10)
             else:
-                ax_list[index].scatter(Lon.flatten(), Lat.flatten(), c=concentration_dict[index], norm=norm,
-                                       cmap=self.cmap, zorder=200)
+                ax_list[index].scatter(Lon.flatten(), Lat.flatten(), c=concentration_dict['adrift'][index].flatten(),
+                                       norm=norm, cmap=self.cmap, zorder=200)
 
         # Saving the figure
         file_name = plot_save_name(output_direc=self.output_direc, rho=self.rho, time_selection=self.time_selection,
