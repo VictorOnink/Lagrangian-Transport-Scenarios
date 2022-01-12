@@ -99,7 +99,7 @@ class SizeTransport_relative_concentrations:
                 ax_list[index].pcolormesh(Lon, Lat, concentration_dict['adrift'][index], norm=norm, cmap=self.cmap,
                                           zorder=200)
                 ax_list[index].scatter(Lon.flatten(), Lat.flatten(), c=concentration_dict['beach'][index].flatten(),
-                                       norm=norm, cmap=self.cmap, zorder=200, s=10)
+                                       norm=norm, cmap=self.cmap, zorder=200, s=6, edgecolors='white')
             else:
                 ax_list[index].scatter(Lon.flatten(), Lat.flatten(), c=concentration_dict['beach'][index].flatten(),
                                        norm=norm, cmap=self.cmap, zorder=200)
