@@ -301,7 +301,7 @@ if SUBMISSION in ['visualization']:
     # DEFAULTS TO PREVENT ERRORS
     RUN: int = 0
     RESTART: int = 0
-    SHORE_TIME: int = 20
+    SHORE_TIME: int = 26
     RESUS_TIME: int = 69
     VICINITY: int = 0
     SHORE_DEP: int = 0
