@@ -55,7 +55,7 @@ class SizeTransport_relative_concentrations:
         normalization_factor = 1e10
         for size in concentration_dict.keys():
             for beach_state in concentration_dict.keys():
-                concentration = concentration_dict[size][beach_state]
+                concentration = concentration_dict[beach_state][size]
                 min_non_zero = np.nanmin(concentration[concentration > 0])
                 if min_non_zero < normalization_factor:
                     normalization_factor = min_non_zero
