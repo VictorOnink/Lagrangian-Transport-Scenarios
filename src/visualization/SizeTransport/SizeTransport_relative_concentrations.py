@@ -94,10 +94,11 @@ class SizeTransport_relative_concentrations:
             if self.beach_state in ['adrift']:
                 ax_list[index].pcolormesh(Lon, Lat, concentration_dict[index], norm=norm, cmap=self.cmap,
                                           zorder=200)
+                ax_list[index].scatter(Lon.flatten(), Lat.flatten(), c=concentration_dict[index], norm=norm,
+                                       cmap=self.cmap, zorder=200, edgecolors='white')
             else:
                 ax_list[index].scatter(Lon.flatten(), Lat.flatten(), c=concentration_dict[index], norm=norm,
-                                       cmap=self.cmap,
-                                       zorder=200)
+                                       cmap=self.cmap, zorder=200)
 
         # Saving the figure
         file_name = plot_save_name(output_direc=self.output_direc, rho=self.rho, time_selection=self.time_selection,

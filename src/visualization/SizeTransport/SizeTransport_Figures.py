@@ -42,12 +42,12 @@ def run(scenario, figure_direc: str):
 
     # Creating figures showing the relative distribution, averaged over the entire simulation and time-snapshots at the
     # end of each simulation year
-    # for time_select in [0]:
-    #     for rho in [30, 920, 980, 1020]:
-    #         SizeTransport_relative_concentrations(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-    #                                               beach_state='adrift', time_selection=time_select, rho=rho).plot()
-    #         SizeTransport_relative_concentrations(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-    #                                               beach_state='beach', time_selection=time_select, rho=rho).plot()
+    for time_select in [0]:
+        for rho in [30, 920, 980, 1020]:
+            SizeTransport_relative_concentrations(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+                                                  beach_state='adrift', time_selection=time_select, rho=rho).plot()
+            # SizeTransport_relative_concentrations(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+            #                                       beach_state='beach', time_selection=time_select, rho=rho).plot()
 
     # Plotting the relative distributions for fixed particle sizes, but with different particle densities
     # for time_select in [0]:
@@ -70,9 +70,9 @@ def run(scenario, figure_direc: str):
     # SizeTransport_CumulativeDistance(figure_direc=figure_direc, scenario=scenario, size_list=size_list).plot()
 
     # Plotting the month average vertical profile
-    for rho in [[920, 980], [30, 1020]]:
-        SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                      time_selection=0, rho_list=rho).plot()
+    # for rho in [[920, 980], [30, 1020]]:
+        # SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+        #                               time_selection=0, rho_list=rho).plot()
         # SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
         #                               time_selection=1, rho_list=rho).plot()
         # SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
