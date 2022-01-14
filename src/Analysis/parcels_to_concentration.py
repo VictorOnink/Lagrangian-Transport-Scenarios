@@ -9,7 +9,7 @@ from copy import deepcopy
 
 
 class parcels_to_concentration:
-    def __init__(self, file_dict: dict, scenario):
+    def __init__(self, file_dict: dict):
         self.parallel_step = settings.PARALLEL_STEP
         self.file_dict = file_dict
         self.LON, self.LAT, self.GRID, self.hexgrid, self.MIN_DEPTH = create_hex_grid()
