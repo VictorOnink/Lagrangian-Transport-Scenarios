@@ -25,7 +25,7 @@ class SizeTransport_full_concentrations:
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'horizontal_concentration'
         # Figure parameters
-        self.figure_size = (20, 30)
+        self.figure_size = (20, 20)
         self.figure_shape = (4, 3)
         self.ax_label_size = 14
         self.ax_ticklabel_size = 14
