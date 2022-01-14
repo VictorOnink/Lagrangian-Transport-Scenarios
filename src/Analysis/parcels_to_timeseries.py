@@ -78,7 +78,10 @@ class parcels_to_timeseries:
                         for weight in self.weight_list:
                             self.output_dict['total'][size_class][weight] += self.output_dict[beach_state][size_class][weight]
                 elif settings.SCENARIO_NAME in ['SizeTransport']:
-                    pass
+                    if beach_state in ['adrift']:
+                        self.output_dict['total'] += self.output_dict[beach_state]['total']
+                    else:
+                        self.output_dict['total'] += self.output_dict[beach_state]
                 else:
                     self.output_dict['total'] += self.output_dict[beach_state]
             # Saving the output
@@ -103,8 +106,13 @@ class parcels_to_timeseries:
                                     for beach_state in self.output_dict.keys():
                                         if beach_state != 'time':
                                             for time_index in range(dataset_post[beach_state].size):
-                                                self.output_dict[beach_state][time_index] += dataset_post[beach_state][time_index]
+                                                if beach_state in ['adrift']:
+                                                    for zone in ['total', 'coastal_zone', 'coastal_10km', 'coastal_20km']:
+                                                        self.output_dict[beach_state][zone][time_index] += dataset_post[beach_state][zone][time_index]
+                                                else:
+                                                    self.output_dict[beach_state][time_index] += dataset_post[beach_state][time_index]
                                     utils.remove_file(file_name)
+
                             else:
                                 dataset_post = utils.load_obj(filename=file_name)
                                 for beach_state in self.output_dict.keys():
