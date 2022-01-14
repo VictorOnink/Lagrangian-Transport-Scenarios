@@ -5,10 +5,10 @@ module load Workspace
 #####################################################################################
 SUBMISSION='analysis'
 export SUBMISSION
-DEBUG=0 # 0 = Not a debug run, 1 = a debug run
+DEBUG=1 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation
-SCENARIO=7
+SCENARIO=5
 export SCENARIO
 #for scenario 1, the time a particle must be near the coast to beach (in days)
 VICINITY=2
@@ -24,7 +24,7 @@ WMIN=3
 export WMIN
 #for scenario 5 and 6, the initial size of the particle in 1e-6 m and the particle rho
 PARTICLE_SIZE_list=(5000)  #(5000 2500 1250 625 313 156 78 39 20 10 5 2)
-INIT_DENSITY_list=(920)
+INIT_DENSITY_list=(30)
 export INIT_DENSITY
 #for scenario 5 and 6, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=0
@@ -47,7 +47,7 @@ export SIZE_CLASS_NUMBER
 export OCEAN_FRAG
 #the starting year of the simulation, and how many years the simulation will take
 YEAR=2010
-STARTMONTH_list=(1 2 3 4 5 6 7 8 9 10 11 12)
+STARTMONTH_list=(1)
 STARTDAY=1
 export STARTDAY
 # Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=lebretondivision, 3=lebretonKaandorpInit,
@@ -81,8 +81,8 @@ export SERVER
 #A number of switches to indicate which analysis steps we want to run.
 #0 = off, 1 = on
 CONCENTRATION=1
-VERTICAL_CONCENTRATION=1
-LONLAT_CONCENTRATION=1
+VERTICAL_CONCENTRATION=0
+LONLAT_CONCENTRATION=0
 TIMESERIES=1
 MAX_DISTANCE=0
 TIMESLICING=0

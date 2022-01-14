@@ -45,24 +45,40 @@ class parcels_to_timeseries:
                 time_selection = full_data_dict['time'] == time_value
                 if np.nansum(time_selection) > 0:
                     time_dict = {}
-                    for variable in utils.flatten_list_of_lists([['beach', 'weights', 'size_class'], self.weight_list]):
+                    for variable in utils.flatten_list_of_lists([['beach', 'weights', 'size_class', 'z', 'distance2coast'], self.weight_list]):
                         if variable in full_data_dict.keys():
                             time_dict[variable] = full_data_dict[variable][time_selection]
                     for beach_state in self.beach_label_dict.keys():
                         beach = time_dict['beach'] == self.beach_label_dict[beach_state]
-                        if 'size_class' in full_data_dict.keys():
+                        if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                             for size_class in range(settings.SIZE_CLASS_NUMBER):
                                 size = time_dict['size_class'] == size_class
                                 for weight in self.weight_list:
                                     self.output_dict[beach_state][size_class][weight][time_index] += max(0, np.nansum(time_dict[weight][size & beach]))
+                        elif settings.SCENARIO_NAME in ['SizeTransport']:
+                            if beach_state in ['adrift']:
+                                # First, the particles within the beaching zone ['total', 'coastal_zone', 'coastal_10km', 'coastal_20km']
+                                selec = time_dict['distance2coast'] < settings.COAST_D
+                                self.output_dict[beach_state]['coastal_zone'][time_index] += max(0, np.nansum(time_dict[weight][selec & beach]))
+                                # Next, the particles within 10 and 20 km of shore
+                                selec = time_dict['distance2coast'] < 10
+                                self.output_dict[beach_state]['coastal_10km'][time_index] += max(0, np.nansum(time_dict[weight][selec & beach]))
+                                selec = time_dict['distance2coast'] < 20
+                                self.output_dict[beach_state]['coastal_20km'][time_index] += max(0, np.nansum(time_dict[weight][selec & beach]))
+                                # Finally, all particles adrift
+                                self.output_dict[beach_state]['total'][time_index] += np.nansum(time_dict['weights'][beach])
+                            else:
+                                self.output_dict[beach_state][time_index] += np.nansum(time_dict['weights'][beach])
                         else:
                             self.output_dict[beach_state][time_index] += np.nansum(time_dict['weights'][beach])
             # Calculating the total over all beach states
             for beach_state in self.beach_label_dict.keys():
-                if 'size_class' in full_data_dict.keys():
+                if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                     for size_class in range(settings.SIZE_CLASS_NUMBER):
                         for weight in self.weight_list:
                             self.output_dict['total'][size_class][weight] += self.output_dict[beach_state][size_class][weight]
+                elif settings.SCENARIO_NAME in ['SizeTransport']:
+                    pass
                 else:
                     self.output_dict['total'] += self.output_dict[beach_state]
             # Saving the output
@@ -149,6 +165,14 @@ def create_output_dict_time_list(beach_label_dict, weight_list):
                 for weight in weight_list:
                     output_dict[beach_state][size_class][weight] = deepcopy(base_array)
                     output_dict['total'][size_class][weight] = deepcopy(base_array)
+        elif settings.SCENARIO_NAME in ['SizeTransport']:
+            if beach_state in ['adrift']:
+                output_dict[beach_state] = {}
+                for key in ['total', 'coastal_zone', 'coastal_10km', 'coastal_20km']:
+                    output_dict[beach_state][key] = deepcopy(base_array)
+            else:
+                output_dict[beach_state] = deepcopy(base_array)
+            output_dict['total'] = deepcopy(base_array)
         else:
             output_dict[beach_state] = deepcopy(base_array)
             output_dict['total'] = deepcopy(base_array)
@@ -168,7 +192,7 @@ def load_parcels_post_output(scenario_name, file_dict, year=settings.STARTYEAR, 
 
 def set_full_data_dict(parcels_dataset, post_dataset, weight_list):
     full_data_dict = {}
-    for variable in ['lon', 'lat', 'beach', 'time', 'size_class']:
+    for variable in ['lon', 'lat', 'beach', 'time', 'size_class', 'z', 'distance2coast']:
         if variable in parcels_dataset.variables.keys():
             full_data_dict[variable] = parcels_dataset.variables[variable][:, :-1].flatten()
     if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
