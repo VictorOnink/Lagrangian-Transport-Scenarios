@@ -27,8 +27,8 @@ class SizeTransport_full_concentrations:
         # Figure parameters
         self.figure_size = (20, 20)
         self.figure_shape = (4, 3)
-        self.ax_label_size = 14
-        self.ax_ticklabel_size = 14
+        self.ax_label_size = 16
+        self.ax_ticklabel_size = 16
         self.number_of_plots = self.size_list.__len__()
         self.adv_file_dict = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
                                                             advection_scenario='CMEMS_MEDITERRANEAN',
