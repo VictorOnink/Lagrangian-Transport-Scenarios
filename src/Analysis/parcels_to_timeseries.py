@@ -59,12 +59,12 @@ class parcels_to_timeseries:
                             if beach_state in ['adrift']:
                                 # First, the particles within the beaching zone ['total', 'coastal_zone', 'coastal_10km', 'coastal_20km']
                                 selec = time_dict['distance2coast'] < settings.COAST_D
-                                self.output_dict[beach_state]['coastal_zone'][time_index] += max(0, np.nansum(time_dict[weight][selec & beach]))
+                                self.output_dict[beach_state]['coastal_zone'][time_index] += max(0, np.nansum(time_dict['weights'][selec & beach]))
                                 # Next, the particles within 10 and 20 km of shore
                                 selec = time_dict['distance2coast'] < 10
-                                self.output_dict[beach_state]['coastal_10km'][time_index] += max(0, np.nansum(time_dict[weight][selec & beach]))
+                                self.output_dict[beach_state]['coastal_10km'][time_index] += max(0, np.nansum(time_dict['weights'][selec & beach]))
                                 selec = time_dict['distance2coast'] < 20
-                                self.output_dict[beach_state]['coastal_20km'][time_index] += max(0, np.nansum(time_dict[weight][selec & beach]))
+                                self.output_dict[beach_state]['coastal_20km'][time_index] += max(0, np.nansum(time_dict['weights'][selec & beach]))
                                 # Finally, all particles adrift
                                 self.output_dict[beach_state]['total'][time_index] += np.nansum(time_dict['weights'][beach])
                             else:
