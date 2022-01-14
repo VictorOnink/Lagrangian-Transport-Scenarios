@@ -106,7 +106,7 @@ class parcels_to_timeseries:
                                     time_steps = dataset_post['total'].size
                                     for beach_state in self.output_dict.keys():
                                         if beach_state != 'time':
-                                            for time_index in range(dataset_post[beach_state].size):
+                                            for time_index in range(time_steps):
                                                 if beach_state in ['adrift']:
                                                     for zone in ['total', 'coastal_zone', 'coastal_10km', 'coastal_20km']:
                                                         self.output_dict[beach_state][zone][time_index] += dataset_post[beach_state][zone][time_index]
