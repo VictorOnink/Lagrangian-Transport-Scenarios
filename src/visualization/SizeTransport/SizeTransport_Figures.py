@@ -10,6 +10,7 @@ from visualization.SizeTransport.SizeTransport_VerticalProfile import SizeTransp
 from visualization.SizeTransport.SizeTransport_lonlat_averages import SizeTransport_lonlat_averages
 from visualization.SizeTransport.SizeTransport_reservoirs import SizeTransport_reservoirs
 from visualization.SizeTransport.SizeTransport_rho_concentrations import SizeTransport_rho_concentrations
+from visualization.SizeTransport.SizeTransport_full_concentrations import SizeTransport_full_concentrations
 import os
 import numpy as np
 
@@ -42,10 +43,10 @@ def run(scenario, figure_direc: str):
 
     # Creating figures showing the relative distribution, averaged over the entire simulation and time-snapshots at the
     # end of each simulation year
-    for time_select in [0]:
-        for rho in [30, 920, 980, 1020]:
-            SizeTransport_relative_concentrations(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                                  beach_state='adrift', time_selection=time_select, rho=rho).plot()
+    # for time_select in [0]:
+    #     for rho in [30, 920, 980, 1020]:
+    #         SizeTransport_relative_concentrations(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                               beach_state='adrift', time_selection=time_select, rho=rho).plot()
             # SizeTransport_relative_concentrations(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
             #                                       beach_state='beach', time_selection=time_select, rho=rho).plot()
 
@@ -55,6 +56,12 @@ def run(scenario, figure_direc: str):
     #         SizeTransport_rho_concentrations(scenario=scenario, figure_direc=figure_direc, size=size,
     #                                          beach_state='adrift', time_selection=time_select,
     #                                          rho_list=[30, 920, 980, 1020]).plot()
+
+    # Plotting all horizontal concentrations for a given density
+    for rho in [30]:
+        for time_select in [0]:
+            SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
+                                              time_selection=time_select, rho=rho).plot()
 
     size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
     # Creating figures of the timeseries of the number of particles that are beached/adrift/seabed
@@ -71,12 +78,12 @@ def run(scenario, figure_direc: str):
 
     # Plotting the month average vertical profile
     # for rho in [[920, 980], [30, 1020]]:
-        # SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-        #                               time_selection=0, rho_list=rho).plot()
-        # SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-        #                               time_selection=1, rho_list=rho).plot()
-        # SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-        #                               time_selection=2, rho_list=rho).plot()
+    #     SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                   time_selection=0, rho_list=rho).plot()
+    #     SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                   time_selection=1, rho_list=rho).plot()
+    #     SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                   time_selection=2, rho_list=rho).plot()
 
     # Plotting the separation distance
     # for size_selection in size_list:
