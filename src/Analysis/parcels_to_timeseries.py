@@ -103,6 +103,7 @@ class parcels_to_timeseries:
                             if settings.SCENARIO_NAME in ['SizeTransport']:
                                 if month == 1 and year == settings.STARTYEAR:
                                     dataset_post = utils.load_obj(filename=file_name)
+                                    time_steps = dataset_post['total'].size
                                     for beach_state in self.output_dict.keys():
                                         if beach_state != 'time':
                                             for time_index in range(dataset_post[beach_state].size):
