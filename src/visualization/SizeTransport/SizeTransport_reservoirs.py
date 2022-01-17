@@ -104,7 +104,7 @@ class SizeTransport_reservoirs:
         ax[-1].legend(handles=rho_lines + beach + coastal + open, fontsize=self.legend_size, loc='upper right')
         ax[-1].axis('off')
 
-        file_name = self.output_direc + 'SizeTransport_reservoirs.jpg'
+        file_name = self.file_name()
         plt.savefig(file_name, bbox_inches='tight', dpi=400)
         plt.close('all')
 
