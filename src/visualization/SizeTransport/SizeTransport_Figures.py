@@ -58,7 +58,7 @@ def run(scenario, figure_direc: str):
     #                                          rho_list=[30, 920, 980, 1020]).plot()
 
     # Plotting all horizontal concentrations for a given density
-    for rho in [30, 920, 980, 1030]:
+    for rho in [30, 920, 980, 1020]:
         for time_select in [0]:
             SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
                                               time_selection=time_select, rho=rho).plot()
