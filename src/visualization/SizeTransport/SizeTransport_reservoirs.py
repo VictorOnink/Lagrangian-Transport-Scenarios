@@ -85,7 +85,7 @@ class SizeTransport_reservoirs:
                                       marker=self.rho_marker_dict[rho], edgecolors='b',
                                       facecolors='none', s=80)
                     elif beach_state in ['adrift']:
-                        coastal_zone = 'coastal_20km'
+                        coastal_zone = 'coastal_10km'
                         ax[0].scatter(size * 1e3, timeseries_dict[rho][size][beach_state][coastal_zone],
                                       marker=self.rho_marker_dict[rho], edgecolors='g',
                                       facecolors='none', s=80)
@@ -107,6 +107,12 @@ class SizeTransport_reservoirs:
         file_name = self.output_direc + 'SizeTransport_reservoirs.jpg'
         plt.savefig(file_name, bbox_inches='tight', dpi=400)
         plt.close('all')
+
+    def file_name(self):
+        if self.rho_list.__len__() == 4:
+            return self.output_direc + 'SizeTransport_reservoirs.jpg'
+        else:
+            return self.output_direc + 'SizeTransport_reservoirs_rho_{}.jpg'.format(self.rho_list[0])
 
 
 def beach_label(beach_state):
