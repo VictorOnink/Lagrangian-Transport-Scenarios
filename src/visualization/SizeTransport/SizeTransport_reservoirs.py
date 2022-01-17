@@ -85,7 +85,7 @@ class SizeTransport_reservoirs:
                                       marker=self.rho_marker_dict[rho], edgecolors='b',
                                       facecolors='none', s=80)
                     elif beach_state in ['adrift']:
-                        coastal_zone = 'coastal_10km'
+                        coastal_zone = 'coastal_20km'
                         ax[0].scatter(size * 1e3, timeseries_dict[rho][size][beach_state][coastal_zone],
                                       marker=self.rho_marker_dict[rho], edgecolors='g',
                                       facecolors='none', s=80)
