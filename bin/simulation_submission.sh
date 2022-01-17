@@ -23,8 +23,8 @@ export SHOREDEPEN
 WMIN=3
 export WMIN
 #for scenario 5 and 6, the initial size of the particle in 1e-6 m and the rho of the particle
-PARTICLE_SIZE_list=(5000 2500 1250 625 313 156 78 39 20 10 5 2) # (5000 2500 1250 625 313 156 78 39 20 10 5 2)
-INIT_DENSITY_list=(30 920 980 1020) # (30 920 980 1020)
+PARTICLE_SIZE_list=(1250 5) # (5000 2500 1250 625 313 156 78 39 20 10 5 2)
+INIT_DENSITY_list=(920) # (30 920 980 1020)
 #for scenarios 5 - 7, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=0
 export SEABED_CRIT
@@ -65,7 +65,7 @@ export INPUT
 ADVECTION_DATA=2
 export ADVECTION_DATA
 #Start year of the simulation. 0 = new simulation, otherwise it picks up from a previous simulation
-START=0
+START=1
 #Number of years the simulation runs
 SIMLEN=3
 export SIMLEN
