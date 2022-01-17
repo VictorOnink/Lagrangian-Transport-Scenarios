@@ -39,36 +39,36 @@ class SizeTransport_full_concentrations:
 
     def plot(self):
         # Loading the data
-        # concentration_dict = {'beach': {}, 'adrift': {}}
-        # key_concentration = utils.analysis_simulation_year_key(self.time_selection)
-        # for index, size in enumerate(self.size_list):
-        #     for beach_state in concentration_dict.keys():
-        #         data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
-        #                                                    data_direc=self.data_direc,
-        #                                                    size=size, rho=self.rho, tau=self.tau)
-        #         if self.beach_state in ['adrift']:
-        #             concentration_array = data_dict[key_concentration][beach_state][self.depth_level]
-        #         else:
-        #             concentration_array = data_dict[key_concentration][beach_state]
-        #         concentration_dict[beach_state][index] = concentration_array
-        # Lon, Lat = np.meshgrid(data_dict['lon'], data_dict['lat'])
-        #
-        # # Normalizing the concentration by the lowest non-zero concentration over all the sizes
-        # normalization_factor = 1e10
-        # for beach_state in concentration_dict.keys():
-        #     for size in concentration_dict[beach_state].keys():
-        #         concentration = concentration_dict[beach_state][size]
-        #         min_non_zero = np.nanmin(concentration[concentration > 0])
-        #         if min_non_zero < normalization_factor:
-        #             normalization_factor = min_non_zero
-        # for beach_state in concentration_dict.keys():
-        #     for size in concentration_dict[beach_state].keys():
-        #         concentration_dict[beach_state][size] /= normalization_factor
-        #
-        # # Setting zero values to nan
-        # for beach_state in concentration_dict.keys():
-        #     for size in concentration_dict[beach_state].keys():
-        #         concentration_dict[beach_state][size][concentration_dict[beach_state][size] == 0] = np.nan
+        concentration_dict = {'beach': {}, 'adrift': {}}
+        key_concentration = utils.analysis_simulation_year_key(self.time_selection)
+        for index, size in enumerate(self.size_list):
+            for beach_state in concentration_dict.keys():
+                data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
+                                                           data_direc=self.data_direc,
+                                                           size=size, rho=self.rho, tau=self.tau)
+                if self.beach_state in ['adrift']:
+                    concentration_array = data_dict[key_concentration][beach_state][self.depth_level]
+                else:
+                    concentration_array = data_dict[key_concentration][beach_state]
+                concentration_dict[beach_state][index] = concentration_array
+        Lon, Lat = np.meshgrid(data_dict['lon'], data_dict['lat'])
+
+        # Normalizing the concentration by the lowest non-zero concentration over all the sizes
+        normalization_factor = 1e10
+        for beach_state in concentration_dict.keys():
+            for size in concentration_dict[beach_state].keys():
+                concentration = concentration_dict[beach_state][size]
+                min_non_zero = np.nanmin(concentration[concentration > 0])
+                if min_non_zero < normalization_factor:
+                    normalization_factor = min_non_zero
+        for beach_state in concentration_dict.keys():
+            for size in concentration_dict[beach_state].keys():
+                concentration_dict[beach_state][size] /= normalization_factor
+
+        # Setting zero values to nan
+        for beach_state in concentration_dict.keys():
+            for size in concentration_dict[beach_state].keys():
+                concentration_dict[beach_state][size][concentration_dict[beach_state][size] == 0] = np.nan
 
         # Creating the base figure
         fig = plt.figure(figsize=self.figure_size)
@@ -96,13 +96,13 @@ class SizeTransport_full_concentrations:
             ax.set_title(subfigure_title(index, self.size_list), weight='bold', fontsize=self.ax_label_size)
 
         # The actual plotting of the figures
-        # for index, size in enumerate(self.size_list):
-        #     if self.beach_state in ['adrift']:
-        #         ax_list[index].pcolormesh(Lon, Lat, concentration_dict['adrift'][index], norm=norm, cmap=self.cmap,
-        #                                   zorder=200)
-        #     else:
-        #         ax_list[index].scatter(Lon.flatten(), Lat.flatten(), c=concentration_dict['beach'][index].flatten(),
-        #                                norm=norm, cmap=self.cmap, zorder=200)
+        for index, size in enumerate(self.size_list):
+            if self.beach_state in ['adrift']:
+                ax_list[index].pcolormesh(Lon, Lat, concentration_dict['adrift'][index], norm=norm, cmap=self.cmap,
+                                          zorder=200)
+            else:
+                ax_list[index].scatter(Lon.flatten(), Lat.flatten(), c=concentration_dict['beach'][index].flatten(),
+                                       norm=norm, cmap=self.cmap, zorder=200)
 
         # Saving the figure
         file_name = self.plot_save_name()
@@ -112,11 +112,11 @@ class SizeTransport_full_concentrations:
     def plot_save_name(self):
         year = {0: 'year_0', 1: 'year_1', 2: 'year_2'}[self.time_selection]
         if self.beach_state in ['adrift']:
-            str_format = self.rho, year, self.beach_state
-            return self.output_direc + 'SizeTransport_rho={}_allsizes_year={}_{}'.format(*str_format)
+            str_format = self.rho, self.rho, year, self.beach_state, self.depth_level
+            return self.output_direc + 'rho_{}/SizeTransport_rho={}_allsizes_year={}_{}_{}'.format(*str_format)
         else:
-            str_format = self.rho, year, self.beach_state
-            return self.output_direc + 'SizeTransport_rho={}_allsizes_year={}_{}'.format(*str_format)
+            str_format = self.rho, self.rho, year, self.beach_state
+            return self.output_direc + 'rho_{}/SizeTransport_rho={}_allsizes_year={}_{}'.format(*str_format)
 
 
 def set_normalization(beach_state):
