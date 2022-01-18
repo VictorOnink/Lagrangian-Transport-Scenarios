@@ -71,7 +71,7 @@ class SizeTransport_MaxDistance:
 
         # Plotting the maximum distances
         for index, size in enumerate(self.size_list):
-            ax_list[index].scatter(LON, LAT, cmap=self.cmap, c=data_dict[size], norm=norm, zorder=50,s=5)
+            ax_list[index].scatter(LON, LAT, cmap=self.cmap, c=data_dict[size], norm=norm, zorder=50, s=8)
 
         # Saving the figure
         plt.savefig(self.plot_save_name(), bbox_inches='tight', dpi=400)
