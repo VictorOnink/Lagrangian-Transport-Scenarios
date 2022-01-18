@@ -32,7 +32,7 @@ class SizeTransport_MaxDistance:
                                                             repeat_dt=None).file_names
         self.spatial_domain = np.nanmin(self.adv_file_dict['LON']), np.nanmax(self.adv_file_dict['LON']), \
                               np.nanmin(self.adv_file_dict['LAT']), np.nanmax(self.adv_file_dict['LAT'])
-        self.cmap = cmo.solar
+        self.cmap = cmo.haline_r
 
     def plot(self):
         # Loading the data
@@ -56,7 +56,7 @@ class SizeTransport_MaxDistance:
                                                            lat_grid_step=5, lon_grid_step=10, resolution='10m'))
 
         # Setting the colormap, and adding a colorbar
-        norm = colors.LogNorm(vmin=1, vmax=100)
+        norm = colors.LogNorm(vmin=1, vmax=500)
         cbar_label, extend = r"Maximum distance from shore (km)", 'max'
         cmap = plt.cm.ScalarMappable(cmap=self.cmap, norm=norm)
         cax = fig.add_subplot(gs[:, -1])
