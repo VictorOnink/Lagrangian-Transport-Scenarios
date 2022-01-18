@@ -32,7 +32,7 @@ class SizeTransport_MaxDistance:
                                                             repeat_dt=None).file_names
         self.spatial_domain = np.nanmin(self.adv_file_dict['LON']), np.nanmax(self.adv_file_dict['LON']), \
                               np.nanmin(self.adv_file_dict['LAT']), np.nanmax(self.adv_file_dict['LAT'])
-        self.cmap = cmo.haline
+        self.cmap = cmo.solar
 
     def plot(self):
         # Loading the data
