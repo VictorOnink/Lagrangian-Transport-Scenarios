@@ -35,6 +35,15 @@ class SizeTransport_MaxDistance:
         self.cmap = cmo.haline
 
     def plot(self):
+        # Loading the data
+        data_dict = {}
+        for size in self.size_list:
+            size_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
+                                                       data_direc=self.data_direc,
+                                                       size=size, rho=self.rho, tau=self.tau)
+            data_dict[size] = size_dict['median_max_distance']
+        LON, LAT = size_dict['site_lon'], size_dict['site_lat']
+
         # Creating the base figure
         fig = plt.figure(figsize=self.figure_size)
         gs = fig.add_gridspec(nrows=self.figure_shape[0], ncols=self.figure_shape[1] + 1, width_ratios=[1, 1, 1, 0.1])
@@ -56,12 +65,25 @@ class SizeTransport_MaxDistance:
         cbar.ax.tick_params(which='major', labelsize=self.ax_ticklabel_size, length=14, width=2)
         cbar.ax.tick_params(which='minor', labelsize=self.ax_ticklabel_size, length=7, width=2)
 
+        # Adding subfigure titles
+        for index, ax in enumerate(ax_list):
+            ax.set_title(self.subfigure_title(index, self.size_list), weight='bold', fontsize=self.ax_label_size)
+
+        # Plotting the maximum distances
+        for index, size in enumerate(self.size_list):
+            ax_list[index].scatter(LON, LAT, cmap=self.cmap, c=data_dict[size], norm=norm, zorder=50)
+
         # Saving the figure
         plt.savefig(self.plot_save_name(), bbox_inches='tight', dpi=400)
         plt.close('all')
 
     def plot_save_name(self):
         return self.output_direc + 'Max_distance_rho={}.png'.format(self.rho)
+
+    @staticmethod
+    def subfigure_title(index, size_list):
+        return '({}) r = {:.3f} mm'.format(string.ascii_lowercase[index], size_list[index] * 1e3)
+
 
 
 

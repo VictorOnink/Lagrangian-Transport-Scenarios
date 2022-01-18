@@ -7,36 +7,40 @@ import settings
 
 def create_distance_to_shore(output_name: str, grid: np.array, lon: np.array, lat: np.array):
     # Getting the dimensions of the model grid
-    mask = grid.mask
+    land = grid.mask
     n_lon, n_lat = len(lon), len(lat)
 
     # Initializing the distance array
-    distance = np.zeros(mask.shape)
+    distance = np.zeros(land.shape)
 
     # Creating a memory variable that keeps track of how many cells away land is. That way, when we move from one
     # cell to it's neighbor, then we don't need to check everything again...
     memory_var = 1
 
-    # The actual distance computation loop
-    for lat_index in progressbar.progressbar(range(mask.shape[0])):
-        for lon_index in range(mask.shape[1]):
-            if not mask[lat_index, lon_index]:
+    # Looping through all the cells
+    for lat_index in progressbar.progressbar(range(land.shape[0])):
+        for lon_index in range(land.shape[1]):
+            # If the land mask is false, find the nearest land cell
+            if not land[lat_index, lon_index]:
+                # Reduce the memory step from the previous cell by two. This saves computational effort because if for
+                # example
                 if memory_var > 2:
                     cells = memory_var - 2
                 else:
                     cells = 1
+
                 land_lon, land_lat, dis = [], [], []
                 while len(land_lon) == 0:
                     for lat_step in [-cells, cells]:
                         for lon_step in range(-cells, cells + 1):
                             if boundary_conditions(n_lat, n_lon, lat_index, lat_step, lon_index, lon_step):
-                                if mask[(lat_index + lat_step) % n_lat, (lon_index + lon_step) % n_lon]:
+                                if land[(lat_index + lat_step) % n_lat, (lon_index + lon_step) % n_lon]:
                                     land_lat.append((lat_index + lat_step) % n_lat)
                                     land_lon.append((lon_index + lon_step) % n_lon)
                     for lat_step in range(-cells, cells + 1):
                         for lon_step in [-cells, cells]:
                             if boundary_conditions(n_lat, n_lon, lat_index, lat_step, lon_index, lon_step):
-                                if mask[(lat_index + lat_step) % n_lat, (lon_index + lon_step) % n_lon]:
+                                if land[(lat_index + lat_step) % n_lat, (lon_index + lon_step) % n_lon]:
                                     land_lat.append((lat_index + lat_step) % n_lat)
                                     land_lon.append((lon_index + lon_step) % n_lon)
                     cells += 1
@@ -48,6 +52,7 @@ def create_distance_to_shore(output_name: str, grid: np.array, lon: np.array, la
                 distance[lat_index, lon_index] += np.min(dis)
             else:
                 memory_var = 1
+
     # Saving the entire distance field
     coords = [('lat', lat), ('lon', lon)]
     dist = xarray.DataArray(distance, coords=coords)
