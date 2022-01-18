@@ -51,7 +51,7 @@ class parcels_to_max_distance:
                 print(median)
 
                 # Create a dictionary contains all the release sites and median distance
-                release_dict, index = {}, 0
+                print(median['release_lon'])
 
 
 
