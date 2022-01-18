@@ -56,7 +56,7 @@ class SizeTransport_MaxDistance:
                                                            lat_grid_step=5, lon_grid_step=10, resolution='10m'))
 
         # Setting the colormap, and adding a colorbar
-        norm = colors.LogNorm(vmin=1, vmax=500)
+        norm = colors.LogNorm(vmin=10, vmax=1000)
         cbar_label, extend = r"Maximum distance from shore (km)", 'max'
         cmap = plt.cm.ScalarMappable(cmap=self.cmap, norm=norm)
         cax = fig.add_subplot(gs[:, -1])
