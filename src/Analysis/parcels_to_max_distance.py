@@ -63,7 +63,8 @@ class parcels_to_max_distance:
 
         def get_directories(self):
             temp_direc = settings.SCRATCH_DIR
-            output_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/{}/'.format(self.scenario_name)
+            output_direc = utils.get_output_directory(server=settings.SERVER) + 'max_distance' \
+                                                                                '/{}/'.format(self.scenario_name)
             utils.check_direc_exist(temp_direc)
             utils.check_direc_exist(output_direc)
             return temp_direc, output_direc
