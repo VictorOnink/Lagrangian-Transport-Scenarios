@@ -44,7 +44,11 @@ class parcels_to_max_distance:
             df = pd.DataFrame.from_dict({'release_lon': self.output_dict['release_lon'],
                                          'release_lat': self.output_dict['release_lat'],
                                          'max_distance': self.output_dict['max_distance']})
-            print(df)
+
+            # Group the particles by release location and calculate the median max distance for each release site
+            median = df.groupby(['release_lon', 'release_lat']).median()
+            print(median)
+
 
 
     @staticmethod
