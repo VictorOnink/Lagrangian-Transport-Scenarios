@@ -20,10 +20,10 @@ class parcels_to_max_distance:
             self.output_dict = self.create_output_dict()
 
         def run(self):
-            if self.parallel_step == 1:
+            if self.parallel_step == 0:
                 utils.print_statement('Nothing happens for parcels_to_max_distance when settings.PARALLEL_STEP == 1',
                                       to_print=True)
-            elif self.parallel_step == 2:
+            elif self.parallel_step == 1:
                 # Calculate the max distance over the first year of the simulation
                 parcels_dataset = xr.load_dataset(self.file_dict[settings.RUN][0])
                 self.output_dict['max_distance'] = parcels_dataset.distance2coast.max(dim='obs', skipna=True)
@@ -47,14 +47,11 @@ class parcels_to_max_distance:
 
                 # Group the particles by release location and calculate the median max distance for each release site
                 median = df.groupby(['release_lon', 'release_lat']).median()
+                print(type(median))
+                print(median)
 
                 # Create a dictionary contains all the release sites and median distance
                 release_dict, index = {}, 0
-                release_lon = median.groups.keys()
-                for lon in release_lon:
-                    print(lon)
-                    print(median.get_group(lon))
-                    print('\n')
 
 
 
