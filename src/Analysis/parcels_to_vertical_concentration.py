@@ -94,13 +94,13 @@ class parcels_to_vertical_concentration:
                                                            run=run, restart=restart)
                                 dataset_post = utils.load_obj(filename=file_name)
 
-                                for key_year in self.output_dict.keys():
-                                    if key_year != 'depth':
-                                        for month_index in self.output_dict[key_year].keys():
-                                            for size_class in self.output_dict[key_year][month_index].keys():
-                                                for index_conc, concentration in enumerate(self.concentration_list):
-                                                    self.output_dict[key_year][month_index][size_class][concentration] += dataset_post[key_year][month_index][size_class][concentration]
-                                                    self.output_dict[key_year][month_index][size_class][self.counts_list[index_conc]] += dataset_post[key_year][month_index][size_class][self.counts_list[index_conc]]
+                                for sim_year in range(settings.SIM_LENGTH):
+                                    key_year = utils.analysis_simulation_year_key(sim_year)
+                                    for month_index in self.output_dict[key_year].keys():
+                                        for size_class in self.output_dict[key_year][month_index].keys():
+                                            for index_conc, concentration in enumerate(self.concentration_list):
+                                                self.output_dict[key_year][month_index][size_class][concentration] += dataset_post[key_year][month_index][size_class][concentration]
+                                                self.output_dict[key_year][month_index][size_class][self.counts_list[index_conc]] += dataset_post[key_year][month_index][size_class][self.counts_list[index_conc]]
                                 utils.remove_file(file_name)
                             else:
                                 if month == 1 and year == settings.STARTYEAR:
@@ -108,11 +108,11 @@ class parcels_to_vertical_concentration:
                                                                directory=self.temp_direc, final=False, year=year, run=run,
                                                                restart=restart)
                                     dataset_post = utils.load_obj(filename=file_name)
-                                    for key_year in self.output_dict.keys():
-                                        if key_year != 'depth':
-                                            for month_index in self.output_dict[key_year].keys():
-                                                self.output_dict[key_year][month_index]['concentration'] += dataset_post[key_year][month_index]['concentration']
-                                                self.output_dict[key_year][month_index]['counts'] += dataset_post[key_year][month_index]['counts']
+                                    for sim_year in range(settings.SIM_LENGTH):
+                                        key_year = utils.analysis_simulation_year_key(sim_year)
+                                        for month_index in self.output_dict[key_year].keys():
+                                            self.output_dict[key_year][month_index]['concentration'] += dataset_post[key_year][month_index]['concentration']
+                                            self.output_dict[key_year][month_index]['counts'] += dataset_post[key_year][month_index]['counts']
                                     utils.remove_file(file_name)
             # Saving the output
             output_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
@@ -170,7 +170,7 @@ def create_output_dict(scenario_name, depth_bins, concentration_list, counts_lis
         simulation_range = settings.SIM_LENGTH + 1
     else:
         base_dict = {'counts': 0.0, 'concentration': np.zeros(depth_bins.__len__() - 1, dtype=np.float32)}
-        simulation_range = settings.SIM_LENGTH
+        simulation_range = settings.SIM_LENGTH + 1
     for simulation_year in range(simulation_range):
         key_year = utils.analysis_simulation_year_key(simulation_year)
         output_dict[key_year] = {}
