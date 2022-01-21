@@ -10,12 +10,13 @@ import cmocean.cm as cmo
 
 
 class SizeTransport_MaxDistance:
-    def __init__(self, scenario, figure_direc, rho, tau=0):
+    def __init__(self, scenario, figure_direc, rho, tau=0, fixed_resus=False):
         # Simulation parameters
         self.scenario = scenario
         self.rho = rho
         self.size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
         self.tau = tau
+        self.fixed_resus = fixed_resus
         # Data parameters
         self.output_direc = figure_direc + 'max_distance/'
         self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'max_distance/SizeTransport/'
@@ -39,7 +40,7 @@ class SizeTransport_MaxDistance:
         data_dict = {}
         for size in self.size_list:
             size_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
-                                                       data_direc=self.data_direc,
+                                                       data_direc=self.data_direc, fixed_resus=self.fixed_resus,
                                                        size=size, rho=self.rho, tau=self.tau)
             data_dict[size] = size_dict['median_max_distance']
         LON, LAT = size_dict['site_lon'], size_dict['site_lat']
