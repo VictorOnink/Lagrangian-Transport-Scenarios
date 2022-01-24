@@ -38,7 +38,7 @@ class SizeTransport_reservoirs:
         self.state_color = {'beach': 'r', 'adrift': 'b'}
         self.single_plot = single_plot
         self.number_of_plots = {True: 1, False: 2}[self.single_plot]
-        self.width_ratio = {1: [1, 0.3], 2: [1, 1, 0.3]}[self.number_of_plots]
+        self.width_ratio = {1: [1, 0.3], 2: [1, 1, 0.35]}[self.number_of_plots]
         self.figure_shape = (1, self.number_of_plots)
 
     def plot(self):
