@@ -60,7 +60,7 @@ class SizeTransport_reservoirs:
                             timeseries_dict[rho][size][fixed_resus][beach_state] = {}
                             for coastal in self.coastal_list:
                                 timeseries_dict[rho][size][fixed_resus][beach_state][coastal] = data_dict[beach_state][coastal]
-                timeseries_dict[rho][size]['total_divide'] = data_dict['total'][-1]
+                    timeseries_dict[rho][size][fixed_resus]['total_divide'] = data_dict['total'][-1]
 
         # Normalizing all the particle counts with the total number of particles, and then multiplying by 100 to get a
         # percentage
