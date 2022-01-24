@@ -33,7 +33,7 @@ class parcels_to_max_distance:
                         print(restart_dataset)
                         print(parcels_dataset)
                         stack_max = np.vstack((self.output_dict['max_distance'],
-                                               restart_dataset.distance2coast.max(dims='obs', skipna=True)))
+                                               parcels_dataset.distance2coast.max(dims='obs', skipna=True)))
                         self.output_dict['max_distance'] = stack_max
 
                 # Save the starting lon and lat positions of each particle
