@@ -112,7 +112,7 @@ class parcels_to_vertical_concentration:
                                             print(key_year, month_index)
                                             print(self.output_dict[key_year].keys())
                                             print(self.output_dict[key_year][month_index].keys())
-                                            print(dataset_post[key_year][month_index].keys())
+                                            print(dataset_post.keys())
                                             self.output_dict[key_year][month_index]['concentration'] += dataset_post[key_year][month_index]['concentration']
                                             self.output_dict[key_year][month_index]['counts'] += dataset_post[key_year][month_index]['counts']
                                     utils.remove_file(file_name)
