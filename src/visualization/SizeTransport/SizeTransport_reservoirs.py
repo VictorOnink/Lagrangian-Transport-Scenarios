@@ -143,7 +143,7 @@ class SizeTransport_reservoirs:
         plt.close('all')
 
     def file_name(self, file_type='.png'):
-        name = 'SizeTransport_reservoirs'
+        name = 'SizeTransport_reservoirs_'
         if self.rho_list.__len__() != 4:
             name += 'rho_{}_'.format(self.rho_list[0])
         if self.single_plot:
@@ -152,7 +152,7 @@ class SizeTransport_reservoirs:
             else:
                 name += 'size_dependent'
         else:
-            name += '_{}'.format(self.resus_time)
+            name += '{}'.format(self.resus_time)
         return self.output_direc + name + file_type
 
 
