@@ -23,7 +23,7 @@ class SizeTransport_reservoirs:
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'timeseries'
         # Figure parameters
-        self.figure_size = (10, 8)
+        self.figure_size = (14, 8)
         self.ax_label_size = 16
         self.ax_ticklabel_size = 14
         self.legend_size = 12
