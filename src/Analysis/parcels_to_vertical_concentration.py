@@ -14,7 +14,7 @@ class parcels_to_vertical_concentration:
         self.parallel_step = settings.PARALLEL_STEP
         self.file_dict = file_dict
         self.depth_bins = determine_depth_bins()
-        self.temp_direc, self.output_direc = get_directories(scenario_name=settings.SCENARIO_NAME)
+        self.temp_direc, self.output_direc = self.get_directories()
         # Some variables specific to FragmentationKaandorpPartial
         self.weight_list = ['particle_mass_sink', 'particle_number_sink']
         self.concentration_list = ['concentration_mass_sink',
@@ -22,34 +22,6 @@ class parcels_to_vertical_concentration:
         self.counts_list = ['counts_mass_sink', 'counts_number_sink']
         # Creating the output_dict
         self.output_dict = self.create_output_dict()
-
-    def create_output_dict(self):
-        # Creating the output dict containing the depth bins
-        depth_mid = 0.5 * self.depth_bins[1:] + 0.5 * self.depth_bins[:-1]
-        output_dict = {'depth': depth_mid}
-
-        # Setting all the ranges for creating the structure of the output dict
-        if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
-            base_dict = {}
-            for count in self.counts_list:
-                base_dict[count] = 0.0
-            for concentration in self.concentration_list:
-                base_dict[concentration] = np.zeros(self.depth_bins.__len__() - 1, dtype=np.float32)
-        else:
-            base_dict = {'counts': 0.0, 'concentration': np.zeros(self.depth_bins.__len__() - 1, dtype=np.float32)}
-        simulation_range = settings.SIM_LENGTH + 1
-
-        for simulation_year in range(simulation_range):
-            key_year = utils.analysis_simulation_year_key(simulation_year)
-            output_dict[key_year] = {}
-            for month in range(0, 12):
-                if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
-                    output_dict[key_year][month] = {}
-                    for size_class in range(settings.SIZE_CLASS_NUMBER):
-                        output_dict[key_year][month][size_class] = deepcopy(base_dict)
-                else:
-                    output_dict[key_year][month] = deepcopy(base_dict)
-        return output_dict
 
     def run(self):
         if self.parallel_step == 1:
@@ -149,6 +121,42 @@ class parcels_to_vertical_concentration:
         else:
             ValueError('settings.PARALLEL_STEP can not have a value of {}'.format(self.parallel_step))
 
+    def create_output_dict(self):
+        # Creating the output dict containing the depth bins
+        depth_mid = 0.5 * self.depth_bins[1:] + 0.5 * self.depth_bins[:-1]
+        output_dict = {'depth': depth_mid}
+
+        # Setting all the ranges for creating the structure of the output dict
+        if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
+            base_dict = {}
+            for count in self.counts_list:
+                base_dict[count] = 0.0
+            for concentration in self.concentration_list:
+                base_dict[concentration] = np.zeros(self.depth_bins.__len__() - 1, dtype=np.float32)
+        else:
+            base_dict = {'counts': 0.0, 'concentration': np.zeros(self.depth_bins.__len__() - 1, dtype=np.float32)}
+        simulation_range = settings.SIM_LENGTH + 1
+
+        for simulation_year in range(simulation_range):
+            key_year = utils.analysis_simulation_year_key(simulation_year)
+            output_dict[key_year] = {}
+            for month in range(0, 12):
+                if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
+                    output_dict[key_year][month] = {}
+                    for size_class in range(settings.SIZE_CLASS_NUMBER):
+                        output_dict[key_year][month][size_class] = deepcopy(base_dict)
+                else:
+                    output_dict[key_year][month] = deepcopy(base_dict)
+        return output_dict
+
+    @staticmethod
+    def get_directories():
+        temp_direc = settings.SCRATCH_DIR
+        output_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/{}/'.format(settings.SCENARIO_NAME)
+        utils.check_direc_exist(temp_direc)
+        utils.check_direc_exist(output_direc)
+        return temp_direc, output_direc
+
 
 ########################################################################################################################
 """
@@ -181,15 +189,6 @@ def determine_month_boundaries():
             days_in_month.append(last_of_month.day)
             time_list.append((last_of_month - reference_time).total_seconds())
     return time_list, days_in_month
-
-
-def get_directories(scenario_name):
-    # temp_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/{}/temporary/'.format(scenario_name)
-    temp_direc = settings.SCRATCH_DIR
-    output_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/{}/'.format(scenario_name)
-    utils.check_direc_exist(temp_direc)
-    utils.check_direc_exist(output_direc)
-    return temp_direc, output_direc
 
 
 def get_file_names(scenario_name, file_dict, directory, final, year=settings.STARTYEAR, month=settings.STARTMONTH,
