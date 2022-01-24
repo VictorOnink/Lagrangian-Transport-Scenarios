@@ -142,11 +142,16 @@ class SizeTransport_reservoirs:
         plt.savefig(file_name, bbox_inches='tight', dpi=400)
         plt.close('all')
 
-    def file_name(self):
-        if self.rho_list.__len__() == 4:
-            return self.output_direc + 'SizeTransport_reservoirs.jpg'
-        else:
-            return self.output_direc + 'SizeTransport_reservoirs_rho_{}.jpg'.format(self.rho_list[0])
+    def file_name(self, file_type='.png'):
+        name = 'SizeTransport_reservoirs'
+        if self.rho_list.__len__() != 4:
+            name += 'rho_{}_'.format(self.rho_list[0])
+        if self.single_plot:
+            if self.fixed_resus:
+                name += 'fixed_resus_{}'.format(self.resus_time)
+            else:
+                name += 'size_dependent'
+        return self.output_direc + name + file_type
 
 
 def beach_label(beach_state):
