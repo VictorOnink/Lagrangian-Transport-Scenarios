@@ -151,6 +151,8 @@ class SizeTransport_reservoirs:
                 name += 'fixed_resus_{}'.format(self.resus_time)
             else:
                 name += 'size_dependent'
+        else:
+            name += '_{}'.format(self.resus_time)
         return self.output_direc + name + file_type
 
 
