@@ -59,15 +59,15 @@ def run(scenario, figure_direc: str):
     #                                          rho_list=[30, 920, 980, 1020]).plot()
 
     # Plotting all horizontal concentrations for a given density
-    for rho in [30, 920, 980, 1020]:
-        for time_select in [0, 1, 2]:
-            for depth_level in ['surface_1m', 'surface_5m', 'column']:
-                SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
-                                                  time_selection=time_select, rho=rho, depth_level=depth_level).plot()
+    # for rho in [30, 920, 980, 1020]:
+    #     for time_select in [0, 1, 2]:
+    #         for depth_level in ['surface_1m', 'surface_5m', 'column']:
+    #             SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
+    #                                               time_selection=time_select, rho=rho, depth_level=depth_level).plot()
 
     # Plot the maximum distance from shore for a given density
-    for rho in [30, 920, 980, 1020]:
-        SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho).plot()
+    # for rho in [30, 920, 980, 1020]:
+    #     SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho).plot()
 
     size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
     # Creating figures of the timeseries of the number of particles that are beached/adrift/seabed
@@ -84,13 +84,13 @@ def run(scenario, figure_direc: str):
     # SizeTransport_CumulativeDistance(figure_direc=figure_direc, scenario=scenario, size_list=size_list).plot()
 
     # Plotting the month average vertical profile
-    for rho in [[920, 980], [30, 1020]]:
-        SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                      time_selection=0, rho_list=rho).plot()
-        SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                      time_selection=1, rho_list=rho).plot()
-        SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                      time_selection=2, rho_list=rho).plot()
+    # for rho in [[920, 980], [30, 1020]]:
+    #     SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                   time_selection=0, rho_list=rho).plot()
+    #     SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                   time_selection=1, rho_list=rho).plot()
+    #     SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                   time_selection=2, rho_list=rho).plot()
 
     # Plotting the separation distance
     # for size_selection in size_list:
@@ -98,10 +98,10 @@ def run(scenario, figure_direc: str):
     #                                      size_list=size_list).plot()
 
     # Plotting the lon lat concentration averages
-    for time in [0, 1, 2]:
-        SizeTransport_lonlat_averages(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                      time_selection=time, beach_state='beach').plot()
-        SizeTransport_lonlat_averages(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                      time_selection=time, beach_state='adrift').plot()
+    # for time in [0, 1, 2]:
+    #     SizeTransport_lonlat_averages(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                   time_selection=time, beach_state='beach').plot()
+    #     SizeTransport_lonlat_averages(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                   time_selection=time, beach_state='adrift').plot()
 
     utils.print_statement("That is all folks!", to_print=True)

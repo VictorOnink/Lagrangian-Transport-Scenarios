@@ -1,5 +1,7 @@
 from parcels import FieldSet, ParticleSet
 import numpy as np
+
+import settings
 import settings as settings
 import scenarios.base_scenario as base_scenario
 import factories.fieldset_factory as fieldset_factory
@@ -98,11 +100,10 @@ class SizeTransport(base_scenario.BaseScenario):
                    shore_time: int = settings.SHORE_TIME, init_size: float = settings.INIT_SIZE,
                    init_density: int = settings.INIT_DENSITY, start_year: int = settings.STARTYEAR,
                    input: str = settings.INPUT, run: int = settings.RUN, restart: int = settings.RESTART,
-                   seabed_crit: float = settings.SEABED_CRIT, fixed_resus: bool = settings.FIXED_RESUS):
+                   seabed_crit: float = settings.SEABED_CRIT, fixed_resus: bool = settings.FIXED_RESUS,
+                   resus_time: str = settings.RESUS_TIME):
         odirec = self.output_dir + "SizeTransport/size_{:.1E}/".format(init_size)
-        if settings.FIXED_RESUS:
-            resus_time = settings.RESUS_TIME
-        else:
+        if not fixed_resus:
             resus_time = utils.get_resuspension_timescale(L=init_size, rho_p=init_density)
         if new:
             str_format = (advection_data, shore_time, resus_time, init_size, init_density, seabed_crit, start_year,

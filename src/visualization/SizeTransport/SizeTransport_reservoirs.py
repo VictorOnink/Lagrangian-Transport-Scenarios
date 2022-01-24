@@ -7,13 +7,16 @@ from datetime import datetime, timedelta
 
 
 class SizeTransport_reservoirs:
-    def __init__(self, scenario, figure_direc, size_list, rho_list=[30, 920, 980, 1020]):
+    def __init__(self, scenario, figure_direc, size_list, rho_list=[30, 920, 980, 1020], single_plot=False,
+                 fixed_resus=False, resus_time=settings.RESUS_TIME):
         utils.print_statement('Creating the SizeTransport reservoirs figure', to_print=True)
         # Simulation parameters
         self.scenario = scenario
         self.rho_list = rho_list
         self.size_list = size_list
         self.tau = 0.0
+        self.fixed_resus = fixed_resus
+        self.resus_time = resus_time
         # Data parameters
         self.output_direc = figure_direc + 'timeseries/'
         self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/SizeTransport/'
@@ -21,7 +24,6 @@ class SizeTransport_reservoirs:
         self.prefix = 'timeseries'
         # Figure parameters
         self.figure_size = (10, 8)
-        self.figure_shape = (1, 1)
         self.ax_label_size = 16
         self.ax_ticklabel_size = 14
         self.legend_size = 12
@@ -34,7 +36,10 @@ class SizeTransport_reservoirs:
         self.x_label = 'Size (mm)'
         self.rho_marker_dict = {30: 'X', 920: 'o', 980: 's', 1020: 'D'}
         self.state_color = {'beach': 'r', 'adrift': 'b'}
-        self.number_of_plots = 1
+        self.single_plot = single_plot
+        self.number_of_plots = {True: 1, False: 2}[self.single_plot]
+        self.width_ratio = {1: [1, 0.3], 2: [1, 1, 0.3]}[self.number_of_plots]
+        self.figure_shape = (1, self.number_of_plots)
 
     def plot(self):
         # Loading the data
@@ -43,57 +48,86 @@ class SizeTransport_reservoirs:
             timeseries_dict[rho] = {}
             for size in self.size_list:
                 timeseries_dict[rho][size] = {}
-                data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix, data_direc=self.data_direc,
-                                                           size=size, rho=rho, tau=self.tau)
-                for beach_state in self.beach_state_list:
-                    if beach_state in ['beach']:
-                        timeseries_dict[rho][size][beach_state] = data_dict[beach_state]
-                    elif beach_state in ['adrift']:
-                        timeseries_dict[rho][size][beach_state] = {}
-                        for coastal in self.coastal_list:
-                            timeseries_dict[rho][size][beach_state][coastal] = data_dict[beach_state][coastal]
+                for fixed_resus in [True, False]:
+                    timeseries_dict[rho][size][fixed_resus] = {}
+                    data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
+                                                               data_direc=self.data_direc, size=size, rho=rho, tau=self.tau,
+                                                               fixed_resus=fixed_resus, resus_time=self.resus_time)
+                    for beach_state in self.beach_state_list:
+                        if beach_state in ['beach']:
+                            timeseries_dict[rho][size][fixed_resus][beach_state] = data_dict[beach_state]
+                        elif beach_state in ['adrift']:
+                            timeseries_dict[rho][size][fixed_resus][beach_state] = {}
+                            for coastal in self.coastal_list:
+                                timeseries_dict[rho][size][fixed_resus][beach_state][coastal] = data_dict[beach_state][coastal]
                 timeseries_dict[rho][size]['total_divide'] = data_dict['total'][-1]
 
         # Normalizing all the particle counts with the total number of particles, and then multiplying by 100 to get a
         # percentage
         for rho in self.rho_list:
             for size in self.size_list:
-                for beach_state in self.beach_state_list:
-                    if beach_state in ['beach']:
-                        timeseries_dict[rho][size][beach_state] /= timeseries_dict[rho][size]['total_divide']
-                        timeseries_dict[rho][size][beach_state] *= 100.
-                        timeseries_dict[rho][size][beach_state] = timeseries_dict[rho][size][beach_state][-1]
-                    elif beach_state in ['adrift']:
-                        for c in self.coastal_list:
-                            timeseries_dict[rho][size][beach_state][c] /= timeseries_dict[rho][size]['total_divide']
-                            timeseries_dict[rho][size][beach_state][c] *= 100.
-                            timeseries_dict[rho][size][beach_state][c] = timeseries_dict[rho][size][beach_state][c][-1]
+                for fixed_resus in [False, True]:
+                    for beach_state in self.beach_state_list:
+                        if beach_state in ['beach']:
+                            timeseries_dict[rho][size][fixed_resus][beach_state] /= timeseries_dict[rho][size][fixed_resus]['total_divide']
+                            timeseries_dict[rho][size][fixed_resus][beach_state] *= 100.
+                            timeseries_dict[rho][size][fixed_resus][beach_state] = timeseries_dict[rho][size][fixed_resus][beach_state][-1]
+                        elif beach_state in ['adrift']:
+                            for c in self.coastal_list:
+                                timeseries_dict[rho][size][fixed_resus][beach_state][c] /= timeseries_dict[rho][size][fixed_resus]['total_divide']
+                                timeseries_dict[rho][size][fixed_resus][beach_state][c] *= 100.
+                                timeseries_dict[rho][size][fixed_resus][beach_state][c] = timeseries_dict[rho][size][fixed_resus][beach_state][c][-1]
 
         # Creating the figure
         ax = vUtils.base_figure(fig_size=self.figure_size, ax_range=self.ax_range, y_label=self.y_label,
                                 x_label=self.x_label, ax_label_size=self.ax_label_size,
                                 ax_ticklabel_size=self.ax_ticklabel_size, shape=self.figure_shape,
                                 plot_num=self.number_of_plots, legend_axis=True, log_yscale=False, log_xscale=True,
-                                width_ratios=[1, 0.3], all_x_labels=True)
+                                width_ratios=self.width_ratio, all_x_labels=True)
+
+        # If we have multiple subplots, labelling the subplots
+        title = ['(a) Size-dependent resuspension', r'(b) $\lambda_R =$' + '{}'.format(self.resus_time) + ' days']
+        for index, ax_sub in enumerate(ax):
+            ax_sub.set_title(title[index], weight='bold', fontsize=self.ax_label_size)
 
         # Now, adding in the actual data
-        for rho in self.rho_list:
-            for index_size, size in enumerate(self.size_list):
-                for beach_state in self.beach_state_list:
-                    if beach_state in ['beach']:
-                        ax[0].scatter(size * 1e3, timeseries_dict[rho][size][beach_state],
-                                      marker=self.rho_marker_dict[rho], edgecolors='b',
-                                      facecolors='none', s=80)
-                    elif beach_state in ['adrift']:
-                        coastal_zone = 'coastal_10km'
-                        ax[0].scatter(size * 1e3, timeseries_dict[rho][size][beach_state][coastal_zone],
-                                      marker=self.rho_marker_dict[rho], edgecolors='g',
-                                      facecolors='none', s=80)
-                        # To get the open ocean, we subtract the coastal fraction from the total fraction
-                        open_ocean = timeseries_dict[rho][size][beach_state]['total'] - timeseries_dict[rho][size][beach_state][coastal_zone]
-                        ax[0].scatter(size * 1e3, open_ocean,
-                                      marker=self.rho_marker_dict[rho], edgecolors='r',
-                                      facecolors='none', s=80)
+        if self.single_plot:
+            for rho in self.rho_list:
+                for index_size, size in enumerate(self.size_list):
+                    for beach_state in self.beach_state_list:
+                        if beach_state in ['beach']:
+                            ax[0].scatter(size * 1e3, timeseries_dict[rho][size][self.fixed_resus][beach_state],
+                                          marker=self.rho_marker_dict[rho], edgecolors='b',
+                                          facecolors='none', s=80)
+                        elif beach_state in ['adrift']:
+                            coastal_zone = 'coastal_10km'
+                            ax[0].scatter(size * 1e3, timeseries_dict[rho][size][self.fixed_resus][beach_state][coastal_zone],
+                                          marker=self.rho_marker_dict[rho], edgecolors='g',
+                                          facecolors='none', s=80)
+                            # To get the open ocean, we subtract the coastal fraction from the total fraction
+                            open_ocean = timeseries_dict[rho][size][self.fixed_resus][beach_state]['total'] - timeseries_dict[rho][size][self.fixed_resus][beach_state][coastal_zone]
+                            ax[0].scatter(size * 1e3, open_ocean,
+                                          marker=self.rho_marker_dict[rho], edgecolors='r',
+                                          facecolors='none', s=80)
+        else:
+            for rho in self.rho_list:
+                for index_size, size in enumerate(self.size_list):
+                    for beach_state in self.beach_state_list:
+                        for index_fix, fixed_resus in enumerate([False, True]):
+                            if beach_state in ['beach']:
+                                ax[index_fix].scatter(size * 1e3, timeseries_dict[rho][size][fixed_resus][beach_state],
+                                                      marker=self.rho_marker_dict[rho], edgecolors='b',
+                                                      facecolors='none', s=80)
+                            elif beach_state in ['adrift']:
+                                coastal_zone = 'coastal_10km'
+                                ax[index_fix].scatter(size * 1e3, timeseries_dict[rho][size][fixed_resus][beach_state][coastal_zone],
+                                                      marker=self.rho_marker_dict[rho], edgecolors='g',
+                                                      facecolors='none', s=80)
+                                # To get the open ocean, we subtract the coastal fraction from the total fraction
+                                open_ocean = timeseries_dict[rho][size][fixed_resus][beach_state]['total'] - timeseries_dict[rho][size][fixed_resus][beach_state][coastal_zone]
+                                ax[index_fix].scatter(size * 1e3, open_ocean,
+                                                      marker=self.rho_marker_dict[rho], edgecolors='r',
+                                                      facecolors='none', s=80)
 
         # Creating a legend
         rho_lines = [plt.plot([], [], self.rho_marker_dict[rho], c='k', label=r'$\rho=$' + str(rho) + r' kg m$^{-3}$',
