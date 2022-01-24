@@ -15,7 +15,7 @@ VICINITY=2
 export VICINITY
 #for scenario 2, the beaching and resuspension timescales (in days)
 SHORETIME_list=(26)
-RESUSTIME_list=(69)
+RESUSTIME_list=(7 50)
 #for scenario 3, the shore dependence scenario.
 SHOREDEPEN=0
 export SHOREDEPEN
@@ -31,7 +31,7 @@ SEABED_CRIT=0
 export SEABED_CRIT
 #for scenarios 5 - 7, if fixed == 1 we have size-independent resuspension, otherwise the resuspension timescale is a
 #function of the particle rise velocity
-FIXED_RESUS=0
+FIXED_RESUS=1
 export FIXED_RESUS
 # For scenario 7, the fragmentation parameters p (x1e-1), DN (x1e-1), the number of size classes and fragmentation
 # timescale (days). Also, the option of including ocean fragmentation or not
@@ -59,7 +59,7 @@ export INPUT
 ADVECTION_DATA=2
 export ADVECTION_DATA
 #Number of years the simulation runs
-SIMLEN=3
+SIMLEN=1
 export SIMLEN
 # For the analysis, if we have multiple years that we want to combine into one analysis set (so if we have continuous
 # particle release), then this how many years we want to include
@@ -80,7 +80,7 @@ export SERVER
 
 #A number of switches to indicate which analysis steps we want to run.
 #0 = off, 1 = on
-CONCENTRATION=0
+CONCENTRATION=1
 VERTICAL_CONCENTRATION=1
 LONLAT_CONCENTRATION=1
 TIMESERIES=1
