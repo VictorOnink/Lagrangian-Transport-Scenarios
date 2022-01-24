@@ -30,10 +30,8 @@ class parcels_to_max_distance:
                 if settings.SIM_LENGTH > 1:
                     for restart in range(1, settings.SIM_LENGTH):
                         restart_dataset = xr.load_dataset(self.file_dict[settings.RUN][restart])
-                        print(restart_dataset)
-                        print(parcels_dataset)
                         stack_max = np.vstack((self.output_dict['max_distance'],
-                                               parcels_dataset.distance2coast.max(dims='obs', skipna=False)))
+                                               parcels_dataset.distance2coast.max(dim='obs', skipna=False)))
                         self.output_dict['max_distance'] = np.nanmax(stack_max, axis=1)
                         print(self.output_dict['max_distance'].shape)
 
