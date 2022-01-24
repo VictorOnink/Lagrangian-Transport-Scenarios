@@ -111,7 +111,7 @@ class parcels_to_vertical_concentration:
                                         for month_index in self.output_dict[key_year].keys():
                                             self.output_dict[key_year][month_index]['concentration'] += dataset_post[key_year][month_index]['concentration']
                                             self.output_dict[key_year][month_index]['counts'] += dataset_post[key_year][month_index]['counts']
-                                    utils.remove_file(file_name)
+                                    utils.remove_file(file_name + '.pkl')
             # Saving the output
             output_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
                                          directory=self.output_direc, final=True)
