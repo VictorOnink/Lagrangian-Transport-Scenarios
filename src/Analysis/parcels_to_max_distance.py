@@ -32,7 +32,7 @@ class parcels_to_max_distance:
                         restart_dataset = xr.load_dataset(self.file_dict[settings.RUN][restart])
                         stack_max = np.vstack((self.output_dict['max_distance'],
                                                parcels_dataset.distance2coast.max(dim='obs', skipna=True)))
-                        self.output_dict['max_distance'] = np.nanmax(stack_max, axis=1)
+                        self.output_dict['max_distance'] = np.nanmax(stack_max, axis=0)
                         print(self.output_dict['max_distance'].shape)
 
                 # Save the starting lon and lat positions of each particle
