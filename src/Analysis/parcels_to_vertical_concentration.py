@@ -22,7 +22,6 @@ class parcels_to_vertical_concentration:
         self.counts_list = ['counts_mass_sink', 'counts_number_sink']
         # Creating the output_dict
         self.output_dict = self.create_output_dict()
-        print(self.output_dict.keys(), settings.SIM_LENGTH)
 
     def run(self):
         if self.parallel_step == 1:
@@ -110,7 +109,9 @@ class parcels_to_vertical_concentration:
                                     for sim_year in range(settings.SIM_LENGTH):
                                         key_year = utils.analysis_simulation_year_key(sim_year)
                                         for month_index in self.output_dict[key_year].keys():
-                                            print(month_index)
+                                            print(key_year, month_index)
+                                            print(self.output_dict[key_year][month_index].keys())
+                                            print(dataset_post[key_year][month_index].keys())
                                             self.output_dict[key_year][month_index]['concentration'] += dataset_post[key_year][month_index]['concentration']
                                             self.output_dict[key_year][month_index]['counts'] += dataset_post[key_year][month_index]['counts']
                                     utils.remove_file(file_name)
