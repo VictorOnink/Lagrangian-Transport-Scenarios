@@ -86,9 +86,9 @@ class SizeTransport_reservoirs:
                                 width_ratios=self.width_ratio, all_x_labels=True)
 
         # If we have multiple subplots, labelling the subplots
-        title = ['(a) Size-dependent resuspension', r'(b) $\lambda_R =$' + '{}'.format(self.resus_time) + ' days']
-        for index, ax_sub in enumerate(ax):
-            ax_sub.set_title(title[index], weight='bold', fontsize=self.ax_label_size)
+        title_list = ['(a) Size-dependent resuspension', r'(b) $\lambda_R =$' + '{}'.format(self.resus_time) + ' days']
+        for index, title in enumerate(title_list):
+            ax[index].set_title(title, weight='bold', fontsize=self.ax_label_size)
 
         # Now, adding in the actual data
         if self.single_plot:
