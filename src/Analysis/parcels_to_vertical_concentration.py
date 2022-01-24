@@ -21,8 +21,35 @@ class parcels_to_vertical_concentration:
                                    'concentration_number_sink']
         self.counts_list = ['counts_mass_sink', 'counts_number_sink']
         # Creating the output_dict
-        self.output_dict = create_output_dict(scenario_name=settings.SCENARIO_NAME, depth_bins=self.depth_bins,
-                                              concentration_list=self.concentration_list, counts_list=self.counts_list)
+        self.output_dict = self.create_output_dict()
+
+    def create_output_dict(self):
+        # Creating the output dict containing the depth bins
+        depth_mid = 0.5 * self.depth_bins[1:] + 0.5 * self.depth_bins[:-1]
+        output_dict = {'depth': depth_mid}
+
+        # Setting all the ranges for creating the structure of the output dict
+        if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
+            base_dict = {}
+            for count in self.counts_list:
+                base_dict[count] = 0.0
+            for concentration in self.concentration_list:
+                base_dict[concentration] = np.zeros(self.depth_bins.__len__() - 1, dtype=np.float32)
+        else:
+            base_dict = {'counts': 0.0, 'concentration': np.zeros(self.depth_bins.__len__() - 1, dtype=np.float32)}
+        simulation_range = settings.SIM_LENGTH + 1
+
+        for simulation_year in range(simulation_range):
+            key_year = utils.analysis_simulation_year_key(simulation_year)
+            output_dict[key_year] = {}
+            for month in range(0, 12):
+                if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
+                    output_dict[key_year][month] = {}
+                    for size_class in range(settings.SIZE_CLASS_NUMBER):
+                        output_dict[key_year][month][size_class] = deepcopy(base_dict)
+                else:
+                    output_dict[key_year][month] = deepcopy(base_dict)
+        return output_dict
 
     def run(self):
         if self.parallel_step == 1:
@@ -76,7 +103,6 @@ class parcels_to_vertical_concentration:
                         self.output_dict[key_year][month_index]['concentration'] += histogram_counts
                         self.output_dict[key_year][month_index]['counts'] += np.nansum(histogram_counts)
 
-
                 utils.save_obj(output_name, self.output_dict)
                 str_format = settings.STARTYEAR, settings.STARTMONTH, settings.RUN, settings.RESTART
                 print_statement = 'The vertical concentration for year {}-{}, run {} restart {} has been save'.format(*str_format)
@@ -111,6 +137,7 @@ class parcels_to_vertical_concentration:
                                     for sim_year in range(settings.SIM_LENGTH):
                                         key_year = utils.analysis_simulation_year_key(sim_year)
                                         for month_index in self.output_dict[key_year].keys():
+                                            print(month_index)
                                             self.output_dict[key_year][month_index]['concentration'] += dataset_post[key_year][month_index]['concentration']
                                             self.output_dict[key_year][month_index]['counts'] += dataset_post[key_year][month_index]['counts']
                                     utils.remove_file(file_name)
@@ -154,34 +181,6 @@ def determine_month_boundaries():
             days_in_month.append(last_of_month.day)
             time_list.append((last_of_month - reference_time).total_seconds())
     return time_list, days_in_month
-
-
-def create_output_dict(scenario_name, depth_bins, concentration_list, counts_list):
-    # Creating the output dict containing the depth bins, and creating the base_dict, which is lowest dictionary level
-    # that will contain the particle counts and the concentration
-    depth_mid = 0.5 * depth_bins[1:] + 0.5 * depth_bins[:-1]
-    output_dict = {'depth': depth_mid}
-    if scenario_name in ['FragmentationKaandorpPartial']:
-        base_dict = {}
-        for count in counts_list:
-            base_dict[count] = 0.0
-        for concentration in concentration_list:
-            base_dict[concentration] = np.zeros(depth_bins.__len__() - 1, dtype=np.float32)
-        simulation_range = settings.SIM_LENGTH + 1
-    else:
-        base_dict = {'counts': 0.0, 'concentration': np.zeros(depth_bins.__len__() - 1, dtype=np.float32)}
-        simulation_range = settings.SIM_LENGTH + 1
-    for simulation_year in range(simulation_range):
-        key_year = utils.analysis_simulation_year_key(simulation_year)
-        output_dict[key_year] = {}
-        for month in range(0, 12):
-            if scenario_name in ['FragmentationKaandorpPartial']:
-                output_dict[key_year][month] = {}
-                for size_class in range(settings.SIZE_CLASS_NUMBER):
-                    output_dict[key_year][month][size_class] = deepcopy(base_dict)
-            else:
-                output_dict[key_year][month] = deepcopy(base_dict)
-    return output_dict
 
 
 def get_directories(scenario_name):
