@@ -22,7 +22,7 @@ class parcels_to_vertical_concentration:
         self.counts_list = ['counts_mass_sink', 'counts_number_sink']
         # Creating the output_dict
         self.output_dict = self.create_output_dict()
-        print(self.output_dict.keys())
+        print(self.output_dict.keys(), settings.SIM_LENGTH)
 
     def run(self):
         if self.parallel_step == 1:
