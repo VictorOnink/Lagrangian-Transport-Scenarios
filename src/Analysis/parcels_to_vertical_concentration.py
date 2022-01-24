@@ -109,10 +109,6 @@ class parcels_to_vertical_concentration:
                                     for sim_year in range(settings.SIM_LENGTH):
                                         key_year = utils.analysis_simulation_year_key(sim_year)
                                         for month_index in self.output_dict[key_year].keys():
-                                            print(key_year, month_index)
-                                            print(self.output_dict[key_year].keys())
-                                            print(self.output_dict[key_year][month_index].keys())
-                                            print(dataset_post.keys())
                                             self.output_dict[key_year][month_index]['concentration'] += dataset_post[key_year][month_index]['concentration']
                                             self.output_dict[key_year][month_index]['counts'] += dataset_post[key_year][month_index]['counts']
                                     utils.remove_file(file_name)
