@@ -10,7 +10,8 @@ import cmocean.cm as cmo
 
 
 class SizeTransport_full_concentrations:
-    def __init__(self, scenario, figure_direc, beach_state, time_selection,  rho, depth_level='column', tau=0):
+    def __init__(self, scenario, figure_direc, beach_state, time_selection,  rho, depth_level='column', tau=0,
+                 fixed_resus=False, resus_time=50):
         # Simulation parameters
         self.scenario = scenario
         self.rho = rho
@@ -19,6 +20,8 @@ class SizeTransport_full_concentrations:
         self.size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
         self.tau = tau
         self.depth_level = depth_level
+        self.fixed_resus = fixed_resus
+        self.resus_time = resus_time
         # Data parameters
         self.output_direc = figure_direc + 'concentrations/'
         self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/SizeTransport/'
@@ -44,8 +47,9 @@ class SizeTransport_full_concentrations:
         for index, size in enumerate(self.size_list):
             for beach_state in concentration_dict.keys():
                 data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
-                                                           data_direc=self.data_direc,
-                                                           size=size, rho=self.rho, tau=self.tau)
+                                                           data_direc=self.data_direc, fixed_resus=self.fixed_resus,
+                                                           size=size, rho=self.rho, tau=self.tau,
+                                                           resus_time=self.resus_time)
                 if self.beach_state in ['adrift']:
                     concentration_array = data_dict[key_concentration][beach_state][self.depth_level]
                 else:
@@ -109,14 +113,17 @@ class SizeTransport_full_concentrations:
         plt.savefig(file_name, bbox_inches='tight')
         plt.close('all')
 
-    def plot_save_name(self):
+    def plot_save_name(self, file_type='.png'):
         year = {0: 'year_0', 1: 'year_1', 2: 'year_2'}[self.time_selection]
         if self.beach_state in ['adrift']:
             str_format = self.rho, self.rho, year, self.beach_state, self.depth_level
-            return self.output_direc + 'rho_{}/SizeTransport_rho={}_allsizes_year={}_{}_{}'.format(*str_format)
+            name = self.output_direc + 'rho_{}/SizeTransport_rho={}_allsizes_year={}_{}_{}'.format(*str_format)
         else:
             str_format = self.rho, self.rho, year, self.beach_state
-            return self.output_direc + 'rho_{}/SizeTransport_rho={}_allsizes_year={}_{}'.format(*str_format)
+            name =  self.output_direc + 'rho_{}/SizeTransport_rho={}_allsizes_year={}_{}'.format(*str_format)
+        if self.fixed_resus:
+            name += 'fixed_resus_{}'.format(self.resus_time)
+        return name + file_type
 
 
 def set_normalization(beach_state):

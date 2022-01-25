@@ -59,11 +59,17 @@ def run(scenario, figure_direc: str):
     #                                          rho_list=[30, 920, 980, 1020]).plot()
 
     # Plotting all horizontal concentrations for a given density
-    # for rho in [30, 920, 980, 1020]:
-    #     for time_select in [0, 1, 2]:
-    #         for depth_level in ['surface_1m', 'surface_5m', 'column']:
-    #             SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
-    #                                               time_selection=time_select, rho=rho, depth_level=depth_level).plot()
+    for rho in [30, 920, 980, 1020]:
+        for time_select in [0]:
+            for depth_level in ['surface_1m', 'surface_5m', 'column']:
+                SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
+                                                  time_selection=time_select, rho=rho, depth_level=depth_level).plot()
+                SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
+                                                  time_selection=time_select, rho=rho, depth_level=depth_level,
+                                                  fixed_resus=True, resus_time=7).plot()
+                SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
+                                                  time_selection=time_select, rho=rho, depth_level=depth_level,
+                                                  fixed_resus=True, resus_time=50).plot()
 
     # Plot the maximum distance from shore for a given density
     # for rho in [30, 920, 980, 1020]:
@@ -75,13 +81,13 @@ def run(scenario, figure_direc: str):
     #                                simulation_years=3, rho_list=[30, 920, 980, 1020]).plot()
 
     # Figure showing the beached/adrift fractions of each size class
-    SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, size_list=size_list, resus_time=7).plot()
-    SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, size_list=size_list, resus_time=50).plot()
-    for rho in [30, 920, 980, 1020]:
-        SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                 rho_list=[rho], resus_time=7).plot()
-        SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                 rho_list=[rho], resus_time=50).plot()
+    # SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, size_list=size_list, resus_time=7).plot()
+    # SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, size_list=size_list, resus_time=50).plot()
+    # for rho in [30, 920, 980, 1020]:
+    #     SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                              rho_list=[rho], resus_time=7).plot()
+    #     SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                              rho_list=[rho], resus_time=50).plot()
 
     # Cumulative plots for the total distance travelled vertically and horizontally, and the max depth reached
     # SizeTransport_CumulativeDistance(figure_direc=figure_direc, scenario=scenario, size_list=size_list).plot()
