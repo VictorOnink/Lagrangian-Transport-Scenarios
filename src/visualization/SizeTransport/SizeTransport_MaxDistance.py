@@ -10,11 +10,13 @@ import cmocean.cm as cmo
 
 
 class SizeTransport_MaxDistance:
-    def __init__(self, scenario, figure_direc, rho, tau=0, fixed_resus=False, resus_time=50):
+    def __init__(self, scenario, figure_direc, rho, tau=0, fixed_resus=False, resus_time=50, subselection=False):
         # Simulation parameters
         self.scenario = scenario
         self.rho = rho
-        self.size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
+        self.subselection = subselection
+        self.size_list = np.array({False: [5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2],
+                                   True: [5000, 2]}[self.subselection]) * settings.SIZE_FACTOR
         self.tau = tau
         self.fixed_resus = fixed_resus
         self.resus_time = resus_time
@@ -25,10 +27,11 @@ class SizeTransport_MaxDistance:
         self.prefix = 'maximum_distance'
         # Figure parameters
         self.figure_size = (20, 20)
-        self.figure_shape = (4, 3)
         self.ax_label_size = 18
         self.ax_ticklabel_size = 16
         self.number_of_plots = self.size_list.__len__()
+        self.figure_shape = {False: (4, 3), True: (1, 2)}[self.subselection]
+        self.width_ratios = {False: [1, 1, 1, 0.1], True: [1, 1, 0.1]}[self.subselection]
         self.adv_file_dict = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
                                                             advection_scenario='CMEMS_MEDITERRANEAN',
                                                             repeat_dt=None).file_names
@@ -49,7 +52,8 @@ class SizeTransport_MaxDistance:
 
         # Creating the base figure
         fig = plt.figure(figsize=self.figure_size)
-        gs = fig.add_gridspec(nrows=self.figure_shape[0], ncols=self.figure_shape[1] + 1, width_ratios=[1, 1, 1, 0.1])
+        gs = fig.add_gridspec(nrows=self.figure_shape[0], ncols=self.figure_shape[1] + 1,
+                              width_ratios=self.width_ratios)
 
         ax_list = []
         for rows in range(self.figure_shape[0]):
@@ -70,7 +74,7 @@ class SizeTransport_MaxDistance:
 
         # Adding subfigure titles
         for index, ax in enumerate(ax_list):
-            ax.set_title(self.subfigure_title(index, self.size_list), weight='bold', fontsize=self.ax_label_size)
+            ax.set_title(self.subfigure_title(index), weight='bold', fontsize=self.ax_label_size)
 
         # Plotting the maximum distances
         for index, size in enumerate(self.size_list):
@@ -84,11 +88,12 @@ class SizeTransport_MaxDistance:
         name = self.output_direc + 'Max_distance_rho={}'.format(self.rho)
         if self.fixed_resus:
             name += '_fixed_resus_{}'.format(self.resus_time)
+        if self.subselection:
+            name += '_subselect'
         return name + file_type
 
-    @staticmethod
-    def subfigure_title(index, size_list):
-        return '({}) r = {:.3f} mm'.format(string.ascii_lowercase[index], size_list[index] * 1e3)
+    def subfigure_title(self, index):
+        return '({}) r = {:.3f} mm'.format(string.ascii_lowercase[index], self.size_list[index] * 1e3)
 
 
 
