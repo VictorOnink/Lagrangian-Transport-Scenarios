@@ -70,7 +70,7 @@ def run(scenario, figure_direc: str):
 
     # Plot the maximum distance from shore for a given density
     for rho in [30, 920, 980, 1020]:
-        for subselection in [True, False]:
+        for subselection in [True]:
             SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho,
                                       subselection=subselection).plot()
             SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho, fixed_resus=True,
