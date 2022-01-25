@@ -346,7 +346,7 @@ def add_resus_timescale_field(fieldset: FieldSet, file_dict: dict, fixed_resus: 
         fieldset.add_field(Field('p_resus', p_r, lon=file_dict['LON'], lat=file_dict['LAT'], mesh='spherical'))
     else:
         if fixed_resus:
-            lambda_R = settings.LAMBDA_FRAG
+            lambda_R = settings.RESUS_TIME
         else:
             lambda_R = utils.get_resuspension_timescale()
         p_r = math.exp(-settings.TIME_STEP.total_seconds() / (lambda_R * 86400.))
