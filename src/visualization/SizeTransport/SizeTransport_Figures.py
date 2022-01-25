@@ -67,13 +67,12 @@ def run(scenario, figure_direc: str):
                 SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
                                                   time_selection=time_select, rho=rho, depth_level=depth_level,
                                                   fixed_resus=True, resus_time=7).plot()
-                SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
-                                                  time_selection=time_select, rho=rho, depth_level=depth_level,
-                                                  fixed_resus=True, resus_time=50).plot()
 
     # Plot the maximum distance from shore for a given density
-    # for rho in [30, 920, 980, 1020]:
-    #     SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho).plot()
+    for rho in [30, 920, 980, 1020]:
+        SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho).plot()
+        SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho, fixed_resus=True,
+                                  resus_time=7).plot()
 
     size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
     # Creating figures of the timeseries of the number of particles that are beached/adrift/seabed
