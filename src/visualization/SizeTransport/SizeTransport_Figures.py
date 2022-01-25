@@ -59,14 +59,14 @@ def run(scenario, figure_direc: str):
     #                                          rho_list=[30, 920, 980, 1020]).plot()
 
     # Plotting all horizontal concentrations for a given density
-    for rho in [30, 920, 980, 1020]:
-        for time_select in [0]:
-            for depth_level in ['surface_1m', 'surface_5m', 'column']:
-                SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
-                                                  time_selection=time_select, rho=rho, depth_level=depth_level).plot()
-                SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
-                                                  time_selection=time_select, rho=rho, depth_level=depth_level,
-                                                  fixed_resus=True, resus_time=7).plot()
+    # for rho in [30, 920, 980, 1020]:
+    #     for time_select in [0]:
+    #         for depth_level in ['surface_1m', 'surface_5m', 'column']:
+    #             SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
+    #                                               time_selection=time_select, rho=rho, depth_level=depth_level).plot()
+    #             SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
+    #                                               time_selection=time_select, rho=rho, depth_level=depth_level,
+    #                                               fixed_resus=True, resus_time=7).plot()
 
     # Plot the maximum distance from shore for a given density
     for rho in [30, 920, 980, 1020]:
