@@ -81,7 +81,7 @@ class SizeTransport_MaxDistance:
         plt.close('all')
 
     def plot_save_name(self, file_type='.png'):
-        name = self.output_direc + 'Max_distance_rho={}'
+        name = self.output_direc + 'Max_distance_rho={}'.format(self.rho)
         if self.fixed_resus:
             name += '_fixed_resus_{}'.format(self.resus_time)
         return name + file_type
