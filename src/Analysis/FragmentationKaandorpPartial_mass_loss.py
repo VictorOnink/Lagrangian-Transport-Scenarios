@@ -83,7 +83,7 @@ class FragmentationKaandorpPartial_mass_loss:
         frag_mass_loss = dict.fromkeys(self.frag_list)
         for lambda_frag in self.frag_list:
             frag_sink_mass_loss[lambda_frag] = (final_mass[lambda_frag] - total_input) / total_input * 100
-            frag_mass_loss[lambda_frag] = (final_mass_sink - 2 * total_input + final_mass[lambda_frag]) / total_input * 100
+            frag_mass_loss[lambda_frag] = (- final_mass_sink + final_mass[lambda_frag]) / total_input * 100
 
         # So, now we print our results
         utils.print_statement("\n", to_print=True)
