@@ -21,6 +21,9 @@ def run(scenario, figure_direc: str):
     # Standardizing field data
     Analysis.FragmentationKaandorpPartial_fielddata(to_overwrite=False)
 
+    # Calculating mass losses
+    Analysis.FragmentationKaandorpPartial_mass_loss(scenario=scenario).run()
+
     # Plotting the input scenario
     # General_input_scenario(scenario=scenario, figure_direc=figure_direc).plot()
 

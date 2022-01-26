@@ -94,7 +94,3 @@ class SizeTransport_MaxDistance:
 
     def subfigure_title(self, index):
         return '({}) r = {:.3f} mm'.format(string.ascii_lowercase[index], self.size_list[index] * 1e3)
-
-
-
-

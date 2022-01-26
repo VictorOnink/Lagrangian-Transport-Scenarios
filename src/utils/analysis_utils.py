@@ -88,21 +88,26 @@ def distance_between_points(lon1, lat1, lon2, lat2, units='km'):
     # Check variable types
     variable_assertion = 'The variable types do not match'
     assert type(lon1) == type(lat1) and type(lon1) == type(lon2) and type(lon1) == type(lat2), variable_assertion
+
     # Check if the numpy arrays are the correct size if the coordinates are indeed numpy arrays
     if type(lon1) == np.ndarray:
         size_assertion = 'The coordinate arrays do not have the same sizes'
         assert lon1.size == lon2.size and lon1.size == lat1.size and lon1.size == lat2.size, size_assertion
+
     # Check units are either km or m
     assert units in ['km', 'm'], "Please choose either 'km' or 'm' for your units"
+
     # Computing the difference in coordinates in radians
     lon1_rad, lat1_rad = np.deg2rad(lon1), np.deg2rad(lat1)
     lon2_rad, lat2_rad = np.deg2rad(lon2), np.deg2rad(lat2)
     dlon, dlat = np.abs(lon1_rad - lon2_rad) % (2 * np.pi), np.abs(lat1_rad - lat2_rad) % np.pi
+
     # Converting that to a physical distance
     radius = earth_radius(lat=0)
     a = np.sin(dlat / 2) ** 2 + np.cos(lat1_rad) * np.cos(lat2_rad) * np.sin(dlon / 2) ** 2
     angle = 2 * np.arctan2(np.sqrt(a), np.sqrt(1 - a))
     distance = radius * angle
+
     # Returning the distance
     if units == 'km':
         return distance
@@ -136,7 +141,8 @@ def histogram(lon_data, lat_data, bins_Lon, bins_Lat, weight_data=None, area_cor
 
     # If we want the mean, then we divide the bin_concentrations by the number of instances per bin
     if operation == 'mean':
-        bin_counts, _, _ = np.histogram2d(lon_data, lat_data, bins=[bins_Lon, bins_Lat], normed=True)
+        bin_counts, _, _ = np.histogram2d(lon_data, lat_data, bins=[bins_Lon, bins_Lat],
+                                          weights=np.ones(lon_data.shape, dtype=float))
         bin_concentrations = np.divide(bin_concentrations, bin_counts)
 
     if area_correc:

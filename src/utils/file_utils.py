@@ -27,7 +27,7 @@ def get_input_directory(server: int) -> str:
     return settings.DATA_INPUT_DIR_SERVERS[server]
 
 
-def get_output_directory(server: int) -> str:
+def get_output_directory(server: int = settings.SERVER) -> str:
     """
 
     :param server:
