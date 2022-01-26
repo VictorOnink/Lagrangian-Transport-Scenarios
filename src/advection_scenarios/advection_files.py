@@ -21,7 +21,8 @@ class AdvectionFiles:
     We also check all the relevant files exist, and if it doesn't, we create it,
     """
 
-    def __init__(self, server, stokes, advection_scenario, repeat_dt):
+    def __init__(self, server=settings.SERVER, stokes=settings.STOKES, advection_scenario=settings.ADVECTION_DATA,
+                 repeat_dt=None):
         self.server = server
         self.stokes = stokes
         self.data_dir = utils.get_data_directory(server=server)

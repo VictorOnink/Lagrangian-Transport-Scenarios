@@ -47,15 +47,16 @@ class parcels_to_bayesian:
         cluster_grid, _, _ = utils.histogram(lon_data=release_lon, lat_data=release_lat, bins_Lon=cluster_lon,
                                              bins_Lat=cluster_lat, weight_data=release_weight, area_correc=False)
 
-        print(np.nansum(cluster_grid > 0))
+        # Now, we create an array that for each particle (not each release site, but each particle) will indicate the
+        # release cluster from which it originates
+        release_cluster = np.zeros(parcels_dataset.lon[:, 0].shape)
+        print(release_cluster.shape)
+
 
 
     def cluster_lon_lat(self):
         # Load the dimensions
-        advection_scenario = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
-                                                            advection_scenario=settings.ADVECTION_DATA,
-                                                            repeat_dt=None)
-        adv_file_dict = advection_scenario.file_names
+        adv_file_dict = advection_files.AdvectionFiles().file_names
         LON, LAT = adv_file_dict['LON'], adv_file_dict['LAT']
 
         # Get the lon/lat arrays for the clustering
