@@ -86,10 +86,12 @@ class FragmentationKaandorpPartial_mass_loss:
             frag_mass_loss[lambda_frag] = (sink_loss - final_mass[lambda_frag]) / total_input * 100
 
         # So, now we print our results
-        utils.print_statement("In 3 years, we release {} particle mass".format(total_input), to_print=True)
+        utils.print_statement("\n", to_print=True)
+        utils.print_statement("In 3 years, we release {:.2f} particle mass".format(total_input), to_print=True)
         str_format = final_mass_sink, sink_loss
-        utils.print_statement("Due to particle sinking, we are left with {}, a {:.2f}% reduction".format(*str_format),
+        utils.print_statement("Due to particle sinking, we are left with {:.2f}, a {:.2f}% reduction".format(*str_format),
                               to_print=True)
+        utils.print_statement("\n", to_print=True)
 
 
 
