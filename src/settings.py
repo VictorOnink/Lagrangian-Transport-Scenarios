@@ -192,8 +192,6 @@ elif INPUT == 'Uniform':
     # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
     INPUT_MIN = 0.0
 
-
-
 ########################################################################################################################
 #                                                                                                                      #
 #                                       Analysis specific parameters                                                   #
@@ -227,6 +225,8 @@ if SUBMISSION in ['analysis']:
     SEPARATION = BOOLEAN_DICT[int(os.environ['SEPARATION'])]
     # CALCULATING THE PARTICLE SIZE SPECTRUM/DISTRIBUTION
     SIZE_SPECTRUM = BOOLEAN_DICT[int(os.environ['SIZE_SPECTRUM'])]
+    # CALCULATING BAYESIAN MATRIX KEEPING TRACK OF
+    BAYESIAN = BOOLEAN_DICT[int(os.environ['BAYESIAN'])]
     # FRACTION OF PLASTIC ENTERING THE OCEAN IN 2010 THAT IS CONSIDERED BUOYANT (BASED ON GEYERS ET AL., 2017)
     BUOYANT = 0.54
 else:

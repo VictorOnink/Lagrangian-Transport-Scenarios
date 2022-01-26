@@ -11,3 +11,4 @@ from Analysis.FragmentationKaandorpPartial_fielddata import *
 from Analysis.FragmentationKaandorp_boxmodel import *
 from Analysis.parcels_to_lonlat_average import *
 from Analysis.FragmentationKaandorpPartial_mass_loss import *
+from Analysis.parcels_to_bayesian import *
