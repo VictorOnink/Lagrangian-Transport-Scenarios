@@ -40,20 +40,12 @@ class parcels_to_bayesian:
         release_lat = release_sites.index.get_level_values('particle_release_lat').values
         release_weight = release_sites['weight'].values
 
-        print(release_lon)
-        print(release_lat)
-
         # Create larger clusters, where we have 2x2 degree bins. For this, we first determine all the sites on this 2x2
         # grid that have input sites
         cluster_lon, cluster_lat = self.cluster_lon_lat()
 
         cluster_grid, _, _ = utils.histogram(lon_data=release_lon, lat_data=release_lat, bins_Lon=cluster_lon,
                                              bins_Lat=cluster_lat, weight_data=release_weight, area_correc=False)
-        print(release_lon)
-        print(release_lat)
-        print(release_weight)
-        print(cluster_lon)
-        print(cluster_lat)
 
         print(np.nansum(cluster_grid > 0))
 
@@ -67,8 +59,10 @@ class parcels_to_bayesian:
         LON, LAT = adv_file_dict['LON'], adv_file_dict['LAT']
 
         # Get the lon/lat arrays for the clustering
-        cluster_lon = np.arange(np.floor(LON.min()) - self.cluster_size, np.floor(LON.min()) + self.cluster_size)
-        cluster_lat = np.arange(np.floor(LAT.min()) - self.cluster_size, np.floor(LAT.min()) + self.cluster_size)
+        cluster_lon = np.arange(np.floor(LON.min()) - self.cluster_size, np.floor(LON.max()) + self.cluster_size,
+                                step=self.cluster_size)
+        cluster_lat = np.arange(np.floor(LAT.min()) - self.cluster_size, np.floor(LAT.max()) + self.cluster_size,
+                                step=self.cluster_size)
 
         return cluster_lon, cluster_lat
 
