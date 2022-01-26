@@ -27,13 +27,11 @@ class parcels_to_bayesian:
     def source_cluster(self):
         # Load the starting locations of all of the particles
         parcels_dataset = xr.load_dataset(self.file_dict[settings.RUN][0])
-        self.output_dict['particle_release_lon'] = parcels_dataset.lon[:, 0]
-        self.output_dict['particle_release_lat'] = parcels_dataset.lat[:, 0]
 
         # Group by the starting location and determine the number of particles released at each site
-        df = pd.DataFrame.from_dict({'particle_release_lon': self.output_dict['particle_release_lon'],
-                                     'particle_release_lat': self.output_dict['particle_release_lat'],
-                                     'weight': np.ones(self.output_dict['particle_release_lon'].shape)})
+        df = pd.DataFrame.from_dict({'particle_release_lon': parcels_dataset.lon[:, 0],
+                                     'particle_release_lat': parcels_dataset.lat[:, 0],
+                                     'weight': np.ones(parcels_dataset.lat[:, 0].shape)})
         release_sites = df.groupby(['particle_release_lon', 'particle_release_lat']).count()
         print(release_sites)
 
