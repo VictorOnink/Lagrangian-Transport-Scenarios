@@ -70,8 +70,9 @@ class FragmentationKaandorpPartial_mass_loss:
             data_dict = vUtils.FragmentationKaandorpPartial_load_data(scenario=self.scenario, prefix='timeseries',
                                                                       data_direc=self.data_direc,
                                                                       shore_time=self.shore_time,
-                                                                      lambda_frag=lambda_frag, rho=settings.INIT_DENSITY,
-                                                                      postprocess=True, input=self.input)
+                                                                      lambda_frag=lambda_frag,
+                                                                      rho=settings.INIT_DENSITY,
+                                                                      postprocess=True)
             for size_class in range(self.size_class_number):
                 final_mass[lambda_frag] += data_dict['total'][size_class]['particle_mass_sink'][-1]
 
