@@ -132,7 +132,7 @@ class parcels_to_bayesian:
             lat_site.append(la)
             number_site.append(n / self.release_cluster.size)
         print(lon_site, lat_site, number_site)
-        ax[0].scatter(lon_site, lat_site, c=number_site, cmap=cmap_name, norm=norm)
+        ax[0].scatter(lon_site, lat_site, c=number_site, cmap=cmap_name, norm=norm, zorder=1000, s=2)
 
         # Saving the figure
         plt.savefig(figure_direc + 'General/Input_clusters.png', bbox_inches='tight')
