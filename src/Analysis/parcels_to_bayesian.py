@@ -68,6 +68,7 @@ class parcels_to_bayesian:
         a=0
         for keys in cluster_dict.keys():
             a += cluster_dict[keys][2]
+        print(a)
 
 
 
