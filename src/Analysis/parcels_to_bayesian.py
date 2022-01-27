@@ -17,6 +17,7 @@ class parcels_to_bayesian:
         self.temp_direc, self.output_direc = self.get_directories()
         # Creating the output dict
         # self.output_dict = self.create_output_dict()
+        # Get the cluster locations
 
     def get_directories(self):
         temp_direc = settings.SCRATCH_DIR
@@ -64,8 +65,10 @@ class parcels_to_bayesian:
                     # particles
                     cluster_dict[cluster_index] = ((lat_min + lat_max) / 2, (lon_min + lon_max) / 2, np.nansum(selection))
                     cluster_index += 1
-        print(np.unique(release_cluster))
-        print(cluster_dict)
+        a=0
+        for keys in cluster_dict.keys():
+            a += cluster_dict[keys][2]
+
 
 
     def cluster_lon_lat(self):
