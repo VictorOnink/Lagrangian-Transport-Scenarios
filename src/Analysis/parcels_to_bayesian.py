@@ -32,7 +32,7 @@ class parcels_to_bayesian:
             # cluster
             for cluster_id in [0]:
                 select_cluster = np.where(self.release_cluster == cluster_id)[0]
-                print(parcels_dataset[select_cluster])
+                print(parcels_dataset)
 
         elif self.parallel_step == 2:
             utils.print_statement('Nothing happens for parcels_to_bayesian when settings.PARALLEL_STEP == 2',
