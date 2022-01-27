@@ -17,11 +17,18 @@ class parcels_to_bayesian:
         self.scenario_name = settings.SCENARIO_NAME
         assert self.scenario_name in ['SizeTransport'], "The max distance function is not set up for {}".format(
             self.scenario_name)
-        self.cluster_size = 1  # size of the clustering in degrees lat/lon
+        # size of the clustering in degrees lat/lon
+        self.cluster_size = 1
+        # Setting directories
         self.temp_direc, self.output_direc = self.get_directories()
+        # Getting the LON/LAT/GRID arrays
+        self.LON, self.LAT, self.GRID = self.get_lon_lat()
         # Get the cluster locations and ID for each particle which cluster they are from
         self.release_cluster, self.cluster_dict = self.source_cluster()
         self.cluster_number = np.nanmax(self.release_cluster)
+        self.particle_number = self.release_cluster.size
+        # Creating the output dictionary
+        self.output_dict = self.create_output_dict()
 
     def run(self):
         if self.parallel_step == 1:
@@ -32,10 +39,14 @@ class parcels_to_bayesian:
             # Now, we loop through the various release clusters and calculate the annual averaged concentration for each
             # cluster
             for cluster_id in [0]:
+                # Getting the trajectories for this cluster
                 select_cluster = np.where(self.release_cluster == cluster_id)[0]
                 lon_selection = particle_lon[select_cluster, :]
                 lat_selection = particle_lat[select_cluster, :]
-                print(lat_selection)
+                # Flattening the arrays
+                lon_selection = lon_selection.values.flatten()
+                lat_selection = lat_selection.values.flatten()
+                # Calculate the
 
         elif self.parallel_step == 2:
             utils.print_statement('Nothing happens for parcels_to_bayesian when settings.PARALLEL_STEP == 2',
@@ -49,6 +60,19 @@ class parcels_to_bayesian:
         utils.check_direc_exist(temp_direc)
         utils.check_direc_exist(output_direc)
         return temp_direc, output_direc
+
+    def create_output_dict(self):
+        output_dict = {'LON': self.LON, 'LAT': self.LAT, 'cluster_dict': self.cluster_dict}
+        for cluster_id in range(self.cluster_number):
+            output_dict[cluster_id] = {}
+            # First, the grid for the posterior probability
+            output_dict[cluster_id]['postprob'] = None
+            # Then, the midpoint lon/lat and the weight
+            output_dict[cluster_id]['lat'], output_dict[cluster_id]['lon'], output_dict[cluster_id]['weight'] = self.cluster_dict[cluster_id]
+        # Finally, a normalization grid and the total number of particles
+        output_dict['norm'] = None
+        output_dict['p_number'] = self.particle_number
+        return output_dict
 
     def source_cluster(self):
         # Load the starting locations of all of the particles
@@ -78,15 +102,18 @@ class parcels_to_bayesian:
                     cluster_index += 1
         return release_cluster, cluster_dict
 
-    def cluster_lon_lat(self):
-        # Load the dimensions
+    @staticmethod
+    def get_lon_lat():
         adv_file_dict = advection_files.AdvectionFiles().file_names
-        LON, LAT = adv_file_dict['LON'], adv_file_dict['LAT']
+        LON, LAT, GRID = adv_file_dict['LON'], adv_file_dict['LAT'], adv_file_dict['GRID']
+        return LON, LAT, GRID
+
+    def cluster_lon_lat(self):
 
         # Get the lon/lat arrays for the clustering
-        cluster_lon = np.arange(np.floor(LON.min()) - self.cluster_size, np.floor(LON.max()) + self.cluster_size,
+        cluster_lon = np.arange(np.floor(self.LON.min()) - self.cluster_size, np.floor(self.LON.max()) + self.cluster_size,
                                 step=self.cluster_size)
-        cluster_lat = np.arange(np.floor(LAT.min()) - self.cluster_size, np.floor(LAT.max()) + self.cluster_size,
+        cluster_lat = np.arange(np.floor(self.LAT.min()) - self.cluster_size, np.floor(self.LAT.max()) + self.cluster_size,
                                 step=self.cluster_size)
 
         return cluster_lon, cluster_lat
@@ -97,7 +124,6 @@ class parcels_to_bayesian:
         figure_size = (10, 8)
         figure_shape = (1, 1)
         ax_label_size = 14
-        ax_ticklabel_size = 12
         adv_file_dict = advection_files.AdvectionFiles().file_names
         LON, LAT = adv_file_dict['LON'], adv_file_dict['LAT']
         spatial_domain = np.nanmin(LON), np.nanmax(LON), np.nanmin(LAT), np.nanmax(LAT)
