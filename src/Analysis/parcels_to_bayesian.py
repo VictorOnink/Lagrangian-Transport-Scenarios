@@ -119,7 +119,7 @@ class parcels_to_bayesian:
         # Creating a cmap for the scatter plot, and creating a legend
         cmap_name = cmo.thermal
         norm = colors.LogNorm(vmin=1e-5, vmax=1e0)
-        cbar_label, extend = r"Maximum distance from shore (km)", None
+        cbar_label, extend = r"P($S_i$)", None
         cmap = plt.cm.ScalarMappable(cmap=cmap_name, norm=norm)
         cax = fig.add_subplot(gs[:, -1])
         cbar = plt.colorbar(cmap, cax=cax, orientation='vertical', extend=extend)
