@@ -15,10 +15,8 @@ class parcels_to_bayesian:
             self.scenario_name)
         self.cluster_size = 2  # size of the clustering in degrees lat/lon
         self.temp_direc, self.output_direc = self.get_directories()
-        # Creating the output dict
-        # self.output_dict = self.create_output_dict()
         # Get the cluster locations and ID for each particle which cluster they are from
-        release_cluster, cluster_dict = self.source_cluster()
+        self.release_cluster, self.cluster_dict = self.source_cluster()
 
     def run(self):
         pass
@@ -69,7 +67,7 @@ class parcels_to_bayesian:
                     # particles
                     cluster_dict[cluster_index] = ((lat_min + lat_max) / 2, (lon_min + lon_max) / 2, np.nansum(selection))
                     cluster_index += 1
-        print(cluster_index)
+        print(cluster_dict)
         return release_cluster, cluster_dict
 
     def cluster_lon_lat(self):
