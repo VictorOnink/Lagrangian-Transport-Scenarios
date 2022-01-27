@@ -59,6 +59,7 @@ class parcels_to_bayesian:
         # Create larger clusters, where we have 2x2 degree bins. For this, we first determine all the sites on this 2x2
         # grid that have input sites
         cluster_lon, cluster_lat = self.cluster_lon_lat()
+        print(cluster_lon, cluster_lat)
 
         cluster_grid, _, _ = utils.histogram(lon_data=release_lon, lat_data=release_lat, bins_Lon=cluster_lon,
                                              bins_Lat=cluster_lat, weight_data=release_weight, area_correc=False)
