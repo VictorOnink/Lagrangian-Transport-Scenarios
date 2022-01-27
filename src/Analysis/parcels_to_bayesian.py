@@ -91,7 +91,7 @@ class parcels_to_bayesian:
 
     def plot_clusters(self):
         # First, we need to set a number of parameters
-        figure_direc = VisualizationFactory.get_figure_direc()
+        figure_direc = settings.FIGURE_OUTPUT_SERVER[settings.SERVER] + '{}/'.format(settings.SCENARIO_NAME)
         figure_size = (10, 8)
         figure_shape = (1, 1)
         ax_label_size = 14
