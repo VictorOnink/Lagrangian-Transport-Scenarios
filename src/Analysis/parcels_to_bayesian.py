@@ -119,6 +119,7 @@ class parcels_to_bayesian:
         cbar.set_label(cbar_label, fontsize=ax_label_size)
 
         # Saving the figure
+        print('save the figure at {}'.format(figure_direc + 'General/Input_clusters.png'))
         plt.savefig(figure_direc + 'General/Input_clusters.png', bbox_inches='tight')
 
 
