@@ -127,12 +127,12 @@ class parcels_to_bayesian:
         # Plotting the release midpoints
         lon_site, lat_site, number_site = [], [], []
         for site in self.cluster_dict.keys():
-            lo, la, n = self.cluster_dict[site]
+            la, lo, n = self.cluster_dict[site]
             lon_site.append(lo)
             lat_site.append(la)
             number_site.append(n / self.release_cluster.size)
         print(lon_site, lat_site, number_site)
-        ax[0].scatter(lon_site, lat_site, c=number_site, cmap=cmap_name, norm=norm, zorder=1000, s=2)
+        ax[0].scatter(lon_site, lat_site, c=number_site, cmap=cmap_name, norm=norm, zorder=1000, s=10)
 
         # Saving the figure
         plt.savefig(figure_direc + 'General/Input_clusters.png', bbox_inches='tight')
