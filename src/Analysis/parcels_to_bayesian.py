@@ -23,7 +23,14 @@ class parcels_to_bayesian:
         self.release_cluster, self.cluster_dict = self.source_cluster()
 
     def run(self):
-        pass
+        if self.parallel_step == 1:
+            pass
+
+        elif self.parallel_step == 2:
+            utils.print_statement('Nothing happens for parcels_to_bayesian when settings.PARALLEL_STEP == 2',
+                                  to_print=True)
+        else:
+            ValueError('settings.PARALLEL_STEP can not have a value of {}'.format(self.parallel_step))
 
     def get_directories(self):
         temp_direc = settings.SCRATCH_DIR
@@ -112,14 +119,22 @@ class parcels_to_bayesian:
         # Creating a cmap for the scatter plot, and creating a legend
         cmap_name = cmo.thermal
         norm = colors.LogNorm(vmin=1e-5, vmax=1e0)
-        cbar_label, extend = r"Maximum distance from shore (km)", 'both'
+        cbar_label, extend = r"Maximum distance from shore (km)", None
         cmap = plt.cm.ScalarMappable(cmap=cmap_name, norm=norm)
         cax = fig.add_subplot(gs[:, -1])
         cbar = plt.colorbar(cmap, cax=cax, orientation='vertical', extend=extend)
         cbar.set_label(cbar_label, fontsize=ax_label_size)
 
+        # Plotting the release midpoints
+        lon_site, lat_site, number_site = [], [], []
+        for site in self.cluster_dict.keys():
+            lo, la, n = self.cluster_dict[site]
+            lon_site.append(lo)
+            lat_site.append(la)
+            number_site.append(n)
+        ax[0].scatter(lon_site, lat_site, c=number_site / self.release_cluster.size, cmap=cmap_name, norm=norm)
+
         # Saving the figure
-        print('save the figure at {}'.format(figure_direc + 'General/Input_clusters.png'))
         plt.savefig(figure_direc + 'General/Input_clusters.png', bbox_inches='tight')
 
 
