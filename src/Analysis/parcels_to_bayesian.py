@@ -17,7 +17,6 @@ class parcels_to_bayesian:
         self.scenario_name = settings.SCENARIO_NAME
         assert self.scenario_name in ['SizeTransport'], "The max distance function is not set up for {}".format(
             self.scenario_name)
-        self.figure_direc
         self.cluster_size = 2  # size of the clustering in degrees lat/lon
         self.temp_direc, self.output_direc = self.get_directories()
         # Get the cluster locations and ID for each particle which cluster they are from
