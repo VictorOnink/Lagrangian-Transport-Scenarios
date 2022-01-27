@@ -27,12 +27,15 @@ class parcels_to_bayesian:
         if self.parallel_step == 1:
             # First, we load the particle trajectories
             parcels_dataset = xr.load_dataset(self.file_dict[settings.RUN][settings.RESTART])
+            particle_lon, particle_lat = parcels_dataset.lon, parcels_dataset.lat
 
             # Now, we loop through the various release clusters and calculate the annual averaged concentration for each
             # cluster
             for cluster_id in [0]:
                 select_cluster = np.where(self.release_cluster == cluster_id)[0]
-                print(parcels_dataset.where(select_cluster))
+                lon_selection = particle_lon[select_cluster, :]
+                lat_selection = particle_lat[select_cluster, :]
+                print(lat_selection)
 
         elif self.parallel_step == 2:
             utils.print_statement('Nothing happens for parcels_to_bayesian when settings.PARALLEL_STEP == 2',
