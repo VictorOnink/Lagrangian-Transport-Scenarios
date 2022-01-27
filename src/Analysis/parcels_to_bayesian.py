@@ -4,6 +4,11 @@ import xarray as xr
 import numpy as np
 import pandas as pd
 from advection_scenarios import advection_files
+from factories.visualization_factory import VisualizationFactory
+import matplotlib.pyplot as plt
+import visualization.visualization_utils as vUtils
+import cmocean.cm as cmo
+import matplotlib.colors as colors
 
 
 class parcels_to_bayesian:
@@ -13,6 +18,7 @@ class parcels_to_bayesian:
         self.scenario_name = settings.SCENARIO_NAME
         assert self.scenario_name in ['SizeTransport'], "The max distance function is not set up for {}".format(
             self.scenario_name)
+        self.figure_direc
         self.cluster_size = 2  # size of the clustering in degrees lat/lon
         self.temp_direc, self.output_direc = self.get_directories()
         # Get the cluster locations and ID for each particle which cluster they are from
@@ -82,4 +88,41 @@ class parcels_to_bayesian:
                                 step=self.cluster_size)
 
         return cluster_lon, cluster_lat
+
+    def plot_clusters(self):
+        # First, we need to set a number of parameters
+        figure_direc = VisualizationFactory.get_figure_direc()
+        figure_size = (10, 8)
+        figure_shape = (1, 1)
+        ax_label_size = 14
+        ax_ticklabel_size = 12
+        adv_file_dict = advection_files.AdvectionFiles().file_names
+        LON, LAT = adv_file_dict['LON'], adv_file_dict['LAT']
+        spatial_domain = np.nanmin(LON), np.nanmax(LON), np.nanmin(LAT), np.nanmax(LAT)
+
+        # Next, we create a map of our region
+        fig = plt.figure(figsize=figure_size)
+        gs = fig.add_gridspec(nrows=figure_shape[0], ncols=figure_shape[1] + 1, width_ratios=[1, 0.1])
+
+        ax = []
+        for rows in range(figure_shape[0]):
+            for columns in range(figure_shape[1]):
+                ax.append(vUtils.cartopy_standard_map(fig=fig, gridspec=gs, row=rows, column=columns,
+                                                      domain=spatial_domain, lat_grid_step=5, lon_grid_step=10,
+                                                      resolution='10m'))
+
+        # Creating a cmap for the scatter plot, and creating a legend
+        cmap_name = cmo.thermal
+        norm = colors.LogNorm(vmin=1e-5, vmax=1e0)
+        cbar_label, extend = r"Maximum distance from shore (km)", 'both'
+        cmap = plt.cm.ScalarMappable(cmap=cmap_name, norm=norm)
+        cax = fig.add_subplot(gs[:, -1])
+        cbar = plt.colorbar(cmap, cax=cax, orientation='vertical', extend=extend)
+        cbar.set_label(cbar_label, fontsize=ax_label_size)
+
+        # Saving the figure
+        plt.savefig(figure_direc + 'General/Input_clusters.png', bbox_inches='tight')
+
+
+
 

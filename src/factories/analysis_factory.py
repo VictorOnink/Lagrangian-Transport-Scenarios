@@ -55,4 +55,4 @@ class AnalysisFactory:
             Analysis.parcels_to_sizespectrum(file_dict=self.file_dict, scenario=self.scenario).run()
         if settings.BAYESIAN:
             utils.print_statement("Calculating BAYESIAN ", to_print=True)
-            Analysis.parcels_to_bayesian(file_dict=self.file_dict)
+            Analysis.parcels_to_bayesian(file_dict=self.file_dict).plot_clusters()
