@@ -134,7 +134,7 @@ class parcels_to_bayesian:
         ax[0].scatter(lon_site, lat_site, c=number_site, cmap=cmap_name, norm=norm, zorder=1000, s=10)
 
         # Saving the figure
-        utils.print_statement('This uses {} clusters'.format(self.cluster_number))
+        utils.print_statement('This uses {} clusters'.format(self.cluster_number), to_print=True)
         plt.savefig(figure_direc + 'General/Input_clusters.png', bbox_inches='tight')
 
 
