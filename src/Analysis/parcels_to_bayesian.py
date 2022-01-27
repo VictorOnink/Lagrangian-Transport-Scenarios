@@ -4,7 +4,6 @@ import xarray as xr
 import numpy as np
 import pandas as pd
 from advection_scenarios import advection_files
-from factories.visualization_factory import VisualizationFactory
 import matplotlib.pyplot as plt
 import visualization.visualization_utils as vUtils
 import cmocean.cm as cmo
