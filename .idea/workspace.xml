@@ -23,7 +23,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="(figures!)">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Analysis/parcels_to_bayesian.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analysis/parcels_to_bayesian.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/factories/analysis_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/factories/analysis_factory.py" afterDir="false" />
     </list>
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
     <list id="c5adc810-e024-4e30-b33b-a2709ed2c5b7" name="moving the release repeat timescale to the scenario" comment="" />
@@ -109,27 +111,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-03286" summary="figures!">
-      <created>1643207263479</created>
-      <option name="number" value="03286" />
-      <option name="presentableId" value="LOCAL-03286" />
-      <option name="project" value="LOCAL" />
-      <updated>1643207263479</updated>
-    </task>
-    <task id="LOCAL-03287" summary="figures!">
-      <created>1643207507995</created>
-      <option name="number" value="03287" />
-      <option name="presentableId" value="LOCAL-03287" />
-      <option name="project" value="LOCAL" />
-      <updated>1643207507995</updated>
-    </task>
-    <task id="LOCAL-03288" summary="figures!">
-      <created>1643207809399</created>
-      <option name="number" value="03288" />
-      <option name="presentableId" value="LOCAL-03288" />
-      <option name="project" value="LOCAL" />
-      <updated>1643207809399</updated>
     </task>
     <task id="LOCAL-03289" summary="figures!">
       <created>1643208251145</created>
@@ -453,7 +434,28 @@
       <option name="project" value="LOCAL" />
       <updated>1643284198104</updated>
     </task>
-    <option name="localTasksCounter" value="3335" />
+    <task id="LOCAL-03335" summary="(figures!)">
+      <created>1643284444487</created>
+      <option name="number" value="03335" />
+      <option name="presentableId" value="LOCAL-03335" />
+      <option name="project" value="LOCAL" />
+      <updated>1643284444487</updated>
+    </task>
+    <task id="LOCAL-03336" summary="(figures!)">
+      <created>1643284518745</created>
+      <option name="number" value="03336" />
+      <option name="presentableId" value="LOCAL-03336" />
+      <option name="project" value="LOCAL" />
+      <updated>1643284518746</updated>
+    </task>
+    <task id="LOCAL-03337" summary="(figures!)">
+      <created>1643284636733</created>
+      <option name="number" value="03337" />
+      <option name="presentableId" value="LOCAL-03337" />
+      <option name="project" value="LOCAL" />
+      <updated>1643284636733</updated>
+    </task>
+    <option name="localTasksCounter" value="3338" />
     <servers />
   </component>
   <component name="UnknownFeatures">
