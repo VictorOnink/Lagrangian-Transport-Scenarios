@@ -62,10 +62,11 @@ class parcels_to_bayesian:
                     release_cluster[selection] = cluster_index
                     # Within the cluster dict we save the mid lon/lat for each cluster, as well as the number of
                     # particles
-                    cluster_dict[cluster_index] = ((lat_min + lat_max) / 2, (lon_min + lon_max) / 2, np.nanmax(selection))
+                    cluster_dict[cluster_index] = ((lat_min + lat_max) / 2, (lon_min + lon_max) / 2, np.nansum(selection))
                     cluster_index += 1
-                    print(np.unique(release_cluster))
-        print(cluster_dict)
+                    print(cluster_index, lat_min, lat_max, lon_min, lon_max)
+        #             print(np.unique(release_cluster))
+        # print(cluster_dict)
 
 
     def cluster_lon_lat(self):
