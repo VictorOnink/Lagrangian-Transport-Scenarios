@@ -31,7 +31,8 @@ class parcels_to_bayesian:
             # Now, we loop through the various release clusters and calculate the annual averaged concentration for each
             # cluster
             for cluster_id in [0]:
-                print(parcels_dataset[np.where(self.release_cluster == cluster_id), 0])
+                select_cluster = np.where(self.release_cluster == cluster_id)
+                print(select_cluster)
 
         elif self.parallel_step == 2:
             utils.print_statement('Nothing happens for parcels_to_bayesian when settings.PARALLEL_STEP == 2',
