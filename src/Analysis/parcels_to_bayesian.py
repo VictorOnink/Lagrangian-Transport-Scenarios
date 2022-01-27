@@ -56,7 +56,7 @@ class parcels_to_bayesian:
         for index_lon in range(0, cluster_lon.size - 1):
             for index_lat in range(0, cluster_lat.size - 1):
                 lat_min, lat_max = cluster_lat[index_lat], cluster_lat[index_lat + 1]
-                lon_min, lon_max = cluster_lon[index_lat], cluster_lon[index_lat + 1]
+                lon_min, lon_max = cluster_lon[index_lon], cluster_lon[index_lon + 1]
                 selection = np.logical_and(np.logical_and(lat_min <= p_lat, p_lat < lat_max), np.logical_and(lon_min <= p_lon, p_lon < lon_max))
                 if np.nanmax(selection) == 1:
                     release_cluster[selection] = cluster_index
@@ -64,9 +64,8 @@ class parcels_to_bayesian:
                     # particles
                     cluster_dict[cluster_index] = ((lat_min + lat_max) / 2, (lon_min + lon_max) / 2, np.nansum(selection))
                     cluster_index += 1
-                    print(cluster_index, lat_min, lat_max, lon_min, lon_max)
-        #             print(np.unique(release_cluster))
-        # print(cluster_dict)
+        print(np.unique(release_cluster))
+        print(cluster_dict)
 
 
     def cluster_lon_lat(self):
