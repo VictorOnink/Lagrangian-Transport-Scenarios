@@ -78,7 +78,6 @@ class parcels_to_bayesian:
                     # particles
                     cluster_dict[cluster_index] = ((lat_min + lat_max) / 2, (lon_min + lon_max) / 2, np.nansum(selection))
                     cluster_index += 1
-        print(cluster_dict)
         return release_cluster, cluster_dict
 
     def cluster_lon_lat(self):
@@ -132,6 +131,7 @@ class parcels_to_bayesian:
             lon_site.append(lo)
             lat_site.append(la)
             number_site.append(n / self.release_cluster.size)
+        print(lon_site, lat_site, number_site)
         ax[0].scatter(lon_site, lat_site, c=number_site, cmap=cmap_name, norm=norm)
 
         # Saving the figure
