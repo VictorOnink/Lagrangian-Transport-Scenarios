@@ -57,7 +57,7 @@ class parcels_to_bayesian:
             for index_lat in range(0, cluster_lat.size - 1):
                 lat_min, lat_max = cluster_lat[index_lat], cluster_lat[index_lat + 1]
                 lon_min, lon_max = cluster_lon[index_lat], cluster_lon[index_lat + 1]
-                selection = lat_min <= p_lat < lat_max and lon_min <= p_lon < lon_max
+                selection = lat_min <= p_lat and p_lat < lat_max and lon_min <= p_lon and p_lon < lon_max
                 if np.nanmax(selection) == 1:
                     release_cluster[selection] = cluster_index
                     # Within the cluster dict we save the mid lon/lat for each cluster, as well as the number of
