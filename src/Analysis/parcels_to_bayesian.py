@@ -17,10 +17,11 @@ class parcels_to_bayesian:
         self.scenario_name = settings.SCENARIO_NAME
         assert self.scenario_name in ['SizeTransport'], "The max distance function is not set up for {}".format(
             self.scenario_name)
-        self.cluster_size = 2  # size of the clustering in degrees lat/lon
+        self.cluster_size = 1  # size of the clustering in degrees lat/lon
         self.temp_direc, self.output_direc = self.get_directories()
         # Get the cluster locations and ID for each particle which cluster they are from
         self.release_cluster, self.cluster_dict = self.source_cluster()
+        self.cluster_number = np.nanmax(self.release_cluster)
 
     def run(self):
         if self.parallel_step == 1:
@@ -77,7 +78,6 @@ class parcels_to_bayesian:
                     # Within the cluster dict we save the mid lon/lat for each cluster, as well as the number of
                     # particles
                     cluster_dict[cluster_index] = ((lat_min + lat_max) / 2, (lon_min + lon_max) / 2, np.nansum(selection))
-                    cluster_index += 1
         return release_cluster, cluster_dict
 
     def cluster_lon_lat(self):
