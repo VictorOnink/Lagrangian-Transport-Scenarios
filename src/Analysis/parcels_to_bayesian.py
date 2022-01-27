@@ -65,7 +65,7 @@ class parcels_to_bayesian:
                     cluster_dict[cluster_index] = ((lat_min + lat_max) / 2, (lon_min + lon_max) / 2, np.nanmax(selection))
                     cluster_index += 1
                     print(np.unique(release_cluster))
-        print(cluster_index)
+        print(cluster_dict.keys())
 
 
     def cluster_lon_lat(self):
