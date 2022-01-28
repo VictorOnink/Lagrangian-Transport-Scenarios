@@ -30,7 +30,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
         else:
             self.count, self.mass = 'particle_number', 'particle_mass'
         self.input_list = input_list
-        self.input_line_style = {'LebretonDivision': '-', 'LebretonKaandorpInit': 'dotted'}
+        self.input_line_style = {'LebretonDivision': 'dotted', 'LebretonKaandorpInit': '-'}
         # Figure parameters
         self.fig_size = (14, 14)
         self.fig_shape = (self.beach_state_list.__len__(), 2)
