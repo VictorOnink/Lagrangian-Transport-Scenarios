@@ -158,10 +158,10 @@ class FragmentationKaandorpPartial_FieldDataComp:
             self.add_input_distribution(ax)
 
         # Adding a legend for the model line colors in the top right panel
-        input_names = ["k = 0 input", r'Zeri et al. (2021)']
-        for index_input, input_scenario in enumerate(self.input_list):
-            twin_ax[1].plot([], [], color='k', label=input_names[index_input],
-                            linestyle=self.input_line_style[input_scenario])
+        # input_names = ["k = 0 input", r'Zeri et al. (2021)']
+        # for index_input, input_scenario in enumerate(self.input_list):
+        #     twin_ax[1].plot([], [], color='k', label=input_names[index_input],
+        #                     linestyle=self.input_line_style[input_scenario])
         for lambda_index, lambda_frag in enumerate(self.lambda_frag_list):
             c = vUtils.discrete_color_from_cmap(index=lambda_index, subdivisions=self.lambda_frag_list.__len__())
             twin_ax[1].plot([], [], color=c, label=self.label(lambda_frag), linestyle='-')
