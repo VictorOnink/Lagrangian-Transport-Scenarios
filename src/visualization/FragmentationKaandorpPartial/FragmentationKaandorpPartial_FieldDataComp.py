@@ -9,7 +9,6 @@ from scipy.interpolate import interp1d
 import pandas as pd
 
 
-
 class FragmentationKaandorpPartial_FieldDataComp:
     def __init__(self, figure_direc, scenario, shore_time, lambda_frag_list, rho, sink=True, with_input=True,
                  input_list=['LebretonDivision']):
@@ -84,7 +83,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
 
         # Labelling the subfigures
         for index_ax in range(self.number_of_plots):
-            ax[index_ax].set_title(subfigure_title(index_ax, self.beach_state_list[index_ax // 2]),
+            ax[index_ax].set_title(self.subfigure_title(index_ax),
                                    fontsize=self.ax_label_size)
 
         # Plotting the model distributions
@@ -101,6 +100,9 @@ class FragmentationKaandorpPartial_FieldDataComp:
                         bin_norm_data = data_dict[input_scenario][lambda_frag][self.beach_state_list[ax_index // 2]][self.mass][time_index] / size_classes
                         norm_factor = bin_norm_data[0]
                         twin_ax[ax_index].plot(size_classes, bin_norm_data / norm_factor, linestyle=linestyle, color=c)
+            # Add shading to indicate the region where sampling by trawl net is more difficult
+            if ax_index < 4:
+                sub_ax.fill_betweenx(np.arange(1e-4, 1e4), self.xmin, 0.33, color='grey', alpha=0.2)
 
         # Field data - open ocean
         norm_factor = field_dict['Cozar']['pdf_counts'][14]
@@ -162,7 +164,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
                             linestyle=self.input_line_style[input_scenario])
         for lambda_index, lambda_frag in enumerate(self.lambda_frag_list):
             c = vUtils.discrete_color_from_cmap(index=lambda_index, subdivisions=self.lambda_frag_list.__len__())
-            twin_ax[1].plot([], [], color=c, label=label(lambda_frag), linestyle='-')
+            twin_ax[1].plot([], [], color=c, label=self.label(lambda_frag), linestyle='-')
         twin_ax[1].legend(fontsize=self.legend_size, loc=self.legend_loc)
 
         # Saving the figure
@@ -190,12 +192,11 @@ class FragmentationKaandorpPartial_FieldDataComp:
                    label=r'Zeri et al. (2021) Input')
         ax[2].legend(fontsize=self.legend_size, loc=self.legend_loc)
 
+    def subfigure_title(self, index):
+        alphabet = string.ascii_lowercase
+        title_dict = {'adrift_open_surf': 'Adrift - open ocean', 'adrift_10km_surf': 'Adrift - coastal', 'beach': 'Beach'}
+        return '({}) {}'.format(alphabet[index], title_dict[self.beach_state_list[index // 2]])
 
-def subfigure_title(index, beach_state):
-    alphabet = string.ascii_lowercase
-    title_dict = {'adrift_open_surf': 'Adrift - open ocean', 'adrift_10km_surf': 'Adrift - coastal', 'beach': 'Beach'}
-    return '({}) {}'.format(alphabet[index], title_dict[beach_state])
-
-
-def label(lambda_frag):
-    return r'$\lambda_f=$' + '{} days'.format(lambda_frag)
+    @staticmethod
+    def label(lambda_frag):
+        return r'$\lambda_f=$' + '{} days'.format(lambda_frag)
