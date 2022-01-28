@@ -15,7 +15,7 @@ VICINITY=2
 export VICINITY
 #for scenario 2, the beaching and resuspension timescales (in days)
 SHORETIME_list=(26)
-RESUSTIME_list=(7)
+RESUSTIME_list=(7 50)
 #for scenario 3, the shore dependence scenario.
 SHOREDEPEN=0
 export SHOREDEPEN
@@ -23,8 +23,8 @@ export SHOREDEPEN
 WMIN=3
 export WMIN
 #for scenario 5 and 6, the initial size of the particle in 1e-6 m and the particle rho
-PARTICLE_SIZE_list=(5000)  #(5000 2500 1250 625 313 156 78 39 20 10 5 2)
-INIT_DENSITY_list=(920) # (30 920 980 1020)
+PARTICLE_SIZE_list=(5000 2500 1250 625 313 156 78 39 20 10 5 2)  #(5000 2500 1250 625 313 156 78 39 20 10 5 2)
+INIT_DENSITY_list=(30 920 980 1020) # (30 920 980 1020)
 export INIT_DENSITY
 #for scenario 5 and 6, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=0
@@ -80,16 +80,16 @@ export SERVER
 
 #A number of switches to indicate which analysis steps we want to run.
 #0 = off, 1 = on
-CONCENTRATION=0
-VERTICAL_CONCENTRATION=0
-LONLAT_CONCENTRATION=0
-TIMESERIES=0
-MAX_DISTANCE=0
+CONCENTRATION=1
+VERTICAL_CONCENTRATION=1
+LONLAT_CONCENTRATION=1
+TIMESERIES=1
+MAX_DISTANCE=1
 TIMESLICING=0
 STATISTICS=0
 SEPARATION=0
 SIZE_SPECTRUM=0
-BAYESIAN=1
+BAYESIAN=0
 
 export CONCENTRATION
 export VERTICAL_CONCENTRATION

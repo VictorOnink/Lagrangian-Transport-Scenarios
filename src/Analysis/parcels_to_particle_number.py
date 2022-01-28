@@ -20,8 +20,8 @@ class parcels_to_particle_number:
         self.DN = settings.DN
         # Analysis parameters
         self.var_list = ['parent', 'to_split', 'time', 'age', 'size_class']
-        self.mass_list = ['particle_mass_sink']
-        self.number_list = ['particle_number_sink']
+        self.mass_list = ['particle_mass_sink', 'particle_mass']
+        self.number_list = ['particle_number_sink', 'particle_number']
         self.mass_number_list = utils.flatten_list_of_lists([self.mass_list, self.number_list])
         self.output_dict = {}
         self.particle_number, self.time_step_number, self.final_t = None, None, None
@@ -36,7 +36,8 @@ class parcels_to_particle_number:
                 variable_restart = restart_dict[variable][:, -1]
                 for p_ind, number in enumerate(variable_restart):
                     output_dict[variable][p_ind, :] = number
-        # The second case is
+        # The second case is when we are starting from scratch, so we initialize the weights following literature
+        # sources
         else:
             if settings.INPUT == 'LebretonKaandorpInit':
                 # The field data from Simon Sanchez et al. (2019) https://doi.org/10.1016/j.scitotenv.2019.06.168
@@ -62,7 +63,7 @@ class parcels_to_particle_number:
                 # Initialize the mass arrays by size class
                 for size_class in range(mass_inter.size):
                     size_class_selection = base_dict['size_class'] == size_class
-                    for variable in self.mass_number_list:
+                    for variable in self.mass_list:
                         output_dict[variable][size_class_selection] = mass_inter[size_class]
         return output_dict
 
