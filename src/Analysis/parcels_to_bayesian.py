@@ -46,7 +46,21 @@ class parcels_to_bayesian:
                 # Flattening the arrays
                 lon_selection = lon_selection.values.flatten()
                 lat_selection = lat_selection.values.flatten()
-                # Calculate the
+                # Calculate the concentrations over all these positions
+                concentration, binned_LAT, binned_LON = utils.histogram(lon_data=lon_selection, lat_data=lat_selection,
+                                                                        bins_Lon=self.LON, bins_Lat=self.LAT)
+                # Now, get all locations where the concentrations are greater than zero
+                indices_LAT, indices_LON = np.where(concentration > 0)
+                # Finally, adding the nonzero concentration points to the output dict
+                for ind_la, ind_lo in zip(indices_LAT, indices_LON):
+                    if (ind_la, ind_lo) in self.output_dict.keys():
+                        self.output_dict[(ind_la, ind_lo)][cluster_id] = concentration[ind_la, ind_lo]
+                        self.output_dict[(ind_la, ind_lo)]['total'] += concentration[ind_la, ind_lo]
+                    else:
+                        self.output_dict[(ind_la, ind_lo)] = {}
+                        self.output_dict[(ind_la, ind_lo)][cluster_id] = concentration[ind_la, ind_lo]
+                        self.output_dict[(ind_la, ind_lo)]['total'] = concentration[ind_la, ind_lo]
+            print(self.output_dict)
 
         elif self.parallel_step == 2:
             utils.print_statement('Nothing happens for parcels_to_bayesian when settings.PARALLEL_STEP == 2',
@@ -62,16 +76,8 @@ class parcels_to_bayesian:
         return temp_direc, output_direc
 
     def create_output_dict(self):
-        output_dict = {'LON': self.LON, 'LAT': self.LAT, 'cluster_dict': self.cluster_dict}
-        for cluster_id in range(self.cluster_number):
-            output_dict[cluster_id] = {}
-            # First, the grid for the posterior probability
-            output_dict[cluster_id]['postprob'] = None
-            # Then, the midpoint lon/lat and the weight
-            output_dict[cluster_id]['lat'], output_dict[cluster_id]['lon'], output_dict[cluster_id]['weight'] = self.cluster_dict[cluster_id]
-        # Finally, a normalization grid and the total number of particles
-        output_dict['norm'] = None
-        output_dict['p_number'] = self.particle_number
+        output_dict = {'LON': 0.5 * self.LON[1:] + 0.5 * self.LON[:-1], 'LAT': 0.5 * self.LAT[1:] + 0.5 * self.LAT[:-1],
+                       'cluster_dict': self.cluster_dict, 'norm': None, 'p_number': self.particle_number}
         return output_dict
 
     def source_cluster(self):
