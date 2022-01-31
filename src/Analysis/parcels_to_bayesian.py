@@ -29,6 +29,7 @@ class parcels_to_bayesian:
         self.particle_number = self.release_cluster.size
         # Creating the output dictionary
         self.output_dict = self.create_output_dict()
+        self.file_name = self.get_filename()
 
     def run(self):
         if self.parallel_step == 1:
@@ -61,8 +62,7 @@ class parcels_to_bayesian:
                         self.output_dict[(ind_la, ind_lo)][cluster_id] = concentration[ind_la, ind_lo]
                         self.output_dict[(ind_la, ind_lo)]['total'] = concentration[ind_la, ind_lo]
             # Saving the output
-            print(self.get_filename())
-            utils.save_obj(self.get_filename(), self.output_dict)
+            utils.save_obj(self.file_name, self.output_dict)
 
         elif self.parallel_step == 2:
             utils.print_statement('Nothing happens for parcels_to_bayesian when settings.PARALLEL_STEP == 2',
@@ -72,6 +72,7 @@ class parcels_to_bayesian:
 
     def get_filename(self):
         prefix = 'bayesian'
+        print(self.file_dict[self.run][self.restart])
         file_name = utils.analysis_save_file_name(input_file=self.file_dict[self.run][self.restart], prefix=prefix)
         return self.output_direc + file_name
 
