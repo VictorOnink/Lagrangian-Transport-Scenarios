@@ -38,7 +38,7 @@ class parcels_to_bayesian:
 
             # Now, we loop through the various release clusters and calculate the annual averaged concentration for each
             # cluster
-            for cluster_id in [0]:
+            for cluster_id in range(self.cluster_number):
                 # Getting the trajectories for this cluster
                 select_cluster = np.where(self.release_cluster == cluster_id)[0]
                 lon_selection = particle_lon[select_cluster, :]
@@ -61,12 +61,19 @@ class parcels_to_bayesian:
                         self.output_dict[(ind_la, ind_lo)][cluster_id] = concentration[ind_la, ind_lo]
                         self.output_dict[(ind_la, ind_lo)]['total'] = concentration[ind_la, ind_lo]
             print(self.output_dict)
+            # Saving the output
+            utils.save_obj(self.get_filename(), self.output_dict)
 
         elif self.parallel_step == 2:
             utils.print_statement('Nothing happens for parcels_to_bayesian when settings.PARALLEL_STEP == 2',
                                   to_print=True)
         else:
             ValueError('settings.PARALLEL_STEP can not have a value of {}'.format(self.parallel_step))
+
+    def get_filename(self):
+        prefix = 'bayesian'
+        file_name = utils.analysis_save_file_name(input_file=self.file_dict[self.run][self.restart], prefix=prefix)
+        return self.output_direc + file_name
 
     def get_directories(self):
         temp_direc = settings.SCRATCH_DIR
