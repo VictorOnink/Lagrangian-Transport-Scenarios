@@ -38,7 +38,7 @@ class parcels_to_bayesian:
 
             # Now, we loop through the various release clusters and calculate the annual averaged concentration for each
             # cluster
-            for cluster_id in range(self.cluster_number):
+            for cluster_id in range(self.cluster_number.astype(int)):
                 # Getting the trajectories for this cluster
                 select_cluster = np.where(self.release_cluster == cluster_id)[0]
                 lon_selection = particle_lon[select_cluster, :]
