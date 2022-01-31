@@ -72,8 +72,8 @@ class parcels_to_bayesian:
 
     def get_filename(self):
         prefix = 'bayesian'
-        print(self.file_dict[self.run][self.restart])
-        file_name = utils.analysis_save_file_name(input_file=self.file_dict[self.run][self.restart], prefix=prefix)
+        file_name = utils.analysis_save_file_name(input_file=self.file_dict[settings.RUN][settings.RESTART],
+                                                  prefix=prefix)
         return self.output_direc + file_name
 
     def get_directories(self):
