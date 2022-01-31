@@ -5,7 +5,7 @@ module load Workspace
 #####################################################################################
 SUBMISSION='analysis'
 export SUBMISSION
-DEBUG=1 # 0 = Not a debug run, 1 = a debug run
+DEBUG=0 # 0 = Not a debug run, 1 = a debug run
 #0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 #5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation
 SCENARIO=5
@@ -23,8 +23,8 @@ export SHOREDEPEN
 WMIN=3
 export WMIN
 #for scenario 5 and 6, the initial size of the particle in 1e-6 m and the particle rho
-PARTICLE_SIZE_list=(5000)  #(5000 2500 1250 625 313 156 78 39 20 10 5 2)
-INIT_DENSITY_list=(920) # (30 920 980 1020)
+PARTICLE_SIZE_list=(5000 2500 1250 625 313 156 78 39 20 10 5 2)  #(5000 2500 1250 625 313 156 78 39 20 10 5 2)
+INIT_DENSITY_list=(30 920 980 1020) # (30 920 980 1020)
 export INIT_DENSITY
 #for scenario 5 and 6, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=0
