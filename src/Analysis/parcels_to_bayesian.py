@@ -60,8 +60,8 @@ class parcels_to_bayesian:
                         self.output_dict[(ind_la, ind_lo)] = {}
                         self.output_dict[(ind_la, ind_lo)][cluster_id] = concentration[ind_la, ind_lo]
                         self.output_dict[(ind_la, ind_lo)]['total'] = concentration[ind_la, ind_lo]
-            print(self.output_dict)
             # Saving the output
+            print(self.get_filename())
             utils.save_obj(self.get_filename(), self.output_dict)
 
         elif self.parallel_step == 2:
