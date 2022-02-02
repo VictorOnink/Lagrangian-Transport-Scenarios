@@ -171,7 +171,7 @@ class parcels_to_vertical_concentration:
     def get_file_names(self, final, year=settings.STARTYEAR, month=settings.STARTMONTH, run=settings.RUN,
                        restart=settings.RESTART):
         split = {True: None, False: '.nc'}[final]
-        directory = {True: self.output_dict, False: self.temp_direc}[final]
+        directory = {True: self.output_direc, False: self.temp_direc}[final]
         prefix = 'vertical_concentration'
         if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
             output_name = directory + utils.analysis_save_file_name(
