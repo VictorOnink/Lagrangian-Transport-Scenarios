@@ -12,7 +12,7 @@ from Analysis.CMEMS_mediterranean_mean_MLD import CMEMS_mediterranean_mean_MLD
 
 class SizeTransport_VerticalProfile:
     def __init__(self, scenario, figure_direc, size_list, time_selection, rho_list=[920], with_mld=True,
-                 off_shore=False, fixed_resus=False, resus_time=7):
+                 shore='all', fixed_resus=False, resus_time=7):
         # Figure Parameters
         self.fig_size = (16, 10)
         self.fig_shape = (2, 2)
@@ -41,7 +41,7 @@ class SizeTransport_VerticalProfile:
         self.year = 2010 + self.time_selection
         self.rho_list = rho_list
         self.tau = 0.0
-        self.off_shore = off_shore
+        self.shore = shore
         self.fixed_resus = fixed_resus
         self.resus_time = resus_time
 
@@ -58,7 +58,8 @@ class SizeTransport_VerticalProfile:
         depth_bins = data_dict['depth']
 
         # Averaging by season
-        conc_type = {False: 'concentration', True:'concentration_offshore'}[self.off_shore]
+        conc_type = {'all': 'concentration', 'offshore': 'concentration_offshore',
+                     'nearshore': 'concentration_nearshore'}[self.off_shore]
         for rho in self.rho_list:
             for size in self.size_list:
                 for month in np.arange(0, 12, 3):
@@ -137,8 +138,8 @@ class SizeTransport_VerticalProfile:
         base = 'SizeTransport_vertical_profile_year={}_rho={}'.format(*str_format)
         if self.fixed_resus:
             base += '_resus_time={}'.format(self.resus_time)
-        if self.off_shore:
-            base += '_offshore'
+        if self.shore != 'all':
+            base += '_{}'.format(self.shore)
         return self.output_direc + base + file_type
 
     @staticmethod
