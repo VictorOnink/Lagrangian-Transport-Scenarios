@@ -101,9 +101,10 @@ def run(scenario, figure_direc: str):
     # Plotting the month average vertical profile
     for rho in [[920, 980], [30, 1020]]:
         SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                      time_selection=0, rho_list=rho, fixed_resus=True).plot()
+                                      time_selection=0, rho_list=rho, fixed_resus=True, resus_time=50).plot()
         SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                      time_selection=0, rho_list=rho, fixed_resus=True, off_shore=True).plot()
+                                      time_selection=0, rho_list=rho, fixed_resus=True, off_shore=True,
+                                      resus_time=50).plot()
         # SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
         #                               time_selection=1, rho_list=rho).plot()
         # SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
