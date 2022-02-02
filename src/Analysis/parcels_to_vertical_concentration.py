@@ -78,6 +78,14 @@ class parcels_to_vertical_concentration:
                         histogram_counts /= days_in_month[index_time]
                         self.output_dict[key_year][month_index]['concentration_offshore'] += histogram_counts
                         self.output_dict[key_year][month_index]['counts_offshore'] += np.nansum(histogram_counts)
+                        # Finally, just the particles that are within 50km from the nearest model coastline
+                        selection = select_dict['distance2coast'] <= 50
+                        histogram_counts, _ = np.histogram(select_dict['z'][selection], bins=self.depth_bins,
+                                                           weights=select_dict['weights'][selection])
+                        histogram_counts /= days_in_month[index_time]
+                        self.output_dict[key_year][month_index]['concentration_nearshore'] += histogram_counts
+                        self.output_dict[key_year][month_index]['counts_nearshore'] += np.nansum(histogram_counts)
+
                     else:
                         histogram_counts, _ = np.histogram(select_dict['z'], bins=self.depth_bins, weights=select_dict['weights'])
                         # Divide the counts by the number of days in the month
@@ -139,9 +147,10 @@ class parcels_to_vertical_concentration:
             for concentration in self.concentration_list:
                 base_dict[concentration] = np.zeros(self.depth_bins.__len__() - 1, dtype=np.float32)
         elif settings.SCENARIO_NAME in ['SizeTransport']:
-            base_dict = {'counts': 0.0, 'concentration': np.zeros(self.depth_bins.__len__() - 1, dtype=np.float32),
-                         'counts_offshore': 0.0,
-                         'concentration_offshore': np.zeros(self.depth_bins.__len__() - 1, dtype=np.float32)}
+            base_dict = {'counts': 0.0, 'counts_offshore': 0.0, 'counts_nearshore': 0.0,
+                         'concentration': np.zeros(self.depth_bins.__len__() - 1, dtype=np.float32),
+                         'concentration_offshore': np.zeros(self.depth_bins.__len__() - 1, dtype=np.float32),
+                         'concentration_nearshore': np.zeros(self.depth_bins.__len__() - 1, dtype=np.float32)}
         else:
             base_dict = {'counts': 0.0, 'concentration': np.zeros(self.depth_bins.__len__() - 1, dtype=np.float32)}
         simulation_range = settings.SIM_LENGTH + 1
