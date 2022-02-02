@@ -4,7 +4,6 @@ from advection_scenarios import advection_files
 from netCDF4 import Dataset
 import numpy as np
 from progressbar import ProgressBar
-import os
 from copy import deepcopy
 from datetime import datetime, timedelta
 
@@ -13,7 +12,7 @@ class parcels_to_vertical_concentration:
     def __init__(self, file_dict: dict):
         self.parallel_step = settings.PARALLEL_STEP
         self.file_dict = file_dict
-        self.depth_bins = determine_depth_bins()
+        self.depth_bins = self.determine_depth_bins()
         self.temp_direc, self.output_direc = self.get_directories()
         # Some variables specific to FragmentationKaandorpPartial
         self.weight_list = ['particle_mass_sink', 'particle_number_sink']
@@ -27,19 +26,17 @@ class parcels_to_vertical_concentration:
         if self.parallel_step == 1:
             # Setting the time boundaries so that we can get the time points at the end of each month, which we in turn
             # can use to select all floating particles within a given time period
-            time_list, days_in_month = determine_month_boundaries()
+            time_list, days_in_month = self.determine_month_boundaries()
 
             # Loading the data
             year, month, run, restart = settings.STARTYEAR, settings.STARTMONTH, settings.RUN, settings.RESTART
             print_statement = 'year {}-{}, run {} restart {}'.format(year, month, run, restart)
             utils.print_statement(print_statement, to_print=True)
-            output_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
-                                         directory=self.temp_direc, final=False)
+            output_name = self.get_file_names(final=False)
             if not utils.check_file_exist(output_name, without_pkl=True):
-                parcels_dataset, post_dataset = load_parcels_post_output(scenario_name=settings.SCENARIO_NAME,
-                                                                         file_dict=self.file_dict)
+                parcels_dataset, post_dataset = self.load_parcels_post_output()
                 # Load the relevant fields into run_restart_dict and flattening the arrays
-                run_restart_dict = set_run_restart_dict(settings.SCENARIO_NAME, parcels_dataset, post_dataset, self.weight_list)
+                run_restart_dict = self.set_run_restart_dict(parcels_dataset, post_dataset)
 
                 # Looping through the various months
                 for index_time in range(1, time_list.__len__()):
@@ -68,6 +65,18 @@ class parcels_to_vertical_concentration:
                                 histogram_counts /= days_in_month[index_time]
                                 self.output_dict[key_year][month_index][size_class][self.concentration_list[index_weight]] += histogram_counts
                                 self.output_dict[key_year][month_index][size_class][self.counts_list[index_weight]] += np.nansum(histogram_counts)
+                    elif settings.SCENARIO_NAME in ['SizeTransport']:
+                        # First, lets consider all particles in the simulation
+                        histogram_counts, _ = np.histogram(select_dict['z'], bins=self.depth_bins, weights=select_dict['weights'])
+                        histogram_counts /= days_in_month[index_time]
+                        self.output_dict[key_year][month_index]['concentration'] += histogram_counts
+                        self.output_dict[key_year][month_index]['counts'] += np.nansum(histogram_counts)
+                        # Next, lets select just the particles that are more than 50km from the nearest model coastline
+                        histogram_counts, _ = np.histogram(select_dict['z'][select_dict['distance2coast'] > 50],
+                                                           bins=self.depth_bins, weights=select_dict['weights'])
+                        histogram_counts /= days_in_month[index_time]
+                        self.output_dict[key_year][month_index]['concentration_offshore'] += histogram_counts
+                        self.output_dict[key_year][month_index]['counts_offshore'] += np.nansum(histogram_counts)
                     else:
                         histogram_counts, _ = np.histogram(select_dict['z'], bins=self.depth_bins, weights=select_dict['weights'])
                         # Divide the counts by the number of days in the month
@@ -87,9 +96,8 @@ class parcels_to_vertical_concentration:
                     for run in range(0, settings.RUN_RANGE):
                         for restart in range(0, settings.SIM_LENGTH - ind_year):
                             if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
-                                file_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
-                                                           directory=self.temp_direc, final=False, year=year, month=month,
-                                                           run=run, restart=restart)
+                                file_name = self.get_file_names(final=False, year=year, month=month, run=run,
+                                                                restart=restart)
                                 dataset_post = utils.load_obj(filename=file_name)
 
                                 for sim_year in range(settings.SIM_LENGTH):
@@ -102,19 +110,16 @@ class parcels_to_vertical_concentration:
                                 utils.remove_file(file_name)
                             else:
                                 if month == 1 and year == settings.STARTYEAR:
-                                    file_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
-                                                               directory=self.temp_direc, final=False, year=year, run=run,
-                                                               restart=restart)
+                                    file_name = self.get_file_names(final=False, year=year, run=run, restart=restart)
                                     dataset_post = utils.load_obj(filename=file_name)
                                     for sim_year in range(settings.SIM_LENGTH):
                                         key_year = utils.analysis_simulation_year_key(sim_year)
                                         for month_index in self.output_dict[key_year].keys():
-                                            self.output_dict[key_year][month_index]['concentration'] += dataset_post[key_year][month_index]['concentration']
-                                            self.output_dict[key_year][month_index]['counts'] += dataset_post[key_year][month_index]['counts']
+                                            for var in self.output_dict[key_year][month_index].keys():
+                                                self.output_dict[key_year][month_index][var] += dataset_post[key_year][month_index][var]
                                     utils.remove_file(file_name + '.pkl')
             # Saving the output
-            output_name = get_file_names(scenario_name=settings.SCENARIO_NAME, file_dict=self.file_dict,
-                                         directory=self.output_direc, final=True)
+            output_name = self.get_file_names(final=True)
             utils.save_obj(output_name, self.output_dict)
             utils.print_statement("The vertical concentration has been saved")
         else:
@@ -132,6 +137,10 @@ class parcels_to_vertical_concentration:
                 base_dict[count] = 0.0
             for concentration in self.concentration_list:
                 base_dict[concentration] = np.zeros(self.depth_bins.__len__() - 1, dtype=np.float32)
+        elif settings.SCENARIO_NAME in ['SizeTransport']:
+            base_dict = {'counts': 0.0, 'concentration': np.zeros(self.depth_bins.__len__() - 1, dtype=np.float32),
+                         'counts_offshore': 0.0,
+                         'concentration_offshore': np.zeros(self.depth_bins.__len__() - 1, dtype=np.float32)}
         else:
             base_dict = {'counts': 0.0, 'concentration': np.zeros(self.depth_bins.__len__() - 1, dtype=np.float32)}
         simulation_range = settings.SIM_LENGTH + 1
@@ -148,6 +157,45 @@ class parcels_to_vertical_concentration:
                     output_dict[key_year][month] = deepcopy(base_dict)
         return output_dict
 
+    def load_parcels_post_output(self, year=settings.STARTYEAR, month=settings.STARTMONTH, run=settings.RUN,
+                                 restart=settings.RESTART):
+        if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
+            parcels_dataset = Dataset(self.file_dict['parcels'][year][month][run][restart])
+            post_dataset = utils.load_obj(self.file_dict['postprocess'][year][month][run][restart])
+        else:
+            parcels_dataset = Dataset(self.file_dict[run][restart])
+            post_dataset = None
+        return parcels_dataset, post_dataset
+
+    def get_file_names(self, final, year=settings.STARTYEAR, month=settings.STARTMONTH, run=settings.RUN,
+                       restart=settings.RESTART):
+        split = {True: None, False: '.nc'}[final]
+        directory = {True: self.output_dict, False: self.temp_direc}[final]
+        prefix = 'vertical_concentration'
+        if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
+            output_name = directory + utils.analysis_save_file_name(
+                input_file=self.file_dict['postprocess'][year][month][run][restart],
+                prefix=prefix, split=split)
+        else:
+            output_name = directory + utils.analysis_save_file_name(input_file=self.file_dict[run][restart], prefix=prefix,
+                                                                    split=split)
+        return output_name
+
+    def set_run_restart_dict(self, parcels_dataset, post_dataset):
+        run_restart_dict = {}
+        for variable in ['z', 'beach', 'time']:
+            run_restart_dict[variable] = parcels_dataset.variables[variable][:, :-1].flatten()
+        if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
+            run_restart_dict['size_class'] = parcels_dataset.variables['size_class'][:, :-1].flatten()
+            for weight in self.weight_list:
+                run_restart_dict[weight] = post_dataset[weight][:, :-1].flatten()
+        elif settings.SCENARIO_NAME in ['SizeTransport']:
+            run_restart_dict['distance2coast'] = parcels_dataset.variables['distance2coast'][:, :-1].flatten()
+            run_restart_dict['weights'] = np.ones(run_restart_dict[variable].shape, dtype=float)
+        else:
+            run_restart_dict['weights'] = np.ones(run_restart_dict[variable].shape, dtype=float)
+        return run_restart_dict
+
     @staticmethod
     def get_directories():
         temp_direc = settings.SCRATCH_DIR
@@ -156,71 +204,29 @@ class parcels_to_vertical_concentration:
         utils.check_direc_exist(output_direc)
         return temp_direc, output_direc
 
+    @staticmethod
+    def determine_depth_bins():
+        advection_scenario = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
+                                                            advection_scenario=settings.ADVECTION_DATA,
+                                                            repeat_dt=None)
+        adv_file_dict = advection_scenario.file_names
+        depth_min, depth_max = np.nanmin(adv_file_dict['DEPTH']) - 0.1, np.nanmax(adv_file_dict['DEPTH'])
+        if depth_min > 0:
+            log_min, log_max = np.log10(depth_min), np.log10(depth_max)
+        else:
+            log_min, log_max = -1, np.log10(depth_max)
+        num = 100
+        depth_bins = np.logspace(log_min, log_max, num=num)
+        return depth_bins
 
-########################################################################################################################
-"""
-These following functions are used across all scenarios
-"""
-
-
-def determine_depth_bins():
-    advection_scenario = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
-                                                        advection_scenario=settings.ADVECTION_DATA,
-                                                        repeat_dt=None)
-    adv_file_dict = advection_scenario.file_names
-    depth_min, depth_max = np.nanmin(adv_file_dict['DEPTH']) - 0.1, np.nanmax(adv_file_dict['DEPTH'])
-    if depth_min > 0:
-        log_min, log_max = np.log10(depth_min), np.log10(depth_max)
-    else:
-        log_min, log_max = -1, np.log10(depth_max)
-    num = 100
-    depth_bins = np.logspace(log_min, log_max, num=num)
-    return depth_bins
-
-
-def determine_month_boundaries():
-    reference_time = datetime(2010, 1, 1, 12, 0)
-    time_list = [-1e6]
-    days_in_month = [1]
-    for year in range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH + 1):
-        for month in range(1, 13):
-            last_of_month = datetime(year, month, 1, 0, 0) - timedelta(seconds=1)
-            days_in_month.append(last_of_month.day)
-            time_list.append((last_of_month - reference_time).total_seconds())
-    return time_list, days_in_month
-
-
-def get_file_names(scenario_name, file_dict, directory, final, year=settings.STARTYEAR, month=settings.STARTMONTH,
-                   run=settings.RUN, restart=settings.RESTART):
-    split = {True: None, False: '.nc'}[final]
-    prefix = 'vertical_concentration'
-    if scenario_name in ['FragmentationKaandorpPartial']:
-        output_name = directory + utils.analysis_save_file_name(input_file=file_dict['postprocess'][year][month][run][restart],
-        prefix=prefix, split=split)
-    else:
-        output_name = directory + utils.analysis_save_file_name(input_file=file_dict[run][restart], prefix=prefix, split=split)
-    return output_name
-
-
-def load_parcels_post_output(scenario_name, file_dict, year=settings.STARTYEAR, month=settings.STARTMONTH,
-                             run=settings.RUN, restart=settings.RESTART):
-    if scenario_name in ['FragmentationKaandorpPartial']:
-        parcels_dataset = Dataset(file_dict['parcels'][year][month][run][restart])
-        post_dataset = utils.load_obj(file_dict['postprocess'][year][month][run][restart])
-    else:
-        parcels_dataset = Dataset(file_dict[run][restart])
-        post_dataset = None
-    return parcels_dataset, post_dataset
-
-
-def set_run_restart_dict(scenario_name, parcels_dataset, post_dataset, weight_list):
-    run_restart_dict = {}
-    for variable in ['z', 'beach', 'time']:
-        run_restart_dict[variable] = parcels_dataset.variables[variable][:, :-1].flatten()
-    if scenario_name in ['FragmentationKaandorpPartial']:
-        run_restart_dict['size_class'] = parcels_dataset.variables['size_class'][:, :-1].flatten()
-        for weight in weight_list:
-            run_restart_dict[weight] = post_dataset[weight][:, :-1].flatten()
-    else:
-        run_restart_dict['weights'] = np.ones(run_restart_dict[variable].shape, dtype=float)
-    return run_restart_dict
+    @staticmethod
+    def determine_month_boundaries():
+        reference_time = datetime(2010, 1, 1, 12, 0)
+        time_list = [-1e6]
+        days_in_month = [1]
+        for year in range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH + 1):
+            for month in range(1, 13):
+                last_of_month = datetime(year, month, 1, 0, 0) - timedelta(seconds=1)
+                days_in_month.append(last_of_month.day)
+                time_list.append((last_of_month - reference_time).total_seconds())
+        return time_list, days_in_month
