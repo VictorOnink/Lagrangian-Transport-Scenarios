@@ -11,7 +11,8 @@ from Analysis.CMEMS_mediterranean_mean_MLD import CMEMS_mediterranean_mean_MLD
 
 
 class SizeTransport_VerticalProfile:
-    def __init__(self, scenario, figure_direc, size_list, time_selection, rho_list=[920], with_mld=True):
+    def __init__(self, scenario, figure_direc, size_list, time_selection, rho_list=[920], with_mld=True,
+                 off_shore=False, fixed_resus=False, resus_time=7):
         # Figure Parameters
         self.fig_size = (16, 10)
         self.fig_shape = (2, 2)
@@ -40,6 +41,9 @@ class SizeTransport_VerticalProfile:
         self.year = 2010 + self.time_selection
         self.rho_list = rho_list
         self.tau = 0.0
+        self.off_shore = off_shore
+        self.fixed_resus = fixed_resus
+        self.resus_time = resus_time
 
     def plot(self):
         # Loading the data
@@ -48,32 +52,33 @@ class SizeTransport_VerticalProfile:
             output_dict[rho] = {}
             for size in self.size_list:
                 data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
-                                                           data_direc=self.data_direc,
-                                                           size=size, rho=rho, tau=self.tau)
+                                                           data_direc=self.data_direc, fixed_resus=self.fixed_resus,
+                                                           size=size, rho=rho, tau=self.tau, resus_time=self.resus_time)
                 output_dict[rho][size] = data_dict[utils.analysis_simulation_year_key(self.time_selection)]
         depth_bins = data_dict['depth']
 
         # Averaging by season
+        conc_type = {False: 'concentration', True:'concentration_offshore'}[self.off_shore]
         for rho in self.rho_list:
             for size in self.size_list:
                 for month in np.arange(0, 12, 3):
-                    month_stack = np.vstack([output_dict[rho][size][month]['concentration'],
-                                             output_dict[rho][size][month + 1]['concentration'],
-                                             output_dict[rho][size][month + 2]['concentration']])
-                    output_dict[rho][size][month]['concentration'] = np.nanmean(month_stack, axis=0)
+                    month_stack = np.vstack([output_dict[rho][size][month][conc_type],
+                                             output_dict[rho][size][month + 1][conc_type],
+                                             output_dict[rho][size][month + 2][conc_type]])
+                    output_dict[rho][size][month][conc_type] = np.nanmean(month_stack, axis=0)
 
         # Normalizing the profiles
         for rho in self.rho_list:
             for size in self.size_list:
                 for month in range(0, 12):
-                    output_dict[rho][size][month]['concentration'] /= np.sum(output_dict[rho][size][month]['concentration'])
+                    output_dict[rho][size][month][conc_type] /= np.sum(output_dict[rho][size][month][conc_type])
 
         # setting the zero values to nan to clear up the plots
         for rho in self.rho_list:
             for size in self.size_list:
                 for month in range(0, 12):
-                    selection = output_dict[rho][size][month]['concentration'] == 0
-                    output_dict[rho][size][month]['concentration'][selection] = np.nan
+                    selection = output_dict[rho][size][month][conc_type] == 0
+                    output_dict[rho][size][month][conc_type][selection] = np.nan
 
         # Get the mean MLD depth data
         if self.with_mld:
@@ -91,13 +96,13 @@ class SizeTransport_VerticalProfile:
 
         # Labelling the subfigures
         for index_ax in range(self.number_of_plots):
-            ax[index_ax].set_title(subfigure_title(index_ax, self.time_selection), fontsize=self.ax_label_size)
+            ax[index_ax].set_title(self.subfigure_title(index_ax, self.time_selection), fontsize=self.ax_label_size)
 
         # Adding in a legend
         cmap_list, label_list = [], []
         for index_size, size in enumerate(self.size_list):
             cmap_list.append(vUtils.discrete_color_from_cmap(index_size, subdivisions=self.size_list.__len__()))
-            label_list.append(legend_label(size))
+            label_list.append(self.legend_label(size))
         size_colors = [plt.plot([], [], c=cmap_list[i], label=label_list[i], linestyle='-')[0] for i in
                        range(cmap_list.__len__())]
         rho_lines = [plt.plot([], [], c='k', label=r'$\rho=$' + str(rho) + r' kg m$^{-3}$', linestyle=self.rho_line_dict[rho])[0]
@@ -114,27 +119,34 @@ class SizeTransport_VerticalProfile:
             for rho in self.rho_list:
                 for index_size, size in enumerate(self.size_list):
                     c = cmap_list[index_size]
-                    if np.sum(~np.isnan(output_dict[rho][size][month]['concentration'])) < 2:
+                    if np.sum(~np.isnan(output_dict[rho][size][month][conc_type])) < 2:
                         linestyle, markerstyle = None, 'o'
                     else:
                         linestyle, markerstyle = self.rho_line_dict[rho], None
-                    ax[ind_month].plot(output_dict[rho][size][month]['concentration'], depth_bins, linestyle=linestyle,
+                    ax[ind_month].plot(output_dict[rho][size][month][conc_type], depth_bins, linestyle=linestyle,
                                        c=c, marker=markerstyle)
                     # Adding in a horizontal line for the MLD
                     if self.with_mld:
                         ax[ind_month].axhline(y=MLD_mean[self.seasons[ind_month]], color='r', linestyle='-')
 
-        file_name = self.output_direc + 'SizeTransport_vertical_profile_year={}_rho={}.png'.format(self.time_selection,
-                                                                                                   self.rho_list)
-        plt.savefig(file_name, bbox_inches='tight')
+        plt.savefig(self.file_name(), bbox_inches='tight')
         plt.close('all')
 
+    def file_name(self, file_type='.png'):
+        str_format = self.time_selection, self.rho_list, self.fixed_resus
+        base = 'SizeTransport_vertical_profile_year={}_rho={}'.format(*str_format)
+        if self.fixed_resus:
+            base += '_resus_time={}'.format(self.resus_time)
+        if self.off_shore:
+            base += '_offshore'
+        return self.output_direc + base + file_type
 
-def legend_label(size):
-    return r'r = {:.3f} mm'.format(size * 1e3)
+    @staticmethod
+    def legend_label(size):
+        return r'r = {:.3f} mm'.format(size * 1e3)
 
-
-def subfigure_title(index, simulation_year):
-    alphabet = string.ascii_lowercase
-    month_dict = {0: 'Winter: JFM', 1: 'Spring: AMJ', 2: 'Summer: JAS', 3: 'Autumn: OND'}
-    return '({}) {}-{}'.format(alphabet[index], month_dict[index], settings.STARTYEAR + simulation_year)
+    @staticmethod
+    def subfigure_title(index, simulation_year):
+        alphabet = string.ascii_lowercase
+        month_dict = {0: 'Winter: JFM', 1: 'Spring: AMJ', 2: 'Summer: JAS', 3: 'Autumn: OND'}
+        return '({}) {}-{}'.format(alphabet[index], month_dict[index], settings.STARTYEAR + simulation_year)

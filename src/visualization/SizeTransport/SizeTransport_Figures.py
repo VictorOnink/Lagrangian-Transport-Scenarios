@@ -99,13 +99,15 @@ def run(scenario, figure_direc: str):
     # SizeTransport_CumulativeDistance(figure_direc=figure_direc, scenario=scenario, size_list=size_list).plot()
 
     # Plotting the month average vertical profile
-    # for rho in [[920, 980], [30, 1020]]:
-    #     SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-    #                                   time_selection=0, rho_list=rho).plot()
-    #     SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-    #                                   time_selection=1, rho_list=rho).plot()
-    #     SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-    #                                   time_selection=2, rho_list=rho).plot()
+    for rho in [[920, 980], [30, 1020]]:
+        SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+                                      time_selection=0, rho_list=rho, fixed_resus=True).plot()
+        SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+                                      time_selection=0, rho_list=rho, fixed_resus=True, off_shore=True).plot()
+        # SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+        #                               time_selection=1, rho_list=rho).plot()
+        # SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+        #                               time_selection=2, rho_list=rho).plot()
 
     # Plotting the separation distance
     # for size_selection in size_list:
