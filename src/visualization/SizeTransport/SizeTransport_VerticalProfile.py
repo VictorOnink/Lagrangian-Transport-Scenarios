@@ -59,7 +59,7 @@ class SizeTransport_VerticalProfile:
 
         # Averaging by season
         conc_type = {'all': 'concentration', 'offshore': 'concentration_offshore',
-                     'nearshore': 'concentration_nearshore'}[self.off_shore]
+                     'nearshore': 'concentration_nearshore'}[self.shore]
         for rho in self.rho_list:
             for size in self.size_list:
                 for month in np.arange(0, 12, 3):
