@@ -72,8 +72,9 @@ class parcels_to_vertical_concentration:
                         self.output_dict[key_year][month_index]['concentration'] += histogram_counts
                         self.output_dict[key_year][month_index]['counts'] += np.nansum(histogram_counts)
                         # Next, lets select just the particles that are more than 50km from the nearest model coastline
-                        histogram_counts, _ = np.histogram(select_dict['z'][select_dict['distance2coast'] > 50],
-                                                           bins=self.depth_bins, weights=select_dict['weights'])
+                        selection = select_dict['distance2coast'] > 50
+                        histogram_counts, _ = np.histogram(select_dict['z'][selection], bins=self.depth_bins,
+                                                           weights=select_dict['weights'][selection])
                         histogram_counts /= days_in_month[index_time]
                         self.output_dict[key_year][month_index]['concentration_offshore'] += histogram_counts
                         self.output_dict[key_year][month_index]['counts_offshore'] += np.nansum(histogram_counts)
