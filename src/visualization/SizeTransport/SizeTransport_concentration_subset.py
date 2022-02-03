@@ -109,8 +109,7 @@ class SizeTransport_concentration_subset:
                                        norm=norm, cmap=self.cmap, zorder=200)
 
         # Saving the figure
-        file_name = self.plot_save_name()
-        plt.savefig(file_name, bbox_inches='tight')
+        plt.savefig(self.plot_save_name(), bbox_inches='tight')
         plt.close('all')
 
     def plot_save_name(self, file_type='.png'):
