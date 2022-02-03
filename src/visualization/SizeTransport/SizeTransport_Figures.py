@@ -12,6 +12,7 @@ from visualization.SizeTransport.SizeTransport_reservoirs import SizeTransport_r
 from visualization.SizeTransport.SizeTransport_rho_concentrations import SizeTransport_rho_concentrations
 from visualization.SizeTransport.SizeTransport_full_concentrations import SizeTransport_full_concentrations
 from visualization.SizeTransport.SizeTransport_MaxDistance import SizeTransport_MaxDistance
+from visualization.SizeTransport.SizeTransport_concentration_subset import SizeTransport_concentration_subset
 import os
 import numpy as np
 
@@ -59,17 +60,25 @@ def run(scenario, figure_direc: str):
     #                                          rho_list=[30, 920, 980, 1020]).plot()
 
     # Plotting all horizontal concentrations for a given density
-    for rho in [30, 920, 980, 1020]:
-        for time_select in [0]:
-            for depth_level in ['surface_1m', 'surface_5m', 'column']:
-                SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
-                                                  time_selection=time_select, rho=rho, depth_level=depth_level).plot()
+    # for rho in [30, 920, 980, 1020]:
+    #     for time_select in [0]:
+    #         for depth_level in ['surface_1m', 'surface_5m', 'column']:
+    #             SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
+    #                                               time_selection=time_select, rho=rho, depth_level=depth_level).plot()
     #             SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
     #                                               time_selection=time_select, rho=rho, depth_level=depth_level,
     #                                               fixed_resus=True, resus_time=7).plot()
     #             SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
     #                                               time_selection=time_select, rho=rho, depth_level=depth_level,
     #                                               fixed_resus=True, resus_time=50).plot()
+
+    # For direct comparison between full column and 1m concentration
+    for rho in [30, 920, 980, 1020]:
+        for time_select in [0]:
+            SizeTransport_concentration_subset(scenario=scenario, figure_direc=figure_direc, time_selection=time_select,
+                                               rho=rho, size_list=np.array([5000, 313, 2]) * settings.SIZE_FACTOR)
+            SizeTransport_concentration_subset(scenario=scenario, figure_direc=figure_direc, time_selection=time_select,
+                                               rho=rho, size_list=np.array([5000, 2]) * settings.SIZE_FACTOR)
 
     # Plot the maximum distance from shore for a given density
     # for rho in [30, 920, 980, 1020]:

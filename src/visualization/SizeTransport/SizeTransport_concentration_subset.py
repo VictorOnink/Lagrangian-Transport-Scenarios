@@ -9,17 +9,17 @@ import string
 import cmocean.cm as cmo
 
 
-class SizeTransport_full_concentrations:
-    def __init__(self, scenario, figure_direc, beach_state, time_selection,  rho, depth_level='column', tau=0,
+class SizeTransport_concentration_subset:
+    def __init__(self, scenario, figure_direc, time_selection,  size_list, rho=920, tau=0,
                  fixed_resus=False, resus_time=50):
         # Simulation parameters
         self.scenario = scenario
         self.rho = rho
         self.time_selection = time_selection
-        self.beach_state = beach_state
-        self.size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
+        self.beach_state = 'adrift'
+        self.size_list = size_list
         self.tau = tau
-        self.depth_level = depth_level
+        self.depth_list = ['column', 'surface_1m']
         self.fixed_resus = fixed_resus
         self.resus_time = resus_time
         # Data parameters
@@ -29,10 +29,10 @@ class SizeTransport_full_concentrations:
         self.prefix = 'horizontal_concentration'
         # Figure parameters
         self.figure_size = (20, 20)
-        self.figure_shape = (4, 3)
+        self.figure_shape = (self.size_list.__len__(), 2)
         self.ax_label_size = 18
         self.ax_ticklabel_size = 16
-        self.number_of_plots = self.size_list.__len__()
+        self.number_of_plots = self.size_list.__len__() * 2
         self.adv_file_dict = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
                                                             advection_scenario='CMEMS_MEDITERRANEAN',
                                                             repeat_dt=None).file_names
@@ -42,32 +42,30 @@ class SizeTransport_full_concentrations:
 
     def plot(self):
         # Loading the data
-        concentration_dict = {'beach': {}, 'adrift': {}}
+        concentration_dict = {'column': {}, 'surface_1m': {}}
         key_concentration = utils.analysis_simulation_year_key(self.time_selection)
         for index, size in enumerate(self.size_list):
-            for beach_state in concentration_dict.keys():
+            for depth_level in concentration_dict.keys():
                 data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
                                                            data_direc=self.data_direc, fixed_resus=self.fixed_resus,
                                                            size=size, rho=self.rho, tau=self.tau,
                                                            resus_time=self.resus_time)
                 if self.beach_state in ['adrift']:
-                    concentration_array = data_dict[key_concentration][beach_state][self.depth_level]
-                else:
-                    concentration_array = data_dict[key_concentration][beach_state]
-                concentration_dict[beach_state][index] = concentration_array
+                    concentration_array = data_dict[key_concentration]['adrift'][depth_level]
+                concentration_dict[depth_level][index] = concentration_array
         Lon, Lat = np.meshgrid(data_dict['lon'], data_dict['lat'])
 
         # Normalizing the concentration by the lowest non-zero concentration over all the sizes
         normalization_factor = 1e10
-        for beach_state in concentration_dict.keys():
-            for size in concentration_dict[beach_state].keys():
-                concentration = concentration_dict[beach_state][size]
+        for depth_level in concentration_dict.keys():
+            for size in concentration_dict[depth_level].keys():
+                concentration = concentration_dict[depth_level][size]
                 min_non_zero = np.nanmin(concentration[concentration > 0])
                 if min_non_zero < normalization_factor:
                     normalization_factor = min_non_zero
-        for beach_state in concentration_dict.keys():
-            for size in concentration_dict[beach_state].keys():
-                concentration_dict[beach_state][size] /= normalization_factor
+        for depth_level in concentration_dict.keys():
+            for size in concentration_dict[depth_level].keys():
+                concentration_dict[depth_level][size] /= normalization_factor
 
         # Setting zero values to nan
         for beach_state in concentration_dict.keys():
@@ -76,17 +74,19 @@ class SizeTransport_full_concentrations:
 
         # Creating the base figure
         fig = plt.figure(figsize=self.figure_size)
-        gs = fig.add_gridspec(nrows=self.figure_shape[0], ncols=self.figure_shape[1] + 1, width_ratios=[1, 1, 1, 0.1])
+        gs = fig.add_gridspec(nrows=self.figure_shape[0], ncols=self.figure_shape[1] + 1,
+                              width_ratios=[1, 1, 0.1])
 
         ax_list = []
         for rows in range(self.figure_shape[0]):
             for columns in range(self.figure_shape[1]):
                 ax_list.append(vUtils.cartopy_standard_map(fig=fig, gridspec=gs, row=rows, column=columns,
-                                                           domain=self.spatial_domain, label_size=self.ax_label_size,
+                                                           domain=self.spatial_domain,
+                                                           label_size=self.ax_label_size,
                                                            lat_grid_step=5, lon_grid_step=10, resolution='10m'))
 
         # Setting the colormap, and adding a colorbar
-        norm = set_normalization(self.beach_state)
+        norm = self.set_normalization()
         cbar_label, extend = r"Relative Concentration ($C/C_{min}$)", 'max'
         cmap = plt.cm.ScalarMappable(cmap=self.cmap, norm=norm)
         cax = fig.add_subplot(gs[:, -1])
@@ -97,7 +97,7 @@ class SizeTransport_full_concentrations:
 
         # Adding subfigure titles
         for index, ax in enumerate(ax_list):
-            ax.set_title(subfigure_title(index, self.size_list), weight='bold', fontsize=self.ax_label_size)
+            ax.set_title(self.subfigure_title(index), weight='bold', fontsize=self.ax_label_size)
 
         # The actual plotting of the figures
         for index, size in enumerate(self.size_list):
@@ -115,32 +115,24 @@ class SizeTransport_full_concentrations:
 
     def plot_save_name(self, file_type='.png'):
         year = {0: 'year_0', 1: 'year_1', 2: 'year_2'}[self.time_selection]
-        if self.beach_state in ['adrift']:
-            str_format = self.rho, self.rho, year, self.beach_state, self.depth_level
-            name = self.output_direc + 'rho_{}/SizeTransport_rho={}_allsizes_year={}_{}_{}'.format(*str_format)
-        else:
-            str_format = self.rho, self.rho, year, self.beach_state
-            name =  self.output_direc + 'rho_{}/SizeTransport_rho={}_allsizes_year={}_{}'.format(*str_format)
+        str_format = self.rho, self.rho, year
+        name = self.output_direc + 'rho_{}/SizeTransport_rho={}_subset_year={}'.format(*str_format)
         if self.fixed_resus:
-            name += 'fixed_resus_{}'.format(self.resus_time)
+            name += '_fixed_resus_{}'.format(self.resus_time)
         return name + file_type
 
+    @staticmethod
+    def set_normalization():
+        """
+        Setting the normalization that we use for the colormap
+        :param beach_state: adrift, beach or seabed
+        :return:
+        """
+        return colors.LogNorm(vmin=1e0, vmax=1e4)
 
-def set_normalization(beach_state):
-    """
-    Setting the normalization that we use for the colormap
-    :param beach_state: adrift, beach or seabed
-    :return:
-    """
-    if beach_state == 'adrift':
-        vmin, vmax = 1, 1e4
-    elif beach_state == 'beach':
-        vmin, vmax = 1, 1e4
-    return colors.LogNorm(vmin=vmin, vmax=vmax)
+    def subfigure_title(self, index):
+        return '({}) r = {:.3f} mm'.format(string.ascii_lowercase[index], self.size_list[index // 2] * 1e3)
 
-
-def subfigure_title(index, size_list):
-    return '({}) r = {:.3f} mm'.format(string.ascii_lowercase[index], size_list[index] * 1e3)
 
 
 
