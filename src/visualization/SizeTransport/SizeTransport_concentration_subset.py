@@ -101,12 +101,10 @@ class SizeTransport_concentration_subset:
 
         # The actual plotting of the figures
         for index, size in enumerate(self.size_list):
-            if self.beach_state in ['adrift']:
-                ax_list[index].pcolormesh(Lon, Lat, concentration_dict['adrift'][index], norm=norm, cmap=self.cmap,
+            ax_list[index * 2].pcolormesh(Lon, Lat, concentration_dict['column'][index], norm=norm, cmap=self.cmap,
                                           zorder=200)
-            else:
-                ax_list[index].scatter(Lon.flatten(), Lat.flatten(), c=concentration_dict['beach'][index].flatten(),
-                                       norm=norm, cmap=self.cmap, zorder=200)
+            ax_list[index * 2 + 1].pcolormesh(Lon, Lat, concentration_dict['surface_1m'][index], norm=norm,
+                                              cmap=self.cmap, zorder=200)
 
         # Saving the figure
         plt.savefig(self.plot_save_name(), bbox_inches='tight')
