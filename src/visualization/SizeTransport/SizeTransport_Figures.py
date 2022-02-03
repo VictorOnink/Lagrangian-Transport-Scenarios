@@ -76,9 +76,9 @@ def run(scenario, figure_direc: str):
     for rho in [30, 920, 980, 1020]:
         for time_select in [0]:
             SizeTransport_concentration_subset(scenario=scenario, figure_direc=figure_direc, time_selection=time_select,
-                                               rho=rho, size_list=np.array([5000, 313, 2]) * settings.SIZE_FACTOR)
+                                               rho=rho, size_list=np.array([5000, 313, 2]) * settings.SIZE_FACTOR).plot()
             SizeTransport_concentration_subset(scenario=scenario, figure_direc=figure_direc, time_selection=time_select,
-                                               rho=rho, size_list=np.array([5000, 2]) * settings.SIZE_FACTOR)
+                                               rho=rho, size_list=np.array([5000, 2]) * settings.SIZE_FACTOR).plot()
 
     # Plot the maximum distance from shore for a given density
     # for rho in [30, 920, 980, 1020]:
