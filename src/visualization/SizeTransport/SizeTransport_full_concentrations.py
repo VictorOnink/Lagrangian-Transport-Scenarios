@@ -38,6 +38,7 @@ class SizeTransport_full_concentrations:
                                                             repeat_dt=None).file_names
         self.spatial_domain = np.nanmin(self.adv_file_dict['LON']),  np.nanmax(self.adv_file_dict['LON']), \
                               np.nanmin(self.adv_file_dict['LAT']), np.nanmax(self.adv_file_dict['LAT'])
+        print(self.spatial_domain)
         self.cmap = cmo.thermal
 
     def plot(self):
