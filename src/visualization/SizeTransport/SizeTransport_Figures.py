@@ -123,7 +123,7 @@ def run(scenario, figure_direc: str):
     # Plotting the month average vertical profile
     for rho in [[920]]:
         SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                      time_selection=0, rho_list=rho, fixed_resus=True, resus_time=50).plot()
+                                      time_selection=0, rho_list=rho).plot()
         # SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
         #                               time_selection=0, rho_list=rho, fixed_resus=True, shore='offshore',
         #                               resus_time=50).plot()
