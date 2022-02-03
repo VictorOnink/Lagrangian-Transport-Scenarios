@@ -112,8 +112,8 @@ class SizeTransport_concentration_subset:
 
     def plot_save_name(self, file_type='.png'):
         year = {0: 'year_0', 1: 'year_1', 2: 'year_2'}[self.time_selection]
-        str_format = self.rho, self.rho, year
-        name = self.output_direc + 'rho_{}/SizeTransport_rho={}_subset_year={}'.format(*str_format)
+        str_format = self.rho, self.rho, self.size_list.__len__(), year
+        name = self.output_direc + 'rho_{}/SizeTransport_rho={}_subset_{}_year={}'.format(*str_format)
         if self.fixed_resus:
             name += '_fixed_resus_{}'.format(self.resus_time)
         return name + file_type
