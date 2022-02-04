@@ -9,7 +9,7 @@ DEBUG=0 # 0 = Not a debug run, 1 = a debug run
 # 0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 # 5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation,
 # 8 = Blue Cloud Hackathon Backward, 9 = Blue Cloud Hackathon Forward
-SCENARIO=9
+SCENARIO=8
 export SCENARIO
 #for scenario 1, the time a particle must be near the coast to beach (in days)
 VICINITY=2
