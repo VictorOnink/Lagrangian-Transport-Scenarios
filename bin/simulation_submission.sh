@@ -121,7 +121,6 @@ if [ "$SCENARIO" -eq "9" -a  "$INPUT" -ne "4" ]; then
   echo 'For BlueCloudForwards, make sure to use input scenario 4!!!!.'
   exit
 fi
-if
 if [ "$SCENARIO" -eq "7" -a ${#PARTICLE_SIZE_list[@]} -gt 1 ]; then
   echo 'For KaandorpFragmentationPartial, please only submit one PARTICLE_SIZE.'
   exit
