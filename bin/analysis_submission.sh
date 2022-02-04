@@ -6,8 +6,9 @@ module load Workspace
 SUBMISSION='analysis'
 export SUBMISSION
 DEBUG=0 # 0 = Not a debug run, 1 = a debug run
-#0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
-#5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation
+# 0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
+# 5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation,
+# 8 = Blue Cloud Hackathon Backward
 SCENARIO=5
 export SCENARIO
 #for scenario 1, the time a particle must be near the coast to beach (in days)
@@ -45,6 +46,9 @@ export P
 export DN
 export SIZE_CLASS_NUMBER
 export OCEAN_FRAG
+# For scenario 8, which release site do we want to do the backwards simulation for
+RELEASE_SITE=0
+export RELEASE_SITE
 #the starting year of the simulation, and how many years the simulation will take
 YEAR=2010
 STARTMONTH_list=(1)
@@ -117,6 +121,10 @@ if [ "$SCENARIO" -eq "5" -a  "$INPUT" -ne "1" ]; then
   echo 'For SizeTransport, make sure to use input scenario 1!!!!.'
   exit
 fi
+if [ "$SCENARIO" -eq "8" -a  "$INPUT" -ne "4" ]; then
+  echo 'For BlueCloudBackwards, make sure to use input scenario 4!!!!.'
+  exit
+fi
 #if [ "$SCENARIO" -eq "7" ] && [[ "$INPUT" -ne "2" ] || [ "$INPUT" -ne "3" ]]; then
 #  echo 'For KaandorpFragmentationPartial, make sure to use input scenario 2!!!!.'
 #  exit
@@ -181,6 +189,8 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
                 RUNNAMEPREFIX="Analysis_PartialKaandorpFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${YEAR}"_lamf="${LAMBDA_FRAG}"_lamfO="${LAMBDA_FRAG_LAMBDA_OCEAN_FRAG}"_"
               elif [ "$SCENARIO" -eq "5" ]; then
                 RUNNAMEPREFIX="Analysis_SizeTransport_SIZE="${PARTICLE_SIZE}"_ST="${SHORETIME}"_y="${YEAR}"_"
+              elif [ "$SCENARIO" -eq "8" ]; then
+                RUNNAMEPREFIX="BlueCloudBackwards_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
               fi
               if [ "$STOKES" -eq "1" ]; then
                 RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"

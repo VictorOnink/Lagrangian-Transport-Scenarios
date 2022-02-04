@@ -92,7 +92,7 @@ STOKES: int = int(os.environ['STOKES'])
 # MODEL SCENARIO SETTINGS
 SCENARIO_DICT: dict = {0: 'AdvectionDiffusionOnly', 1: 'CoastalProximity', 2: 'Stochastic',
                        3: 'ShoreDependentResuspension', 4: 'TurrellResuspension', 5: 'SizeTransport',
-                       6: 'FragmentationKaandorp', 7: 'FragmentationKaandorpPartial'}
+                       6: 'FragmentationKaandorp', 7: 'FragmentationKaandorpPartial', 8: 'BlueCloudBackwards'}
 
 SCENARIO_NUM: int = int(os.environ["SCENARIO"])
 SCENARIO_NAME: str = SCENARIO_DICT[SCENARIO_NUM]
@@ -168,14 +168,19 @@ elif INPUT == 'LebretonKaandorpInit':
     # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
     INPUT_MIN = 0.01  # Minimum plastic mass input for a cell in order to be considered for the input
 elif INPUT == 'Point_Release':
+    # THE RELEASE SITE OF THE POINT RELEASE
+    RELEASE_SITE = int(os.environ['RELEASE_SITE'])
+    SITE_LONLAT = {0: (11.17, 42.43)}
+    # NUMBER OF RELEASE PARTICLES
+    PARTICLE_NUMBER = 100000
     # THE NUMBER OF PARTICLES PER RELEASE STEP PER RUN
-    INPUT_DIV = 5000
+    INPUT_DIV = 1000000
     # NUMBER OF RUNS
     RUN_RANGE: int = 1
     # STARTING LONGITUDE FOR POINT RELEASE (DEGREES EAST)
-    INPUT_LON = 0.000000
+    INPUT_LON = SITE_LONLAT[0]
     # STARTING LATITUDE FOR POINT RELEASE (DEGREES NORTH)
-    INPUT_LAT = 38.604168
+    INPUT_LAT = SITE_LONLAT[1]
     # MAXIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
     INPUT_MAX = 1.0
     # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
@@ -238,7 +243,10 @@ else:
 #                                                                                                                      #
 ########################################################################################################################
 # MODEL INTEGRATION TIMESTEP
-TIME_STEP = timedelta(minutes=0.5)
+if SCENARIO_NAME == 'BlueCloudBackwards':
+    TIME_STEP = timedelta(minutes=-1)
+else:
+    TIME_STEP = timedelta(minutes=0.5)
 # MODEL OUTPUT TIMESTEP
 OUTPUT_TIME_STEP = timedelta(hours=12)
 # PARTICLE RELEASE TIMESTEP

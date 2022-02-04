@@ -1,12 +1,13 @@
 import scenarios.base_scenario as base_scenario
-import scenarios.advection_diffusion_only_scenario as AdvDifOnly
-import scenarios.coastal_proximity as prox
-import scenarios.stochastic_scenario as stochastic
-import scenarios.shore_dependent_resuspension_scenario as SD_resuspension
-import scenarios.Turrel_Beaching_scenario as Turrell
-import scenarios.FragmentationKaandorp as FragmentationKaandorp
-import scenarios.FragmentationKaandorpPartial as FragmentationKaandorpPartial
-import scenarios.SizeTransport as SizeTransport
+from scenarios.advection_diffusion_only_scenario import AdvectionDiffusionOnly
+from scenarios.coastal_proximity import CoastalProximity
+from scenarios.stochastic_scenario import Stochastic
+from scenarios.shore_dependent_resuspension_scenario import SD_Resuspension
+from scenarios.Turrel_Beaching_scenario import Turrell_Resuspension
+from scenarios.FragmentationKaandorp import FragmentationKaandorp
+from scenarios.FragmentationKaandorpPartial import FragmentationKaandorpPartial
+from scenarios.SizeTransport import SizeTransport
+from scenarios.BlueCloudBackwards import BlueCloudBackwards
 from settings import SCENARIO_NAME, STOKES, SERVER
 
 
@@ -14,21 +15,23 @@ class ScenarioFactory:
     @staticmethod
     def create_scenario(scenario_name=SCENARIO_NAME, stokes=STOKES, server=SERVER) -> base_scenario.BaseScenario:
         if scenario_name == "AdvectionDiffusionOnly":
-            return AdvDifOnly.AdvectionDiffusionOnly(server=server, stokes=stokes)
+            return AdvectionDiffusionOnly(server=server, stokes=stokes)
         elif scenario_name == "CoastalProximity":
-            return prox.CoastalProximity(server=server, stokes=stokes)
+            return CoastalProximity(server=server, stokes=stokes)
         elif scenario_name == "Stochastic":
-            return stochastic.Stochastic(server=server, stokes=stokes)
+            return Stochastic(server=server, stokes=stokes)
         elif scenario_name == 'ShoreDependentResuspension':
-            return SD_resuspension.SD_Resuspension(server=server, stokes=stokes)
+            return SD_Resuspension(server=server, stokes=stokes)
         elif scenario_name == 'TurrellResuspension':
-            return Turrell.Turrell_Resuspension(server=server, stokes=stokes)
+            return Turrell_Resuspension(server=server, stokes=stokes)
         elif scenario_name == 'FragmentationKaandorp':
-            return FragmentationKaandorp.FragmentationKaandorp(server=server, stokes=stokes)
+            return FragmentationKaandorp(server=server, stokes=stokes)
         elif scenario_name == 'FragmentationKaandorpPartial':
-            return FragmentationKaandorpPartial.FragmentationKaandorpPartial(server=server, stokes=stokes)
+            return FragmentationKaandorpPartial(server=server, stokes=stokes)
         elif scenario_name == 'SizeTransport':
-            return SizeTransport.SizeTransport(server=server, stokes=stokes)
+            return SizeTransport(server=server, stokes=stokes)
+        elif scenario_name == 'BlueCloudBackwards':
+            return BlueCloudBackwards(server=server, stokes=stokes)
         else:
             raise ValueError("invalid model scenario")
 
