@@ -8,7 +8,7 @@ export SUBMISSION
 DEBUG=0 # 0 = Not a debug run, 1 = a debug run
 # 0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 # 5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation,
-# 8 = Blue Cloud Hackathon Backward
+# 8 = Blue Cloud Hackathon Backward, 9 = Blue Cloud Hackathon Forward
 SCENARIO=8
 export SCENARIO
 #for scenario 1, the time a particle must be near the coast to beach (in days)
@@ -117,6 +117,11 @@ if [ "$SCENARIO" -eq "8" -a  "$INPUT" -ne "4" ]; then
   echo 'For BlueCloudBackwards, make sure to use input scenario 4!!!!.'
   exit
 fi
+if [ "$SCENARIO" -eq "9" -a  "$INPUT" -ne "4" ]; then
+  echo 'For BlueCloudForwards, make sure to use input scenario 4!!!!.'
+  exit
+fi
+if
 if [ "$SCENARIO" -eq "7" -a ${#PARTICLE_SIZE_list[@]} -gt 1 ]; then
   echo 'For KaandorpFragmentationPartial, please only submit one PARTICLE_SIZE.'
   exit
@@ -183,6 +188,8 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
                 RUNNAMEPREFIX="SizeTransport_SIZE="${PARTICLE_SIZE}"_ST="${SHORETIME}"_y="${STARTYEAR}"_tau="${SEABED_CRIT}"_"
               elif [ "$SCENARIO" -eq "8" ]; then
                 RUNNAMEPREFIX="BlueCloudBackwards_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
+              elif [ "$SCENARIO" -eq "9" ]; then
+                RUNNAMEPREFIX="BlueCloudForwards_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
               fi
               if [ "$STOKES" -eq "1" ]; then
                 RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"

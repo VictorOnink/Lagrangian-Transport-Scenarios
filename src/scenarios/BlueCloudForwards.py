@@ -9,13 +9,13 @@ from datetime import datetime, timedelta
 from parcels import ParcelsRandom, ErrorCode
 
 
-class BlueCloudBackwards(base_scenario.BaseScenario):
+class BlueCloudForwards(base_scenario.BaseScenario):
     """Backwards simulation for the Blue Cloud Hackathon"""
 
     def __init__(self, server, stokes):
         """Constructor for coastal_proximity"""
         super().__init__(server, stokes)
-        self.prefix = "BlueCloudBackwards"
+        self.prefix = "BlueCloudForwards"
         self.input_dir = utils.get_input_directory(server=self.server)
         self.output_dir = utils.get_output_directory(server=self.server)
         self.repeat_dt = timedelta(days=1)
@@ -92,7 +92,7 @@ class BlueCloudBackwards(base_scenario.BaseScenario):
     def run(self) -> object:
         utils.print_statement("Creating the particle set")
         pset = self.get_pset(fieldset=self.field_set, particle_type=self.particle,
-                             var_dict=self.get_var_dict(), start_time=utils.get_start_end_time(time='end'),
+                             var_dict=self.get_var_dict(), start_time=utils.get_start_end_time(time='start'),
                              repeat_dt=self.repeat_dt)
         pfile = pset.ParticleFile(name=self.file_names(new=True),
                                   outputdt=settings.OUTPUT_TIME_STEP)

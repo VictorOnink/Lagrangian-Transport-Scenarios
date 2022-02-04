@@ -92,7 +92,8 @@ STOKES: int = int(os.environ['STOKES'])
 # MODEL SCENARIO SETTINGS
 SCENARIO_DICT: dict = {0: 'AdvectionDiffusionOnly', 1: 'CoastalProximity', 2: 'Stochastic',
                        3: 'ShoreDependentResuspension', 4: 'TurrellResuspension', 5: 'SizeTransport',
-                       6: 'FragmentationKaandorp', 7: 'FragmentationKaandorpPartial', 8: 'BlueCloudBackwards'}
+                       6: 'FragmentationKaandorp', 7: 'FragmentationKaandorpPartial', 8: 'BlueCloudBackwards',
+                       9: 'BlueCloudForwards'}
 
 SCENARIO_NUM: int = int(os.environ["SCENARIO"])
 SCENARIO_NAME: str = SCENARIO_DICT[SCENARIO_NUM]
@@ -172,7 +173,7 @@ elif INPUT == 'Point_Release':
     RELEASE_SITE = int(os.environ['RELEASE_SITE'])
     SITE_LONLAT = {0: (11.17, 42.43)}[RELEASE_SITE]
     # NUMBER OF RELEASE PARTICLES
-    PARTICLE_NUMBER = 100000
+    PARTICLE_NUMBER = 275
     # THE NUMBER OF PARTICLES PER RELEASE STEP PER RUN
     INPUT_DIV = 1000000
     # NUMBER OF RUNS
@@ -244,7 +245,9 @@ else:
 ########################################################################################################################
 # MODEL INTEGRATION TIMESTEP
 if SCENARIO_NAME == 'BlueCloudBackwards':
-    TIME_STEP = timedelta(minutes=-1)
+    TIME_STEP = timedelta(minutes=-5)
+elif SCENARIO_NAME == 'BlueCloudForwards':
+    TIME_STEP = timedelta(minutes=5)
 else:
     TIME_STEP = timedelta(minutes=0.5)
 # MODEL OUTPUT TIMESTEP

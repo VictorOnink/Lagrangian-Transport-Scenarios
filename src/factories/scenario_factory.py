@@ -8,6 +8,7 @@ from scenarios.FragmentationKaandorp import FragmentationKaandorp
 from scenarios.FragmentationKaandorpPartial import FragmentationKaandorpPartial
 from scenarios.SizeTransport import SizeTransport
 from scenarios.BlueCloudBackwards import BlueCloudBackwards
+from scenarios.BlueCloudForwards import BlueCloudForwards
 from settings import SCENARIO_NAME, STOKES, SERVER
 
 
@@ -32,6 +33,8 @@ class ScenarioFactory:
             return SizeTransport(server=server, stokes=stokes)
         elif scenario_name == 'BlueCloudBackwards':
             return BlueCloudBackwards(server=server, stokes=stokes)
+        elif scenario_name == 'BlueCloudForwards':
+            return BlueCloudForwards(server=server, stokes=stokes)
         else:
             raise ValueError("invalid model scenario")
 
