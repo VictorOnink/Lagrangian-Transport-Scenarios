@@ -69,6 +69,7 @@ def create_input_files(prefix: str, grid: np.array, lon: np.array, lat: np.array
             lon_inputs = np.ones((settings.PARTICLE_NUMBER, 1)) * settings.INPUT_LON
             lat_inputs = np.ones((settings.PARTICLE_NUMBER, 1)) * settings.INPUT_LAT
             plastic_inputs = np.ones((settings.PARTICLE_NUMBER, 1)) * settings.INPUT_MAX
+            releases = 1
         elif settings.INPUT == 'Uniform':
             lon_min, lon_max, lat_min, lat_max = np.min(lon), np.max(lon), np.min(lat), np.max(lat)
             release_grid = np.mgrid[lon_min:lon_max:settings.RELEASE_GRID, lat_min:lat_max:settings.RELEASE_GRID]
