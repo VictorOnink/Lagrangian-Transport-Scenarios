@@ -110,13 +110,6 @@
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
     </task>
-    <task id="LOCAL-03355" summary="(figures!)">
-      <created>1643375307599</created>
-      <option name="number" value="03355" />
-      <option name="presentableId" value="LOCAL-03355" />
-      <option name="project" value="LOCAL" />
-      <updated>1643375307599</updated>
-    </task>
     <task id="LOCAL-03356" summary="(figures!)">
       <created>1643375406897</created>
       <option name="number" value="03356" />
@@ -453,7 +446,14 @@
       <option name="project" value="LOCAL" />
       <updated>1643995295831</updated>
     </task>
-    <option name="localTasksCounter" value="3404" />
+    <task id="LOCAL-03404" summary="Adding blue cloud backwards scenario">
+      <created>1644333745283</created>
+      <option name="number" value="03404" />
+      <option name="presentableId" value="LOCAL-03404" />
+      <option name="project" value="LOCAL" />
+      <updated>1644333745284</updated>
+    </task>
+    <option name="localTasksCounter" value="3405" />
     <servers />
   </component>
   <component name="UnknownFeatures">
