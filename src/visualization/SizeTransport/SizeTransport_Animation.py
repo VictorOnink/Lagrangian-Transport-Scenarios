@@ -47,7 +47,8 @@ class SizeTransport_Animation:
                 ax_list.append(vUtils.cartopy_standard_map(fig=fig, gridspec=gs, row=rows, column=columns,
                                                            domain=self.spatial_domain, label_size=self.tick_label_size,
                                                            lat_grid_step=5, lon_grid_step=10, resolution='10m',
-                                                           ocean_color='black', border_color='white'))
+                                                           ocean_color='black', border_color='white',
+                                                           add_gridlines=False))
         # Setting the colormap for the particle depth
         norm = colors.Normalize(vmin=0.0, vmax=100.0)
         cmap = plt.cm.ScalarMappable(cmap=self.cmap, norm=norm)

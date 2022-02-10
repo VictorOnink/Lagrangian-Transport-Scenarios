@@ -42,7 +42,7 @@ def run(scenario, figure_direc: str):
 
     # Creating an animation showing how the six different size classes I have simulations for at the moment look like
     SizeTransport_Animation(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                            simulation_years=3).animate()
+                            simulation_years=1).animate()
 
     # Creating figures showing the relative distribution, averaged over the entire simulation and time-snapshots at the
     # end of each simulation year
