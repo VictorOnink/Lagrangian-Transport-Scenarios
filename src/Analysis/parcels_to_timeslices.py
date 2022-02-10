@@ -58,12 +58,13 @@ class parcels_to_timeslicing:
                         if key in parcels_dataset.variables.keys():
                             output_dict[key] = np.array([], dtype=float)
                     # Getting all the timeslice files for this date, and looping through them
-                    file_list = glob.glob(self.temp_direc + prefix + '*')
+                    str_format = settings.INIT_SIZE, settings.INIT_DENSITY
+                    file_list = glob.glob(self.temp_direc + prefix + '*{:.1E}*{}*'.format(*str_format))
                     for file_name in file_list:
                         time_file = utils.load_obj(file_name)
                         for key in output_dict.keys():
                             output_dict[key] = np.append(output_dict[key], time_file[key])
-                        # utils.remove_file(file_name)
+                        utils.remove_file(file_name)
                         utils.print_statement("At {} we have {} particles".format(date, output_dict['lon'].size), to_print=True)
                         utils.save_obj(output_name, output_dict)
         else:
