@@ -40,7 +40,7 @@ class SizeTransport_Animation:
     def animate(self):
         # Creating the base figure
         fig = plt.figure(figsize=self.figure_size)
-        gs = fig.add_gridspec(nrows=self.grid_shape[0], ncols=self.grid_shape[1] + 1, width_ratios=[1, 1, 1, 0.1])
+        gs = fig.add_gridspec(nrows=self.grid_shape[0], ncols=self.grid_shape[1] + 1, width_ratios=[1, 1, 0.1])
         ax_list = []
         for rows in range(self.grid_shape[0]):
             for columns in range(self.grid_shape[1]):
@@ -59,11 +59,11 @@ class SizeTransport_Animation:
 
         # Setting the time range for which we want to create the simulation
         current_time, end_time = datetime(2010, 1, 1, 0), datetime(2010 + self.simulation_years, 1, 1, 0)
-        time_step, time_list = timedelta(hours=24), []
+        time_step, time_list = timedelta(hours=48), []
         while current_time < end_time:
             time_list.append(current_time)
             current_time += time_step
-        frame_number = len(time_list)
+        frame_number = 2  # time_list.__len__()
 
         # Setting a text box for the simulation date
         props = dict(boxstyle='round', facecolor='white', alpha=1)
