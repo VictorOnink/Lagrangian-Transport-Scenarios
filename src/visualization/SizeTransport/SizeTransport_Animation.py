@@ -15,8 +15,8 @@ class SizeTransport_Animation:
     def __init__(self, scenario, figure_direc, size_list, simulation_years, rho=920, tau=0.0):
         # Figure parameters
         self.figure_size = (20, 10)
-        self.ax_label_size = 14
-        self.tick_label_size = 14
+        self.ax_label_size = 16
+        self.tick_label_size = 16
         self.grid_shape = (2, 2)
         self.adv_file_dict = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
                                                             advection_scenario='CMEMS_MEDITERRANEAN',
@@ -60,11 +60,11 @@ class SizeTransport_Animation:
 
         # Setting the time range for which we want to create the simulation
         current_time, end_time = datetime(2010, 1, 1, 0), datetime(2010 + self.simulation_years, 1, 1, 0)
-        time_step, time_list = timedelta(hours=48), []
+        time_step, time_list = timedelta(hours=24), []
         while current_time < end_time:
             time_list.append(current_time)
             current_time += time_step
-        frame_number = 2  # time_list.__len__()
+        frame_number = time_list.__len__()
 
         # Setting a text box for the simulation date
         props = dict(boxstyle='round', facecolor='white', alpha=1)
