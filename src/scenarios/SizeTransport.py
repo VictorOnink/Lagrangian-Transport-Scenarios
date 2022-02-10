@@ -103,12 +103,8 @@ class SizeTransport(base_scenario.BaseScenario):
                    seabed_crit: float = settings.SEABED_CRIT, fixed_resus: bool = settings.FIXED_RESUS,
                    resus_time: str = settings.RESUS_TIME):
         odirec = self.output_dir + "SizeTransport/size_{:.1E}/".format(init_size)
-        if fixed_resus:
-            print('in file name resus {}, fixed resus {}'.format(resus_time, fixed_resus))
-        else:
-            print('size in file name {}, fixed resus {}'.format(init_size, fixed_resus))
+        if not fixed_resus:
             resus_time = utils.get_resuspension_timescale(L=init_size, rho_p=init_density)
-        print('check 2 resus {}, fixed resus {}'.format(resus_time, fixed_resus))
         if new:
             str_format = (advection_data, shore_time, resus_time, init_size, init_density, seabed_crit, start_year,
                           input, restart, run)

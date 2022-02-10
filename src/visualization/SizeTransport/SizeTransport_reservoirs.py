@@ -38,6 +38,7 @@ class SizeTransport_reservoirs:
         self.rho_marker_dict = {30: 'X', 920: 'o', 980: 's', 1020: 'D'}
         self.state_color = {'beach': 'r', 'adrift': 'b'}
         self.single_plot = single_plot
+        self.figure_size = {True: (10, 10), False: (14, 8)}[self.single_plot]
         self.number_of_plots = {True: 1, False: 2}[self.single_plot]
         self.width_ratio = {1: [1, 0.3], 2: [1, 1, 0.35]}[self.number_of_plots]
         self.figure_shape = (1, self.number_of_plots)
@@ -51,7 +52,6 @@ class SizeTransport_reservoirs:
                 timeseries_dict[rho][size] = {}
                 for fixed_resus in [True, False]:
                     timeseries_dict[rho][size][fixed_resus] = {}
-                    print('size in plot {}, fixed resus {}, self.resustime {}'.format(size, fixed_resus, self.resus_time))
                     if fixed_resus:
                         data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
                                                                    data_direc=self.data_direc, size=size, rho=rho,
@@ -96,9 +96,14 @@ class SizeTransport_reservoirs:
                                 width_ratios=self.width_ratio, all_x_labels=True)
 
         # If we have multiple subplots, labelling the subplots
-        title_list = ['Size-dependent resuspension', r'$\lambda_R =$' + '{}'.format(self.resus_time) + ' days']
-        for index, title in enumerate(title_list):
-            ax[index].set_title(title, weight='bold', fontsize=self.ax_label_size)
+        if self.single_plot:
+            title = {True: r'$\lambda_R =$' + '{}'.format(self.resus_time) + ' days',
+                     False: 'Size-dependent resuspension'}[self.fixed_resus]
+            ax[0].set_title(title, weight='bold', fontsize=self.ax_label_size)
+        else:
+            title_list = ['Size-dependent resuspension', r'$\lambda_R =$' + '{}'.format(self.resus_time) + ' days']
+            for index in range(self.number_of_plots):
+                ax[index].set_title(title_list[index], weight='bold', fontsize=self.ax_label_size)
 
         # Now, adding in the actual data
         if self.single_plot:

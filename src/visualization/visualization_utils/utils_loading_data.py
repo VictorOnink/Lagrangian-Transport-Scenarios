@@ -24,11 +24,9 @@ def SizeTransport_load_data(scenario, prefix, data_direc, size, rho, tau=setting
     :param input:
     :return:
     """
-    print('size in load data {}, fixed resus {}'.format(size, fixed_resus))
     file_name = scenario.file_names(new=True, advection_data=advection_data, shore_time=shore_time, init_size=size,
                                     init_density=rho, start_year=start_year, input=input, run=run,
                                     restart=restart, seabed_crit=tau, fixed_resus=fixed_resus, resus_time=resus_time)
-    print('size in load data {}, fixed resus {}, {}'.format(size, fixed_resus, file_name))
     full_path = data_direc + utils.analysis_save_file_name(input_file=file_name, prefix=prefix)
     return utils.load_obj(full_path)
 
