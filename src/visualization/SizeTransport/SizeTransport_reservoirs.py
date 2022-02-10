@@ -27,7 +27,7 @@ class SizeTransport_reservoirs:
         self.figure_size = (14, 8)
         self.ax_label_size = 16
         self.ax_ticklabel_size = 14
-        self.legend_size = 13
+        self.legend_size = 14
         self.xmax, self.xmin = 1e1, 1e-3
         self.ymax, self.ymin = 100, 0
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
@@ -40,7 +40,7 @@ class SizeTransport_reservoirs:
         self.single_plot = single_plot
         self.figure_size = {True: (12, 10), False: (14, 8)}[self.single_plot]
         self.number_of_plots = {True: 1, False: 2}[self.single_plot]
-        self.width_ratio = {1: [1, 0.4], 2: [1, 1, 0.4]}[self.number_of_plots]
+        self.width_ratio = {1: [1, 0.3], 2: [1, 1, 0.4]}[self.number_of_plots]
         self.figure_shape = (1, self.number_of_plots)
 
     def plot(self):
