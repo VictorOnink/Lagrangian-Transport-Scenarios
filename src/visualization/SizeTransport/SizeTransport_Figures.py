@@ -13,6 +13,7 @@ from visualization.SizeTransport.SizeTransport_rho_concentrations import SizeTra
 from visualization.SizeTransport.SizeTransport_full_concentrations import SizeTransport_full_concentrations
 from visualization.SizeTransport.SizeTransport_MaxDistance import SizeTransport_MaxDistance
 from visualization.SizeTransport.SizeTransport_concentration_subset import SizeTransport_concentration_subset
+from visualization.SizeTransport.SizeTransport_concentration_OSM import SizeTransport_concentration_OSM
 import os
 import numpy as np
 
@@ -93,6 +94,11 @@ def run(scenario, figure_direc: str):
     #                                            rho=rho, size_list=np.array([5000, 2]) * settings.SIZE_FACTOR,
     #                                            fixed_resus=True, resus_time=50).plot()
 
+    # Concentration figures for OSM 2022
+    for depth in ['column', 'surface_1m']:
+        SizeTransport_concentration_OSM(scenario=scenario, figure_direc=figure_direc, depth=depth).plot()
+
+
     # Plot the maximum distance from shore for a given density
     # for rho in [30, 920, 980, 1020]:
     #     for subselection in [False, True]:
@@ -109,13 +115,13 @@ def run(scenario, figure_direc: str):
     #                                simulation_years=3, rho_list=[30, 920, 980, 1020]).plot()
 
     # Figure showing the beached/adrift fractions of each size class
-    SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, single_plot=True,
-                             rho_list=[920]).plot()
-    SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, resus_time=7,
-                             fixed_resus=True, single_plot=True, rho_list=[920]).plot()
-    SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, single_plot=True).plot()
-    SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, resus_time=7,
-                             fixed_resus=True, single_plot=True).plot()
+    # SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, single_plot=True,
+    #                          rho_list=[920]).plot()
+    # SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, resus_time=7,
+    #                          fixed_resus=True, single_plot=True, rho_list=[920]).plot()
+    # SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, single_plot=True).plot()
+    # SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, resus_time=7,
+    #                          fixed_resus=True, single_plot=True).plot()
 
     # SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, resus_time=7).plot()
     # SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, resus_time=50).plot()
