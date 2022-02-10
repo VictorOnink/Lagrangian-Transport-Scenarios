@@ -41,8 +41,8 @@ def run(scenario, figure_direc: str):
     # General.General_season_average(scenario=scenario, figure_direc=figure_direc, variable='wind').plot()
 
     # Creating an animation showing how the six different size classes I have simulations for at the moment look like
-    # SizeTransport_Animation(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-    #                         simulation_years=3).animate()
+    SizeTransport_Animation(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+                            simulation_years=3).animate()
 
     # Creating figures showing the relative distribution, averaged over the entire simulation and time-snapshots at the
     # end of each simulation year
@@ -109,7 +109,7 @@ def run(scenario, figure_direc: str):
     #                                simulation_years=3, rho_list=[30, 920, 980, 1020]).plot()
 
     # Figure showing the beached/adrift fractions of each size class
-    SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, size_list=size_list, single_plot=True).plot()
+    # SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, size_list=size_list, single_plot=True).plot()
     # SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, size_list=size_list, resus_time=7,
     #                          fixed_resus=True, single_plot=True).plot()
     # SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, size_list=size_list, resus_time=7).plot()
