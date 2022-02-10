@@ -9,7 +9,7 @@ import numpy as np
 
 class SizeTransport_reservoirs:
     def __init__(self, scenario, figure_direc, rho_list=[30, 920, 980, 1020], single_plot=False,
-                 fixed_resus=False, resus_time=utils.get_resuspension_timescale()):
+                 fixed_resus=False, resus_time=7):
         utils.print_statement('Creating the SizeTransport reservoirs figure', to_print=True)
         # Simulation parameters
         self.scenario = scenario
@@ -51,7 +51,7 @@ class SizeTransport_reservoirs:
                 timeseries_dict[rho][size] = {}
                 for fixed_resus in [True, False]:
                     timeseries_dict[rho][size][fixed_resus] = {}
-                    print('size in plot {}, fixed resus {}, self.resustime'.format(size, fixed_resus, self.resus_time))
+                    print('size in plot {}, fixed resus {}, self.resustime {}'.format(size, fixed_resus, self.resus_time))
                     if fixed_resus:
                         data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
                                                                    data_direc=self.data_direc, size=size, rho=rho,
