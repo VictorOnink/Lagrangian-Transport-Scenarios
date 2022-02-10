@@ -165,5 +165,4 @@ def run(scenario, figure_direc: str):
             SizeTransport_vertical_OSM(scenario=scenario, figure_direc=figure_direc, time_selection=year,
                                        season=season).plot()
 
-
     utils.print_statement("That is all folks!", to_print=True)
