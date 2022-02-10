@@ -68,7 +68,7 @@ class SizeTransport_Animation:
 
         # Setting a text box for the simulation date
         props = dict(boxstyle='round', facecolor='white', alpha=1)
-        text = ax_list[3].text(0.02, 0.02, 'initial', horizontalalignment='left', verticalalignment='bottom',
+        text = ax_list[2].text(0.02, 0.02, 'initial', horizontalalignment='left', verticalalignment='bottom',
                                transform=ax_list[3].transAxes, bbox=props, fontsize=self.ax_label_size, zorder=200)
 
         # Setting the initial values of the x and y coordinates, which will later be filled by lon and lat
