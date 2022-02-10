@@ -34,7 +34,7 @@ class SizeTransport_reservoirs:
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
         self.beach_state_list = ['beach', 'adrift']
         self.coastal_list = ['total', 'coastal_zone', 'coastal_10km', 'coastal_20km']
-        self.y_label = 'Fraction of particles per size class (%)'
+        self.y_label = 'Percentage of total particles per size class (%)'
         self.x_label = 'Size (mm)'
         self.rho_marker_dict = {30: 'X', 920: 'o', 980: 's', 1020: 'D'}
         self.state_color = {'beach': 'r', 'adrift': 'b'}
