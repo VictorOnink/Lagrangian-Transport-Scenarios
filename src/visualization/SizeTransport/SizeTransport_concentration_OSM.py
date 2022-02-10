@@ -30,6 +30,7 @@ class SizeTransport_concentration_OSM:
         # Figure parameters
         self.figure_size = (20, 20)
         self.figure_shape = (self.size_list.__len__(), 1)
+        self.title_size = 24
         self.ax_label_size = 18
         self.ax_ticklabel_size = 16
         self.number_of_plots = self.size_list.__len__() * 1
@@ -97,7 +98,7 @@ class SizeTransport_concentration_OSM:
 
         # Adding subfigure titles
         for index, ax in enumerate(ax_list):
-            ax.set_title(self.subfigure_title(index), weight='bold', fontsize=self.ax_label_size)
+            ax.set_title(self.subfigure_title(index), weight='bold', fontsize=self.title_size)
 
         # The actual plotting of the figures
         for index, size in enumerate(self.size_list):
