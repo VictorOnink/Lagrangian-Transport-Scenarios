@@ -28,6 +28,7 @@ class SizeTransport_reservoirs:
         self.ax_label_size = 16
         self.ax_ticklabel_size = 14
         self.legend_size = 14
+        self.markersize = 140
         self.xmax, self.xmin = 1e1, 1e-3
         self.ymax, self.ymin = 100, 0
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
@@ -113,17 +114,17 @@ class SizeTransport_reservoirs:
                         if beach_state in ['beach']:
                             ax[0].scatter(size * 1e3, timeseries_dict[rho][size][self.fixed_resus][beach_state],
                                           marker=self.rho_marker_dict[rho], edgecolors='b',
-                                          facecolors='none', s=80)
+                                          facecolors='none', s=self.markersize)
                         elif beach_state in ['adrift']:
                             coastal_zone = 'coastal_10km'
                             ax[0].scatter(size * 1e3, timeseries_dict[rho][size][self.fixed_resus][beach_state][coastal_zone],
                                           marker=self.rho_marker_dict[rho], edgecolors='g',
-                                          facecolors='none', s=80)
+                                          facecolors='none', s=self.markersize)
                             # To get the open ocean, we subtract the coastal fraction from the total fraction
                             open_ocean = timeseries_dict[rho][size][self.fixed_resus][beach_state]['total'] - timeseries_dict[rho][size][self.fixed_resus][beach_state][coastal_zone]
                             ax[0].scatter(size * 1e3, open_ocean,
                                           marker=self.rho_marker_dict[rho], edgecolors='r',
-                                          facecolors='none', s=80)
+                                          facecolors='none', s=self.markersize)
         else:
             for rho in self.rho_list:
                 for index_size, size in enumerate(self.size_list):
@@ -132,17 +133,17 @@ class SizeTransport_reservoirs:
                             if beach_state in ['beach']:
                                 ax[index_fix].scatter(size * 1e3, timeseries_dict[rho][size][fixed_resus][beach_state],
                                                       marker=self.rho_marker_dict[rho], edgecolors='b',
-                                                      facecolors='none', s=80)
+                                                      facecolors='none', s=self.markersize)
                             elif beach_state in ['adrift']:
                                 coastal_zone = 'coastal_10km'
                                 ax[index_fix].scatter(size * 1e3, timeseries_dict[rho][size][fixed_resus][beach_state][coastal_zone],
                                                       marker=self.rho_marker_dict[rho], edgecolors='g',
-                                                      facecolors='none', s=80)
+                                                      facecolors='none', s=self.markersize)
                                 # To get the open ocean, we subtract the coastal fraction from the total fraction
                                 open_ocean = timeseries_dict[rho][size][fixed_resus][beach_state]['total'] - timeseries_dict[rho][size][fixed_resus][beach_state][coastal_zone]
                                 ax[index_fix].scatter(size * 1e3, open_ocean,
                                                       marker=self.rho_marker_dict[rho], edgecolors='r',
-                                                      facecolors='none', s=80)
+                                                      facecolors='none', s=self.markersize)
 
         # Creating a legend
         rho_lines = [plt.plot([], [], self.rho_marker_dict[rho], c='k', label=r'$\rho=$' + str(rho) + r' kg m$^{-3}$',
