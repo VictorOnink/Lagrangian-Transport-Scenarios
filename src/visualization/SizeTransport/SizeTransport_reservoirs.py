@@ -25,7 +25,7 @@ class SizeTransport_reservoirs:
         self.prefix = 'timeseries'
         # Figure parameters
         self.figure_size = (14, 8)
-        self.ax_label_size = 16
+        self.ax_label_size = 18
         self.ax_ticklabel_size = 14
         self.legend_size = 14
         self.markersize = 140
