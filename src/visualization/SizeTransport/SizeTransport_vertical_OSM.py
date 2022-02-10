@@ -25,7 +25,7 @@ class SizeTransport_vertical_OSM:
         self.xmin, self.xmax = 1e-7, 1e0 + 0.1
         self.ymin, self.ymax = 3e3, 1e0
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
-        self.number_of_plots = 4
+        self.number_of_plots = 1
         self.rho_line_dict = {30: 'dashed', 920: '-', 980: 'dashed', 1020: '-'}
         self.season_list = ['JFM', 'AMJ', 'JAS', 'OND']
         self.with_mld = with_mld
