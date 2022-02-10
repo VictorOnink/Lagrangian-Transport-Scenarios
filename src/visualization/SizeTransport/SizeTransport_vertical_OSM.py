@@ -18,9 +18,10 @@ class SizeTransport_vertical_OSM:
         self.fig_shape = (1, 1)
         self.x_label = 'Normalized Concentration'
         self.y_label = 'Depth (m)'
-        self.ax_ticklabel_size = 12
-        self.ax_label_size = 14
+        self.ax_ticklabel_size = 16
+        self.ax_label_size = 18
         self.legend_size = 16
+        self.title_size = 24
         self.line_width = 3
         self.xmin, self.xmax = 1e-7, 1e0 + 0.1
         self.ymin, self.ymax = 3e3, 1e0
@@ -99,7 +100,7 @@ class SizeTransport_vertical_OSM:
 
         # Labelling the subfigures
         for index_ax in range(self.number_of_plots):
-            ax[index_ax].set_title(self.season, fontsize=self.ax_label_size, fontweight='bold')
+            ax[index_ax].set_title(self.season, fontsize=self.title_size, fontweight='bold')
 
         # Adding in a legend
         cmap_list, label_list = [], []
