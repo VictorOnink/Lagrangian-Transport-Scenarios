@@ -31,8 +31,8 @@ class SizeTransport_concentration_OSM:
         self.figure_size = (20, 20)
         self.figure_shape = (self.size_list.__len__(), 1)
         self.title_size = 24
-        self.ax_label_size = 18
-        self.ax_ticklabel_size = 16
+        self.ax_label_size = 22
+        self.ax_ticklabel_size = 20
         self.number_of_plots = self.size_list.__len__() * 1
         self.adv_file_dict = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
                                                             advection_scenario='CMEMS_MEDITERRANEAN',
