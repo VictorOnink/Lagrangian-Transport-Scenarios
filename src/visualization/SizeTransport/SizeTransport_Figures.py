@@ -113,6 +113,10 @@ def run(scenario, figure_direc: str):
                              rho_list=[920]).plot()
     SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, resus_time=7,
                              fixed_resus=True, single_plot=True, rho_list=[920]).plot()
+    SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, single_plot=True).plot()
+    SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, resus_time=7,
+                             fixed_resus=True, single_plot=True).plot()
+
     # SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, resus_time=7).plot()
     # SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, resus_time=50).plot()
     # for rho in [30, 920, 980, 1020]:
