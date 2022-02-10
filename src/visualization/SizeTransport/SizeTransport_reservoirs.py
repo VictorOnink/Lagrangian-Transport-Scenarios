@@ -51,14 +51,18 @@ class SizeTransport_reservoirs:
                 timeseries_dict[rho][size] = {}
                 for fixed_resus in [True, False]:
                     timeseries_dict[rho][size][fixed_resus] = {}
-                    print('size in plot {}, fixed resus {}'.format(size, fixed_resus))
-                    if not fixed_resus:
-                        resus_time = utils.get_resuspension_timescale(L=size, rho_p=rho)
+                    print('size in plot {}, fixed resus {}, self.resustime'.format(size, fixed_resus, self.resus_time))
+                    if fixed_resus:
+                        data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
+                                                                   data_direc=self.data_direc, size=size, rho=rho,
+                                                                   tau=self.tau, fixed_resus=fixed_resus,
+                                                                   resus_time=self.resus_time)
                     else:
-                        resus_time = self.resus_time
-                    data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
-                                                               data_direc=self.data_direc, size=size, rho=rho, tau=self.tau,
-                                                               fixed_resus=fixed_resus, resus_time=resus_time)
+                        data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
+                                                                   data_direc=self.data_direc, size=size, rho=rho,
+                                                                   tau=self.tau, fixed_resus=fixed_resus,
+                                                                   resus_time=utils.get_resuspension_timescale(L=size, rho_p=rho))
+
                     for beach_state in self.beach_state_list:
                         if beach_state in ['beach']:
                             timeseries_dict[rho][size][fixed_resus][beach_state] = data_dict[beach_state]
