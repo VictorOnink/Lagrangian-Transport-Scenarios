@@ -17,7 +17,7 @@ class SizeTransport_Animation:
         self.figure_size = (20, 10)
         self.ax_label_size = 14
         self.tick_label_size = 14
-        self.grid_shape = (2, 3)
+        self.grid_shape = (2, 2)
         self.adv_file_dict = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
                                                             advection_scenario='CMEMS_MEDITERRANEAN',
                                                             repeat_dt=None).file_names

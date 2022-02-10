@@ -22,10 +22,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="Adding blue cloud backwards scenario">
+    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="figures">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/visualization_submission.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/visualization_submission.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_Figures.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_Figures.py" afterDir="false" />
     </list>
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
     <list id="c5adc810-e024-4e30-b33b-a2709ed2c5b7" name="moving the release repeat timescale to the scenario" comment="" />
@@ -111,13 +109,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-03359" summary="(figures!)">
-      <created>1643626651949</created>
-      <option name="number" value="03359" />
-      <option name="presentableId" value="LOCAL-03359" />
-      <option name="project" value="LOCAL" />
-      <updated>1643626651949</updated>
     </task>
     <task id="LOCAL-03360" summary="(figures!)">
       <created>1643626965195</created>
@@ -455,7 +446,14 @@
       <option name="project" value="LOCAL" />
       <updated>1644413030202</updated>
     </task>
-    <option name="localTasksCounter" value="3408" />
+    <task id="LOCAL-03408" summary="figures">
+      <created>1644415513215</created>
+      <option name="number" value="03408" />
+      <option name="presentableId" value="LOCAL-03408" />
+      <option name="project" value="LOCAL" />
+      <updated>1644415513215</updated>
+    </task>
+    <option name="localTasksCounter" value="3409" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -486,7 +484,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="A lot of code has been cleaned up somewhat, and I'm in the process of adding a lot of model documentation." />
     <MESSAGE value="More documentation" />
     <MESSAGE value="job submission" />
     <MESSAGE value="Adding in distance between point calculation function" />
@@ -511,6 +508,7 @@
     <MESSAGE value="(figures!)" />
     <MESSAGE value="simulations" />
     <MESSAGE value="Adding blue cloud backwards scenario" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding blue cloud backwards scenario" />
+    <MESSAGE value="figures" />
+    <option name="LAST_COMMIT_MESSAGE" value="figures" />
   </component>
 </project>
