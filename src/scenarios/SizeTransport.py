@@ -103,7 +103,9 @@ class SizeTransport(base_scenario.BaseScenario):
                    seabed_crit: float = settings.SEABED_CRIT, fixed_resus: bool = settings.FIXED_RESUS,
                    resus_time: str = settings.RESUS_TIME):
         odirec = self.output_dir + "SizeTransport/size_{:.1E}/".format(init_size)
-        if not fixed_resus:
+        if fixed_resus:
+            print('resus {}'.format(resus_time))
+        else:
             print('size in file name {}, fixed resus {}'.format(init_size, fixed_resus))
             resus_time = utils.get_resuspension_timescale(L=init_size, rho_p=init_density)
         if new:
