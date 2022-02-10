@@ -50,10 +50,13 @@ class parcels_to_timeslicing:
                 output_name = get_file_names(file_dict=self.file_dict, directory=self.output_direc, final=True,
                                              prefix=prefix)
                 if not utils.check_file_exist(output_name + '.pkl'):
+                    # Loading an example input file to know which variables are stored in it:
+                    parcels_dataset = load_parcels_post_output(file_dict=self.file_dict)
                     # Creating an output dict
                     output_dict = {}
                     for key in self.variable_list[:-1]:
-                        output_dict[key] = np.array([], dtype=float)
+                        if key in parcels_dataset.variables.keys():
+                            output_dict[key] = np.array([], dtype=float)
                     # Getting all the timeslice files for this date, and looping through them
                     file_list = glob.glob(self.temp_direc + prefix + '*')
                     for file_name in file_list:
