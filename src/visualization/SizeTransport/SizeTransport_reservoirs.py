@@ -8,13 +8,13 @@ import numpy as np
 
 
 class SizeTransport_reservoirs:
-    def __init__(self, scenario, figure_direc, size_list, rho_list=[30, 920, 980, 1020], single_plot=False,
+    def __init__(self, scenario, figure_direc, rho_list=[30, 920, 980, 1020], single_plot=False,
                  fixed_resus=False, resus_time=utils.get_resuspension_timescale()):
         utils.print_statement('Creating the SizeTransport reservoirs figure', to_print=True)
         # Simulation parameters
         self.scenario = scenario
         self.rho_list = rho_list
-        self.size_list = size_list
+        self.size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
         self.tau = 0.0
         self.fixed_resus = fixed_resus
         self.resus_time = resus_time

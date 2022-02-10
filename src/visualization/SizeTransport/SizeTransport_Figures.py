@@ -109,16 +109,16 @@ def run(scenario, figure_direc: str):
     #                                simulation_years=3, rho_list=[30, 920, 980, 1020]).plot()
 
     # Figure showing the beached/adrift fractions of each size class
-    SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, size_list=size_list, single_plot=True,
+    SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, single_plot=True,
                              rho_list=[920]).plot()
-    SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, size_list=size_list, resus_time=7,
+    SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, resus_time=7,
                              fixed_resus=True, single_plot=True, rho_list=[920]).plot()
-    # SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, size_list=size_list, resus_time=7).plot()
-    # SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, size_list=size_list, resus_time=50).plot()
+    # SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, resus_time=7).plot()
+    # SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, resus_time=50).plot()
     # for rho in [30, 920, 980, 1020]:
-    #     SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #     SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc,
     #                              rho_list=[rho], resus_time=7).plot()
-    #     SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #     SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc,
     #                              rho_list=[rho], resus_time=50).plot()
 
     # Cumulative plots for the total distance travelled vertically and horizontally, and the max depth reached
