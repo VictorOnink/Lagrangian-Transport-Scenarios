@@ -14,6 +14,7 @@ from visualization.SizeTransport.SizeTransport_full_concentrations import SizeTr
 from visualization.SizeTransport.SizeTransport_MaxDistance import SizeTransport_MaxDistance
 from visualization.SizeTransport.SizeTransport_concentration_subset import SizeTransport_concentration_subset
 from visualization.SizeTransport.SizeTransport_concentration_OSM import SizeTransport_concentration_OSM
+from visualization.SizeTransport.SizeTransport_vertical_OSM import SizeTransport_vertical_OSM
 import os
 import numpy as np
 
@@ -94,11 +95,6 @@ def run(scenario, figure_direc: str):
     #                                            rho=rho, size_list=np.array([5000, 2]) * settings.SIZE_FACTOR,
     #                                            fixed_resus=True, resus_time=50).plot()
 
-    # Concentration figures for OSM 2022
-    for depth in ['column', 'surface_1m']:
-        SizeTransport_concentration_OSM(scenario=scenario, figure_direc=figure_direc, depth=depth).plot()
-
-
     # Plot the maximum distance from shore for a given density
     # for rho in [30, 920, 980, 1020]:
     #     for subselection in [False, True]:
@@ -160,5 +156,14 @@ def run(scenario, figure_direc: str):
     #                                   time_selection=time, beach_state='beach').plot()
     #     SizeTransport_lonlat_averages(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
     #                                   time_selection=time, beach_state='adrift').plot()
+
+    # Figures for OSM 2022
+    # for depth in ['column', 'surface_1m']:
+    #     SizeTransport_concentration_OSM(scenario=scenario, figure_direc=figure_direc, depth=depth).plot()
+    for season in ['Winter', 'Summer']:
+        for year in [0, 1, 2]:
+            SizeTransport_vertical_OSM(scenario=scenario, figure_direc=figure_direc, time_selection=year,
+                                       season=season).plot()
+
 
     utils.print_statement("That is all folks!", to_print=True)
