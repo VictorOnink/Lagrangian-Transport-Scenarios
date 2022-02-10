@@ -104,7 +104,7 @@ class SizeTransport(base_scenario.BaseScenario):
                    resus_time: str = settings.RESUS_TIME):
         odirec = self.output_dir + "SizeTransport/size_{:.1E}/".format(init_size)
         if not fixed_resus:
-            print('size in file name {}'.format(init_size))
+            print('size in file name {}, fixed resus {}'.format(init_size, fixed_resus))
             resus_time = utils.get_resuspension_timescale(L=init_size, rho_p=init_density)
         if new:
             str_format = (advection_data, shore_time, resus_time, init_size, init_density, seabed_crit, start_year,

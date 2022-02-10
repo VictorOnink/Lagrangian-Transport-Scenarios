@@ -51,7 +51,7 @@ class SizeTransport_reservoirs:
                 timeseries_dict[rho][size] = {}
                 for fixed_resus in [True, False]:
                     timeseries_dict[rho][size][fixed_resus] = {}
-                    print('size in plot {}'.format(size))
+                    print('size in plot {}, fixed resus {}'.format(size, fixed_resus))
                     if not fixed_resus:
                         self.resus_time = utils.get_resuspension_timescale(L=size, rho_p=rho)
                     data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
