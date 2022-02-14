@@ -25,7 +25,7 @@ class SizeTransport_reservoirs:
         self.prefix = 'timeseries'
         # Figure parameters
         self.figure_size = (14, 8)
-        self.ax_label_size = 18
+        self.ax_label_size = 16
         self.ax_ticklabel_size = 14
         self.legend_size = 14
         self.markersize = 140
@@ -98,8 +98,8 @@ class SizeTransport_reservoirs:
 
         # If we have multiple subplots, labelling the subplots
         if self.single_plot:
-            title = {True: r'$\lambda_R =$' + '{}'.format(self.resus_time) + ' days',
-                     False: 'Size-dependent resuspension'}[self.fixed_resus]
+            title = {True: r'(b) $\lambda_R =$' + '{}'.format(self.resus_time) + ' days',
+                     False: '(a) Size-dependent resuspension'}[self.fixed_resus]
             ax[0].set_title(title, weight='bold', fontsize=self.ax_label_size)
         else:
             title_list = ['Size-dependent resuspension', r'$\lambda_R =$' + '{}'.format(self.resus_time) + ' days']
