@@ -39,7 +39,7 @@ class SizeTransport_reservoirs:
         self.rho_marker_dict = {30: 'X', 920: 'o', 980: 's', 1020: 'D'}
         self.state_color = {'beach': 'r', 'adrift': 'b'}
         self.single_plot = single_plot
-        self.figure_size = {True: (12, 10), False: (14, 8)}[self.single_plot]
+        self.figure_size = {True: (12, 10), False: (16, 8)}[self.single_plot]
         self.number_of_plots = {True: 1, False: 2}[self.single_plot]
         self.width_ratio = {1: [1, 0.3], 2: [1, 1, 0.4]}[self.number_of_plots]
         self.figure_shape = (1, self.number_of_plots)
