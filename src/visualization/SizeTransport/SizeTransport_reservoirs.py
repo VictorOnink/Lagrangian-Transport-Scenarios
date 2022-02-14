@@ -98,13 +98,14 @@ class SizeTransport_reservoirs:
 
         # If we have multiple subplots, labelling the subplots
         if self.single_plot:
-            title = {True: r'(b) $\lambda_R =$' + '{}'.format(self.resus_time) + ' days',
-                     False: '(a) Size-dependent resuspension'}[self.fixed_resus]
+            title = {True: r'$\lambda_R =$' + '{}'.format(self.resus_time) + ' days',
+                     False: 'Size-dependent resuspension'}[self.fixed_resus]
             ax[0].set_title(title, weight='bold', fontsize=self.ax_label_size)
         else:
-            title_list = ['Size-dependent resuspension', r'$\lambda_R =$' + '{}'.format(self.resus_time) + ' days']
+            title_list = ['(a) Size-dependent resuspension',
+                          r' (b) $\lambda_R =$' + '{}'.format(self.resus_time) + ' days']
             for index in range(self.number_of_plots):
-                ax[index].set_title(title_list[index], weight='bold', fontsize=self.ax_label_size)
+                ax[index].set_title(title_list[index], fontsize=self.ax_label_size)
 
         # Now, adding in the actual data
         if self.single_plot:
