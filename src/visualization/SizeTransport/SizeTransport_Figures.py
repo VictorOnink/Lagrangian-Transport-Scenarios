@@ -43,8 +43,8 @@ def run(scenario, figure_direc: str):
     # General.General_season_average(scenario=scenario, figure_direc=figure_direc, variable='wind').plot()
 
     # Creating an animation showing how the six different size classes I have simulations for at the moment look like
-    SizeTransport_Animation(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                            simulation_years=3).animate()
+    # SizeTransport_Animation(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                         simulation_years=3).animate()
 
     # Creating figures showing the relative distribution, averaged over the entire simulation and time-snapshots at the
     # end of each simulation year
@@ -96,14 +96,14 @@ def run(scenario, figure_direc: str):
     #                                            fixed_resus=True, resus_time=50).plot()
 
     # Plot the maximum distance from shore for a given density
-    # for rho in [30, 920, 980, 1020]:
-    #     for subselection in [False, True]:
-    #         SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho,
-    #                                   subselection=subselection).plot()
-    #         SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho, fixed_resus=True,
-    #                                   resus_time=7, subselection=subselection).plot()
-    #         SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho, fixed_resus=True,
-    #                                   resus_time=50, subselection=subselection).plot()
+    for rho in [30, 920, 980, 1020]:
+        for subselection in [False, True]:
+            SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho,
+                                      subselection=subselection).plot()
+            SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho, fixed_resus=True,
+                                      resus_time=7, subselection=subselection).plot()
+            SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho, fixed_resus=True,
+                                      resus_time=50, subselection=subselection).plot()
 
     # size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
     # Creating figures of the timeseries of the number of particles that are beached/adrift/seabed
