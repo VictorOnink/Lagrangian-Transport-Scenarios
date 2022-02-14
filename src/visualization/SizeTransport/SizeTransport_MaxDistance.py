@@ -74,7 +74,7 @@ class SizeTransport_MaxDistance:
 
         # Adding subfigure titles
         for index, ax in enumerate(ax_list):
-            ax.set_title(self.subfigure_title(index), weight='bold', fontsize=self.ax_label_size)
+            ax.set_title(self.subfigure_title(index), fontsize=self.ax_label_size)
 
         # Plotting the maximum distances
         for index, size in enumerate(self.size_list):
