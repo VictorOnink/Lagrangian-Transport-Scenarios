@@ -151,7 +151,7 @@ class SizeTransport_reservoirs:
                               )[0] for rho in self.rho_list]
         beach = [plt.plot([], [], 'o', c='b', label='Beach')[0]]
         coastal = [plt.plot([], [], 'o', c='g', label='Coastal')[0]]
-        open = [plt.plot([], [], 'o', c='r', label='Open Ocean')[0]]
+        open = [plt.plot([], [], 'o', c='r', label='Open water')[0]]
         ax[-1].legend(handles=rho_lines + beach + coastal + open, fontsize=self.legend_size, loc='upper right')
         ax[-1].axis('off')
 
