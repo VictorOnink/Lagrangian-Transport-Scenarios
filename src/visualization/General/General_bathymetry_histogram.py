@@ -57,13 +57,13 @@ class General_bathymetry_histogram:
 
         ax = fig.add_subplot(gs[0, 0])
         # ax.set_xlim([0, np.round(np.max(histogram_depths), -1)])
-        ax.set_yscale('symlog')
-        ax.set_ylim([-3000, -1])
+        ax.set_yscale('log')
+        ax.set_ylim([1, 3000])
 
         ax.set_ylabel('Depth (m)')
         ax.set_xlabel('Percentage of all ocean cells')
 
-        ax.plot(histogram_depths, -1 * depth_bins_mid)
+        ax.plot(histogram_depths, depth_bins_mid)
 
         ax.set_aspect('auto', adjustable=None)
         file_name = self.output_direc + 'Bathymetry_histogram_{}.png'.format(self.depth_selection)
