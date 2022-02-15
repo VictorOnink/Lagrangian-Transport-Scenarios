@@ -46,7 +46,7 @@ class General_bathymetry_histogram:
         histogram_depths, _ = np.histogram(depth, bins=depth_bins)
 
         # Normalize all the depth bins by the total number of cells
-        histogram_depths = np.divide(histogram_depths, np.sum(histogram_depths))
+        histogram_depths = np.divide(histogram_depths, depth.size)
         histogram_depths *= 100
 
         # Creating the figure
