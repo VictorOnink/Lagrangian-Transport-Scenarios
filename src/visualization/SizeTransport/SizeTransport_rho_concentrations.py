@@ -101,10 +101,14 @@ class SizeTransport_rho_concentrations:
                                        zorder=200)
 
         # Saving the figure
-        file_name = plot_save_name(output_direc=self.output_direc, size=self.size, time_selection=self.time_selection,
-                                   beach_state=self.beach_state)
+        file_name = self.plot_save_name()
         plt.savefig(file_name, bbox_inches='tight')
         plt.close('all')
+
+    def plot_save_name(self, flowdata='CMEMS_MEDITERRANEAN', startyear=2010):
+        selection_dict = {'average': 'TotalAverage', 0: 'year_0', 1: 'year_1', 2: 'year_2'}
+        str_format = flowdata, self.beach_state, selection_dict[self.time_selection], self.size * 1E6, startyear, self.depth_level
+        return self.output_direc + 'rho/SizeTransport_RHO_{}_{}_{}_size_{:.3f}_y_{}_{}.png'.format(*str_format)
 
 
 def set_normalization(beach_state):
@@ -125,9 +129,5 @@ def subfigure_title(index, size, rho_list):
            '{} kg m'.format(rho_list[index]) + r'$^{-3}$'
 
 
-def plot_save_name(output_direc, size, time_selection, beach_state, flowdata='CMEMS_MEDITERRANEAN', startyear=2010):
-    selection_dict = {'average': 'TotalAverage', 0: 'year_0', 1: 'year_1', 2: 'year_2'}
-    str_format = flowdata, beach_state, selection_dict[time_selection], size * 1E6, startyear
-    return output_direc + 'rho/SizeTransport_RHO_{}_{}_{}_size_{:.3f}_y_{}.png'.format(*str_format)
 
 
