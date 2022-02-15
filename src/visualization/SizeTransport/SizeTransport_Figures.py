@@ -68,11 +68,12 @@ def run(scenario, figure_direc: str):
     #                                               beach_state='beach', time_selection=time_select, rho=rho).plot()
 
     # Plotting the relative distributions for fixed particle sizes, but with different particle densities
-    # for time_select in [0]:
-    #     for size in np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR:
-    #         SizeTransport_rho_concentrations(scenario=scenario, figure_direc=figure_direc, size=size,
-    #                                          beach_state='adrift', time_selection=time_select,
-    #                                          rho_list=[30, 920, 980, 1020]).plot()
+    for time_select in [0]:
+        for size in np.array([2]) * settings.SIZE_FACTOR:
+            for depth_level in ['surface_5m']:
+                SizeTransport_rho_concentrations(scenario=scenario, figure_direc=figure_direc, size=size,
+                                                 beach_state='adrift', time_selection=time_select,
+                                                 rho_list=[30, 920, 980, 1020], depth_level=depth_level).plot()
 
     # Plotting all horizontal concentrations for a given density
     # for rho in [30, 920, 980, 1020]:

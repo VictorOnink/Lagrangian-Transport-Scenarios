@@ -10,7 +10,7 @@ import cmocean.cm as cmo
 
 
 class SizeTransport_rho_concentrations:
-    def __init__(self, scenario, figure_direc, size, beach_state, time_selection, rho_list, tau=0):
+    def __init__(self, scenario, figure_direc, size, beach_state, time_selection, rho_list, depth_level, tau=0):
         # Simulation parameters
         self.scenario = scenario
         self.rho_list = rho_list
@@ -18,6 +18,7 @@ class SizeTransport_rho_concentrations:
         self.beach_state = beach_state
         self.size = size
         self.tau = tau
+        self.depth_level = depth_level
         # Data parameters
         self.output_direc = figure_direc + 'concentrations/'
         self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/SizeTransport/'
@@ -47,7 +48,7 @@ class SizeTransport_rho_concentrations:
             data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
                                                        data_direc=self.data_direc,
                                                        size=self.size, rho=rho, tau=self.tau)
-            concentration_dict[index] = data_dict[key_concentration][self.beach_state]
+            concentration_dict[index] = data_dict[key_concentration][self.beach_state][self.depth_level]
         Lon, Lat = np.meshgrid(data_dict['lon'], data_dict['lat'])
 
         # Normalizing the concentration by the lowest non-zero concentration over all the sizes
