@@ -34,13 +34,13 @@ class General_bathymetry_histogram:
         distance2shore = Dataset(self.scenario.file_dict['DISTANCE_filename']).variables['distance'][:]
         print('max {} min {}'.format(np.nanmax(distance2shore), np.nanmin(distance2shore)))
         if self.depth_selection in ['offshore']:
-            depth[distance2shore > 50] = np.nan
+            depth[distance2shore < 50] = np.nan
             print('In the offshore case, we have {} cells'.format(np.sum(~np.isnan(depth))))
         elif self.depth_selection in ['nearshore']:
-            depth[distance2shore < 50] = np.nan
+            depth[distance2shore > 50] = np.nan
             print('In the nearshore case, we have {} cells'.format(np.sum(~np.isnan(depth))))
         elif self.depth_selection in ['coastal']:
-            depth[distance2shore < 10] = np.nan
+            depth[distance2shore > 10] = np.nan
             print('In the coastal case, we have {} cells'.format(np.sum(~np.isnan(depth))))
         else:
             print('We have {}'.format(self.depth_selection))
