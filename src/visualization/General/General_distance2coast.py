@@ -27,15 +27,15 @@ class General_distance2coast:
         # Loading the data
         dataset = Dataset(self.scenario.file_dict['DISTANCE_filename'])
         bath_dict = {}
-        for variable in ['longitude', 'latitude', 'distance']:  # Note, DEPTH is actually the bathymetry
+        for variable in ['lon', 'lat', 'distance']:  # Note, DEPTH is actually the bathymetry
             bath_dict[variable] = dataset.variables[variable][:]
 
         # Setting the zero depths to nan values
         bath_dict['distance'][bath_dict['distance'] == 0] = np.nan
 
         # Getting the spatial domain for the figure
-        spatial_domain = np.nanmin(bath_dict['LON']), np.nanmax(bath_dict['LON']), \
-                         np.nanmin(bath_dict['LAT']), np.nanmax(bath_dict['LAT'])
+        spatial_domain = np.nanmin(bath_dict['lon']), np.nanmax(bath_dict['lon']), \
+                         np.nanmin(bath_dict['lat']), np.nanmax(bath_dict['lat'])
 
         # Creating the figure
         fig = plt.figure(figsize=self.figure_size)
@@ -51,7 +51,7 @@ class General_distance2coast:
         normalization = colors.LogNorm(vmin=1e0, vmax=500)
 
         # The actual plotting
-        Lon, Lat = np.meshgrid(bath_dict['LON'], bath_dict['LAT'])
+        Lon, Lat = np.meshgrid(bath_dict['lon'], bath_dict['lat'])
         depth_plot = plt.pcolormesh(Lon, Lat, bath_dict['distance'], norm=normalization, cmap=self.cmap, zorder=1000)
 
         cax = fig.add_subplot(gs[:, -1])
