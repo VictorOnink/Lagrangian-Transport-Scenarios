@@ -30,8 +30,8 @@ class General_bathymetry_histogram:
         depth = dataset.variables[self.scenario.file_dict['BATH_variables']['DEPTH']][:]
         depth[depth <= 0] = np.nan
 
-        print(dataset.variable['longitude'][:])
-        print(dataset.variable['latitude'][:])
+        print(dataset.variables['longitude'][:])
+        print(dataset.variables['latitude'][:])
         print(Dataset(self.scenario.file_dict['DISTANCE_filename']).variables['lon'][:])
         print(Dataset(self.scenario.file_dict['DISTANCE_filename']).variables['lat'][:])
 
