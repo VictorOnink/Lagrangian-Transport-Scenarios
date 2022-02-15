@@ -6,6 +6,7 @@ import visualization.visualization_utils as vUtils
 import matplotlib.pyplot as plt
 import matplotlib.colors as colors
 import cmocean.cm as cmo
+from matplotlib.ticker import AutoMinorLocator
 
 
 class General_bathymetry_histogram:
@@ -63,13 +64,13 @@ class General_bathymetry_histogram:
         gs = fig.add_gridspec(nrows=self.figure_shape[0], ncols=self.figure_shape[1])
 
         ax = fig.add_subplot(gs[0, 0])
-        ax.set_yscale('symlog')
-        ax.set_ylim([-3000, -1])
+        ax.set_yscale('log')
+        ax.set_ylim([3000, 1])
 
         ax.set_ylabel('Depth (m)')
         ax.set_xlabel('Percentage of {} cells'.format(self.depth_selection))
 
-        ax.plot(histogram_depths, -1 * depth_bins_mid)
+        ax.plot(histogram_depths, depth_bins_mid)
 
         ax.set_aspect('auto', adjustable=None)
         file_name = self.output_direc + 'Bathymetry_histogram_{}.png'.format(self.depth_selection)
