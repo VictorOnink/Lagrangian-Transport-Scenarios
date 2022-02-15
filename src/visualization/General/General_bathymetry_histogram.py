@@ -50,6 +50,7 @@ class General_bathymetry_histogram:
         ax = fig.add_subplot(gs[0, 0])
         ax.set_xlim([0, 100])
         ax.set_ylim([-3000, 1])
+        ax.set_yscale('symlog')
 
         ax.plot(histogram_depths, -1 * depth_bins_mid)
 
