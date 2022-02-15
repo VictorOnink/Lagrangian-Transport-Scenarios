@@ -16,7 +16,7 @@ VICINITY=2
 export VICINITY
 #for scenario 2, the beaching and resuspension timescales (in days)
 SHORETIME_list=(26)
-RESUSTIME_list=(7) # (7 50)
+RESUSTIME_list=(69) # (7 50)
 #for scenario 3, the shore dependence scenario.
 SHOREDEPEN=0
 export SHOREDEPEN
@@ -62,7 +62,7 @@ export STARTYEAR
 export STARTDAY
 # Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=lebretondivision, 3=lebretonKaandorpInit,
 # 4=point, 5=uniform
-INPUT=4
+INPUT=3
 export INPUT
 #Which advection data do we want to use?
 # 0 = Global HYCOM, 1 = Caribbean HYCOM, 2 = Mediterranean CMEMS
