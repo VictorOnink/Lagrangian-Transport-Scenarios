@@ -44,10 +44,10 @@ def run(scenario, figure_direc: str):
 
     # Figure showing a histogram of all depth levels in the Mediterranean
     # General.General_bathymetry_histogram(scenario=scenario, figure_direc=figure_direc).plot()
-    # General.General_bathymetry_histogram(scenario=scenario, figure_direc=figure_direc,
-    #                                      depth_selection='nearshore').plot()
-    # General.General_bathymetry_histogram(scenario=scenario, figure_direc=figure_direc,
-    #                                      depth_selection='offshore').plot()
+    General.General_bathymetry_histogram(scenario=scenario, figure_direc=figure_direc,
+                                         depth_selection='nearshore').plot()
+    General.General_bathymetry_histogram(scenario=scenario, figure_direc=figure_direc,
+                                         depth_selection='offshore').plot()
     General.General_bathymetry_histogram(scenario=scenario, figure_direc=figure_direc,
                                          depth_selection='coastal').plot()
 
