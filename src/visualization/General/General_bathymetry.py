@@ -33,6 +33,10 @@ class General_bathymetry:
         # Setting the zero depths to nan values
         bath_dict['DEPTH'][bath_dict['DEPTH'] == 0] = np.nan
 
+        # Getting just the regions where the depth is between 10 and 11 meters
+        bath_dict['DEPTH'][bath_dict['DEPTH'] < 10] = np.nan
+        bath_dict['DEPTH'][bath_dict['DEPTH'] > 11] = np.nan
+
         # Getting the spatial domain for the figure
         spatial_domain = np.nanmin(bath_dict['LON']), np.nanmax(bath_dict['LON']), \
                          np.nanmin(bath_dict['LAT']), np.nanmax(bath_dict['LAT'])
