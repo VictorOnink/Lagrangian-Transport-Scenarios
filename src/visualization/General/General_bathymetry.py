@@ -63,7 +63,7 @@ class General_bathymetry:
         # Lon, Lat = np.meshgrid(bath_dict['LON'], bath_dict['LAT'])
         # depth_plot = plt.pcolormesh(Lon, Lat, bath_dict['DEPTH'], norm=normalization, cmap=self.cmap, zorder=1000)
 
-        ax.plot(lon_list, lat_list, '.r')
+        ax[0].plot(lon_list, lat_list, '.r')
 
         # cax = fig.add_subplot(gs[:, -1])
         # cbar = plt.colorbar(depth_plot, cax=cax, orientation='vertical', extend='both')
