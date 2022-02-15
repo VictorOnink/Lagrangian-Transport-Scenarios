@@ -35,6 +35,8 @@ class General_bathymetry_histogram:
             depth[distance2shore > 50] = 0
         elif self.depth_selection in ['offshore']:
             depth[distance2shore < 50] = 0
+        if self.depth_selection in ['coastal']:
+            depth[distance2shore < 10] = 0
 
         # Flattening the array, and removing all depths == 0
         depth = depth.flatten()
