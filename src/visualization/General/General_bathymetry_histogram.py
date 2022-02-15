@@ -67,7 +67,7 @@ class General_bathymetry_histogram:
         ax.set_ylim([-3000, -1])
 
         ax.set_ylabel('Depth (m)')
-        ax.set_xlabel('Percentage of all ocean cells')
+        ax.set_xlabel('Percentage of {} cells'.format(self.depth_selection))
 
         ax.plot(histogram_depths, -1 * depth_bins_mid)
 
