@@ -30,7 +30,7 @@ def run(scenario, figure_direc: str):
     size_list = np.array([5000, 313, 20, 2]) * settings.SIZE_FACTOR
 
     # Creating a figure of the basin bathymetry
-    # General.General_bathymetry(scenario=scenario, figure_direc=figure_direc).plot()
+    General.General_bathymetry(scenario=scenario, figure_direc=figure_direc).plot()
 
     # Figure of the mean wind speed
     # General.General_average_wind_speed(scenario=scenario, figure_direc=figure_direc).plot()
@@ -47,12 +47,12 @@ def run(scenario, figure_direc: str):
 
     # Figure showing a histogram of all depth levels in the Mediterranean
     # General.General_bathymetry_histogram(scenario=scenario, figure_direc=figure_direc).plot()
-    General.General_bathymetry_histogram(scenario=scenario, figure_direc=figure_direc,
-                                         depth_selection='nearshore').plot()
-    General.General_bathymetry_histogram(scenario=scenario, figure_direc=figure_direc,
-                                         depth_selection='offshore').plot()
-    General.General_bathymetry_histogram(scenario=scenario, figure_direc=figure_direc,
-                                         depth_selection='coastal').plot()
+    # General.General_bathymetry_histogram(scenario=scenario, figure_direc=figure_direc,
+    #                                      depth_selection='nearshore').plot()
+    # General.General_bathymetry_histogram(scenario=scenario, figure_direc=figure_direc,
+    #                                      depth_selection='offshore').plot()
+    # General.General_bathymetry_histogram(scenario=scenario, figure_direc=figure_direc,
+    #                                      depth_selection='coastal').plot()
 
     # Creating an animation showing how the six different size classes I have simulations for at the moment look like
     # SizeTransport_Animation(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
