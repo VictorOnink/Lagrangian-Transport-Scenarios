@@ -36,8 +36,6 @@ class General_bathymetry_histogram:
         depth_bins = np.logspace(0, 3.5)
         depth_bins_mid = (depth_bins[:-1] + depth_bins[1:]) / 2
         histogram_depths, _ = np.histogram(depth, bins=depth_bins)
-        print(histogram_depths)
-        print(np.sum(histogram_depths))
 
         # Normalize all the depth bins by the total number of cells
         histogram_depths = np.divide(histogram_depths, np.sum(histogram_depths))
@@ -48,7 +46,7 @@ class General_bathymetry_histogram:
         gs = fig.add_gridspec(nrows=self.figure_shape[0], ncols=self.figure_shape[1])
 
         ax = fig.add_subplot(gs[0, 0])
-        ax.set_xlim([0, 100])
+        ax.set_xlim([0, 20])
         ax.set_ylim([-3000, 1])
         ax.set_yscale('symlog')
 
