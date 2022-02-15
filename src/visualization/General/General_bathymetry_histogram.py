@@ -28,6 +28,7 @@ class General_bathymetry_histogram:
         # Loading the data
         dataset = Dataset(self.scenario.file_dict['BATH_filenames'])
         depth = dataset.variables[self.scenario.file_dict['BATH_variables']['DEPTH']][:]
+        depth[depth <= 0] = np.nan
 
         # Filter out the cells in the nearshore and offshore
         distance2shore = Dataset(self.scenario.file_dict['DISTANCE_filename']).variables['distance'][:]
@@ -40,7 +41,7 @@ class General_bathymetry_histogram:
 
         # Flattening the array, and removing all depths == 0
         depth = depth.flatten()
-        depth = depth[depth > 0]
+        depth = depth[~np.isnan(depth)]
 
         # Set the depth bins, and then calculate a histogram of the depths
         depth_bins = np.logspace(0, 3.5)
