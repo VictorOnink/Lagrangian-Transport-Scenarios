@@ -90,7 +90,7 @@ class parcels_to_concentration:
                                                          time_steps=time_steps, lon_bin=self.LON, lat_bin=self.LAT)
                         self.output_dict[key_year][beach_state]['column'] = output
                         # Next, the concentration within 5m of the ocean surface (defined at self.MIN_DEPTH)
-                        selec = state_data['z'] < (self.MIN_DEPTH + 5)
+                        selec = (state_data['z'] < 11) & (state_data['z'] > 10)
                         if np.sum(selec) > 0:
                             output = calculate_concentration(lon=state_data['lon'][selec], lat=state_data['lat'][selec],
                                                              weights=state_data['weights'], hex_grid=self.hexgrid,
