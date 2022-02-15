@@ -37,6 +37,11 @@ class General_bathymetry:
         bath_dict['DEPTH'][bath_dict['DEPTH'] < 10] = np.nan
         bath_dict['DEPTH'][bath_dict['DEPTH'] > 11] = np.nan
 
+        depth_list = bath_dict['DEPTH'][bath_dict['DEPTH'] < 10].flatten()
+        selection = ~np.isnan(depth_list)
+        lon_list = bath_dict['LON'].flatten()[selection]
+        lat_list = bath_dict['LAT'].flatten()[selection]
+
         # Getting the spatial domain for the figure
         spatial_domain = np.nanmin(bath_dict['LON']), np.nanmax(bath_dict['LON']), \
                          np.nanmin(bath_dict['LAT']), np.nanmax(bath_dict['LAT'])
@@ -52,18 +57,19 @@ class General_bathymetry:
                                                       domain=spatial_domain, lat_grid_step=5, lon_grid_step=10,
                                                       resolution='10m'))
         # Setting the normalization of the colormap
-        # normalization = colors.LogNorm(vmin=1e1, vmax=5e3)
-        normalization = colors.LogNorm(vmin=1e1, vmax=2e1)
+        normalization = colors.LogNorm(vmin=1e1, vmax=5e3)
 
         # The actual plotting
-        Lon, Lat = np.meshgrid(bath_dict['LON'], bath_dict['LAT'])
-        depth_plot = plt.pcolormesh(Lon, Lat, bath_dict['DEPTH'], norm=normalization, cmap=self.cmap, zorder=1000)
+        # Lon, Lat = np.meshgrid(bath_dict['LON'], bath_dict['LAT'])
+        # depth_plot = plt.pcolormesh(Lon, Lat, bath_dict['DEPTH'], norm=normalization, cmap=self.cmap, zorder=1000)
 
-        cax = fig.add_subplot(gs[:, -1])
-        cbar = plt.colorbar(depth_plot, cax=cax, orientation='vertical', extend='both')
-        cbar.set_label('Depth (m)', fontsize=self.ax_label_size)
-        cbar.ax.tick_params(which='major', labelsize=self.ax_ticklabel_size, length=14, width=2)
-        cbar.ax.tick_params(which='minor', labelsize=self.ax_ticklabel_size, length=7, width=2)
+        ax.plot(lon_list, lat_list, '.r')
+
+        # cax = fig.add_subplot(gs[:, -1])
+        # cbar = plt.colorbar(depth_plot, cax=cax, orientation='vertical', extend='both')
+        # cbar.set_label('Depth (m)', fontsize=self.ax_label_size)
+        # cbar.ax.tick_params(which='major', labelsize=self.ax_ticklabel_size, length=14, width=2)
+        # cbar.ax.tick_params(which='minor', labelsize=self.ax_ticklabel_size, length=7, width=2)
 
         file_name = self.output_direc + 'Bathymetry.png'
-        plt.savefig(file_name, bbox_inches='tight', dpi=400)
+        plt.savefig(file_name, bbox_inches='tight')
