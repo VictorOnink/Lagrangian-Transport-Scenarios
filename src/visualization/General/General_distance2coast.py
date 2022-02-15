@@ -27,8 +27,8 @@ class General_distance2coast:
         # Loading the data
         dataset = Dataset(self.scenario.file_dict['DISTANCE_filename'])
         bath_dict = {}
-        for variable in ['LON', 'LAT', 'distance']:  # Note, DEPTH is actually the bathymetry
-            bath_dict[variable] = dataset.variables[self.scenario.file_dict['BATH_variables'][variable]][:]
+        for variable in ['longitude', 'latitude', 'distance']:  # Note, DEPTH is actually the bathymetry
+            bath_dict[variable] = dataset.variables[variable][:]
 
         # Setting the zero depths to nan values
         bath_dict['distance'][bath_dict['distance'] == 0] = np.nan
