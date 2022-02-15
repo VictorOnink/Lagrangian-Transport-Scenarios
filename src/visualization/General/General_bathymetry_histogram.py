@@ -38,6 +38,8 @@ class General_bathymetry_histogram:
             depth[distance2shore < 50] = np.nan
         elif self.depth_selection in ['coastal']:
             depth[distance2shore < 50] = np.nan
+        else:
+            print('We have {}'.format(self.depth_selection))
 
         # Flattening the array, and removing all depths == 0
         depth = depth.flatten()
