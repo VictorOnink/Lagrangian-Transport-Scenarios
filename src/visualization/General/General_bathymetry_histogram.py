@@ -39,6 +39,7 @@ class General_bathymetry_histogram:
         # Flattening the array, and removing all depths == 0
         depth = depth.flatten()
         depth = depth[depth > 0]
+        print(depth.size)
 
         # Set the depth bins, and then calculate a histogram of the depths
         depth_bins = np.logspace(0, 3.5)
