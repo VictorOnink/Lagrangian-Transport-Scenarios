@@ -34,8 +34,8 @@ class General_bathymetry:
         bath_dict['DEPTH'][bath_dict['DEPTH'] == 0] = np.nan
 
         # Getting just the regions where the depth is between 10 and 11 meters
-        bath_dict['DEPTH'][bath_dict['DEPTH'] < 1] = np.nan
-        bath_dict['DEPTH'][bath_dict['DEPTH'] > 100] = np.nan
+        bath_dict['DEPTH'][bath_dict['DEPTH'] < 10] = np.nan
+        bath_dict['DEPTH'][bath_dict['DEPTH'] > 11] = np.nan
 
         depth_list = bath_dict['DEPTH'].flatten()
         selection = ~np.isnan(depth_list)
