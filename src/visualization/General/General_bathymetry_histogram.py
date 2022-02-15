@@ -32,9 +32,9 @@ class General_bathymetry_histogram:
 
         # Filter out the cells in the nearshore and offshore
         distance2shore = Dataset(self.scenario.file_dict['DISTANCE_filename']).variables['distance'][:]
-        if self.depth_selection in ['nearshore']:
+        if self.depth_selection in ['offshore']:
             depth[distance2shore > 50] = np.nan
-        elif self.depth_selection in ['offshore']:
+        elif self.depth_selection in ['nearshore']:
             depth[distance2shore < 50] = np.nan
         elif self.depth_selection in ['coastal']:
             depth[distance2shore < 50] = np.nan
