@@ -52,7 +52,8 @@ class General_bathymetry:
                                                       domain=spatial_domain, lat_grid_step=5, lon_grid_step=10,
                                                       resolution='10m'))
         # Setting the normalization of the colormap
-        normalization = colors.LogNorm(vmin=1e1, vmax=5e3)
+        # normalization = colors.LogNorm(vmin=1e1, vmax=5e3)
+        normalization = colors.LogNorm(vmin=1e1, vmax=2e1)
 
         # The actual plotting
         Lon, Lat = np.meshgrid(bath_dict['LON'], bath_dict['LAT'])
@@ -65,4 +66,4 @@ class General_bathymetry:
         cbar.ax.tick_params(which='minor', labelsize=self.ax_ticklabel_size, length=7, width=2)
 
         file_name = self.output_direc + 'Bathymetry.png'
-        plt.savefig(file_name, bbox_inches='tight')
+        plt.savefig(file_name, bbox_inches='tight', dpi=400)
