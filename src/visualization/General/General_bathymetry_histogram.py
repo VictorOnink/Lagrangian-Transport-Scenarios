@@ -9,10 +9,11 @@ import cmocean.cm as cmo
 
 
 class General_bathymetry_histogram:
-    def __init__(self, scenario, figure_direc):
+    def __init__(self, scenario, figure_direc, depth_selection='all'):
         # Scenario specific variables
         self.scenario = scenario
         self.figure_direc = figure_direc
+        self.depth_selection = depth_selection
         # Data variables
         self.output_direc = figure_direc + 'General/'
         utils.check_direc_exist(self.output_direc)
@@ -27,6 +28,13 @@ class General_bathymetry_histogram:
         # Loading the data
         dataset = Dataset(self.scenario.file_dict['BATH_filenames'])
         depth = dataset.variables[self.scenario.file_dict['BATH_variables']['DEPTH']][:]
+
+        # Filter out the cells in the nearshore and offshore
+        distance2shore = Dataset(self.scenario.file_dict['DISTANCE_filename']).variables['distance'][:]
+        if self.depth_selection in ['nearshore']:
+            depth[distance2shore > 50] = 0
+        elif self.depth_selection in ['offshore']:
+            depth[distance2shore < 50] = 0
 
         # Flattening the array, and removing all depths == 0
         depth = depth.flatten()
@@ -46,7 +54,7 @@ class General_bathymetry_histogram:
         gs = fig.add_gridspec(nrows=self.figure_shape[0], ncols=self.figure_shape[1])
 
         ax = fig.add_subplot(gs[0, 0])
-        ax.set_xlim([0, 20])
+        ax.set_xlim([0, np.round(np.max(histogram_depths), -1)])
         ax.set_yscale('symlog')
         ax.set_ylim([-3000, -1])
 
@@ -56,5 +64,5 @@ class General_bathymetry_histogram:
         ax.plot(histogram_depths, -1 * depth_bins_mid)
 
         ax.set_aspect('auto', adjustable=None)
-        file_name = self.output_direc + 'Bathymetry_histogram.png'
+        file_name = self.output_direc + 'Bathymetry_histogram_{}.png'.format(self.depth_selection)
         plt.savefig(file_name, bbox_inches='tight')
