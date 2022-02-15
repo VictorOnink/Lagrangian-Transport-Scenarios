@@ -42,6 +42,9 @@ def run(scenario, figure_direc: str):
     # General.General_season_average(scenario=scenario, figure_direc=figure_direc, variable='MLD').plot()
     # General.General_season_average(scenario=scenario, figure_direc=figure_direc, variable='wind').plot()
 
+    # Figure of the distance to shore for each cell in the Mediterranean
+    General.General_distance2coast(scenario=scenario, figure_direc=figure_direc).plot()
+
     # Figure showing a histogram of all depth levels in the Mediterranean
     # General.General_bathymetry_histogram(scenario=scenario, figure_direc=figure_direc).plot()
     General.General_bathymetry_histogram(scenario=scenario, figure_direc=figure_direc,
