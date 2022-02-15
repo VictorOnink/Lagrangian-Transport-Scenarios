@@ -37,10 +37,11 @@ class General_bathymetry:
         bath_dict['DEPTH'][bath_dict['DEPTH'] < 1] = np.nan
         bath_dict['DEPTH'][bath_dict['DEPTH'] > 100] = np.nan
 
-        depth_list = bath_dict['DEPTH'][bath_dict['DEPTH'] < 10].flatten()
+        depth_list = bath_dict['DEPTH'].flatten()
         selection = ~np.isnan(depth_list)
-        lon_list = bath_dict['LON'].flatten()[selection]
-        lat_list = bath_dict['LAT'].flatten()[selection]
+        Lon, Lat = np.meshgrid(bath_dict['LON'], bath_dict['LAT'])
+        lon_list = Lon.flatten()[selection]
+        lat_list = Lat.flatten()[selection]
 
         # Getting the spatial domain for the figure
         spatial_domain = np.nanmin(bath_dict['LON']), np.nanmax(bath_dict['LON']), \
