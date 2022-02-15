@@ -51,7 +51,7 @@ class General_bathymetry_histogram:
         depth = depth[~np.isnan(depth)]
 
         # Set the depth bins, and then calculate a histogram of the depths
-        depth_bins = np.logspace(0, 3.5)
+        depth_bins = np.logspace(0, 3.5, num=100)
         depth_bins_mid = (depth_bins[:-1] + depth_bins[1:]) / 2
         histogram_depths, _ = np.histogram(depth, bins=depth_bins)
 
