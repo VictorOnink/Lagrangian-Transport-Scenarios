@@ -70,11 +70,11 @@ def run(scenario, figure_direc: str):
 
     # Plotting the relative distributions for fixed particle sizes, but with different particle densities
     for time_select in [0, 1, 2]:
-        for size in np.array([2]) * settings.SIZE_FACTOR:
+        for size in np.array([78]) * settings.SIZE_FACTOR:
             for depth_level in ['surface_5m']:
-                # SizeTransport_rho_concentrations(scenario=scenario, figure_direc=figure_direc, size=size,
-                #                                  beach_state='adrift', time_selection=time_select,
-                #                                  rho_list=[30, 920, 980, 1020], depth_level=depth_level).plot()
+                SizeTransport_rho_concentrations(scenario=scenario, figure_direc=figure_direc, size=size,
+                                                 beach_state='adrift', time_selection=time_select,
+                                                 rho_list=[30, 920, 980, 1020], depth_level=depth_level).plot()
                 SizeTransport_concentration_seasons(scenario=scenario, figure_direc=figure_direc, size=size,
                                                     beach_state='adrift', time_selection=time_select,
                                                     depth_level=depth_level).plot()

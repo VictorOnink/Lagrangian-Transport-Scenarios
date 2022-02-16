@@ -84,7 +84,7 @@ export SERVER
 
 #A number of switches to indicate which analysis steps we want to run.
 #0 = off, 1 = on
-CONCENTRATION=1
+CONCENTRATION=0
 MONTHLY_CONCENTRATION=1
 VERTICAL_CONCENTRATION=0
 LONLAT_CONCENTRATION=0
