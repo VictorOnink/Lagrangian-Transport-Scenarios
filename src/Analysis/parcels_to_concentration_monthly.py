@@ -21,7 +21,6 @@ class parcels_to_concentration_monthly:
         self.output_dict = self.create_output_file_dict()
         self.parcels_dataset, self.post_dataset = self.load_parcels_post_output()
         self.month_indices = self.get_month_indices()
-        print(self.month_indices)
 
     def run(self):
         if self.parallel_step == 1:
@@ -31,79 +30,82 @@ class parcels_to_concentration_monthly:
             output_name = self.get_file_names(file_dict=self.file_dict,
                                          directory=self.temp_direc, final=False)
             if not utils.check_file_exist(output_name, without_pkl=True):
-                # Loading, flattening and removing nan values for necessary data arrays
-                full_data_dict = {}
-                for variable in self.data_variable_list:
-                    full_data_dict[variable] = self.parcels_dataset.variables[variable][:, :-1]
-                full_data_dict, time_steps = self.complete_full_data_dict(full_data_dict=full_data_dict,
-                                                                          parcels_dataset=self.parcels_dataset,
-                                                                          post_dataset=self.post_dataset)
-                # Looping through the beach states
-                for beach_state in self.beach_label_dict.keys():
-                    state_data = {}
-                    for variable in utils.flatten_list_of_lists([['lon', 'lat', 'weights', 'size_class', 'z'], self.weight_list]):
-                        if variable in full_data_dict.keys():
-                            beach_selection = full_data_dict['beach'] == self.beach_label_dict[beach_state]
-                            state_data[variable] = full_data_dict[variable][beach_selection]
-                    if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
-                        for size_class in range(settings.SIZE_CLASS_NUMBER):
-                            size_class_data = {}
-                            for variable in utils.flatten_list_of_lists([['lon', 'lat'], self.weight_list]):
-                                size_selection = state_data['size_class'] == size_class
-                                size_class_data[variable] = state_data[variable][size_selection]
+                for month in range(1, 13):
+                    # Getting the indices for the month
+                    start_ind, end_ind = self.month_indices[month][0], self.month_indices[month][1]
+                    # Loading, flattening and removing nan values for necessary data arrays
+                    full_data_dict = {}
+                    for variable in self.data_variable_list:
+                        full_data_dict[variable] = self.parcels_dataset.variables[variable][:, start_ind:end_ind]
+                    full_data_dict, time_steps = self.complete_full_data_dict(full_data_dict=full_data_dict,
+                                                                              parcels_dataset=self.parcels_dataset,
+                                                                              post_dataset=self.post_dataset)
+                    # Looping through the beach states
+                    for beach_state in self.beach_label_dict.keys():
+                        state_data = {}
+                        for variable in utils.flatten_list_of_lists([['lon', 'lat', 'weights', 'size_class', 'z'], self.weight_list]):
+                            if variable in full_data_dict.keys():
+                                beach_selection = full_data_dict['beach'] == self.beach_label_dict[beach_state]
+                                state_data[variable] = full_data_dict[variable][beach_selection]
+                        if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
+                            for size_class in range(settings.SIZE_CLASS_NUMBER):
+                                size_class_data = {}
+                                for variable in utils.flatten_list_of_lists([['lon', 'lat'], self.weight_list]):
+                                    size_selection = state_data['size_class'] == size_class
+                                    size_class_data[variable] = state_data[variable][size_selection]
+                                key_year = utils.analysis_simulation_year_key(settings.RESTART)
+                                for weight in self.weight_list:
+                                    # First, the total water column
+                                    output = self.calculate_concentration(lon=size_class_data['lon'],
+                                                                          lat=size_class_data['lat'],
+                                                                          weights=size_class_data[weight],
+                                                                          time_steps=time_steps)
+                                    self.output_dict[key_year][month][beach_state][weight][size_class]['column'] = output
+                                    # Next, the concentration within 5m of the ocean surface (defined at self.MIN_DEPTH)
+                                    selec = size_class_data['z'] < (self.MIN_DEPTH + 5)
+                                    if np.sum(selec) > 0:
+                                        output = self.calculate_concentration(lon=size_class_data['lon'][selec],
+                                                                              lat=size_class_data['lat'][selec],
+                                                                              weights=size_class_data[weight][selec],
+                                                                              time_steps=time_steps)
+                                        self.output_dict[key_year][month][beach_state][weight][size_class]['surface_5m'] = output
+                                    # Finally, the concentration within 1m of the ocean surface
+                                    selec = size_class_data['z'] < (self.MIN_DEPTH + 1)
+                                    if np.sum(selec) > 0:
+                                        output = self.calculate_concentration(lon=size_class_data['lon'][selec],
+                                                                              lat=size_class_data['lat'][selec],
+                                                                              weights=size_class_data[weight][selec],
+                                                                              time_steps=time_steps)
+                                        self.output_dict[key_year][month][beach_state][weight][size_class]['surface_1m'] = output
+                        elif settings.SCENARIO_NAME in ['SizeTransport']:
                             key_year = utils.analysis_simulation_year_key(settings.RESTART)
-                            for weight in self.weight_list:
-                                # First, the total water column
-                                output = self.calculate_concentration(lon=size_class_data['lon'],
-                                                                      lat=size_class_data['lat'],
-                                                                      weights=size_class_data[weight],
+                            # First, the total water column
+                            output = self.calculate_concentration(lon=state_data['lon'], lat=state_data['lat'],
+                                                                  weights=state_data['weights'], time_steps=time_steps)
+                            self.output_dict[key_year][beach_state]['column'] = output
+                            # Next, the concentration within 5m of the ocean surface (defined at self.MIN_DEPTH)
+                            selec = (state_data['z'] < 11) & (state_data['z'] > 10)
+                            if np.sum(selec) > 0:
+                                output = self.calculate_concentration(lon=state_data['lon'][selec],
+                                                                      lat=state_data['lat'][selec],
+                                                                      weights=state_data['weights'],
                                                                       time_steps=time_steps)
-                                self.output_dict[key_year][beach_state][weight][size_class]['column'] = output
-                                # Next, the concentration within 5m of the ocean surface (defined at self.MIN_DEPTH)
-                                selec = size_class_data['z'] < (self.MIN_DEPTH + 5)
-                                if np.sum(selec) > 0:
-                                    output = self.calculate_concentration(lon=size_class_data['lon'][selec],
-                                                                          lat=size_class_data['lat'][selec],
-                                                                          weights=size_class_data[weight][selec],
-                                                                          time_steps=time_steps)
-                                    self.output_dict[key_year][beach_state][weight][size_class]['surface_5m'] = output
-                                # Finally, the concentration within 1m of the ocean surface
-                                selec = size_class_data['z'] < (self.MIN_DEPTH + 1)
-                                if np.sum(selec) > 0:
-                                    output = self.calculate_concentration(lon=size_class_data['lon'][selec],
-                                                                          lat=size_class_data['lat'][selec],
-                                                                          weights=size_class_data[weight][selec],
-                                                                          time_steps=time_steps)
-                                    self.output_dict[key_year][beach_state][weight][size_class]['surface_1m'] = output
-                    elif settings.SCENARIO_NAME in ['SizeTransport']:
-                        key_year = utils.analysis_simulation_year_key(settings.RESTART)
-                        # First, the total water column
-                        output = self.calculate_concentration(lon=state_data['lon'], lat=state_data['lat'],
-                                                              weights=state_data['weights'], time_steps=time_steps)
-                        self.output_dict[key_year][beach_state]['column'] = output
-                        # Next, the concentration within 5m of the ocean surface (defined at self.MIN_DEPTH)
-                        selec = (state_data['z'] < 11) & (state_data['z'] > 10)
-                        if np.sum(selec) > 0:
-                            output = self.calculate_concentration(lon=state_data['lon'][selec],
-                                                                  lat=state_data['lat'][selec],
-                                                                  weights=state_data['weights'],
-                                                                  time_steps=time_steps)
-                            self.output_dict[key_year][beach_state]['surface_5m'] = output
-                        # Finally, the concentration within 1m of the ocean surface
-                        selec = state_data['z'] < (self.MIN_DEPTH + 1)
-                        if np.sum(selec) > 0:
-                            output = self.calculate_concentration(lon=state_data['lon'][selec],
-                                                                  lat=state_data['lat'][selec],
-                                                                  weights=state_data['weights'],
-                                                                  time_steps=time_steps)
-                            self.output_dict[key_year][beach_state]['surface_1m'] = output
+                                self.output_dict[key_year][month][beach_state]['surface_5m'] = output
+                            # Finally, the concentration within 1m of the ocean surface
+                            selec = state_data['z'] < (self.MIN_DEPTH + 1)
+                            if np.sum(selec) > 0:
+                                output = self.calculate_concentration(lon=state_data['lon'][selec],
+                                                                      lat=state_data['lat'][selec],
+                                                                      weights=state_data['weights'],
+                                                                      time_steps=time_steps)
+                                self.output_dict[key_year][month][beach_state]['surface_1m'] = output
 
-                    else:
-                        key_year = utils.analysis_simulation_year_key(settings.RESTART)
-                        self.output_dict[key_year][beach_state] = self.calculate_concentration(lon=state_data['lon'],
-                                                                                               lat=state_data['lat'],
-                                                                                               weights=state_data['weights'],
-                                                                                               time_steps=time_steps)
+                        else:
+                            key_year = utils.analysis_simulation_year_key(settings.RESTART)
+                            self.output_dict[key_year][month][beach_state] = self.calculate_concentration(lon=state_data['lon'],
+                                                                                                   lat=state_data['lat'],
+                                                                                                   weights=state_data['weights'],
+                                                                                                   time_steps=time_steps)
                 utils.save_obj(output_name, self.output_dict)
                 str_format = settings.STARTYEAR, settings.STARTMONTH, settings.RUN, settings.RESTART
                 print_statement = 'The concentration for year {}-{}, run {} restart {} has been save'.format(*str_format)
@@ -112,30 +114,32 @@ class parcels_to_concentration_monthly:
         elif self.parallel_step == 2:
             pbar = ProgressBar()
             for ind_year, year in pbar(enumerate(range(settings.STARTYEAR, settings.STARTYEAR + settings.SIM_LENGTH))):
-                for month in range(1, 13):
+                for month_ind in range(1, 13):
                     for run in range(0, settings.RUN_RANGE):
                         for restart in range(0, settings.SIM_LENGTH - ind_year):
                             file_name = self.get_file_names(directory=self.temp_direc, final=False, year=year,
-                                                            month=month, run=run, restart=restart)
+                                                            month=month_ind, run=run, restart=restart)
                             if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
                                 dataset_post = utils.load_obj(filename=file_name)
-                                for beach_state in self.beach_label_dict.keys():
-                                    for weight in self.weight_list:
-                                        for size_class in range(settings.SIZE_CLASS_NUMBER):
-                                            for depth in self.depth_level:
-                                                key_year = utils.analysis_simulation_year_key(restart + ind_year)
-                                                self.output_dict[key_year][beach_state][weight][size_class][depth] += dataset_post[key_year][beach_state][weight][size_class][depth]
+                                for month in range(1, 13):
+                                    for beach_state in self.beach_label_dict.keys():
+                                        for weight in self.weight_list:
+                                            for size_class in range(settings.SIZE_CLASS_NUMBER):
+                                                for depth in self.depth_level:
+                                                    key_year = utils.analysis_simulation_year_key(restart + ind_year)
+                                                    self.output_dict[key_year][month][beach_state][weight][size_class][depth] += dataset_post[key_year][month][beach_state][weight][size_class][depth]
                                 utils.remove_file(file_name + '.pkl')
                             else:
-                                if month == 1 and year == settings.STARTYEAR:
+                                if month_ind == 1 and year == settings.STARTYEAR:
                                     dataset_post = utils.load_obj(filename=file_name)
-                                    for beach_state in self.beach_label_dict.keys():
-                                        key_year = utils.analysis_simulation_year_key(restart + ind_year)
-                                        if settings.SCENARIO_NAME in ['SizeTransport']:
-                                            for depth in self.depth_level:
-                                                self.output_dict[key_year][beach_state][depth] += dataset_post[key_year][beach_state][depth]
-                                        else:
-                                            self.output_dict[key_year][beach_state] += dataset_post[key_year][beach_state]
+                                    for month in range(1, 13):
+                                        for beach_state in self.beach_label_dict.keys():
+                                            key_year = utils.analysis_simulation_year_key(restart + ind_year)
+                                            if settings.SCENARIO_NAME in ['SizeTransport']:
+                                                for depth in self.depth_level:
+                                                    self.output_dict[key_year][month][beach_state][depth] += dataset_post[key_year][month][beach_state][depth]
+                                            else:
+                                                self.output_dict[key_year][month][beach_state] += dataset_post[key_year][month][beach_state]
                                     utils.remove_file(file_name + '.pkl')
             # Saving the computed concentration
             output_name = self.get_file_names(directory=self.output_direc, final=True)
@@ -179,7 +183,7 @@ class parcels_to_concentration_monthly:
         for simulation_years in range(settings.SIM_LENGTH):
             year_key = utils.analysis_simulation_year_key(simulation_years)
             output_dict[year_key] = {}
-            for month in range(12):
+            for month in range(1, 13):
                 output_dict[year_key][month] = deepcopy(beach_state_dict)
 
         return output_dict

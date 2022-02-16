@@ -30,7 +30,7 @@ class AnalysisFactory:
             Analysis.parcels_to_concentration(file_dict=self.file_dict).run()
         if settings.MONTHLY_CONCENTRATION:
             utils.print_statement("Calculating monthly concentrations", to_print=True)
-            Analysis.parcels_to_concentration_monthly(file_dict=self.file_dict)
+            Analysis.parcels_to_concentration_monthly(file_dict=self.file_dict).run()
         if settings.VERTICAL_CONCENTRATION:
             utils.print_statement("Calculating the vertical concentration", to_print=True)
             Analysis.parcels_to_vertical_concentration(file_dict=self.file_dict).run()
