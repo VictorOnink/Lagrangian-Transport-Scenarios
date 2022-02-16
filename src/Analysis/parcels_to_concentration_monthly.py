@@ -38,7 +38,8 @@ class parcels_to_concentration_monthly:
                         full_data_dict[variable] = self.parcels_dataset.variables[variable][:, start_ind:end_ind]
                     full_data_dict, time_steps = self.complete_full_data_dict(full_data_dict=full_data_dict,
                                                                               parcels_dataset=self.parcels_dataset,
-                                                                              post_dataset=self.post_dataset)
+                                                                              post_dataset=self.post_dataset,
+                                                                              start_ind=start_ind, end_ind=end_ind)
                     # Looping through the beach states
                     for beach_state in self.beach_label_dict.keys():
                         state_data = {}
@@ -187,11 +188,11 @@ class parcels_to_concentration_monthly:
 
         return output_dict
 
-    def complete_full_data_dict(self, full_data_dict, parcels_dataset, post_dataset):
+    def complete_full_data_dict(self, full_data_dict, parcels_dataset, post_dataset, start_ind, end_ind):
         if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
             for weight in self.weight_list:
-                full_data_dict[weight] = post_dataset[weight][:, :-1]
-            full_data_dict['size_class'] = parcels_dataset.variables['size_class'][:, :-1]
+                full_data_dict[weight] = post_dataset[weight][:, start_ind:end_ind]
+            full_data_dict['size_class'] = parcels_dataset.variables['size_class'][:, start_ind:end_ind]
         else:
             if 'weights' in parcels_dataset.variables.keys():
                 full_data_dict['weights'] = parcels_dataset.variables['weights'][:, :-1] * settings.BUOYANT
