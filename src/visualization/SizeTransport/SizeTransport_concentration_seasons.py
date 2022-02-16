@@ -111,9 +111,9 @@ class SizeTransport_concentration_seasons:
 
     def set_color_norm(self):
         if self.time_selection == 0:
-            vmin, vmax = 1, 1e4
+            vmin, vmax = 1, 1e3
         elif self.time_selection == 1:
-            vmin, vmax = 1, 1e2
+            vmin, vmax = 1, 5e1
         elif self.time_selection == 2:
-            vmin, vmax = 1, 1e1
+            vmin, vmax = 1, 7e0
         return colors.LogNorm(vmin=vmin, vmax=vmax)
