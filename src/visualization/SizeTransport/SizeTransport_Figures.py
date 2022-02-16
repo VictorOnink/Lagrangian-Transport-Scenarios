@@ -147,6 +147,7 @@ def run(scenario, figure_direc: str):
     # SizeTransport_CumulativeDistance(figure_direc=figure_direc, scenario=scenario, size_list=size_list).plot()
 
     # Plotting the month average vertical profile
+    size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
     for rho in [[30, 920, 980, 1020]]:
         SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
                                       time_selection=0, rho_list=rho).plot()
