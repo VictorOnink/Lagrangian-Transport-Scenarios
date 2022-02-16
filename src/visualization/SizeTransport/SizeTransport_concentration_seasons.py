@@ -80,7 +80,7 @@ class SizeTransport_concentration_seasons:
                                                            lat_grid_step=5, lon_grid_step=10, resolution='10m'))
 
         # Setting the colormap, and adding a colorbar
-        norm = colors.LogNorm(vmin=1, vmax=1e4)
+        norm = self.set_color_norm()
         cbar_label, extend = r"Relative Concentration ($C/C_{min}$)", 'max'
         cmap = plt.cm.ScalarMappable(cmap=self.cmap, norm=norm)
         cax = fig.add_subplot(gs[:, -1])
@@ -108,3 +108,12 @@ class SizeTransport_concentration_seasons:
         str_format = flowdata, self.beach_state, selection_dict[self.time_selection], self.size * 1E6, startyear, \
                      self.depth_level
         return self.output_direc + 'rho/SizeTransport_SEASON_{}_{}_{}_size_{:.3f}_y_{}_{}.png'.format(*str_format)
+
+    def set_color_norm(self):
+        if self.time_selection == 0:
+            vmin, vmax = 1, 1e4
+        elif self.time_selection == 1:
+            vmin, vmax = 1, 1e2
+        elif self.time_selection == 2:
+            vmin, vmax = 1, 1e1
+        return colors.LogNorm(vmin=vmin, vmax=vmax)
