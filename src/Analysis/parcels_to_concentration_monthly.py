@@ -27,8 +27,7 @@ class parcels_to_concentration_monthly:
             print_statement = 'year {}-{}, run {} restart {}'.format(settings.STARTYEAR, settings.STARTMONTH,
                                                                      settings.RUN, settings.RESTART)
             utils.print_statement(print_statement, to_print=True)
-            output_name = self.get_file_names(file_dict=self.file_dict,
-                                         directory=self.temp_direc, final=False)
+            output_name = self.get_file_names(directory=self.temp_direc, final=False)
             if not utils.check_file_exist(output_name, without_pkl=True):
                 for month in range(1, 13):
                     # Getting the indices for the month
