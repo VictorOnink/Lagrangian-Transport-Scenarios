@@ -90,9 +90,9 @@ class SizeTransport_concentration_seasons:
         cbar.ax.tick_params(which='minor', labelsize=self.ax_ticklabel_size, length=7, width=2)
 
         # Adding subfigure titles
-        season_title = ['Winter (JFM)', 'Spring (AMJ)', 'Summer (JAS)', 'Fall (OND)']
+        season_title = ['(a) Winter (JFM)', '(b) Spring (AMJ)', '(c) Summer (JAS)', '(d) Fall (OND)']
         for index, ax in enumerate(ax_list):
-            ax.set_title(season_title[index], weight='bold', fontsize=self.ax_label_size)
+            ax.set_title(season_title[index], fontsize=self.ax_label_size)
 
         # The actual plotting of the figures
         for index in range(self.number_of_plots):
