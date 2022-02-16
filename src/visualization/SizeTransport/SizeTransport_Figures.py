@@ -149,18 +149,13 @@ def run(scenario, figure_direc: str):
     # Plotting the month average vertical profile
     size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
     for rho in [[920, 980], [30, 1020]]:
-        SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                      time_selection=0, rho_list=rho).plot()
-        SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                      time_selection=0, rho_list=rho, fixed_resus=True, shore='offshore',
-                                      resus_time=50).plot()
-        SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                      time_selection=0, rho_list=rho, fixed_resus=True, shore='nearshore',
-                                      resus_time=50).plot()
-        SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                      time_selection=1, rho_list=rho).plot()
-        SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                      time_selection=2, rho_list=rho).plot()
+        for shore in ['all', 'nearshore', 'offshore']:
+            SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+                                          time_selection=0, rho_list=rho, shore=shore).plot()
+            SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+                                          time_selection=1, rho_list=rho, shore=shore).plot()
+            SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+                                          time_selection=2, rho_list=rho, shore=shore).plot()
 
     # Plotting the separation distance
     # for size_selection in size_list:
