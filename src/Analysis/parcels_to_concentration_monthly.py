@@ -5,7 +5,7 @@ from netCDF4 import Dataset
 import numpy as np
 from progressbar import ProgressBar
 from copy import deepcopy
-from datetime import datetime, timedelta
+from datetime import datetime
 
 
 class parcels_to_concentration_monthly:
@@ -206,7 +206,7 @@ class parcels_to_concentration_monthly:
     def get_file_names(self, directory, final, year=settings.STARTYEAR, month=settings.STARTMONTH,
                        run=settings.RUN, restart=settings.RESTART):
         split = {True: None, False: '.nc'}[final]
-        prefix = 'horizontal_concentration'
+        prefix = 'horizontal_concentration_monthly'
         if settings.SCENARIO_NAME in ['FragmentationKaandorpPartial']:
             output_name = directory + utils.analysis_save_file_name(
                 input_file=self.file_dict['postprocess'][year][month][run][restart],
