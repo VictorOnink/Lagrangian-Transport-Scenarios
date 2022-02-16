@@ -195,7 +195,7 @@ class parcels_to_concentration_monthly:
             full_data_dict['size_class'] = parcels_dataset.variables['size_class'][:, start_ind:end_ind]
         else:
             if 'weights' in parcels_dataset.variables.keys():
-                full_data_dict['weights'] = parcels_dataset.variables['weights'][:, :-1] * settings.BUOYANT
+                full_data_dict['weights'] = parcels_dataset.variables['weights'][:, start_ind:end_ind] * settings.BUOYANT
             else:
                 full_data_dict['weights'] = np.ones(full_data_dict['lon'].shape, dtype=np.float32)
         time_steps = full_data_dict['lon'].shape[1]
