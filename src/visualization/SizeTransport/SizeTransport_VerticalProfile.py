@@ -44,6 +44,7 @@ class SizeTransport_VerticalProfile:
         self.shore = shore
         self.fixed_resus = fixed_resus
         self.resus_time = resus_time
+        self.total_number = 85196  # the total number of particles in each SizeTransport simulation
 
     def plot(self):
         # Loading the data
@@ -68,11 +69,11 @@ class SizeTransport_VerticalProfile:
                                              output_dict[rho][size][month + 2][conc_type]])
                     output_dict[rho][size][month][conc_type] = np.nanmean(month_stack, axis=0)
 
-        # Normalizing the profiles
+        # Normalizing the profiles by the total number of particles per simulation
         for rho in self.rho_list:
             for size in self.size_list:
                 for month in range(0, 12):
-                    output_dict[rho][size][month][conc_type] /= np.sum(output_dict[rho][size][month][conc_type])
+                    output_dict[rho][size][month][conc_type] /= self.total_number
 
         # setting the zero values to nan to clear up the plots
         for rho in self.rho_list:

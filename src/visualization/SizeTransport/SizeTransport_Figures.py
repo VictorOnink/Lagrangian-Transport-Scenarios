@@ -69,15 +69,15 @@ def run(scenario, figure_direc: str):
     #                                               beach_state='beach', time_selection=time_select, rho=rho).plot()
 
     # Plotting the relative distributions for fixed particle sizes, but with different particle densities
-    for time_select in [0, 1, 2]:
-        for size in np.array([78]) * settings.SIZE_FACTOR:
-            for depth_level in ['surface_5m']:
-                SizeTransport_rho_concentrations(scenario=scenario, figure_direc=figure_direc, size=size,
-                                                 beach_state='adrift', time_selection=time_select,
-                                                 rho_list=[30, 920, 980, 1020], depth_level=depth_level).plot()
-                SizeTransport_concentration_seasons(scenario=scenario, figure_direc=figure_direc, size=size,
-                                                    beach_state='adrift', time_selection=time_select,
-                                                    depth_level=depth_level).plot()
+    # for time_select in [0, 1, 2]:
+    #     for size in np.array([78]) * settings.SIZE_FACTOR:
+    #         for depth_level in ['surface_5m']:
+    #             SizeTransport_rho_concentrations(scenario=scenario, figure_direc=figure_direc, size=size,
+    #                                              beach_state='adrift', time_selection=time_select,
+    #                                              rho_list=[30, 920, 980, 1020], depth_level=depth_level).plot()
+    #             SizeTransport_concentration_seasons(scenario=scenario, figure_direc=figure_direc, size=size,
+    #                                                 beach_state='adrift', time_selection=time_select,
+    #                                                 depth_level=depth_level).plot()
 
     # Plotting all horizontal concentrations for a given density
     # for rho in [30, 920, 980, 1020]:
@@ -147,19 +147,19 @@ def run(scenario, figure_direc: str):
     # SizeTransport_CumulativeDistance(figure_direc=figure_direc, scenario=scenario, size_list=size_list).plot()
 
     # Plotting the month average vertical profile
-    # for rho in [[920]]:
-    #     SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-    #                                   time_selection=0, rho_list=rho).plot()
-    #     SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-    #                                   time_selection=0, rho_list=rho, fixed_resus=True, shore='offshore',
-    #                                   resus_time=50).plot()
-    #     SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-    #                                   time_selection=0, rho_list=rho, fixed_resus=True, shore='nearshore',
-    #                                   resus_time=50).plot()
-    #     SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-    #                                   time_selection=1, rho_list=rho).plot()
-    #     SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-    #                                   time_selection=2, rho_list=rho).plot()
+    for rho in [[30, 920, 980, 1020]]:
+        SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+                                      time_selection=0, rho_list=rho).plot()
+        SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+                                      time_selection=0, rho_list=rho, fixed_resus=True, shore='offshore',
+                                      resus_time=50).plot()
+        SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+                                      time_selection=0, rho_list=rho, fixed_resus=True, shore='nearshore',
+                                      resus_time=50).plot()
+        SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+                                      time_selection=1, rho_list=rho).plot()
+        SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+                                      time_selection=2, rho_list=rho).plot()
 
     # Plotting the separation distance
     # for size_selection in size_list:
