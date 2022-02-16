@@ -51,8 +51,6 @@ class SizeTransport_concentration_seasons:
         season_dict = {}
         for season, month_list in enumerate([[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]]):
             season_dict[season] = np.zeros(shape=(data_dict['lat'].size, data_dict['lon'].size))
-            print('season_dict[season] {}'.format(season_dict[season].shape))
-            print('concentration_dict[month] {}'.format(concentration_dict[month].shape))
             for month in month_list:
                 season_dict[season] += concentration_dict[month]
             season_dict[season] /= month_list.__len__()
@@ -97,7 +95,7 @@ class SizeTransport_concentration_seasons:
             ax.set_title(season_title[index], weight='bold', fontsize=self.ax_label_size)
 
         # The actual plotting of the figures
-        for index in range(self.rho_list.__len__()):
+        for index in range(self.number_of_plots):
             ax_list[index].pcolormesh(Lon, Lat, season_dict[index], norm=norm, cmap=self.cmap, zorder=200)
 
         # Saving the figure
