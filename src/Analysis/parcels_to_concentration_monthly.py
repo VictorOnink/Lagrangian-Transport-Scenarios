@@ -199,6 +199,8 @@ class parcels_to_concentration_monthly:
             else:
                 full_data_dict['weights'] = np.ones(full_data_dict['lon'].shape, dtype=np.float32)
         time_steps = full_data_dict['lon'].shape[1]
+        for key in full_data_dict.keys():
+            print(key, full_data_dict[key].size)
         # Flatten the arrays and remove nana values
         full_data_dict = self.flatten_and_nan_removal(full_data_dict)
         return full_data_dict, time_steps
