@@ -15,8 +15,8 @@ class parcels_to_timeseries:
         self.temp_direc, self.output_direc = get_directories(scenario_name=settings.SCENARIO_NAME)
         self.beach_label_dict = set_beach_label_dict()
         # Some variables specific to FragmentationKaandorpPartial
-        self.weight_list = ['particle_mass_sink', 'particle_number_sink']
-        self.counts_list = ['counts_mass_sink', 'counts_number_sink']
+        self.weight_list = ['particle_mass_sink', 'particle_number_sink', 'particle_mass', 'particle_number']
+        self.counts_list = ['counts_mass_sink', 'counts_number_sink', 'counts_mass', 'counts_number']
         # Creating the output dict
         self.output_dict, self.time_list = create_output_dict_time_list(beach_label_dict=self.beach_label_dict,
                                                                         weight_list=self.weight_list)

@@ -3,7 +3,7 @@ import utils
 from visualization.SizeTransport.SizeTransport_Animation import SizeTransport_Animation
 from visualization.SizeTransport.SizeTransport_relative_concentrations import SizeTransport_relative_concentrations
 from visualization.SizeTransport.SizeTransport_beach_timeseries import SizeTransport_beach_timeseries
-import visualization.General as General
+from visualization.General import *
 from visualization.SizeTransport.SizeTransport_CumulativeDistance import SizeTransport_CumulativeDistance
 from visualization.SizeTransport.SizeTransport_SeparationDistance import SizeTransport_SeparationDistance
 from visualization.SizeTransport.SizeTransport_VerticalProfile import SizeTransport_VerticalProfile
@@ -31,20 +31,20 @@ def run(scenario, figure_direc: str):
     size_list = np.array([5000, 313, 20, 2]) * settings.SIZE_FACTOR
 
     # Creating a figure of the basin bathymetry
-    # General.General_bathymetry(scenario=scenario, figure_direc=figure_direc).plot()
+    # General_bathymetry(scenario=scenario, figure_direc=figure_direc).plot()
 
     # Figure of the mean wind speed
-    # General.General_average_wind_speed(scenario=scenario, figure_direc=figure_direc).plot()
+    # General_average_wind_speed(scenario=scenario, figure_direc=figure_direc).plot()
 
     # Figure of the input scenario
-    # General.General_input_scenario(scenario=scenario, figure_direc=figure_direc).plot()
+    # General_input_scenario(scenario=scenario, figure_direc=figure_direc).plot()
 
     # Figure of the seasonal average MLD and wind speed
-    # General.General_season_average(scenario=scenario, figure_direc=figure_direc, variable='MLD').plot()
-    # General.General_season_average(scenario=scenario, figure_direc=figure_direc, variable='wind').plot()
+    # General_season_average(scenario=scenario, figure_direc=figure_direc, variable='MLD').plot()
+    # General_season_average(scenario=scenario, figure_direc=figure_direc, variable='wind').plot()
 
     # Figure of the distance to shore for each cell in the Mediterranean
-    # General.General_distance2coast(scenario=scenario, figure_direc=figure_direc).plot()
+    # General_distance2coast(scenario=scenario, figure_direc=figure_direc).plot()
 
     # Figure showing a histogram of all depth levels in the Mediterranean
     # General.General_bathymetry_histogram(scenario=scenario, figure_direc=figure_direc).plot()
@@ -147,15 +147,15 @@ def run(scenario, figure_direc: str):
     # SizeTransport_CumulativeDistance(figure_direc=figure_direc, scenario=scenario, size_list=size_list).plot()
 
     # Plotting the month average vertical profile
-    size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
-    for rho in [[920, 980], [30, 1020]]:
-        for shore in ['all', 'nearshore', 'offshore']:
-            SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                          time_selection=0, rho_list=rho, shore=shore).plot()
-            SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                          time_selection=1, rho_list=rho, shore=shore).plot()
-            SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                          time_selection=2, rho_list=rho, shore=shore).plot()
+    # size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
+    # for rho in [[920, 980], [30, 1020]]:
+    #     for shore in ['all', 'nearshore', 'offshore']:
+    #         SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                       time_selection=0, rho_list=rho, shore=shore).plot()
+    #         SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                       time_selection=1, rho_list=rho, shore=shore).plot()
+    #         SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                       time_selection=2, rho_list=rho, shore=shore).plot()
 
     # Plotting the separation distance
     # for size_selection in size_list:
