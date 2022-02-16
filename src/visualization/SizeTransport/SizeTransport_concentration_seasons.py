@@ -50,7 +50,7 @@ class SizeTransport_concentration_seasons:
 
         season_dict = {}
         for season, month_list in enumerate([[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]]):
-            season_dict[season] = np.zeros(shape=(data_dict['lat'].size - 1, data_dict['lon'].size - 1))
+            season_dict[season] = np.zeros(shape=(data_dict['lat'].size, data_dict['lon'].size))
             print('season_dict[season] {}'.format(season_dict[season].shape))
             print('concentration_dict[month] {}'.format(concentration_dict[month].shape))
             for month in month_list:
