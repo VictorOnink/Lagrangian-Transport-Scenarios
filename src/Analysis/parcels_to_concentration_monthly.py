@@ -88,7 +88,7 @@ class parcels_to_concentration_monthly:
                             if np.sum(selec) > 0:
                                 output = self.calculate_concentration(lon=state_data['lon'][selec],
                                                                       lat=state_data['lat'][selec],
-                                                                      weights=state_data['weights'],
+                                                                      weights=state_data['weights'][selec],
                                                                       time_steps=time_steps)
                                 self.output_dict[key_year][month][beach_state]['surface_5m'] = output
                             # Finally, the concentration within 1m of the ocean surface
@@ -96,7 +96,7 @@ class parcels_to_concentration_monthly:
                             if np.sum(selec) > 0:
                                 output = self.calculate_concentration(lon=state_data['lon'][selec],
                                                                       lat=state_data['lat'][selec],
-                                                                      weights=state_data['weights'],
+                                                                      weights=state_data['weights'][selec],
                                                                       time_steps=time_steps)
                                 self.output_dict[key_year][month][beach_state]['surface_1m'] = output
 
@@ -199,8 +199,6 @@ class parcels_to_concentration_monthly:
             else:
                 full_data_dict['weights'] = np.ones(full_data_dict['lon'].shape, dtype=np.float32)
         time_steps = full_data_dict['lon'].shape[1]
-        for key in full_data_dict.keys():
-            print(key, full_data_dict[key].size)
         # Flatten the arrays and remove nana values
         full_data_dict = self.flatten_and_nan_removal(full_data_dict)
         return full_data_dict, time_steps
