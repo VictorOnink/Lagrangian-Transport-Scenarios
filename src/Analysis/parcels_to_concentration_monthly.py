@@ -81,7 +81,7 @@ class parcels_to_concentration_monthly:
                             # First, the total water column
                             output = self.calculate_concentration(lon=state_data['lon'], lat=state_data['lat'],
                                                                   weights=state_data['weights'], time_steps=time_steps)
-                            self.output_dict[key_year][beach_state]['column'] = output
+                            self.output_dict[key_year][month][beach_state]['column'] = output
                             # Next, the concentration within 5m of the ocean surface (defined at self.MIN_DEPTH)
                             selec = (state_data['z'] < 11) & (state_data['z'] > 10)
                             if np.sum(selec) > 0:
