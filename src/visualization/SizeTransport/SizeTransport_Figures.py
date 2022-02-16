@@ -15,6 +15,7 @@ from visualization.SizeTransport.SizeTransport_MaxDistance import SizeTransport_
 from visualization.SizeTransport.SizeTransport_concentration_subset import SizeTransport_concentration_subset
 from visualization.SizeTransport.SizeTransport_concentration_OSM import SizeTransport_concentration_OSM
 from visualization.SizeTransport.SizeTransport_vertical_OSM import SizeTransport_vertical_OSM
+from visualization.SizeTransport.SizeTransport_concentration_seasons import SizeTransport_concentration_seasons
 import os
 import numpy as np
 
@@ -68,12 +69,15 @@ def run(scenario, figure_direc: str):
     #                                               beach_state='beach', time_selection=time_select, rho=rho).plot()
 
     # Plotting the relative distributions for fixed particle sizes, but with different particle densities
-    for time_select in [0]:
+    for time_select in [0, 1, 2]:
         for size in np.array([2]) * settings.SIZE_FACTOR:
             for depth_level in ['surface_5m']:
                 SizeTransport_rho_concentrations(scenario=scenario, figure_direc=figure_direc, size=size,
                                                  beach_state='adrift', time_selection=time_select,
                                                  rho_list=[30, 920, 980, 1020], depth_level=depth_level).plot()
+                SizeTransport_concentration_seasons(scenario=scenario, figure_direc=figure_direc, size=size,
+                                                    beach_state='adrift', time_selection=time_select,
+                                                    depth_level=depth_level).plot()
 
     # Plotting all horizontal concentrations for a given density
     # for rho in [30, 920, 980, 1020]:
