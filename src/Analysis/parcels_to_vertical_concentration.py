@@ -130,7 +130,7 @@ class parcels_to_vertical_concentration:
             # Saving the output
             output_name = self.get_file_names(final=True)
             utils.save_obj(output_name, self.output_dict)
-            utils.print_statement("The vertical concentration has been saved")
+            utils.print_statement("The vertical concentration has been saved", to_print=True)
         else:
             ValueError('settings.PARALLEL_STEP can not have a value of {}'.format(self.parallel_step))
 

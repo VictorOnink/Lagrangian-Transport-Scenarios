@@ -65,7 +65,28 @@ class parcels_to_spatial_vertical_profiles:
             utils.print_statement(print_statement, to_print=True)
 
         elif self.parallel_step == 2:
-            pass
+            for run in range(0, settings.RUN_RANGE):
+                for restart in range(0, settings.SIM_LENGTH):
+                    file_name = self.get_file_names(final=False, run=run, restart=restart)
+                    dataset_post = utils.load_obj(filename=file_name)
+                    for year in range(settings.SIM_LENGTH):
+                        key_year = utils.analysis_simulation_year_key(year)
+                        for season in self.season_indices.keys():
+                            for locations in dataset_post[key_year][season].keys():
+                                if type(locations) == tuple:
+                                    self.output_dict[key_year][season][locations] += dataset_post[key_year][season][locations]
+                    utils.remove_file(file_name + '.pkl')
+            # Remove all locations for which we have no data from the self.output_dict to reduce storage
+            for year in range(settings.SIM_LENGTH):
+                for season in self.season_indices.keys():
+                    for locations in self.output_dict[key_year][season].keys():
+                        if type(locations) == tuple:
+                            if self.output_dict[key_year][season][locations] == np.zeros(self.depth_bins.__len__() - 1,
+                                                                                         dtype=np.float32):
+                                self.output_dict[key_year][season].pop(locations)
+
+            utils.save_obj(self.get_file_names(final=True), self.output_dict)
+            utils.print_statement("The spatial vertical concentration has been saved", to_print=True)
         else:
             ValueError('settings.PARALLEL_STEP can not have a value of {}'.format(self.parallel_step))
 
