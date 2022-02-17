@@ -14,6 +14,7 @@ class AnalysisFactory:
         Depending on the parameters in the src/settings.py file, we run specified analysis procedures on the parcels
         output.
         - settings.CONCENTRATION: Calculate the horizontal particle concentrations
+        - settings.MONTHLY_CONCENTRATION: Calculate the monthly average horizontal particle concentrations
         - settings.VERTICAL_CONCENTRATION: Calculate the vertical particle concentrations
         - settings.LONLAT_CONCENTRATION: Calculate the lon/lat averaged horizontal particle concentrations
         - settings.TIMESERIES: Calculate the number of particles in beach/adrift/seabed reservoirs
@@ -34,6 +35,9 @@ class AnalysisFactory:
         if settings.VERTICAL_CONCENTRATION:
             utils.print_statement("Calculating the vertical concentration", to_print=True)
             Analysis.parcels_to_vertical_concentration(file_dict=self.file_dict).run()
+        if settings.SPATIAL_VERTICAL_PROFILES:
+            utils.print_statement("Calculating the spatial vertical profiles", to_print=True)
+            Analysis.parcels_to_spatial_vertical_profiles(file_dict=self.file_dict).run()
         if settings.LONLAT_CONCENTRATION:
             utils.print_statement("Calculating the lonlat concentration averages", to_print=True)
             Analysis.parcels_to_lonlat_average(file_dict=self.file_dict).run()

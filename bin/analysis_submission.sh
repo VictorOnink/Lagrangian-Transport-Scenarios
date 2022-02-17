@@ -5,11 +5,11 @@ module load Workspace
 #####################################################################################
 SUBMISSION='analysis'
 export SUBMISSION
-DEBUG=0 # 0 = Not a debug run, 1 = a debug run
+DEBUG=1 # 0 = Not a debug run, 1 = a debug run
 # 0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 # 5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation,
 # 8 = Blue Cloud Hackathon Backward, 9 = Blue Cloud Hackathon Forward
-SCENARIO=7
+SCENARIO=5
 export SCENARIO
 #for scenario 1, the time a particle must be near the coast to beach (in days)
 VICINITY=2
@@ -39,7 +39,7 @@ export FIXED_RESUS
 P=4
 DN=25
 SIZE_CLASS_NUMBER=6
-LAMBDA_FRAG_list=(388 1000 10000 35000 50000)
+LAMBDA_FRAG_list=(388)
 OCEAN_FRAG=0
 LAMBDA_OCEAN_FRAG_LIST=(388)
 export P
@@ -51,19 +51,19 @@ RELEASE_SITE=0
 export RELEASE_SITE
 #the starting year of the simulation, and how many years the simulation will take
 YEAR=2010
-STARTMONTH_list=(1 2 3 4 5 6 7 8 9 10 11 12)
+STARTMONTH_list=(1)
 STARTDAY=1
 export STARTDAY
 # Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=lebretondivision, 3=lebretonKaandorpInit,
 # 4=point, 5=uniform
-INPUT=3
+INPUT=1
 export INPUT
 #Which advection data do we want to use?
 # 0 = Global HYCOM, 1 = Caribbean HYCOM, 2 = Mediterranean CMEMS
 ADVECTION_DATA=2
 export ADVECTION_DATA
 #Number of years the simulation runs
-SIMLEN=3
+SIMLEN=1
 export SIMLEN
 # For the analysis, if we have multiple years that we want to combine into one analysis set (so if we have continuous
 # particle release), then this how many years we want to include
@@ -87,8 +87,9 @@ export SERVER
 CONCENTRATION=0
 MONTHLY_CONCENTRATION=0
 VERTICAL_CONCENTRATION=0
+SPATIAL_VERTICAL_PROFILES=1
 LONLAT_CONCENTRATION=0
-TIMESERIES=1
+TIMESERIES=0
 MAX_DISTANCE=0
 TIMESLICING=0
 STATISTICS=0
@@ -107,6 +108,7 @@ export STATISTICS
 export SEPARATION
 export SIZE_SPECTRUM
 export BAYESIAN
+export SPATIAL_VERTICAL_PROFILES
 
 #####################################################################################
 # A number of tests to make sure that I don't submit too many jobs by accident      #
