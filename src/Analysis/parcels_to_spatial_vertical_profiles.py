@@ -20,7 +20,7 @@ class parcels_to_spatial_vertical_profiles:
         self.depth_bins = self.determine_depth_bins()
         self.temp_direc, self.output_direc = self.get_directories()
         self.season_indices = self.get_season_indices()
-        self.output_dict = self.create_output_file_dict
+        self.output_dict = self.create_output_file_dict()
 
     def create_output_file_dict(self):
         depth_mid = 0.5 * self.depth_bins[1:] + 0.5 * self.depth_bins[:-1]
@@ -67,8 +67,6 @@ class parcels_to_spatial_vertical_profiles:
                             if selection.max() > 0:
                                 depth_selection = season_dict['z'][selection]
                                 depth_counts, _ = np.histogram(depth_selection, bins=self.depth_bins)
-                                print(self.output_dict[key_year].keys())
-                                print(self.output_dict[key_year][season].keys())
                                 self.output_dict[key_year][season][(self.LON_mid[lo_i], self.LAT_mid[la_i])] += depth_counts
                             # If there are no particles within this region, remove this key from the output dict to
                             # reduce storage requirements
