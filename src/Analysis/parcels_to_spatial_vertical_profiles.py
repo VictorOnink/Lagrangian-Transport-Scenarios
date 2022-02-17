@@ -76,12 +76,14 @@ class parcels_to_spatial_vertical_profiles:
                                 if type(locations) == tuple:
                                     self.output_dict[key_year][season][locations] += dataset_post[key_year][season][locations]
                     utils.remove_file(file_name + '.pkl')
+
             # Remove all locations for which we have no data from the self.output_dict to reduce storage
+            full_dict = deepcopy(self.output_dict)
             for year in range(settings.SIM_LENGTH):
                 for season in self.season_indices.keys():
-                    for locations in self.output_dict[key_year][season].keys():
+                    for locations in full_dict[key_year][season].keys():
                         if type(locations) == tuple:
-                            if np.nansum(self.output_dict[key_year][season][locations]) == 0:
+                            if np.nansum(full_dict[key_year][season][locations]) == 0:
                                 self.output_dict[key_year][season].pop(locations)
 
             utils.save_obj(self.get_file_names(final=True), self.output_dict)
