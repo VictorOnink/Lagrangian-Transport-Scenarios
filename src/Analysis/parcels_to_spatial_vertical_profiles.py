@@ -44,7 +44,7 @@ class parcels_to_spatial_vertical_profiles:
             key_year = utils.analysis_simulation_year_key(year)
             print_statement = 'year {}-{}, run {} restart {}'.format(year, month, run, restart)
             utils.print_statement(print_statement, to_print=True)
-            output_name = self.get_file_names(final=False)
+            output_name = self.get_file_names(directory=self.temp_direc, final=False)
             if not utils.check_file_exist(output_name, without_pkl=True):
                 parcels_dataset = self.load_parcels_output()
 
