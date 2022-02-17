@@ -22,21 +22,6 @@ class parcels_to_spatial_vertical_profiles:
         self.season_indices = self.get_season_indices()
         self.output_dict = self.create_output_file_dict()
 
-    def create_output_file_dict(self):
-        depth_mid = 0.5 * self.depth_bins[1:] + 0.5 * self.depth_bins[:-1]
-        output_dict = {'depth_bins': depth_mid}
-        # Looping through the years and seasons:
-        for year in range(settings.SIM_LENGTH):
-            key_year = utils.analysis_simulation_year_key(year)
-            output_dict[key_year] = {}
-            for season in self.season_indices.keys():
-                output_dict[key_year][season] = {}
-                for lon_mid in self.LON_mid:
-                    for lat_mid in self.LAT_mid:
-                        output_dict[key_year][season][(lon_mid, lat_mid)] = np.zeros(self.depth_bins.__len__() - 1,
-                                                                                     dtype=np.float32)
-        return output_dict
-
     def run(self):
         if self.parallel_step == 1:
             # Loading the data
@@ -49,7 +34,8 @@ class parcels_to_spatial_vertical_profiles:
                 parcels_dataset = self.load_parcels_output()
 
                 # Looping through the various seasons
-                for season in self.season_indices.keys():
+                pbar = ProgressBar()
+                for season in pbar(self.season_indices.keys()):
                     # Selecting the necessary variables for a particular season
                     season_dict = {}
                     ind_min, ind_max = self.season_indices[season][0], self.season_indices[season][1]
@@ -99,6 +85,21 @@ class parcels_to_spatial_vertical_profiles:
     def load_parcels_output(self, run=settings.RUN, restart=settings.RESTART):
         parcels_dataset = Dataset(self.file_dict[run][restart])
         return parcels_dataset
+
+    def create_output_file_dict(self):
+        depth_mid = 0.5 * self.depth_bins[1:] + 0.5 * self.depth_bins[:-1]
+        output_dict = {'depth_bins': depth_mid}
+        # Looping through the years and seasons:
+        for year in range(settings.SIM_LENGTH):
+            key_year = utils.analysis_simulation_year_key(year)
+            output_dict[key_year] = {}
+            for season in self.season_indices.keys():
+                output_dict[key_year][season] = {}
+                for lon_mid in self.LON_mid:
+                    for lat_mid in self.LAT_mid:
+                        output_dict[key_year][season][(lon_mid, lat_mid)] = np.zeros(self.depth_bins.__len__() - 1,
+                                                                                     dtype=np.float32)
+        return output_dict
 
     @staticmethod
     def determine_depth_bins():
