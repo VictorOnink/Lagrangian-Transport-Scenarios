@@ -67,7 +67,7 @@ class parcels_to_spatial_vertical_profiles:
         elif self.parallel_step == 2:
             for run in range(0, settings.RUN_RANGE):
                 for restart in range(0, settings.SIM_LENGTH):
-                    file_name = self.get_file_names(final=False, run=run, restart=restart)
+                    file_name = self.get_file_names(final=False, directory=self.temp_direc, run=run, restart=restart)
                     dataset_post = utils.load_obj(filename=file_name)
                     for year in range(settings.SIM_LENGTH):
                         key_year = utils.analysis_simulation_year_key(year)
