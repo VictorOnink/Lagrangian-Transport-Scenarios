@@ -21,7 +21,8 @@ class SizeTransport_VerticalProfile:
         self.ax_ticklabel_size = 12
         self.ax_label_size = 14
         self.legend_size = 11
-        self.xmin, self.xmax = 1e-7, 1e-1 + 0.1
+        # self.xmin, self.xmax = 1e-7, 1e-1 + 0.1
+        self.xmin, self.xmax = 1, 86000
         self.ymin, self.ymax = 3e3, 1e0
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
         self.number_of_plots = 4
@@ -70,10 +71,10 @@ class SizeTransport_VerticalProfile:
                     output_dict[rho][size][month][conc_type] = np.nanmean(month_stack, axis=0)
 
         # Normalizing the profiles by the total number of particles per simulation
-        for rho in self.rho_list:
-            for size in self.size_list:
-                for month in range(0, 12):
-                    output_dict[rho][size][month][conc_type] /= self.total_number
+        # for rho in self.rho_list:
+        #     for size in self.size_list:
+        #         for month in range(0, 12):
+        #             output_dict[rho][size][month][conc_type] /= self.total_number
 
         # setting the zero values to nan to clear up the plots
         for rho in self.rho_list:
