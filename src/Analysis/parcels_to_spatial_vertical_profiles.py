@@ -41,7 +41,7 @@ class parcels_to_spatial_vertical_profiles:
         if self.parallel_step == 1:
             # Loading the data
             year, month, run, restart = settings.STARTYEAR, settings.STARTMONTH, settings.RUN, settings.RESTART
-            key_year = utils.analysis_simulation_year_key(year)
+            key_year = utils.analysis_simulation_year_key(restart)
             print_statement = 'year {}-{}, run {} restart {}'.format(year, month, run, restart)
             utils.print_statement(print_statement, to_print=True)
             output_name = self.get_file_names(directory=self.temp_direc, final=False)
