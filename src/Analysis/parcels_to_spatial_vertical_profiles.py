@@ -81,8 +81,7 @@ class parcels_to_spatial_vertical_profiles:
                 for season in self.season_indices.keys():
                     for locations in self.output_dict[key_year][season].keys():
                         if type(locations) == tuple:
-                            if self.output_dict[key_year][season][locations] == np.zeros(self.depth_bins.__len__() - 1,
-                                                                                         dtype=np.float32):
+                            if np.nansum(self.output_dict[key_year][season][locations]) == 0:
                                 self.output_dict[key_year][season].pop(locations)
 
             utils.save_obj(self.get_file_names(final=True), self.output_dict)
