@@ -56,7 +56,7 @@ class SizeTransport_peak_depth:
                 if type(location) is tuple:
                     site_lon, site_lat = location
                     site_lon_ind, site_lat_ind = np.where(lon_mid == site_lon)[0], np.where(lat_mid == site_lat)[0]
-                    max_depth[season][site_lon_ind, site_lat_ind] = np.nanmax(data_dict[season[location]])
+                    max_depth[season][site_lon_ind, site_lat_ind] = np.nanmax(data_dict[season][location])
                     if max_depth[season][site_lon_ind, site_lat_ind] == 0:
                         max_depth[season][site_lon_ind, site_lat_ind] = np.nan
         Lon, Lat = np.meshgrid(lon_bin[:-1], lat_bin[:-1])
