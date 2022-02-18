@@ -61,7 +61,9 @@ class SizeTransport_peak_depth:
                     if np.nanmax(data_dict[season][location]) == 0:
                         max_depth[season][site_lon_ind, site_lat_ind] = np.nan
                     else:
-                        max_depth[season][site_lon_ind, site_lat_ind] = depth_bins[np.argmax(data_dict[season][location])]
+                        depth_selection = depth_bins < 100
+                        max_ind = np.argmax(data_dict[season][location][depth_selection])
+                        max_depth[season][site_lon_ind, site_lat_ind] = depth_bins[depth_selection][max_ind]
         Lat, Lon = np.meshgrid(lat_bin[:-1], lon_bin[:-1])
 
         # Creating the base figure
@@ -78,7 +80,7 @@ class SizeTransport_peak_depth:
 
         # Setting the colormap, and adding a colorbar
         norm = colors.LogNorm(vmin=1e0, vmax=100)
-        cbar_label, extend = r"Relative Concentration ($C/C_{min}$)", 'max'
+        cbar_label, extend = r"Relative Concentration ($C/C_{min}$)", None
         cmap = plt.cm.ScalarMappable(cmap=self.cmap, norm=norm)
         cax = fig.add_subplot(gs[:, -1])
         cbar = plt.colorbar(cmap, cax=cax, orientation='vertical', extend=extend)
