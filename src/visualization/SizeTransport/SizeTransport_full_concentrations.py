@@ -76,7 +76,7 @@ class SizeTransport_full_concentrations:
 
         # Creating the base figure
         fig = plt.figure(figsize=self.figure_size)
-        gs = fig.add_gridspec(nrows=self.figure_shape[0], ncols=self.figure_shape[1] + 1, width_ratios=[1, 1, 0.1])
+        gs = fig.add_gridspec(nrows=self.figure_shape[0], ncols=self.figure_shape[1] + 1, width_ratios=[1, 1, 1, 0.1])
 
         ax_list = []
         for rows in range(self.figure_shape[0]):
