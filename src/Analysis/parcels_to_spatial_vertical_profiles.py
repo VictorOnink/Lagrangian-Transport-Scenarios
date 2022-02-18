@@ -84,7 +84,7 @@ class parcels_to_spatial_vertical_profiles:
                     for locations in full_dict[key_year][season].keys():
                         if type(locations) == tuple:
                             if np.nansum(full_dict[key_year][season][locations]) == 0:
-                                self.output_dict[key_year][season].pop(locations)
+                                _ = self.output_dict[key_year][season].pop(locations, 0)
 
             utils.save_obj(self.get_file_names(final=True, directory=self.output_direc), self.output_dict)
             utils.print_statement("The spatial vertical concentration has been saved", to_print=True)
