@@ -36,6 +36,32 @@ class SizeTransport_peak_depth:
         self.tau = 0.0
 
     def plot(self):
+        # Loading the data
+        key_year = utils.analysis_simulation_year_key(self.time_selection)
+        data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
+                                                   data_direc=self.data_direc, fixed_resus=self.fixed_resus,
+                                                   size=self.size, rho=self.rho, tau=self.tau,
+                                                   resus_time=self.resus_time)[key_year]
+        lon_bin = np.arange(np.round(self.adv_file_dict['LON'].min()), np.round(self.adv_file_dict['LON'].max()) + 1)
+        lat_bin = np.arange(np.round(self.adv_file_dict['LAT'].min()), np.round(self.adv_file_dict['LAT'].max()) + 1)
+        lon_mid = (lon_bin[1:] + lon_bin[:-1]) / 2
+        lat_mid = (lat_bin[1:] + lat_bin[:-1]) / 2
+
+        # Add the maximum depth onto a 2D so we can plot this later with pcolormesh
+        max_depth = {0: np.zeros(shape=(lon_mid.size, lat_mid.size)),
+                     1: np.zeros(shape=(lon_mid.size, lat_mid.size)),
+                     2: np.zeros(shape=(lon_mid.size, lat_mid.size)),
+                     3: np.zeros(shape=(lon_mid.size, lat_mid.size))}
+        for season in data_dict.keys():
+            for location in data_dict[season].keys():
+                if type(location) is tuple:
+                    site_lon, site_lat = location
+                    site_lon_ind, site_lat_ind = np.where(lon_mid == site_lon)[0], np.where(lat_mid == site_lat)[0]
+                    max_depth[season][site_lon_ind, site_lat_ind] = np.nanmax(data_dict[season[location]])
+                    if max_depth[season][site_lon_ind, site_lat_ind] == 0:
+                        max_depth[season][site_lon_ind, site_lat_ind] = np.nan
+        Lon, Lat = np.meshgrid(lon_bin[:-1], lat_bin[:-1])
+
         # Creating the base figure
         fig = plt.figure(figsize=self.figure_size)
         gs = fig.add_gridspec(nrows=self.figure_shape[0], ncols=self.figure_shape[1] + 1, width_ratios=[1, 1, 0.1])
@@ -56,6 +82,10 @@ class SizeTransport_peak_depth:
         cbar.set_label(cbar_label, fontsize=self.ax_label_size)
         cbar.ax.tick_params(which='major', labelsize=self.ax_ticklabel_size, length=14, width=2)
         cbar.ax.tick_params(which='minor', labelsize=self.ax_ticklabel_size, length=7, width=2)
+
+        # Plotting the max depth
+        for season in max_depth.keys():
+            ax_list[season].pcolormesh(Lon, Lat, max_depth[season], norm=norm, cmap=self.cmap)
 
         # Saving the figure
         file_name = self.plot_save_name()
