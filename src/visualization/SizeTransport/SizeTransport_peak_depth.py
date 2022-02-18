@@ -59,7 +59,7 @@ class SizeTransport_peak_depth:
                     max_depth[season][site_lon_ind, site_lat_ind] = np.nanmax(data_dict[season][location])
                     if max_depth[season][site_lon_ind, site_lat_ind] == 0:
                         max_depth[season][site_lon_ind, site_lat_ind] = np.nan
-        Lon, Lat = np.meshgrid(lon_bin[:-1], lat_bin[:-1])
+        Lat, Lon = np.meshgrid(lat_bin[:-1], lon_bin[:-1])
 
         # Creating the base figure
         fig = plt.figure(figsize=self.figure_size)
