@@ -161,8 +161,9 @@ def run(scenario, figure_direc: str):
     # Plotting the seasonal peak concentration depth
     for size in np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR:
         for time in [0, 1, 2]:
-            SizeTransport_peak_depth(scenario=scenario, figure_direc=figure_direc, size=size,
-                                     time_selection=time).plot()
+            for rho in [30, 920, 980, 1020]:
+                SizeTransport_peak_depth(scenario=scenario, figure_direc=figure_direc, size=size,
+                                         time_selection=time, rho=rho).plot()
 
     # Plotting the separation distance
     # for size_selection in size_list:
