@@ -64,4 +64,4 @@ class SizeTransport_peak_depth:
 
     def plot_save_name(self, file_type='.png'):
         str_format = self.size, self.rho, self.time_selection
-        return self.output_direc + 'VerticalPeak_size={}_rho={}_year={}'.format(*str_format) + file_type
+        return self.output_direc + 'VerticalPeak_size={:.2E}_rho={}_year={}'.format(*str_format) + file_type
