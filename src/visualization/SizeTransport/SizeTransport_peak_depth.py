@@ -84,6 +84,7 @@ class SizeTransport_peak_depth:
 
         # Plotting the max depth
         for season in max_depth.keys():
+            print(Lon.shape, Lat.shape, max_depth[season].shape)
             ax_list[season].pcolormesh(Lon, Lat, max_depth[season], norm=norm, cmap=self.cmap)
 
         # Saving the figure
