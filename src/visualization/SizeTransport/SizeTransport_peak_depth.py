@@ -38,14 +38,15 @@ class SizeTransport_peak_depth:
     def plot(self):
         # Loading the data
         key_year = utils.analysis_simulation_year_key(self.time_selection)
-        data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
+        full_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
                                                    data_direc=self.data_direc, size=self.size, rho=self.rho,
-                                                   tau=self.tau)[key_year]
+                                                   tau=self.tau)
+        data_dict = full_dict[key_year]
         lon_bin = np.arange(np.round(self.adv_file_dict['LON'].min()), np.round(self.adv_file_dict['LON'].max()) + 1)
         lat_bin = np.arange(np.round(self.adv_file_dict['LAT'].min()), np.round(self.adv_file_dict['LAT'].max()) + 1)
         lon_mid = (lon_bin[1:] + lon_bin[:-1]) / 2
         lat_mid = (lat_bin[1:] + lat_bin[:-1]) / 2
-        depth_bins = data_dict['depth_bins']
+        depth_bins = full_dict['depth_bins']
 
         # Add the maximum depth onto a 2D so we can plot this later with pcolormesh
         max_depth = {0: np.zeros(shape=(lon_mid.size, lat_mid.size)),
