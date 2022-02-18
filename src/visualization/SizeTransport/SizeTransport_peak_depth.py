@@ -39,9 +39,8 @@ class SizeTransport_peak_depth:
         # Loading the data
         key_year = utils.analysis_simulation_year_key(self.time_selection)
         data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
-                                                   data_direc=self.data_direc, fixed_resus=self.fixed_resus,
-                                                   size=self.size, rho=self.rho, tau=self.tau,
-                                                   resus_time=self.resus_time)[key_year]
+                                                   data_direc=self.data_direc, size=self.size, rho=self.rho,
+                                                   tau=self.tau, resus_time=self.resus_time)[key_year]
         lon_bin = np.arange(np.round(self.adv_file_dict['LON'].min()), np.round(self.adv_file_dict['LON'].max()) + 1)
         lat_bin = np.arange(np.round(self.adv_file_dict['LAT'].min()), np.round(self.adv_file_dict['LAT'].max()) + 1)
         lon_mid = (lon_bin[1:] + lon_bin[:-1]) / 2
