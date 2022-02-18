@@ -45,6 +45,7 @@ class SizeTransport_peak_depth:
         lat_bin = np.arange(np.round(self.adv_file_dict['LAT'].min()), np.round(self.adv_file_dict['LAT'].max()) + 1)
         lon_mid = (lon_bin[1:] + lon_bin[:-1]) / 2
         lat_mid = (lat_bin[1:] + lat_bin[:-1]) / 2
+        depth_bins = data_dict['depth_bins']
 
         # Add the maximum depth onto a 2D so we can plot this later with pcolormesh
         max_depth = {0: np.zeros(shape=(lon_mid.size, lat_mid.size)),
@@ -56,9 +57,10 @@ class SizeTransport_peak_depth:
                 if type(location) is tuple:
                     site_lon, site_lat = location
                     site_lon_ind, site_lat_ind = np.where(lon_mid == site_lon)[0], np.where(lat_mid == site_lat)[0]
-                    max_depth[season][site_lon_ind, site_lat_ind] = np.nanmax(data_dict[season][location])
-                    if max_depth[season][site_lon_ind, site_lat_ind] == 0:
+                    if np.nanmax(data_dict[season][location]) == 0:
                         max_depth[season][site_lon_ind, site_lat_ind] = np.nan
+                    else:
+                        max_depth[season][site_lon_ind, site_lat_ind] = depth_bins[np.argmax(data_dict[season][location])]
         Lat, Lon = np.meshgrid(lat_bin[:-1], lon_bin[:-1])
 
         print(max_depth[3])
