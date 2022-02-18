@@ -74,10 +74,11 @@ class SizeTransport_peak_depth:
             for columns in range(self.figure_shape[1]):
                 ax_list.append(vUtils.cartopy_standard_map(fig=fig, gridspec=gs, row=rows, column=columns,
                                                            domain=self.spatial_domain, label_size=self.ax_label_size,
-                                                           lat_grid_step=5, lon_grid_step=10, resolution='10m'))
+                                                           lat_grid_step=5, lon_grid_step=10, resolution='10m',
+                                                           ocean_color=None))
 
         # Setting the colormap, and adding a colorbar
-        norm = colors.LogNorm(vmin=1, vmax=100)
+        norm = colors.LogNorm(vmin=1e-1, vmax=100)
         cbar_label, extend = r"Relative Concentration ($C/C_{min}$)", 'max'
         cmap = plt.cm.ScalarMappable(cmap=self.cmap, norm=norm)
         cax = fig.add_subplot(gs[:, -1])
@@ -88,7 +89,6 @@ class SizeTransport_peak_depth:
 
         # Plotting the max depth
         for season in max_depth.keys():
-            print(Lon.shape, Lat.shape, max_depth[season].shape)
             ax_list[season].pcolormesh(Lon, Lat, max_depth[season], norm=norm, cmap=self.cmap)
 
         # Saving the figure
