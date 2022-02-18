@@ -23,7 +23,7 @@ class SizeTransport_peak_depth:
                               np.nanmin(self.adv_file_dict['LAT']), np.nanmax(self.adv_file_dict['LAT'])
         self.cmap = cmo.speed
         # Data parameters
-        self.output_direc = figure_direc + 'vertical_profile/'
+        self.output_direc = figure_direc + 'vertical_profile/peak_depth/'
         self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/SizeTransport/'
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'spatial_vertical_profile'
@@ -77,7 +77,7 @@ class SizeTransport_peak_depth:
                                                            ocean_color=None))
 
         # Setting the colormap, and adding a colorbar
-        norm = colors.LogNorm(vmin=1e-1, vmax=100)
+        norm = colors.LogNorm(vmin=1e0, vmax=100)
         cbar_label, extend = r"Relative Concentration ($C/C_{min}$)", 'max'
         cmap = plt.cm.ScalarMappable(cmap=self.cmap, norm=norm)
         cax = fig.add_subplot(gs[:, -1])
