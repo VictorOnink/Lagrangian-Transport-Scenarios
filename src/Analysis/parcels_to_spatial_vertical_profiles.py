@@ -77,15 +77,6 @@ class parcels_to_spatial_vertical_profiles:
                                     self.output_dict[key_year][season][locations] += dataset_post[key_year][season][locations]
                     utils.remove_file(file_name + '.pkl')
 
-            # Remove all locations for which we have no data from the self.output_dict to reduce storage
-            full_dict = deepcopy(self.output_dict)
-            for year in range(settings.SIM_LENGTH):
-                for season in self.season_indices.keys():
-                    for locations in full_dict[key_year][season].keys():
-                        if type(locations) == tuple:
-                            if np.nansum(full_dict[key_year][season][locations]) == 0:
-                                _ = self.output_dict[key_year][season].pop(locations, 0)
-
             utils.save_obj(self.get_file_names(final=True, directory=self.output_direc), self.output_dict)
             utils.print_statement("The spatial vertical concentration has been saved", to_print=True)
         else:
