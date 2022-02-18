@@ -48,7 +48,7 @@ class SizeTransport_peak_depth:
                                                            lat_grid_step=5, lon_grid_step=10, resolution='10m'))
 
         # Setting the colormap, and adding a colorbar
-        norm = colors.Normalize(vmin=1, vmax=100)
+        norm = colors.LogNorm(vmin=1, vmax=100)
         cbar_label, extend = r"Relative Concentration ($C/C_{min}$)", 'max'
         cmap = plt.cm.ScalarMappable(cmap=self.cmap, norm=norm)
         cax = fig.add_subplot(gs[:, -1])
