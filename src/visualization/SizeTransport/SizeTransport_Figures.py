@@ -16,6 +16,7 @@ from visualization.SizeTransport.SizeTransport_concentration_subset import SizeT
 from visualization.SizeTransport.SizeTransport_concentration_OSM import SizeTransport_concentration_OSM
 from visualization.SizeTransport.SizeTransport_vertical_OSM import SizeTransport_vertical_OSM
 from visualization.SizeTransport.SizeTransport_concentration_seasons import SizeTransport_concentration_seasons
+from visualization.SizeTransport.SizeTransport_peak_depth import SizeTransport_peak_depth
 import os
 import numpy as np
 
@@ -147,15 +148,21 @@ def run(scenario, figure_direc: str):
     # SizeTransport_CumulativeDistance(figure_direc=figure_direc, scenario=scenario, size_list=size_list).plot()
 
     # Plotting the month average vertical profile
-    size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
-    for rho in [[920, 980], [30, 1020]]:
-        for shore in ['all', 'nearshore', 'offshore']:
-            SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                          time_selection=0, rho_list=rho, shore=shore).plot()
-            SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                          time_selection=1, rho_list=rho, shore=shore).plot()
-            SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                          time_selection=2, rho_list=rho, shore=shore).plot()
+    # size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
+    # for rho in [[920, 980], [30, 1020]]:
+    #     for shore in ['all', 'nearshore', 'offshore']:
+    #         SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                       time_selection=0, rho_list=rho, shore=shore).plot()
+    #         SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                       time_selection=1, rho_list=rho, shore=shore).plot()
+    #         SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                       time_selection=2, rho_list=rho, shore=shore).plot()
+
+    # Plotting the seasonal peak concentration depth
+    for size in np.array([5000]) * settings.SIZE_FACTOR:
+        for time in [0]:
+            SizeTransport_peak_depth(scenario=scenario, figure_direc=figure_direc, size=size,
+                                     time_selection=time).plot()
 
     # Plotting the separation distance
     # for size_selection in size_list:

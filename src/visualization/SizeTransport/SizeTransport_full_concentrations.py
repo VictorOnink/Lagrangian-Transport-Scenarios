@@ -120,7 +120,7 @@ class SizeTransport_full_concentrations:
             name = self.output_direc + 'rho_{}/SizeTransport_rho={}_allsizes_year={}_{}_{}'.format(*str_format)
         else:
             str_format = self.rho, self.rho, year, self.beach_state
-            name =  self.output_direc + 'rho_{}/SizeTransport_rho={}_allsizes_year={}_{}'.format(*str_format)
+            name = self.output_direc + 'rho_{}/SizeTransport_rho={}_allsizes_year={}_{}'.format(*str_format)
         if self.fixed_resus:
             name += 'fixed_resus_{}'.format(self.resus_time)
         return name + file_type
