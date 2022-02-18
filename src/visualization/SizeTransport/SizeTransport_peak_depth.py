@@ -64,7 +64,6 @@ class SizeTransport_peak_depth:
                         max_depth[season][site_lon_ind, site_lat_ind] = depth_bins[np.argmax(data_dict[season][location])]
         Lat, Lon = np.meshgrid(lat_bin[:-1], lon_bin[:-1])
 
-        print(max_depth[3])
         # Creating the base figure
         fig = plt.figure(figsize=self.figure_size)
         gs = fig.add_gridspec(nrows=self.figure_shape[0], ncols=self.figure_shape[1] + 1, width_ratios=[1, 1, 0.1])

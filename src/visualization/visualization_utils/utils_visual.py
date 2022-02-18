@@ -47,9 +47,12 @@ def cartopy_standard_map(fig, gridspec, row, column, domain, resolution='50m', a
 
     # Adding coastlines, borders, land and ocean shapefiles
     axis.coastlines(resolution=resolution)
-    axis.add_feature(cpf.BORDERS.with_scale(resolution), edgecolor=border_color, zorder=line_zorder)
-    axis.add_feature(cpf.LAND.with_scale(resolution), facecolor=land_color, zorder=land_zorder)
-    axis.add_feature(cpf.OCEAN.with_scale(resolution), facecolor=ocean_color, zorder=ocean_zorder)
+    if border_color is not None:
+        axis.add_feature(cpf.BORDERS.with_scale(resolution), edgecolor=border_color, zorder=line_zorder)
+    if land_color is not None:
+        axis.add_feature(cpf.LAND.with_scale(resolution), facecolor=land_color, zorder=land_zorder)
+    if ocean_color is not None:
+        axis.add_feature(cpf.OCEAN.with_scale(resolution), facecolor=ocean_color, zorder=ocean_zorder)
 
     # Adding gridlines and axis labels
     if add_gridlines:
