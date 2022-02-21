@@ -77,7 +77,7 @@ class General_season_average:
 
         # Plotting the actual mean variables
         if self.variable == 'MLD':
-            Lon, Lat = np.meshgrid(dataset.variables['lon'][:], dataset.variables['lat'][:])
+            Lon, Lat = np.meshgrid(MLD_data['LON'], MLD_data['LAT'])
         elif self.variable == 'wind':
             Lon, Lat = np.meshgrid(dataset.variables['longitude'][:], dataset.variables['latitude'][:])
         for ax_index, ax in enumerate(ax_list):
