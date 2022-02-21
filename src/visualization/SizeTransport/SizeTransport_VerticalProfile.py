@@ -29,7 +29,7 @@ class SizeTransport_VerticalProfile:
         self.seasons = ['JFM', 'AMJ', 'JAS', 'OND']
         self.with_mld = with_mld
         # Data parameters
-        self.output_direc = figure_direc + 'vertical_profile/monthly_profiles/'
+        self.output_direc = figure_direc + 'vertical_profile/'
         self.data_direc = utils.get_output_directory(
             server=settings.SERVER) + 'concentrations/SizeTransport/'
         utils.check_direc_exist(self.output_direc)
