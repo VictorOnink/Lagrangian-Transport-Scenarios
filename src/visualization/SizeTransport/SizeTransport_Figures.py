@@ -41,11 +41,14 @@ def run(scenario, figure_direc: str):
     # General_input_scenario(scenario=scenario, figure_direc=figure_direc).plot()
 
     # Figure of the seasonal average MLD and wind speed
-    General_season_average(scenario=scenario, figure_direc=figure_direc, variable='MLD').plot()
+    # General_season_average(scenario=scenario, figure_direc=figure_direc, variable='MLD').plot()
     # General_season_average(scenario=scenario, figure_direc=figure_direc, variable='wind').plot()
 
     # Figure of the distance to shore for each cell in the Mediterranean
     # General_distance2coast(scenario=scenario, figure_direc=figure_direc).plot()
+
+    # Plotting the mean vertical profile of Tidal Kz
+    General_mean_tidal_Kz(scenario=scenario, figure_direc=figure_direc).plot()
 
     # Figure showing a histogram of all depth levels in the Mediterranean
     # General.General_bathymetry_histogram(scenario=scenario, figure_direc=figure_direc).plot()

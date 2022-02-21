@@ -4,3 +4,4 @@ from visualization.General.General_input_scenario import General_input_scenario
 from visualization.General.General_season_average import General_season_average
 from visualization.General.General_bathymetry_histogram import General_bathymetry_histogram
 from visualization.General.General_distance2coast import General_distance2coast
+from visualization.General.General_mean_tidal_Kz import General_mean_tidal_Kz
