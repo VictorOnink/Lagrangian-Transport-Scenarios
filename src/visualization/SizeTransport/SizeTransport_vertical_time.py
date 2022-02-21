@@ -24,7 +24,7 @@ class SizeTransport_vertical_time:
         self.xmin, self.xmax = 1e-7, 1e-1 + 0.1
         self.ymin, self.ymax = 3e3, 1e0
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
-        self.number_of_plots = 4
+        self.number_of_plots = self.fig_shape[0] * self.fig_shape[1]
         self.rho_line_dict = {30: 'dashed', 920: '-', 980: 'dashed', 1020: '-'}
         self.months = range(1, 13)
         self.with_mld = with_mld
@@ -119,11 +119,11 @@ class SizeTransport_vertical_time:
                     linestyle, markerstyle = None, 'o'
                 else:
                     linestyle, markerstyle = self.rho_line_dict[rho], None
-                ax[month].plot(output_dict[rho][month][conc_type], depth_bins, linestyle=linestyle,
+                ax[month - 1].plot(output_dict[rho][month][conc_type], depth_bins, linestyle=linestyle,
                                    c=c, marker=markerstyle)
                 # Adding in a horizontal line for the MLD
                 if self.with_mld:
-                    ax[month].axhline(y=MLD_mean[month], color='r', linestyle='-')
+                    ax[month - 1].axhline(y=MLD_mean[month], color='r', linestyle='-')
 
         plt.savefig(self.file_name(), bbox_inches='tight')
         plt.close('all')
