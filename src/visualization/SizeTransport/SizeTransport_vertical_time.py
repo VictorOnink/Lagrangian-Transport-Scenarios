@@ -36,7 +36,7 @@ class SizeTransport_vertical_time:
         self.ymin, self.ymax = 3e3, 1e0
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
         self.number_of_plots = self.fig_shape[0] * self.fig_shape[1]
-        self.rho_line_dict = {30: 'dashed', 920: '-', 980: 'dashed', 1020: '-'}
+        self.rho_line_dict = {30: 'dashed', 920: '-', 980: 'dotted', 1020: '-.'}
         self.months = range(0, 12)
         self.with_mld = with_mld
         # Data parameters

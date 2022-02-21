@@ -168,7 +168,8 @@ def run(scenario, figure_direc: str):
         for time_selection in [0, 1, 2]:
             for shore in ['all', 'nearshore', 'offshore']:
                 SizeTransport_vertical_time(scenario=scenario, figure_direc=figure_direc, size=size,
-                                            time_selection=time_selection, shore=shore).plot()
+                                            time_selection=time_selection, shore=shore,
+                                            rho_list=[30, 920, 980, 1020]).plot()
 
     # Plotting the seasonal peak concentration depth
     # for size in np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR:
