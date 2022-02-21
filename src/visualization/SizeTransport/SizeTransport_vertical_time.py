@@ -71,12 +71,12 @@ class SizeTransport_vertical_time:
 
         # Normalizing the profiles by the total number of particles per simulation
         for rho in self.rho_list:
-            for month in range(0, 12):
+            for month in self.months:
                 output_dict[rho][month][conc_type] /= self.total_number
 
         # setting the zero values to nan to clear up the plots
         for rho in self.rho_list:
-            for month in range(0, 12):
+            for month in self.months:
                 selection = output_dict[rho][month][conc_type] == 0
                 output_dict[rho][month][conc_type][selection] = np.nan
 
