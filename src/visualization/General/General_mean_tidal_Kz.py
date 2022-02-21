@@ -53,8 +53,7 @@ class General_mean_tidal_Kz:
 
     def load_data_file(self):
         # Loading the Kz file
-        Kz_data = xr.load_dataset(utils.get_input_directory(server=settings.SERVER) + 'global_tidal_energy_dissipation.nc')
-        print(Kz_data)
+        Kz_data = xr.load_dataset(utils.get_input_directory(server=settings.SERVER) + 'CMEMS_MEDITERRANEAN_Kz_TIDAL.nc')
         data_dict = {'depth': Kz_data.depth.values, 'LON': Kz_data.lon.values, 'LAT': Kz_data.lat.values,
                      'TIDAL_Kz': Kz_data.TIDAL_Kz.values[0, :, :, :]}
         # Setting all values not in the Mediterranean to np.nan
