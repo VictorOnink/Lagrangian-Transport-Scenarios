@@ -61,7 +61,7 @@ class SizeTransport_peak_depth:
                     if np.nanmax(data_dict[season][location]) == 0:
                         max_depth[season][site_lon_ind, site_lat_ind] = np.nan
                     else:
-                        depth_selection = depth_bins < 100
+                        depth_selection = (depth_bins < 100) & (depth_bins > 2)
                         max_ind = np.argmax(data_dict[season][location][depth_selection])
                         max_depth[season][site_lon_ind, site_lat_ind] = depth_bins[depth_selection][max_ind]
         Lat, Lon = np.meshgrid(lat_bin[:-1], lon_bin[:-1])
