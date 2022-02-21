@@ -51,11 +51,11 @@ class SizeTransport_vertical_time:
         output_dict = {}
         for rho in self.rho_list:
             output_dict[rho] = {}
-            for size in self.size_list:
-                data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
-                                                           data_direc=self.data_direc, fixed_resus=self.fixed_resus,
-                                                           size=size, rho=rho, tau=self.tau, resus_time=self.resus_time)
-                output_dict[rho][size] = data_dict[utils.analysis_simulation_year_key(self.time_selection)]
+            data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
+                                                       data_direc=self.data_direc, fixed_resus=self.fixed_resus,
+                                                       size=self.size, rho=rho, tau=self.tau,
+                                                       resus_time=self.resus_time)
+            output_dict[rho] = data_dict[utils.analysis_simulation_year_key(self.time_selection)]
         depth_bins = data_dict['depth']
 
         # Averaging by season
@@ -71,16 +71,14 @@ class SizeTransport_vertical_time:
 
         # Normalizing the profiles by the total number of particles per simulation
         for rho in self.rho_list:
-            for size in self.size_list:
-                for month in range(0, 12):
-                    output_dict[rho][size][month][conc_type] /= self.total_number
+            for month in range(0, 12):
+                output_dict[rho][month][conc_type] /= self.total_number
 
         # setting the zero values to nan to clear up the plots
         for rho in self.rho_list:
-            for size in self.size_list:
-                for month in range(0, 12):
-                    selection = output_dict[rho][size][month][conc_type] == 0
-                    output_dict[rho][size][month][conc_type][selection] = np.nan
+            for month in range(0, 12):
+                selection = output_dict[rho][month][conc_type] == 0
+                output_dict[rho][month][conc_type][selection] = np.nan
 
         # Get the mean MLD depth data
         if self.with_mld:
@@ -102,34 +100,30 @@ class SizeTransport_vertical_time:
 
         # Adding in a legend
         cmap_list, label_list = [], []
-        for index_size, size in enumerate(self.size_list):
-            cmap_list.append(vUtils.discrete_color_from_cmap(index_size, subdivisions=self.size_list.__len__()))
-            label_list.append(self.legend_label(size))
+        cmap_list.append('black')
+        label_list.append(self.legend_label(self.size))
         size_colors = [plt.plot([], [], c=cmap_list[i], label=label_list[i], linestyle='-')[0] for i in
                        range(cmap_list.__len__())]
-        rho_lines = [plt.plot([], [], c='k', label=r'$\rho=$' + str(rho) + r' kg m$^{-3}$', linestyle=self.rho_line_dict[rho])[0]
-                     for rho in self.rho_list]
         if self.with_mld:
             mld_line = [plt.plot([], [], c='r', label=r'Mean MLD', linestyle='-')[0]]
-            ax[-1].legend(handles=rho_lines + mld_line + size_colors, fontsize=self.legend_size)
+            ax[-1].legend(handles=mld_line + size_colors, fontsize=self.legend_size)
         else:
-            ax[-1].legend(handles=rho_lines + size_colors, fontsize=self.legend_size)
+            ax[-1].legend(handles=size_colors, fontsize=self.legend_size)
         ax[-1].axis('off')
 
         # The actual plotting
         for month in self.months:
             for rho in self.rho_list:
-                for index_size, size in enumerate(self.size_list):
-                    c = cmap_list[index_size]
-                    if np.sum(~np.isnan(output_dict[rho][size][month][conc_type])) < 2:
-                        linestyle, markerstyle = None, 'o'
-                    else:
-                        linestyle, markerstyle = self.rho_line_dict[rho], None
-                    ax[month - 1].plot(output_dict[rho][size][month][conc_type], depth_bins, linestyle=linestyle,
-                                       c=c, marker=markerstyle)
-                    # Adding in a horizontal line for the MLD
-                    if self.with_mld:
-                        ax[month - 1].axhline(y=MLD_mean[month], color='r', linestyle='-')
+                c = cmap_list[0]
+                if np.sum(~np.isnan(output_dict[rho][month][conc_type])) < 2:
+                    linestyle, markerstyle = None, 'o'
+                else:
+                    linestyle, markerstyle = self.rho_line_dict[rho], None
+                ax[month - 1].plot(output_dict[rho][month][conc_type], depth_bins, linestyle=linestyle,
+                                   c=c, marker=markerstyle)
+                # Adding in a horizontal line for the MLD
+                if self.with_mld:
+                    ax[month - 1].axhline(y=MLD_mean[month], color='r', linestyle='-')
 
         plt.savefig(self.file_name(), bbox_inches='tight')
         plt.close('all')
