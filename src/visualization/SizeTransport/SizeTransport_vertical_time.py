@@ -119,11 +119,11 @@ class SizeTransport_vertical_time:
                     linestyle, markerstyle = None, 'o'
                 else:
                     linestyle, markerstyle = self.rho_line_dict[rho], None
-                ax[month - 1].plot(output_dict[rho][month][conc_type], depth_bins, linestyle=linestyle,
+                ax[month].plot(output_dict[rho][month][conc_type], depth_bins, linestyle=linestyle,
                                    c=c, marker=markerstyle)
                 # Adding in a horizontal line for the MLD
                 if self.with_mld:
-                    ax[month - 1].axhline(y=MLD_mean[month], color='r', linestyle='-')
+                    ax[month].axhline(y=MLD_mean[month], color='r', linestyle='-')
 
         plt.savefig(self.file_name(), bbox_inches='tight')
         plt.close('all')
