@@ -23,7 +23,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="animation">
-      <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_vertical_time.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_vertical_time.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_Figures.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_Figures.py" afterDir="false" />
     </list>
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
     <list id="c5adc810-e024-4e30-b33b-a2709ed2c5b7" name="moving the release repeat timescale to the scenario" comment="" />
@@ -109,27 +109,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-03567" summary="animation">
-      <created>1645129577617</created>
-      <option name="number" value="03567" />
-      <option name="presentableId" value="LOCAL-03567" />
-      <option name="project" value="LOCAL" />
-      <updated>1645129577617</updated>
-    </task>
-    <task id="LOCAL-03568" summary="animation">
-      <created>1645130504971</created>
-      <option name="number" value="03568" />
-      <option name="presentableId" value="LOCAL-03568" />
-      <option name="project" value="LOCAL" />
-      <updated>1645130504971</updated>
-    </task>
-    <task id="LOCAL-03569" summary="animation">
-      <created>1645131415432</created>
-      <option name="number" value="03569" />
-      <option name="presentableId" value="LOCAL-03569" />
-      <option name="project" value="LOCAL" />
-      <updated>1645131415432</updated>
     </task>
     <task id="LOCAL-03570" summary="animation">
       <created>1645135641699</created>
@@ -453,7 +432,28 @@
       <option name="project" value="LOCAL" />
       <updated>1645451314587</updated>
     </task>
-    <option name="localTasksCounter" value="3616" />
+    <task id="LOCAL-03616" summary="animation">
+      <created>1645451527975</created>
+      <option name="number" value="03616" />
+      <option name="presentableId" value="LOCAL-03616" />
+      <option name="project" value="LOCAL" />
+      <updated>1645451527975</updated>
+    </task>
+    <task id="LOCAL-03617" summary="animation">
+      <created>1645451627219</created>
+      <option name="number" value="03617" />
+      <option name="presentableId" value="LOCAL-03617" />
+      <option name="project" value="LOCAL" />
+      <updated>1645451627219</updated>
+    </task>
+    <task id="LOCAL-03618" summary="animation">
+      <created>1645451771288</created>
+      <option name="number" value="03618" />
+      <option name="presentableId" value="LOCAL-03618" />
+      <option name="project" value="LOCAL" />
+      <updated>1645451771288</updated>
+    </task>
+    <option name="localTasksCounter" value="3619" />
     <servers />
   </component>
   <component name="UnknownFeatures">

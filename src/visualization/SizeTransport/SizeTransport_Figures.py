@@ -163,7 +163,7 @@ def run(scenario, figure_direc: str):
     #                                       time_selection=2, rho_list=rho, shore=shore).plot()
 
     # Plotting the monthly average vertical profiles
-    size_list = np.array([78, 2]) * settings.SIZE_FACTOR
+    size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
     for size in size_list:
         for time_selection in [0, 1, 2]:
             SizeTransport_vertical_time(scenario=scenario, figure_direc=figure_direc, size=size,
