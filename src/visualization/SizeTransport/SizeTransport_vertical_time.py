@@ -13,6 +13,17 @@ from Analysis.CMEMS_mediterranean_mean_MLD import CMEMS_mediterranean_mean_MLD
 class SizeTransport_vertical_time:
     def __init__(self, scenario, figure_direc, size, time_selection, rho_list=[920], with_mld=True,
                  shore='all', fixed_resus=False, resus_time=7):
+        # Simulation parameters
+        self.scenario = scenario
+        self.size = size
+        self.time_selection = time_selection
+        self.year = 2010 + self.time_selection
+        self.rho_list = rho_list
+        self.tau = 0.0
+        self.shore = shore
+        self.fixed_resus = fixed_resus
+        self.resus_time = resus_time
+        self.total_number = 85196  # the total number of particles in each SizeTransport simulation
         # Figure Parameters
         self.fig_size = (16, 10)
         self.fig_shape = (4, 3)
@@ -29,22 +40,12 @@ class SizeTransport_vertical_time:
         self.months = range(0, 12)
         self.with_mld = with_mld
         # Data parameters
-        self.output_direc = figure_direc + 'vertical_profile/monthly_profiles/'
+        self.output_direc = figure_direc + 'vertical_profile/monthly_profiles/{}/'.format(self.shore)
         self.data_direc = utils.get_output_directory(
             server=settings.SERVER) + 'concentrations/SizeTransport/'
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'vertical_concentration'
-        # Simulation parameters
-        self.scenario = scenario
-        self.size = size
-        self.time_selection = time_selection
-        self.year = 2010 + self.time_selection
-        self.rho_list = rho_list
-        self.tau = 0.0
-        self.shore = shore
-        self.fixed_resus = fixed_resus
-        self.resus_time = resus_time
-        self.total_number = 85196  # the total number of particles in each SizeTransport simulation
+
 
     def plot(self):
         # Loading the data
