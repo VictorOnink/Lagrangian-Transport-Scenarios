@@ -28,7 +28,7 @@ class General_season_average:
         self.ax_ticklabel_size = 14
         self.spatial_domain = np.nanmin(self.file_dict['LON']), np.nanmax(self.file_dict['LON']), \
                               np.nanmin(self.file_dict['LAT']), np.nanmax(self.file_dict['LAT'])
-        self.season_list = ['DJF', 'MAM', 'JJA', 'SON']
+        self.season_list = {'wind': ['DJF', 'MAM', 'JJA', 'SON'], 'MLD': ['JFM', 'AMJ', 'JAS', 'OND']}[self.variable]
         self.cmap = {'wind': cmo.speed, 'MLD': cmo.haline_r}[self.variable]
         self.step = 3
 
