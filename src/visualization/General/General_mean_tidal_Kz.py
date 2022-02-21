@@ -37,10 +37,10 @@ class General_mean_tidal_Kz:
         gs = fig.add_gridspec(nrows=self.figure_shape[0], ncols=self.figure_shape[1])
 
         ax = fig.add_subplot(gs[0, 0])
-        ax.set_yscale('log')
-        # ax.set_ylim([3000, 1])
         ax.set_xscale('log')
-        # ax.set_xlim([1e-7, 1e-3])
+        ax.set_xlim([3000, 1])
+        ax.set_yscale('log')
+        ax.set_ylim([1e-7, 1e-3])
 
         ax.set_ylabel('Depth (m)')
         ax.set_xlabel(r'Tidal $K_z$ (m$^2$ s$^{-1}$)')
