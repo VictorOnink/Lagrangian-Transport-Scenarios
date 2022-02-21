@@ -8,6 +8,7 @@ import matplotlib.colors as colors
 import cmocean.cm as cmo
 import cartopy.crs as ccrs
 import string
+from Analysis.CMEMS_mediterranean_mean_MLD import CMEMS_mediterranean_mean_MLD
 
 
 class General_season_average:
@@ -35,10 +36,11 @@ class General_season_average:
         # Loading the data
         variable_dict = {}
         for season in self.season_list:
-            dataset = Dataset(file_name_variable(variable=self.variable, season=season))
             if self.variable == 'MLD':
-                variable_dict[season] = np.nanmean(dataset.variables['mlotst'][:], axis=0)
+                MLD_data = CMEMS_mediterranean_mean_MLD().calculate_seasonal_mean()
+                variable_dict[season] = (MLD_data[2010][season] + MLD_data[2011][season] + MLD_data[2012][season]) / 3
             elif self.variable == 'wind':
+                dataset = Dataset(file_name_variable(variable=self.variable, season=season))
                 variable_dict[season] = {}
                 u10, v10 = np.nanmean(dataset.variables['u10'][:], axis=0), np.nanmean(dataset.variables['v10'][:], axis=0)
                 variable_dict[season]['magnitude'] = np.sqrt(np.square(u10) + np.square(v10))

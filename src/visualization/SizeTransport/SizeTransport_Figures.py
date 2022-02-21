@@ -41,7 +41,7 @@ def run(scenario, figure_direc: str):
     # General_input_scenario(scenario=scenario, figure_direc=figure_direc).plot()
 
     # Figure of the seasonal average MLD and wind speed
-    # General_season_average(scenario=scenario, figure_direc=figure_direc, variable='MLD').plot()
+    General_season_average(scenario=scenario, figure_direc=figure_direc, variable='MLD').plot()
     # General_season_average(scenario=scenario, figure_direc=figure_direc, variable='wind').plot()
 
     # Figure of the distance to shore for each cell in the Mediterranean
@@ -159,11 +159,11 @@ def run(scenario, figure_direc: str):
     #                                       time_selection=2, rho_list=rho, shore=shore).plot()
 
     # Plotting the seasonal peak concentration depth
-    for size in np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR:
-        for time in [0, 1, 2]:
-            for rho in [30, 920, 980, 1020]:
-                SizeTransport_peak_depth(scenario=scenario, figure_direc=figure_direc, size=size,
-                                         time_selection=time, rho=rho).plot()
+    # for size in np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR:
+    #     for time in [0, 1, 2]:
+    #         for rho in [30, 920, 980, 1020]:
+    #             SizeTransport_peak_depth(scenario=scenario, figure_direc=figure_direc, size=size,
+    #                                      time_selection=time, rho=rho).plot()
 
     # Plotting the separation distance
     # for size_selection in size_list:
