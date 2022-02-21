@@ -26,7 +26,7 @@ class SizeTransport_vertical_time:
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
         self.number_of_plots = self.fig_shape[0] * self.fig_shape[1]
         self.rho_line_dict = {30: 'dashed', 920: '-', 980: 'dashed', 1020: '-'}
-        self.months = range(1, 13)
+        self.months = range(0, 12)
         self.with_mld = with_mld
         # Data parameters
         self.output_direc = figure_direc + 'vertical_profile/'
@@ -85,7 +85,7 @@ class SizeTransport_vertical_time:
             MLD_data = CMEMS_mediterranean_mean_MLD().calculate_monthly_mean()[self.year]
             MLD_mean = dict.fromkeys(self.months)
             for month in self.months:
-                MLD_mean[month] = np.nanmean(MLD_data[month])
+                MLD_mean[month] = np.nanmean(MLD_data[month + 1])
 
         # Creating the figure
         ax = vUtils.base_figure(fig_size=self.fig_size, ax_range=self.ax_range, x_label=self.x_label,
@@ -119,11 +119,11 @@ class SizeTransport_vertical_time:
                     linestyle, markerstyle = None, 'o'
                 else:
                     linestyle, markerstyle = self.rho_line_dict[rho], None
-                ax[month - 1].plot(output_dict[rho][month][conc_type], depth_bins, linestyle=linestyle,
-                                   c=c, marker=markerstyle)
+                ax[month].plot(output_dict[rho][month][conc_type], depth_bins, linestyle=linestyle,
+                               c=c, marker=markerstyle)
                 # Adding in a horizontal line for the MLD
                 if self.with_mld:
-                    ax[month - 1].axhline(y=MLD_mean[month], color='r', linestyle='-')
+                    ax[month].axhline(y=MLD_mean[month], color='r', linestyle='-')
 
         plt.savefig(self.file_name(), bbox_inches='tight')
         plt.close('all')
