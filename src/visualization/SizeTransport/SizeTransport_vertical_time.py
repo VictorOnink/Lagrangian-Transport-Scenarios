@@ -105,11 +105,13 @@ class SizeTransport_vertical_time:
         label_list.append(self.legend_label(self.size))
         size_colors = [plt.plot([], [], c=cmap_list[i], label=label_list[i], linestyle='-')[0] for i in
                        range(cmap_list.__len__())]
+        rho_lines = [plt.plot([], [], c='k', label=r'$\rho=$' + str(rho) + r' kg m$^{-3}$', linestyle=self.rho_line_dict[rho])[0]
+                     for rho in self.rho_list]
         if self.with_mld:
             mld_line = [plt.plot([], [], c='r', label=r'Mean MLD', linestyle='-')[0]]
-            ax[-1].legend(handles=mld_line + size_colors, fontsize=self.legend_size)
+            ax[-1].legend(handles=rho_lines + mld_line + size_colors, fontsize=self.legend_size)
         else:
-            ax[-1].legend(handles=size_colors, fontsize=self.legend_size)
+            ax[-1].legend(handles=rho_lines + size_colors, fontsize=self.legend_size)
         ax[-1].axis('off')
 
         # The actual plotting
