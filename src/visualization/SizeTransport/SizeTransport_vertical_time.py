@@ -130,7 +130,7 @@ class SizeTransport_vertical_time:
 
     def file_name(self, file_type='.png'):
         str_format = self.time_selection, self.rho_list, self.size
-        base = 'vertical_profile_monthly_y={}_rho={}_size={}'.format(*str_format)
+        base = 'vertical_profile_monthly_y={}_rho={}_size={:.2E}'.format(*str_format)
         if self.fixed_resus:
             base += '_resus_time={}'.format(self.resus_time)
         if self.shore != 'all':
