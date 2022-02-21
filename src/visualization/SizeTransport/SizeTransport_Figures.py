@@ -17,6 +17,7 @@ from visualization.SizeTransport.SizeTransport_concentration_OSM import SizeTran
 from visualization.SizeTransport.SizeTransport_vertical_OSM import SizeTransport_vertical_OSM
 from visualization.SizeTransport.SizeTransport_concentration_seasons import SizeTransport_concentration_seasons
 from visualization.SizeTransport.SizeTransport_peak_depth import SizeTransport_peak_depth
+from visualization.SizeTransport.SizeTransport_vertical_time import SizeTransport_vertical_time
 import os
 import numpy as np
 
@@ -48,7 +49,7 @@ def run(scenario, figure_direc: str):
     # General_distance2coast(scenario=scenario, figure_direc=figure_direc).plot()
 
     # Plotting the mean vertical profile of Tidal Kz
-    General_mean_tidal_Kz(scenario=scenario, figure_direc=figure_direc).plot()
+    # General_mean_tidal_Kz(scenario=scenario, figure_direc=figure_direc).plot()
 
     # Figure showing a histogram of all depth levels in the Mediterranean
     # General.General_bathymetry_histogram(scenario=scenario, figure_direc=figure_direc).plot()
@@ -150,7 +151,7 @@ def run(scenario, figure_direc: str):
     # Cumulative plots for the total distance travelled vertically and horizontally, and the max depth reached
     # SizeTransport_CumulativeDistance(figure_direc=figure_direc, scenario=scenario, size_list=size_list).plot()
 
-    # Plotting the month average vertical profile
+    # Plotting the seasonal average vertical profile
     # size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
     # for rho in [[920, 980], [30, 1020]]:
     #     for shore in ['all', 'nearshore', 'offshore']:
@@ -160,6 +161,13 @@ def run(scenario, figure_direc: str):
     #                                       time_selection=1, rho_list=rho, shore=shore).plot()
     #         SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
     #                                       time_selection=2, rho_list=rho, shore=shore).plot()
+
+    # Plotting the monthly average vertical profiles
+    size_list = np.array([78, 2]) * settings.SIZE_FACTOR
+    for size in size_list:
+        for time_selection in [0, 1, 2]:
+            SizeTransport_vertical_time(scenario=scenario, figure_direc=figure_direc, size=size,
+                                        time_selection=time_selection).plot()
 
     # Plotting the seasonal peak concentration depth
     # for size in np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR:
