@@ -30,7 +30,7 @@ class General_mean_tidal_Kz:
         Kz_data = self.load_data_file()
 
         # Calculate the vertical mean Kz value
-        Kz_mean = np.nanmean(Kz_data['TIDAL_Kz'], axis=(1, 2)).shape
+        Kz_mean = np.nanmean(Kz_data['TIDAL_Kz'], axis=(1, 2))
 
         # Creating the figure
         fig = plt.figure(figsize=self.figure_size)
