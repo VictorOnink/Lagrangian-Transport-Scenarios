@@ -163,13 +163,13 @@ def run(scenario, figure_direc: str):
     #                                       time_selection=2, rho_list=rho, shore=shore).plot()
 
     # Plotting the monthly average vertical profiles
-    size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
-    for size in size_list:
-        for time_selection in [0, 1, 2]:
-            for shore in ['all', 'nearshore', 'offshore']:
-                SizeTransport_vertical_time(scenario=scenario, figure_direc=figure_direc, size=size,
-                                            time_selection=time_selection, shore=shore,
-                                            rho_list=[30, 920, 980, 1020]).plot()
+    # size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
+    # for size in size_list:
+    #     for time_selection in [0, 1, 2]:
+    #         for shore in ['all', 'nearshore', 'offshore']:
+    #             SizeTransport_vertical_time(scenario=scenario, figure_direc=figure_direc, size=size,
+    #                                         time_selection=time_selection, shore=shore,
+    #                                         rho_list=[30, 920, 980, 1020]).plot()
 
     # Plotting the seasonal peak concentration depth
     # for size in np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR:

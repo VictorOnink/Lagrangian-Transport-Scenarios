@@ -53,18 +53,8 @@ class FragmentationKaandorpPartial_mass_loss:
         # Convert the mass loss term from loss per timestep (30 seconds) to loss per day
         p_sink = settings.P_SINK * 2 * 60 * 24
 
-        # Calculate the plastic mass at the end of the simulation based on
-        final_mass_sink = monthly_input
-        for year in range(settings.STARTYEAR, settings.STARTYEAR + self.simulation_length):
-            for month in range(1, 13):
-                # First, the number of days in the month
-                days = monthrange(year, month)[1]
-                # Calculate the loss of mass in that month
-                final_mass_sink *= (1 - p_sink) ** days
-                # Add the new input
-                final_mass_sink += monthly_input
-
-        # Next, we load the timeseries that give us the total mass in the simulation at any point in the simulation
+        # Next, we load the timeseries that give us the total mass in the simulation at any point in the simulation,
+        # first when incorporating the sink term and then without the sink term
         final_mass = dict.fromkeys(self.frag_list, 0)
         for lambda_frag in self.frag_list:
             data_dict = vUtils.FragmentationKaandorpPartial_load_data(scenario=self.scenario, prefix='timeseries',
@@ -73,24 +63,22 @@ class FragmentationKaandorpPartial_mass_loss:
                                                                       lambda_frag=lambda_frag,
                                                                       rho=settings.INIT_DENSITY,
                                                                       postprocess=True)
+            final_mass[lambda_frag] = {}
             for size_class in range(self.size_class_number):
-                final_mass[lambda_frag] += data_dict['total'][size_class]['particle_mass_sink'][-1]
+                final_mass[lambda_frag]['mass_sink'] += data_dict['total'][size_class]['particle_mass_sink'][-1]
+                final_mass[lambda_frag]['mass'] += data_dict['total'][size_class]['particle_mass'][-1]
 
         # Calculate the percentage mass losses, first from sinking, then sinking and fragmentation and finally just
         # fragmentation, where we remove the sinking loss from the sinking and fragmentation loss
-        sink_loss = (final_mass_sink - total_input) / total_input * 100
         frag_sink_mass_loss = dict.fromkeys(self.frag_list)
         frag_mass_loss = dict.fromkeys(self.frag_list)
         for lambda_frag in self.frag_list:
-            frag_sink_mass_loss[lambda_frag] = (final_mass[lambda_frag] - total_input) / total_input * 100
-            frag_mass_loss[lambda_frag] = (- final_mass_sink + final_mass[lambda_frag]) / total_input * 100
+            frag_sink_mass_loss[lambda_frag] = (final_mass[lambda_frag]['mass_sink'] - total_input) / total_input * 100
+            frag_mass_loss[lambda_frag] = (final_mass[lambda_frag]['mass'] - total_input) / total_input * 100
 
         # So, now we print our results
         utils.print_statement("\n", to_print=True)
         utils.print_statement("In 3 years, we release {:.2f} particle mass".format(total_input), to_print=True)
-        str_format = final_mass_sink, sink_loss
-        utils.print_statement("Due to particle sinking, we are left with {:.2f}, a {:.2f}% reduction".format(*str_format),
-                              to_print=True)
         utils.print_statement("\n", to_print=True)
 
         for lambda_frag in self.frag_list:
