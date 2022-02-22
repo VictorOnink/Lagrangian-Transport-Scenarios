@@ -82,10 +82,10 @@ class FragmentationKaandorpPartial_mass_loss:
         utils.print_statement("\n", to_print=True)
 
         for lambda_frag in self.frag_list:
-            str_format = lambda_frag, final_mass[lambda_frag], frag_sink_mass_loss[lambda_frag]
+            str_format = lambda_frag, final_mass[lambda_frag]['mass_sink'], frag_sink_mass_loss[lambda_frag]
             statement = "With lambda_frag={}, we are left with {:.2f}, a a {:.2f}% reduction".format(*str_format)
             utils.print_statement(statement, to_print=True)
-            statement = "Just fragmentation leads to a {:.2f}% reduction".format(frag_mass_loss[lambda_frag])
+            statement = "Just fragmentation leads to a {:.2f}% reduction".format(frag_mass_loss[lambda_frag]['mass'])
             utils.print_statement(statement, to_print=True)
 
 
