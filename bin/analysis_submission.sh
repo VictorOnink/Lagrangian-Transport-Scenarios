@@ -9,7 +9,7 @@ DEBUG=0 # 0 = Not a debug run, 1 = a debug run
 # 0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 # 5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation,
 # 8 = Blue Cloud Hackathon Backward, 9 = Blue Cloud Hackathon Forward
-SCENARIO=5
+SCENARIO=7
 export SCENARIO
 #for scenario 1, the time a particle must be near the coast to beach (in days)
 VICINITY=2
@@ -24,8 +24,8 @@ export SHOREDEPEN
 WMIN=3
 export WMIN
 #for scenario 5 and 6, the initial size of the particle in 1e-6 m and the particle rho
-PARTICLE_SIZE_list=(5000 2500 1250 625 313 156 78 39 20 10 5 2)  #(5000 2500 1250 625 313 156 78 39 20 10 5 2)
-INIT_DENSITY_list=(30 920 980 1020) # (30 920 980 1020)
+PARTICLE_SIZE_list=(5000)  #(5000 2500 1250 625 313 156 78 39 20 10 5 2)
+INIT_DENSITY_list=(920) # (30 920 980 1020)
 export INIT_DENSITY
 #for scenario 5 and 6, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=0
@@ -39,7 +39,7 @@ export FIXED_RESUS
 P=4
 DN=25
 SIZE_CLASS_NUMBER=6
-LAMBDA_FRAG_list=(388)
+LAMBDA_FRAG_list=(388 1000 10000 35000 50000)
 OCEAN_FRAG=0
 LAMBDA_OCEAN_FRAG_LIST=(388)
 export P
@@ -51,12 +51,12 @@ RELEASE_SITE=0
 export RELEASE_SITE
 #the starting year of the simulation, and how many years the simulation will take
 YEAR=2010
-STARTMONTH_list=(1)
+STARTMONTH_list=(1 2 3 4 5 6 7 8 9 10 11 12)
 STARTDAY=1
 export STARTDAY
 # Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=lebretondivision, 3=lebretonKaandorpInit,
 # 4=point, 5=uniform
-INPUT=1
+INPUT=3
 export INPUT
 #Which advection data do we want to use?
 # 0 = Global HYCOM, 1 = Caribbean HYCOM, 2 = Mediterranean CMEMS
@@ -87,9 +87,9 @@ export SERVER
 CONCENTRATION=0
 MONTHLY_CONCENTRATION=0
 VERTICAL_CONCENTRATION=0
-SPATIAL_VERTICAL_PROFILES=1
+SPATIAL_VERTICAL_PROFILES=0
 LONLAT_CONCENTRATION=0
-TIMESERIES=0
+TIMESERIES=1
 MAX_DISTANCE=0
 TIMESLICING=0
 STATISTICS=0
