@@ -38,7 +38,6 @@ class SizeTransport_VerticalProfile:
         self.scenario = scenario
         self.size_list = size_list
         self.time_selection = time_selection
-        self.year = 2010 + self.time_selection
         self.rho_list = rho_list
         self.tau = 0.0
         self.shore = shore
@@ -104,10 +103,17 @@ class SizeTransport_VerticalProfile:
 
         # Get the mean MLD depth data
         if self.with_mld:
-            MLD_data = CMEMS_mediterranean_mean_MLD().calculate_seasonal_mean()[self.year]
-            MLD_mean = dict.fromkeys(self.seasons)
-            for season in self.seasons:
-                MLD_mean[season] = np.nanmean(MLD_data[season])
+            if type(self.time_selection) in [int, float]:
+                MLD_data = CMEMS_mediterranean_mean_MLD().calculate_seasonal_mean()[settings.STARTYEAR + self.time_selection]
+                MLD_mean = dict.fromkeys(self.seasons)
+                for season in self.seasons:
+                    MLD_mean[season] = np.nanmean(MLD_data[season])
+            else:
+                MLD_data = CMEMS_mediterranean_mean_MLD().calculate_seasonal_mean()
+                MLD_mean = dict.fromkeys(self.seasons)
+                for season in self.seasons:
+                    MLD_mean[season] = (np.nanmean(MLD_data[2010][season]) + np.nanmean(MLD_data[2011][season]) +
+                                        np.nanmean(MLD_data[2012][season])) / 3
 
         # Creating the figure
         ax = vUtils.base_figure(fig_size=self.fig_size, ax_range=self.ax_range, x_label=self.x_label,
@@ -118,7 +124,7 @@ class SizeTransport_VerticalProfile:
 
         # Labelling the subfigures
         for index_ax in range(self.number_of_plots):
-            ax[index_ax].set_title(self.subfigure_title(index_ax, self.time_selection), fontsize=self.ax_label_size)
+            ax[index_ax].set_title(self.subfigure_title(index_ax), fontsize=self.ax_label_size)
 
         # Adding in a legend
         cmap_list, label_list = [], []
@@ -167,8 +173,11 @@ class SizeTransport_VerticalProfile:
     def legend_label(size):
         return r'r = {:.3f} mm'.format(size * 1e3)
 
-    @staticmethod
-    def subfigure_title(index, simulation_year):
+    def subfigure_title(self, index):
         alphabet = string.ascii_lowercase
         month_dict = {0: 'Winter: JFM', 1: 'Spring: AMJ', 2: 'Summer: JAS', 3: 'Autumn: OND'}
-        return '({}) {}-{}'.format(alphabet[index], month_dict[index], settings.STARTYEAR + simulation_year)
+        if type(self.time_selection) in [int, float]:
+            return '({}) {}-{}'.format(alphabet[index], month_dict[index], settings.STARTYEAR + self.time_selection)
+        else:
+            return '({}) {}'.format(alphabet[index], month_dict[index])
+
