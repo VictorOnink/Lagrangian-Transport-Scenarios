@@ -63,9 +63,9 @@ class SizeTransport_VerticalProfile:
                     output_dict[rho][size] = {}
                     for month in range(0, 12):
                         output_dict[rho][size][month] = {conc_type: None}
-                        full_simulation_average = (data_dict[utils.analysis_simulation_year_key(0)][month] +
-                                                   data_dict[utils.analysis_simulation_year_key(1)][month] +
-                                                   data_dict[utils.analysis_simulation_year_key(2)][month]) / 3
+                        full_simulation_average = (data_dict[utils.analysis_simulation_year_key(0)][month][conc_type] +
+                                                   data_dict[utils.analysis_simulation_year_key(1)][month][conc_type] +
+                                                   data_dict[utils.analysis_simulation_year_key(2)][month][conc_type]) / 3
                         output_dict[rho][size][month][conc_type] = full_simulation_average
         else:
             # Otherwise, we just plot the single year specified by self.time_selection
@@ -104,7 +104,8 @@ class SizeTransport_VerticalProfile:
         # Get the mean MLD depth data
         if self.with_mld:
             if type(self.time_selection) in [int, float]:
-                MLD_data = CMEMS_mediterranean_mean_MLD().calculate_seasonal_mean()[settings.STARTYEAR + self.time_selection]
+                MLD_data = CMEMS_mediterranean_mean_MLD().calculate_seasonal_mean()[
+                    settings.STARTYEAR + self.time_selection]
                 MLD_mean = dict.fromkeys(self.seasons)
                 for season in self.seasons:
                     MLD_mean[season] = np.nanmean(MLD_data[season])
@@ -133,8 +134,9 @@ class SizeTransport_VerticalProfile:
             label_list.append(self.legend_label(size))
         size_colors = [plt.plot([], [], c=cmap_list[i], label=label_list[i], linestyle='-')[0] for i in
                        range(cmap_list.__len__())]
-        rho_lines = [plt.plot([], [], c='k', label=r'$\rho=$' + str(rho) + r' kg m$^{-3}$', linestyle=self.rho_line_dict[rho])[0]
-                     for rho in self.rho_list]
+        rho_lines = [
+            plt.plot([], [], c='k', label=r'$\rho=$' + str(rho) + r' kg m$^{-3}$', linestyle=self.rho_line_dict[rho])[0]
+            for rho in self.rho_list]
         if self.with_mld:
             mld_line = [plt.plot([], [], c='r', label=r'Mean MLD', linestyle='-')[0]]
             ax[-1].legend(handles=rho_lines + mld_line + size_colors, fontsize=self.legend_size)
@@ -180,4 +182,3 @@ class SizeTransport_VerticalProfile:
             return '({}) {}-{}'.format(alphabet[index], month_dict[index], settings.STARTYEAR + self.time_selection)
         else:
             return '({}) {}'.format(alphabet[index], month_dict[index])
-
