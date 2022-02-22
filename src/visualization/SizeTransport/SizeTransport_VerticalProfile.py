@@ -47,20 +47,40 @@ class SizeTransport_VerticalProfile:
         self.total_number = 85196  # the total number of particles in each SizeTransport simulation
 
     def plot(self):
+        # Specifying which data we want to load depending on self.shore
+        conc_type = {'all': 'concentration', 'offshore': 'concentration_offshore',
+                     'nearshore': 'concentration_nearshore'}[self.shore]
         # Loading the data
         output_dict = {}
-        for rho in self.rho_list:
-            output_dict[rho] = {}
-            for size in self.size_list:
-                data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
-                                                           data_direc=self.data_direc, fixed_resus=self.fixed_resus,
-                                                           size=size, rho=rho, tau=self.tau, resus_time=self.resus_time)
-                output_dict[rho][size] = data_dict[utils.analysis_simulation_year_key(self.time_selection)]
+        if self.time_selection == 'all':
+            # In this case, we want to average over all 3 simulation years
+            for rho in self.rho_list:
+                output_dict[rho] = {}
+                for size in self.size_list:
+                    data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
+                                                               data_direc=self.data_direc, fixed_resus=self.fixed_resus,
+                                                               size=size, rho=rho, tau=self.tau,
+                                                               resus_time=self.resus_time)
+                    output_dict[rho][size] = {}
+                    for month in range(0, 12):
+                        output_dict[rho][size][month] = {conc_type: None}
+                        full_simulation_average = (data_dict[utils.analysis_simulation_year_key(0)][month] +
+                                                   data_dict[utils.analysis_simulation_year_key(1)][month] +
+                                                   data_dict[utils.analysis_simulation_year_key(2)][month]) / 3
+                        output_dict[rho][size][month][conc_type] = full_simulation_average
+        else:
+            # Otherwise, we just plot the single year specified by self.time_selection
+            for rho in self.rho_list:
+                output_dict[rho] = {}
+                for size in self.size_list:
+                    data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=self.prefix,
+                                                               data_direc=self.data_direc, fixed_resus=self.fixed_resus,
+                                                               size=size, rho=rho, tau=self.tau,
+                                                               resus_time=self.resus_time)
+                    output_dict[rho][size] = data_dict[utils.analysis_simulation_year_key(self.time_selection)]
         depth_bins = data_dict['depth']
 
         # Averaging by season
-        conc_type = {'all': 'concentration', 'offshore': 'concentration_offshore',
-                     'nearshore': 'concentration_nearshore'}[self.shore]
         for rho in self.rho_list:
             for size in self.size_list:
                 for month in np.arange(0, 12, 3):

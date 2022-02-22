@@ -109,7 +109,8 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
         file_name = self.output_direc + 'boxmodel_ocean_frag-ST={}_size_classes={}.png'.format(*str_format)
         plt.savefig(file_name, bbox_inches='tight', dpi=300)
 
-    def subfigure_title(self, index):
+    @staticmethod
+    def subfigure_title(index):
         alphabet = string.ascii_lowercase
         subtitle_list = ['Counts', 'Mass']
         reservoir_list = ['Open water', 'Coastal', 'Beach']
