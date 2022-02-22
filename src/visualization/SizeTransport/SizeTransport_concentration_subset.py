@@ -97,7 +97,7 @@ class SizeTransport_concentration_subset:
 
         # Adding subfigure titles
         for index, ax in enumerate(ax_list):
-            ax.set_title(self.subfigure_title(index), weight='bold', fontsize=self.ax_label_size)
+            ax.set_title(self.subfigure_title(index), fontsize=self.ax_label_size)
 
         # The actual plotting of the figures
         for index, size in enumerate(self.size_list):
