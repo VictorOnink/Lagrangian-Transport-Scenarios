@@ -316,6 +316,7 @@ if SUBMISSION in ['visualization']:
     # DEFAULTS TO PREVENT ERRORS
     RUN: int = 0
     RESTART: int = 0
+    SIM_LENGTH: int = 3
     SHORE_TIME: int = 26
     RESUS_TIME: int = 69
     VICINITY: int = 0
