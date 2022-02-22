@@ -55,7 +55,7 @@ class FragmentationKaandorpPartial_mass_loss:
 
         # Next, we load the timeseries that give us the total mass in the simulation at any point in the simulation,
         # first when incorporating the sink term and then without the sink term
-        final_mass = dict.fromkeys(self.frag_list, 0)
+        final_mass = dict.fromkeys(self.frag_list)
         for lambda_frag in self.frag_list:
             data_dict = vUtils.FragmentationKaandorpPartial_load_data(scenario=self.scenario, prefix='timeseries',
                                                                       data_direc=self.data_direc,
@@ -63,7 +63,7 @@ class FragmentationKaandorpPartial_mass_loss:
                                                                       lambda_frag=lambda_frag,
                                                                       rho=settings.INIT_DENSITY,
                                                                       postprocess=True)
-            final_mass[lambda_frag] = {}
+            final_mass[lambda_frag] = {'mass_sink': 0, 'mass': 0}
             for size_class in range(self.size_class_number):
                 final_mass[lambda_frag]['mass_sink'] += data_dict['total'][size_class]['particle_mass_sink'][-1]
                 final_mass[lambda_frag]['mass'] += data_dict['total'][size_class]['particle_mass'][-1]
