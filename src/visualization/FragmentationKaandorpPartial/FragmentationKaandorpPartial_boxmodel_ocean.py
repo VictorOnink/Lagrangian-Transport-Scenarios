@@ -29,8 +29,8 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
         self.fig_size = (17, 10)
         self.fig_shape = (3, 2)
         self.x_label = 'Size (mm)'
-        self.y_label = r'Particle Number (n)'
-        self.twiny_label = r'Particle Mass (g)'
+        self.y_label = r'Normalized Particle Number (n mm$^{-1}$)'
+        self.twiny_label = r'Normalized Particle Mass (g mm$^{-1}$)'
         self.ax_ticklabel_size = 12
         self.ax_label_size = 14
         self.legend_size = 12
@@ -74,7 +74,7 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
                                          y_label=self.y_label, ax_ticklabel_size=self.ax_ticklabel_size,
                                          ax_label_size=self.ax_label_size, shape=self.fig_shape,
                                          plot_num=self.number_of_plots, log_yscale=True, log_xscale=True,
-                                         all_x_labels=True, all_y_labels=True, add_twinx=True,
+                                         all_x_labels=True, all_y_labels=False, add_twinx=True,
                                          twinx_y_label=self.twiny_label, twinx_ax_range=self.twin_ax_range,
                                          log_twinxscale=True, legend_axis=True, width_ratios=[1, 1, 0.5])
 
