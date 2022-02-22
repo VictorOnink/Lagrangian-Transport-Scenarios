@@ -14,38 +14,19 @@ class FragmentationKaandorpPartial_mass_loss:
                                                                        grid=np.ones(1), lon=np.ones(1), lat=np.ones(1))
         self.frag_list = [388, 1000, 10000, 35000, 50000]
         self.scenario = scenario
+        self.file_dict = self.scenario.return_full_run_directory()
         self.data_direc = utils.get_output_directory() + 'timeseries/FragmentationKaandorpPartial/'
         self.shore_time = settings.SHORE_TIME
         self.size_class_number = settings.SIZE_CLASS_NUMBER
         self.simulation_length = 3
 
     def run(self):
-        # First, we need to calculate the particle mass in each size category, which we calculate starting with the size
-        # distribution from Zeri et al. (2021) https://doi.org/10.1016/j.scitotenv.2019.06.168
-        size_bins = np.arange(0, 5.2, 0.1)
-        lengths = pd.read_excel(settings.DATA_INPUT_DIR_SERVERS[settings.SERVER] + "Zeri_Sustainability_MP_sizes.xls",
-                                sheet_name='Combined')['LENGTH']
-        field_data, _ = np.histogram(lengths, size_bins)
-        size_bins = (size_bins[1:] + size_bins[:-1]) / 2
-        # Creating the interpolation function from the bin sizes and the uncorrected field data
-        interpolation_function = interp1d(size_bins, field_data)
-        # Calculating the particle number at the sizes equivalent to the size class
-        number_inter = interpolation_function(
-            utils.size_range(units='mm', size_class_number=settings.SIZE_CLASS_NUMBER))
-        # Converting the particle number to the particle mass
-        mass_inter = np.zeros(number_inter.shape, dtype=float)
-        for size_class in range(mass_inter.size):
-            mass_inter[size_class] = number_inter[size_class] / (2 ** (settings.DN * size_class))
-
-        # So, the total 'mass' of plastic that has entered the simulation
-        particle_input = 0
-        for run in range(settings.RUN_RANGE):
-            particle_input += np.load(self.input_file_prefix + '{}_run={}.npy'.format('lon', run)).size
-
-        # First, the monthly mass input
+        # Getting the monthly input
         monthly_input = 0
-        for size_class in range(settings.SIZE_CLASS_NUMBER):
-            monthly_input += particle_input * mass_inter[size_class]
+        for run in range(settings.RUN_RANGE):
+            particle_number = np.load(self.input_file_prefix + '{}_run={}.npy'.format('lon', run)).size
+            post_dataset = utils.load_obj(self.file_dict['postprocess'][settings.STARTYEAR][settings.STARTMONTH][run][0])
+            monthly_input += np.sum(post_dataset['particle_mass'][:particle_number * settings.SIZE_CLASS_NUMBER, 0])
 
         # The total mass of plastic within the 3 year simulation
         total_input = monthly_input * 12 * 3
