@@ -112,7 +112,8 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
     def subfigure_title(self, index):
         alphabet = string.ascii_lowercase
         subtitle_list = ['Counts', 'Mass']
-        return '({}) {} - {}'.format(alphabet[index], self.reservoir_list[index // 2], subtitle_list[index % 2])
+        reservoir_list = ['Open water', 'Coastal', 'Beach']
+        return '({}) {} - {}'.format(alphabet[index], reservoir_list[index // 2], subtitle_list[index % 2])
 
 
 def label(lambda_fO):
