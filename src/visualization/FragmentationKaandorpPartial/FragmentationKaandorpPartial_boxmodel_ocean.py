@@ -34,7 +34,7 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
         self.ax_ticklabel_size = 12
         self.ax_label_size = 14
         self.legend_size = 12
-        self.xmin, self.xmax = 1e-3, 2e2
+        self.xmin, self.xmax = 1e-3, 1e1
         # self.ymin, self.ymax = {388: (1e2, 1e11), 35000: (1e3, 1e8)}[self.lambda_frag]
         self.ymin, self.ymax = 1e2, 1e11
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
