@@ -36,10 +36,10 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
         self.legend_size = 12
         self.xmin, self.xmax = 1e-3, 1e1
         # self.ymin, self.ymax = {388: (1e2, 1e11), 35000: (1e3, 1e8)}[self.lambda_frag]
-        self.ymin, self.ymax = 1e2, 1e11
+        self.ymin, self.ymax = 1e2, 1e12
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
         # self.twin_ymin, self.twin_ymax = {388: (1e2, 1e5), 35000: (1e-1, 1e6)}[self.lambda_frag]
-        self.twin_ymin, self.twin_ymax = 1e-1, 1e6
+        self.twin_ymin, self.twin_ymax = 1e-2, 2e5
         self.twin_ax_range = self.xmax, self.xmin, self.twin_ymax, self.twin_ymin
         self.number_of_plots = self.fig_shape[0] * self.fig_shape[1]
         self.cmap = 'viridis'
