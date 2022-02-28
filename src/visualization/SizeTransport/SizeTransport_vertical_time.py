@@ -142,7 +142,7 @@ class SizeTransport_vertical_time:
 
     @staticmethod
     def legend_label(size):
-        return r'r = {:.3f} mm'.format(size * 1e3)
+        return r'd = {:.3f} mm'.format(size * 1e3)
 
     @staticmethod
     def subfigure_title(index, simulation_year):

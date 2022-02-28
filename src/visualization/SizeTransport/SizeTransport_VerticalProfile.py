@@ -173,7 +173,7 @@ class SizeTransport_VerticalProfile:
 
     @staticmethod
     def legend_label(size):
-        return r'r = {:.3f} mm'.format(size * 1e3)
+        return r'd = {:.3f} mm'.format(size * 1e3)
 
     def subfigure_title(self, index):
         alphabet = string.ascii_lowercase
