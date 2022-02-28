@@ -22,7 +22,7 @@ def run(scenario, figure_direc: str):
     Analysis.FragmentationKaandorpPartial_fielddata(to_overwrite=False)
 
     # Calculating mass losses
-    Analysis.FragmentationKaandorpPartial_mass_loss(scenario=scenario).run()
+    # Analysis.FragmentationKaandorpPartial_mass_loss(scenario=scenario).run()
 
     # Plotting the input scenario
     # General_input_scenario(scenario=scenario, figure_direc=figure_direc).plot()
@@ -37,15 +37,15 @@ def run(scenario, figure_direc: str):
     #                                                    shore_time=shore_time, lambda_frag=35000, rho=rho,
     #                                                    simulation_length=3, weight='particle_number_sink').plot()
 
-    # FieldDataComp.FragmentationKaandorpPartial_FieldDataComp(figure_direc=figure_direc, scenario=scenario,
-    #                                                          shore_time=shore_time, lambda_frag_list=lambda_frag_list,
-    #                                                          rho=rho, input_list=['LebretonKaandorpInit']).plot()
+    FieldDataComp.FragmentationKaandorpPartial_FieldDataComp(figure_direc=figure_direc, scenario=scenario,
+                                                             shore_time=shore_time, lambda_frag_list=lambda_frag_list,
+                                                             rho=rho, input_list=['LebretonKaandorpInit']).plot()
 
     # box_model.FragmentationKaandorpPartial_boxmodelcomparison(figure_direc=figure_direc, scenario=scenario,
     #                                                           shore_time=shore_time, lambda_frag=388,
     #                                                           rho=rho, sim_length=2).plot()
 
-    box_model_ocean.FragmentationKaandorpPartial_boxmodel_ocean(figure_direc=figure_direc, size_class_number=12).plot()
+    # box_model_ocean.FragmentationKaandorpPartial_boxmodel_ocean(figure_direc=figure_direc, size_class_number=12).plot()
 
     # for year in [0, 1, 2]:
     #     for weight in ['particle_number_sink', 'particle_mass_sink']:
