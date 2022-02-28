@@ -140,7 +140,7 @@ def set_normalization(beach_state):
 
 
 def subfigure_title(index, size_list):
-    return '({}) r = {:.3f} mm'.format(string.ascii_lowercase[index], size_list[index] * 1e3)
+    return '({}) d = {:.3f} mm'.format(string.ascii_lowercase[index], size_list[index] * 1e3)
 
 
 
