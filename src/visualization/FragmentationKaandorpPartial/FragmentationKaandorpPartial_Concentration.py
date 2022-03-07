@@ -90,7 +90,7 @@ class FragmentationKaandorpPartial_Concentration:
 
         # Adding subfigure titles
         for index, ax in enumerate(ax_list):
-            ax.set_title(subfigure_title(index), weight='bold', fontsize=self.ax_label_size)
+            ax.set_title(subfigure_title(index), fontsize=self.ax_label_size)
 
         # The actual plotting of the figures
         for index, ax in enumerate(ax_list):
@@ -119,7 +119,7 @@ def subfigure_title(index):
     :return:
     """
     particle_size = utils.size_range(single_size_class=index, units='mm')
-    title = '({}) r = {:.3f} mm'.format(string.ascii_lowercase[index], particle_size)
+    title = '({}) k = {}, r = {:.3f} mm'.format(string.ascii_lowercase[index], index, particle_size)
     return title
 
 
