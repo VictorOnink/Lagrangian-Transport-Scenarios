@@ -49,24 +49,23 @@ class parcels_to_timeslicing:
                 # Setting the output name
                 output_name = get_file_names(file_dict=self.file_dict, directory=self.output_direc, final=True,
                                              prefix=prefix)
-                if not utils.check_file_exist(output_name + '.pkl'):
-                    # Loading an example input file to know which variables are stored in it:
-                    parcels_dataset = load_parcels_post_output(file_dict=self.file_dict)
-                    # Creating an output dict
-                    output_dict = {}
-                    for key in self.variable_list[:-1]:
-                        if key in parcels_dataset.variables.keys():
-                            output_dict[key] = np.array([], dtype=float)
-                    # Getting all the timeslice files for this date, and looping through them
-                    str_format = settings.INIT_SIZE, settings.INIT_DENSITY
-                    file_list = glob.glob(self.temp_direc + prefix + '*{:.1E}*{}*'.format(*str_format))
-                    for file_name in file_list:
-                        time_file = utils.load_obj(file_name)
-                        for key in output_dict.keys():
-                            output_dict[key] = np.append(output_dict[key], time_file[key])
-                        utils.remove_file(file_name)
-                        utils.print_statement("At {} we have {} particles".format(date, output_dict['lon'].size), to_print=True)
-                        utils.save_obj(output_name, output_dict)
+                # Loading an example input file to know which variables are stored in it:
+                parcels_dataset = load_parcels_post_output(file_dict=self.file_dict)
+                # Creating an output dict
+                output_dict = {}
+                for key in self.variable_list[:-1]:
+                    if key in parcels_dataset.variables.keys():
+                        output_dict[key] = np.array([], dtype=float)
+                # Getting all the timeslice files for this date, and looping through them
+                str_format = settings.INIT_SIZE, settings.INIT_DENSITY
+                file_list = glob.glob(self.temp_direc + prefix + '*{:.1E}*{}*'.format(*str_format))
+                for file_name in file_list:
+                    time_file = utils.load_obj(file_name)
+                    for key in output_dict.keys():
+                        output_dict[key] = np.append(output_dict[key], time_file[key])
+                    utils.remove_file(file_name)
+                    utils.print_statement("At {} we have {} particles".format(date, output_dict['lon'].size), to_print=True)
+                    utils.save_obj(output_name, output_dict)
         else:
             ValueError('settings.PARALLEL_STEP can not have a value of {}'.format(self.parallel_step))
 
