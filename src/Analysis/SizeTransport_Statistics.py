@@ -56,7 +56,7 @@ class SizeTransport_Statistics:
             below_dict['total'] += below_dict[season] / 4
 
         # Print the percentage of particles below a given depth
-        opening = 'For a particle with size {:.3f} and density {}, we have the following fractions below {} m'.format(self.size, self.rho, reference_depth),
+        opening = 'For a particle with size {:.3f} and density {}, we have the following fractions below {} m'.format(self.size, self.rho, reference_depth)
         print(opening)
         for key in below_dict.keys():
             print("\t{} {:.2f}%".format(key, below_dict[key]))
