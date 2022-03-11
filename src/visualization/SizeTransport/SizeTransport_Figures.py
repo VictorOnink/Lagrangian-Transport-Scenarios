@@ -18,6 +18,7 @@ from visualization.SizeTransport.SizeTransport_vertical_OSM import SizeTransport
 from visualization.SizeTransport.SizeTransport_concentration_seasons import SizeTransport_concentration_seasons
 from visualization.SizeTransport.SizeTransport_peak_depth import SizeTransport_peak_depth
 from visualization.SizeTransport.SizeTransport_vertical_time import SizeTransport_vertical_time
+import Analysis
 import os
 import numpy as np
 
@@ -30,7 +31,7 @@ def run(scenario, figure_direc: str):
     :return:
     """
     # 5000 2500 1250 625 313 156 78 39 20 10 5 2
-    size_list = np.array([5000, 313, 20, 2]) * settings.SIZE_FACTOR
+    size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
 
     # Creating a figure of the basin bathymetry
     # General_bathymetry(scenario=scenario, figure_direc=figure_direc).plot()
@@ -85,47 +86,47 @@ def run(scenario, figure_direc: str):
     #                                                 depth_level=depth_level).plot()
 
     # Plotting all horizontal concentrations for a given density
-    for rho in [30, 920, 980, 1020]:
-        for time_select in [0, 1, 2]:
-            for depth_level in ['surface_1m', 'surface_5m', 'column']:
-                SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
-                                                  time_selection=time_select, rho=rho, depth_level=depth_level).plot()
-                SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
-                                                  time_selection=time_select, rho=rho, depth_level=depth_level,
-                                                  fixed_resus=True, resus_time=7).plot()
-                SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
-                                                  time_selection=time_select, rho=rho, depth_level=depth_level,
-                                                  fixed_resus=True, resus_time=50).plot()
+    # for rho in [30, 920, 980, 1020]:
+    #     for time_select in [0, 1, 2]:
+    #         for depth_level in ['surface_1m', 'surface_5m', 'column']:
+    #             SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
+    #                                               time_selection=time_select, rho=rho, depth_level=depth_level).plot()
+    #             SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
+    #                                               time_selection=time_select, rho=rho, depth_level=depth_level,
+    #                                               fixed_resus=True, resus_time=7).plot()
+    #             SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
+    #                                               time_selection=time_select, rho=rho, depth_level=depth_level,
+    #                                               fixed_resus=True, resus_time=50).plot()
 
     # For direct comparison between full column and 1m concentration
-    for rho in [30, 920, 980, 1020]:
-        for time_select in [0, 2]:
-            SizeTransport_concentration_subset(scenario=scenario, figure_direc=figure_direc, time_selection=time_select,
-                                               rho=rho, size_list=np.array([5000, 313, 2]) * settings.SIZE_FACTOR).plot()
-            SizeTransport_concentration_subset(scenario=scenario, figure_direc=figure_direc, time_selection=time_select,
-                                               rho=rho, size_list=np.array([5000, 2]) * settings.SIZE_FACTOR).plot()
-            SizeTransport_concentration_subset(scenario=scenario, figure_direc=figure_direc, time_selection=time_select,
-                                               rho=rho, size_list=np.array([5000, 313, 2]) * settings.SIZE_FACTOR,
-                                               fixed_resus=True, resus_time=7).plot()
-            SizeTransport_concentration_subset(scenario=scenario, figure_direc=figure_direc, time_selection=time_select,
-                                               rho=rho, size_list=np.array([5000, 2]) * settings.SIZE_FACTOR,
-                                               fixed_resus=True, resus_time=7).plot()
-            SizeTransport_concentration_subset(scenario=scenario, figure_direc=figure_direc, time_selection=time_select,
-                                               rho=rho, size_list=np.array([5000, 313, 2]) * settings.SIZE_FACTOR,
-                                               fixed_resus=True, resus_time=50).plot()
-            SizeTransport_concentration_subset(scenario=scenario, figure_direc=figure_direc, time_selection=time_select,
-                                               rho=rho, size_list=np.array([5000, 2]) * settings.SIZE_FACTOR,
-                                               fixed_resus=True, resus_time=50).plot()
+    # for rho in [30, 920, 980, 1020]:
+    #     for time_select in [0, 2]:
+    #         SizeTransport_concentration_subset(scenario=scenario, figure_direc=figure_direc, time_selection=time_select,
+    #                                            rho=rho, size_list=np.array([5000, 313, 2]) * settings.SIZE_FACTOR).plot()
+    #         SizeTransport_concentration_subset(scenario=scenario, figure_direc=figure_direc, time_selection=time_select,
+    #                                            rho=rho, size_list=np.array([5000, 2]) * settings.SIZE_FACTOR).plot()
+    #         SizeTransport_concentration_subset(scenario=scenario, figure_direc=figure_direc, time_selection=time_select,
+    #                                            rho=rho, size_list=np.array([5000, 313, 2]) * settings.SIZE_FACTOR,
+    #                                            fixed_resus=True, resus_time=7).plot()
+    #         SizeTransport_concentration_subset(scenario=scenario, figure_direc=figure_direc, time_selection=time_select,
+    #                                            rho=rho, size_list=np.array([5000, 2]) * settings.SIZE_FACTOR,
+    #                                            fixed_resus=True, resus_time=7).plot()
+    #         SizeTransport_concentration_subset(scenario=scenario, figure_direc=figure_direc, time_selection=time_select,
+    #                                            rho=rho, size_list=np.array([5000, 313, 2]) * settings.SIZE_FACTOR,
+    #                                            fixed_resus=True, resus_time=50).plot()
+    #         SizeTransport_concentration_subset(scenario=scenario, figure_direc=figure_direc, time_selection=time_select,
+    #                                            rho=rho, size_list=np.array([5000, 2]) * settings.SIZE_FACTOR,
+    #                                            fixed_resus=True, resus_time=50).plot()
 
     # Plot the maximum distance from shore for a given density
-    for rho in [30, 920, 980, 1020]:
-        for subselection in [False, True]:
-            SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho,
-                                      subselection=subselection).plot()
-            SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho, fixed_resus=True,
-                                      resus_time=7, subselection=subselection).plot()
-            SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho, fixed_resus=True,
-                                      resus_time=50, subselection=subselection).plot()
+    # for rho in [30, 920, 980, 1020]:
+    #     for subselection in [False, True]:
+    #         SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho,
+    #                                   subselection=subselection).plot()
+    #         SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho, fixed_resus=True,
+    #                                   resus_time=7, subselection=subselection).plot()
+    #         SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho, fixed_resus=True,
+    #                                   resus_time=50, subselection=subselection).plot()
 
     # size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
     # Creating figures of the timeseries of the number of particles that are beached/adrift/seabed
@@ -152,26 +153,26 @@ def run(scenario, figure_direc: str):
     # SizeTransport_CumulativeDistance(figure_direc=figure_direc, scenario=scenario, size_list=size_list).plot()
 
     # Plotting the seasonal average vertical profile
-    size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
-    for rho in [[920, 980], [30, 1020]]:
-        for shore in ['all', 'nearshore', 'offshore']:
-            SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                          time_selection=0, rho_list=rho, shore=shore).plot()
-            SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                          time_selection=1, rho_list=rho, shore=shore).plot()
-            SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                          time_selection=2, rho_list=rho, shore=shore).plot()
-            SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
-                                          time_selection='all', rho_list=rho, shore=shore).plot()
+    # size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
+    # for rho in [[920, 980], [30, 1020]]:
+    #     for shore in ['all', 'nearshore', 'offshore']:
+    #         SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                       time_selection=0, rho_list=rho, shore=shore).plot()
+    #         SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                       time_selection=1, rho_list=rho, shore=shore).plot()
+    #         SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                       time_selection=2, rho_list=rho, shore=shore).plot()
+    #         SizeTransport_VerticalProfile(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
+    #                                       time_selection='all', rho_list=rho, shore=shore).plot()
 
     # Plotting the monthly average vertical profiles
-    size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
-    for size in size_list:
-        for time_selection in [0, 1, 2]:
-            for shore in ['all', 'nearshore', 'offshore']:
-                SizeTransport_vertical_time(scenario=scenario, figure_direc=figure_direc, size=size,
-                                            time_selection=time_selection, shore=shore,
-                                            rho_list=[30, 920, 980, 1020]).plot()
+    # size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
+    # for size in size_list:
+    #     for time_selection in [0, 1, 2]:
+    #         for shore in ['all', 'nearshore', 'offshore']:
+    #             SizeTransport_vertical_time(scenario=scenario, figure_direc=figure_direc, size=size,
+    #                                         time_selection=time_selection, shore=shore,
+    #                                         rho_list=[30, 920, 980, 1020]).plot()
 
     # Plotting the seasonal peak concentration depth
     # for size in np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR:
@@ -199,5 +200,11 @@ def run(scenario, figure_direc: str):
     #     for year in [0, 1, 2]:
     #         SizeTransport_vertical_OSM(scenario=scenario, figure_direc=figure_direc, time_selection=year,
     #                                    season=season).plot()
+
+    # Calculate basic statistics
+    for size in np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR:
+        for rho in [920]:
+            Analysis.SizeTransport_Statistics(scenario=scenario, size=size,
+                                              rho=rho).fraction_below_depth(reference_depth=10)
 
     utils.print_statement("That is all folks!", to_print=True)
