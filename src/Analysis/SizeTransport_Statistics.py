@@ -60,5 +60,4 @@ class SizeTransport_Statistics:
         print(opening)
         for key in below_dict.keys():
             print("\t{} {:.2f}%".format(key, below_dict[key]))
-        print('\n')
 
