@@ -57,8 +57,8 @@ class SizeTransport_Statistics:
 
         # Print the percentage of particles below a given depth
         opening = 'For a particle with size {:.3f} and density {}, we have the following fractions below {} m\n'.format(self.size, self.rho, reference_depth),
-        utils.print_statement(opening, to_print=True)
+        print(opening)
         for key in below_dict.keys():
-            utils.print_statement("\t{} {}% \n".format(key, below_dict[key]))
+            print("\t{} {}% \n".format(key, below_dict[key]))
 
 
