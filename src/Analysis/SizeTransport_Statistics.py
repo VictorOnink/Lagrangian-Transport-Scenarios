@@ -59,6 +59,6 @@ class SizeTransport_Statistics:
         opening = 'For a particle with size {:.3f} and density {}, we have the following fractions below {} m'.format(self.size, self.rho, reference_depth),
         print(opening)
         for key in below_dict.keys():
-            print("\t{} {}%".format(key, below_dict[key]))
+            print("\t{} {:.2f}%".format(key, below_dict[key]))
         print('\n')
 
