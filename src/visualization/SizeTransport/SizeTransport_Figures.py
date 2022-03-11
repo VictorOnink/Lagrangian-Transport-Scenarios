@@ -203,8 +203,8 @@ def run(scenario, figure_direc: str):
 
     # Calculate basic statistics
     for size in np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR:
-        for rho in [30]:
-            Analysis.SizeTransport_Statistics(scenario=scenario, size=size,
-                                              rho=rho).fraction_below_depth(reference_depth=10)
+        for rho in [980]:
+            base_statistic = Analysis.SizeTransport_Statistics(scenario=scenario, size=size, rho=rho)
+            base_statistic.fraction_below_depth(reference_depth=10)
 
     utils.print_statement("That is all folks!", to_print=True)
