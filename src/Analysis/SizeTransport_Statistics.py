@@ -81,7 +81,7 @@ class SizeTransport_Statistics:
 
         # Calculating the mean fraction on the beaches, adrift (<10km) and adrift (>10 km)
         beach = np.nanmean(data_dict['beach'])
-        coastal = np.nanmean(data_dict['coastal_10km'])
+        coastal = np.nanmean(data_dict['adrift']['coastal_10km'])
         open_water = self.total_number - coastal - beach
 
         beach *= 100 / self.total_number
