@@ -82,12 +82,12 @@ class SizeTransport_reservoirs:
                         if beach_state in ['beach']:
                             timeseries_dict[rho][size][fixed_resus][beach_state] /= timeseries_dict[rho][size][fixed_resus]['total_divide']
                             timeseries_dict[rho][size][fixed_resus][beach_state] *= 100.
-                            timeseries_dict[rho][size][fixed_resus][beach_state] = np.nanmean(timeseries_dict[rho][size][fixed_resus][beach_state][-1])
+                            timeseries_dict[rho][size][fixed_resus][beach_state] = np.nanmean(timeseries_dict[rho][size][fixed_resus][beach_state])
                         elif beach_state in ['adrift']:
                             for c in self.coastal_list:
                                 timeseries_dict[rho][size][fixed_resus][beach_state][c] /= timeseries_dict[rho][size][fixed_resus]['total_divide']
                                 timeseries_dict[rho][size][fixed_resus][beach_state][c] *= 100.
-                                timeseries_dict[rho][size][fixed_resus][beach_state][c] = np.nanmean(timeseries_dict[rho][size][fixed_resus][beach_state][c][-1])
+                                timeseries_dict[rho][size][fixed_resus][beach_state][c] = np.nanmean(timeseries_dict[rho][size][fixed_resus][beach_state][c])
 
         # Creating the figure
         ax = vUtils.base_figure(fig_size=self.figure_size, ax_range=self.ax_range, y_label=self.y_label,
