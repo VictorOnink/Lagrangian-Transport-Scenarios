@@ -202,8 +202,8 @@ def run(scenario, figure_direc: str):
     #                                    season=season).plot()
 
     # Calculate basic statistics
-    for size in np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR:
-        for rho in [1020]:
+    for size in np.array([5000, 2]) * settings.SIZE_FACTOR:
+        for rho in [30, 920, 980, 1020]:
             base_statistic = Analysis.SizeTransport_Statistics(scenario=scenario, size=size, rho=rho)
             # base_statistic.fraction_below_depth(reference_depth=10)
             base_statistic.fraction_per_reservoir()
