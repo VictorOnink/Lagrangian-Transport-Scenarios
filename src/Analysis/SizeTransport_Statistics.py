@@ -16,14 +16,22 @@ class SizeTransport_Statistics:
         self.rho = rho
         self.tau = tau
         self.fixed_resus = fixed_resus
-        self.resus_time = resus_time
+        self.resus_time = {True: resus_time, False: utils.get_resuspension_timescale(L=self.size, rho_p=self.rho)}[self.fixed_resus]
         # Data specific variables
         self.base_data_direc = utils.get_output_directory(server=settings.SERVER)
         # Other useful variables
         self.seasons = ['JFM', 'AMJ', 'JAS', 'OND']
         self.total_number = 85196
 
-    def fraction_below_depth(self, reference_depth, shore='all'):
+    def fraction_below_depth(self, reference_depth, shore='all', adrift=False):
+        """
+        Calculate the fraction of particles found below a given reference depth, either seasonally or averaged over
+        the entire simulation
+        :param reference_depth:
+        :param shore:
+        :param adrift:
+        :return:
+        """
         prefix = 'vertical_concentration'
         data_direc = self.base_data_direc + 'concentrations/SizeTransport/'
         conc_type = {'all': 'concentration', 'offshore': 'concentration_offshore',
@@ -60,4 +68,31 @@ class SizeTransport_Statistics:
         print(opening)
         for key in below_dict.keys():
             print("\t{} {:.2f}%".format(key, below_dict[key]))
+
+    def fraction_per_reservoir(self):
+        prefix = 'timeseries'
+        data_direc = self.base_data_direc + 'timeseries/SizeTransport/'
+
+        # Loading the timeseries in question
+        data_dict = vUtils.SizeTransport_load_data(scenario=self.scenario, prefix=prefix,
+                                                   data_direc=data_direc, size=self.size, rho=self.rho,
+                                                   tau=self.tau, fixed_resus=self.fixed_resus,
+                                                   resus_time=self.resus_time)
+
+        # Calculating the mean fraction on the beaches, adrift (<10km) and adrift (>10 km)
+        beach = np.nanmean(data_dict['beach'])
+        coastal = np.nanmean(data_dict['coastal_10km'])
+        open_water = self.total_number - coastal - beach
+
+        beach *= 100 / self.total_number
+        coastal *= 100 / self.total_number
+        open_water *= 100 / self.total_number
+
+        # Print the fractions
+        print('For a particle with size {:.3f} and density {}, we have the distribution'.format(self.size * 1e3, self.rho))
+        print('\tBeach = {:.2f}%'.format(beach))
+        print('\tCoastal = {:.2f}%'.format(coastal))
+        print('\tOpen water = {:.2f}%'.format(open_water))
+
+
 
