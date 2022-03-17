@@ -89,11 +89,12 @@ class FragmentationKaandorpPartial_Statistics:
             total_mass += total_dict[size_class]['concentration_mass_sink']
             total_counts += total_dict[size_class]['concentration_number_sink']
 
-        # Print the percentage of particles below a given depth
+        # Print the size distributions
         print('For lambda_frag {}, we have the following mass/number distribution'.format(self.lambda_frag))
         for size_class in range(settings.SIZE_CLASS_NUMBER):
             print("\tk = {} mass = {:.2f}%, counts = {:.2f}".format(size_class,
-                                                                    total_dict[size_class]['concentration_mass_sink'] / total_counts * 100))
+                                                                    total_dict[size_class]['concentration_mass_sink'] / total_mass * 100,
+                                                                    total_dict[size_class]['concentration_number_sink'] / total_counts * 100))
 
 
 
