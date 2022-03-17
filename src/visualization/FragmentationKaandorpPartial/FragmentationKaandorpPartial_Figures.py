@@ -61,17 +61,17 @@ def run(scenario, figure_direc: str):
     #                                                                            simulation_year=year,
     #                                                                            weight=weight).plot()
 
-    for beach_state in ['adrift']:
-        for year in [0, 1, 2]:
-            for input in ['LebretonKaandorpInit']:
-                concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc,
-                                                                         rho=rho, shore_time=shore_time,
-                                                                         beach_state=beach_state, simulation_year=year,
-                                                                         lambda_frag=388, mass=False, input=input).plot()
-                concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc,
-                                                                         rho=rho, shore_time=shore_time,
-                                                                         beach_state=beach_state, simulation_year=year,
-                                                                         lambda_frag=388, mass=True, input=input).plot()
+    # for beach_state in ['adrift']:
+    #     for year in [0, 1, 2]:
+    #         for input in ['LebretonKaandorpInit']:
+    #             concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc,
+    #                                                                      rho=rho, shore_time=shore_time,
+    #                                                                      beach_state=beach_state, simulation_year=year,
+    #                                                                      lambda_frag=388, mass=False, input=input).plot()
+    #             concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc,
+    #                                                                      rho=rho, shore_time=shore_time,
+    #                                                                      beach_state=beach_state, simulation_year=year,
+    #                                                                      lambda_frag=388, mass=True, input=input).plot()
 
     # for beach_state in ['adrift', 'beach']:
     #     for year in [0, 1]:
@@ -84,6 +84,11 @@ def run(scenario, figure_direc: str):
     #                                                                         lambda_frag=35000, time_selection=year,
     #                                                                         beach_state=beach_state, mass=True,
     #                                                                         input=input).plot()
+
+    for lambda_frag in lambda_frag_list:
+        base_statistics = Analysis.FragmentationKaandorpPartial_Statistics(scenario, lambda_frag)
+        base_statistics.fraction_below_depth(reference_depth=10)
+        base_statistics.mass_number_fraction_per_size_class()
 
     utils.print_statement("That is all folks!", to_print=True)
 

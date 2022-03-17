@@ -15,3 +15,4 @@ from Analysis.parcels_to_lonlat_average import *
 from Analysis.FragmentationKaandorpPartial_mass_loss import *
 from Analysis.parcels_to_bayesian import *
 from Analysis.SizeTransport_Statistics import SizeTransport_Statistics
+from Analysis.FragmentationKaandorpPartial_Statistics import FragmentationKaandorpPartial_Statistics
