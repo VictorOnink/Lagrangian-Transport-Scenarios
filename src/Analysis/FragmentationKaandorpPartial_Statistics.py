@@ -58,8 +58,8 @@ class FragmentationKaandorpPartial_Statistics:
         print('For lambda_frag {}, we have the following fractions below {} m'.format(self.lambda_frag, reference_depth))
         for size_class in range(settings.SIZE_CLASS_NUMBER):
             print("\tk = {} mass = {:.2f}%, counts = {:.2f}".format(size_class,
-                                                                    below_dict[size_class]['concentration_mass'],
-                                                                    below_dict[size_class]['concentration_number']))
+                                                                    below_dict[size_class]['concentration_mass_sink'],
+                                                                    below_dict[size_class]['concentration_number_sink']))
 
     def mass_number_fraction_per_size_class(self):
         prefix = 'vertical_concentration'
@@ -87,15 +87,14 @@ class FragmentationKaandorpPartial_Statistics:
         # Calculate the total counts and mass
         total_mass, total_counts = 0, 0
         for size_class in range(settings.SIZE_CLASS_NUMBER):
-            total_mass += total_dict[size_class]['concentration_mass']
-            total_counts += total_dict[size_class]['concentration_number']
+            total_mass += total_dict[size_class]['concentration_mass_sink']
+            total_counts += total_dict[size_class]['concentration_number_sink']
 
         # Print the percentage of particles below a given depth
         print('For lambda_frag {}, we have the following mass/number distribution'.format(self.lambda_frag))
         for size_class in range(settings.SIZE_CLASS_NUMBER):
             print("\tk = {} mass = {:.2f}%, counts = {:.2f}".format(size_class,
-                                                                    total_dict[size_class]['concentration_mass'] / total_mass * 100,
-                                                                    total_dict[size_class]['concentration_number'] / total_counts * 100))
+                                                                    total_dict[size_class]['concentration_mass_sink'] / total_counts * 100))
 
 
 
