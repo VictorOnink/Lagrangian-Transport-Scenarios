@@ -71,8 +71,7 @@ class FragmentationKaandorpPartial_Statistics:
                                                                   data_direc=data_direc,
                                                                   shore_time=self.shore_time,
                                                                   lambda_frag=self.lambda_frag,
-                                                                  rho=self.rho, postprocess=True,
-                                                                  input=self.input)
+                                                                  rho=self.rho, postprocess=True)
 
         # Getting the last year and month
         data_dict = data_dict[utils.analysis_simulation_year_key(2)][11]
