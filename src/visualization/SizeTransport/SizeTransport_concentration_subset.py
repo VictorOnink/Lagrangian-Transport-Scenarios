@@ -128,7 +128,8 @@ class SizeTransport_concentration_subset:
         return colors.LogNorm(vmin=1e0, vmax=1e4)
 
     def subfigure_title(self, index):
-        return '({}) d = {:.3f} mm'.format(string.ascii_lowercase[index], self.size_list[index // 2] * 1e3)
+        depth = {0: 'Column-integrated', 1: 'Near-surface'}[index % 2]
+        return '({}) d = {:.3f} mm, {}'.format(string.ascii_lowercase[index], self.size_list[index // 2] * 1e3, depth)
 
 
 
