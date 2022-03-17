@@ -64,7 +64,7 @@ class FragmentationKaandorpPartial_Statistics:
     def mass_number_fraction_per_size_class(self):
         prefix = 'vertical_concentration'
         data_direc = self.base_data_direc + 'concentrations/FragmentationKaandorpPartial/'
-        conc_types = ['concentration_mass', 'concentration_number']
+        conc_types = ['concentration_mass_sink', 'concentration_number_sink']
 
         # Loading the profile in question
         data_dict = vUtils.FragmentationKaandorpPartial_load_data(scenario=self.scenario, prefix=prefix,
