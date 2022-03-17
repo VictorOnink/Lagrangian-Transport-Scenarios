@@ -9,13 +9,12 @@ class FragmentationKaandorpPartial_Statistics:
     """
     This class will have a number of basic statistical tests, such as fractions below any given depth
     """
-    def __init__(self, scenario, lambda_frag, shore_time=26, rho=920, input='LebretonDivision'):
+    def __init__(self, scenario, lambda_frag, shore_time=26, rho=920):
         # Scenario specific variables
         self.scenario = scenario
         self.lambda_frag = lambda_frag
         self.rho = rho
         self.shore_time = shore_time
-        self.input = input
         # Data specific variables
         self.base_data_direc = utils.get_output_directory(server=settings.SERVER)
         # Other useful variables
@@ -39,8 +38,7 @@ class FragmentationKaandorpPartial_Statistics:
                                                                   data_direc=data_direc,
                                                                   shore_time=self.shore_time,
                                                                   lambda_frag=self.lambda_frag,
-                                                                  rho=self.rho, postprocess=True,
-                                                                  input=self.input)
+                                                                  rho=self.rho, postprocess=True)
         depth_bins = data_dict['depth']
 
         # Getting the last year and month
