@@ -51,7 +51,6 @@ class FragmentationKaandorpPartial_Statistics:
 
         for size_class in range(settings.SIZE_CLASS_NUMBER):
             below_dict[size_class] = {}
-            print(data_dict[size_class].keys())
             for conc in conc_types:
                 below_dict[size_class][conc] = np.nansum(data_dict[size_class][conc][depth_selection]) / np.nansum(data_dict[size_class][conc]) * 100
 
