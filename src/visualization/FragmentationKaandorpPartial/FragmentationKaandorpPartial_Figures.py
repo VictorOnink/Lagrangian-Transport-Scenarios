@@ -88,7 +88,7 @@ def run(scenario, figure_direc: str):
     for lambda_frag in lambda_frag_list:
         base_statistics = Analysis.FragmentationKaandorpPartial_Statistics(scenario, lambda_frag)
         base_statistics.fraction_below_depth(reference_depth=10)
-        base_statistics.mass_number_fraction_per_size_class()
+        # base_statistics.mass_number_fraction_per_size_class()
 
     utils.print_statement("That is all folks!", to_print=True)
 
