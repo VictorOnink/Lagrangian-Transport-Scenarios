@@ -85,7 +85,7 @@ def run(scenario, figure_direc: str):
     #                                                                         beach_state=beach_state, mass=True,
     #                                                                         input=input).plot()
 
-    for lambda_frag in [388]:#lambda_frag_list:
+    for lambda_frag in lambda_frag_list:
         base_statistics = Analysis.FragmentationKaandorpPartial_Statistics(scenario, lambda_frag)
         # base_statistics.fraction_below_depth(reference_depth=10)
         base_statistics.mass_number_fraction_per_size_class()
