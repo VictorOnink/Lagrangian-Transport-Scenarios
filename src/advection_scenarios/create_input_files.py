@@ -238,8 +238,7 @@ def input_to_nearest_coastal(coastal: np.array, inputs_grid: np.array, lon: np.a
             while len(coastal_lon) < 1:
                 for lat_step in [-step, step]:
                     for lon_step in range(-step, step + 1):
-                        if coastal[
-                            (lat_point + lat_step) % coastal.shape[0], (lon_point + lon_step) % coastal.shape[1]]:
+                        if coastal[(lat_point + lat_step) % coastal.shape[0], (lon_point + lon_step) % coastal.shape[1]]:
                             coastal_lat.append((lat_point + lat_step) % coastal.shape[0])
                             coastal_lon.append((lon_point + lon_step) % coastal.shape[1])
                 step += 1
@@ -325,17 +324,6 @@ def number_of_releases(repeat_dt):
 
 
 def histogram(lon_data, lat_data, bins_Lon, bins_Lat, weight_data=0):
-    """
-    operation -> 'sum' = get array with sum of weights per cell, divided by km^2
-                 'mean' = get array with mean of weights per cell, divided by km^2
-                 'count' = get array with counts of occurences within each cell, divided by km^2
-    :param lon_data: Nx1 or (N,) array
-    :param lat_data: Nx1 or (N,) array
-    :param bins_Lon: LONx1 array
-    :param bins_Lat: LATx1 array
-    :param weight_data: 0 if we are only interested in counts, else Nx1 or (N,) array
-    :return:
-    """
     lon_data, lat_data = lon_data.reshape(np.size(lon_data)), lat_data.reshape(np.size(lat_data))
     weight_data = weight_data.reshape(np.size(weight_data))
     masses = np.zeros((len(bins_Lat), len(bins_Lon)))
