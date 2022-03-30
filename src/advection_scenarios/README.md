@@ -49,6 +49,8 @@ together with population density estimates for 2010.
 - `Lebreton`: This uses estimates of annual riverine plastic inputs from [Lebreton et al. (2017)](https://doi.org/10.1038/ncomms15611)
 - 'LebretonDivision': This is the same as the Lebreton scenario, but with a slightly different subdivision of the particle
 release.
+- 'LebretonKaandorpInit': This has the spatial scaling according to [Lebreton et al. (2017)](https://doi.org/10.1038/ncomms15611), but
+weighs the particle mass/counts according to [Zeri et al. (2021)](https://doi.org/10.3390/su13105328)
 - `Point_Release`: This releases a particle at a single point, where the initial coordinates are set in `src/settings.py`
 - `Uniform`: This releases particles on a uniformly spaced lon/lat grid over the entire basin (with the exception of
 land).

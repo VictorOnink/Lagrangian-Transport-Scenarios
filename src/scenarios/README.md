@@ -33,3 +33,5 @@ Now, we have a number of different scenarios built in at the moment:
 - `coastal_proximity.py`: This is a beaching scenario where a particle beaches when it is within the coastal zone for more than a predetermined period of time. This has not been included in any final paper
 - `stochastic_scenario.py`: This is a beaching/resuspension scenario where beaching/resuspension are implemented stochastically when the particle is within the coastal zone. This is the main scenario described in [Onink et al. (2021)](https://doi.org/10.1088/1748-9326/abecbd).
 - `shore_dependent_resuspension_scenario.py`: This beaching/resuspension scenario is very similar to the `stochastic_scenario.py` scenario, but here the resuspension rate is spatially varying based on the sandiness of the coastline. This scenario was also described in [Onink et al. (2021)](https://doi.org/10.1088/1748-9326/abecbd).
+- `BlueCloudBackwards.py`: This is a 2D transport scenario set up to do back-in-time simulations for the Blue Cloud Hackathon
+- `BlueCloudForwards.py`: The equivalent to `BlueCloudBackwards.py`, but then for forward-in-time simulations for the Blue Cloud Hackathon

@@ -1,39 +1,50 @@
 #!/bin/sh
 module load Workspace
 #####################################################################################
-# First we define the general parameters of the run                                 #
+# General run parameters                                                            #
 #####################################################################################
 SUBMISSION='analysis'
 export SUBMISSION
-DEBUG=0 # 0 = Not a debug run, 1 = a debug run
+
+# 0 = Not a debug run, 1 = a debug run
+DEBUG=0
+
 # 0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 # 5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation,
 # 8 = Blue Cloud Hackathon Backward, 9 = Blue Cloud Hackathon Forward
 SCENARIO=7
 export SCENARIO
+
 #for scenario 1, the time a particle must be near the coast to beach (in days)
 VICINITY=2
 export VICINITY
+
 #for scenario 2, the beaching and resuspension timescales (in days)
 SHORETIME_list=(26)
 RESUSTIME_list=(69)
+
 #for scenario 3, the shore dependence scenario.
 SHOREDEPEN=0
 export SHOREDEPEN
+
 #for scenario 4, the minimum wind speed for resusplension. Divide by 10 for actual value
 WMIN=3
 export WMIN
+
 #for scenario 5 and 6, the initial size of the particle in 1e-6 m and the particle rho
 PARTICLE_SIZE_list=(5000)  #(5000 2500 1250 625 313 156 78 39 20 10 5 2)
 INIT_DENSITY_list=(920) # (30 920 980 1020)
 export INIT_DENSITY
+
 #for scenario 5 and 6, the critical bottom shear stress for particle resuspension (x1e-3)
 SEABED_CRIT=0
 export SEABED_CRIT
+
 #for scenarios 5 - 7, if fixed == 1 we have size-independent resuspension, otherwise the resuspension timescale is a
 #function of the particle rise velocity
 FIXED_RESUS=0
 export FIXED_RESUS
+
 # For scenario 7, the fragmentation parameters p (x1e-1), DN (x1e-1), the number of size classes and fragmentation
 # timescale (days). Also, the option of including ocean fragmentation or not
 P=4
@@ -46,25 +57,31 @@ export P
 export DN
 export SIZE_CLASS_NUMBER
 export OCEAN_FRAG
+
 # For scenario 8 & 9, which release site do we want to do the backwards simulation for
 RELEASE_SITE=0
 export RELEASE_SITE
+
 #the starting year of the simulation, and how many years the simulation will take
 YEAR=2010
 STARTMONTH_list=(1 2 3 4 5 6 7 8 9 10 11 12)
 STARTDAY=1
 export STARTDAY
+
 # Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=lebretondivision, 3=lebretonKaandorpInit,
 # 4=point, 5=uniform
 INPUT=3
 export INPUT
+
 #Which advection data do we want to use?
 # 0 = Global HYCOM, 1 = Caribbean HYCOM, 2 = Mediterranean CMEMS
 ADVECTION_DATA=2
 export ADVECTION_DATA
+
 #Number of years the simulation runs
 SIMLEN=3
 export SIMLEN
+
 # For the analysis, if we have multiple years that we want to combine into one analysis set (so if we have continuous
 # particle release), then this how many years we want to include
 if [ "$SCENARIO" -eq "7" ]; then
@@ -72,12 +89,15 @@ if [ "$SCENARIO" -eq "7" ]; then
 else
   COMBINE_YEARS=1
 fi
+
 #Inclusion of Stokes drift. 0 = include stokes, 1 = do not include stokes
 STOKES=0
 export STOKES
+
 #Ensemble member
 ENSEMBLE=1
 export ENSEMBLE
+
 #Ubelix server, so server==1
 SERVER=1
 export SERVER
@@ -133,11 +153,6 @@ if [ "$SCENARIO" -eq "9" -a  "$INPUT" -ne "4" ]; then
   echo 'For BlueCloudForwards, make sure to use input scenario 4!!!!.'
   exit
 fi
-#if [ "$SCENARIO" -eq "7" ] && [[ "$INPUT" -ne "2" ] || [ "$INPUT" -ne "3" ]]; then
-#  echo 'For KaandorpFragmentationPartial, make sure to use input scenario 2!!!!.'
-#  exit
-#fi
-
 if [ "$SCENARIO" -eq "7" -a ${#PARTICLE_SIZE_list[@]} -gt 1 ]; then
   echo 'For KaandorpFragmentationPartial, please only submit one PARTICLE_SIZE.'
   exit
@@ -149,9 +164,9 @@ fi
 
 #The number of runs we do, dependent on the input scenario.
 if [ "$INPUT" -eq "0" ]; then
-  RUNLENGTH=0 #8
+  RUNLENGTH=0
 elif [ "$INPUT" -eq "1" ]; then
-  RUNLENGTH=0 #3
+  RUNLENGTH=0
 elif [ "$INPUT" -eq "2" ]; then
   RUNLENGTH=9
 elif [ "$INPUT" -eq "3" ]; then

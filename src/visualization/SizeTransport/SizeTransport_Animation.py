@@ -32,6 +32,7 @@ class SizeTransport_Animation:
         # Simulation parameters
         self.scenario = scenario
         self.size_list = size_list
+        assert self.size_list.__len__() == 4, 'You specified too many sizes to plot, you can only have 4'
         self.lambda_frag = 388
         self.rho = rho
         self.tau = tau

@@ -1,5 +1,4 @@
 # factories
-# factories
 
 This directory contains a number of files, each of which contains code to run a certain procedure or create a specific object. In principle, setting it up like this should make
 it easier to add new features. For example, if you have a new scenario, then all that would need to be added to the factory would be an `if` statement for the new scenario which
