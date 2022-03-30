@@ -28,7 +28,7 @@ class SizeTransport_concentration_subset:
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'horizontal_concentration'
         # Figure parameters
-        self.figure_size = (20, 20)
+        self.figure_size = (20, 14)
         self.figure_shape = (self.size_list.__len__(), 2)
         self.ax_label_size = 18
         self.ax_ticklabel_size = 16
