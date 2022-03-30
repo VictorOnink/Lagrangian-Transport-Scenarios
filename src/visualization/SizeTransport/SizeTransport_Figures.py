@@ -123,10 +123,10 @@ def run(scenario, figure_direc: str):
         for subselection in [False, True]:
             SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho,
                                       subselection=subselection).plot()
-            SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho, fixed_resus=True,
-                                      resus_time=7, subselection=subselection).plot()
-            SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho, fixed_resus=True,
-                                      resus_time=50, subselection=subselection).plot()
+            # SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho, fixed_resus=True,
+            #                           resus_time=7, subselection=subselection).plot()
+            # SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho, fixed_resus=True,
+            #                           resus_time=50, subselection=subselection).plot()
 
     # size_list = np.array([5000, 2500, 1250, 625, 313, 156, 78, 39, 20, 10, 5, 2]) * settings.SIZE_FACTOR
     # Creating figures of the timeseries of the number of particles that are beached/adrift/seabed
