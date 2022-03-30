@@ -26,12 +26,12 @@ class SizeTransport_MaxDistance:
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'maximum_distance'
         # Figure parameters
-        self.figure_size = {False: (20, 20), True: (20, 10)}[self.subselection]
+        self.figure_size = {False: (20, 20), True: (20, 15)}[self.subselection]
         self.ax_label_size = 18
         self.ax_ticklabel_size = 16
         self.number_of_plots = self.size_list.__len__()
         self.figure_shape = {False: (4, 3), True: (1, 2)}[self.subselection]
-        self.width_ratios = {False: [1, 1, 1, 0.1], True: [1, 1, 0.1]}[self.subselection]
+        self.width_ratios = {False: [1, 1, 1, 0.1], True: [1, 1, 0.07]}[self.subselection]
         self.adv_file_dict = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
                                                             advection_scenario='CMEMS_MEDITERRANEAN',
                                                             repeat_dt=None).file_names
