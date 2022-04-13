@@ -8,7 +8,6 @@ if socket.gethostname() in ['kuphaven', 'climatestor01']:
 SUBMISSION = str(os.environ["SUBMISSION"])
 os.system('echo "run="' + SUBMISSION)
 
-
 ########################################################################################################################
 #                                                                                                                      #
 #                                    Parameters for data retrieval/storage                                             #
@@ -92,8 +91,7 @@ STOKES: int = int(os.environ['STOKES'])
 # MODEL SCENARIO SETTINGS
 SCENARIO_DICT: dict = {0: 'AdvectionDiffusionOnly', 1: 'CoastalProximity', 2: 'Stochastic',
                        3: 'ShoreDependentResuspension', 4: 'TurrellResuspension', 5: 'SizeTransport',
-                       6: 'FragmentationKaandorp', 7: 'FragmentationKaandorpPartial', 8: 'BlueCloudBackwards',
-                       9: 'BlueCloudForwards'}
+                       6: 'FragmentationKaandorp', 7: 'FragmentationKaandorpPartial', 8: 'BlueCloud'}
 
 SCENARIO_NUM: int = int(os.environ["SCENARIO"])
 SCENARIO_NAME: str = SCENARIO_DICT[SCENARIO_NUM]
@@ -247,13 +245,15 @@ else:
 #                                       Model and physical parameters                                                  #
 #                                                                                                                      #
 ########################################################################################################################
+# FORWARD OR BACKWARDS IN TIME
+BACKWARD = BOOLEAN_DICT[int(os.environ['BACKWARD'])]
+BACKWARD_MULT = {True: -1, False: 1}[BACKWARD]
 # MODEL INTEGRATION TIMESTEP
-if SCENARIO_NAME == 'BlueCloudBackwards':
-    TIME_STEP = timedelta(minutes=-5)
-elif SCENARIO_NAME == 'BlueCloudForwards':
-    TIME_STEP = timedelta(minutes=5)
+if SCENARIO_NAME == 'BlueCloud':
+    DT_MINUTES = 5
 else:
-    TIME_STEP = timedelta(minutes=0.5)
+    DT_MINUTES = 0.5
+TIME_STEP = timedelta(minutes=DT_MINUTES * BACKWARD_MULT)
 # MODEL OUTPUT TIMESTEP
 OUTPUT_TIME_STEP = timedelta(hours=12)
 # PARTICLE RELEASE TIMESTEP

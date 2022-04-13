@@ -7,8 +7,7 @@ from scenarios.Turrel_Beaching_scenario import Turrell_Resuspension
 from scenarios.FragmentationKaandorp import FragmentationKaandorp
 from scenarios.FragmentationKaandorpPartial import FragmentationKaandorpPartial
 from scenarios.SizeTransport import SizeTransport
-from scenarios.BlueCloudBackwards import BlueCloudBackwards
-from scenarios.BlueCloudForwards import BlueCloudForwards
+from scenarios.BlueCloud import BlueCloud
 from settings import SCENARIO_NAME, STOKES, SERVER
 
 
@@ -31,10 +30,8 @@ class ScenarioFactory:
             return FragmentationKaandorpPartial(server=server, stokes=stokes)
         elif scenario_name == 'SizeTransport':
             return SizeTransport(server=server, stokes=stokes)
-        elif scenario_name == 'BlueCloudBackwards':
-            return BlueCloudBackwards(server=server, stokes=stokes)
-        elif scenario_name == 'BlueCloudForwards':
-            return BlueCloudForwards(server=server, stokes=stokes)
+        elif scenario_name == 'BlueCloud':
+            return BlueCloud(server=server, stokes=stokes)
         else:
             raise ValueError("invalid model scenario")
 

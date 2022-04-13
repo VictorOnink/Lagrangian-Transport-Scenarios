@@ -11,8 +11,8 @@ DEBUG=0
 
 # 0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
 # 5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation,
-# 8 = Blue Cloud Hackathon Backward, 9 = Blue Cloud Hackathon Forward
-SCENARIO=7
+# 8 = Blue Cloud Hackathon
+SCENARIO=8
 export SCENARIO
 
 #for scenario 1, the time a particle must be near the coast to beach (in days)
@@ -68,16 +68,19 @@ export POST_PROCESS
 RELEASE_SITE=0
 export RELEASE_SITE
 
-#the starting year of the simulation, and how many years the simulation will take
+#the starting year of the simulation, how many years the simulation will take, and whether the simulation is forwards
+#or backwards in time
 STARTYEAR=2012
-STARTMONTH_list=(1 2 3 4 5 6 7 8 9 10 11 12)
+STARTMONTH_list=(1)
 STARTDAY=1
+BACKWARD=1
 export STARTYEAR
 export STARTDAY
+export BACKWARD
 
 # Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=lebretondivision, 3=lebretonKaandorpInit,
 # 4=point, 5=uniform
-INPUT=3
+INPUT=4
 export INPUT
 
 #Which advection data do we want to use?
@@ -89,7 +92,7 @@ export ADVECTION_DATA
 START=0
 
 #Number of years the simulation runs
-SIMLEN=1
+SIMLEN=2
 export SIMLEN
 
 #Inclusion of Stokes drift. 0 = include stokes, 1 = do not include stokes

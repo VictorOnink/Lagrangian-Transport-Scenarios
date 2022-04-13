@@ -40,9 +40,9 @@ def get_start_end_time(time: str):
     if settings.RESTART == 0:
         start_time = datetime(settings.STARTYEAR, settings.STARTMONTH, settings.STARTDAY, 0, 0)
     else:
-        start_time = datetime(settings.STARTYEAR + settings.RESTART, 1, 1, 0, 0)
-    end_time = datetime(settings.STARTYEAR + settings.RESTART + 1, 1, 1, 0, 0)
-    simulation_length = (end_time - start_time).days
+        start_time = datetime(settings.STARTYEAR + settings.RESTART * settings.BACKWARD_MULT, 1, 1, 0, 0)
+    end_time = datetime(settings.STARTYEAR + (settings.RESTART + 1) * settings.BACKWARD_MULT, 1, 1, 0, 0)
+    simulation_length = np.abs((end_time - start_time).days)
     if time == 'start':
         return start_time
     elif time == 'end':

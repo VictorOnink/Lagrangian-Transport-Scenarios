@@ -19,6 +19,9 @@ INPUT=1
 #Inclusion of Stokes drift. 0 = include stokes, 1 = do not include stokes
 STOKES=0
 
+#Is it a forward or backward simulation that we want to visualize
+BACKWARD=0
+
 #kuphaven == 0, Ubelix == 1
 SERVER=1
 
@@ -29,6 +32,7 @@ ADVECTION_DATA=2
 export SUBMISSION
 export SCENARIO
 export STOKES
+export BACKWARD
 export SERVER
 export INPUT
 export ADVECTION_DATA

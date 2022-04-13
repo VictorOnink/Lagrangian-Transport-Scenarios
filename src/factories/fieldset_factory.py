@@ -316,7 +316,7 @@ def add_vicinity_constant(fieldset: FieldSet):
 def add_beach_timescale_field(fieldset: FieldSet):
     # Here only the beaching probability is a global constant, the resuspension
     # probability will instead be represented using a field
-    p_b = math.exp(-settings.TIME_STEP.total_seconds() / (settings.SHORE_TIME * 86400.))
+    p_b = math.exp(-np.abs(settings.TIME_STEP.total_seconds()) / (settings.SHORE_TIME * 86400.))
     fieldset.add_constant('p_beach', p_b)
 
 
@@ -342,14 +342,14 @@ def add_resus_timescale_field(fieldset: FieldSet, file_dict: dict, fixed_resus: 
     :return:
     """
     if settings.SCENARIO_NAME == 'ShoreDependentResuspension':
-        p_r = np.exp(-settings.TIME_STEP.total_seconds() / (compute_shore_resus_Field(file_dict) * 86400.))
+        p_r = np.exp(-np.abs(settings.TIME_STEP.total_seconds()) / (compute_shore_resus_Field(file_dict) * 86400.))
         fieldset.add_field(Field('p_resus', p_r, lon=file_dict['LON'], lat=file_dict['LAT'], mesh='spherical'))
     else:
         if fixed_resus:
             lambda_R = settings.RESUS_TIME
         else:
             lambda_R = utils.get_resuspension_timescale()
-        p_r = math.exp(-settings.TIME_STEP.total_seconds() / (lambda_R * 86400.))
+        p_r = math.exp(-np.abs(settings.TIME_STEP.total_seconds()) / (lambda_R * 86400.))
         fieldset.add_constant('p_resus', p_r)
 
 
