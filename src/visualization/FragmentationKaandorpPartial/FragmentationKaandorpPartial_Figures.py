@@ -32,9 +32,9 @@ def run(scenario, figure_direc: str):
     #                                                  rho=rho, simulation_years=3, ocean_frag=False).animate()
 
     # Comparing the calculated size distributions from the Lagrangian simulations with field data
-    # FieldDataComp.FragmentationKaandorpPartial_FieldDataComp(figure_direc=figure_direc, scenario=scenario,
-    #                                                          shore_time=shore_time, lambda_frag_list=lambda_frag_list,
-    #                                                          rho=rho, input_list=['LebretonKaandorpInit']).plot()
+    FieldDataComp.FragmentationKaandorpPartial_FieldDataComp(figure_direc=figure_direc, scenario=scenario,
+                                                             shore_time=shore_time, lambda_frag_list=lambda_frag_list,
+                                                             rho=rho, input_list=['LebretonKaandorpInit']).plot()
 
     # Plot the results from the box model
     # box_model_ocean.FragmentationKaandorpPartial_boxmodel_ocean(figure_direc=figure_direc, size_class_number=12).plot()

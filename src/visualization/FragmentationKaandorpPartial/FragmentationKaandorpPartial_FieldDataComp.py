@@ -126,7 +126,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
         norm_factor = field_dict['DeHaanSanchez']['pdf_counts'][14]
         ax[2].plot(field_dict['DeHaanSanchez']['bin_midpoint'], field_dict['DeHaanSanchez']['pdf_counts'] / norm_factor,
                    marker=self.field_marker, linestyle=self.field_line, color='tab:orange',
-                   label=r'de Haan et al. (submitted)')
+                   label=r'de Haan et al. (2022)')
         ax[2].legend(fontsize=self.legend_size, loc=self.legend_loc)
 
         # Field data - beach, microplastic counts
