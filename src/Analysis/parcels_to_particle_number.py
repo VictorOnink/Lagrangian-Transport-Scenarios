@@ -9,13 +9,14 @@ import pandas as pd
 
 
 class parcels_to_particle_number:
-    def __init__(self, base_file, output_file, restart_file):
+    def __init__(self, base_file, output_file, restart_file, time_step):
         # The names of the parcels base_file, the output file of the analysis and restart particle number file for when
         # restart > 0
         self.base_file, self.output_file, self.restart_file = base_file, output_file, restart_file
         self.restart = settings.RESTART
         # Model parameters
-        self.dt = settings.TIME_STEP.total_seconds()
+        self.dt = time_step.total_seconds()
+        self.p_sink = settings.P_SINK / (604800 / self.dt)
         self.f = 90 / settings.LAMBDA_FRAG
         self.DN = settings.DN
         # Analysis parameters
@@ -80,7 +81,7 @@ class parcels_to_particle_number:
 
         # Computing the mass removal fraction
         age_in_timesteps = base_dict['age'] // self.dt
-        mass_remainder = np.power(1 - settings.P_SINK, age_in_timesteps)
+        mass_remainder = np.power(1 - self.p_sink, age_in_timesteps)
 
         # Initializing the output dict with arrays equal in size to the variables in self.base_file
         # Note: The mass loss accounting needs to be updated whenever we have a split event
@@ -119,7 +120,7 @@ class parcels_to_particle_number:
                             self.output_dict[variable][p_id, (t_ind + 1):] = self.output_dict[variable][p_id, t_ind] * mass_fraction
                         # For particle_mass_sink, we account for the loss of mass due to the P_sink term after the
                         # fragmentation event
-                        sink_correction = np.power(1 - settings.P_SINK, np.arange(0, self.time_step_number - (t_ind + 1)))
+                        sink_correction = np.power(1 - self.p_sink, np.arange(0, self.time_step_number - (t_ind + 1)))
                         self.output_dict['particle_mass_sink'][p_id, (t_ind + 1):] *= sink_correction
                         # Getting the ID of all the new created particles, where we need to add the +1 to the time index
                         # since the new particles are only technically present in the next time step

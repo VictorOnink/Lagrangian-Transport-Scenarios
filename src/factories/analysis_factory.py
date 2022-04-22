@@ -7,6 +7,7 @@ from factories.scenario_factory import ScenarioFactory
 class AnalysisFactory:
     def __init__(self):
         self.scenario = ScenarioFactory.create_scenario()
+        self.output_time_step = self.scenario.output_time_step
         self.file_dict = self.scenario.return_full_run_directory()
 
     def run_analysis_procedure(self):
@@ -31,13 +32,15 @@ class AnalysisFactory:
             Analysis.parcels_to_concentration(file_dict=self.file_dict).run()
         if settings.MONTHLY_CONCENTRATION:
             utils.print_statement("Calculating monthly concentrations", to_print=True)
-            Analysis.parcels_to_concentration_monthly(file_dict=self.file_dict).run()
+            Analysis.parcels_to_concentration_monthly(file_dict=self.file_dict,
+                                                      output_time_step=self.output_time_step).run()
         if settings.VERTICAL_CONCENTRATION:
             utils.print_statement("Calculating the vertical concentration", to_print=True)
             Analysis.parcels_to_vertical_concentration(file_dict=self.file_dict).run()
         if settings.SPATIAL_VERTICAL_PROFILES:
             utils.print_statement("Calculating the spatial vertical profiles", to_print=True)
-            Analysis.parcels_to_spatial_vertical_profiles(file_dict=self.file_dict).run()
+            Analysis.parcels_to_spatial_vertical_profiles(file_dict=self.file_dict,
+                                                          output_time_step=self.output_time_step).run()
         if settings.LONLAT_CONCENTRATION:
             utils.print_statement("Calculating the lonlat concentration averages", to_print=True)
             Analysis.parcels_to_lonlat_average(file_dict=self.file_dict).run()

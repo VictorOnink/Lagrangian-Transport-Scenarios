@@ -250,42 +250,43 @@ BUOYANT = 0.54
 # FORWARD OR BACKWARDS IN TIME
 BACKWARD = load_env_variable("BACKWARD", default=False, variable_type=bool)
 BACKWARD_MULT = {True: -1, False: 1}[BACKWARD]
-# MODEL INTEGRATION TIMESTEP
-if SCENARIO_NAME == 'BlueCloud':
-    DT_MINUTES = 5
-else:
-    DT_MINUTES = 0.5
-TIME_STEP = timedelta(minutes=DT_MINUTES * BACKWARD_MULT)
-# MODEL OUTPUT TIMESTEP
-OUTPUT_TIME_STEP = timedelta(hours=12)
-# PARTICLE RELEASE TIMESTEP
-REPEAT_DT_R0 = timedelta(days=31)
-REPEAT_DT_ELSE = None
+
 # RNG SEED VALUE
 SEED = 'Fixed'
+
 # HORIZONTAL DIFFUSIVITY M^2 / S, FOLLOWING LACERDA ET AL. (2019) AND LIUBERTSEVA ET AL. (2018)
 K_HOR = 10
+
 # VERTICAL (DIAPYCNAL) DIFFUSION (M^2/S) BELOW THE MLD (WATERHOUSE ET AL, 2014)
 K_Z_BULK = 3e-5
+
 # WIDTH OF THE BEACHING ZONE (KM) WITHIN WHICH BEACHING CAN OCCUR
 COAST_D = {'HYCOM_GLOBAL': 10, 'HYCOM_CARIBBEAN': 4, 'CMEMS_MEDITERRANEAN': 6}[ADVECTION_DATA]
+
 # SIZE SCALING FACTOR FOR INIT_SIZE
 SIZE_FACTOR = 1E-6
 
 # INITIAL PARTICLE SIZE (M)
 INIT_SIZE = load_env_variable("PARTICLE_SIZE", default=5000) * SIZE_FACTOR
+
 # INITIAL DENSITY (KG/M^3): 920 = POLYPROPYLENE, 980 = HIGH DENSITY POLYETHYLENE (BRIGNAC ET AL. 2017)
 INIT_DENSITY = load_env_variable("INIT_DENSITY", default=920)
+
 # FRAGMENTATION PROBABILITY
 P_FRAG = load_env_variable("P", default=0.4, variable_type=float)
+
 # NUMBER OF SPATIAL DIMENSIONS
 DN = load_env_variable("DN", default=2.5, variable_type=float)
+
 # NUMBER OF SIZE CLASSES
 SIZE_CLASS_NUMBER = load_env_variable("SIZE_CLASS_NUMBER", default=6)
+
 # FRAGMENTATION TIMESCALE (DAYS)
 LAMBDA_FRAG = load_env_variable("LAMBDA_FRAG", default=388)
+
 # OPEN OCEAN FRAGMENTATION TIMESCALE (DAYS)
 LAMBDA_OCEAN_FRAG = load_env_variable("LAMBDA_OCEAN_FRAG", default=388)
+
 # CRITICAL SHEAR STRESS FOR RESUSPENSION OF PARTICLES FROM THE SEA BED, HORIZONTAL DIFFUSION AT THE SEA BED
 SEABED_CRIT = load_env_variable("SEABED_CRIT", default=0, variable_type=float)
 
@@ -305,8 +306,8 @@ BETA, BETA_STAR = 1.21, 35
 PHI = 0.9
 # HORIZONTAL DIFFUSION AT THE SEA BED
 SEABED_KH = 0.2
-# MICROPLASTIC REMOVAL RATE (KAANDORP ET AL., 2020), CONVERT FROM 5.3 X 10**-3 WEEK**-1 TO PER TIMESTEP
-P_SINK = 5.1e-3 / (604800 / TIME_STEP.total_seconds())
+# MICROPLASTIC REMOVAL RATE (KAANDORP ET AL., 2020), 5.3 X 10**-3 WEEK**-1
+P_SINK = 5.1e-3
 
 ########################################################################################################################
 #                                                                                                                      #

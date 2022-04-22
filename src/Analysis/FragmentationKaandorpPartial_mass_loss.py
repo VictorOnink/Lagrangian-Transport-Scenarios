@@ -31,9 +31,6 @@ class FragmentationKaandorpPartial_mass_loss:
         # The total mass of plastic within the 3 year simulation
         total_input = monthly_input * 12 * 3
 
-        # Convert the mass loss term from loss per timestep (30 seconds) to loss per day
-        p_sink = settings.P_SINK * 2 * 60 * 24
-
         # Next, we load the timeseries that give us the total mass in the simulation at any point in the simulation,
         # first when incorporating the sink term and then without the sink term
         final_mass = dict.fromkeys(self.frag_list)

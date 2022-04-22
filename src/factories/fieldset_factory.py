@@ -5,11 +5,12 @@ import numpy as np
 from parcels import GeographicPolar, Geographic, FieldSet, Field
 import math
 import utils
+from datetime import timedelta
 
 
 class FieldSetFactory:
     @classmethod
-    def create_fieldset(cls, file_dict: dict, stokes: int,
+    def create_fieldset(cls, file_dict: dict, stokes: int, time_step: timedelta,
                         stokes_depth: bool = False,
                         border_current: bool = False,
                         diffusion: bool = False,
@@ -37,6 +38,7 @@ class FieldSetFactory:
         Creating the fieldset object containing all the oceanographic and other fields for the parcels simulations
         :param file_dict: dictionary object containing all file paths for the given advection scenario
         :param stokes: if True, add stokes drift field
+        :param time_step: integration timestep of the simulation
         :param stokes_depth: if True, add data fields for computing depth dependence of stokes drift
         :param border_current: if True, add border current field
         :param diffusion: if True, add diffusion field
@@ -90,9 +92,10 @@ class FieldSetFactory:
         if vicinity:
             add_vicinity_constant(fieldset=fieldset)
         if beach_timescale:
-            add_beach_timescale_field(fieldset=fieldset)
+            add_beach_timescale_field(fieldset=fieldset, time_step=time_step)
         if resus_timescale:
-            add_resus_timescale_field(fieldset=fieldset, file_dict=file_dict, fixed_resus=fixed_resus)
+            add_resus_timescale_field(fieldset=fieldset, file_dict=file_dict, fixed_resus=fixed_resus,
+                                      time_step=time_step)
         if fragmentation_period is not None:
             add_fragmentation_period(fieldset=fieldset, fragmentation_period=fragmentation_period)
         if MLD:
@@ -313,10 +316,10 @@ def add_vicinity_constant(fieldset: FieldSet):
     fieldset.add_constant('vic', settings.VICINITY)
 
 
-def add_beach_timescale_field(fieldset: FieldSet):
+def add_beach_timescale_field(fieldset: FieldSet, time_step):
     # Here only the beaching probability is a global constant, the resuspension
     # probability will instead be represented using a field
-    p_b = math.exp(-np.abs(settings.TIME_STEP.total_seconds()) / (settings.SHORE_TIME * 86400.))
+    p_b = math.exp(-np.abs(time_step.total_seconds()) / (settings.SHORE_TIME * 86400.))
     fieldset.add_constant('p_beach', p_b)
 
 
@@ -336,20 +339,20 @@ def compute_shore_resus_Field(file_dict: dict):
         return resus_field
 
 
-def add_resus_timescale_field(fieldset: FieldSet, file_dict: dict, fixed_resus: bool):
+def add_resus_timescale_field(fieldset: FieldSet, file_dict: dict, fixed_resus: bool, time_step):
     """
     :param fieldset:
     :return:
     """
     if settings.SCENARIO_NAME == 'ShoreDependentResuspension':
-        p_r = np.exp(-np.abs(settings.TIME_STEP.total_seconds()) / (compute_shore_resus_Field(file_dict) * 86400.))
+        p_r = np.exp(-np.abs(time_step.total_seconds()) / (compute_shore_resus_Field(file_dict) * 86400.))
         fieldset.add_field(Field('p_resus', p_r, lon=file_dict['LON'], lat=file_dict['LAT'], mesh='spherical'))
     else:
         if fixed_resus:
             lambda_R = settings.RESUS_TIME
         else:
             lambda_R = utils.get_resuspension_timescale()
-        p_r = math.exp(-np.abs(settings.TIME_STEP.total_seconds()) / (lambda_R * 86400.))
+        p_r = math.exp(-np.abs(time_step.total_seconds()) / (lambda_R * 86400.))
         fieldset.add_constant('p_resus', p_r)
 
 

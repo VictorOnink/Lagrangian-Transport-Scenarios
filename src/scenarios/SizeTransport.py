@@ -24,6 +24,9 @@ class SizeTransport(base_scenario.BaseScenario):
         self.output_dir = utils.get_output_directory(server=self.server)
         self.repeat_dt = None
         self.UV_interpolation = 'linear'
+        self.var_list = ['lon', 'lat', 'beach', 'age', 'distance2coast', 'z']
+        self.dt = timedelta(minutes=0.5 * settings.BACKWARD_MULT)
+        self.output_time_step = timedelta(hours=12)
         if settings.SUBMISSION in ['simulation', 'visualization']:
             advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
                                                                 advection_scenario=settings.ADVECTION_DATA,
@@ -32,7 +35,7 @@ class SizeTransport(base_scenario.BaseScenario):
             if settings.SUBMISSION in ['simulation']:
                 self.field_set = self.create_fieldset()
 
-    var_list = ['lon', 'lat', 'beach', 'age', 'distance2coast', 'z']
+
 
     def create_fieldset(self) -> FieldSet:
         utils.print_statement("Creating the fieldset")
@@ -45,7 +48,8 @@ class SizeTransport(base_scenario.BaseScenario):
                                                                       resus_timescale=True, MLD=True,
                                                                       physics_constants=True,
                                                                       wind=True, TIDAL_mixing=True,
-                                                                      velocity_interpolation=self.UV_interpolation
+                                                                      velocity_interpolation=self.UV_interpolation,
+                                                                      time_step=self.dt
                                                                       )
         return fieldset
 

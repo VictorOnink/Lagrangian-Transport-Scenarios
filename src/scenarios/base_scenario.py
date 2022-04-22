@@ -24,10 +24,6 @@ class BaseScenario(ABC):
         self.stokes = stokes
         self.particle = self.get_pclass()
 
-    @property
-    def var_list(self):
-        raise NotImplementedError
-
     @abstractmethod
     def create_fieldset(self) -> FieldSet:
         pass
@@ -76,7 +72,7 @@ class BaseScenario(ABC):
                              var_dict=self.get_var_dict(), start_time=get_start_end_time(time='start'),
                              repeat_dt=self.repeat_dt)
         pfile = pset.ParticleFile(name=self.file_names(new=True),
-                                  outputdt=settings.OUTPUT_TIME_STEP)
+                                  outputdt=self.output_time_step)
         utils.print_statement("Setting the random seed")
         set_random_seed(seed=settings.SEED)
         utils.print_statement("Defining the particle behavior")
@@ -84,7 +80,7 @@ class BaseScenario(ABC):
         utils.print_statement("The actual execution of the run")
         pset.execute(behavior_kernel,
                      runtime=timedelta(days=get_start_end_time(time='length')),
-                     dt=settings.TIME_STEP,
+                     dt=self.dt,
                      recovery={ErrorCode.ErrorOutOfBounds: delete_particle},
                      output_file=pfile
                      )

@@ -9,10 +9,11 @@ from datetime import datetime
 
 
 class parcels_to_spatial_vertical_profiles:
-    def __init__(self, file_dict: dict):
+    def __init__(self, file_dict: dict, output_time_step):
         assert settings.SCENARIO_NAME in ['SizeTransport'], 'The spatial vertical profiles is currently only set ' \
                                                             'up for SizeTransport'
         self.file_dict = file_dict
+        self.output_time_step = output_time_step
         self.parallel_step = settings.PARALLEL_STEP
         self.file_dict = file_dict
         self.LON, self.LAT, self.GRID, self.MIN_DEPTH = self.get_lonlat_grid_depth()
@@ -129,12 +130,11 @@ class parcels_to_spatial_vertical_profiles:
         depth_bins = np.logspace(log_min, log_max, num=num)
         return depth_bins
 
-    @staticmethod
-    def get_season_indices():
+    def get_season_indices(self):
         # Setting the start time of the simulation, and defining the output dt and time index
         current_time = datetime(settings.STARTYEAR + settings.RESTART, settings.STARTMONTH, settings.STARTDAY)
         end_time = datetime(settings.STARTYEAR + settings.RESTART + 1, 1, 1)
-        output_dt, index_dt = settings.OUTPUT_TIME_STEP, 0
+        output_dt, index_dt = self.output_time_step, 0
         # Creating the dictionary containing the start and end indices for each month
         month_indices = {}
         while current_time < end_time:

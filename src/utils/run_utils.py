@@ -39,11 +39,3 @@ def add_particle_variable(particleType: JITParticle, name: str, other_name=None,
         init = 0
     var = Variable(name, dtype=dtype, initial=init, to_write=to_write)
     setattr(particleType, name, var)
-
-
-def get_repeat_dt():
-    if settings.RESTART == 0:
-        repeat_dt = settings.REPEAT_DT_R0
-    else:
-        repeat_dt = settings.REPEAT_DT_ELSE
-    return repeat_dt

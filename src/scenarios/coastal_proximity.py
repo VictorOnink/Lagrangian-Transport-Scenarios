@@ -18,6 +18,9 @@ class CoastalProximity(base_scenario.BaseScenario):
         self.prefix = "Prox"
         self.input_dir = utils.get_input_directory(server=self.server)
         self.output_dir = utils.get_output_directory(server=self.server)
+        self.var_list = ['lon', 'lat', 'weights', 'beach', 'age', 'prox']
+        self.dt = timedelta(minutes=10 * settings.BACKWARD_MULT)
+        self.output_time_step = timedelta(hours=12)
         if settings.RESTART == 0:
             self.repeat_dt = timedelta(days=31)
         else:
@@ -29,13 +32,12 @@ class CoastalProximity(base_scenario.BaseScenario):
             self.file_dict = advection_scenario.file_names
             self.field_set = self.create_fieldset()
 
-    var_list = ['lon', 'lat', 'weights', 'beach', 'age', 'prox']
-
     def create_fieldset(self) -> FieldSet:
         utils.print_statement("Creating the fieldset")
         fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict, stokes=self.stokes,
                                                                       border_current=True, diffusion=True,
-                                                                      landID=True, distance=True, vicinity=True)
+                                                                      landID=True, distance=True, vicinity=True,
+                                                                      time_step=self.dt)
         return fieldset
 
     def get_pset(self, fieldset: FieldSet, particle_type: utils.BaseParticle, var_dict: dict,

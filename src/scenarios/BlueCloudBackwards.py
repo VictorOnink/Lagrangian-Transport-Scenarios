@@ -19,6 +19,9 @@ class BlueCloudBackwards(base_scenario.BaseScenario):
         self.input_dir = utils.get_input_directory(server=self.server)
         self.output_dir = utils.get_output_directory(server=self.server)
         self.repeat_dt = timedelta(days=1)
+        self.dt = timedelta(minutes=5 * settings.BACKWARD_MULT)
+        self.output_time_step = timedelta(hours=12)
+        self.var_list = ['lon', 'lat', 'beach', 'age']
         if settings.SUBMISSION in ['simulation', 'visualization']:
             advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
                                                                 advection_scenario=settings.ADVECTION_DATA,
@@ -27,14 +30,15 @@ class BlueCloudBackwards(base_scenario.BaseScenario):
             if settings.SUBMISSION in ['simulation']:
                 self.field_set = self.create_fieldset()
 
-    var_list = ['lon', 'lat', 'beach', 'age']
+
 
     def create_fieldset(self) -> FieldSet:
         utils.print_statement("Creating the fieldset")
         fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict, stokes=self.stokes,
                                                                       border_current=True, diffusion=True,
                                                                       distance=True, beach_timescale=True,
-                                                                      resus_timescale=True, fixed_resus=True
+                                                                      resus_timescale=True, fixed_resus=True,
+                                                                      time_step=self.dt
                                                                       )
         return fieldset
 
@@ -95,7 +99,7 @@ class BlueCloudBackwards(base_scenario.BaseScenario):
                              var_dict=self.get_var_dict(), start_time=utils.get_start_end_time(time='end'),
                              repeat_dt=self.repeat_dt)
         pfile = pset.ParticleFile(name=self.file_names(new=True),
-                                  outputdt=settings.OUTPUT_TIME_STEP)
+                                  outputdt=self.output_time_step)
         utils.print_statement("Setting the random seed")
         utils.set_random_seed(seed=settings.SEED)
         utils.print_statement("Defining the particle behavior")
@@ -103,7 +107,7 @@ class BlueCloudBackwards(base_scenario.BaseScenario):
         utils.print_statement("The actual execution of the run")
         pset.execute(behavior_kernel,
                      runtime=timedelta(days=utils.get_start_end_time(time='length')),
-                     dt=settings.TIME_STEP,
+                     dt=self.dt,
                      recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle},
                      output_file=pfile
                      )

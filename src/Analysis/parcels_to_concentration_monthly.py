@@ -9,9 +9,10 @@ from datetime import datetime
 
 
 class parcels_to_concentration_monthly:
-    def __init__(self, file_dict: dict):
+    def __init__(self, file_dict: dict, output_time_step):
         self.parallel_step = settings.PARALLEL_STEP
         self.file_dict = file_dict
+        self.output_time_step = output_time_step
         self.LON, self.LAT, self.GRID, self.MIN_DEPTH = self.get_lonlat_grid_depth()
         self.beach_label_dict = self.set_beach_label_dict()
         self.temp_direc, self.output_direc = self.get_directories()
@@ -234,12 +235,11 @@ class parcels_to_concentration_monthly:
         concentration /= time_steps
         return concentration
 
-    @staticmethod
-    def get_month_indices():
+    def get_month_indices(self):
         # Setting the start time of the simulation, and defining the output dt and time index
         current_time = datetime(settings.STARTYEAR + settings.RESTART, settings.STARTMONTH, settings.STARTDAY)
         end_time = datetime(settings.STARTYEAR + settings.RESTART + 1, 1, 1)
-        output_dt = settings.OUTPUT_TIME_STEP
+        output_dt = self.output_time_step
         index_dt = 0
         # Creating the dictionary containing the start and end indices for each month
         month_indices = {}

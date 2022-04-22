@@ -21,6 +21,9 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
         self.input_dir = utils.get_input_directory(server=self.server)
         self.output_dir = utils.get_output_directory(server=self.server)
         self.repeat_dt = None
+        self.dt = timedelta(minutes=0.5 * settings.BACKWARD_MULT)
+        self.output_time_step = timedelta(hours=12)
+        self.var_list = ['lon', 'lat', 'beach', 'age', 'size', 'rho_plastic', 'parent', 'rise_velocity', 'size_class']
         if settings.SUBMISSION in ['simulation', 'visualization']:
             advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
                                                                 advection_scenario=settings.ADVECTION_DATA,
@@ -28,8 +31,6 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
             self.file_dict = advection_scenario.file_names
             if settings.SUBMISSION in ['simulation']:
                 self.field_set = self.create_fieldset()
-
-    var_list = ['lon', 'lat', 'beach', 'age', 'size', 'rho_plastic', 'parent', 'rise_velocity', 'size_class']
 
     def create_fieldset(self) -> FieldSet:
         utils.print_statement("Creating the fieldset")
@@ -40,7 +41,8 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                                                                       bathymetry=True, beach_timescale=True,
                                                                       resus_timescale=True, MLD=True,
                                                                       physics_constants=True, wind=True,
-                                                                      TIDAL_mixing=True, fragmentation_timescale=True
+                                                                      TIDAL_mixing=True, fragmentation_timescale=True,
+                                                                      time_step=self.dt
                                                                       )
         return fieldset
 
@@ -58,14 +60,14 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                                age=var_dict['age'][::step], size=var_dict['size'][::step],
                                rho_plastic=var_dict['rho_plastic'][::step], parent=range(len(var_dict['lon'][::step])),
                                rise_velocity=rise_velocity, size_class=np.zeros(rise_velocity.shape, dtype=np.float32),
-                               prob_resus=utils.resuspension_probability(w_rise=rise_velocity),
+                               prob_resus=utils.resuspension_probability(w_rise=rise_velocity, time_step=self.dt),
                                time=start_time, repeatdt=repeat_dt)
         else:
             pset = ParticleSet(fieldset=fieldset, pclass=particle_type,
                                lon=var_dict['lon'], lat=var_dict['lat'], beach=var_dict['beach'], parent=var_dict['parent'],
                                age=var_dict['age'], size=var_dict['size'], size_class=var_dict['size_class'],
                                rho_plastic=var_dict['rho_plastic'], rise_velocity=var_dict['rise_velocity'],
-                               prob_resus=utils.resuspension_probability(w_rise=var_dict['rise_velocity']),
+                               prob_resus=utils.resuspension_probability(w_rise=var_dict['rise_velocity'], time_step=self.dt),
                                time=start_time, repeatdt=repeat_dt)
         return pset
 
@@ -203,7 +205,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                                                rise_velocity=utils.create_list(utils.initial_estimate_particle_rise_velocity(L=new_particle_size), particle_number),
                                                reynolds=utils.create_list(0, particle_number),
                                                size_class=utils.create_list(parent_size_class + k + 1, particle_number),
-                                               prob_resus=utils.create_list(utils.resuspension_probability(w_rise=utils.initial_estimate_particle_rise_velocity(L=new_particle_size)), particle_number),
+                                               prob_resus=utils.create_list(utils.resuspension_probability(w_rise=utils.initial_estimate_particle_rise_velocity(L=new_particle_size), time_step=self.dt), particle_number),
                                                repeatdt=None)
                         pset.add(pset_new)
         return pset
@@ -225,23 +227,21 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                              var_dict=self.get_var_dict(), start_time=utils.get_start_end_time(time='start'),
                              repeat_dt=self.repeat_dt)
         pfile = pset.ParticleFile(name=self.file_names(new=True),
-                                  outputdt=settings.OUTPUT_TIME_STEP)
+                                  outputdt=self.output_time_step)
         # Setting the random seed and defining the particle behavior
         utils.print_statement("Setting the random seed")
         utils.set_random_seed(seed=settings.SEED)
         utils.print_statement("Defining the particle behavior")
         behavior_kernel = self.get_particle_behavior(pset=pset)
-        # Getting the size class limits for the particle splitting
-        size_limit = self.size_class_limits()
         # Carrying out the execution of the simulation
         utils.print_statement("The actual execution of the run")
         time = utils.get_start_end_time(time='start')
         while time <= utils.get_start_end_time(time='end'):
-            pset.execute(behavior_kernel, runtime=settings.OUTPUT_TIME_STEP, dt=settings.TIME_STEP,
+            pset.execute(behavior_kernel, runtime=self.output_time_step, dt=self.dt,
                          recovery={ErrorCode.ErrorOutOfBounds: utils.delete_particle},
                          output_file=pfile)
-            time += settings.OUTPUT_TIME_STEP
-            pset = self.particle_splitter(self.field_set, pset, size_limit)
+            time += self.output_time_step
+            pset = self.particle_splitter(self.field_set, pset)
             utils.print_statement('time = {}'.format(time))
         pfile.export()
         utils.print_statement("Run completed")
