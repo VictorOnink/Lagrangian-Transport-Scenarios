@@ -25,7 +25,23 @@ class BaseScenario(ABC):
         self.particle = self.get_pclass()
 
     @property
+    def prefix(self):
+        raise NotImplementedError
+
+    @property
     def var_list(self):
+        raise NotImplementedError
+
+    @property
+    def dt(self):
+        raise NotImplementedError
+
+    @property
+    def repeat_dt(self):
+        raise NotImplementedError
+
+    @property
+    def output_time_step(self):
         raise NotImplementedError
 
     @abstractmethod
