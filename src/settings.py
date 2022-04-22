@@ -15,8 +15,14 @@ def load_env_variable(variable, default, variable_type=int):
     :return:
     """
     if variable in os.environ:
-        return {int: int(os.environ[variable]), float: float(os.environ[variable]), str: str(os.environ[variable]),
-                bool: bool(int(os.environ[variable]))}[variable_type]
+        if variable_type is int:
+            return int(os.environ[variable])
+        elif variable_type is float:
+            return float(os.environ[variable])
+        elif variable_type is str:
+            return str(os.environ[variable])
+        elif variable_type is bool:
+            return bool(int(os.environ[variable]))
     else:
         return default
 
