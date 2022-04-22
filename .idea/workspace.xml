@@ -22,14 +22,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="final figure for thesis">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/analysis_submission.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/analysis_submission.sh" afterDir="false" />
+    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="Restructuring">
       <change beforePath="$PROJECT_DIR$/bin/simulation_submission.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/simulation_submission.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/visualization_submission.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/visualization_submission.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/factories/fieldset_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/factories/fieldset_factory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/factories/scenario_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/factories/scenario_factory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/settings.py" afterDir="false" />
     </list>
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
     <list id="c5adc810-e024-4e30-b33b-a2709ed2c5b7" name="moving the release repeat timescale to the scenario" comment="" />
@@ -115,27 +109,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-03645" summary="massloss">
-      <created>1646040689345</created>
-      <option name="number" value="03645" />
-      <option name="presentableId" value="LOCAL-03645" />
-      <option name="project" value="LOCAL" />
-      <updated>1646040689345</updated>
-    </task>
-    <task id="LOCAL-03646" summary="massloss">
-      <created>1646042900851</created>
-      <option name="number" value="03646" />
-      <option name="presentableId" value="LOCAL-03646" />
-      <option name="project" value="LOCAL" />
-      <updated>1646042900851</updated>
-    </task>
-    <task id="LOCAL-03647" summary="massloss">
-      <created>1646043562505</created>
-      <option name="number" value="03647" />
-      <option name="presentableId" value="LOCAL-03647" />
-      <option name="project" value="LOCAL" />
-      <updated>1646043562505</updated>
     </task>
     <task id="LOCAL-03648" summary="massloss">
       <created>1646043758910</created>
@@ -459,7 +432,28 @@
       <option name="project" value="LOCAL" />
       <updated>1650476687211</updated>
     </task>
-    <option name="localTasksCounter" value="3694" />
+    <task id="LOCAL-03694" summary="Restructuring">
+      <created>1650619846521</created>
+      <option name="number" value="03694" />
+      <option name="presentableId" value="LOCAL-03694" />
+      <option name="project" value="LOCAL" />
+      <updated>1650619846521</updated>
+    </task>
+    <task id="LOCAL-03695" summary="Restructuring">
+      <created>1650619889635</created>
+      <option name="number" value="03695" />
+      <option name="presentableId" value="LOCAL-03695" />
+      <option name="project" value="LOCAL" />
+      <updated>1650619889635</updated>
+    </task>
+    <task id="LOCAL-03696" summary="Restructuring">
+      <created>1650619999991</created>
+      <option name="number" value="03696" />
+      <option name="presentableId" value="LOCAL-03696" />
+      <option name="project" value="LOCAL" />
+      <updated>1650619999991</updated>
+    </task>
+    <option name="localTasksCounter" value="3697" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -490,7 +484,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="changing how print statements are implemented so that the ones related to simulations only get printed during simulations" />
     <MESSAGE value="thanks to Mikael, a bug was caught in KPP mixing with a missing square root" />
     <MESSAGE value="Adding base figure function" />
     <MESSAGE value="test bash error messages" />
@@ -515,6 +508,7 @@
     <MESSAGE value="documentation update" />
     <MESSAGE value="implementing flexible backward in time" />
     <MESSAGE value="final figure for thesis" />
-    <option name="LAST_COMMIT_MESSAGE" value="final figure for thesis" />
+    <MESSAGE value="Restructuring" />
+    <option name="LAST_COMMIT_MESSAGE" value="Restructuring" />
   </component>
 </project>
