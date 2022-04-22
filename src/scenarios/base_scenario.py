@@ -24,9 +24,9 @@ class BaseScenario(ABC):
         self.stokes = stokes
         self.particle = self.get_pclass()
 
-    @property
-    def prefix(self):
-        raise NotImplementedError
+    # @property
+    # def prefix(self):
+    #     raise NotImplementedError
 
     @property
     def var_list(self):
