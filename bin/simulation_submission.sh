@@ -61,7 +61,7 @@ export OCEAN_FRAG
 # to calculate the particle numbers.
 # POST_PROCESS == 0 -> run lagrangian simulation
 # POST_PROCESS == 1 -> run post processing
-POST_PROCESS=1
+POST_PROCESS=0
 export POST_PROCESS
 
 # For scenario 8, which release site do we want to do the backwards simulation for
