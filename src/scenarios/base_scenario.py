@@ -24,10 +24,6 @@ class BaseScenario(ABC):
         self.stokes = stokes
         self.particle = self.get_pclass()
 
-    @property
-    def var_list(self):
-        raise NotImplementedError
-
     @abstractmethod
     def create_fieldset(self) -> FieldSet:
         pass
