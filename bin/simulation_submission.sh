@@ -191,6 +191,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
                 RUNNAMEPREFIX="SizeTransport_SIZE="${PARTICLE_SIZE}"_ST="${SHORETIME}"_y="${STARTYEAR}"_tau="${SEABED_CRIT}"_"
               elif [ $SCENARIO == "BlueCloud" ]; then
                 RUNNAMEPREFIX="BlueCloud_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
+              fi
 
               echo $RUNNAMEPREFIX
 

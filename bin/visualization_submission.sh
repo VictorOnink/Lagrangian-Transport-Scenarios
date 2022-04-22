@@ -44,6 +44,7 @@ elif [ $SCENARIO == "SizeTransport" ]; then
   RUNNAMEPREFIX="Visualization_SizeTransport"
 elif [ $SCENARIO == "BlueCloud" ]; then
   RUNNAMEPREFIX="Visualization_BlueCloud"
+fi
 
 echo $RUNNAMEPREFIX
 
