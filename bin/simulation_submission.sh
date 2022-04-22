@@ -7,7 +7,7 @@ SUBMISSION='simulation'
 export SUBMISSION
 
 # 0 = Not a debug run, 1 = a debug run
-DEBUG=0
+DEBUG=1
 
 # Which scenario would you like to run? The current options are listed below:
 # 'AdvectionDiffusionOnly', 'CoastalProximity', 'Stochastic', 'ShoreDependentResuspension', 'TurrellResuspension',
@@ -92,7 +92,7 @@ export ADVECTION_DATA
 START=0
 
 #Number of years the simulation runs
-SIMLEN=2
+SIMLEN=1
 export SIMLEN
 
 #Inclusion of Stokes drift. 0 = include stokes, 1 = do not include stokes
