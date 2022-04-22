@@ -21,7 +21,7 @@ class BlueCloud(base_scenario.BaseScenario):
         self.repeat_dt = timedelta(days=1)
         self.dt = timedelta(minutes=5 * settings.BACKWARD_MULT)
         self.output_time_step = timedelta(hours=12)
-        self.var_list = ['lon', 'lat', 'beach', 'age']
+        # self.var_list = ['lon', 'lat', 'beach', 'age']
         if settings.SUBMISSION in ['simulation', 'visualization']:
             advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
                                                                 advection_scenario=settings.ADVECTION_DATA,
