@@ -5,7 +5,23 @@ if socket.gethostname() in ['kuphaven', 'climatestor01']:
     from dotenv import load_dotenv
     load_dotenv()
 
-SUBMISSION = str(os.environ["SUBMISSION"])
+
+def load_env_variable(variable, default, variable_type=int):
+    """
+    Loading environmental variables
+    :param variable: name of the variable
+    :param default: default value if the environmental variable is not defined
+    :param variable_type: form that the variable should take
+    :return:
+    """
+    if variable in os.environ:
+        return {int: int(os.environ[variable]), float: float(os.environ[variable]), str: str(os.environ[variable]),
+                bool: bool(int(os.environ[variable]))}[variable_type]
+    else:
+        return default
+
+
+SUBMISSION = load_env_variable("SUBMISSION", default=None, variable_type=str)
 os.system('echo "run="' + SUBMISSION)
 
 ########################################################################################################################
@@ -15,61 +31,53 @@ os.system('echo "run="' + SUBMISSION)
 ########################################################################################################################
 
 # DIRECTORIES FOR DATA, INPUTS & OUTPUTS
-SERVER: int = int(os.environ["SERVER"])
-DATA_DIR_SERVERS: dict = {0: "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/",
-                          1: "/storage/homefs/vo18e689/Data/"}
-DATA_INPUT_DIR_SERVERS: dict = {0: "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/Input/",
-                                1: "/storage/homefs/vo18e689/Data/Input/"}
-DATA_OUTPUT_DIR_SERVERS: dict = {0: "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/Output/",
-                                 1: "/storage/homefs/vo18e689/Data/Output/"}
-DATA_WORKSPACE_OUTPUT_DIR: dict = {0: None,
-                                   1: "/storage/workspaces/climate_esm_bgc/bern3d_lpx/onink/"}
-FIGURE_OUTPUT_SERVER: dict = {0: "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/Output/Figures/",
-                              1: "/storage/homefs/vo18e689/Data/Output/Figures/"}
+SERVER: str = load_env_variable("SERVER", default="UBELIX", variable_type=str)
+DATA_DIR_SERVERS: dict = {'KUPHAVEN': "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/",
+                          'UBELIX': "/storage/homefs/vo18e689/Data/"}
+DATA_INPUT_DIR_SERVERS: dict = {'KUPHAVEN': "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/Input/",
+                                'UBELIX': "/storage/homefs/vo18e689/Data/Input/"}
+DATA_OUTPUT_DIR_SERVERS: dict = {'KUPHAVEN': "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/Output/",
+                                 'UBELIX': "/storage/homefs/vo18e689/Data/Output/"}
+DATA_WORKSPACE_OUTPUT_DIR: dict = {'KUPHAVEN': None,
+                                   'UBELIX': "/storage/workspaces/climate_esm_bgc/bern3d_lpx/onink/"}
+FIGURE_OUTPUT_SERVER: dict = {'KUPHAVEN': "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/Output/Figures/",
+                              'UBELIX': "/storage/homefs/vo18e689/Data/Output/Figures/"}
 INPUT_DIREC_DICT = {0: DATA_INPUT_DIR_SERVERS[SERVER] + 'Jambeck_Inputs/',
                     1: DATA_INPUT_DIR_SERVERS[SERVER] + 'Lebreton_Inputs/',
                     2: DATA_INPUT_DIR_SERVERS[SERVER] + 'LebretonDivision_Inputs/',
                     3: DATA_INPUT_DIR_SERVERS[SERVER] + 'Lebreton_Kaandorp_init_Inputs/',
                     4: DATA_INPUT_DIR_SERVERS[SERVER] + 'Point_Release/',
                     5: DATA_INPUT_DIR_SERVERS[SERVER] + 'Uniform/'}
-SCRATCH_DIR = {0: None,
-               1: "/storage/scratch/users/vo18e689/"}[SERVER]
+SCRATCH_DIR = {'KUPHAVEN': None,
+               'UBELIX': "/storage/scratch/users/vo18e689/"}[SERVER]
 
-if SUBMISSION in ['simulation', 'analysis']:
-    # STARTING YEAR, MONTH AND DAY OF THE SIMULATION
-    STARTYEAR: int = int(os.environ['STARTYEAR'])
-    STARTMONTH: int = int(os.environ['STARTMONTH'])
-    STARTDAY: int = int(os.environ['STARTDAY'])
+# STARTING YEAR, MONTH AND DAY OF THE SIMULATION
+STARTYEAR: int = load_env_variable("STARTYEAR", default=2010)
+STARTMONTH: int = load_env_variable("STARTMONTH", default=1)
+STARTDAY: int = load_env_variable("STARTDAY", default=1)
 
-    # LENGTH IN YEARS OF THE SIMULATION
-    SIM_LENGTH: int = int(os.environ['SIMLEN'])
+# LENGTH IN YEARS OF THE SIMULATION
+SIM_LENGTH: int = load_env_variable("SIMLEN", default=1)
 
 ########################################################################################################################
 #                                                                                                                      #
 #                                         Run/restart specific parameters                                              #
 #                                                                                                                      #
 ########################################################################################################################
-# DICTIONARY TO CONVERT 0/1 INDICATORS TO BOOLEAN FALSE/TRUE STATEMENTS
-BOOLEAN_DICT = {0: False, 1: True}
 
-if SUBMISSION == 'simulation':
-    # WHICH OF THE SUBRUNS (DIVISION OF PARTICLE INPUTS)
-    RUN: int = int(os.environ['RUN'])
+# WHICH OF THE SUBRUNS (DIVISION OF PARTICLE INPUTS)
+RUN: int = load_env_variable("RUN", default=0)
 
-    # RESTART NUMBER OF THE RUN
-    # 0 = NEW RUN, N>0 INDICATES NTH YEAR FROM SIMULATION START
-    RESTART: int = int(os.environ['RESTARTNUM'])
+# RESTART NUMBER OF THE RUN
+# 0 = NEW RUN, N>0 INDICATES NTH YEAR FROM SIMULATION START
+RESTART: int = load_env_variable("RESTARTNUM", default=0)
 
 # LAGRANGIAN OR POSTPROCESSING RUN
 # 0 = RUN LAGRANGIAN SIMULATION, 1 = RUN POST PROCESSING
-if SUBMISSION == 'simulation':
-    POST_PROCESS: bool = BOOLEAN_DICT[int(os.environ['POST_PROCESS'])]
-else:
-    POST_PROCESS = False
+POST_PROCESS: bool = load_env_variable("POST_PROCESS", default=False, variable_type=bool)
 
-if SUBMISSION in ['simulation', 'analysis']:
-    # ENSEMBLE NUMBER
-    ENSEMBLE = int(os.environ['ENSEMBLE'])
+# ENSEMBLE NUMBER
+ENSEMBLE: int = load_env_variable("ENSEMBLE", default=1)
 
 ########################################################################################################################
 #                                                                                                                      #
@@ -79,9 +87,9 @@ if SUBMISSION in ['simulation', 'analysis']:
 
 # UV ADVECTION DATA
 ADVECTION_DICT: dict = {0: 'HYCOM_GLOBAL', 1: 'HYCOM_CARIBBEAN', 2: 'CMEMS_MEDITERRANEAN'}
-ADVECTION_DATA: str = ADVECTION_DICT[int(os.environ['ADVECTION_DATA'])]
+ADVECTION_DATA: str = ADVECTION_DICT[load_env_variable("ADVECTION_DATA", default=2)]
 # STOKES DRIFT: 0 -> STOKES, 1 -> NO STOKES
-STOKES: int = int(os.environ['STOKES'])
+STOKES: int = load_env_variable("STOKES", default=0)
 
 ########################################################################################################################
 #                                                                                                                      #
@@ -89,33 +97,29 @@ STOKES: int = int(os.environ['STOKES'])
 #                                                                                                                      #
 ########################################################################################################################
 # MODEL SCENARIO SETTINGS
-SCENARIO_DICT: dict = {0: 'AdvectionDiffusionOnly', 1: 'CoastalProximity', 2: 'Stochastic',
-                       3: 'ShoreDependentResuspension', 4: 'TurrellResuspension', 5: 'SizeTransport',
-                       6: 'FragmentationKaandorp', 7: 'FragmentationKaandorpPartial', 8: 'BlueCloud'}
+SCENARIO_NAME: str = load_env_variable("SCENARIO", default=None, variable_type=str)
+assert SCENARIO_NAME is not None, 'Please pick a scenario!'
 
-SCENARIO_NUM: int = int(os.environ["SCENARIO"])
-SCENARIO_NAME: str = SCENARIO_DICT[SCENARIO_NUM]
 
-if SUBMISSION in ['simulation', 'analysis']:
-    # FOR 'CoastalProximity': TIME IN BEACHING ZONE PRIOR TO BEACHING (DAYS)
-    VICINITY: int = int(os.environ['VICINITY'])
+# FOR 'CoastalProximity': TIME IN BEACHING ZONE PRIOR TO BEACHING (DAYS)
+VICINITY: int = load_env_variable("VICINITY", default=1)
 
-    # BEACHING TIMESCALE
-    SHORE_TIME: int = int(os.environ['SHORETIME'])  # days
-    # RESUSPENSION TIMESCALE
-    RESUS_TIME: int = int(os.environ['RESUSTIME'])  # days
-    # FIXED_RESUS OR SIZE DEPENDENT RESUSPENSION TIMESCALE
-    FIXED_RESUS: bool = BOOLEAN_DICT[int(os.environ['FIXED_RESUS'])]
+# BEACHING TIMESCALE (DAYS)
+SHORE_TIME: int = load_env_variable("SHORETIME", default=26)
+# RESUSPENSION TIMESCALE (DAYS)
+RESUS_TIME: int = load_env_variable("RESUSTIME", default=69)
+# FIXED_RESUS OR SIZE DEPENDENT RESUSPENSION TIMESCALE
+FIXED_RESUS: bool = load_env_variable("FIXED_RESUS", default=False, variable_type=bool)
 
-    # FOR 'ShoreDependentResuspension': 0 -> SAMARAS ET AL (2015) RESUSPENSION DEPENDENCE,
-    #                                   1 -> 1:4 RESUSPENSION DEPENDENCE
-    SHORE_DEP: int = int(os.environ['SHOREDEPEN'])
+# FOR 'ShoreDependentResuspension': 0 -> SAMARAS ET AL (2015) RESUSPENSION DEPENDENCE,
+#                                   1 -> 1:4 RESUSPENSION DEPENDENCE
+SHORE_DEP: int = load_env_variable("SHOREDEPEN", default=0)
 
-    # FOR 'TurrellResuspension': MINIMUM OFF-SHORE WIND SPEED FOR RESUSPENSION (x10 TO NOT GET DECIMAL IN OUTPUT FILES)
-    WMIN: int = int(os.environ['WMIN'])
+# FOR 'TurrellResuspension': MINIMUM OFF-SHORE WIND SPEED FOR RESUSPENSION
+WMIN: float = load_env_variable("WMIN", default=0.0, variable_type=float)
 
-    # FOR 'FragmentationKaandorpPartial': WHETHER WE WANT TO INCLUDE OCEAN FRAGMENTATION OR NOT
-    OCEAN_FRAG: bool = BOOLEAN_DICT[int(os.environ['OCEAN_FRAG'])]
+# FOR 'FragmentationKaandorpPartial': WHETHER WE WANT TO INCLUDE OCEAN FRAGMENTATION OR NOT
+OCEAN_FRAG: bool = load_env_variable("OCEAN_FRAG", default=False, variable_type=bool)
 
 
 ########################################################################################################################
@@ -126,9 +130,9 @@ if SUBMISSION in ['simulation', 'analysis']:
 # THE INPUT SCENARIO
 INPUT_NAMES = {0: 'Jambeck', 1: 'Lebreton', 2: 'LebretonDivision', 3: 'LebretonKaandorpInit', 4: 'Point_Release',
                5: 'Uniform'}
-INPUT = INPUT_NAMES[int(os.environ['INPUT'])]
+INPUT = INPUT_NAMES[load_env_variable("INPUT", default=0)]
 # DIRECTORY CONTAINING INITIAL INPUTS FOR RESTART == 0
-INPUT_DIREC = INPUT_DIREC_DICT[int(os.environ['INPUT'])]
+INPUT_DIREC = INPUT_DIREC_DICT[load_env_variable("INPUT", default=0)]
 
 if INPUT == 'Jambeck':
     # THE NUMBER OF PARTICLES PER RELEASE STEP PER RUN
@@ -168,7 +172,7 @@ elif INPUT == 'LebretonKaandorpInit':
     INPUT_MIN = 0.01  # Minimum plastic mass input for a cell in order to be considered for the input
 elif INPUT == 'Point_Release':
     # THE RELEASE SITE OF THE POINT RELEASE
-    RELEASE_SITE = int(os.environ['RELEASE_SITE'])
+    RELEASE_SITE = load_env_variable("RELEASE_SITE", default=0)
     SITE_LONLAT = {0: (11.0, 42.2)}[RELEASE_SITE]
     # NUMBER OF RELEASE PARTICLES
     PARTICLE_NUMBER = 275
@@ -201,44 +205,36 @@ elif INPUT == 'Uniform':
 #                                       Analysis specific parameters                                                   #
 #                                                                                                                      #
 ########################################################################################################################
-if SUBMISSION in ['analysis']:
-    # IF PARALLEL_STEP == 1, THEN WE ARE CALCULATING THE ANALYSIS FOR EACH RUN/RESTART FILE
-    # IF PARALLEL_STEP == 2, THEN WE COMBINE ALL THE INDIVIDUAL RUN/RESTART ANALYSIS OUTPUT FILES INTO ONE FOR THE WHOLE
-    #                        MODEL SETUP
-    PARALLEL_STEP: int = int(os.environ['PARALLEL_STEP'])
-    # WHICH OF THE SUBRUNS (DIVISION OF PARTICLE INPUTS)
-    RUN: int = int(os.environ['RUN'])
-    # RESTART NUMBER OF THE RUN
-    # 0 = NEW RUN, N>0 INDICATES NTH YEAR FROM SIMULATION START
-    RESTART: int = int(os.environ['RESTARTNUM'])
-    # PLASTIC CONCENTRATION
-    CONCENTRATION = BOOLEAN_DICT[int(os.environ['CONCENTRATION'])]
-    # PLASTIC CONCENTRATIONS (MONTHLY CONCENTRATIONS)
-    MONTHLY_CONCENTRATION = BOOLEAN_DICT[int(os.environ['MONTHLY_CONCENTRATION'])]
-    # VERTICAL PLASTIC CONCENTRATION
-    VERTICAL_CONCENTRATION = BOOLEAN_DICT[int(os.environ['VERTICAL_CONCENTRATION'])]
-    # CALCULATE THE VERTICAL PROFILES ON A SPATIAL GRID
-    SPATIAL_VERTICAL_PROFILES = BOOLEAN_DICT[int(os.environ['SPATIAL_VERTICAL_PROFILES'])]
-    # LON LAT AVERAGED CONCENTRATIONS
-    LONLAT_CONCENTRATION = BOOLEAN_DICT[int(os.environ['LONLAT_CONCENTRATION'])]
-    # TIMESERIES OF BEACHED/COASTAL FRACTIONS
-    TIMESERIES = BOOLEAN_DICT[int(os.environ['TIMESERIES'])]
-    # MAX DISTANCE FROM SHORE
-    MAX_DISTANCE = BOOLEAN_DICT[int(os.environ['MAX_DISTANCE'])]
-    # CREATING TIME SLICES OF THE SIMULATION
-    TIMESLICING = BOOLEAN_DICT[int(os.environ['TIMESLICING'])]
-    # CALCULATING BASIC STATISTICS FOR EACH PARTICLE TRAJECTORY
-    STATISTICS = BOOLEAN_DICT[int(os.environ['STATISTICS'])]
-    # CAlCULATING SEPARATION DISTANCES BETWEEN PARTICLES
-    SEPARATION = BOOLEAN_DICT[int(os.environ['SEPARATION'])]
-    # CALCULATING THE PARTICLE SIZE SPECTRUM/DISTRIBUTION
-    SIZE_SPECTRUM = BOOLEAN_DICT[int(os.environ['SIZE_SPECTRUM'])]
-    # CALCULATING BAYESIAN MATRIX KEEPING TRACK OF
-    BAYESIAN = BOOLEAN_DICT[int(os.environ['BAYESIAN'])]
-    # FRACTION OF PLASTIC ENTERING THE OCEAN IN 2010 THAT IS CONSIDERED BUOYANT (BASED ON GEYERS ET AL., 2017)
-    BUOYANT = 0.54
-else:
-    PARALLEL_STEP: int = 1
+# IF PARALLEL_STEP == 1, THEN WE ARE CALCULATING THE ANALYSIS FOR EACH RUN/RESTART FILE
+# IF PARALLEL_STEP == 2, THEN WE COMBINE ALL THE INDIVIDUAL RUN/RESTART ANALYSIS OUTPUT FILES INTO ONE FOR THE WHOLE
+#                        MODEL SETUP
+PARALLEL_STEP: int = load_env_variable("PARALLEL_STEP", default=0)
+# PLASTIC CONCENTRATION
+CONCENTRATION = load_env_variable("CONCENTRATION", default=False, variable_type=bool)
+# PLASTIC CONCENTRATIONS (MONTHLY CONCENTRATIONS)
+MONTHLY_CONCENTRATION = load_env_variable("MONTHLY_CONCENTRATION", default=False, variable_type=bool)
+# VERTICAL PLASTIC CONCENTRATION
+VERTICAL_CONCENTRATION = load_env_variable("VERTICAL_CONCENTRATION", default=False, variable_type=bool)
+# CALCULATE THE VERTICAL PROFILES ON A SPATIAL GRID
+SPATIAL_VERTICAL_PROFILES = load_env_variable("SPATIAL_VERTICAL_PROFILES", default=False, variable_type=bool)
+# LON LAT AVERAGED CONCENTRATIONS
+LONLAT_CONCENTRATION = load_env_variable("LONLAT_CONCENTRATION", default=False, variable_type=bool)
+# TIMESERIES OF BEACHED/COASTAL FRACTIONS
+TIMESERIES = load_env_variable("TIMESERIES", default=False, variable_type=bool)
+# MAX DISTANCE FROM SHORE
+MAX_DISTANCE = load_env_variable("MAX_DISTANCE", default=False, variable_type=bool)
+# CREATING TIME SLICES OF THE SIMULATION
+TIMESLICING = load_env_variable("TIMESLICING", default=False, variable_type=bool)
+# CALCULATING BASIC STATISTICS FOR EACH PARTICLE TRAJECTORY
+STATISTICS = load_env_variable("STATISTICS", default=False, variable_type=bool)
+# CAlCULATING SEPARATION DISTANCES BETWEEN PARTICLES
+SEPARATION = load_env_variable("SEPARATION", default=False, variable_type=bool)
+# CALCULATING THE PARTICLE SIZE SPECTRUM/DISTRIBUTION
+SIZE_SPECTRUM = load_env_variable("SIZE_SPECTRUM", default=False, variable_type=bool)
+# CALCULATING BAYESIAN MATRIX KEEPING TRACK OF
+BAYESIAN = load_env_variable("BAYESIAN", default=False, variable_type=bool)
+# FRACTION OF PLASTIC ENTERING THE OCEAN IN 2010 THAT IS CONSIDERED BUOYANT (BASED ON GEYERS ET AL., 2017)
+BUOYANT = 0.54
 
 ########################################################################################################################
 #                                                                                                                      #
@@ -246,7 +242,7 @@ else:
 #                                                                                                                      #
 ########################################################################################################################
 # FORWARD OR BACKWARDS IN TIME
-BACKWARD = BOOLEAN_DICT[int(os.environ['BACKWARD'])]
+BACKWARD = load_env_variable("BACKWARD", default=False, variable_type=bool)
 BACKWARD_MULT = {True: -1, False: 1}[BACKWARD]
 # MODEL INTEGRATION TIMESTEP
 if SCENARIO_NAME == 'BlueCloud':
@@ -270,23 +266,22 @@ COAST_D = {'HYCOM_GLOBAL': 10, 'HYCOM_CARIBBEAN': 4, 'CMEMS_MEDITERRANEAN': 6}[A
 # SIZE SCALING FACTOR FOR INIT_SIZE
 SIZE_FACTOR = 1E-6
 
-if SUBMISSION in ['simulation', 'analysis']:
-    # INITIAL PARTICLE SIZE (M)
-    INIT_SIZE = int(os.environ['PARTICLE_SIZE']) * SIZE_FACTOR
-    # INITIAL DENSITY (KG/M^3): 920 = POLYPROPYLENE, 980 = HIGH DENSITY POLYETHYLENE (BRIGNAC ET AL. 2017)
-    INIT_DENSITY = int(os.environ['INIT_DENSITY'])
-    # FRAGMENTATION PROBABILITY
-    P_FRAG = int(os.environ['P']) * 1e-1
-    # NUMBER OF SPATIAL DIMENSIONS
-    DN = int(os.environ['DN']) * 1e-1
-    # NUMBER OF SIZE CLASSES
-    SIZE_CLASS_NUMBER = int(os.environ['SIZE_CLASS_NUMBER'])
-    # FRAGMENTATION TIMESCALE (DAYS)
-    LAMBDA_FRAG = int(os.environ['LAMBDA_FRAG'])
-    # OPEN OCEAN FRAGMENTATION TIMESCALE (DAYS)
-    LAMBDA_OCEAN_FRAG = int(os.environ['LAMBDA_OCEAN_FRAG'])
-    # CRITICAL SHEAR STRESS FOR RESUSPENSION OF PARTICLES FROM THE SEA BED, HORIZONTAL DIFFUSION AT THE SEA BED
-    SEABED_CRIT = int(os.environ['SEABED_CRIT']) * 1E-3
+# INITIAL PARTICLE SIZE (M)
+INIT_SIZE = load_env_variable("PARTICLE_SIZE", default=5000) * SIZE_FACTOR
+# INITIAL DENSITY (KG/M^3): 920 = POLYPROPYLENE, 980 = HIGH DENSITY POLYETHYLENE (BRIGNAC ET AL. 2017)
+INIT_DENSITY = load_env_variable("INIT_DENSITY", default=920)
+# FRAGMENTATION PROBABILITY
+P_FRAG = load_env_variable("P", default=0.4, variable_type=float)
+# NUMBER OF SPATIAL DIMENSIONS
+DN = load_env_variable("DN", default=2.5, variable_type=float)
+# NUMBER OF SIZE CLASSES
+SIZE_CLASS_NUMBER = load_env_variable("SIZE_CLASS_NUMBER", default=6)
+# FRAGMENTATION TIMESCALE (DAYS)
+LAMBDA_FRAG = load_env_variable("LAMBDA_FRAG", default=388)
+# OPEN OCEAN FRAGMENTATION TIMESCALE (DAYS)
+LAMBDA_OCEAN_FRAG = load_env_variable("LAMBDA_OCEAN_FRAG", default=388)
+# CRITICAL SHEAR STRESS FOR RESUSPENSION OF PARTICLES FROM THE SEA BED, HORIZONTAL DIFFUSION AT THE SEA BED
+SEABED_CRIT = load_env_variable("SEABED_CRIT", default=0, variable_type=float)
 
 # ACCELERATION DUE TO GRAVITY (M/S^2)
 G = 9.81
@@ -306,37 +301,6 @@ PHI = 0.9
 SEABED_KH = 0.2
 # MICROPLASTIC REMOVAL RATE (KAANDORP ET AL., 2020), CONVERT FROM 5.3 X 10**-3 WEEK**-1 TO PER TIMESTEP
 P_SINK = 5.1e-3 / (604800 / TIME_STEP.total_seconds())
-
-########################################################################################################################
-#                                                                                                                      #
-#                                       Plotting-specific parameters                                                   #
-#                                                                                                                      #
-########################################################################################################################
-if SUBMISSION in ['visualization']:
-    # DEFAULTS TO PREVENT ERRORS
-    RUN: int = 0
-    RESTART: int = 0
-    SIM_LENGTH: int = 3
-    SHORE_TIME: int = 26
-    RESUS_TIME: int = 69
-    VICINITY: int = 0
-    SHORE_DEP: int = 0
-    WMIN: int = 0
-    INIT_SIZE: float = 5000 * SIZE_FACTOR
-    INIT_DENSITY: int = 920
-    STARTYEAR: int = 2010
-    STARTMONTH: int = 1
-    STARTDAY: int = 1
-    SEABED_CRIT: float = 0.025
-    P_FRAG: float = 4 * 1e-1
-    DN: float = 25 * 1e-1
-    SIZE_CLASS_NUMBER: int = 6
-    LAMBDA_FRAG: int = 388
-    ENSEMBLE: int = 1
-    OCEAN_FRAG: bool = False
-    LAMBDA_OCEAN_FRAG: int = 388
-    FIXED_RESUS: bool = False
-
 
 ########################################################################################################################
 #                                                                                                                      #

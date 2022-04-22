@@ -8,26 +8,14 @@ SUBMISSION='visualization'
 # 0 = Not a debug run, 1 = a debug run
 DEBUG=1
 
-# 0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
-# 5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation
-SCENARIO=7
+# Which scenario would you like to run? The current options are listed below:
+# 'AdvectionDiffusionOnly', 'CoastalProximity', 'Stochastic', 'ShoreDependentResuspension', 'TurrellResuspension',
+# 'SizeTransport', 'FragmentationKaandorp', 'FragmentationKaandorpPartial', 'BlueCloud'
+SCENARIO='BlueCloud'
 
-# Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=lebretondivision, 3=lebretonKaandorpInit,
-# 4=point, 5=uniform
-INPUT=3
-
-#Inclusion of Stokes drift. 0 = include stokes, 1 = do not include stokes
-STOKES=0
-
-#Is it a forward or backward simulation that we want to visualize
-BACKWARD=0
-
-#kuphaven == 0, Ubelix == 1
-SERVER=1
-
-#Which advection data do we want to use?
-# 0 = Global HYCOM, 1 = Caribbean HYCOM, 2 = Mediterranean CMEMS
-ADVECTION_DATA=2
+#What server everything is running on
+SERVER='UBELIX'
+export SERVER
 
 export SUBMISSION
 export SCENARIO
@@ -38,23 +26,24 @@ export INPUT
 export ADVECTION_DATA
 
 #Now, we can set the job name prefix
-if [ "$SCENARIO" -eq "0" ]; then
-	RUNNAMEPREFIX="Visualization_AdvDifOnly"
-elif [ "$SCENARIO" -eq "1" ]; then
-	RUNNAMEPREFIX="Visualization_Prox"
-elif [ "$SCENARIO" -eq "2" ]; then
-	RUNNAMEPREFIX="Visualization_Stochastic"
-elif [ "$SCENARIO" -eq "3" ]; then
-        RUNNAMEPREFIX="Visualization_SDResus"
-elif [ "$SCENARIO" -eq "4" ]; then
-        RUNNAMEPREFIX="Visualization_Turrell"
-elif [ "$SCENARIO" -eq "6" ]; then
-        RUNNAMEPREFIX="Visualization_KaandorpFrag"
-elif [ "$SCENARIO" -eq "5" ]; then
-        RUNNAMEPREFIX="Visualization_SizeTransport"
-elif [ "$SCENARIO" -eq "7" ]; then
-        RUNNAMEPREFIX="Visualization_PartialKaandorpFrag"
-fi
+if [ $SCENARIO == "AdvectionDiffusionOnly" ]; then
+  RUNNAMEPREFIX="Visualization_AdvDifOnly"
+elif [ $SCENARIO == "CoastalProximity" ]; then
+  RUNNAMEPREFIX="Visualization_Prox"
+elif [ $SCENARIO == "Stochastic" ]; then
+  RUNNAMEPREFIX="Visualization_Stochastic"
+elif [ $SCENARIO == "ShoreDependentResuspension" ]; then
+  RUNNAMEPREFIX="Visualization_SDResus"
+elif [ $SCENARIO == "TurrellResuspension" ]; then
+  RUNNAMEPREFIX="Visualization_Turrell"
+elif [ $SCENARIO == "FragmentationKaandorp" ]; then
+  RUNNAMEPREFIX="Visualization_KaandorpFrag"
+elif [ $SCENARIO == "FragmentationKaandorpPartial" ]; then
+  RUNNAMEPREFIX="Visualization_PartialKaandorpFrag"
+elif [ $SCENARIO == "SizeTransport" ]; then
+  RUNNAMEPREFIX="Visualization_SizeTransport"
+elif [ $SCENARIO == "BlueCloud" ]; then
+  RUNNAMEPREFIX="Visualization_BlueCloud"
 
 echo $RUNNAMEPREFIX
 
@@ -62,7 +51,7 @@ echo $RUNNAMEPREFIX
 # Now the part where we create the submission file                                  #
 #####################################################################################
 runname=$RUNNAMEPREFIX
-if [ "$SERVER" -eq "1" ]; then
+if [ $SERVER == "UBELIX" ]; then
   #Submission for ubelix
   part1="#!/bin/sh"
   part2="#SBATCH --mail-type=fail"
@@ -91,7 +80,7 @@ if [ "$SERVER" -eq "1" ]; then
   partGrab="part"$i
   echo ${!partGrab} >> jobsubmissionFile.sh
   done
-elif [ "$SERVER" -eq "0" ]; then
+elif [ $SERVER == "KUPHAVEN" ]; then
   #Submission for kuphaven
   part1="#!/bin/sh"
   part2="#SBATCH --mail-type=begin,end,fail"

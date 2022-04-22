@@ -33,7 +33,7 @@ class ScenarioFactory:
         elif scenario_name == 'BlueCloud':
             return BlueCloud(server=server, stokes=stokes)
         else:
-            raise ValueError("invalid model scenario")
+            raise ValueError("{} is an invalid model scenario!".format(scenario_name))
 
 
 

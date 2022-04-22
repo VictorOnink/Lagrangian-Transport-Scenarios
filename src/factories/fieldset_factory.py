@@ -402,7 +402,7 @@ def add_physics_constants(fieldset: FieldSet, file_dict: dict):
     fieldset.add_constant('SEABED_CRIT', settings.SEABED_CRIT)
     fieldset.add_constant('SEABED_KH', settings.SEABED_KH)
     # The minimum offshore wind speed for resuspension to be possible
-    fieldset.add_constant('Wmin', settings.WMIN / 10)
+    fieldset.add_constant('Wmin', settings.WMIN)
     # Adding a number of constants that are required for computing the wind-driven mixing according to the KPP scheme
     fieldset.add_constant('G', settings.G)  # Acceleration due to gravity
     fieldset.add_constant('VK', settings.VK)  # von Karman coefficient

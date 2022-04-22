@@ -9,10 +9,10 @@ export SUBMISSION
 # 0 = Not a debug run, 1 = a debug run
 DEBUG=0
 
-# 0=first order, 1=coastal, 2=stochastic beaching/resuspension, 3=coast type dependent, 4 = Turrell (2020)
-# 5 = Size dependent transport, 6 = Kaandorp based fragmentation, 7 = alternate Kaandorp fragmentation,
-# 8 = Blue Cloud Hackathon Backward, 9 = Blue Cloud Hackathon Forward
-SCENARIO=7
+# Which scenario would you like to run? The current options are listed below:
+# 'AdvectionDiffusionOnly', 'CoastalProximity', 'Stochastic', 'ShoreDependentResuspension', 'TurrellResuspension',
+# 'SizeTransport', 'FragmentationKaandorp', 'FragmentationKaandorpPartial', 'BlueCloud'
+SCENARIO='BlueCloud'
 export SCENARIO
 
 #for scenario 1, the time a particle must be near the coast to beach (in days)
@@ -36,8 +36,8 @@ PARTICLE_SIZE_list=(5000)  #(5000 2500 1250 625 313 156 78 39 20 10 5 2)
 INIT_DENSITY_list=(920) # (30 920 980 1020)
 export INIT_DENSITY
 
-#for scenario 5 and 6, the critical bottom shear stress for particle resuspension (x1e-3)
-SEABED_CRIT=0
+#for scenario 5 and 6, the critical bottom shear stress for particle resuspension
+SEABED_CRIT='0'
 export SEABED_CRIT
 
 #for scenarios 5 - 7, if fixed == 1 we have size-independent resuspension, otherwise the resuspension timescale is a
@@ -47,8 +47,8 @@ export FIXED_RESUS
 
 # For scenario 7, the fragmentation parameters p (x1e-1), DN (x1e-1), the number of size classes and fragmentation
 # timescale (days). Also, the option of including ocean fragmentation or not
-P=4
-DN=25
+P='0.4'
+DN='2.5'
 SIZE_CLASS_NUMBER=6
 LAMBDA_FRAG_list=(388)
 OCEAN_FRAG=0
@@ -101,8 +101,8 @@ export STOKES
 ENSEMBLE=1
 export ENSEMBLE
 
-#Ubelix server, so server==1
-SERVER=1
+#What server everything is running on
+SERVER='UBELIX'
 export SERVER
 
 #A number of switches to indicate which analysis steps we want to run.
@@ -136,32 +136,28 @@ export SPATIAL_VERTICAL_PROFILES
 #####################################################################################
 # A number of tests to make sure that I don't submit too many jobs by accident      #
 #####################################################################################
-if [ "$SCENARIO" -eq "5" -a ${#LAMBDA_FRAG_list[@]} -gt 1 ]; then
+if [ $SCENARIO == "SizeTransport" -a ${#LAMBDA_FRAG_list[@]} -gt 1 ]; then
   echo 'For SizeTransport, do not submit multiple LAMBDA_FRAG values.'
   exit
 fi
-if [ "$SCENARIO" -eq "5" -a ${#LAMBDA_OCEAN_FRAG_LIST[@]} -gt 1 ]; then
+if [ $SCENARIO == "SizeTransport" -a ${#LAMBDA_OCEAN_FRAG_LIST[@]} -gt 1 ]; then
   echo 'For SizeTransport, do not submit multiple LAMBDA_OCEAN_FRAG values.'
   exit
 fi
-if [ "$SCENARIO" -eq "5" -a  "$INPUT" -ne "1" ]; then
+if [ $SCENARIO == "SizeTransport" -a  "$INPUT" -ne "1" ]; then
   echo 'For SizeTransport, make sure to use input scenario 1!!!!.'
   exit
 fi
-if [ "$SCENARIO" -eq "8" -a  "$INPUT" -ne "4" ]; then
-  echo 'For BlueCloudBackwards, make sure to use input scenario 4!!!!.'
-  exit
-fi
-if [ "$SCENARIO" -eq "9" -a  "$INPUT" -ne "4" ]; then
-  echo 'For BlueCloudForwards, make sure to use input scenario 4!!!!.'
-  exit
-fi
-if [ "$SCENARIO" -eq "7" -a ${#PARTICLE_SIZE_list[@]} -gt 1 ]; then
+if [ $SCENARIO == "FragmentationKaandorpPartial" -a ${#PARTICLE_SIZE_list[@]} -gt 1 ]; then
   echo 'For KaandorpFragmentationPartial, please only submit one PARTICLE_SIZE.'
   exit
 fi
-if [ "$SCENARIO" -eq "7" -a ${#LAMBDA_OCEAN_FRAG_LIST[@]} -gt 1 -a $OCEAN_FRAG -eq 0 ]; then
+if [ $SCENARIO == "FragmentationKaandorpPartial" -a ${#LAMBDA_OCEAN_FRAG_LIST[@]} -gt 1 -a $OCEAN_FRAG -eq 0 ]; then
   echo 'Without OCEAN_FRAG, do not submit more than one LAMBDA_OCEAN_FRAG value'
+  exit
+fi
+if [ $SCENARIO != "FragmentationKaandorpPartial" -a  "$POST_PROCESS" -ne "0" ]; then
+  echo 'Postprocessing only applies for KaandorpFragmentationPartial, not any other scenario'
   exit
 fi
 
@@ -199,31 +195,29 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
               export STARTMONTH
 
               #Now, we can set the job name prefix
-              if [ "$SCENARIO" -eq "0" ]; then
-                RUNNAMEPREFIX="Analysis_AdvDifOnly_y="${YEAR}"_"
-              elif [ "$SCENARIO" -eq "1" ]; then
-                RUNNAMEPREFIX="Analysis_Prox_vic="${VICINITY}"_y="${YEAR}"_"
-              elif [ "$SCENARIO" -eq "2" ]; then
-                RUNNAMEPREFIX="Analysis_Stochastic_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${YEAR}"_"
-              elif [ "$SCENARIO" -eq "3" ]; then
-                RUNNAMEPREFIX="Analysis_SDResus_SD="${SHOREDEPEN}"_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${YEAR}"_"
-              elif [ "$SCENARIO" -eq "4" ]; then
-                RUNNAMEPREFIX="Analysis_Turrell_Wmin="${WMIN}"_ST="${SHORETIME}"_y="${YEAR}"_"
-              elif [ "$SCENARIO" -eq "6" ]; then
-                RUNNAMEPREFIX="Analysis_KaandorpFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${YEAR}"_"
-              elif [ "$SCENARIO" -eq "7" ]; then
-                RUNNAMEPREFIX="Analysis_PartialKaandorpFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${YEAR}"_lamf="${LAMBDA_FRAG}"_lamfO="${LAMBDA_FRAG_LAMBDA_OCEAN_FRAG}"_"
-              elif [ "$SCENARIO" -eq "5" ]; then
-                RUNNAMEPREFIX="Analysis_SizeTransport_SIZE="${PARTICLE_SIZE}"_ST="${SHORETIME}"_y="${YEAR}"_"
-              elif [ "$SCENARIO" -eq "8" ]; then
-                RUNNAMEPREFIX="BlueCloudBackwards_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
-              elif [ "$SCENARIO" -eq "9" ]; then
-                RUNNAMEPREFIX="BlueCloudForwards_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
-              fi
-              if [ "$STOKES" -eq "1" ]; then
-                RUNNAMEPREFIX=${RUNNAMEPREFIX}"NS_"
-              fi
-              RUNNAMEPREFIX=${RUNNAMEPREFIX}"ENSEMBLE="${ENSEMBLE}"_"
+              if [ $SCENARIO == "AdvectionDiffusionOnly" ]; then
+                RUNNAMEPREFIX="AdvDifOnly_y="${STARTYEAR}"_"
+              elif [ $SCENARIO == "CoastalProximity" ]; then
+                RUNNAMEPREFIX="Prox_vic="${VICINITY}"_y="${STARTYEAR}"_"
+              elif [ $SCENARIO == "Stochastic" ]; then
+                RUNNAMEPREFIX="Stochastic_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
+              elif [ $SCENARIO == "ShoreDependentResuspension" ]; then
+                RUNNAMEPREFIX="SDResus_SD="${SHOREDEPEN}"_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
+              elif [ $SCENARIO == "TurrellResuspension" ]; then
+                RUNNAMEPREFIX="Turrell_Wmin="${WMIN}"_ST="${SHORETIME}"_y="${STARTYEAR}"_"
+              elif [ $SCENARIO == "FragmentationKaandorp" ]; then
+                RUNNAMEPREFIX="KaandorpFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
+              elif [ $SCENARIO == "FragmentationKaandorpPartial" ]; then
+                RUNNAMEPREFIX="PartialKaandorpFrag_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
+                if [ "$POST_PROCESS" -eq "1" ]; then
+                  RUNNAMEPREFIX='PP_'${RUNNAMEPREFIX}
+                fi
+              elif [ $SCENARIO == "SizeTransport" ]; then
+                RUNNAMEPREFIX="SizeTransport_SIZE="${PARTICLE_SIZE}"_ST="${SHORETIME}"_y="${STARTYEAR}"_tau="${SEABED_CRIT}"_"
+              elif [ $SCENARIO == "BlueCloud" ]; then
+                RUNNAMEPREFIX="BlueCloud_ST="${SHORETIME}"_RT="${RESUSTIME}"_y="${STARTYEAR}"_"
+
+              echo $RUNNAMEPREFIX
 
               #Initializing a string used for keeping track of the job dependencies
               PARALLEL_STEP=1
