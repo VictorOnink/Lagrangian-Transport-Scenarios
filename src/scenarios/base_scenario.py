@@ -22,7 +22,34 @@ class BaseScenario(ABC):
     def __init__(self, server, stokes):
         self.server = server
         self.stokes = stokes
+        self.input_dir = utils.get_input_directory(server=self.server)
+        self.output_dir = utils.get_output_directory(server=self.server)
         self.particle = self.get_pclass()
+
+    @property
+    @abstractmethod
+    def prefix(self):
+        pass
+
+    @property
+    @abstractmethod
+    def repeat_dt(self):
+        pass
+
+    @property
+    @abstractmethod
+    def dt(self):
+        pass
+
+    @property
+    @abstractmethod
+    def output_time_step(self):
+        pass
+
+    @property
+    @abstractmethod
+    def var_list(self):
+        pass
 
     @abstractmethod
     def create_fieldset(self) -> FieldSet:

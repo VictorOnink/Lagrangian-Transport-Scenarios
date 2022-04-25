@@ -17,8 +17,6 @@ class AdvectionDiffusionOnly(base_scenario.BaseScenario):
         """Constructor for coastal_proximity"""
         super().__init__(server, stokes)
         self.prefix = "AdvDifOnly"
-        self.input_dir = utils.get_input_directory(server=self.server)
-        self.output_dir = utils.get_output_directory(server=self.server)
         self.var_list = ['lon', 'lat', 'weights', 'beach', 'age']
         self.dt = timedelta(minutes=10 * settings.BACKWARD_MULT)
         self.output_time_step = timedelta(hours=12)

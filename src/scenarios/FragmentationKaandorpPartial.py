@@ -30,8 +30,6 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         """Constructor for FragmentationKaandorp"""
         super().__init__(server, stokes)
         self.prefix = "Frag_Kaandorp"
-        self.input_dir = utils.get_input_directory(server=self.server)
-        self.output_dir = settings.DATA_WORKSPACE_OUTPUT_DIR[self.server]
         self.repeat_dt = None
         self.dt = timedelta(minutes=0.5 * settings.BACKWARD_MULT)
         self.output_time_step = timedelta(hours=12)

@@ -20,8 +20,6 @@ class SizeTransport(base_scenario.BaseScenario):
         """Constructor for FragmentationKaandorp"""
         super().__init__(server, stokes)
         self.prefix = "Size_Transport"
-        self.input_dir = utils.get_input_directory(server=self.server)
-        self.output_dir = utils.get_output_directory(server=self.server)
         self.repeat_dt = None
         self.UV_interpolation = 'linear'
         self.var_list = ['lon', 'lat', 'beach', 'age', 'distance2coast', 'z']

@@ -7,7 +7,7 @@ SUBMISSION='simulation'
 export SUBMISSION
 
 # 0 = Not a debug run, 1 = a debug run
-DEBUG=0
+DEBUG=1
 
 # Which scenario would you like to run? The current options are listed below:
 # 'AdvectionDiffusionOnly', 'CoastalProximity', 'Stochastic', 'ShoreDependentResuspension', 'TurrellResuspension',

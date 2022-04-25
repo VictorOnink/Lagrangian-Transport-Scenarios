@@ -15,9 +15,7 @@ class BlueCloud(base_scenario.BaseScenario):
     def __init__(self, server, stokes):
         """Constructor for coastal_proximity"""
         super().__init__(server, stokes)
-        self.prefix = "BlueCloud"
-        self.input_dir = utils.get_input_directory(server=self.server)
-        self.output_dir = utils.get_output_directory(server=self.server)
+        # self.prefix = "BlueCloud"
         self.repeat_dt = timedelta(days=1)
         self.dt = timedelta(minutes=5 * settings.BACKWARD_MULT)
         self.output_time_step = timedelta(hours=12)
