@@ -46,8 +46,6 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
         if settings.SUBMISSION in ['simulation'] and not settings.POST_PROCESS:
             self.field_set = self.create_fieldset()
 
-
-
     def create_fieldset(self) -> FieldSet:
         utils.print_statement("Creating the fieldset")
         fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict, stokes=self.stokes,

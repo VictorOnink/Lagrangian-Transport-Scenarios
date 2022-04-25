@@ -39,7 +39,7 @@ class AdvectionFiles:
             # The core UV velocity fields
             UV_filenames = glob.glob(self.data_dir + "HYCOM/HYCOM_Surface*2000-01-01.nc") + \
                            glob.glob(self.data_dir + "HYCOM/HYCOM_Surface*{}*.nc".format(
-                               settings.STARTYEAR + settings.RESTART))
+                               settings.STARTYEAR + settings.RESTART * settings.BACKWARD_MULT))
             # Remove duplicates
             UV_filenames = list(dict.fromkeys(UV_filenames))
             UV_filenames.sort()
@@ -53,7 +53,7 @@ class AdvectionFiles:
 
             # The stokes drift fields
             STOKES_filenames = glob.glob(self.data_dir + "WaveWatchIIIstokes/ww3.{}*_uss.nc".format(
-                settings.STARTYEAR + settings.RESTART))
+                settings.STARTYEAR + settings.RESTART * settings.BACKWARD_MULT))
             STOKES_filenames.sort()
             STOKES_variables = {'Ust': 'uuss', 'Vst': 'vuss'}
             STOKES_dimensions = {'Ust': {'lat': 'latitude', 'lon': 'longitude', 'time': 'time'},
@@ -68,7 +68,7 @@ class AdvectionFiles:
 
             # The sea surface elevation fields
             ELEV_filenames = glob.glob(
-                self.data_dir + "HYCOM/HYCOM_SeaEleve_3h_{}*.nc".format(settings.STARTYEAR + settings.RESTART))
+                self.data_dir + "HYCOM/HYCOM_SeaEleve_3h_{}*.nc".format(settings.STARTYEAR + settings.RESTART * settings.BACKWARD_MULT))
             ELEV_filenames.sort()
             ELEV_variables = {'eta': 'surf_el'}
             ELEV_dimensions = {'time': 'time', 'lat': 'lat', 'lon': 'lon'}
@@ -80,7 +80,7 @@ class AdvectionFiles:
                                          variable=ELEV_dimensions)
 
             # The surface winds
-            WIND_filenames = glob.glob(self.data_dir + "Wind/ERA5*{}.nc".format(settings.STARTYEAR + settings.RESTART))
+            WIND_filenames = glob.glob(self.data_dir + "Wind/ERA5*{}.nc".format(settings.STARTYEAR + settings.RESTART * settings.BACKWARD_MULT))
             WIND_filenames.sort()
             WIND_variables = {'u10': 'u10', 'v10': 'v10'}
             WIND_dimensions = {'time': 'time', 'lat': 'latitude', 'lon': 'longitude'}
@@ -110,7 +110,7 @@ class AdvectionFiles:
             # The core UV velocity fields
             UV_filenames = glob.glob(self.data_dir + "HYCOM_CARIBBEAN/hycom_gomu_501_2010010100_t000.nc.nc4") + \
                            glob.glob(self.data_dir + "HYCOM_CARIBBEAN/hycom_gomu_501_{}*.nc.nc4".format(
-                               settings.STARTYEAR + settings.RESTART))
+                               settings.STARTYEAR + settings.RESTART * settings.BACKWARD_MULT))
             # Remove duplicates
             UV_filenames = list(dict.fromkeys(UV_filenames))
             UV_filenames.sort()
@@ -125,7 +125,7 @@ class AdvectionFiles:
 
             # The stokes drift fields
             STOKES_filenames = glob.glob(self.data_dir + "WaveWatchIIIstokes/ww3.{}*_uss.nc".format(
-                settings.STARTYEAR + settings.RESTART))
+                settings.STARTYEAR + settings.RESTART * settings.BACKWARD_MULT))
             STOKES_filenames.sort()
             STOKES_variables = {'Ust': 'uuss', 'Vst': 'vuss'}
             STOKES_dimensions = {'Ust': {'lat': 'latitude', 'lon': 'longitude', 'time': 'time'},
@@ -140,7 +140,7 @@ class AdvectionFiles:
 
             # The sea surface elevation fields
             ELEV_filenames = glob.glob(self.data_dir + "HYCOM_CARIBBEAN/hycom_gomu_501_{}*.nc.nc4".format(
-                settings.STARTYEAR + settings.RESTART))
+                settings.STARTYEAR + settings.RESTART * settings.BACKWARD_MULT))
             ELEV_filenames.sort()
             ELEV_variables = {'eta': 'surf_el'}
             ELEV_dimensions = {'time': 'time', 'lat': 'lat', 'lon': 'lon'}
@@ -152,7 +152,7 @@ class AdvectionFiles:
                                          variable=ELEV_dimensions)
 
             # The surface winds
-            WIND_filenames = glob.glob(self.data_dir + "Wind/ERA5*{}.nc".format(settings.STARTYEAR + settings.RESTART))
+            WIND_filenames = glob.glob(self.data_dir + "Wind/ERA5*{}.nc".format(settings.STARTYEAR + settings.RESTART * settings.BACKWARD_MULT))
             WIND_filenames.sort()
             WIND_variables = {'u10': 'u10', 'v10': 'v10'}
             WIND_dimensions = {'time': 'time', 'lat': 'latitude', 'lon': 'longitude'}
@@ -182,7 +182,7 @@ class AdvectionFiles:
             # The core UV velocity fields
             UV_filenames = glob.glob(self.data_dir + "CMEMS_MED/20100101_d-CMCC--RFVL-MFSe3r1-MED-b20200901_re-sv01.00.nc") + \
                            glob.glob(self.data_dir + "CMEMS_MED/{}*--RFVL*.nc".format(
-                               settings.STARTYEAR + settings.RESTART))
+                               settings.STARTYEAR + settings.RESTART * settings.BACKWARD_MULT))
             # Remove duplicates
             UV_filenames = list(dict.fromkeys(UV_filenames))
             UV_filenames.sort()
@@ -196,7 +196,7 @@ class AdvectionFiles:
 
             # The stokes drift fields
             STOKES_filenames = glob.glob(self.data_dir + "WAVE_MED/{}*--WAVE*.nc".format(
-                settings.STARTYEAR + settings.RESTART))
+                settings.STARTYEAR + settings.RESTART * settings.BACKWARD_MULT))
             STOKES_filenames.sort()
             STOKES_variables = {'Ust': 'VSDX', 'Vst': 'VSDY'}
             STOKES_dimensions = {'Ust': {'time': 'time', 'lat': 'lat', 'lon': 'lon'},
@@ -211,7 +211,7 @@ class AdvectionFiles:
 
             # The peak wave period fields
             PERIOD_filenames = glob.glob(self.data_dir + "WAVE_MED/{}*--WAVE*.nc".format(
-                settings.STARTYEAR + settings.RESTART))
+                settings.STARTYEAR + settings.RESTART * settings.BACKWARD_MULT))
             PERIOD_filenames.sort()
             PERIOD_variables = {'WP': 'VTPK'}
             PERIOD_dimensions = {'WP': {'time': 'time', 'lat': 'lat', 'lon': 'lon'},
@@ -225,7 +225,7 @@ class AdvectionFiles:
 
             # Ocean Temperature
             TEMP_filenames = glob.glob(self.data_dir + "CMEMS_MED/{}*--TEMP*.nc".format(
-                settings.STARTYEAR + settings.RESTART))
+                settings.STARTYEAR + settings.RESTART * settings.BACKWARD_MULT))
             TEMP_filenames.sort()
             TEMP_variables = {'cons_temperature': 'thetao'}
             TEMP_dimensions = {'cons_temperature': {'time': 'time', 'depth': 'depth', 'lat': 'lat', 'lon': 'lon'}}
@@ -238,7 +238,7 @@ class AdvectionFiles:
 
             # Ocean Salinity
             SALINITY_filenames = glob.glob(self.data_dir + "CMEMS_MED/{}*--PSAL*.nc".format(
-                settings.STARTYEAR + settings.RESTART))
+                settings.STARTYEAR + settings.RESTART * settings.BACKWARD_MULT))
             SALINITY_filenames.sort()
             SALINITY_variables = {'abs_salinity': 'so'}
             SALINITY_dimensions = {'abs_salinity': {'time': 'time', 'depth': 'depth', 'lat': 'lat', 'lon': 'lon'}}
@@ -258,7 +258,7 @@ class AdvectionFiles:
                                          variable=BATH_variables)
 
             # The surface winds
-            WIND_filenames = glob.glob(self.data_dir + "Wind/ERA5*{}.nc".format(settings.STARTYEAR + settings.RESTART))
+            WIND_filenames = glob.glob(self.data_dir + "Wind/ERA5*{}.nc".format(settings.STARTYEAR + settings.RESTART * settings.BACKWARD_MULT))
             WIND_filenames.sort()
             WIND_variables = {'u10': 'u10', 'v10': 'v10'}
             WIND_dimensions = {'time': 'time', 'lat': 'latitude', 'lon': 'longitude'}
@@ -282,7 +282,7 @@ class AdvectionFiles:
 
             # The Mixed Layer Depth (MLD)
             MLD_filenames = glob.glob(self.data_dir + "CMEMS_MED/{}*--AMXL*.nc".format(
-                settings.STARTYEAR + settings.RESTART))
+                settings.STARTYEAR + settings.RESTART * settings.BACKWARD_MULT))
             MLD_filenames.sort()
             MLD_variables = {'MLD': 'mlotst'}
             MLD_dimensions = {'MLD': {'time': 'time', 'lat': 'lat', 'lon': 'lon'}}

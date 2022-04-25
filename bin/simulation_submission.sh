@@ -89,7 +89,7 @@ ADVECTION_DATA=2
 export ADVECTION_DATA
 
 #Start year of the simulation. 0 = new simulation, otherwise it picks up from a previous simulation
-START=0
+START=1
 
 #Number of years the simulation runs
 SIMLEN=2
