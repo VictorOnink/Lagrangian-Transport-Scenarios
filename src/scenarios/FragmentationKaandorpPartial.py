@@ -29,20 +29,39 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
     def __init__(self, server, stokes):
         """Constructor for FragmentationKaandorp"""
         super().__init__(server, stokes)
-        self.prefix = "Frag_Kaandorp"
-        self.repeat_dt = None
-        self.dt = timedelta(minutes=0.5 * settings.BACKWARD_MULT)
-        self.output_time_step = timedelta(hours=12)
         self.OCEAN_FRAG = settings.OCEAN_FRAG
         self.T_frag = 90
-        self.var_list = ['lon', 'lat', 'beach', 'age', 'parent', 'beach_time', 'size_class', 'ocean_time',
-                         'at_seafloor', 'distance2coast']
         advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
                                                             advection_scenario=settings.ADVECTION_DATA,
                                                             repeat_dt=self.repeat_dt)
         self.file_dict = advection_scenario.file_names
         if settings.SUBMISSION in ['simulation'] and not settings.POST_PROCESS:
             self.field_set = self.create_fieldset()
+
+    def set_prefix(self) -> str:
+        """
+        Set the scenario prefix
+        :return:
+        """
+        return "Frag_Kaandorp"
+
+    def set_var_list(self) -> list:
+        """
+        Set the var_list, which contains all the variables that need to be loaded during the restarts
+        :return:
+        """
+        return ['lon', 'lat', 'beach', 'age', 'parent', 'beach_time', 'size_class', 'ocean_time', 'at_seafloor',
+                'distance2coast']
+
+    def set_time_steps(self) -> tuple:
+        """
+        Set the integration, output and repeat timesteps
+        :return: self.dt, self.output_time_step, self.repeat_dt
+        """
+        dt = timedelta(minutes=0.5 * settings.BACKWARD_MULT)
+        output_time_step = timedelta(hours=12)
+        repeat_dt = None
+        return dt, output_time_step, repeat_dt
 
     def create_fieldset(self) -> FieldSet:
         utils.print_statement("Creating the fieldset")

@@ -3,10 +3,8 @@ import numpy as np
 import settings as settings
 import scenarios.base_scenario as base_scenario
 import factories.fieldset_factory as fieldset_factory
-from advection_scenarios import advection_files
 import utils as utils
 from datetime import datetime, timedelta
-import os
 from parcels import ParcelsRandom
 
 
@@ -14,24 +12,35 @@ class SD_Resuspension(base_scenario.BaseScenario):
     """Stochastic beaching and shore dependent resuspension """
 
     def __init__(self, server, stokes):
-        """Constructor for coastal_proximity"""
+        """Constructor for ShoreDependentResuspension"""
         super().__init__(server, stokes)
-        self.prefix = "SDResus"
-        self.var_list = ['lon', 'lat', 'weights', 'beach', 'age']
-        self.dt = timedelta(minutes=10 * settings.BACKWARD_MULT)
-        self.output_time_step = timedelta(hours=12)
+
+    def set_prefix(self) -> str:
+        """
+        Set the scenario prefix
+        :return:
+        """
+        return "SDResus"
+
+    def set_var_list(self) -> list:
+        """
+        Set the var_list, which contains all the variables that need to be loaded during the restarts
+        :return:
+        """
+        return ['lon', 'lat', 'weights', 'beach', 'age']
+
+    def set_time_steps(self) -> tuple:
+        """
+        Set the integration, output and repeat timesteps
+        :return: self.dt, self.output_time_step, self.repeat_dt
+        """
+        dt = timedelta(minutes=10 * settings.BACKWARD_MULT)
+        output_time_step = timedelta(hours=12)
         if settings.RESTART == 0:
-            self.repeat_dt = timedelta(days=31)
+            repeat_dt = timedelta(days=31)
         else:
-            self.repeat_dt = None
-        if settings.SUBMISSION in ['simulation', 'visualization']:
-            advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
-                                                                advection_scenario=settings.ADVECTION_DATA,
-                                                                repeat_dt=self.repeat_dt)
-            self.file_dict = advection_scenario.file_names
-            self.field_set = self.create_fieldset()
-
-
+            repeat_dt = None
+        return dt, output_time_step, repeat_dt
 
     def create_fieldset(self) -> FieldSet:
         utils.print_statement("Creating the fieldset")

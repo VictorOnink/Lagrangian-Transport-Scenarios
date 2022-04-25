@@ -24,8 +24,6 @@
   <component name="ChangeListManager">
     <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="Restructuring">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/simulation_submission.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/simulation_submission.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/advection_scenarios/advection_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/advection_scenarios/advection_files.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/scenarios/BlueCloud.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/BlueCloud.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/scenarios/BlueCloudBackwards.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/BlueCloudBackwards.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/scenarios/BlueCloudForwards.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/BlueCloudForwards.py" afterDir="false" />
@@ -123,13 +121,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-03660" summary="massloss">
-      <created>1646990293248</created>
-      <option name="number" value="03660" />
-      <option name="presentableId" value="LOCAL-03660" />
-      <option name="project" value="LOCAL" />
-      <updated>1646990293248</updated>
     </task>
     <task id="LOCAL-03661" summary="massloss">
       <created>1646991195014</created>
@@ -467,7 +458,14 @@
       <option name="project" value="LOCAL" />
       <updated>1650882102149</updated>
     </task>
-    <option name="localTasksCounter" value="3709" />
+    <task id="LOCAL-03709" summary="Restructuring">
+      <created>1650887296198</created>
+      <option name="number" value="03709" />
+      <option name="presentableId" value="LOCAL-03709" />
+      <option name="project" value="LOCAL" />
+      <updated>1650887296198</updated>
+    </task>
+    <option name="localTasksCounter" value="3710" />
     <servers />
   </component>
   <component name="UnknownFeatures">

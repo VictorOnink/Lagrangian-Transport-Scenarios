@@ -6,49 +6,40 @@ from netCDF4 import Dataset
 from utils import set_random_seed, delete_particle, restart_nan_removal, get_start_end_time
 import utils
 import settings as settings
-import os
 from factories.pset_variable_factory import PsetVariableFactory as pvf
+from advection_scenarios import advection_files
 
 
 class BaseScenario(ABC):
-    server: int
-    stokes: int
-    field_set: FieldSet
-    particle: JITParticle
-    prefix: str
-
     """A base class for the different scenarios"""
 
     def __init__(self, server, stokes):
-        self.server = server
-        self.stokes = stokes
-        self.input_dir = utils.get_input_directory(server=self.server)
-        self.output_dir = utils.get_output_directory(server=self.server)
-        self.particle = self.get_pclass()
+        self.server: int = server
+        self.stokes: int = stokes
+        self.input_dir: str = utils.get_input_directory(server=self.server)
+        self.output_dir: str = utils.get_output_directory(server=self.server)
+        self.particle: ParticleSet = self.get_pclass()
+        self.prefix: str = self.set_prefix()
+        self.dt, self.output_time_step, self.repeat_dt = self.set_time_steps()
+        self.var_list: list = self.set_var_list()
+        if settings.SUBMISSION in ['simulation', 'visualization']:
+            advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
+                                                                advection_scenario=settings.ADVECTION_DATA,
+                                                                repeat_dt=self.repeat_dt)
+            self.file_dict = advection_scenario.file_names
+            if settings.SUBMISSION in ['simulation']:
+                self.field_set = self.create_fieldset()
 
-    @property
     @abstractmethod
-    def prefix(self):
+    def set_prefix(self) -> str:
         pass
 
-    @property
     @abstractmethod
-    def repeat_dt(self):
+    def set_time_steps(self) -> tuple:
         pass
 
-    @property
     @abstractmethod
-    def dt(self):
-        pass
-
-    @property
-    @abstractmethod
-    def output_time_step(self):
-        pass
-
-    @property
-    @abstractmethod
-    def var_list(self):
+    def set_var_list(self) -> list:
         pass
 
     @abstractmethod
@@ -68,14 +59,14 @@ class BaseScenario(ABC):
         pass
 
     @abstractmethod
-    def beaching_kernel(self) -> ParticleSet:
+    def beaching_kernel(self) -> ParticleSet.Kernel:
         pass
 
     @abstractmethod
-    def get_particle_behavior(self):
+    def get_particle_behavior(self) -> ParticleSet.Kernel:
         pass
 
-    def get_restart_variables(self):
+    def get_restart_variables(self) -> dict:
         dataset = Dataset(self.file_names(new=False))
         time = dataset.variables['time'][:]
         final_time = time[0, -1]

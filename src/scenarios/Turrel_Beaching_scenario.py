@@ -17,21 +17,33 @@ class Turrell_Resuspension(base_scenario.BaseScenario):
     def __init__(self, server, stokes):
         """Constructor for coastal_proximity"""
         super().__init__(server, stokes)
-        self.prefix = "Turrell"
-        self.var_list = ['lon', 'lat', 'weights', 'beach', 'age']
-        self.dt = timedelta(minutes=10 * settings.BACKWARD_MULT)
-        self.output_time_step = timedelta(hours=12)
-        if settings.RESTART == 0:
-            self.repeat_dt = timedelta(days=31)
-        else:
-            self.repeat_dt = None
-        if settings.SUBMISSION in ['simulation', 'visualization']:
-            advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
-                                                                advection_scenario=settings.ADVECTION_DATA,
-                                                                repeat_dt=self.repeat_dt)
-            self.file_dict = advection_scenario.file_names
-            self.field_set = self.create_fieldset()
 
+    def set_prefix(self) -> str:
+        """
+        Set the scenario prefix
+        :return:
+        """
+        return "Turrell"
+
+    def set_var_list(self) -> list:
+        """
+        Set the var_list, which contains all the variables that need to be loaded during the restarts
+        :return:
+        """
+        return ['lon', 'lat', 'weights', 'beach', 'age']
+
+    def set_time_steps(self) -> tuple:
+        """
+        Set the integration, output and repeat timesteps
+        :return: self.dt, self.output_time_step, self.repeat_dt
+        """
+        dt = timedelta(minutes=10 * settings.BACKWARD_MULT)
+        output_time_step = timedelta(hours=12)
+        if settings.RESTART == 0:
+            repeat_dt = timedelta(days=31)
+        else:
+            repeat_dt = None
+        return dt, output_time_step, repeat_dt
 
     def create_fieldset(self) -> FieldSet:
         utils.print_statement("Creating the fieldset")
