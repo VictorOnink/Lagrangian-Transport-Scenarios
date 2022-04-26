@@ -17,8 +17,7 @@ def parcels_to_separation_distance(file_dict: dict, scenario):
     :return:
     """
     # Getting the directory saving the output files
-    output_direc = utils.get_output_directory(server=settings.SERVER) + 'separation_distance/{}/'.format(
-        settings.SCENARIO_NAME)
+    output_direc = settings.DATA_OUTPUT_DIREC + 'separation_distance/{}/'.format(settings.SCENARIO_NAME)
     utils.check_direc_exist(output_direc)
 
     # Setting the particle sizes we loop through and creating a dictionary to save the average separation distance

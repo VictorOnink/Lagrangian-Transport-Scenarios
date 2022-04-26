@@ -11,7 +11,7 @@ class FragmentationKaandorpPartial_boxmodelcomparison:
     def __init__(self, figure_direc, scenario, shore_time, lambda_frag, rho, sink=True, sim_length=2, month_step=4):
         # Data parameters
         self.output_direc = figure_direc + 'size_distribution/'
-        self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'size_distribution/FragmentationKaandorpPartial/'
+        self.data_direc = settings.DATA_OUTPUT_DIREC + 'size_distribution/FragmentationKaandorpPartial/'
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'size_distribution'
         # Simulation parameters

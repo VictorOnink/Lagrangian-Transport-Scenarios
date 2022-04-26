@@ -32,7 +32,7 @@ class FragmentationKaandorpPartial_vertical_profile:
 
         # Data parameters
         self.output_direc = figure_direc + 'vertical_profile/'
-        self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/FragmentationKaandorpPartial/'
+        self.data_direc = settings.DATA_OUTPUT_DIREC + 'concentrations/FragmentationKaandorpPartial/'
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'vertical_concentration'
         # Simulation parameters

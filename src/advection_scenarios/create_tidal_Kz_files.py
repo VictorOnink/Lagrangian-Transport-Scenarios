@@ -15,7 +15,7 @@ def create_tidal_Kz_files(file_name: str, LON: array, LAT: array, DEPTH: array, 
     downloaded at https://www.seanoe.org/data/00619/73082/
     """
     # Loading the global data from de Lavergne et al. (2020)
-    TIDAL_filename = utils.get_input_directory(server=settings.SERVER) + 'global_tidal_energy_dissipation.nc'
+    TIDAL_filename = settings.DATA_INPUT_DIREC + 'global_tidal_energy_dissipation.nc'
     TIDAL_data = {}
     for key in Dataset(TIDAL_filename).variables.keys():
         TIDAL_data[key] = Dataset(TIDAL_filename).variables[key][:]

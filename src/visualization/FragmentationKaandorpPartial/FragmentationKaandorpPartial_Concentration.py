@@ -27,7 +27,7 @@ class FragmentationKaandorpPartial_Concentration:
         self.input = input
         # Data parameters
         self.output_direc = figure_direc + 'concentrations/'
-        self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/FragmentationKaandorpPartial/'
+        self.data_direc = settings.DATA_OUTPUT_DIREC + 'concentrations/FragmentationKaandorpPartial/'
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'horizontal_concentration'
         self.key_concentration = utils.analysis_simulation_year_key(self.simulation_year)

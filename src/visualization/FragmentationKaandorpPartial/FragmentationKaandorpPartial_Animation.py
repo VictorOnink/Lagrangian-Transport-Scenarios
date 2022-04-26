@@ -27,7 +27,7 @@ class FragmentationKaandorpPartial_Animation:
         self.fps = 10
         # Data parameters
         self.output_direc = figure_direc + 'animations/'
-        self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'timeslices/FragmentationKaandorpPartial/'
+        self.data_direc = settings.DATA_OUTPUT_DIREC + 'timeslices/FragmentationKaandorpPartial/'
         utils.check_direc_exist(self.output_direc)
         self.ocean_frag = ocean_frag
         # Simulation parameters

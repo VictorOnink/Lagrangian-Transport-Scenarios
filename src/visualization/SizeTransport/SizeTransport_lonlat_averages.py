@@ -24,7 +24,7 @@ class SizeTransport_lonlat_averages:
         self.step = 0.5
         # Data parameters
         self.output_direc = figure_direc + 'concentrations/'
-        self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/SizeTransport/'
+        self.data_direc = settings.DATA_OUTPUT_DIREC + 'concentrations/SizeTransport/'
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'lonlat_concentration'
         # Figure parameters

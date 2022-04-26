@@ -77,8 +77,8 @@ class parcels_to_bayesian:
         return self.output_direc + file_name
 
     def get_directories(self):
-        temp_direc = settings.SCRATCH_DIR
-        output_direc = utils.get_output_directory(server=settings.SERVER) + 'bayes/{}/'.format(self.scenario_name)
+        temp_direc = settings.SCRATCH_DIREC
+        output_direc = settings.DATA_OUTPUT_DIREC + 'bayes/{}/'.format(self.scenario_name)
         utils.check_direc_exist(temp_direc)
         utils.check_direc_exist(output_direc)
         return temp_direc, output_direc
@@ -134,7 +134,7 @@ class parcels_to_bayesian:
 
     def plot_clusters(self):
         # First, we need to set a number of parameters
-        figure_direc = settings.FIGURE_OUTPUT_SERVER[settings.SERVER] + '{}/'.format(settings.SCENARIO_NAME)
+        figure_direc = settings.FIGURE_OUTPUT_DIREC + '{}/'.format(settings.SCENARIO_NAME)
         figure_size = (10, 8)
         figure_shape = (1, 1)
         ax_label_size = 14

@@ -123,8 +123,8 @@ def load_parcels_post_output(scenario_name, file_dict, year=settings.STARTYEAR, 
 
 
 def get_directories():
-    temp_direc = settings.SCRATCH_DIR
-    output_direc = utils.get_output_directory(server=settings.SERVER) + 'size_distribution/{}/'.format(settings.SCENARIO_NAME)
+    temp_direc = settings.SCRATCH_DIREC
+    output_direc = settings.DATA_OUTPUT_DIREC + 'size_distribution/{}/'.format(settings.SCENARIO_NAME)
     utils.check_direc_exist(temp_direc)
     utils.check_direc_exist(output_direc)
     return temp_direc, output_direc

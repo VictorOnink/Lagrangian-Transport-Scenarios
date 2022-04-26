@@ -14,7 +14,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
                  input_list=['LebretonDivision']):
         # Data parameters
         self.output_direc = figure_direc + 'size_distribution/'
-        self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'size_distribution/FragmentationKaandorpPartial/'
+        self.data_direc = settings.DATA_OUTPUT_DIREC + 'size_distribution/FragmentationKaandorpPartial/'
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'size_distribution'
         self.beach_state_list = ['adrift_open_surf', 'adrift_10km_surf', 'beach']
@@ -176,7 +176,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
     def add_input_distribution(self, ax):
         # The field data from Zeri et al. (2021) https://doi.org/10.3390/su13105328
         size_bins = np.arange(0, 5.2, 0.1)
-        lengths = pd.read_excel(settings.DATA_INPUT_DIR_SERVERS[settings.SERVER] + "Zeri_Sustainability_MP_sizes.xls",
+        lengths = pd.read_excel(settings.DATA_INPUT_DIREC + "Zeri_Sustainability_MP_sizes.xls",
                                 sheet_name='Combined')['LENGTH']
         field_data, _ = np.histogram(lengths, size_bins)
         size_bins = (size_bins[1:] + size_bins[:-1]) / 2

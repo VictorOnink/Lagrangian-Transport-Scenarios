@@ -57,7 +57,7 @@ def FragmentationKaandorpPartial_load_data(scenario, prefix, data_direc, shore_t
 
 
 def FragmentationKaandorpPartial_fielddata_filename(with_type=True):
-    file_name = settings.DATA_INPUT_DIR_SERVERS[settings.SERVER] + 'Field_Data/standardized_field_data'
+    file_name = settings.DATA_INPUT_DIREC + 'Field_Data/standardized_field_data'
     if with_type:
         file_name += '.pkl'
     return file_name

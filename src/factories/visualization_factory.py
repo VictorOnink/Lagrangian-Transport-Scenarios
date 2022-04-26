@@ -14,7 +14,7 @@ class VisualizationFactory:
         self.scenario = ScenarioFactory().create_scenario()
 
     def get_figure_direc(self):
-        return settings.FIGURE_OUTPUT_SERVER[self.server] + '{}/'.format(self.scenario_name)
+        return settings.FIGURE_OUTPUT_DIREC + '{}/'.format(self.scenario_name)
 
     def run(self):
         if self.scenario_name is 'SizeTransport':

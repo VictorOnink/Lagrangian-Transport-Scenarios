@@ -22,7 +22,7 @@ class SizeTransport_MaxDistance:
         self.resus_time = resus_time
         # Data parameters
         self.output_direc = figure_direc + 'max_distance/'
-        self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'max_distance/SizeTransport/'
+        self.data_direc = settings.DATA_OUTPUT_DIREC + 'max_distance/SizeTransport/'
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'maximum_distance'
         # Figure parameters

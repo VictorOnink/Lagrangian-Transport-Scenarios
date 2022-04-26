@@ -21,7 +21,7 @@ class SizeTransport_concentration_seasons:
         self.depth_level = depth_level
         # Data parameters
         self.output_direc = figure_direc + 'concentrations/'
-        self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/SizeTransport/'
+        self.data_direc = settings.DATA_OUTPUT_DIREC + 'concentrations/SizeTransport/'
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'horizontal_concentration_monthly'
         # Figure parameters

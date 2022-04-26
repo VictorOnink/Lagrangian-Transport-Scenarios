@@ -78,8 +78,8 @@ These following functions are used across all scenarios
 
 def get_directories(scenario_name):
     # temp_direc = utils.get_output_directory(server=settings.SERVER) + 'timeslices/{}/temporary/'.format(scenario_name)
-    temp_direc = settings.SCRATCH_DIR
-    output_direc = utils.get_output_directory(server=settings.SERVER) + 'timeslices/{}/'.format(scenario_name)
+    temp_direc = settings.SCRATCH_DIREC
+    output_direc = settings.DATA_OUTPUT_DIREC + 'timeslices/{}/'.format(scenario_name)
     utils.check_direc_exist(temp_direc)
     utils.check_direc_exist(output_direc)
     return temp_direc, output_direc

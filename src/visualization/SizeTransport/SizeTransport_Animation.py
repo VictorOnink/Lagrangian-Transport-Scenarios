@@ -27,7 +27,7 @@ class SizeTransport_Animation:
         self.fps = 10
         # Data parameters
         self.output_direc = figure_direc + 'animations/'
-        self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'timeslices/SizeTransport/'
+        self.data_direc = settings.DATA_OUTPUT_DIREC + 'timeslices/SizeTransport/'
         utils.check_direc_exist(self.output_direc)
         # Simulation parameters
         self.scenario = scenario

@@ -16,8 +16,8 @@ class BaseScenario(ABC):
     def __init__(self, server, stokes):
         self.server: int = server
         self.stokes: int = stokes
-        self.input_dir: str = utils.get_input_directory(server=self.server)
-        self.output_dir: str = utils.get_output_directory(server=self.server)
+        self.input_dir: str = settings.DATA_INPUT_DIREC
+        self.output_dir: str = settings.DATA_OUTPUT_DIREC
         self.particle: ParticleSet = self.get_pclass()
         self.prefix: str = self.set_prefix()
         self.dt, self.output_time_step, self.repeat_dt = self.set_time_steps()

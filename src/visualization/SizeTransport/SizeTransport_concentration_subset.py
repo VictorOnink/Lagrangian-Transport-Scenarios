@@ -24,7 +24,7 @@ class SizeTransport_concentration_subset:
         self.resus_time = resus_time
         # Data parameters
         self.output_direc = figure_direc + 'concentrations/'
-        self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/SizeTransport/'
+        self.data_direc = settings.DATA_OUTPUT_DIREC + 'concentrations/SizeTransport/'
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'horizontal_concentration'
         # Figure parameters

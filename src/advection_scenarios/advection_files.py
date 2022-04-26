@@ -24,8 +24,8 @@ class AdvectionFiles:
                  repeat_dt=None):
         self.server = server
         self.stokes = stokes
-        self.data_dir = utils.get_data_directory(server=server)
-        self.input_dir = utils.get_input_directory(server=server)
+        self.data_dir = settings.DATA_DIREC
+        self.input_dir = settings.DATA_INPUT_DIREC
         self.advection_scenario = advection_scenario
         self.repeat_dt = repeat_dt
         os.system('echo "The advection scenario is "' + self.advection_scenario)

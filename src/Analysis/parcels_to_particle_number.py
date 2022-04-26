@@ -47,7 +47,7 @@ class parcels_to_particle_number:
 
                 # The field data from Zeri et al. (2021) https://doi.org/10.3390/su13105328
                 size_bins = np.arange(0, 5.2, 0.1)
-                lengths = pd.read_excel(settings.DATA_INPUT_DIR_SERVERS[settings.SERVER] + "Zeri_Sustainability_MP_sizes.xls",
+                lengths = pd.read_excel(settings.DATA_INPUT_DIREC + "Zeri_Sustainability_MP_sizes.xls",
                                         sheet_name='Combined')['LENGTH']
                 field_data, _ = np.histogram(lengths, size_bins)
                 size_bins = (size_bins[1:] + size_bins[:-1]) / 2

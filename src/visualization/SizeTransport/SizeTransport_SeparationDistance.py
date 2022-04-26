@@ -15,7 +15,7 @@ class SizeTransport_SeparationDistance:
         self.tau = tau
         # Data parameters
         self.output_direc = figure_direc + 'separation_distance/'
-        self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'separation_distance/SizeTransport/'
+        self.data_direc = settings.DATA_OUTPUT_DIREC + 'separation_distance/SizeTransport/'
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'separation_distance'
         # Figure parameters

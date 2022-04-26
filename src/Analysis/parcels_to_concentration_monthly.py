@@ -275,8 +275,8 @@ class parcels_to_concentration_monthly:
 
     @staticmethod
     def get_directories():
-        temp_direc = settings.SCRATCH_DIR
-        output_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/{}/'.format(settings.SCENARIO_NAME)
+        temp_direc = settings.SCRATCH_DIREC
+        output_direc = settings.DATA_OUTPUT_DIREC + 'concentrations/{}/'.format(settings.SCENARIO_NAME)
         utils.check_direc_exist(temp_direc)
         utils.check_direc_exist(output_direc)
         return temp_direc, output_direc

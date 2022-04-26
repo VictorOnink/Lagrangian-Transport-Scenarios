@@ -50,7 +50,7 @@ def Constant2019_standardization(output_dict: dict):
     Data for Constant et al. (2019), again with pdf's normalized by the particle size
     https://doi.org/10.1016/j.marpolbul.2019.03.032
     """
-    data_direc = settings.DATA_INPUT_DIR_SERVERS[settings.SERVER] + 'Field_Data/'
+    data_direc = settings.DATA_INPUT_DIREC + 'Field_Data/'
     bin_edges = np.array([0.063, 0.315, 0.5, 1, 2.5, 5, 8])
     bin_midpoint = .5 * (np.log10(bin_edges)[1:] + np.log10(bin_edges)[:-1])
 
@@ -76,7 +76,7 @@ def Cozar2015_standardization(output_dict: dict):
     Data for Cozar et al. (2015), again with pdf's normalized by the particle size
     https://doi.org/10.1371/journal.pone.0121762
     """
-    data_direc = settings.DATA_INPUT_DIR_SERVERS[settings.SERVER] + 'Field_Data/'
+    data_direc = settings.DATA_INPUT_DIREC + 'Field_Data/'
     prefix = 'Cozar'
     output_dict[prefix] = {}
 
@@ -123,7 +123,7 @@ def Gundogdu_2017_standardization(output_dict: dict):
     prefix = 'Gundogdu2017'
     output_dict[prefix] = {}
 
-    data_direc = settings.DATA_INPUT_DIR_SERVERS[settings.SERVER] + 'Field_Data/'
+    data_direc = settings.DATA_INPUT_DIREC + 'Field_Data/'
     data_pd = pd.read_excel(data_direc + 'Gundogdu_2017_field_data.xls', sheet_name='Sayfa1')
     size = data_pd['SIZE (MM)'].values
 
@@ -178,7 +178,7 @@ def DeHaanSanchez_standardization(output_dict: dict):
     prefix = 'DeHaanSanchez'
     output_dict[prefix] = {}
 
-    data_direc = settings.DATA_INPUT_DIR_SERVERS[settings.SERVER] + 'Field_Data/'
+    data_direc = settings.DATA_INPUT_DIREC + 'Field_Data/'
     data_pd = pd.read_csv(data_direc + 'SSC_data_LiamAnna.csv')
     size = data_pd['Feret'].values
     group = data_pd['Group'].values

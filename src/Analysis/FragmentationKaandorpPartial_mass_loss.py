@@ -15,7 +15,7 @@ class FragmentationKaandorpPartial_mass_loss:
         self.frag_list = [388, 1000, 10000, 35000, 50000]
         self.scenario = scenario
         self.file_dict = self.scenario.return_full_run_directory()
-        self.data_direc = utils.get_output_directory() + 'timeseries/FragmentationKaandorpPartial/'
+        self.data_direc = settings.DATA_OUTPUT_DIREC + 'timeseries/FragmentationKaandorpPartial/'
         self.shore_time = settings.SHORE_TIME
         self.size_class_number = settings.SIZE_CLASS_NUMBER
         self.simulation_length = 3

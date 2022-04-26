@@ -11,8 +11,8 @@ class FragmentationKaandorp_box_model:
                  rho=settings.INIT_DENSITY, lambda_f_ocean=settings.LAMBDA_OCEAN_FRAG, ocean_frag=False,
                  steady_state=False):
         # Data directories
-        self.input_direc = settings.DATA_INPUT_DIR_SERVERS[settings.SERVER] + 'box_model/'
-        self.output_direc = settings.DATA_OUTPUT_DIR_SERVERS[settings.SERVER] + 'box_model/'
+        self.input_direc = settings.DATA_INPUT_DIREC + 'box_model/'
+        self.output_direc = settings.DATA_OUTPUT_DIREC + 'box_model/'
         # Fragmentation parameters
         self.start_size = start_size
         self.size_classes = size_classes

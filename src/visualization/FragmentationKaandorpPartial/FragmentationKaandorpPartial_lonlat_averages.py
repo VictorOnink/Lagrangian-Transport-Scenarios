@@ -31,7 +31,7 @@ class FragmentationKaandorpPartial_lonlat_averages:
         self.input = input
         # Data parameters
         self.output_direc = figure_direc + 'concentrations/'
-        self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/FragmentationKaandorpPartial/'
+        self.data_direc = settings.DATA_OUTPUT_DIREC + 'concentrations/FragmentationKaandorpPartial/'
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'lonlat_concentration'
         # Figure parameters

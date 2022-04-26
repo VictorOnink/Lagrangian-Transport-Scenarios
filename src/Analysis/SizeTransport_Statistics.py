@@ -18,7 +18,7 @@ class SizeTransport_Statistics:
         self.fixed_resus = fixed_resus
         self.resus_time = {True: resus_time, False: utils.get_resuspension_timescale(L=self.size, rho_p=self.rho)}[self.fixed_resus]
         # Data specific variables
-        self.base_data_direc = utils.get_output_directory(server=settings.SERVER)
+        self.base_data_direc = settings.DATA_OUTPUT_DIREC
         # Other useful variables
         self.seasons = ['JFM', 'AMJ', 'JAS', 'OND']
         self.total_number = 85196

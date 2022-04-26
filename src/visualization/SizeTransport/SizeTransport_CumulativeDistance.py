@@ -17,7 +17,7 @@ class SizeTransport_CumulativeDistance:
         self.simulation_years = simulation_years
         # Data parameters
         self.output_direc = figure_direc + 'mix/'
-        self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'statistics/SizeTransport/'
+        self.data_direc = settings.DATA_OUTPUT_DIREC + 'statistics/SizeTransport/'
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'basic_statistics'
         self.advection_scenario = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,

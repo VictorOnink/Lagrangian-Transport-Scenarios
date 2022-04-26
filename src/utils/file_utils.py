@@ -5,35 +5,7 @@ from netCDF4 import Dataset
 import numpy as np
 import os
 import shutil
-
 import utils
-
-
-def get_data_directory(server: int) -> str:
-    """
-
-    :param server:
-    :return:
-    """
-    return settings.DATA_DIR_SERVERS[server]
-
-
-def get_input_directory(server: int) -> str:
-    """
-
-    :param server:
-    :return:
-    """
-    return settings.DATA_INPUT_DIR_SERVERS[server]
-
-
-def get_output_directory(server: int = settings.SERVER) -> str:
-    """
-
-    :param server:
-    :return:
-    """
-    return settings.DATA_OUTPUT_DIR_SERVERS[server]
 
 
 def get_start_end_time(time: str):

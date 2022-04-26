@@ -11,7 +11,7 @@ class CMEMS_mediterranean_mean_MLD:
         self.MLD_variable = 'mlotst'
         self.start_year = 2010
         self.simulation_years = 3
-        self.data_dir = utils.get_data_directory(server=settings.SERVER) + 'CMEMS_MED/'
+        self.data_dir = settings.DATA_DIREC + 'CMEMS_MED/'
         self.seasons = ['JFM', 'AMJ', 'JAS', 'OND']
 
     def create_output_dict(self, time_frame):

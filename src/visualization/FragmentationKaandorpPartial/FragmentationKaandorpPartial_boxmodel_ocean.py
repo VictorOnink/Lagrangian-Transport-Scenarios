@@ -13,7 +13,7 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
                  sim_length=10, size_class_number=10):
         # Data parameters
         self.output_direc = figure_direc + 'size_distribution/'
-        self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'size_distribution/FragmentationKaandorpPartial/'
+        self.data_direc = settings.DATA_OUTPUT_DIREC + 'size_distribution/FragmentationKaandorpPartial/'
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'size_distribution'
         # Simulation parameters

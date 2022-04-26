@@ -38,24 +38,26 @@ os.system('echo "run="' + SUBMISSION)
 
 # DIRECTORIES FOR DATA, INPUTS & OUTPUTS
 SERVER: str = load_env_variable("SERVER", default="UBELIX", variable_type=str)
-DATA_DIR_SERVERS: dict = {'KUPHAVEN': "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/",
-                          'UBELIX': "/storage/homefs/vo18e689/Data/"}
-DATA_INPUT_DIR_SERVERS: dict = {'KUPHAVEN': "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/Input/",
-                                'UBELIX': "/storage/homefs/vo18e689/Data/Input/"}
-DATA_OUTPUT_DIR_SERVERS: dict = {'KUPHAVEN': "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/Output/",
-                                 'UBELIX': "/storage/homefs/vo18e689/Data/Output/"}
-DATA_WORKSPACE_OUTPUT_DIR: dict = {'KUPHAVEN': None,
-                                   'UBELIX': "/storage/workspaces/climate_esm_bgc/bern3d_lpx/onink/"}
-FIGURE_OUTPUT_SERVER: dict = {'KUPHAVEN': "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/Output/Figures/",
-                              'UBELIX': "/storage/homefs/vo18e689/Data/Output/Figures/"}
-INPUT_DIREC_DICT = {0: DATA_INPUT_DIR_SERVERS[SERVER] + 'Jambeck_Inputs/',
-                    1: DATA_INPUT_DIR_SERVERS[SERVER] + 'Lebreton_Inputs/',
-                    2: DATA_INPUT_DIR_SERVERS[SERVER] + 'LebretonDivision_Inputs/',
-                    3: DATA_INPUT_DIR_SERVERS[SERVER] + 'Lebreton_Kaandorp_init_Inputs/',
-                    4: DATA_INPUT_DIR_SERVERS[SERVER] + 'Point_Release/',
-                    5: DATA_INPUT_DIR_SERVERS[SERVER] + 'Uniform/'}
-SCRATCH_DIR = {'KUPHAVEN': None,
-               'UBELIX': "/storage/scratch/users/vo18e689/"}[SERVER]
+
+# BASE DIRECTORY FROM WHICH ALL DATA PATHS ARE DERIVED
+DATA_DIREC: str = {'KUPHAVEN': "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/",
+                   'UBELIX': "/storage/homefs/vo18e689/Data/"}[SERVER]
+
+DATA_INPUT_DIREC: str = DATA_DIREC + "Input/"
+
+DATA_OUTPUT_DIREC: str = DATA_DIREC + "Output/"
+
+FIGURE_OUTPUT_DIREC: str = DATA_DIREC + "Output/Figures/"
+
+INPUT_DIREC_DICT = {0: DATA_INPUT_DIREC + 'Jambeck_Inputs/',
+                    1: DATA_INPUT_DIREC + 'Lebreton_Inputs/',
+                    2: DATA_INPUT_DIREC + 'LebretonDivision_Inputs/',
+                    3: DATA_INPUT_DIREC + 'Lebreton_Kaandorp_init_Inputs/',
+                    4: DATA_INPUT_DIREC + 'Point_Release/',
+                    5: DATA_INPUT_DIREC + 'Uniform/'}
+
+SCRATCH_DIREC: str = {'KUPHAVEN': None,
+                      'UBELIX': "/storage/scratch/users/vo18e689/"}[SERVER]
 
 # STARTING YEAR, MONTH AND DAY OF THE SIMULATION
 STARTYEAR: int = load_env_variable("STARTYEAR", default=2010)

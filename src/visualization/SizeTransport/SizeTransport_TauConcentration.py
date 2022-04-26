@@ -13,7 +13,7 @@ def SizeTransport_TauConcentration(scenario, figure_direc, size_selection, tau_l
                                    time_selection=0, figsize=(20, 10), fontsize=14):
     # Setting the folder within which we have the output, and where we have the saved timeslices
     output_direc = figure_direc + 'concentrations/'
-    data_direc = utils.get_output_directory(server=settings.SERVER) + 'concentrations/{}/'.format('SizeTransport')
+    data_direc = settings.DATA_OUTPUT_DIREC + 'concentrations/{}/'.format('SizeTransport')
 
     # Loading in the data
     prefix = 'horizontal_concentration'

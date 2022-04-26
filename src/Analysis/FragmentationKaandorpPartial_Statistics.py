@@ -16,7 +16,7 @@ class FragmentationKaandorpPartial_Statistics:
         self.rho = rho
         self.shore_time = shore_time
         # Data specific variables
-        self.base_data_direc = utils.get_output_directory(server=settings.SERVER)
+        self.base_data_direc = settings.DATA_OUTPUT_DIREC
         # Other useful variables
         self.seasons = ['JFM', 'AMJ', 'JAS', 'OND']
         self.total_number = 85196

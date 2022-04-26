@@ -17,7 +17,7 @@ class General_average_wind_speed:
         # Data variables
         self.output_direc = figure_direc + 'General/'
         utils.check_direc_exist(self.output_direc)
-        self.data_direc = settings.DATA_DIR_SERVERS[settings.SERVER] + 'Wind/'
+        self.data_direc = settings.DATA_DIREC + 'Wind/'
         self.lon_grid, self.lat_grid = self.scenario.file_dict['LON'], self.scenario.file_dict['LAT']
         # Figure variables
         self.figure_size = (10, 8)

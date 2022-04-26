@@ -20,7 +20,7 @@ class SizeTransport_reservoirs:
         self.resus_time = resus_time
         # Data parameters
         self.output_direc = figure_direc + 'timeseries/'
-        self.data_direc = utils.get_output_directory(server=settings.SERVER) + 'timeseries/SizeTransport/'
+        self.data_direc = settings.DATA_OUTPUT_DIREC + 'timeseries/SizeTransport/'
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'timeseries'
         # Figure parameters

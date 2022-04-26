@@ -41,8 +41,7 @@ class SizeTransport_vertical_time:
         self.with_mld = with_mld
         # Data parameters
         self.output_direc = figure_direc + 'vertical_profile/monthly_profiles/{}/'.format(self.shore)
-        self.data_direc = utils.get_output_directory(
-            server=settings.SERVER) + 'concentrations/SizeTransport/'
+        self.data_direc = settings.DATA_OUTPUT_DIREC + 'concentrations/SizeTransport/'
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'vertical_concentration'
 
