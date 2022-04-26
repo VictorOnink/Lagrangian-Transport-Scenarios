@@ -72,7 +72,7 @@ class BlueCloud(base_scenario.BaseScenario):
                           settings.STARTYEAR, settings.INPUT_LON, settings.INPUT_LAT, restart, run)
         else:
             str_format = (settings.ADVECTION_DATA, backward, settings.SHORE_TIME, settings.RESUS_TIME,
-                          settings.STARTYEAR, settings.INPUT_LON, settings.INPUT_LAT, restart, run)
+                          settings.STARTYEAR, settings.INPUT_LON, settings.INPUT_LAT, restart - 1, run)
         return odirec + self.prefix + '_{}_{}_st={}_rt={}_y={}_LON={}_LAT={}_r={}_run={}.nc'.format(*str_format)
 
     def beaching_kernel(particle, fieldset, time):
