@@ -21,6 +21,7 @@ class create_input_files:
         # Check if the directory for the input files exists
         utils.check_direc_exist(settings.INPUT_DIREC)
         # Input parameters
+        self.input_prefix = None
         self.advection_prefix = advection_prefix
         self.repeat_dt = repeat_dt
         self.lon_inputs, self.lat_inputs, self.plastic_inputs = None, None, None
@@ -35,22 +36,6 @@ class create_input_files:
         self.GRID = grid
         self.LON = lon
         self.LAT = lat
-
-    def get_input_prefix(self):
-        """
-        Set the prefix of the input files
-        :return:
-        """
-        if settings.INPUT in ['Jambeck', 'Lebreton', 'LebretonDivision', 'LebretonKaandorpInit']:
-            return settings.INPUT_DIREC + settings.INPUT + '_{}_{}_'.format(self.advection_prefix, settings.STARTYEAR)
-        elif settings.INPUT in ['Point_Release']:
-            str_format = (self.advection_prefix, settings.STARTYEAR, settings.INPUT_LAT, settings.INPUT_LON)
-            return settings.INPUT_DIREC + settings.INPUT + '_{}_{}_{}_{}_'.format(*str_format)
-        elif settings.INPUT == 'Uniform':
-            str_format = (self.advection_prefix, settings.STARTYEAR)
-            return settings.INPUT_DIREC + settings.INPUT + '_{}_{}_'.format(*str_format)
-        else:
-            ValueError("Perhaps take another look at what input you are using? {} is not valid".format(settings.INPUT))
 
     def create_files(self):
         # Get the prefix for the input files, then check if the files exist
@@ -111,6 +96,29 @@ class create_input_files:
             run_number = self.split_to_runs(particle_lat=self.particle_lat, particle_lon=self.particle_lon,
                                             particle_weight=self.particle_weight, input_prefix=self.input_prefix)
             utils.print_statement("The {} input files have been created.".format(run_number), to_print=True)
+
+    def get_input_prefix(self):
+        """
+        Set the prefix of the input files
+        :return:
+        """
+        if settings.INPUT in ['Jambeck', 'Lebreton', 'LebretonDivision', 'LebretonKaandorpInit']:
+            return settings.INPUT_DIREC + settings.INPUT + '_{}_{}_'.format(self.advection_prefix, settings.STARTYEAR)
+        elif settings.INPUT in ['Point_Release']:
+            str_format = (self.advection_prefix, settings.STARTYEAR, settings.INPUT_LAT, settings.INPUT_LON)
+            return settings.INPUT_DIREC + settings.INPUT + '_{}_{}_{}_{}_'.format(*str_format)
+        elif settings.INPUT == 'Uniform':
+            str_format = (self.advection_prefix, settings.STARTYEAR)
+            return settings.INPUT_DIREC + settings.INPUT + '_{}_{}_'.format(*str_format)
+        else:
+            ValueError("Perhaps take another look at what input you are using? {} is not valid".format(settings.INPUT))
+
+    def number_of_releases(self):
+        if self.repeat_dt is None:
+            releases = 1
+        else:
+            releases = math.floor(timedelta(days=365) / self.repeat_dt) + 1
+        return releases
 
     def get_lon_lat_weights_Jambeck(self) -> tuple:
         """
@@ -187,31 +195,8 @@ class create_input_files:
         Land = self.land_mark_checker()
         [lon_inputs, lat_inputs] = [np.array([lo for lo, la in zip(lon_inputs, lat_inputs) if Land[0, 0, la, lo] == 0.0]),
                                     np.array([la for lo, la in zip(lon_inputs, lat_inputs) if Land[0, 0, la, lo] == 0.0])]
-        split_to_runs(particle_lat=lat_inputs, particle_lon=lon_inputs, particle_weight=None,
-                      output_prefix=self.input_prefix)
-
-    def get_lon_lat_weights_Uniform(self):
-        """
-        Getting the lon, lat positions for a uniform particle release, assuming all particle weights are even
-        :return:
-        """
-        lon_min, lon_max, lat_min, lat_max = np.min(self.LON), np.max(self.LON), np.min(self.LAT), np.max(self.LAT)
-        release_grid = np.mgrid[lon_min:lon_max:settings.RELEASE_GRID, lat_min:lat_max:settings.RELEASE_GRID]
-        n = release_grid[0].size
-        lon_inputs, lat_inputs = np.reshape(release_grid[0], n), np.reshape(release_grid[1], n)
-        # Remove cells on land
-        Land = self.land_mark_checker()
-        [lon_inputs, lat_inputs] = [np.array([lo for lo, la in zip(lon_inputs, lat_inputs) if Land[0, 0, la, lo] == 0.0]),
-                                    np.array([la for lo, la in zip(lon_inputs, lat_inputs) if Land[0, 0, la, lo] == 0.0])]
-        split_to_runs(particle_lat=lat_inputs, particle_lon=lon_inputs, particle_weight=None,
-                      output_prefix=self.input_prefix)
-
-    def number_of_releases(self):
-        if self.repeat_dt is None:
-            releases = 1
-        else:
-            releases = math.floor(timedelta(days=365) / self.repeat_dt) + 1
-        return releases
+        _ = self.split_to_runs(particle_lat=lat_inputs, particle_lon=lon_inputs, particle_weight=None,
+                               output_prefix=self.input_prefix)
 
     def land_mark_checker(self):
         mask = np.ma.getmask(self.grid)

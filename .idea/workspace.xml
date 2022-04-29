@@ -23,53 +23,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="Restructuring">
-      <change afterPath="$PROJECT_DIR$/src/scenarios/example_scenario.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/analysis_submission.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/analysis_submission.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/simulation_submission.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/simulation_submission.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/visualization_submission.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/visualization_submission.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Analysis/CMEMS_mediterranean_mean_MLD.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analysis/CMEMS_mediterranean_mean_MLD.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Analysis/FragmentationKaandorpPartial_mass_loss.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analysis/FragmentationKaandorpPartial_mass_loss.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Analysis/parcels_to_concentration.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analysis/parcels_to_concentration.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Analysis/parcels_to_concentration_monthly.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analysis/parcels_to_concentration_monthly.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Analysis/parcels_to_lonlat_average.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analysis/parcels_to_lonlat_average.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Analysis/parcels_to_spatial_vertical_profiles.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analysis/parcels_to_spatial_vertical_profiles.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Analysis/parcels_to_vertical_concentration.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analysis/parcels_to_vertical_concentration.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/advection_scenarios/advection_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/advection_scenarios/advection_files.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/advection_scenarios/create_input_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/advection_scenarios/create_input_files.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/factories/fieldset_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/factories/fieldset_factory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/factories/scenario_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/factories/scenario_factory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/factories/visualization_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/factories/visualization_factory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/BlueCloud.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/BlueCloud.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/BlueCloudBackwards.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/BlueCloudBackwards.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/BlueCloudForwards.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/BlueCloudForwards.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/FragmentationKaandorp.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/FragmentationKaandorp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/FragmentationKaandorpPartial.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/FragmentationKaandorpPartial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/SizeTransport.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/SizeTransport.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/Turrel_Beaching_scenario.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/Turrel_Beaching_scenario.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/advection_diffusion_only_scenario.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/advection_diffusion_only_scenario.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/base_scenario.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/base_scenario.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/coastal_proximity.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/coastal_proximity.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/shore_dependent_resuspension_scenario.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/shore_dependent_resuspension_scenario.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenarios/stochastic_scenario.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenarios/stochastic_scenario.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/file_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/file_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/FragmentationKaandorpPartial/FragmentationKaandorpPartial_Animation.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/FragmentationKaandorpPartial/FragmentationKaandorpPartial_Animation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/FragmentationKaandorpPartial/FragmentationKaandorpPartial_Concentration.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/FragmentationKaandorpPartial/FragmentationKaandorpPartial_Concentration.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/FragmentationKaandorpPartial/FragmentationKaandorpPartial_lonlat_averages.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/FragmentationKaandorpPartial/FragmentationKaandorpPartial_lonlat_averages.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/General/General_input_scenario.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/General/General_input_scenario.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_Animation.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_Animation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_CumulativeDistance.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_CumulativeDistance.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_MaxDistance.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_MaxDistance.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_TauConcentration.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_TauConcentration.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_concentration_OSM.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_concentration_OSM.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_concentration_seasons.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_concentration_seasons.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_concentration_subset.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_concentration_subset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_full_concentrations.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_full_concentrations.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_lonlat_averages.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_lonlat_averages.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_peak_depth.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_peak_depth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_relative_concentrations.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_relative_concentrations.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_rho_concentrations.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_rho_concentrations.py" afterDir="false" />
     </list>
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
     <list id="c5adc810-e024-4e30-b33b-a2709ed2c5b7" name="moving the release repeat timescale to the scenario" comment="" />
@@ -156,20 +112,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-03664" summary="massloss">
-      <created>1646992884578</created>
-      <option name="number" value="03664" />
-      <option name="presentableId" value="LOCAL-03664" />
-      <option name="project" value="LOCAL" />
-      <updated>1646992884578</updated>
-    </task>
-    <task id="LOCAL-03665" summary="massloss">
-      <created>1647449090482</created>
-      <option name="number" value="03665" />
-      <option name="presentableId" value="LOCAL-03665" />
-      <option name="project" value="LOCAL" />
-      <updated>1647449090482</updated>
     </task>
     <task id="LOCAL-03666" summary="massloss">
       <created>1647449121734</created>
@@ -500,7 +442,21 @@
       <option name="project" value="LOCAL" />
       <updated>1650963218451</updated>
     </task>
-    <option name="localTasksCounter" value="3713" />
+    <task id="LOCAL-03713" summary="Restructuring">
+      <created>1651248433847</created>
+      <option name="number" value="03713" />
+      <option name="presentableId" value="LOCAL-03713" />
+      <option name="project" value="LOCAL" />
+      <updated>1651248433848</updated>
+    </task>
+    <task id="LOCAL-03714" summary="Restructuring">
+      <created>1651248538406</created>
+      <option name="number" value="03714" />
+      <option name="presentableId" value="LOCAL-03714" />
+      <option name="project" value="LOCAL" />
+      <updated>1651248538407</updated>
+    </task>
+    <option name="localTasksCounter" value="3715" />
     <servers />
   </component>
   <component name="UnknownFeatures">
