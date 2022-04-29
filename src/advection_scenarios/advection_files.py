@@ -356,7 +356,8 @@ class AdvectionFiles:
                 utils.print_statement("The grid spacing file still does not exist")
 
         # Checking for the input files
-        output_prefix = create_input_files.create_input_files(advection_prefix=prefix, grid=GRID, lon=LON, lat=LAT).create_files()
+        output_prefix = create_input_files.create_input_files(advection_prefix=prefix, grid=GRID, lon=LON, lat=LAT,
+                                                              repeat_dt=self.repeat_dt).create_files()
         STARTFILES_filename = {}
         for variable in ['lon', 'lat', 'weight']:
             file_name = output_prefix + '{}_run={}.npy'.format(variable, settings.RUN)
