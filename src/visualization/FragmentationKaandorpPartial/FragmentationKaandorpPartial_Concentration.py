@@ -37,9 +37,7 @@ class FragmentationKaandorpPartial_Concentration:
         self.ax_label_size = 14
         self.ax_ticklabel_size = 14
         self.number_of_plots = self.figure_shape[0] * self.figure_shape[1]
-        self.adv_file_dict = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
-                                                            advection_scenario='CMEMS_MEDITERRANEAN',
-                                                            repeat_dt=None).file_names
+        self.adv_file_dict = advection_files.AdvectionFiles(advection_scenario='CMEMS_MEDITERRANEAN').file_names
         self.spatial_domain = np.nanmin(self.adv_file_dict['LON']),  np.nanmax(self.adv_file_dict['LON']), \
                               np.nanmin(self.adv_file_dict['LAT']), np.nanmax(self.adv_file_dict['LAT'])
         self.cmap = cmo.thermal

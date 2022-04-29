@@ -254,9 +254,7 @@ class parcels_to_concentration_monthly:
 
     @staticmethod
     def get_lonlat_grid_depth():
-        advection_scenario = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
-                                                            advection_scenario=settings.ADVECTION_DATA,
-                                                            repeat_dt=None)
+        advection_scenario = advection_files.AdvectionFiles()
         adv_file_dict = advection_scenario.file_names
         LON, LAT, GRID = adv_file_dict['LON'], adv_file_dict['LAT'], adv_file_dict['GRID']
         MIN_DEPTH = np.nanmin(adv_file_dict['DEPTH'])

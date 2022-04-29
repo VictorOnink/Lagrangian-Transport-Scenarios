@@ -14,13 +14,13 @@ import math
 class Turrell_Resuspension(base_scenario.BaseScenario):
     """Stochastic beaching and shore dependent resuspension """
 
-    def __init__(self, server, stokes):
+    def __init__(self):
         """Constructor for coastal_proximity"""
-        super().__init__(server, stokes)
+        super().__init__()
 
     def set_prefix(self) -> str:
         """
-        Set the scenario prefix
+        Set the scenario advection_prefix
         :return:
         """
         return "Turrell"
@@ -47,7 +47,7 @@ class Turrell_Resuspension(base_scenario.BaseScenario):
 
     def create_fieldset(self) -> FieldSet:
         utils.print_statement("Creating the fieldset")
-        fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict, stokes=self.stokes,
+        fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict,
                                                                       border_current=True, diffusion=True, landID=True,
                                                                       distance=True, beach_timescale=True, wind=True,
                                                                       sea_elev=True, physics_constants=True,

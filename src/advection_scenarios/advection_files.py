@@ -20,10 +20,7 @@ class AdvectionFiles:
     We also check all the relevant files exist, and if it doesn't, we create it,
     """
 
-    def __init__(self, server=settings.SERVER, stokes=settings.STOKES, advection_scenario=settings.ADVECTION_DATA,
-                 repeat_dt=None):
-        self.server = server
-        self.stokes = stokes
+    def __init__(self, advection_scenario=settings.ADVECTION_DATA, repeat_dt=None):
         self.data_dir = settings.DATA_DIREC
         self.input_dir = settings.DATA_INPUT_DIREC
         self.advection_scenario = advection_scenario
@@ -39,7 +36,6 @@ class AdvectionFiles:
             UV_filenames = glob.glob(self.data_dir + "HYCOM/HYCOM_Surface*2000-01-01.nc") + \
                            glob.glob(self.data_dir + "HYCOM/HYCOM_Surface*{}*.nc".format(
                                settings.STARTYEAR + settings.RESTART * settings.BACKWARD_MULT))
-            # Remove duplicates
             UV_filenames = list(dict.fromkeys(UV_filenames))
             UV_filenames.sort()
             UV_variables = {'U': 'water_u', 'V': 'water_v'}
@@ -360,8 +356,7 @@ class AdvectionFiles:
                 utils.print_statement("The grid spacing file still does not exist")
 
         # Checking for the input files
-        output_prefix = create_input_files.create_input_files(prefix=prefix, grid=GRID, lon=LON, lat=LAT,
-                                                              repeat_dt=self.repeat_dt)
+        output_prefix = create_input_files.create_input_files(advection_prefix=prefix, grid=GRID, lon=LON, lat=LAT).create_files()
         STARTFILES_filename = {}
         for variable in ['lon', 'lat', 'weight']:
             file_name = output_prefix + '{}_run={}.npy'.format(variable, settings.RUN)

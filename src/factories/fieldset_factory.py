@@ -10,7 +10,7 @@ from datetime import timedelta
 
 class FieldSetFactory:
     @classmethod
-    def create_fieldset(cls, file_dict: dict, stokes: int, time_step: timedelta,
+    def create_fieldset(cls, file_dict: dict, time_step: timedelta, stokes: int = settings.STOKES,
                         stokes_depth: bool = False,
                         border_current: bool = False,
                         diffusion: bool = False,

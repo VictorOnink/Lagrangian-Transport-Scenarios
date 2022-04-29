@@ -45,9 +45,7 @@ def SizeTransport_TauConcentration(scenario, figure_direc, size_selection, tau_l
         concentration_dict[size][concentration_dict[size] == 0] = np.nan
 
     # Getting the size of the domain that we want to plot for
-    advection_scenario = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
-                                                        advection_scenario='CMEMS_MEDITERRANEAN',
-                                                        repeat_dt=None)
+    advection_scenario = advection_files.AdvectionFiles(advection_scenario='CMEMS_MEDITERRANEAN')
     adv_file_dict = advection_scenario.file_names
 
     spatial_domain = np.nanmin(adv_file_dict['LON']), np.nanmax(adv_file_dict['LON']), \

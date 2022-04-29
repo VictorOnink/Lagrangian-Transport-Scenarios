@@ -18,9 +18,7 @@ class FragmentationKaandorpPartial_Animation:
         self.ax_label_size = 18
         self.tick_label_size = 16
         self.grid_shape = (2, 3)
-        self.adv_file_dict = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
-                                                            advection_scenario='CMEMS_MEDITERRANEAN',
-                                                            repeat_dt=None).file_names
+        self.adv_file_dict = advection_files.AdvectionFiles(advection_scenario='CMEMS_MEDITERRANEAN').file_names
         self.spatial_domain = np.nanmin(self.adv_file_dict['LON']),  np.nanmax(self.adv_file_dict['LON']), \
                               np.nanmin(self.adv_file_dict['LAT']), np.nanmax(self.adv_file_dict['LAT'])
         self.cmap = cmo.haline_r

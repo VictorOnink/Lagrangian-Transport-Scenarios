@@ -7,8 +7,6 @@ import settings
 
 class VisualizationFactory:
     def __init__(self):
-        self.server = settings.SERVER
-        self.stokes = settings.STOKES
         self.scenario_name = settings.SCENARIO_NAME
         self.figure_direc = self.get_figure_direc()
         self.scenario = ScenarioFactory().create_scenario()

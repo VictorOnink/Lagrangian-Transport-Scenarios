@@ -33,9 +33,7 @@ class SizeTransport_lonlat_averages:
         self.ax_label_size = 14
         self.ax_ticklabel_size = 14
         self.number_of_plots = self.size_list.__len__()
-        self.adv_file_dict = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
-                                                            advection_scenario='CMEMS_MEDITERRANEAN',
-                                                            repeat_dt=None).file_names
+        self.adv_file_dict = advection_files.AdvectionFiles(advection_scenario='CMEMS_MEDITERRANEAN').file_names
         self.spatial_domain = np.nanmin(self.adv_file_dict['LON']), np.nanmax(self.adv_file_dict['LON']), \
                               np.nanmin(self.adv_file_dict['LAT']), np.nanmax(self.adv_file_dict['LAT'])
         self.cmap = 'viridis_r'

@@ -15,9 +15,7 @@ class CMEMS_mediterranean_mean_MLD:
         self.seasons = ['JFM', 'AMJ', 'JAS', 'OND']
 
     def create_output_dict(self, time_frame):
-        advection_scenario = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
-                                                            advection_scenario=settings.ADVECTION_DATA,
-                                                            repeat_dt=None).file_names
+        advection_scenario = advection_files.AdvectionFiles().file_names
         GRID, GRID_MASK = advection_scenario['GRID'], advection_scenario['GRID'].mask
         LON, LAT = advection_scenario['LON'], advection_scenario['LAT']
         output_dict = {'LON': LON, "LAT": LAT}

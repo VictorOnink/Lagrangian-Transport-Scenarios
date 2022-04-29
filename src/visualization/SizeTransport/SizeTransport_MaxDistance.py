@@ -32,9 +32,7 @@ class SizeTransport_MaxDistance:
         self.number_of_plots = self.size_list.__len__()
         self.figure_shape = {False: (4, 3), True: (1, 2)}[self.subselection]
         self.width_ratios = {False: [1, 1, 1, 0.1], True: [1, 1, 0.07]}[self.subselection]
-        self.adv_file_dict = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
-                                                            advection_scenario='CMEMS_MEDITERRANEAN',
-                                                            repeat_dt=None).file_names
+        self.adv_file_dict = advection_files.AdvectionFiles(advection_scenario='CMEMS_MEDITERRANEAN').file_names
         self.spatial_domain = np.nanmin(self.adv_file_dict['LON']), np.nanmax(self.adv_file_dict['LON']), \
                               np.nanmin(self.adv_file_dict['LAT']), np.nanmax(self.adv_file_dict['LAT'])
         self.cmap = cmo.haline_r

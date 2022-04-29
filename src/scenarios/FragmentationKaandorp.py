@@ -12,13 +12,13 @@ import math
 class FragmentationKaandorp(base_scenario.BaseScenario):
     """Fragmentation scenario based on the Kaandorp fragmentation model. Beaching based on the stochastic scenario"""
 
-    def __init__(self, server, stokes):
+    def __init__(self):
         """Constructor for FragmentationKaandorp"""
-        super().__init__(server, stokes)
+        super().__init__()
 
     def set_prefix(self) -> str:
         """
-        Set the scenario prefix
+        Set the scenario advection_prefix
         :return:
         """
         return "Frag_Kaandorp"
@@ -42,7 +42,7 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
 
     def create_fieldset(self) -> FieldSet:
         utils.print_statement("Creating the fieldset")
-        fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict, stokes=self.stokes,
+        fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict,
                                                                       stokes_depth=True,
                                                                       border_current=True, diffusion=True, landID=True,
                                                                       distance=True, salinity=True, temperature=True,
@@ -180,7 +180,9 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                 if ParcelsRandom.uniform(0, 1) > fieldset.p_frag:
                     particle.to_split = 1
 
-    def particle_splitter(self, fieldset, pset, size_limit):
+    def particle_splitter(self, fieldset, pset):
+        """ WARNING: THIS IS AN OUTDATED FUNCTION. WHILE IT DOES WORK, FOR A MUCH FASTER VERSION PLEASE REFER TO THE
+        FRAGMENTATIONKAANDORPPARTIAL SCENARIO"""
         for particle in pset:
             if particle.to_split == 1:
                 # First, we set the split condition statement back to 0
@@ -200,34 +202,25 @@ class FragmentationKaandorp(base_scenario.BaseScenario):
                     for k in range(0, remaining_classes):
                         new_particle_size = parent_size * settings.P_FRAG ** (k + 1)
                         particle_number = int(np.round(self.particle_number_per_size_class(k + 1)))
+                        w_rise = utils.initial_estimate_particle_rise_velocity(L=new_particle_size)
                         pset_new = ParticleSet(fieldset=fieldset, pclass=self.particle,
-                                               lon=utils.create_list(particle.lon, particle_number),
-                                               lat=utils.create_list(particle.lat, particle_number),
-                                               depth=utils.create_list(particle.depth, particle_number),
-                                               size=utils.create_list(new_particle_size, particle_number),
-                                               parent=utils.create_list(particle.id, particle_number),
-                                               age=utils.create_list(0, particle_number),
-                                               beach=utils.create_list(particle.beach, particle_number),
-                                               time=utils.create_list(particle.time, particle_number),
-                                               rho_plastic=utils.create_list(particle.rho_plastic, particle_number),
-                                               rise_velocity=utils.create_list(utils.initial_estimate_particle_rise_velocity(L=new_particle_size), particle_number),
-                                               reynolds=utils.create_list(0, particle_number),
-                                               size_class=utils.create_list(parent_size_class + k + 1, particle_number),
-                                               prob_resus=utils.create_list(utils.resuspension_probability(w_rise=utils.initial_estimate_particle_rise_velocity(L=new_particle_size), time_step=self.dt), particle_number),
+                                               lon=[particle.lon] * particle_number,
+                                               lat=[particle.lat] * particle_number,
+                                               depth=[particle.depth] * particle_number,
+                                               size=[new_particle_size] * particle_number,
+                                               parent=[particle.id] * particle_number,
+                                               age=[0] * particle_number,
+                                               beach=[particle.beach] * particle_number,
+                                               time=[particle.time] * particle_number,
+                                               rho_plastic=[particle.rho_plastic] * particle_number,
+                                               rise_velocity=[w_rise] * particle_number,
+                                               reynolds=[0] * particle_number,
+                                               size_class=[parent_size_class + k + 1] * particle_number,
+                                               prob_resus=[utils.resuspension_probability(w_rise=w_rise, time_step=self.dt)] * particle_number,
                                                repeatdt=None)
                         pset.add(pset_new)
         return pset
 
-    def mass_per_size_class(self, k, f, p=settings.P_FRAG):
-        gamma_ratio = math.gamma(k + f) / (math.gamma(k + 1) * math.gamma(f))
-        return gamma_ratio * p ** k * (1 - p) ** f
-
-    def particle_number_per_size_class(self, k, f=1, p=settings.P_FRAG, Dn=settings.DN):
-        return self.mass_per_size_class(k, f, p) * 2 ** (Dn * k)
-
-    def size_class_limits(self, k_range=settings.SIZE_CLASS_NUMBER, init_size=settings.INIT_SIZE,
-                          p_frag=settings.P_FRAG):
-        return np.array([init_size * p_frag ** k for k in range(k_range)])
 
     def run(self):
         # Creating the particle set and output file

@@ -11,13 +11,13 @@ from parcels import ParcelsRandom, ErrorCode
 class BlueCloudBackwards(base_scenario.BaseScenario):
     """Backwards simulation for the Blue Cloud Hackathon"""
 
-    def __init__(self, server, stokes):
+    def __init__(self):
         """Constructor for BlueCloudBackwards"""
-        super().__init__(server, stokes)
+        super().__init__()
 
     def set_prefix(self) -> str:
         """
-        Set the scenario prefix
+        Set the scenario advection_prefix
         :return:
         """
         return "BlueCloudBackwards"
@@ -41,7 +41,7 @@ class BlueCloudBackwards(base_scenario.BaseScenario):
 
     def create_fieldset(self) -> FieldSet:
         utils.print_statement("Creating the fieldset")
-        fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict, stokes=self.stokes,
+        fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict,
                                                                       border_current=True, diffusion=True,
                                                                       distance=True, beach_timescale=True,
                                                                       resus_timescale=True, fixed_resus=True,

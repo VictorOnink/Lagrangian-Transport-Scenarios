@@ -26,21 +26,21 @@ def var_dict_expansion(var_dict: dict):
 class FragmentationKaandorpPartial(base_scenario.BaseScenario):
     """Fragmentation scenario based on the Kaandorp fragmentation model. Beaching based on the stochastic scenario"""
 
-    def __init__(self, server, stokes):
+    def __init__(self):
         """Constructor for FragmentationKaandorp"""
-        super().__init__(server, stokes)
+        super().__init__()
+        # Whether to include ocean fragmentation
         self.OCEAN_FRAG = settings.OCEAN_FRAG
+        # Beached time cutoff for fragmentation to occur (days)
         self.T_frag = 90
-        advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
-                                                            advection_scenario=settings.ADVECTION_DATA,
-                                                            repeat_dt=self.repeat_dt)
-        self.file_dict = advection_scenario.file_names
+        self.advection_scenario = advection_files.AdvectionFiles(repeat_dt=self.repeat_dt)
+        self.file_dict = self.advection_scenario.file_names
         if settings.SUBMISSION in ['simulation'] and not settings.POST_PROCESS:
             self.field_set = self.create_fieldset()
 
     def set_prefix(self) -> str:
         """
-        Set the scenario prefix
+        Set the scenario advection_prefix
         :return:
         """
         return "Frag_Kaandorp"
@@ -65,7 +65,7 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
 
     def create_fieldset(self) -> FieldSet:
         utils.print_statement("Creating the fieldset")
-        fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict, stokes=self.stokes,
+        fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict,
                                                                       stokes_depth=True,
                                                                       border_current=True, diffusion=True, landID=True,
                                                                       distance=True, salinity=True, temperature=True,

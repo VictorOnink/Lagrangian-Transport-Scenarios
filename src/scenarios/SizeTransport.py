@@ -11,13 +11,13 @@ from parcels import ParcelsRandom
 class SizeTransport(base_scenario.BaseScenario):
     """Fragmentation scenario based on the Kaandorp fragmentation model. Beaching based on the stochastic scenario"""
 
-    def __init__(self, server, stokes):
+    def __init__(self):
         """Constructor for SizeTransport"""
-        super().__init__(server, stokes)
+        super().__init__()
 
     def set_prefix(self) -> str:
         """
-        Set the scenario prefix
+        Set the scenario advection_prefix
         :return:
         """
         return "Size_Transport"
@@ -41,7 +41,7 @@ class SizeTransport(base_scenario.BaseScenario):
 
     def create_fieldset(self) -> FieldSet:
         utils.print_statement("Creating the fieldset")
-        fieldset = fieldset_factory.FieldSetFactory().UV_interpolation(file_dict=self.file_dict, stokes=self.stokes,
+        fieldset = fieldset_factory.FieldSetFactory().UV_interpolation(file_dict=self.file_dict,
                                                                       stokes_depth=True, border_current=True,
                                                                       diffusion=True,
                                                                       distance=True, salinity=True, temperature=True,

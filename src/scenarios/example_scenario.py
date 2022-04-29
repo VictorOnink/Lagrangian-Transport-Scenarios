@@ -8,11 +8,11 @@ from datetime import datetime, timedelta
 from parcels import ParcelsRandom
 
 
-class BlueCloud(base_scenario.BaseScenario):
-    """Backwards simulation for the Blue Cloud Hackathon"""
+class ExampleScenario(base_scenario.BaseScenario):
+    """Example scenario"""
 
     def __init__(self):
-        """Constructor for BlueCloudBackwards"""
+        """Constructor for ExampleScenario"""
         super().__init__()
 
     def set_prefix(self) -> str:
@@ -20,14 +20,14 @@ class BlueCloud(base_scenario.BaseScenario):
         Set the scenario advection_prefix
         :return:
         """
-        return "BlueCloud"
+        return "ExampleScenario"
 
     def set_var_list(self) -> list:
         """
         Set the var_list, which contains all the variables that need to be loaded during the restarts
         :return:
         """
-        return ['lon', 'lat', 'beach', 'age']
+        return ['lon', 'lat', 'beach']
 
     def set_time_steps(self) -> tuple:
         """
@@ -41,11 +41,7 @@ class BlueCloud(base_scenario.BaseScenario):
 
     def create_fieldset(self) -> FieldSet:
         utils.print_statement("Creating the fieldset")
-        fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict,
-                                                                      border_current=True, diffusion=True,
-                                                                      distance=True, beach_timescale=True,
-                                                                      resus_timescale=True, fixed_resus=True,
-                                                                      time_step=self.dt)
+        fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict)
         return fieldset
 
     def get_pset(self, fieldset: FieldSet, particle_type: utils.BaseParticle, var_dict: dict,
@@ -55,7 +51,7 @@ class BlueCloud(base_scenario.BaseScenario):
         """
         utils.print_statement("Creating the particle set")
         pset = ParticleSet(fieldset=fieldset, pclass=particle_type, lon=var_dict['lon'], lat=var_dict['lat'],
-                           beach=var_dict['beach'], age=var_dict['age'], time=start_time, repeatdt=repeat_dt)
+                           beach=var_dict['beach'], time=start_time, repeatdt=repeat_dt)
         return pset
 
     def get_pclass(self):
@@ -66,36 +62,19 @@ class BlueCloud(base_scenario.BaseScenario):
 
     def file_names(self, new: bool = False, run: int = settings.RUN, restart: int = settings.RESTART,
                    backward: bool = settings.BACKWARD):
-        odirec = self.output_dir + 'BlueCloudHackathon/'
+        odirec = self.output_dir + 'ExampleScenario/'
         if new:
             str_format = (settings.ADVECTION_DATA, backward, settings.SHORE_TIME, settings.RESUS_TIME,
-                          settings.STARTYEAR, settings.INPUT_LON, settings.INPUT_LAT, restart, run)
+                          settings.STARTYEAR, restart, run)
         else:
             str_format = (settings.ADVECTION_DATA, backward, settings.SHORE_TIME, settings.RESUS_TIME,
-                          settings.STARTYEAR, settings.INPUT_LON, settings.INPUT_LAT, restart - 1, run)
-        return odirec + self.prefix + '_{}_{}_st={}_rt={}_y={}_LON={}_LAT={}_r={}_run={}.nc'.format(*str_format)
+                          settings.STARTYEAR, restart - 1, run)
+        return odirec + self.prefix + '_{}_{}_st={}_rt={}_y={}_r={}_run={}.nc'.format(*str_format)
 
     def beaching_kernel(particle, fieldset, time):
-        """
-        The beaching and resuspension kernels for beaching on the coastline follows the procedure outlined in Onink et
-        al. (2021) https://doi.org/10.1088/1748-9326/abecbd
-        """
-        if particle.beach == 0:
-            dist = fieldset.distance2shore[time, particle.depth, particle.lat, particle.lon]
-            if dist < fieldset.Coastal_Boundary:
-                if ParcelsRandom.uniform(0, 1) > fieldset.p_beach:
-                    particle.beach = 1
-        # Now the part where we build in the resuspension
-        elif particle.beach == 1:
-            if ParcelsRandom.uniform(0, 1) > fieldset.p_resus:
-                particle.beach = 0
-        # Update the age of the particle
-        particle.age += particle.dt
+        pass
 
     def get_particle_behavior(self, pset: ParticleSet):
         utils.print_statement("Setting the particle behavior")
-        total_behavior = pset.Kernel(utils.floating_advection_rk4) + \
-                         pset.Kernel(utils.floating_2d_brownian_motion) + \
-                         pset.Kernel(utils.anti_beach_nudging) + \
-                         pset.Kernel(self.beaching_kernel)
+        total_behavior = pset.Kernel(utils.floating_advection_rk4)
         return total_behavior

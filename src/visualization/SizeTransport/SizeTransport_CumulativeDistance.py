@@ -20,9 +20,7 @@ class SizeTransport_CumulativeDistance:
         self.data_direc = settings.DATA_OUTPUT_DIREC + 'statistics/SizeTransport/'
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'basic_statistics'
-        self.advection_scenario = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
-                                                                 advection_scenario='CMEMS_MEDITERRANEAN',
-                                                                 repeat_dt=None)
+        self.advection_scenario = advection_files.AdvectionFiles(advection_scenario='CMEMS_MEDITERRANEAN')
         # Figure parameters
         self.figure_size = (20, 8)
         self.variable_list = ['z', 'distance_vertical', 'distance_horizontal']

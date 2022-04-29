@@ -8,30 +8,30 @@ from scenarios.FragmentationKaandorp import FragmentationKaandorp
 from scenarios.FragmentationKaandorpPartial import FragmentationKaandorpPartial
 from scenarios.SizeTransport import SizeTransport
 from scenarios.BlueCloud import BlueCloud
-from settings import SCENARIO_NAME, STOKES, SERVER
+from settings import SCENARIO_NAME
 
 
 class ScenarioFactory:
     @staticmethod
-    def create_scenario(scenario_name=SCENARIO_NAME, stokes=STOKES, server=SERVER) -> base_scenario.BaseScenario:
+    def create_scenario(scenario_name=SCENARIO_NAME) -> base_scenario.BaseScenario:
         if scenario_name == "AdvectionDiffusionOnly":
-            return AdvectionDiffusionOnly(server=server, stokes=stokes)
+            return AdvectionDiffusionOnly()
         elif scenario_name == "CoastalProximity":
-            return CoastalProximity(server=server, stokes=stokes)
+            return CoastalProximity()
         elif scenario_name == "Stochastic":
-            return Stochastic(server=server, stokes=stokes)
+            return Stochastic()
         elif scenario_name == 'ShoreDependentResuspension':
-            return SD_Resuspension(server=server, stokes=stokes)
+            return SD_Resuspension()
         elif scenario_name == 'TurrellResuspension':
-            return Turrell_Resuspension(server=server, stokes=stokes)
+            return Turrell_Resuspension()
         elif scenario_name == 'FragmentationKaandorp':
-            return FragmentationKaandorp(server=server, stokes=stokes)
+            return FragmentationKaandorp()
         elif scenario_name == 'FragmentationKaandorpPartial':
-            return FragmentationKaandorpPartial(server=server, stokes=stokes)
+            return FragmentationKaandorpPartial()
         elif scenario_name == 'SizeTransport':
-            return SizeTransport(server=server, stokes=stokes)
+            return SizeTransport()
         elif scenario_name == 'BlueCloud':
-            return BlueCloud(server=server, stokes=stokes)
+            return BlueCloud()
         else:
             raise ValueError("{} is an invalid model scenario!".format(scenario_name))
 

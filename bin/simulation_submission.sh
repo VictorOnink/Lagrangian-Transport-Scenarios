@@ -84,8 +84,8 @@ INPUT=4
 export INPUT
 
 #Which advection data do we want to use?
-# 0 = Global HYCOM, 1 = Caribbean HYCOM, 2 = Mediterranean CMEMS
-ADVECTION_DATA=2
+# 0: 'HYCOM_GLOBAL', 1: 'HYCOM_CARIBBEAN', 2: 'CMEMS_MEDITERRANEAN'
+ADVECTION_DATA='CMEMS_MEDITERRANEAN'
 export ADVECTION_DATA
 
 #Start year of the simulation. 0 = new simulation, otherwise it picks up from a previous simulation

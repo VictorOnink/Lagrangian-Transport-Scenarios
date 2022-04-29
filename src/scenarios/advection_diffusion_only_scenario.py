@@ -13,13 +13,13 @@ import math
 class AdvectionDiffusionOnly(base_scenario.BaseScenario):
     """Advection and Diffusion only scenario"""
 
-    def __init__(self, server, stokes):
+    def __init__(self):
         """Constructor for AdvectionDiffusionOnly"""
-        super().__init__(server, stokes)
+        super().__init__()
 
     def set_prefix(self) -> str:
         """
-        Set the scenario prefix
+        Set the scenario advection_prefix
         :return:
         """
         return "AdvDifOnly"
@@ -46,7 +46,7 @@ class AdvectionDiffusionOnly(base_scenario.BaseScenario):
 
     def create_fieldset(self) -> FieldSet:
         utils.print_statement("Creating the fieldset")
-        fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict, stokes=self.stokes,
+        fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict,
                                                                       diffusion=True, landID=True, distance=True,
                                                                       coastal_zone=False, time_step=self.dt)
         return fieldset

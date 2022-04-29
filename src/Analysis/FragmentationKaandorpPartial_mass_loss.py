@@ -10,8 +10,9 @@ from calendar import monthrange
 
 class FragmentationKaandorpPartial_mass_loss:
     def __init__(self, scenario):
-        self.input_file_prefix = create_input_files.create_input_files(prefix=settings.ADVECTION_DATA, repeat_dt=None,
-                                                                       grid=np.ones(1), lon=np.ones(1), lat=np.ones(1))
+        self.input_file_prefix = create_input_files.create_input_files(advection_prefix=settings.ADVECTION_DATA,
+                                                                       repeat_dt=None, grid=np.ones(1), lon=np.ones(1),
+                                                                       lat=np.ones(1)).create_files()
         self.frag_list = [388, 1000, 10000, 35000, 50000]
         self.scenario = scenario
         self.file_dict = self.scenario.return_full_run_directory()

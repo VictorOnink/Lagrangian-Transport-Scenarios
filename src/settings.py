@@ -1,5 +1,4 @@
 import os
-from datetime import timedelta
 import socket
 if socket.gethostname() in ['kuphaven', 'climatestor01']:
     from dotenv import load_dotenv
@@ -59,6 +58,12 @@ INPUT_DIREC_DICT = {0: DATA_INPUT_DIREC + 'Jambeck_Inputs/',
 SCRATCH_DIREC: str = {'KUPHAVEN': None,
                       'UBELIX': "/storage/scratch/users/vo18e689/"}[SERVER]
 
+########################################################################################################################
+#                                                                                                                      #
+#                                         Run/restart specific parameters                                              #
+#                                                                                                                      #
+########################################################################################################################
+
 # STARTING YEAR, MONTH AND DAY OF THE SIMULATION
 STARTYEAR: int = load_env_variable("STARTYEAR", default=2010)
 STARTMONTH: int = load_env_variable("STARTMONTH", default=1)
@@ -67,11 +72,12 @@ STARTDAY: int = load_env_variable("STARTDAY", default=1)
 # LENGTH IN YEARS OF THE SIMULATION
 SIM_LENGTH: int = load_env_variable("SIMLEN", default=1)
 
-########################################################################################################################
-#                                                                                                                      #
-#                                         Run/restart specific parameters                                              #
-#                                                                                                                      #
-########################################################################################################################
+# FORWARD OR BACKWARDS IN TIME
+BACKWARD = load_env_variable("BACKWARD", default=False, variable_type=bool)
+BACKWARD_MULT = {True: -1, False: 1}[BACKWARD]
+
+# RNG SEED VALUE
+SEED = 'Fixed'
 
 # WHICH OF THE SUBRUNS (DIVISION OF PARTICLE INPUTS)
 RUN: int = load_env_variable("RUN", default=0)
@@ -94,8 +100,8 @@ ENSEMBLE: int = load_env_variable("ENSEMBLE", default=1)
 ########################################################################################################################
 
 # UV ADVECTION DATA
-ADVECTION_DICT: dict = {0: 'HYCOM_GLOBAL', 1: 'HYCOM_CARIBBEAN', 2: 'CMEMS_MEDITERRANEAN'}
-ADVECTION_DATA: str = ADVECTION_DICT[load_env_variable("ADVECTION_DATA", default=2)]
+ADVECTION_DATA: str = load_env_variable("ADVECTION_DATA", default='CMEMS_MEDITERRANEAN', variable_type=str)
+
 # STOKES DRIFT: 0 -> STOKES, 1 -> NO STOKES
 STOKES: int = load_env_variable("STOKES", default=0)
 
@@ -104,10 +110,10 @@ STOKES: int = load_env_variable("STOKES", default=0)
 #                      Scenario specific parameters, not considering input and advection scenarios                     #
 #                                                                                                                      #
 ########################################################################################################################
+
 # MODEL SCENARIO SETTINGS
 SCENARIO_NAME: str = load_env_variable("SCENARIO", default=None, variable_type=str)
 assert SCENARIO_NAME is not None, 'Please pick a scenario!'
-
 
 # FOR 'CoastalProximity': TIME IN BEACHING ZONE PRIOR TO BEACHING (DAYS)
 VICINITY: int = load_env_variable("VICINITY", default=1)
@@ -135,49 +141,55 @@ OCEAN_FRAG: bool = load_env_variable("OCEAN_FRAG", default=False, variable_type=
 #                                       Input scenario specific parameters                                             #
 #                                                                                                                      #
 ########################################################################################################################
+
 # THE INPUT SCENARIO
 INPUT_NAMES = {0: 'Jambeck', 1: 'Lebreton', 2: 'LebretonDivision', 3: 'LebretonKaandorpInit', 4: 'Point_Release',
                5: 'Uniform'}
 INPUT = INPUT_NAMES[load_env_variable("INPUT", default=0)]
+
 # DIRECTORY CONTAINING INITIAL INPUTS FOR RESTART == 0
 INPUT_DIREC = INPUT_DIREC_DICT[load_env_variable("INPUT", default=0)]
 
 if INPUT == 'Jambeck':
-    # THE NUMBER OF PARTICLES PER RELEASE STEP PER RUN
-    INPUT_DIV = 5000
-    # NUMBER OF RUNS
-    RUN_RANGE: int = 9
     # MAXIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
     INPUT_MAX = 10.0
     # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
     INPUT_MIN = 0.08
+    # THE NUMBER OF PARTICLES PER RELEASE STEP PER RUN
+    INPUT_DIV = 5000
+    # NUMBER OF RUNS
+    RUN_RANGE: int = 9
+
 elif INPUT == 'Lebreton':
+    # MAXIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
+    INPUT_MAX = 0.0125
+    # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
+    INPUT_MIN = 0.00001
     # THE NUMBER OF PARTICLES PER RELEASE STEP PER RUN
     INPUT_DIV = 200000
     # NUMBER OF RUNS
     RUN_RANGE: int = 1
-    # MAXIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
-    INPUT_MAX = 0.0125
-    # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
-    INPUT_MIN = 0.00001  # Minimum plastic mass input for a cell in order to be considered for the input
+
 elif INPUT == 'LebretonDivision':
+    # MAXIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
+    INPUT_MAX = 5
+    # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
+    INPUT_MIN = 0.01
     # THE NUMBER OF PARTICLES PER RELEASE STEP PER RUN
     INPUT_DIV = 50
     # NUMBER OF RUNS
     RUN_RANGE: int = 10
-    # MAXIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
-    INPUT_MAX = 5
-    # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
-    INPUT_MIN = 0.01  # Minimum plastic mass input for a cell in order to be considered for the input
+
 elif INPUT == 'LebretonKaandorpInit':
+    # MAXIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
+    INPUT_MAX = 5
+    # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
+    INPUT_MIN = 0.01
     # THE NUMBER OF PARTICLES PER RELEASE STEP PER RUN
     INPUT_DIV = 50
     # NUMBER OF RUNS
     RUN_RANGE: int = 10
-    # MAXIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
-    INPUT_MAX = 5
-    # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
-    INPUT_MIN = 0.01  # Minimum plastic mass input for a cell in order to be considered for the input
+
 elif INPUT == 'Point_Release':
     # THE RELEASE SITE OF THE POINT RELEASE
     RELEASE_SITE = load_env_variable("RELEASE_SITE", default=0)
@@ -196,23 +208,25 @@ elif INPUT == 'Point_Release':
     INPUT_MAX = 1.0
     # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
     INPUT_MIN = 0.0
+
 elif INPUT == 'Uniform':
+    # MAXIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
+    INPUT_MAX = 1.0
+    # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
+    INPUT_MIN = 0.0
     # THE NUMBER OF PARTICLES PER RELEASE STEP PER RUN
     INPUT_DIV = 5000
     # Number of runs
     RUN_RANGE: int = 1
     # GRID RESOlUTION ON WHICH PARTICLES ARE RELEASED
     RELEASE_GRID = 0.1
-    # MAXIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
-    INPUT_MAX = 1.0
-    # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
-    INPUT_MIN = 0.0
 
 ########################################################################################################################
 #                                                                                                                      #
 #                                       Analysis specific parameters                                                   #
 #                                                                                                                      #
 ########################################################################################################################
+
 # IF PARALLEL_STEP == 1, THEN WE ARE CALCULATING THE ANALYSIS FOR EACH RUN/RESTART FILE
 # IF PARALLEL_STEP == 2, THEN WE COMBINE ALL THE INDIVIDUAL RUN/RESTART ANALYSIS OUTPUT FILES INTO ONE FOR THE WHOLE
 #                        MODEL SETUP
@@ -246,15 +260,9 @@ BUOYANT = 0.54
 
 ########################################################################################################################
 #                                                                                                                      #
-#                                       Model and physical parameters                                                  #
+#                                       Physical parameters                                                            #
 #                                                                                                                      #
 ########################################################################################################################
-# FORWARD OR BACKWARDS IN TIME
-BACKWARD = load_env_variable("BACKWARD", default=False, variable_type=bool)
-BACKWARD_MULT = {True: -1, False: 1}[BACKWARD]
-
-# RNG SEED VALUE
-SEED = 'Fixed'
 
 # HORIZONTAL DIFFUSIVITY M^2 / S, FOLLOWING LACERDA ET AL. (2019) AND LIUBERTSEVA ET AL. (2018)
 K_HOR = 10
@@ -294,20 +302,28 @@ SEABED_CRIT = load_env_variable("SEABED_CRIT", default=0, variable_type=float)
 
 # ACCELERATION DUE TO GRAVITY (M/S^2)
 G = 9.81
+
 # THERMAL EXPANSION COEFFICIENT (1/K) AND REFERENCE TEMPERATURE (K)
 A_T, T_R = 2e-4, 25
+
 # HALINE CONTRACTION COEFFICIENT (1/PSU) AND REFERENCE SALINITY (PSU)
 B_S, S_R = 8e-4, 35
+
 # DENSITY OF AIR (KG/M^3)
 RHO_A = 1.22
+
 # VON KARMAN COEFFICIENT
 VK = 0.4
+
 # WAVE AGE FOR FULLY DEVELOPED SEA (KUKULKA ET AL., 2012), BASED ON EITHER WIND SPEED OR AIR FRICTIONAL VELOCITY
 BETA, BETA_STAR = 1.21, 35
+
 # STABILITY FUNCTION IN MONIN-OBUKOV BOUNDARY LAYER THEORY (BOUFADEL ET AL. 2020)
 PHI = 0.9
+
 # HORIZONTAL DIFFUSION AT THE SEA BED
 SEABED_KH = 0.2
+
 # MICROPLASTIC REMOVAL RATE (KAANDORP ET AL., 2020), 5.3 X 10**-3 WEEK**-1
 P_SINK = 5.1e-3
 
@@ -322,6 +338,7 @@ if SUBMISSION == 'simulation':
     os.system('echo "The starting year is {}-{}, and this is run {}, restart {}"'.format(STARTYEAR, STARTMONTH, RUN,
                                                                                          RESTART))
     os.system('echo "We are using {} for the plastic advection"'.format(ADVECTION_DATA))
+
 if SUBMISSION == 'analysis':
     os.system('echo "We are running analysis parallelization step {}"'.format(PARALLEL_STEP))
 

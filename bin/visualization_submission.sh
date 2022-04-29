@@ -25,7 +25,7 @@ export SERVER
 export INPUT
 export ADVECTION_DATA
 
-#Now, we can set the job name prefix
+#Now, we can set the job name advection_prefix
 if [ $SCENARIO == "AdvectionDiffusionOnly" ]; then
   RUNNAMEPREFIX="Visualization_AdvDifOnly"
 elif [ $SCENARIO == "CoastalProximity" ]; then

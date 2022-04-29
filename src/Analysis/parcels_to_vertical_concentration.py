@@ -216,9 +216,7 @@ class parcels_to_vertical_concentration:
 
     @staticmethod
     def determine_depth_bins():
-        advection_scenario = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
-                                                            advection_scenario=settings.ADVECTION_DATA,
-                                                            repeat_dt=None)
+        advection_scenario = advection_files.AdvectionFiles()
         adv_file_dict = advection_scenario.file_names
         depth_min, depth_max = np.nanmin(adv_file_dict['DEPTH']) - 0.1, np.nanmax(adv_file_dict['DEPTH'])
         if depth_min > 0:

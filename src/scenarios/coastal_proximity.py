@@ -10,13 +10,13 @@ from datetime import datetime, timedelta
 class CoastalProximity(base_scenario.BaseScenario):
     """Coastal proximity scenario"""
 
-    def __init__(self, server, stokes):
+    def __init__(self):
         """Constructor for coastal_proximity"""
-        super().__init__(server, stokes)
+        super().__init__()
 
     def set_prefix(self) -> str:
         """
-        Set the scenario prefix
+        Set the scenario advection_prefix
         :return:
         """
         return "Prox"
@@ -43,7 +43,7 @@ class CoastalProximity(base_scenario.BaseScenario):
 
     def create_fieldset(self) -> FieldSet:
         utils.print_statement("Creating the fieldset")
-        fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict, stokes=self.stokes,
+        fieldset = fieldset_factory.FieldSetFactory().create_fieldset(file_dict=self.file_dict,
                                                                       border_current=True, diffusion=True,
                                                                       landID=True, distance=True, vicinity=True,
                                                                       time_step=self.dt)

@@ -13,22 +13,17 @@ from advection_scenarios import advection_files
 class BaseScenario(ABC):
     """A base class for the different scenarios"""
 
-    def __init__(self, server, stokes):
-        self.server: int = server
-        self.stokes: int = stokes
+    def __init__(self):
         self.input_dir: str = settings.DATA_INPUT_DIREC
         self.output_dir: str = settings.DATA_OUTPUT_DIREC
         self.particle: ParticleSet = self.get_pclass()
         self.prefix: str = self.set_prefix()
         self.dt, self.output_time_step, self.repeat_dt = self.set_time_steps()
         self.var_list: list = self.set_var_list()
-        if settings.SUBMISSION in ['simulation', 'visualization']:
-            advection_scenario = advection_files.AdvectionFiles(server=self.server, stokes=self.stokes,
-                                                                advection_scenario=settings.ADVECTION_DATA,
-                                                                repeat_dt=self.repeat_dt)
-            self.file_dict = advection_scenario.file_names
-            if settings.SUBMISSION in ['simulation']:
-                self.field_set = self.create_fieldset()
+        self.advection_scenario = advection_files.AdvectionFiles(repeat_dt=self.repeat_dt)
+        self.file_dict = self.advection_scenario.file_names
+        if settings.SUBMISSION in ['simulation']:
+            self.field_set = self.create_fieldset()
 
     @abstractmethod
     def set_prefix(self) -> str:

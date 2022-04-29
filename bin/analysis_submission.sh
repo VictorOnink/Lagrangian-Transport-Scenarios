@@ -77,8 +77,8 @@ INPUT=3
 export INPUT
 
 #Which advection data do we want to use?
-# 0 = Global HYCOM, 1 = Caribbean HYCOM, 2 = Mediterranean CMEMS
-ADVECTION_DATA=2
+# 0: 'HYCOM_GLOBAL', 1: 'HYCOM_CARIBBEAN', 2: 'CMEMS_MEDITERRANEAN'
+ADVECTION_DATA='CMEMS_MEDITERRANEAN'
 export ADVECTION_DATA
 
 #Number of years the simulation runs
@@ -194,7 +194,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
             for STARTMONTH in "${STARTMONTH_list[@]}"; do
               export STARTMONTH
 
-              #Now, we can set the job name prefix
+              #Now, we can set the job name advection_prefix
               if [ $SCENARIO == "AdvectionDiffusionOnly" ]; then
                 RUNNAMEPREFIX="AdvDifOnly_y="${STARTYEAR}"_"
               elif [ $SCENARIO == "CoastalProximity" ]; then

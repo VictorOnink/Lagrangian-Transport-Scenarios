@@ -117,9 +117,7 @@ class parcels_to_spatial_vertical_profiles:
 
     @staticmethod
     def determine_depth_bins():
-        advection_scenario = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
-                                                            advection_scenario=settings.ADVECTION_DATA,
-                                                            repeat_dt=None)
+        advection_scenario = advection_files.AdvectionFiles()
         adv_file_dict = advection_scenario.file_names
         depth_min, depth_max = np.nanmin(adv_file_dict['DEPTH']) - 0.1, np.nanmax(adv_file_dict['DEPTH'])
         if depth_min > 0:
@@ -152,9 +150,7 @@ class parcels_to_spatial_vertical_profiles:
 
     @staticmethod
     def get_lonlat_grid_depth():
-        advection_scenario = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
-                                                            advection_scenario=settings.ADVECTION_DATA,
-                                                            repeat_dt=None)
+        advection_scenario = advection_files.AdvectionFiles()
         adv_file_dict = advection_scenario.file_names
         LON, LAT, GRID = adv_file_dict['LON'], adv_file_dict['LAT'], adv_file_dict['GRID']
         MIN_DEPTH = np.nanmin(adv_file_dict['DEPTH'])

@@ -195,9 +195,7 @@ def flatten_and_nan_removal(full_data_dict):
 
 
 def create_hex_grid():
-    advection_scenario = advection_files.AdvectionFiles(server=settings.SERVER, stokes=settings.STOKES,
-                                                        advection_scenario=settings.ADVECTION_DATA,
-                                                        repeat_dt=None)
+    advection_scenario = advection_files.AdvectionFiles()
     adv_file_dict = advection_scenario.file_names
     LON, LAT, GRID = adv_file_dict['LON'], adv_file_dict['LAT'], adv_file_dict['GRID']
     bin_number = max(GRID.shape)
