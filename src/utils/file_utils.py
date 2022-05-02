@@ -8,7 +8,13 @@ import shutil
 import utils
 
 
-def get_start_end_time(time: str):
+def get_start_end_time(time: str) -> datetime:
+    """
+    Depending the input variable time, returns either the datetime object for the beginning or end of the simulation, or
+    the length of the simulation in days.
+    :param time: specifies what datetime object to return
+    :return:
+    """
     if settings.RESTART == 0:
         start_time = datetime(settings.STARTYEAR, settings.STARTMONTH, settings.STARTDAY, 0, 0)
     else:
@@ -62,16 +68,32 @@ def restart_nan_removal(dataset: Dataset, variable: str, last_selec: np.array,
 
 
 def check_direc_exist(direc: str):
+    """
+    Check if the directory specified by the path direc exists, and if it doesn't, create the directory.
+    :param direc: path of the directory
+    :return:
+    """
     if not os.path.isdir(direc):
         os.makedirs(direc)
 
 
 def remove_directory(direc: str):
+    """
+    Check if a directory exists and if it does, delete it.
+    :param direc: path of the directory
+    :return:
+    """
     if check_direc_exist(direc):
         shutil.rmtree(direc)
 
 
-def remove_file(File: str, conduct: bool=True):
+def remove_file(File: str, conduct: bool = True):
+    """
+    Check if the file with path File exists, and if it does then delete it
+    :param File:
+    :param conduct:
+    :return:
+    """
     if conduct:
         if check_file_exist(File):
             os.remove(File)
