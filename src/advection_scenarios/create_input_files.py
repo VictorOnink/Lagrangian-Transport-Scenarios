@@ -152,7 +152,7 @@ class create_input_files:
 
     def get_distance_to_shore(self, filename: str):
         if utils.check_file_exist(filename):
-            utils.print_statement("The mismanaged grid already exists")
+            utils.print_statement("The distance to shore file already exists")
         else:
             create_distance_to_shore_land(output_name=filename, grid=self.GRID, lon=self.LON, lat=self.LAT)
         return self.slicing_correction(Dataset(filename).variables['distance'][:])
@@ -395,7 +395,7 @@ class create_input_files:
         elif len(array.shape) == 4:
             return array[0, :, :, :]
         else:
-            ValueError('What sort of data are you using that it has {} dimensions?'.format(len(array.shape)))
+            ValueError("What sort of data are you using that it has {} dimensions?".format(len(array.shape)))
 
     @staticmethod
     def split_to_runs(particle_lat: np.array, particle_lon: np.array, particle_weight: None,

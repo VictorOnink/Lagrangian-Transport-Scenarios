@@ -23,7 +23,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="Restructuring">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/advection_scenarios/create_input_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/advection_scenarios/create_input_files.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/file_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/file_utils.py" afterDir="false" />
     </list>
@@ -112,13 +111,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-03673" summary="massloss">
-      <created>1647525106632</created>
-      <option name="number" value="03673" />
-      <option name="presentableId" value="LOCAL-03673" />
-      <option name="project" value="LOCAL" />
-      <updated>1647525106632</updated>
     </task>
     <task id="LOCAL-03674" summary="massloss">
       <created>1647525352719</created>
@@ -456,7 +448,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651531455766</updated>
     </task>
-    <option name="localTasksCounter" value="3722" />
+    <task id="LOCAL-03722" summary="Restructuring">
+      <created>1651531834899</created>
+      <option name="number" value="03722" />
+      <option name="presentableId" value="LOCAL-03722" />
+      <option name="project" value="LOCAL" />
+      <updated>1651531834899</updated>
+    </task>
+    <option name="localTasksCounter" value="3723" />
     <servers />
   </component>
   <component name="UnknownFeatures">

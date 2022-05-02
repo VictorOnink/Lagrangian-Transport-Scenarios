@@ -30,7 +30,7 @@ def get_start_end_time(time: str) -> datetime:
 
 
 def restart_nan_removal(dataset: Dataset, variable: str, last_selec: np.array,
-                        final_time: datetime, last_time_selec: datetime):
+                        final_time: datetime, last_time_selec: datetime) -> np.array:
     """
     This function inputs a dataset object for the rfile. We then take the last
     non-masked value for each row, which we then use to initialise the new ofile
@@ -46,12 +46,12 @@ def restart_nan_removal(dataset: Dataset, variable: str, last_selec: np.array,
         the dataset object we get the variable field from.
     variable : string
         name of the variable we wish to examine.
-    lastSelec : int
+    last_selec : int
         For each row, the index of the last unmasked cell. If there are no
         masked cells, it indicates the last cell of the .
-    finalTime : datetime object
+    final_time : datetime object
         The last timestep of the previous restart file.
-    lastTimeSelec : datetime object
+    last_time_selec : datetime object
         the time of the last unmasked call, as indicated by the index from
         lastSelec.
 
@@ -67,7 +67,7 @@ def restart_nan_removal(dataset: Dataset, variable: str, last_selec: np.array,
     return var_selec
 
 
-def check_direc_exist(direc: str):
+def check_direc_exist(direc: str) -> None:
     """
     Check if the directory specified by the path direc exists, and if it doesn't, create the directory.
     :param direc: path of the directory
@@ -77,7 +77,7 @@ def check_direc_exist(direc: str):
         os.makedirs(direc)
 
 
-def remove_directory(direc: str):
+def remove_directory(direc: str) -> None:
     """
     Check if a directory exists and if it does, delete it.
     :param direc: path of the directory
@@ -87,7 +87,7 @@ def remove_directory(direc: str):
         shutil.rmtree(direc)
 
 
-def remove_file(File: str, conduct: bool = True):
+def remove_file(File: str, conduct: bool = True) -> None:
     """
     Check if the file with path File exists, and if it does then delete it
     :param File: path of the file
@@ -101,7 +101,7 @@ def remove_file(File: str, conduct: bool = True):
             utils.print_statement('The file {} does not exist.'.format(File), to_print=True)
 
 
-def check_file_exist(File: str, without_pkl=False):
+def check_file_exist(File: str, without_pkl=False) -> bool:
     """
     Check if a file exists
     :param File: path of the file
@@ -117,7 +117,7 @@ def check_file_exist(File: str, without_pkl=False):
         return os.path.isfile(File)
 
 
-def save_obj(filename, item):
+def save_obj(filename, item) -> None:
     """
     Pickles an object at the location specified by the filename path
     :param filename: path of the location where pickle object is to be saved
@@ -130,7 +130,7 @@ def save_obj(filename, item):
         pickle.dump(item, f, pickle.HIGHEST_PROTOCOL)
 
 
-def load_obj(filename):
+def load_obj(filename) -> pickle:
     """
     Load the pickled object within the file specified by the filename path
     :param filename: path of the pickle file
@@ -142,16 +142,21 @@ def load_obj(filename):
         return pickle.load(f)
 
 
-def print_statement(statement, to_print=False):
+def print_statement(statement, to_print=False) -> None:
     """
-
-    :param statement: string of the
-    :param to_print:
+    Prints a statement to the job output file, but only for "simulation" jobs or when to_print is True
+    :param statement: string that is printed
+    :param to_print: if True, print statement
     :return:
     """
     if settings.SUBMISSION in ['simulation'] or to_print is True:
         os.system('echo {}'.format(statement))
 
 
-def flatten_list_of_lists(t):
-    return [item for sublist in t for item in sublist]
+def flatten_list_of_lists(list_of_lists) -> list:
+    """
+    flattens a list of lists to one single list with containing all the subelements
+    :param list_of_lists: i think this speaks for itself?
+    :return:
+    """
+    return [item for sublist in list_of_lists for item in sublist]
