@@ -1,6 +1,6 @@
 import os
 import socket
-if socket.gethostname() in ['kuphaven', 'climatestor01']:
+if socket.gethostname() in ["kuphaven", "climatestor01"]:
     from dotenv import load_dotenv
     load_dotenv()
 
@@ -39,8 +39,8 @@ os.system('echo "run="' + SUBMISSION)
 SERVER: str = load_env_variable("SERVER", default="UBELIX", variable_type=str)
 
 # BASE DIRECTORY FROM WHICH ALL DATA PATHS ARE DERIVED
-DATA_DIREC: str = {'KUPHAVEN': "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/",
-                   'UBELIX': "/storage/homefs/vo18e689/Data/"}[SERVER]
+DATA_DIREC: str = {"KUPHAVEN": "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/",
+                   "UBELIX": "/storage/homefs/vo18e689/Data/"}[SERVER]
 
 # DIRECTORY FOR ALL INPUT AND PREPROCESSING FILES
 DATA_INPUT_DIREC: str = DATA_DIREC + "Input/"
@@ -52,8 +52,8 @@ DATA_OUTPUT_DIREC: str = DATA_DIREC + "Output/"
 FIGURE_OUTPUT_DIREC: str = DATA_DIREC + "Output/Figures/"
 
 # SCRATCH DIRECTORY FOR STORING INTERMEDIARY POSTPROCESSING FILES
-SCRATCH_DIREC: str = {'KUPHAVEN': None,
-                      'UBELIX': "/storage/scratch/users/vo18e689/"}[SERVER]
+SCRATCH_DIREC: str = {"KUPHAVEN": None,
+                      "UBELIX": "/storage/scratch/users/vo18e689/"}[SERVER]
 
 ########################################################################################################################
 #                                                                                                                      #
@@ -74,7 +74,7 @@ BACKWARD = load_env_variable("BACKWARD", default=False, variable_type=bool)
 BACKWARD_MULT = {True: -1, False: 1}[BACKWARD]
 
 # RANDOM NUMBER GENERATOR SEED VALUE
-SEED = 'Fixed'
+SEED = "Fixed"
 
 # WHICH OF THE SUBRUNS (DIVISION OF PARTICLE INPUTS)
 RUN: int = load_env_variable("RUN", default=0)
@@ -97,7 +97,7 @@ ENSEMBLE: int = load_env_variable("ENSEMBLE", default=1)
 ########################################################################################################################
 
 # ZONAL AND MERIDIONAL ADVECTION DATA SCENARIO
-ADVECTION_DATA: str = load_env_variable("ADVECTION_DATA", default='CMEMS_MEDITERRANEAN', variable_type=str)
+ADVECTION_DATA: str = load_env_variable("ADVECTION_DATA", default="CMEMS_MEDITERRANEAN", variable_type=str)
 
 # STOKES DRIFT: 0 -> STOKES, 1 -> NO STOKES
 STOKES: int = load_env_variable("STOKES", default=0)
@@ -110,7 +110,7 @@ STOKES: int = load_env_variable("STOKES", default=0)
 
 # MODEL SCENARIO SETTINGS
 SCENARIO_NAME: str = load_env_variable("SCENARIO", default=None, variable_type=str)
-assert SCENARIO_NAME is not None, 'Please pick a scenario!'
+assert SCENARIO_NAME is not None, "Please pick a scenario!"
 
 # FOR 'CoastalProximity': TIME IN BEACHING ZONE PRIOR TO BEACHING (DAYS)
 VICINITY: int = load_env_variable("VICINITY", default=1)
@@ -142,20 +142,20 @@ OCEAN_FRAG: bool = load_env_variable("OCEAN_FRAG", default=False, variable_type=
 ########################################################################################################################
 
 # THE INPUT SCENARIO
-INPUT = load_env_variable("INPUT", default='Jambeck', variable_type=str)
+INPUT = load_env_variable("INPUT", default="Jambeck", variable_type=str)
 
 # DIRECTORY FOR THE INOUT FILES FOR EACH INPUT SCENARIO
-INPUT_DIREC_DICT = {'Jambeck': DATA_INPUT_DIREC + 'Jambeck_Inputs/',
-                    'Lebreton': DATA_INPUT_DIREC + 'Lebreton_Inputs/',
-                    'LebretonDivision': DATA_INPUT_DIREC + 'LebretonDivision_Inputs/',
-                    'LebretonKaandorpInit': DATA_INPUT_DIREC + 'Lebreton_Kaandorp_init_Inputs/',
-                    'Point_Release': DATA_INPUT_DIREC + 'Point_Release/',
-                    'Uniform': DATA_INPUT_DIREC + 'Uniform/'}
+INPUT_DIREC_DICT = {"Jambeck": DATA_INPUT_DIREC + "Jambeck_Inputs/",
+                    "Lebreton": DATA_INPUT_DIREC + "Lebreton_Inputs/",
+                    "LebretonDivision": DATA_INPUT_DIREC + "LebretonDivision_Inputs/",
+                    "LebretonKaandorpInit": DATA_INPUT_DIREC + "Lebreton_Kaandorp_init_Inputs/",
+                    "Point_Release": DATA_INPUT_DIREC + "Point_Release/",
+                    "Uniform": DATA_INPUT_DIREC + "Uniform/"}
 
 # DIRECTORY CONTAINING INITIAL INPUTS FOR RESTART == 0
 INPUT_DIREC = INPUT_DIREC_DICT[INPUT]
 
-if INPUT == 'Jambeck':
+if INPUT == "Jambeck":
     # MAXIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
     INPUT_MAX = 10.0
     # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
@@ -165,7 +165,7 @@ if INPUT == 'Jambeck':
     # NUMBER OF RUNS
     RUN_RANGE: int = 9
 
-elif INPUT == 'Lebreton':
+elif INPUT == "Lebreton":
     # MAXIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
     INPUT_MAX = 0.0125
     # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
@@ -175,7 +175,7 @@ elif INPUT == 'Lebreton':
     # NUMBER OF RUNS
     RUN_RANGE: int = 1
 
-elif INPUT == 'LebretonDivision':
+elif INPUT == "LebretonDivision":
     # MAXIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
     INPUT_MAX = 5
     # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
@@ -185,7 +185,7 @@ elif INPUT == 'LebretonDivision':
     # NUMBER OF RUNS
     RUN_RANGE: int = 10
 
-elif INPUT == 'LebretonKaandorpInit':
+elif INPUT == "LebretonKaandorpInit":
     # MAXIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
     INPUT_MAX = 5
     # MINIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
@@ -195,7 +195,7 @@ elif INPUT == 'LebretonKaandorpInit':
     # NUMBER OF RUNS
     RUN_RANGE: int = 10
 
-elif INPUT == 'Point_Release':
+elif INPUT == "Point_Release":
     # THE RELEASE SITE OF THE POINT RELEASE
     RELEASE_SITE = load_env_variable("RELEASE_SITE", default=0)
     SITE_LONLAT = {0: (11.0, 42.2)}[RELEASE_SITE]
@@ -210,7 +210,7 @@ elif INPUT == 'Point_Release':
     # STARTING LATITUDE FOR POINT RELEASE (DEGREES NORTH)
     INPUT_LAT = SITE_LONLAT[1]
 
-elif INPUT == 'Uniform':
+elif INPUT == "Uniform":
     # THE NUMBER OF PARTICLES PER RELEASE STEP PER RUN
     INPUT_DIV = 5000
     # Number of runs
@@ -268,7 +268,7 @@ K_HOR = 10
 K_Z_BULK = 3e-5
 
 # WIDTH OF THE BEACHING ZONE (KM) WITHIN WHICH BEACHING CAN OCCUR
-COAST_D = {'HYCOM_GLOBAL': 10, 'HYCOM_CARIBBEAN': 4, 'CMEMS_MEDITERRANEAN': 6}[ADVECTION_DATA]
+COAST_D = {"HYCOM_GLOBAL": 10, "HYCOM_CARIBBEAN": 4, "CMEMS_MEDITERRANEAN": 6}[ADVECTION_DATA]
 
 # SIZE SCALING FACTOR FOR INIT_SIZE
 SIZE_FACTOR = 1E-6
@@ -331,31 +331,31 @@ P_SINK = 5.1e-3
 ########################################################################################################################
 os.system('echo "This is the {} for the {} scenario"'.format(SUBMISSION, SCENARIO_NAME))
 os.system('echo "The input scenario is {}"'.format(INPUT))
-if SUBMISSION == 'simulation':
+if SUBMISSION == "simulation":
     os.system('echo "The starting year is {}-{}, and this is run {}, restart {}"'.format(STARTYEAR, STARTMONTH, RUN,
                                                                                          RESTART))
     os.system('echo "We are using {} for the plastic advection"'.format(ADVECTION_DATA))
 
-if SUBMISSION == 'analysis':
+if SUBMISSION == "analysis":
     os.system('echo "We are running analysis parallelization step {}"'.format(PARALLEL_STEP))
 
-if SCENARIO_NAME == 'CoastalProximity':
+if SCENARIO_NAME == "CoastalProximity":
     os.system('echo "The coastal vicinity time cutoff is {} days "'.format(VICINITY))
 
 elif SCENARIO_NAME == "Stochastic":
     os.system('echo "The beaching timescale is {} days "'.format(SHORE_TIME))
     os.system('echo "The resuspension timescale is {} days "'.format(RESUS_TIME))
 
-elif SCENARIO_NAME == 'ShoreDependentResuspension':
+elif SCENARIO_NAME == "ShoreDependentResuspension":
     os.system('echo "The beaching timescale is {} days "'.format(SHORE_TIME))
     os.system('echo "The resuspension timescale is {} days "'.format(RESUS_TIME))
     os.system('echo "The shore dependent resuspension scenario is {}"'.format(SHORE_DEP))
 
-elif SCENARIO_NAME == 'TurrellResuspension':
+elif SCENARIO_NAME == "TurrellResuspension":
     os.system('echo "The beaching timescale is {} days "'.format(SHORE_TIME))
     os.system('echo "The minimum offshore wind for resuspension is {} m / s"'.format(WMIN/10.))
 
-elif SCENARIO_NAME == 'SizeTransport':
+elif SCENARIO_NAME == "SizeTransport":
     os.system('echo "The particle size is {:.3f} mm"'.format(INIT_SIZE * 1e3))
     os.system('echo "The particle density is {} kg/m3 "'.format(INIT_DENSITY))
     os.system('echo "The beaching timescale is {} days "'.format(SHORE_TIME))
@@ -364,7 +364,7 @@ elif SCENARIO_NAME == 'SizeTransport':
     else:
         os.system('echo "The resuspension timescale is size dependent"')
 
-elif SCENARIO_NAME in ['FragmentationKaandorp', 'FragmentationKaandorpPartial']:
+elif SCENARIO_NAME in ["FragmentationKaandorp", "FragmentationKaandorpPartial"]:
     os.system('echo "The beaching timescale is {} days "'.format(SHORE_TIME))
     os.system('echo "The fragmentation timescale is {} days "'.format(LAMBDA_FRAG))
     os.system('echo "The initial particle size is {} m and a rho of {} kg/m^3"'.format(INIT_SIZE, INIT_DENSITY))

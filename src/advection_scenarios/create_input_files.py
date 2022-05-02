@@ -40,7 +40,7 @@ class create_input_files:
     def create_files(self):
         # Get the prefix for the input files, then check if the files exist
         self.input_prefix = self.get_input_prefix()
-        if len(glob.glob(self.input_prefix + '*')) > 0:
+        if len(glob.glob(self.input_prefix + "*")) > 0:
             utils.print_statement("The input files {} are already present".format(self.input_prefix))
             return self.input_prefix
         else:
@@ -50,13 +50,13 @@ class create_input_files:
             self.releases = self.number_of_releases()
 
             # Get the unprocessed lon/lat coordinates of all the plastic sources
-            if settings.INPUT in ['Jambeck']:
+            if settings.INPUT in ["Jambeck"]:
                 self.lon_inputs, self.lat_inputs, self.plastic_inputs, self.input_max, self.input_min, self.distance = self.get_lon_lat_weights_Jambeck()
-            elif settings.INPUT in ['Lebreton', 'LebretonDivision', 'LebretonKaandorpInit']:
+            elif settings.INPUT in ["Lebreton", "LebretonDivision", "LebretonKaandorpInit"]:
                 self.lon_inputs, self.lat_inputs, self.plastic_inputs, self.input_max, self.input_min = self.get_lon_lat_weights_Lebreton()
-            elif settings.INPUT in ['Point_Release']:
+            elif settings.INPUT in ["Point_Release"]:
                 self.lon_inputs, self.lat_inputs, self.plastic_inputs, self.input_max, self.input_min = self.get_lon_lat_weights_PointRelease()
-            elif settings.INPUT in ['Uniform']:
+            elif settings.INPUT in ["Uniform"]:
                 self.get_lon_lat_weights_Uniform()
                 return self.input_prefix
 
@@ -69,7 +69,7 @@ class create_input_files:
             self.inputs_grid = self.histogram(lon_data=self.lon_inputs, lat_data=self.lat_inputs,
                                               weight_data=self.plastic_inputs)
             # Remove any sources further than 50 kilometers from land
-            if settings.INPUT in ['Jambeck']:
+            if settings.INPUT in ["Jambeck"]:
                 self.inputs_grid[self.distance > 50] = 0
 
             # Getting all ocean cells that are adjacent to coastal ocean cells (which are in turn adjacent to land). The
@@ -103,14 +103,14 @@ class create_input_files:
         Set the prefix of the input files
         :return:
         """
-        if settings.INPUT in ['Jambeck', 'Lebreton', 'LebretonDivision', 'LebretonKaandorpInit']:
-            return settings.INPUT_DIREC + settings.INPUT + '_{}_{}_'.format(self.advection_prefix, settings.STARTYEAR)
-        elif settings.INPUT in ['Point_Release']:
+        if settings.INPUT in ["Jambeck", "Lebreton", "LebretonDivision", "LebretonKaandorpInit"]:
+            return settings.INPUT_DIREC + settings.INPUT + "_{}_{}_".format(self.advection_prefix, settings.STARTYEAR)
+        elif settings.INPUT in ["Point_Release"]:
             str_format = (self.advection_prefix, settings.STARTYEAR, settings.INPUT_LAT, settings.INPUT_LON)
-            return settings.INPUT_DIREC + settings.INPUT + '_{}_{}_{}_{}_'.format(*str_format)
-        elif settings.INPUT == 'Uniform':
+            return settings.INPUT_DIREC + settings.INPUT + "_{}_{}_{}_{}_".format(*str_format)
+        elif settings.INPUT == "Uniform":
             str_format = (self.advection_prefix, settings.STARTYEAR)
-            return settings.INPUT_DIREC + settings.INPUT + '_{}_{}_'.format(*str_format)
+            return settings.INPUT_DIREC + settings.INPUT + "_{}_{}_".format(*str_format)
         else:
             ValueError("Perhaps take another look at what input you are using? {} is not valid".format(settings.INPUT))
 
@@ -127,17 +127,18 @@ class create_input_files:
         :return:
         """
         # Get the population data
-        dataset = Dataset(settings.INPUT_DIREC + 'gpw_v4_population_count_adjusted_rev11_2pt5_min.nc')
-        var_name = 'UN WPP-Adjusted Population Count, v4.11 (2000, 2005, 2010, 2015, 2020): 2.5 arc-minutes'
+        dataset = Dataset(settings.INPUT_DIREC + "gpw_v4_population_count_adjusted_rev11_2pt5_min.nc")
+        var_name = "UN WPP-Adjusted Population Count, v4.11 (2000, 2005, 2010, 2015, 2020): 2.5 arc-minutes"
         population = np.array(dataset.variables[var_name][2, :, :])
-        lon_population = dataset.variables['longitude'][:]
-        lat_population = dataset.variables['latitude'][:]
+        lon_population = dataset.variables["longitude"][:]
+        lat_population = dataset.variables["latitude"][:]
         Lon_population, Lat_population = np.meshgrid(lon_population, lat_population)
         # Get the mismanaged plastic fraction
         mismanaged = self.get_mismanaged_fraction_Jambeck(dataset=dataset)
         utils.print_statement("Hi")
         # Get the distance from land to shore
-        distance_file = settings.INPUT_DIREC + self.input_prefix + '_distance_to_coast_land.nc'
+        distance_file = settings.INPUT_DIREC + self.input_prefix + "_distance_to_coast_land.nc"
+        utils.print_statement(distance_file)
         distance = self.get_distance_to_shore(filename=distance_file)
         utils.print_statement("Hi 2")
         # The yearly mismanaged plastic
@@ -155,22 +156,22 @@ class create_input_files:
         return lon_inputs, lat_inputs, plastic_inputs, input_max, input_min, distance
 
     def get_distance_to_shore(self, filename: str):
+        utils.print_statement("Hi here")
         if utils.check_file_exist(filename):
-            utils.print_statement("Hi here")
             utils.print_statement("The distance to shore file already exists")
         else:
             create_distance_to_shore_land(output_name=filename, grid=self.GRID, lon=self.LON, lat=self.LAT)
-        return self.slicing_correction(Dataset(filename).variables['distance'][:])
+        return self.slicing_correction(Dataset(filename).variables["distance"][:])
 
     def get_lon_lat_weights_Lebreton(self) -> tuple:
         """
         Getting the lon/lat/weights data for input scenarios based on the Lebreton et al. (2017) river input estimates
         :return:
         """
-        lebData = pd.read_csv(settings.INPUT_DIREC + 'PlasticRiverInputs.csv')
-        lon_inputs = np.array(lebData['X'])
-        lat_inputs = np.array(lebData['Y'])
-        plastic_inputs = np.array(lebData['i_low'])
+        lebData = pd.read_csv(settings.INPUT_DIREC + "PlasticRiverInputs.csv")
+        lon_inputs = np.array(lebData["X"])
+        lat_inputs = np.array(lebData["Y"])
+        plastic_inputs = np.array(lebData["i_low"])
         # Get the max/min mass for each parcels particle
         input_max, input_min = settings.INPUT_MAX, settings.INPUT_MIN
         return lon_inputs, lat_inputs, plastic_inputs, input_max, input_min
@@ -205,7 +206,7 @@ class create_input_files:
 
     def land_mark_checker(self):
         mask = np.ma.getmask(self.grid)
-        land = Field('Land', mask, lon=self.lon, lat=self.lat, transpose=False, mesh='spherical')
+        land = Field("Land", mask, lon=self.lon, lat=self.lat, transpose=False, mesh="spherical")
         return land
 
     def within_domain(self):
@@ -324,7 +325,7 @@ class create_input_files:
         selection = (self.inputs_coastal_grid - np.multiply(particle_number, particle_weight)) > self.input_min
         particle_remain_num[selection] += 1
         particle_remain[selection] += (self.inputs_coastal_grid[selection] - np.multiply(particle_number, particle_weight)[selection])
-        return particle_number.astype('int'), particle_weight, particle_remain_num.astype('int'), particle_remain
+        return particle_number.astype("int"), particle_weight, particle_remain_num.astype("int"), particle_remain
 
     def particle_grid_to_list(self):
         particle_lat, particle_lon, particle_mass = [], [], []
@@ -347,41 +348,41 @@ class create_input_files:
 
     @staticmethod
     def get_mismanaged_fraction_Jambeck(dataset: Dataset):
-        mismanaged_file = settings.INPUT_DIREC + 'Jambeck_mismanaged_grid.nc'
+        mismanaged_file = settings.INPUT_DIREC + "Jambeck_mismanaged_grid.nc"
         if utils.check_file_exist(mismanaged_file):
             utils.print_statement("The mismanaged grid already exists")
-            return Dataset(mismanaged_file).variables['mismanaged_plastic'][:]
+            return Dataset(mismanaged_file).variables["mismanaged_plastic"][:]
         else:
             utils.print_statement("We need to generate the mismanaged grid")
             # Load the grid of the population data
-            lon_pop, lat_pop = dataset.variables['longitude'][:], dataset.variables['latitude'][:]
+            lon_pop, lat_pop = dataset.variables["longitude"][:], dataset.variables["latitude"][:]
             Lon, Lat = np.meshgrid(lon_pop, lat_pop)
             # Load the Jambeck estimates of mismanaged plastic per capita
-            jambeck_excel = pd.read_excel(settings.INPUT_DIREC + 'Jambeck2010data.xlsx')
-            jambeck_country = list(jambeck_excel['Country'])
-            jambeck_data = jambeck_excel['Mismanaged plastic waste [kg/person/day]7']
+            jambeck_excel = pd.read_excel(settings.INPUT_DIREC + "Jambeck2010data.xlsx")
+            jambeck_country = list(jambeck_excel["Country"])
+            jambeck_data = jambeck_excel["Mismanaged plastic waste [kg/person/day]7"]
             # Initialize grid for mismanaged plastic estimates
             mismanaged_grid = np.zeros(Lon.shape)
             # Getting the country shapefiles
             countries = fiona.open(settings.INPUT_DIREC +
-                                   'country_shapefile/gpw_v4_national_identifier_grid_rev11_30_sec.shp')
+                                   "country_shapefile/gpw_v4_national_identifier_grid_rev11_30_sec.shp")
             # Looping through all the countries, and marking which of the grid cells fall within which
             for country_index in progressbar.progressbar(range(len(countries))):
-                if countries[country_index]['properties']['NAME0'] in jambeck_country:
-                    country_geometry = shape(countries[country_index]['geometry'])
+                if countries[country_index]["properties"]["NAME0"] in jambeck_country:
+                    country_geometry = shape(countries[country_index]["geometry"])
                     country_mask = vectorized.contains(country_geometry, Lon, Lat)
                     if country_index in [145, 146]:
                         # 122 is the Netherlands Antilles value
                         mismanaged_grid[country_mask] = jambeck_data[122]
                     else:
                         mismanaged_grid[country_mask] = jambeck_data[
-                            jambeck_country.index(countries[country_index]['properties']['NAME0'])]
+                            jambeck_country.index(countries[country_index]["properties"]["NAME0"])]
             # Saving the entire distance field
             utils.print_statement("Starting to save the mismanaged grid")
-            coords = [('lat', lat_pop), ('lon', lon_pop)]
+            coords = [("lat", lat_pop), ("lon", lon_pop)]
             misman = xarray.DataArray(mismanaged_grid, coords=coords)
-            dcoo = {'lat': lat_pop, 'lon': lon_pop}
-            dset = xarray.Dataset({'mismanaged_plastic': misman}, coords=dcoo)
+            dcoo = {"lat": lat_pop, "lon": lon_pop}
+            dset = xarray.Dataset({"mismanaged_plastic": misman}, coords=dcoo)
             dset.to_netcdf(mismanaged_file)
             utils.print_statement("The mismanaged grid has now been created and saved for future use")
             return mismanaged_grid
@@ -420,14 +421,14 @@ class create_input_files:
 
         # Get all the variables that need to be split into indivual run files
         if particle_weight is not None:
-            var_dict = {'lon': particle_lon, 'lat': particle_lat, 'weight': particle_weight}
+            var_dict = {"lon": particle_lon, "lat": particle_lat, "weight": particle_weight}
         else:
-            var_dict = {'lon': particle_lon, 'lat': particle_lat}
+            var_dict = {"lon": particle_lon, "lat": particle_lat}
 
         # Split the runs
         for run in range(run_number):
             for variables in var_dict:
                 var_run = var_dict[variables][run * settings.INPUT_DIV: (run + 1) * settings.INPUT_DIV]
-                np.save(input_prefix + '{}_run={}.npy'.format(variables, run), var_run)
+                np.save(input_prefix + "{}_run={}.npy".format(variables, run), var_run)
 
         return int(run_number)
