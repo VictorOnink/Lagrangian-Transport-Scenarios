@@ -91,7 +91,7 @@ def create_distance_to_shore_land(output_name: str, grid: np.array, lon: np.arra
     memory_var = 1
     utils.print_statement("Hi here 3")
     # The actual distance computation loop
-    for lat_index in progressbar.progressbar(range(mask.shape[0])):
+    for lat_index in range(mask.shape[0]):
         for lon_index in range(mask.shape[1]):
             if mask[lat_index, lon_index]:
                 if memory_var > 2:
