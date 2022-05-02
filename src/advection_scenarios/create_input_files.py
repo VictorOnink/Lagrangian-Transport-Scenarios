@@ -62,7 +62,7 @@ class create_input_files:
 
             # Only keep particles within the domain
             self.lon_inputs, self.lat_inputs, self.plastic_inputs = self.within_domain()
-            utils.print_statement('We have {} input locations'.format(len(self.lon_inputs)), to_print=True)
+            utils.print_statement("We have {} input locations".format(len(self.lon_inputs)), to_print=True)
 
             # Get the inputs onto the grid of the advection data
             self.inputs_grid = self.histogram(lon_data=self.lon_inputs, lat_data=self.lat_inputs,

@@ -90,8 +90,8 @@ def remove_directory(direc: str):
 def remove_file(File: str, conduct: bool = True):
     """
     Check if the file with path File exists, and if it does then delete it
-    :param File:
-    :param conduct:
+    :param File: path of the file
+    :param conduct: boolean that determines where the remove_file procedure is conducted
     :return:
     """
     if conduct:
@@ -102,6 +102,12 @@ def remove_file(File: str, conduct: bool = True):
 
 
 def check_file_exist(File: str, without_pkl=False):
+    """
+    Check if a file exists
+    :param File: path of the file
+    :param without_pkl: if false, append '.pkl' to the end of the file path
+    :return:
+    """
     if without_pkl:
         File += '.pkl'
     if os.path.isfile(File):
@@ -112,6 +118,12 @@ def check_file_exist(File: str, without_pkl=False):
 
 
 def save_obj(filename, item):
+    """
+    Pickles an object at the location specified by the filename path
+    :param filename: path of the location where pickle object is to be saved
+    :param item: object being pickled
+    :return:
+    """
     if filename[-4:] != '.pkl':
         filename += '.pkl'
     with open(filename, 'wb') as f:
@@ -119,6 +131,11 @@ def save_obj(filename, item):
 
 
 def load_obj(filename):
+    """
+    Load the pickled object within the file specified by the filename path
+    :param filename: path of the pickle file
+    :return:
+    """
     if filename[-4:] != '.pkl':
         filename += '.pkl'
     with open(filename, 'rb') as f:
@@ -126,6 +143,12 @@ def load_obj(filename):
 
 
 def print_statement(statement, to_print=False):
+    """
+
+    :param statement: string of the
+    :param to_print:
+    :return:
+    """
     if settings.SUBMISSION in ['simulation'] or to_print is True:
         os.system('echo {}'.format(statement))
 
