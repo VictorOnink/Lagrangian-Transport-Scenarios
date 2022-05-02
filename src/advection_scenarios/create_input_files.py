@@ -345,6 +345,7 @@ class create_input_files:
         mismanaged_file = settings.INPUT_DIREC + 'Jambeck_mismanaged_grid.nc'
         if utils.check_file_exist(mismanaged_file):
             utils.print_statement("The mismanaged grid already exists")
+            utils.print_statement("hi")
             return Dataset(mismanaged_file).variables['mismanaged_plastic'][:]
         else:
             utils.print_statement("We need to generate the mismanaged grid")
