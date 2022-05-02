@@ -34,14 +34,29 @@ The `bin/analysis_submission.sh` is used to submit analysis jobs that take the u
 Finally, the `bin/visualization_submission.sh` script is used to generate figures and animations of the post-processed data from the analysis stage. A number of standard functions for e.g. creating figure with a (M, N) subplot array or cartopy maps are provided, but in general each scenario will have its own set of code to generate figures. 
 ### Usage guide <a name="usage"></a>
 In general, any general questions about the LTS framework (for either understanding it or applying it to another setting) can be posted in the [Issues](https://github.com/VictorOnink/Lagrangian-Transport-Scenarios/issues) section of this repository. However, a few basic use cases are described below.
-#### Running simulations backwards in time
+<details> 
+<summary> Running simulations backwards in time
+</summary>
+<p>
+  
 The LTS framework is set up to run both forward-in-time and backward-in-time simulations for any model scenario. Within the bash scripts, the `BACKWARD` variable specifies if a simulation is forward or backward, where `BACKWARD = 0` indicates forward in time and `BACKWARD = 1` indicates backwards in time.
-#### Running LTS on a different server
+</p>
+</details>
+
+<details> 
+<summary> Running LTS on a different server
+</summary>
+<p>
+  
 In order to run LTS on a new server, it is first important to modify the job submission bash scripts in the `bin` directory to state `SERVER='NewServerName'`. Depending on the exact setup of this new server, it is likely also necessary to modify the job submission scripts to account for a different workload manager. In case the new server uses Slurm, these modifications might be minor (e.g. updating the partition and qos names to whatever names are used on the server). For other workload managers, this could require significantly more effort, and if necessary perhaps ask your local systems administrator for assistance.
 
 Once the bash scripts are done, go to `src/settings.py` and modify the `DATA_DIREC` variable to include the path to the model data on `'NewServerName'`. This then automatically updates other directory paths such as `DATA_INPUT_DIREC`, `DATA_OUTPUT_DIREC` and `FIGURE_OUTPUT_DIREC`. However, `SCRATCH_DIREC` will need to be updated manually since the scratch directory is likely not a subdirectory of `DATA_DIREC`.
 
 In principle, this is all that is required to set up LTS to run on a new server. Just make sure that all the necessary oceanographic/meteorological data is available on the server following the paths set in `src/advection_scenarios/advection_files.py` and you should be good to go.
+  
+</p>
+</details>
+
 #### Introducing new model variables
 In order to create a new variable that can be accessed throughout the LTS framework, you simply need to add it to `src/settings.py`, where the convention is to have all `src/settings.py` variables be completely capitalised. If the variable is e.g. a physical constant such as the density of air or some other quantity that doesn't generally vary between different scenarios, then it is easiest just to give it a set value within the settings file. However, if it is a model parameter (e.g. beaching timescale, fragmentation timescale, etc.), then it is preferable to set the value using the `load_env_variable()` function. This loads the variable value from the `.env` file, where the value can be set within the bash submission scripts. 
 #### Creating a new model scenario
