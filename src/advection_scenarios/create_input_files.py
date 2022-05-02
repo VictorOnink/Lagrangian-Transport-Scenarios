@@ -156,6 +156,7 @@ class create_input_files:
 
     def get_distance_to_shore(self, filename: str):
         if utils.check_file_exist(filename):
+            utils.print_statement("Hi here")
             utils.print_statement("The distance to shore file already exists")
         else:
             create_distance_to_shore_land(output_name=filename, grid=self.GRID, lon=self.LON, lat=self.LAT)
