@@ -72,8 +72,8 @@ def create_distance_to_shore(output_name: str, grid: np.array, lon: np.array, la
                 search_memory = 1
 
     # Saving the entire distance field
-    dset = xarray.Dataset({'distance': xarray.DataArray(distance, coords=[('lat', lat), ('lon', lon)])},
-                          coords={'lat': lat, 'lon': lon})
+    dset = xarray.Dataset({"distance": xarray.DataArray(distance, coords=[("lat", lat), ("lon", lon)])},
+                          coords={"lat": lat, "lon": lon})
     dset.to_netcdf(output_name)
 
 
@@ -122,17 +122,17 @@ def create_distance_to_shore_land(output_name: str, grid: np.array, lon: np.arra
                 memory_var = 1
     distance[mask == False] = 0
     # Saving the entire distance field
-    coords = [('time', np.array([0])), ('lat', lat), ('lon', lon)]
+    coords = [("time", np.array([0])), ("lat", lat), ("lon", lon)]
     dist = xarray.DataArray(distance[np.newaxis, :, :], coords=coords)
-    dcoo = {'time': np.array([0]), 'lat': lat, 'lon': lon}
-    dset = xarray.Dataset({'distance': dist}, coords=dcoo)
+    dcoo = {"time": np.array([0]), "lat": lat, "lon": lon}
+    dset = xarray.Dataset({"distance": dist}, coords=dcoo)
     dset.to_netcdf(output_name)
 
 
 def boundary_conditions(n_lat: int, n_lon: int, lat_index: int, k: int, lon_index: int, m: int):
-    if settings.ADVECTION_DATA == 'HYCOM_GLOBAL':
+    if settings.ADVECTION_DATA == "HYCOM_GLOBAL":
         return (lat_index + k) < n_lat & (lat_index + k) > 0
-    if settings.ADVECTION_DATA == 'HYCOM_CARIBBEAN':
+    if settings.ADVECTION_DATA == "HYCOM_CARIBBEAN":
         return ((lat_index + k) < n_lat) & ((lat_index + k) >= 0) & ((lon_index + m) < n_lon) & ((lon_index + m) >= 0)
-    if settings.ADVECTION_DATA == 'CMEMS_MEDITERRANEAN':
+    if settings.ADVECTION_DATA == "CMEMS_MEDITERRANEAN":
         return ((lat_index + k) < n_lat) & ((lat_index + k) >= 0) & ((lon_index + m) < n_lon) & ((lon_index + m) >= 0)
