@@ -147,3 +147,4 @@ In order to create a new general analysis function, follow the subsequent steps:
 </details>
 
 ## System requirements <a name="requirements"></a>
+To install the necessary packages for the LTS framework, run `conda env create -f environment_LTS.yml`. This will install all the necessary packages and dependencies to run all the LTS code.
