@@ -71,9 +71,9 @@ BACKWARD=1
 export STARTDAY
 export BACKWARD
 
-# Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=lebretondivision, 3=lebretonKaandorpInit,
-# 4=point, 5=uniform
-INPUT=3
+# Which input distribution do we want to use?
+# 'Jambeck', 'Lebreton', 'LebretonDivision', 'LebretonKaandorpInit', 'Point_Release', 'Uniform'
+INPUT='Jambeck'
 export INPUT
 
 #Which advection data do we want to use?
@@ -162,18 +162,18 @@ if [ $SCENARIO != "FragmentationKaandorpPartial" -a  "$POST_PROCESS" -ne "0" ]; 
 fi
 
 #The number of runs we do, dependent on the input scenario.
-if [ "$INPUT" -eq "0" ]; then
-  RUNLENGTH=0
-elif [ "$INPUT" -eq "1" ]; then
-  RUNLENGTH=0
-elif [ "$INPUT" -eq "2" ]; then
-  RUNLENGTH=9
-elif [ "$INPUT" -eq "3" ]; then
-  RUNLENGTH=9
-elif [ "$INPUT" -eq "4" ]; then
-  RUNLENGTH=0
-elif [ "$INPUT" -eq "5" ]; then
-  RUNLENGTH=0
+if [ "$INPUT" == "Jambeck" ]; then
+  RUNRANGE=0
+elif [ "$INPUT" == "Lebreton" ]; then
+  RUNRANGE=0
+elif [ "$INPUT" == "LebretonDivision" ]; then
+  RUNRANGE=9
+elif [ "$INPUT" == "LebretonKaandorpInit" ]; then
+  RUNRANGE=9
+elif [ "$INPUT" == "Point_Release" ]; then
+  RUNRANGE=0
+elif [ "$INPUT" == "Uniform" ]; then
+  RUNRANGE=0
 fi
 #####################################################################################
 # Now the part where we create the submission file and submit the job               #
@@ -227,7 +227,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
               RESTART_REMOVE=0
               for ((STARTYEAR=${YEAR}; STARTYEAR<$((YEAR+COMBINE_YEARS)); STARTYEAR++)); do
                 export STARTYEAR
-                for ((RUN=0; RUN<=${RUNLENGTH}; RUN++)); do
+                for ((RUN=0; RUN<=${RUNRANGE}; RUN++)); do
                   export RUN
                   # looping over all the simulation years
                   for ((RESTARTNUM=0; RESTARTNUM<$((SIMLEN-RESTART_REMOVE)); RESTARTNUM++)); do
@@ -275,7 +275,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
             export PARALLEL_STEP
             STARTYEAR=${YEAR}
             export STARTYEAR
-            RUN=${RUNLENGTH}
+            RUN=${RUNRANGE}
             RESTARTNUM=0
             export RUN
             export RESTARTNUM

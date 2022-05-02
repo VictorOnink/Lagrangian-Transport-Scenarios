@@ -9,7 +9,7 @@ def load_env_variable(variable, default, variable_type=int):
     """
     Loading environmental variables
     :param variable: name of the variable
-    :param default: default value if the environmental variable is not defined
+    :param default: default value if the environmental variable is not defined within .env
     :param variable_type: form that the variable should take
     :return:
     """
@@ -142,9 +142,7 @@ OCEAN_FRAG: bool = load_env_variable("OCEAN_FRAG", default=False, variable_type=
 ########################################################################################################################
 
 # THE INPUT SCENARIO
-INPUT_NAMES = {0: 'Jambeck', 1: 'Lebreton', 2: 'LebretonDivision', 3: 'LebretonKaandorpInit', 4: 'Point_Release',
-               5: 'Uniform'}
-INPUT = INPUT_NAMES[load_env_variable("INPUT", default=0)]
+INPUT = load_env_variable("INPUT", default='Jambeck', variable_type=str)
 
 # DIRECTORY FOR THE INOUT FILES FOR EACH INPUT SCENARIO
 INPUT_DIREC_DICT = {'Jambeck': DATA_INPUT_DIREC + 'Jambeck_Inputs/',
