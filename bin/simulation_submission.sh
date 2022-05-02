@@ -80,7 +80,7 @@ export BACKWARD
 
 # Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=lebretondivision, 3=lebretonKaandorpInit,
 # 4=point, 5=uniform
-INPUT=4
+INPUT=0
 export INPUT
 
 #Which advection data do we want to use?
@@ -149,7 +149,6 @@ if [ $SCENARIO != "FragmentationKaandorpPartial" -a  "$POST_PROCESS" -ne "0" ]; 
   echo 'Postprocessing only applies for KaandorpFragmentationPartial, not any other scenario'
   exit
 fi
-
 
 #####################################################################################
 # Creating the submission file and submitting the job                               #
