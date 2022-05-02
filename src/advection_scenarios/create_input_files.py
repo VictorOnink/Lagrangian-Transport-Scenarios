@@ -60,7 +60,7 @@ class create_input_files:
                 self.get_lon_lat_weights_Uniform()
                 return self.input_prefix
 
-            utils.print_statement("Hi")
+            utils.print_statement("Hi 5")
             # Only keep particles within the domain
             self.lon_inputs, self.lat_inputs, self.plastic_inputs = self.within_domain()
             utils.print_statement("We have {} input locations".format(len(self.lon_inputs)), to_print=True)
@@ -135,20 +135,23 @@ class create_input_files:
         Lon_population, Lat_population = np.meshgrid(lon_population, lat_population)
         # Get the mismanaged plastic fraction
         mismanaged = self.get_mismanaged_fraction_Jambeck(dataset=dataset)
+        utils.print_statement("Hi")
         # Get the distance from land to shore
         distance_file = settings.INPUT_DIREC + self.input_prefix + '_distance_to_coast_land.nc'
         distance = self.get_distance_to_shore(filename=distance_file)
+        utils.print_statement("Hi 2")
         # The yearly mismanaged plastic
         transport_to_ocean = 0.15  # percentage of mismanaged plastic that reaches the ocean
         kg_to_tons = 1000
         mismanaged_total = np.multiply(mismanaged, population) * 365 * transport_to_ocean / kg_to_tons
+        utils.print_statement("Hi 3")
         # Get everything in column arrays to load
         lon_inputs = Lon_population[mismanaged_total > 0].flatten()
         lat_inputs = Lat_population[mismanaged_total > 0].flatten()
         plastic_inputs = mismanaged_total[mismanaged_total > 0].flatten()
         # Get the max/min mass for each parcels particle
         input_max, input_min = settings.INPUT_MAX, settings.INPUT_MIN
-
+        utils.print_statement("Hi 4")
         return lon_inputs, lat_inputs, plastic_inputs, input_max, input_min, distance
 
     def get_distance_to_shore(self, filename: str):
