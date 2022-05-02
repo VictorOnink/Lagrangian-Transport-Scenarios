@@ -78,9 +78,9 @@ export STARTYEAR
 export STARTDAY
 export BACKWARD
 
-# Which input distribution do we want to use? 0=Jambeck, 1=lebreton, 2=lebretondivision, 3=lebretonKaandorpInit,
-# 4=point, 5=uniform
-INPUT=0
+# Which input distribution do we want to use?
+# 'Jambeck', 'Lebreton', 'LebretonDivision', 'LebretonKaandorpInit', 'Point_Release', 'Uniform'
+INPUT='Jambeck'
 export INPUT
 
 #Which advection data do we want to use?
@@ -108,18 +108,18 @@ SERVER='UBELIX'
 export SERVER
 
 #The number of runs we do, dependent on the input scenario.
-if [ "$INPUT" -eq "0" ]; then
-  runlength=0
-elif [ "$INPUT" -eq "1" ]; then
-  runlength=0
-elif [ "$INPUT" -eq "2" ]; then
-  runlength=9
-elif [ "$INPUT" -eq "3" ]; then
-  runlength=9
-elif [ "$INPUT" -eq "4" ]; then
-  runlength=0
-elif [ "$INPUT" -eq "5" ]; then
-  runlength=0
+if [ "$INPUT" == "Jambeck" ]; then
+  RUNRANGE=0
+elif [ "$INPUT" == "Lebreton" ]; then
+  RUNRANGE=0
+elif [ "$INPUT" == "LebretonDivision" ]; then
+  RUNRANGE=9
+elif [ "$INPUT" == "LebretonKaandorpInit" ]; then
+  RUNRANGE=9
+elif [ "$INPUT" == "Point_Release" ]; then
+  RUNRANGE=0
+elif [ "$INPUT" == "Uniform" ]; then
+  RUNRANGE=0
 fi
 
 #####################################################################################
@@ -195,7 +195,7 @@ for SHORETIME in "${SHORETIME_list[@]}"; do
               echo $RUNNAMEPREFIX
 
               #Looping over all the runs based on the input scenario
-              for ((RUN=0; RUN<=$runlength; RUN++)); do
+              for ((RUN=0; RUN<=RUNRANGE; RUN++)); do
                 export RUN
                 # looping over all the simulation years
                 for ((RESTARTNUM=$START; RESTARTNUM<$SIMLEN; RESTARTNUM++)); do
