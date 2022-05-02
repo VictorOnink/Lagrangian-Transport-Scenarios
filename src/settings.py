@@ -42,19 +42,16 @@ SERVER: str = load_env_variable("SERVER", default="UBELIX", variable_type=str)
 DATA_DIREC: str = {'KUPHAVEN': "/storage/climatestor/Bern3dLPX/onink/alphadata04/lagrangian_sim/",
                    'UBELIX': "/storage/homefs/vo18e689/Data/"}[SERVER]
 
+# DIRECTORY FOR ALL INPUT AND PREPROCESSING FILES
 DATA_INPUT_DIREC: str = DATA_DIREC + "Input/"
 
+# DIRECTORY FOR ALL PARCELS AND POSTPROCESSING OUTPUT FILES
 DATA_OUTPUT_DIREC: str = DATA_DIREC + "Output/"
 
+# DIRECTORY FOR ALL FIGURES
 FIGURE_OUTPUT_DIREC: str = DATA_DIREC + "Output/Figures/"
 
-INPUT_DIREC_DICT = {0: DATA_INPUT_DIREC + 'Jambeck_Inputs/',
-                    1: DATA_INPUT_DIREC + 'Lebreton_Inputs/',
-                    2: DATA_INPUT_DIREC + 'LebretonDivision_Inputs/',
-                    3: DATA_INPUT_DIREC + 'Lebreton_Kaandorp_init_Inputs/',
-                    4: DATA_INPUT_DIREC + 'Point_Release/',
-                    5: DATA_INPUT_DIREC + 'Uniform/'}
-
+# SCRATCH DIRECTORY FOR STORING INTERMEDIARY POSTPROCESSING FILES
 SCRATCH_DIREC: str = {'KUPHAVEN': None,
                       'UBELIX': "/storage/scratch/users/vo18e689/"}[SERVER]
 
@@ -76,14 +73,14 @@ SIM_LENGTH: int = load_env_variable("SIMLEN", default=1)
 BACKWARD = load_env_variable("BACKWARD", default=False, variable_type=bool)
 BACKWARD_MULT = {True: -1, False: 1}[BACKWARD]
 
-# RNG SEED VALUE
+# RANDOM NUMBER GENERATOR SEED VALUE
 SEED = 'Fixed'
 
 # WHICH OF THE SUBRUNS (DIVISION OF PARTICLE INPUTS)
 RUN: int = load_env_variable("RUN", default=0)
 
 # RESTART NUMBER OF THE RUN
-# 0 = NEW RUN, N>0 INDICATES NTH YEAR FROM SIMULATION START
+# 0 = NEW RUN, N > 0 INDICATES NTH YEAR FROM SIMULATION START
 RESTART: int = load_env_variable("RESTARTNUM", default=0)
 
 # LAGRANGIAN OR POSTPROCESSING RUN
@@ -99,7 +96,7 @@ ENSEMBLE: int = load_env_variable("ENSEMBLE", default=1)
 #                                                                                                                      #
 ########################################################################################################################
 
-# UV ADVECTION DATA
+# ZONAL AND MERIDIONAL ADVECTION DATA SCENARIO
 ADVECTION_DATA: str = load_env_variable("ADVECTION_DATA", default='CMEMS_MEDITERRANEAN', variable_type=str)
 
 # STOKES DRIFT: 0 -> STOKES, 1 -> NO STOKES
@@ -120,8 +117,10 @@ VICINITY: int = load_env_variable("VICINITY", default=1)
 
 # BEACHING TIMESCALE (DAYS)
 SHORE_TIME: int = load_env_variable("SHORETIME", default=26)
+
 # RESUSPENSION TIMESCALE (DAYS)
 RESUS_TIME: int = load_env_variable("RESUSTIME", default=69)
+
 # FIXED_RESUS OR SIZE DEPENDENT RESUSPENSION TIMESCALE
 FIXED_RESUS: bool = load_env_variable("FIXED_RESUS", default=False, variable_type=bool)
 
@@ -147,8 +146,16 @@ INPUT_NAMES = {0: 'Jambeck', 1: 'Lebreton', 2: 'LebretonDivision', 3: 'LebretonK
                5: 'Uniform'}
 INPUT = INPUT_NAMES[load_env_variable("INPUT", default=0)]
 
+# DIRECTORY FOR THE INOUT FILES FOR EACH INPUT SCENARIO
+INPUT_DIREC_DICT = {'Jambeck': DATA_INPUT_DIREC + 'Jambeck_Inputs/',
+                    'Lebreton': DATA_INPUT_DIREC + 'Lebreton_Inputs/',
+                    'LebretonDivision': DATA_INPUT_DIREC + 'LebretonDivision_Inputs/',
+                    'LebretonKaandorpInit': DATA_INPUT_DIREC + 'Lebreton_Kaandorp_init_Inputs/',
+                    'Point_Release': DATA_INPUT_DIREC + 'Point_Release/',
+                    'Uniform': DATA_INPUT_DIREC + 'Uniform/'}
+
 # DIRECTORY CONTAINING INITIAL INPUTS FOR RESTART == 0
-INPUT_DIREC = INPUT_DIREC_DICT[load_env_variable("INPUT", default=0)]
+INPUT_DIREC = INPUT_DIREC_DICT[INPUT]
 
 if INPUT == 'Jambeck':
     # MAXIMUM PLASTIC MASS INPUT ASSIGNED TO ONE PARTICLE (TONS)
