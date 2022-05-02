@@ -136,7 +136,7 @@ class create_input_files:
         mismanaged = self.get_mismanaged_fraction_Jambeck(dataset=dataset)
         # Get the distance from land to shore
         distance_file = settings.INPUT_DIREC + self.input_prefix + '_distance_to_coast_land.nc'
-        distance = self.get_distance_to_shore(filename=distance_file, grid=self.GRID, lon=self.LON, lat=self.LAT)
+        distance = self.get_distance_to_shore(filename=distance_file)
         # The yearly mismanaged plastic
         transport_to_ocean = 0.15  # percentage of mismanaged plastic that reaches the ocean
         kg_to_tons = 1000
