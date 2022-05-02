@@ -3,6 +3,7 @@ import xarray
 import progressbar
 import geopy.distance
 import settings
+import utils
 
 
 def create_distance_to_shore(output_name: str, grid: np.array, lon: np.array, lat: np.array):
@@ -81,14 +82,14 @@ def create_distance_to_shore_land(output_name: str, grid: np.array, lon: np.arra
     # Getting the dimensions of the model grid
     mask = grid.mask
     n_lon, n_lat = len(lon), len(lat)
-
+    utils.print_statement("Hi here 1")
     # Initializing the distance array
     distance = np.zeros(mask.shape)
-
+    utils.print_statement("Hi here 2")
     # Creating a memory variable that keeps track of how many cells away land is. That way, when we move from one
     # cell to it's neighbor, then we don't need to check everything again...
     memory_var = 1
-
+    utils.print_statement("Hi here 3")
     # The actual distance computation loop
     for lat_index in progressbar.progressbar(range(mask.shape[0])):
         for lon_index in range(mask.shape[1]):
@@ -120,12 +121,16 @@ def create_distance_to_shore_land(output_name: str, grid: np.array, lon: np.arra
                 distance[lat_index, lon_index] += np.min(dis)
             else:
                 memory_var = 1
+    utils.print_statement("Hi here 4")
     distance[mask == False] = 0
+    utils.print_statement("Hi here 5")
     # Saving the entire distance field
     coords = [("time", np.array([0])), ("lat", lat), ("lon", lon)]
     dist = xarray.DataArray(distance[np.newaxis, :, :], coords=coords)
+    utils.print_statement("Hi here 6")
     dcoo = {"time": np.array([0]), "lat": lat, "lon": lon}
     dset = xarray.Dataset({"distance": dist}, coords=dcoo)
+    utils.print_statement("Hi here 7")
     dset.to_netcdf(output_name)
 
 
