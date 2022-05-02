@@ -1,5 +1,5 @@
 # Lagrangian Transport Scenarios
-### Contents
+## Contents
 1. [Introduction](#introduction)
 2. [Citing the LTS framework](#citing)
 3. [General overview](#overview)
@@ -7,13 +7,13 @@
 5. [System requirements](#requirements)
 
 
-### Introduction <a name="introduction"></a>
+## Introduction <a name="introduction"></a>
 The Lagrangian Transport Scenarios (LTS) repository contains the framework to run, process and visualise oceanic Lagrangian particle-tracking simulations. The LTS framework was developed to standardize and simplify running a wide array of Lagrangian ocean scenarios, where each scenario contains a set of kernels that describe the behavior of particles which are advected with a specified set of oceanographic and meteorological data.
 
 Almost all the code within this repository is written in python, with bash scripts being used to submit and run jobs. All the Lagrangian simulation code uses the parcels (**P**robably **A** **R**eally **C**omputationally **E**fficient **L**agrangian **S**imulator) package, which is 
 described in detail in [Lange & van Sebille (2017)](https://doi.org/10.5194/gmd-10-4175-2017) and [Delandmeter & van Sebille (2019)](https://doi.org/10.5194/gmd-12-3571-2019). For explanations of Parcels, please refer to the the [OceanParcels](http://oceanparcels.org/) website, which has a number of tutorials and references to various use-cases of Parcels.
 
-### Citing the LTS framework <a name="citing"></a>
+## Citing the LTS framework <a name="citing"></a>
 The LTS framework is largely based on the work for the [Onink et al. (2021)](https://doi.org/10.1088/1748-9326/abecbd) paper, which described stochastic plastic beaching and resuspension parametrizations within large-scale ocean simulations. However, various other scenarios and kernels have been described in other publications outlined below.
 
 - The stochastic beaching and resuspension kernels within the `Stochastic`  and `ShoreDependentResuspension` scenarios are described in [Onink et al. (2021)](https://doi.org/10.1088/1748-9326/abecbd).
@@ -22,17 +22,18 @@ The LTS framework is largely based on the work for the [Onink et al. (2021)](htt
 
 For any model components described above, please cite the relevant paper. For citing the LTS framework itself, please cite: *zenodo link*.
 
-### General overview <a name="overview"></a>
+## General overview <a name="overview"></a>
 The LTS framework is set up for three basic tasks: run the Lagrangian simulations, analyze the output and visualize the post-processed Lagrangian simulations. For each of these tasks, there is a dedicated submission bash script in the `bin` directory which is used to submit jobs onto the server. Currently, all these script are written for the [ubelix](https://ubelix.unibe.ch/) HPC cluster at the University of Bern, which uses a version of the Slurm workload manager. In principle the LTS framework can be applied to run servers that use different workload managers, but this would require modification of the submission scripts.
 
 To speed up computation, the particle tracking simulations are parallelised into `runs`, where each run contains a subselection of the total number of particles in the simulation. This subselection is allocated at the beginning of the simulation according to the starting locations of the particles and remain fixed throughout the entire duration of the simulation, and the number of runs is dependent on the input scenario. Each run is also further subdivided into according to the `restart` variable. All multi-year simulations are subdivided into 1-year sections, where `restart = 0` indicates that this is a new simulation starting from the initial input files. The second simulation year would then be indicated by `restart = 1`, where each subsequent simulation year only starts when the simulation for the previous simulation year is complete (e.g. `restart = 2` only starts when `restart = 1` ends, which in turn only started once `restart = 0` is complete). Breaking up the simulation into these subsimulations according to the `restart` and `run` variables speeds up the computational time to run these simulations, and implies that an error in a later simulation year doesn't require rerunning the entire simulation.
 
 The `bin/simulation_submission.sh` script also allows the user to set a number of variables, such as beaching timescales, fragmentation rates, ensemble members, etc. These are saved in the local `.env` file, which are then loaded into the `src/settings.py` file. This governs the scenario parameters, and the submission script is set up for easily submit a large number of jobs for e.g. a range of beaching timescale values. 
 
-The `bin/analysis_submission.sh` is used to submit analysis jobs that take the unprocessed Parcels output and produce post-processing output files. A number of standardized analysis functions are built into the LTS framework, such as for calculating annual mean horizontal and vertical concentration distributions, calculating bayesian statistics and simple timeseries of beaching/adrift particle fractions. For almost all these analysis functions, the analysis consists of two steps. For the first step, a job is submitted that carries out the specified analysis procedure for each individual `restart`/`run` file and produces an intermediate output file. The second step then takes all these intermediate output files and compiles them into one output file which contains the analysis results for the simulation as a whole. For model scenarios with a $N$ `restart`/`run` files, this two step procedure can increase the speed of the analysis by a factor $\approx N$. Almost all analysis functions are standardized to work with any basic scenario, but a number are scenario specific (e.g. `src/Analysis/parcels_to_sizespectrum.py`).
+The `bin/analysis_submission.sh` is used to submit analysis jobs that take the unprocessed Parcels output and produce post-processing output files. A number of standardized analysis functions are built into the LTS framework, such as for calculating annual mean horizontal and vertical concentration distributions, calculating bayesian statistics and simple timeseries of beaching/adrift particle fractions. For almost all these analysis functions, the analysis consists of two steps. For the first step, a job is submitted that carries out the specified analysis procedure for each individual `restart`/`run` file and produces an intermediate output file. The second step then takes all these intermediate output files and compiles them into one output file which contains the analysis results for the simulation as a whole. For model scenarios with a N `restart`/`run` files, this two step procedure can increase the speed of the analysis by a factor ~N. Almost all analysis functions are standardized to work with any basic scenario, but a number are scenario specific (e.g. `src/Analysis/parcels_to_sizespectrum.py`).
 
 Finally, the `bin/visualization_submission.sh` script is used to generate figures and animations of the post-processed data from the analysis stage. A number of standard functions for e.g. creating figure with a (M, N) subplot array or cartopy maps are provided, but in general each scenario will have its own set of code to generate figures. 
-### Usage guide <a name="usage"></a>
+
+## Usage guide <a name="usage"></a>
 In general, any general questions about the LTS framework (for either understanding it or applying it to another setting) can be posted in the [Issues](https://github.com/VictorOnink/Lagrangian-Transport-Scenarios/issues) section of this repository. However, a few basic use cases are described below.
 <details> 
 <summary> Running simulations backwards in time
@@ -57,9 +58,21 @@ In principle, this is all that is required to set up LTS to run on a new server.
 </p>
 </details>
 
-#### Introducing new model variables
+<details>
+<summary> Introducing new model variables
+</summary>
+<p>
+  
 In order to create a new variable that can be accessed throughout the LTS framework, you simply need to add it to `src/settings.py`, where the convention is to have all `src/settings.py` variables be completely capitalised. If the variable is e.g. a physical constant such as the density of air or some other quantity that doesn't generally vary between different scenarios, then it is easiest just to give it a set value within the settings file. However, if it is a model parameter (e.g. beaching timescale, fragmentation timescale, etc.), then it is preferable to set the value using the `load_env_variable()` function. This loads the variable value from the `.env` file, where the value can be set within the bash submission scripts. 
-#### Creating a new model scenario
+  
+</p>
+</details>
+
+<details>
+<summary> Creating a new model scenario
+</summary>
+<p>
+  
 In order to create a new scenario, a number of steps need to be taken:
 1. Within the bash scripts, set `SCENARIO='NewScenario'`. The `src/settings.py` file will load the `SCENARIO` variable factor, and then know that you are running a `NewScenario` simulation. If you need to specify new model variables within the bash scripts, then do so as well.
 2. Not much needs to happen within `src/settings.py`, except to update it for any new scenario variables you defined within the bash scripts before and to update the log section at the end of file to print the particular model variables relevant for `NewScenario`
@@ -68,7 +81,15 @@ In order to create a new scenario, a number of steps need to be taken:
 Once these steps have been taken, everything should be ready to go to run any `NewScenario` simulation. In principle, the analysis functions should be ready as well, although it might be necessary to modify some of the functions if you have any model parameters that you want to loop through aside from just `run` or `restart` (see `src/Analysis/parcels_to_concentration.py` as an example of how changes were made for the `SizeTransport` and `FragmentationKaandorpPartial` scenarios.) If you want to also build in visualization capabilities, then there is an additional step:
 6. Add a `NewScenario` directory to `src/visualization`, within which you create `NewScenario_Figures.py`. This file will then have a function `run()`, which will contain all the code for creating figures. 
 7. Go to `src/factories/visualization_factory.py` and add `visualization.NewScenario.NewScenario_Figures.run()` to the `VisualizationFactory.run()` method. This will finalize visualization capabilities for `NewScenario`.
-#### Creating a new advection scenario
+  
+</p>
+</details>
+
+<details>
+<summary> Creating a new advection scenario
+</summary>
+<p>
+
 The advection scenario refers to the set of data including the ocean currents, temperature/salinity, mixed layer depth, wind, etc. that is used to drive the particle transport simulation. Given that the ocean currents are generally the main driver of particle transport, the advection scenario is generally named after the ocean current data (e.g. `CMEMS_MEDITERRANEAN` refers to the advection scenario where the ocean currents are from the [CMEMS Mediterranean Sea Physics Reanalysis](https://doi.org/10.25423/CMCC/MEDSEA_MULTIYEAR_PHY_006_004_E3R1)).
 
 Within the submission scripts and `src/settings.py`, the only steps that need to be taken is that the `ADVECTION_DATA` variables within the bash scripts must be updated to the new advection scenario name `NewAdvection`. This is then automatically set within the `src/settings.py` file.
@@ -84,8 +105,14 @@ Aside from file paths for oceanographic data specific to an advection scenario, 
 - `src/advection_scenarios/create_land_ID.py`
 - `src/advection_scenarios/create_tidal_Kz_files.py`, where this is only necessary if you are running simulations including vertical tidal mixing.
 
+</p>
+</details>
 
-#### Creating a new input scenario
+<details>
+<summary> Creating a new input scenario
+</summary>
+<p>
+  
 A number of input scenarios are currently specified within the LTS framework:
 - `Jambeck`: This weighs inputs according to mismanaged waste estimates from [Jambeck et al. (2015)](https://doi.org/10.1126/science.1260352) and coastal [population densities](https://sedac.ciesin.columbia.edu/data/set/gpw-v4-population-density-adjusted-to-2015-unwpp-country-totals-rev11). A fixed fraction of all estimated mismanaged waste within 50 km of the ocean is estimated to enter the ocean, and the input distribution and particle weights are scaled according to the estimated waste input
 - `Lebreton`, `LebretonDivision` and `LebretonKaandorpInit` are based on riverine plastic inputs from [Lebreton et al. (2017)](https://doi.org/10.1038/ncomms15611), where the Lebreton inputs are used for the spatial distribution and/or the weights of the particles
@@ -97,14 +124,26 @@ In order to create an entirely new input scenario, the `INPUT` variable within t
 
 Subsequently, if the new input scenario scales the particle release according to input estimates such as riverine inputs, the `INPUT_MAX` and `INPUT_MIN` variables within `src/settings.py` specify the maximum and minimum weight a single parcels particle represents. For example, if  `INPUT_MAX = 1` and `INPUT_MIN = 0.2` and we have a site with 2.1 input units, then we'd release 2 particles at this site with weight 1, whereas the remaining 0.1 input units is not large enough to warrant creating another particle. This means that some inputs are neglected, but this can dramatically reduce the number of particles (and thus computational cost) for a simulation. By setting the `INPUT_MAX` and `INPUT_MIN` parameters the user can determine which sources to include or not. Then, `INPUT_DIV` sets the number of particles within each `run`, where e.g. a simulation with 25,000 particles and `INPUT_DIV = 10 000` would mean the simulation is broken up into three runs with 10 000, 10 000 and 5 000 particles. Again, it is up to the discretion of the user to determine a suitable  `INPUT_DIV` value. 
 
-Then,  `create_input_files.create_files()` needs to be updated to account for the new input scenario. For this, we refer you to the code for the other input scenarios for examples on how to set up this code.
+Then, `create_input_files.create_files()` needs to be updated to account for the new input scenario. For this, we refer you to the code for the other input scenarios for examples on how to set up this code.
 
 Once the number of runs has been determined, it is important to update `RUNRANGE` in the submission scripts and `src/settings.py`, such that the code knows how many runs to submit jobs for, and how many output files need to be considered in the final analysis. 
-#### Creating a new general analysis function
+  
+</p>
+</details>
+
+<details>
+<summary> Creating a new analysis function
+</summary>
+<p>
+  
 In order to create a new general analysis function, follow the subsequent steps:
 1. Add a variable `NEWANALYSIS` to the `bin/analysis_submission.sh` script, where `NEWANALYSIS = 0` indicates not to run this analysis step and `NEWANALYSIS = 1` does indicate to run it.
 2. Add `NEWANALYSIS` to `src/settings.py`, which loads the `NEWANALYSIS` variable from the `.env` file.
 3. Add a file for the analysis procedure to the `src/Analysis` directory. The typical naming convention is `parcels_to_NEWANALYSIS.py`, which will give a general indication of what type of analysis is being conducted in this run. 
 4. If possible, we suggest setting up the `parcels_to_NEWANALYSIS.run()` class so that it follows the two step parallelization procedure outlined earlier, as this will generally speed up the code. For examples on how to approach this, please refer to the other codes. In addition, we suggest making the code as general as possible so that it might be applied to other scenarios as well. However, this might not always be possible and if not, we suggest adding a statement such as `assert self.scenario_name in ['ScenarioName'], "The NEWANALYSIS function is not set up for {}".format(self.scenario_name)` to prevent the code from running for scenarios for which it is not intended.
 5. Once the analysis code has been written, go to `src/analysis_factory.py` and add the new analysis code to the `AnalysisFactory.run_analysis_procedure()` method. 
-### System requirements <a name="requirements"></a>
+  
+</p>
+</details>
+
+## System requirements <a name="requirements"></a>
