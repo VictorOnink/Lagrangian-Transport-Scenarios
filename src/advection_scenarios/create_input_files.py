@@ -158,9 +158,12 @@ class create_input_files:
     def get_distance_to_shore(self, filename: str):
         utils.print_statement("Hi here")
         if utils.check_file_exist(filename):
+            utils.print_statement("Hi now here")
             utils.print_statement("The distance to shore file already exists")
         else:
+            utils.print_statement("Hi or here")
             create_distance_to_shore_land(output_name=filename, grid=self.GRID, lon=self.LON, lat=self.LAT)
+            utils.print_statement("Hi or here 2")
         return self.slicing_correction(Dataset(filename).variables["distance"][:])
 
     def get_lon_lat_weights_Lebreton(self) -> tuple:
