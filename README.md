@@ -10,7 +10,7 @@
 ## Introduction <a name="introduction"></a>
 The Lagrangian Transport Scenarios (LTS) repository contains the framework to run, process and visualise oceanic Lagrangian particle-tracking simulations. The LTS framework was developed to standardize and simplify running a wide array of Lagrangian ocean scenarios, where each scenario contains a set of kernels that describe the behavior of particles which are advected with a specified set of oceanographic and meteorological data.
 
-Almost all the code within this repository is written in python, with bash scripts being used to submit and run jobs. All the Lagrangian simulation code uses the parcels (**P**robably **A** **R**eally **C**omputationally **E**fficient **L**agrangian **S**imulator) package, which is 
+Almost all the code within this repository is written in python, with bash scripts being used to submit and run jobs. All the Lagrangian simulation code uses the Parcels (**P**robably **A** **R**eally **C**omputationally **E**fficient **L**agrangian **S**imulator) package, which is 
 described in detail in [Lange & van Sebille (2017)](https://doi.org/10.5194/gmd-10-4175-2017) and [Delandmeter & van Sebille (2019)](https://doi.org/10.5194/gmd-12-3571-2019). For explanations of Parcels, please refer to the the [OceanParcels](http://oceanparcels.org/) website, which has a number of tutorials and references to various use-cases of Parcels.
 
 ## Citing the LTS framework <a name="citing"></a>
