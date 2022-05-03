@@ -60,7 +60,6 @@ class create_input_files:
                 self.get_lon_lat_weights_Uniform()
                 return self.input_prefix
 
-            utils.print_statement("Hi 5")
             # Only keep particles within the domain
             self.lon_inputs, self.lat_inputs, self.plastic_inputs = self.within_domain()
             utils.print_statement("We have {} input locations".format(len(self.lon_inputs)), to_print=True)
@@ -68,10 +67,11 @@ class create_input_files:
             # Get the inputs onto the grid of the advection data
             self.inputs_grid = self.histogram(lon_data=self.lon_inputs, lat_data=self.lat_inputs,
                                               weight_data=self.plastic_inputs)
+
             # Remove any sources further than 50 kilometers from land
             if settings.INPUT in ["Jambeck"]:
-                print(self.inputs_grid.size)
-                print(self.distance.size)
+                print(self.inputs_grid.shape)
+                print(self.distance.shape)
                 self.inputs_grid[self.distance > 50] = 0
 
             # Getting all ocean cells that are adjacent to coastal ocean cells (which are in turn adjacent to land). The
@@ -151,7 +151,6 @@ class create_input_files:
         plastic_inputs = mismanaged_total[mismanaged_total > 0].flatten()
         # Get the max/min mass for each parcels particle
         input_max, input_min = settings.INPUT_MAX, settings.INPUT_MIN
-        utils.print_statement("Hi 4")
         return lon_inputs, lat_inputs, plastic_inputs, input_max, input_min, distance
 
     def get_distance_to_shore(self, filename: str):
