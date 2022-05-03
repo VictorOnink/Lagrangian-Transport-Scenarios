@@ -100,6 +100,8 @@ class create_input_files:
                                             particle_weight=self.particle_weight, input_prefix=self.input_prefix)
             utils.print_statement("The {} input files have been created.".format(run_number), to_print=True)
 
+            return self.input_prefix
+
     def get_input_prefix(self):
         """
         Set the prefix of the input files
