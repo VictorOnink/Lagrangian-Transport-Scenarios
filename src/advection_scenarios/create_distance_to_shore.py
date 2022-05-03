@@ -79,7 +79,7 @@ def create_distance_to_shore(output_name: str, grid: np.array, lon: np.array, la
 
 def create_distance_to_shore_land(output_name: str, grid: np.array, lon: np.array, lat: np.array):
     # Getting the dimensions of the model grid
-    utils.print_statement("grid shape {} {}".format(grid.shape[0], grid.shape[1]))
+    # utils.print_statement("grid shape {} {}".format(grid.shape[0], grid.shape[1]))
     mask = grid.mask
     n_lat, n_lon = mask.shape
     # Initializing the distance array
@@ -89,8 +89,8 @@ def create_distance_to_shore_land(output_name: str, grid: np.array, lon: np.arra
     # cell to it's neighbor, then we don't need to check everything again...
     memory_var = 1
     # The actual distance computation loop
-    for lat_index in range(mask.shape[0]):
-        for lon_index in range(mask.shape[1]):
+    for lat_index in range(n_lat):
+        for lon_index in range(n_lon):
             if mask[lat_index, lon_index]:
                 if memory_var > 2:
                     cells = memory_var - 2
@@ -119,7 +119,9 @@ def create_distance_to_shore_land(output_name: str, grid: np.array, lon: np.arra
                 distance[lat_index, lon_index] += np.min(dis)
             else:
                 memory_var = 1
+
     distance[mask == False] = 0
+
     # Saving the entire distance field
     coords = [("time", np.array([0])), ("lat", lat), ("lon", lon)]
     dist = xarray.DataArray(distance[np.newaxis, :, :], coords=coords)
