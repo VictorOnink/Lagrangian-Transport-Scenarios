@@ -396,7 +396,7 @@ class create_input_files:
         elif len(array.shape) == 3:
             return array[0, :, :]
         elif len(array.shape) == 4:
-            return array[0, :, :, :]
+            return array[0, 0, :, :]
         else:
             ValueError("What sort of data are you using that it has {} dimensions?".format(len(array.shape)))
 

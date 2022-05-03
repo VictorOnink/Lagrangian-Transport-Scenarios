@@ -78,6 +78,14 @@ def create_distance_to_shore(output_name: str, grid: np.array, lon: np.array, la
 
 
 def create_distance_to_shore_land(output_name: str, grid: np.array, lon: np.array, lat: np.array):
+    """
+    Getting the distance to the coastline for each land cell
+    :param output_name:
+    :param grid:
+    :param lon:
+    :param lat:
+    :return:
+    """
     # Getting the dimensions of the model grid
     # utils.print_statement("grid shape {} {}".format(grid.shape[0], grid.shape[1]))
     mask = grid.mask
