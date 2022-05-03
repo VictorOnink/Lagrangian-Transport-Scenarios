@@ -157,7 +157,7 @@ class create_input_files:
         # if utils.check_file_exist(filename):
         #     utils.print_statement("The distance to shore file already exists")
         # else:
-        print(self.grid.shape)
+        print(self.GRID.shape)
         create_distance_to_shore_land(output_name=filename, grid=self.GRID, lon=self.LON, lat=self.LAT)
         return self.slicing_correction(Dataset(filename).variables["distance"][:])
 
