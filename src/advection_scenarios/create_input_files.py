@@ -154,10 +154,11 @@ class create_input_files:
         return lon_inputs, lat_inputs, plastic_inputs, input_max, input_min, distance
 
     def get_distance_to_shore(self, filename: str):
-        if utils.check_file_exist(filename):
-            utils.print_statement("The distance to shore file already exists")
-        else:
-            create_distance_to_shore_land(output_name=filename, grid=self.GRID, lon=self.LON, lat=self.LAT)
+        # if utils.check_file_exist(filename):
+        #     utils.print_statement("The distance to shore file already exists")
+        # else:
+        print(self.grid.shape)
+        create_distance_to_shore_land(output_name=filename, grid=self.GRID, lon=self.LON, lat=self.LAT)
         return self.slicing_correction(Dataset(filename).variables["distance"][:])
 
     def get_lon_lat_weights_Lebreton(self) -> tuple:
