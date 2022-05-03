@@ -204,7 +204,7 @@ class create_input_files:
                                output_prefix=self.input_prefix)
 
     def land_mark_checker(self):
-        mask = np.ma.getmask(self.grid)
+        mask = np.ma.getmask(self.GRID)
         land = Field("Land", mask, lon=self.lon, lat=self.lat, transpose=False, mesh="spherical")
         return land
 
@@ -236,7 +236,7 @@ class create_input_files:
         a land cell are marked with 1, all other cells are 0
         :return:
         """
-        mask = self.grid.mask
+        mask = self.GRID.mask
         coastal = np.zeros(mask.shape, dtype=bool)
         for lat_index in range(mask.shape[0]):
             for lon_index in range(mask.shape[1]):
@@ -254,7 +254,7 @@ class create_input_files:
         computed in self.get_cells_adjacent_to_land()
         :return:
         """
-        mask = self.grid.mask
+        mask = self.GRID.mask
         coastal = self.get_cells_adjacent_to_land()
         # We want the next layer of ocean cells after the coastal cells
         coastal_extended = np.zeros(mask.shape, dtype=bool)
