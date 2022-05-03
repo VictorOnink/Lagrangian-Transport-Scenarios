@@ -83,6 +83,7 @@ def create_distance_to_shore_land(output_name: str, grid: np.array, lon: np.arra
     n_lat, n_lon = mask.shape
     # Initializing the distance array
     distance = np.zeros(mask.shape)
+    print(distance.shape)
     # Creating a memory variable that keeps track of how many cells away land is. That way, when we move from one
     # cell to it's neighbor, then we don't need to check everything again...
     memory_var = 1
