@@ -292,13 +292,13 @@ class create_input_files:
                     step += 1
 
                 # Now find the coastal cell that is geographically the closest to the input
-                nearest_dist = geopy.distance.distance((self.lat[lat_point], self.lon[lon_point]),
-                                                       (self.lat[coastal_lat[0]], self.lon[coastal_lon[0]]))
+                nearest_dist = geopy.distance.distance((self.LAT[lat_point], self.LON[lon_point]),
+                                                       (self.LAT[coastal_lat[0]], self.LON[coastal_lon[0]]))
                 nearest_lat, nearest_lon = coastal_lat[0], coastal_lon[0]
                 if len(coastal_lon) > 0:
                     for candidate in range(len(coastal_lon)):
-                        distance = geopy.distance.distance((self.lat[lat_point], self.lon[lon_point]),
-                                                           (self.lat[coastal_lat[candidate]], self.lon[coastal_lon[candidate]]))
+                        distance = geopy.distance.distance((self.LAT[lat_point], self.LON[lon_point]),
+                                                           (self.LAT[coastal_lat[candidate]], self.LON[coastal_lon[candidate]]))
                         if distance < nearest_dist:
                             nearest_dist = distance
                             nearest_lat, nearest_lon = coastal_lat[candidate], coastal_lon[candidate]
@@ -332,12 +332,12 @@ class create_input_files:
             for lon_index in range(N_lon):
                 if self.particle_number[lat_index, lon_index] > 0:
                     for reps in range(self.particle_number[lat_index, lon_index]):
-                        particle_lat.append(self.lat[lat_index])
-                        particle_lon.append(self.lon[lon_index])
+                        particle_lat.append(self.LAT[lat_index])
+                        particle_lon.append(self.LON[lon_index])
                         particle_mass.append(self.particle_weight[lat_index, lon_index])
                 if self.particle_remain_num[lat_index, lon_index] > 0:
-                    particle_lat.append(self.lat[lat_index])
-                    particle_lon.append(self.lon[lon_index])
+                    particle_lat.append(self.LAT[lat_index])
+                    particle_lon.append(self.LON[lon_index])
                     particle_mass.append(self.particle_remain[lat_index, lon_index])
         particle_lat, particle_lon, particle_mass = np.array(particle_lat), np.array(particle_lon), np.array(particle_mass)
         non_zero = particle_mass > 0
