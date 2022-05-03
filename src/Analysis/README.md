@@ -32,5 +32,12 @@ originally from [here](https://github.com/OceanParcels/ContinuousCascadingFragme
 - `SizeTransport_Statistics.py`: Contains code to calculate some basic statistics for the `SizeTransport` scenario
 
 
-We also include code for standardizing field data so that it can be easily plotted
+We also include code for standardizing field data so that it can be easily plotted, and some other analysis procedures
+for the `FragmentationKaandorpPartial` scenario
 - `FragmentationKaandorpPartial_fielddata.py`: standardizing field data of microplastic size distributions
+- `FragmentationKaandorpPartial_mass_loss.py`: Calculate the mass loss due to fragmentation
+- `FragmentationKaandorpPartial_Statistics.py`: Calculate some basic statistics of the simulations
+
+Then we also have code for processing the `SizeTransport` scenarios
+- `SizeTransport_Statistics.py`: Calculates some basic statistics of the simulations
+

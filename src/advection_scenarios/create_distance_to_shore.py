@@ -1,6 +1,5 @@
 import numpy as np
 import xarray
-import progressbar
 import geopy.distance
 import settings
 import utils
@@ -19,7 +18,7 @@ def create_distance_to_shore(output_name: str, grid: np.array, lon: np.array, la
     search_memory = 1
 
     # Looping through all the cells
-    for lat_index in progressbar.progressbar(range(land.shape[0])):
+    for lat_index in range(land.shape[0]):
         for lon_index in range(land.shape[1]):
             # If the land mask is false, find the nearest land cell
             if not land[lat_index, lon_index]:
