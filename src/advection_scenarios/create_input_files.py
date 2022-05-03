@@ -137,7 +137,7 @@ class create_input_files:
         mismanaged = self.get_mismanaged_fraction_Jambeck(dataset=dataset)
         utils.print_statement("Hi")
         # Get the distance from land to shore
-        distance_file = settings.INPUT_DIREC + self.input_prefix + "_distance_to_coast_land.nc"
+        distance_file = self.advection_prefix + "_distance_to_coast_land.nc"
         utils.print_statement(distance_file)
         distance = self.get_distance_to_shore(filename=distance_file)
         utils.print_statement("Hi 2")
