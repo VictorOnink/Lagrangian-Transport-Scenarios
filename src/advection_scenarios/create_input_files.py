@@ -81,7 +81,7 @@ class create_input_files:
 
             # Moving all plastic sources onto the coastal cells, and the computing the input per release_dt
             self.inputs_coastal_grid = self.input_to_nearest_coastal()
-            self.inputs_coastal_grid /= self.releases()
+            self.inputs_coastal_grid /= self.releases
 
             # Calculating the number of particles that are released per cell, along with the weights of these cells
             self.particle_number, self.particle_weight, self.particle_remain_num, self.particle_remain = self.number_weights_releases()
