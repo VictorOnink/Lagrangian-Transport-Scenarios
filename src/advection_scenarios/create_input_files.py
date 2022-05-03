@@ -218,11 +218,9 @@ class create_input_files:
             "Of the original {} input sites in the {} scenario, {} are within the domain".format(*str_format))
         return self.lon_inputs[domain], self.lat_inputs[domain], self.plastic_inputs[domain]
 
-    def histogram(self, lon_data, lat_data, weight_data=0):
-        lon_data, lat_data = lon_data.reshape(np.size(lon_data)), lat_data.reshape(np.size(lat_data))
-        weight_data = weight_data.reshape(np.size(weight_data))
-        masses = np.zeros((len(self.LAT), len(self.LON)))
-        counts = np.zeros((len(self.LAT), len(self.LON)))
+    def histogram(self, lon_data, lat_data, weight_data):
+        masses = np.zeros(self.GRID.shape)
+        counts = np.zeros(self.GRID.shape)
         for i in range(np.array(lon_data).shape[0]):
             if weight_data[i] > 0:
                 lat_selec = np.argmin(np.abs(lat_data[i] - self.LAT))
