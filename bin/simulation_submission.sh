@@ -80,7 +80,7 @@ export BACKWARD
 
 # Which input distribution do we want to use?
 # 'Jambeck', 'Lebreton', 'LebretonDivision', 'LebretonKaandorpInit', 'Point_Release', 'Uniform'
-INPUT='Jambeck'
+INPUT='Lebreton'
 export INPUT
 
 #Which advection data do we want to use?
