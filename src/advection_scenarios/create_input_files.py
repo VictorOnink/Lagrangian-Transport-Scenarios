@@ -70,6 +70,8 @@ class create_input_files:
                                               weight_data=self.plastic_inputs)
             # Remove any sources further than 50 kilometers from land
             if settings.INPUT in ["Jambeck"]:
+                print(self.inputs_grid.size)
+                print(self.distance.size)
                 self.inputs_grid[self.distance > 50] = 0
 
             # Getting all ocean cells that are adjacent to coastal ocean cells (which are in turn adjacent to land). The
@@ -135,17 +137,14 @@ class create_input_files:
         Lon_population, Lat_population = np.meshgrid(lon_population, lat_population)
         # Get the mismanaged plastic fraction
         mismanaged = self.get_mismanaged_fraction_Jambeck(dataset=dataset)
-        utils.print_statement("Hi")
         # Get the distance from land to shore
         distance_file = settings.INPUT_DIREC + self.advection_prefix + "_distance_to_coast_land.nc"
         utils.print_statement(distance_file)
         distance = self.get_distance_to_shore(filename=distance_file)
-        utils.print_statement("Hi 2")
         # The yearly mismanaged plastic
         transport_to_ocean = 0.15  # percentage of mismanaged plastic that reaches the ocean
         kg_to_tons = 1000
         mismanaged_total = np.multiply(mismanaged, population) * 365 * transport_to_ocean / kg_to_tons
-        utils.print_statement("Hi 3")
         # Get everything in column arrays to load
         lon_inputs = Lon_population[mismanaged_total > 0].flatten()
         lat_inputs = Lat_population[mismanaged_total > 0].flatten()
@@ -156,14 +155,10 @@ class create_input_files:
         return lon_inputs, lat_inputs, plastic_inputs, input_max, input_min, distance
 
     def get_distance_to_shore(self, filename: str):
-        utils.print_statement("Hi here")
         if utils.check_file_exist(filename):
-            utils.print_statement("Hi now here")
             utils.print_statement("The distance to shore file already exists")
         else:
-            utils.print_statement("Hi or here")
             create_distance_to_shore_land(output_name=filename, grid=self.GRID, lon=self.LON, lat=self.LAT)
-            utils.print_statement("Hi or here 2")
         return self.slicing_correction(Dataset(filename).variables["distance"][:])
 
     def get_lon_lat_weights_Lebreton(self) -> tuple:
