@@ -5,6 +5,7 @@
 3. [General overview](#overview)
 4. [Usage guide](#usage)
 5. [System requirements](#requirements)
+6. [Acknowledgements](#acknowledgements)
 
 
 ## Introduction <a name="introduction"></a>
@@ -148,3 +149,13 @@ In order to create a new general analysis function, follow the subsequent steps:
 
 ## System requirements <a name="requirements"></a>
 To install the necessary packages for the LTS framework, run `conda env create -f environment_LTS.yml`. This will install all the necessary packages and dependencies to run all the LTS code.
+
+## Acknowledgements <a name="acknowledgements"></a>
+The following people have been involved in the development of the LTS framework:
+- Victor Onink has done the full implementation and had a leading role in the development of all the scenarios within the LTS framework.
+- [Charlotte Laufkötter](https://github.com/blauhai) has been involved in the conceptual and theoretical development of all the scenarios.
+- [Inger van Boeijen](https://github.com/IngerMathilde) helped in the initial structuring of the LTS framework.
+- [Erik van Sebille](https://github.com/erikvansebille) was involved in the conceptual and theoretical development of all the scenarios.
+- [Christian Kehl](https://github.com/CKehl) and [Philippe Delandmeter](https://github.com/delandmeterp) contributed to the development of all Parcels components of the LTS framework. 
+- [Cleo Jongedijk](https://github.com/cjongedijk) assisted in the conceptual development of the beaching and resuspension parametrizations in the `Stochastic` scenario.
+- [Mikael Kaandorp](https://github.com/mikaelk) was involved in the development of the `FragmentationKaandorpPartial` scenario.
