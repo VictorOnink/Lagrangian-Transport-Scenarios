@@ -21,7 +21,7 @@ The LTS framework is largely based on the work for the [Onink et al. (2021)](htt
 - The KPP vertical turbulent mixing kernel is described in [Onink et al. (2022)](https://doi.org/10.5194/gmd-15-1995-2022), with the model code to simulate 1D vertical transport of buoyant particles being available [here](https://github.com/VictorOnink/Wind-Mixing-Diffusion).
 - The `SizeTransport` and `FragmentationKaandorpPartial` scenarios are described in Onink et al. (in prep) "The influence of particle size and fragmentation on large-scale microplastic transport in the Mediterranean Sea"
 
-For any model components described above, please cite the relevant paper. For citing the LTS framework itself, please cite: *zenodo link*.
+For any model components described above, please cite the relevant paper. For citing the LTS framework itself, please cite zenodo.
 
 ## General overview <a name="overview"></a>
 The LTS framework is set up for three basic tasks: run the Lagrangian simulations, analyze the output and visualize the post-processed Lagrangian simulations. For each of these tasks, there is a dedicated submission bash script in the `bin` directory which is used to submit jobs onto the server. Currently, all these script are written for the [ubelix](https://ubelix.unibe.ch/) HPC cluster at the University of Bern, which uses a version of the Slurm workload manager. In principle the LTS framework can be applied to run servers that use different workload managers, but this would require modification of the submission scripts.
