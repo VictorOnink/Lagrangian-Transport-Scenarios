@@ -152,7 +152,7 @@ To install the necessary packages for the LTS framework, run `conda env create -
 
 ## Acknowledgements <a name="acknowledgements"></a>
 The following people have been involved in the development of the LTS framework:
-- Victor Onink has done the full implementation and had a leading role in the development of all the scenarios within the LTS framework.
+- [Victor Onink](https://github.com/VictorOnink) has done the full implementation and had a leading role in the development of all the scenarios within the LTS framework.
 - [Charlotte Laufkötter](https://github.com/blauhai) has been involved in the conceptual and theoretical development of all the scenarios.
 - [Inger van Boeijen](https://github.com/IngerMathilde) helped in the initial structuring of the LTS framework.
 - [Erik van Sebille](https://github.com/erikvansebille) was involved in the conceptual and theoretical development of all the scenarios.
