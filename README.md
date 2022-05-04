@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/297894637.svg)](https://zenodo.org/badge/latestdoi/297894637)
+
 # Lagrangian Transport Scenarios
 ## Contents
 1. [Introduction](#introduction)
