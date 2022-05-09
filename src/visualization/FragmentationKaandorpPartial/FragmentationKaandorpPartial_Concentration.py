@@ -33,7 +33,7 @@ class FragmentationKaandorpPartial_Concentration:
         self.key_concentration = utils.analysis_simulation_year_key(self.simulation_year)
         # Figure parameters
         self.figure_size = (20, 10)
-        self.figure_shape = (2, 3)
+        self.figure_shape = (3, 2)
         self.ax_label_size = 14
         self.ax_ticklabel_size = 14
         self.number_of_plots = self.figure_shape[0] * self.figure_shape[1]
