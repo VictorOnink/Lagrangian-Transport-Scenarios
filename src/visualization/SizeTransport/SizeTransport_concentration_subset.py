@@ -31,7 +31,7 @@ class SizeTransport_concentration_subset:
         self.figure_size = (20, 8)
         self.figure_shape = (self.size_list.__len__(), 2)
         self.ax_label_size = 18
-        self.ax_ticklabel_size = 16
+        self.ax_ticklabel_size = 14
         self.number_of_plots = self.size_list.__len__() * 2
         self.adv_file_dict = advection_files.AdvectionFiles(advection_scenario='CMEMS_MEDITERRANEAN').file_names
         self.spatial_domain = np.nanmin(self.adv_file_dict['LON']),  np.nanmax(self.adv_file_dict['LON']), \
