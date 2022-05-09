@@ -26,7 +26,7 @@ class SizeTransport_MaxDistance:
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'maximum_distance'
         # Figure parameters
-        self.figure_size = {False: (20, 20), True: (20, 8)}[self.subselection]
+        self.figure_size = {False: (20, 10), True: (20, 8)}[self.subselection]
         self.ax_label_size = 18
         self.ax_ticklabel_size = 16
         self.number_of_plots = self.size_list.__len__()
