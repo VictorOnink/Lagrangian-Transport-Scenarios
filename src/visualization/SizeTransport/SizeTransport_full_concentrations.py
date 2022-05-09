@@ -28,10 +28,10 @@ class SizeTransport_full_concentrations:
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'horizontal_concentration'
         # Figure parameters
-        self.figure_size = (20, 20)
+        self.figure_size = (20, 10)
         self.figure_shape = (4, 3)
-        self.ax_label_size = 18
-        self.ax_ticklabel_size = 16
+        self.ax_label_size = 16
+        self.ax_ticklabel_size = 12
         self.number_of_plots = self.size_list.__len__()
         self.adv_file_dict = advection_files.AdvectionFiles(advection_scenario='CMEMS_MEDITERRANEAN').file_names
         self.spatial_domain = np.nanmin(self.adv_file_dict['LON']),  np.nanmax(self.adv_file_dict['LON']), \
@@ -81,7 +81,8 @@ class SizeTransport_full_concentrations:
             for columns in range(self.figure_shape[1]):
                 ax_list.append(vUtils.cartopy_standard_map(fig=fig, gridspec=gs, row=rows, column=columns,
                                                            domain=self.spatial_domain, label_size=self.ax_label_size,
-                                                           lat_grid_step=5, lon_grid_step=10, resolution='10m'))
+                                                           lat_grid_step=5, lon_grid_step=10, resolution='10m',
+                                                           auto_aspect=False))
 
         # Setting the colormap, and adding a colorbar
         norm = set_normalization(self.beach_state)

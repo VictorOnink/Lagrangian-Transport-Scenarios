@@ -80,17 +80,17 @@ def run(scenario, figure_direc: str):
     #                                                 depth_level=depth_level).plot()
 
     # Plotting all horizontal concentrations for a given density (so all 12 of them)
-    # for rho in [30, 920, 980, 1020]:
-    #     for time_select in [0, 1, 2]:
-    #         for depth_level in ['surface_1m', 'surface_5m', 'column']:
-    #             SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
-    #                                               time_selection=time_select, rho=rho, depth_level=depth_level).plot()
-    #             SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
-    #                                               time_selection=time_select, rho=rho, depth_level=depth_level,
-    #                                               fixed_resus=True, resus_time=7).plot()
-    #             SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
-    #                                               time_selection=time_select, rho=rho, depth_level=depth_level,
-    #                                               fixed_resus=True, resus_time=50).plot()
+    for rho in [920]:
+        for time_select in [0]:
+            for depth_level in ['surface_1m']: #, 'column']:
+                SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
+                                                  time_selection=time_select, rho=rho, depth_level=depth_level).plot()
+                # SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
+                #                                   time_selection=time_select, rho=rho, depth_level=depth_level,
+                #                                   fixed_resus=True, resus_time=7).plot()
+                # SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
+                #                                   time_selection=time_select, rho=rho, depth_level=depth_level,
+                #                                   fixed_resus=True, resus_time=50).plot()
 
     # For direct comparison between full column and 1m concentrations for a specific simulation year
     # for rho in [920, 980]:
@@ -107,14 +107,14 @@ def run(scenario, figure_direc: str):
 
     # Plot the maximum distance from shore for a given density, where subselection indicates if we want a plot with all
     # particle sizes or just 2 (the largest and smallest)
-    for rho in [920]:
-        for subselection in [False]:
-            SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho,
-                                      subselection=subselection).plot()
-            # SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho, fixed_resus=True,
-            #                           resus_time=7, subselection=subselection).plot()
-            # SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho, fixed_resus=True,
-            #                           resus_time=50, subselection=subselection).plot()
+    # for rho in [920]:
+    #     for subselection in [False]:
+    #         SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho,
+    #                                   subselection=subselection).plot()
+    #         SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho, fixed_resus=True,
+    #                                   resus_time=7, subselection=subselection).plot()
+    #         SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho, fixed_resus=True,
+    #                                   resus_time=50, subselection=subselection).plot()
 
     # Creating figures of the timeseries of the number of particles that are beached/adrift/seabed
     # SizeTransport_beach_timeseries(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
