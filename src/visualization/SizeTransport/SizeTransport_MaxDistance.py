@@ -27,8 +27,8 @@ class SizeTransport_MaxDistance:
         self.prefix = 'maximum_distance'
         # Figure parameters
         self.figure_size = {False: (20, 10), True: (20, 8)}[self.subselection]
-        self.ax_label_size = 18
-        self.ax_ticklabel_size = 16
+        self.ax_label_size = 16
+        self.ax_ticklabel_size = 12
         self.number_of_plots = self.size_list.__len__()
         self.figure_shape = {False: (4, 3), True: (1, 2)}[self.subselection]
         self.width_ratios = {False: [1, 1, 1, 0.1], True: [1, 1, 0.07]}[self.subselection]
@@ -57,7 +57,7 @@ class SizeTransport_MaxDistance:
         for rows in range(self.figure_shape[0]):
             for columns in range(self.figure_shape[1]):
                 ax_list.append(vUtils.cartopy_standard_map(fig=fig, gridspec=gs, row=rows, column=columns,
-                                                           domain=self.spatial_domain, label_size=self.ax_label_size,
+                                                           domain=self.spatial_domain, label_size=self.ax_ticklabel_size,
                                                            lat_grid_step=5, lon_grid_step=10, resolution='10m',
                                                            auto_aspect=False))
 
