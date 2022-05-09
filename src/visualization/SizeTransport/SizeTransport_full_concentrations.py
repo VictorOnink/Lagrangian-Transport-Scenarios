@@ -30,7 +30,7 @@ class SizeTransport_full_concentrations:
         # Figure parameters
         self.figure_size = (20, 10)
         self.figure_shape = (4, 3)
-        self.ax_label_size = 16
+        self.ax_label_size = 14
         self.ax_ticklabel_size = 12
         self.number_of_plots = self.size_list.__len__()
         self.adv_file_dict = advection_files.AdvectionFiles(advection_scenario='CMEMS_MEDITERRANEAN').file_names
@@ -80,7 +80,7 @@ class SizeTransport_full_concentrations:
         for rows in range(self.figure_shape[0]):
             for columns in range(self.figure_shape[1]):
                 ax_list.append(vUtils.cartopy_standard_map(fig=fig, gridspec=gs, row=rows, column=columns,
-                                                           domain=self.spatial_domain, label_size=self.ax_label_size,
+                                                           domain=self.spatial_domain, label_size=self.ax_ticklabel_size,
                                                            lat_grid_step=5, lon_grid_step=10, resolution='10m',
                                                            auto_aspect=False))
 
