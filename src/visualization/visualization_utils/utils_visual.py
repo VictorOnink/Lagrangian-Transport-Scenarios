@@ -21,7 +21,7 @@ def SizeTransport_linestyle_SEABED_CRIT(tau):
 def cartopy_standard_map(fig, gridspec, row, column, domain, resolution='50m', add_gridlines=True, add_gridlabels=True,
                          lat_grid_step=20, lon_grid_step=30, label_size=14, land_zorder=1, ocean_zorder=1,
                          line_zorder=101, border_color='black', land_color='lightgray', ocean_color='white',
-                         x_grid_locator=None, y_grid_locator=None):
+                         x_grid_locator=None, y_grid_locator=None, auto_aspect=True):
     """
     A nice basic function that can be used to create standardized maps
     :param fig:
@@ -89,7 +89,8 @@ def cartopy_standard_map(fig, gridspec, row, column, domain, resolution='50m', a
         grid.ylabel_style = {'size': label_size, 'color': 'black', 'weight': 'normal'}
 
     # Setting the axis
-    axis.set_aspect('auto', adjustable=None)
+    if auto_aspect:
+        axis.set_aspect('auto', adjustable=None)
     return axis
 
 

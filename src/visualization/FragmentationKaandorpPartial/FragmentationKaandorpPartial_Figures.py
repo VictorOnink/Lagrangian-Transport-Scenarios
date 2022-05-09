@@ -32,9 +32,9 @@ def run(scenario, figure_direc: str):
     #                                                  rho=rho, simulation_years=3, ocean_frag=False).animate()
 
     # Comparing the calculated size distributions from the Lagrangian simulations with field data
-    FieldDataComp.FragmentationKaandorpPartial_FieldDataComp(figure_direc=figure_direc, scenario=scenario,
-                                                             shore_time=shore_time, lambda_frag_list=lambda_frag_list,
-                                                             rho=rho, input_list=['LebretonKaandorpInit']).plot()
+    # FieldDataComp.FragmentationKaandorpPartial_FieldDataComp(figure_direc=figure_direc, scenario=scenario,
+    #                                                          shore_time=shore_time, lambda_frag_list=lambda_frag_list,
+    #                                                          rho=rho, input_list=['LebretonKaandorpInit']).plot()
 
     # Plot the results from the box model
     # box_model_ocean.FragmentationKaandorpPartial_boxmodel_ocean(figure_direc=figure_direc, size_class_number=12).plot()
@@ -55,17 +55,17 @@ def run(scenario, figure_direc: str):
     #                                                                            weight=weight).plot()
 
     # Plot the horizontal distribution of the particles in each size class
-    # for beach_state in ['adrift']:
-    #     for year in [0, 1, 2]:
-    #         for input in ['LebretonKaandorpInit']:
-    #             concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc,
-    #                                                                      rho=rho, shore_time=shore_time,
-    #                                                                      beach_state=beach_state, simulation_year=year,
-    #                                                                      lambda_frag=388, mass=False, input=input).plot()
-    #             concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc,
-    #                                                                      rho=rho, shore_time=shore_time,
-    #                                                                      beach_state=beach_state, simulation_year=year,
-    #                                                                      lambda_frag=388, mass=True, input=input).plot()
+    for beach_state in ['adrift']:
+        for year in [0, 1, 2]:
+            for input in ['LebretonKaandorpInit']:
+                concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc,
+                                                                         rho=rho, shore_time=shore_time,
+                                                                         beach_state=beach_state, simulation_year=year,
+                                                                         lambda_frag=388, mass=False, input=input).plot()
+                concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc,
+                                                                         rho=rho, shore_time=shore_time,
+                                                                         beach_state=beach_state, simulation_year=year,
+                                                                         lambda_frag=388, mass=True, input=input).plot()
 
     # Calculating some basic statistics about the Lagrangian runs
     # for lambda_frag in lambda_frag_list:

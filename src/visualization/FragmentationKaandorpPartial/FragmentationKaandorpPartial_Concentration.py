@@ -74,7 +74,7 @@ class FragmentationKaandorpPartial_Concentration:
             for columns in range(self.figure_shape[1]):
                 ax_list.append(vUtils.cartopy_standard_map(fig=fig, gridspec=gs, row=rows, column=columns,
                                                            domain=self.spatial_domain, lat_grid_step=5,
-                                                           lon_grid_step=10, resolution='10m'))
+                                                           lon_grid_step=10, resolution='10m', auto_aspect=False))
         # Setting the colormap and creating the colorbar
         norm = set_normalization(self.beach_state, self.simulation_year, self.weight)
         cbar_label = "Relative {}".format({True: 'Mass', False: 'Count'}[self.mass]) + r" Concentration ($C/C_{min}$)"
