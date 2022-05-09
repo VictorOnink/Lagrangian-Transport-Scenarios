@@ -80,7 +80,7 @@ class SizeTransport_concentration_subset:
             for columns in range(self.figure_shape[1]):
                 ax_list.append(vUtils.cartopy_standard_map(fig=fig, gridspec=gs, row=rows, column=columns,
                                                            domain=self.spatial_domain,
-                                                           label_size=self.ax_label_size,
+                                                           label_size=self.ax_ticklabel_size,
                                                            lat_grid_step=5, lon_grid_step=10, resolution='10m',
                                                            auto_aspect=False))
 
