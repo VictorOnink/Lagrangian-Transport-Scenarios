@@ -56,7 +56,7 @@ def run(scenario, figure_direc: str):
 
     # Plot the horizontal distribution of the particles in each size class
     for beach_state in ['adrift']:
-        for year in [0, 1, 2]:
+        for year in [2]:
             for input in ['LebretonKaandorpInit']:
                 concentration.FragmentationKaandorpPartial_Concentration(scenario=scenario, figure_direc=figure_direc,
                                                                          rho=rho, shore_time=shore_time,
