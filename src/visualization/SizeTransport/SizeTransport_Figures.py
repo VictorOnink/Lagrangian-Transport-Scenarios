@@ -93,28 +93,28 @@ def run(scenario, figure_direc: str):
     #                                               fixed_resus=True, resus_time=50).plot()
 
     # For direct comparison between full column and 1m concentrations for a specific simulation year
-    for rho in [920, 980]:
-        for time_select in [0]:
-            for size_list in [np.array([5000, 2]) * settings.SIZE_FACTOR]:
-                SizeTransport_concentration_subset(scenario=scenario, figure_direc=figure_direc,
-                                                   time_selection=time_select, rho=rho, size_list=size_list).plot()
-                SizeTransport_concentration_subset(scenario=scenario, figure_direc=figure_direc,
-                                                   time_selection=time_select, rho=rho, size_list=size_list,
-                                                   fixed_resus=True, resus_time=7).plot()
-                SizeTransport_concentration_subset(scenario=scenario, figure_direc=figure_direc,
-                                                   time_selection=time_select, rho=rho, size_list=size_list,
-                                                   fixed_resus=True, resus_time=50).plot()
+    # for rho in [920, 980]:
+    #     for time_select in [0]:
+    #         for size_list in [np.array([5000, 2]) * settings.SIZE_FACTOR]:
+    #             SizeTransport_concentration_subset(scenario=scenario, figure_direc=figure_direc,
+    #                                                time_selection=time_select, rho=rho, size_list=size_list).plot()
+    #             SizeTransport_concentration_subset(scenario=scenario, figure_direc=figure_direc,
+    #                                                time_selection=time_select, rho=rho, size_list=size_list,
+    #                                                fixed_resus=True, resus_time=7).plot()
+    #             SizeTransport_concentration_subset(scenario=scenario, figure_direc=figure_direc,
+    #                                                time_selection=time_select, rho=rho, size_list=size_list,
+    #                                                fixed_resus=True, resus_time=50).plot()
 
     # Plot the maximum distance from shore for a given density, where subselection indicates if we want a plot with all
     # particle sizes or just 2 (the largest and smallest)
-    # for rho in [30, 920, 980, 1020]:
-    #     for subselection in [False, True]:
-    #         SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho,
-    #                                   subselection=subselection).plot()
-    #         SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho, fixed_resus=True,
-    #                                   resus_time=7, subselection=subselection).plot()
-    #         SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho, fixed_resus=True,
-    #                                   resus_time=50, subselection=subselection).plot()
+    for rho in [920]:
+        for subselection in [False]:
+            SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho,
+                                      subselection=subselection).plot()
+            # SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho, fixed_resus=True,
+            #                           resus_time=7, subselection=subselection).plot()
+            # SizeTransport_MaxDistance(scenario=scenario, figure_direc=figure_direc, rho=rho, fixed_resus=True,
+            #                           resus_time=50, subselection=subselection).plot()
 
     # Creating figures of the timeseries of the number of particles that are beached/adrift/seabed
     # SizeTransport_beach_timeseries(scenario=scenario, figure_direc=figure_direc, size_list=size_list,
