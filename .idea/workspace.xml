@@ -109,27 +109,6 @@
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
     </task>
-    <task id="LOCAL-03709" summary="Restructuring">
-      <created>1650887296198</created>
-      <option name="number" value="03709" />
-      <option name="presentableId" value="LOCAL-03709" />
-      <option name="project" value="LOCAL" />
-      <updated>1650887296198</updated>
-    </task>
-    <task id="LOCAL-03710" summary="Restructuring">
-      <created>1650889982200</created>
-      <option name="number" value="03710" />
-      <option name="presentableId" value="LOCAL-03710" />
-      <option name="project" value="LOCAL" />
-      <updated>1650889982200</updated>
-    </task>
-    <task id="LOCAL-03711" summary="Restructuring">
-      <created>1650961152758</created>
-      <option name="number" value="03711" />
-      <option name="presentableId" value="LOCAL-03711" />
-      <option name="project" value="LOCAL" />
-      <updated>1650961152758</updated>
-    </task>
     <task id="LOCAL-03712" summary="Restructuring">
       <created>1650963218451</created>
       <option name="number" value="03712" />
@@ -452,7 +431,28 @@
       <option name="project" value="LOCAL" />
       <updated>1652086039371</updated>
     </task>
-    <option name="localTasksCounter" value="3758" />
+    <task id="LOCAL-03758" summary="Figure update">
+      <created>1652086603677</created>
+      <option name="number" value="03758" />
+      <option name="presentableId" value="LOCAL-03758" />
+      <option name="project" value="LOCAL" />
+      <updated>1652086603677</updated>
+    </task>
+    <task id="LOCAL-03759" summary="Figure update">
+      <created>1652086631451</created>
+      <option name="number" value="03759" />
+      <option name="presentableId" value="LOCAL-03759" />
+      <option name="project" value="LOCAL" />
+      <updated>1652086631451</updated>
+    </task>
+    <task id="LOCAL-03760" summary="Figure update">
+      <created>1652086807306</created>
+      <option name="number" value="03760" />
+      <option name="presentableId" value="LOCAL-03760" />
+      <option name="project" value="LOCAL" />
+      <updated>1652086807306</updated>
+    </task>
+    <option name="localTasksCounter" value="3761" />
     <servers />
   </component>
   <component name="UnknownFeatures">
