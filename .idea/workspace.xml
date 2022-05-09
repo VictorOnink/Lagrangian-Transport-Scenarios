@@ -22,10 +22,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="Restructuring">
+    <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="Figure update">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_Figures.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_Figures.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/visualization_utils/utils_visual.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/visualization_utils/utils_visual.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/factories/visualization_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/factories/visualization_factory.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/visualization/visualization_utils/utils_loading_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/visualization_utils/utils_loading_data.py" afterDir="false" />
     </list>
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
     <list id="c5adc810-e024-4e30-b33b-a2709ed2c5b7" name="moving the release repeat timescale to the scenario" comment="" />
@@ -112,13 +112,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-03707" summary="Restructuring">
-      <created>1650629267033</created>
-      <option name="number" value="03707" />
-      <option name="presentableId" value="LOCAL-03707" />
-      <option name="project" value="LOCAL" />
-      <updated>1650629267033</updated>
     </task>
     <task id="LOCAL-03708" summary="Restructuring">
       <created>1650882102149</created>
@@ -456,7 +449,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651579461262</updated>
     </task>
-    <option name="localTasksCounter" value="3756" />
+    <task id="LOCAL-03756" summary="Figure update">
+      <created>1652085532811</created>
+      <option name="number" value="03756" />
+      <option name="presentableId" value="LOCAL-03756" />
+      <option name="project" value="LOCAL" />
+      <updated>1652085532811</updated>
+    </task>
+    <option name="localTasksCounter" value="3757" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -487,7 +487,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="thanks to Mikael, a bug was caught in KPP mixing with a missing square root" />
     <MESSAGE value="Adding base figure function" />
     <MESSAGE value="test bash error messages" />
     <MESSAGE value="lots of updates related to setting the start and end point of inidividual runs and renaming some variables" />
@@ -512,6 +511,7 @@
     <MESSAGE value="implementing flexible backward in time" />
     <MESSAGE value="final figure for thesis" />
     <MESSAGE value="Restructuring" />
-    <option name="LAST_COMMIT_MESSAGE" value="Restructuring" />
+    <MESSAGE value="Figure update" />
+    <option name="LAST_COMMIT_MESSAGE" value="Figure update" />
   </component>
 </project>
