@@ -87,7 +87,7 @@ class SizeTransport_concentration_OSM:
                                                            domain=self.spatial_domain,
                                                            label_size=self.ax_label_size,
                                                            lat_grid_step=5, lon_grid_step=10, resolution='10m',
-                                                           auto_aspect=False))
+                                                           auto_aspect=False, add_gridlines=False))
 
         # Setting the colormap, and adding a colorbar
         norm = self.set_normalization()
