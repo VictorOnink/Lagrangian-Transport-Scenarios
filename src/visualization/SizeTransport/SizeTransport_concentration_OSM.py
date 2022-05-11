@@ -28,15 +28,11 @@ class SizeTransport_concentration_OSM:
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'horizontal_concentration'
         # Figure parameters
-        # self.figure_size = (20, 10)
-        self.figure_size = (3.25, 1.75)
+        self.figure_size = (20, 10)
         self.figure_shape = (self.size_list.__len__(), 1)
-        # self.title_size = 24
-        # self.ax_label_size = 26
-        # self.ax_ticklabel_size = 20
-        self.title_size = 8
-        self.ax_label_size = 6
-        self.ax_ticklabel_size = 6
+        self.title_size = 24
+        self.ax_label_size = 26
+        self.ax_ticklabel_size = 20
         self.number_of_plots = self.size_list.__len__() * 1
         self.adv_file_dict = advection_files.AdvectionFiles(advection_scenario='CMEMS_MEDITERRANEAN').file_names
         self.spatial_domain = np.nanmin(self.adv_file_dict['LON']),  np.nanmax(self.adv_file_dict['LON']), \
