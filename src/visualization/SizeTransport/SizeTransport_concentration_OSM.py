@@ -28,10 +28,10 @@ class SizeTransport_concentration_OSM:
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'horizontal_concentration'
         # Figure parameters
-        self.figure_size = (15, 10)
+        self.figure_size = (14, 10)
         self.figure_shape = (self.size_list.__len__(), 1)
-        self.title_size = 24
-        self.ax_label_size = 26
+        self.title_size = 22
+        self.ax_label_size = 20
         self.ax_ticklabel_size = 20
         self.number_of_plots = self.size_list.__len__() * 1
         self.adv_file_dict = advection_files.AdvectionFiles(advection_scenario='CMEMS_MEDITERRANEAN').file_names
