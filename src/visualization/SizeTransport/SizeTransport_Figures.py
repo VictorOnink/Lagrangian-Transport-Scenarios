@@ -80,17 +80,17 @@ def run(scenario, figure_direc: str):
     #                                                 depth_level=depth_level).plot()
 
     # Plotting all horizontal concentrations for a given density (so all 12 of them)
-    for rho in [920]:
-        for time_select in [0, 2]:
-            for depth_level in ['surface_1m', 'column']:
-                SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
-                                                  time_selection=time_select, rho=rho, depth_level=depth_level).plot()
-                # SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
-                #                                   time_selection=time_select, rho=rho, depth_level=depth_level,
-                #                                   fixed_resus=True, resus_time=7).plot()
-                # SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
-                #                                   time_selection=time_select, rho=rho, depth_level=depth_level,
-                #                                   fixed_resus=True, resus_time=50).plot()
+    # for rho in [920]:
+    #     for time_select in [0, 2]:
+    #         for depth_level in ['surface_1m', 'column']:
+    #             SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
+    #                                               time_selection=time_select, rho=rho, depth_level=depth_level).plot()
+    #             SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
+    #                                               time_selection=time_select, rho=rho, depth_level=depth_level,
+    #                                               fixed_resus=True, resus_time=7).plot()
+    #             SizeTransport_full_concentrations(scenario=scenario, figure_direc=figure_direc, beach_state='adrift',
+    #                                               time_selection=time_select, rho=rho, depth_level=depth_level,
+    #                                               fixed_resus=True, resus_time=50).plot()
 
     # For direct comparison between full column and 1m concentrations for a specific simulation year
     # for rho in [920, 980]:
@@ -146,8 +146,8 @@ def run(scenario, figure_direc: str):
     #                                         rho_list=[30, 920, 980, 1020]).plot()
 
     # Figures for OSM 2022
-    # for depth in ['column', 'surface_1m']:
-    #     SizeTransport_concentration_OSM(scenario=scenario, figure_direc=figure_direc, depth=depth).plot()
+    for depth in ['surface_1m']:
+        SizeTransport_concentration_OSM(scenario=scenario, figure_direc=figure_direc, depth=depth).plot()
     # for season in ['Winter', 'Summer']:
     #     for year in [0, 1, 2]:
     #         SizeTransport_vertical_OSM(scenario=scenario, figure_direc=figure_direc, time_selection=year,

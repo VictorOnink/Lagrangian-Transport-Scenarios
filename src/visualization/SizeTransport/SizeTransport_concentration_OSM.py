@@ -28,7 +28,7 @@ class SizeTransport_concentration_OSM:
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'horizontal_concentration'
         # Figure parameters
-        self.figure_size = (20, 20)
+        self.figure_size = (20, 10)
         self.figure_shape = (self.size_list.__len__(), 1)
         self.title_size = 24
         self.ax_label_size = 26
@@ -82,7 +82,8 @@ class SizeTransport_concentration_OSM:
                 ax_list.append(vUtils.cartopy_standard_map(fig=fig, gridspec=gs, row=rows, column=columns,
                                                            domain=self.spatial_domain,
                                                            label_size=self.ax_label_size,
-                                                           lat_grid_step=5, lon_grid_step=10, resolution='10m'))
+                                                           lat_grid_step=5, lon_grid_step=10, resolution='10m',
+                                                           auto_aspect=False))
 
         # Setting the colormap, and adding a colorbar
         norm = self.set_normalization()
@@ -122,9 +123,9 @@ class SizeTransport_concentration_OSM:
 
     def subfigure_title(self, index):
         if index == 0:
-            return 'Large particles (r = {:.3f} mm)'.format(self.size_list[index] * 1e3)
+            return 'Large microplastics (d = {:.3f} mm)'.format(self.size_list[index] * 1e3)
         else:
-            return 'Small particles (r = {:.3f} mm)'.format(self.size_list[index] * 1e3)
+            return 'Small microplastics (d = {:.3f} mm)'.format(self.size_list[index] * 1e3)
 
 
 
