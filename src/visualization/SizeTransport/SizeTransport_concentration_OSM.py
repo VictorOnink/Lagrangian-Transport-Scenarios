@@ -28,7 +28,7 @@ class SizeTransport_concentration_OSM:
         utils.check_direc_exist(self.output_direc)
         self.prefix = 'horizontal_concentration'
         # Figure parameters
-        self.figure_size = (20, 10)
+        self.figure_size = (15, 10)
         self.figure_shape = (self.size_list.__len__(), 1)
         self.title_size = 24
         self.ax_label_size = 26
@@ -74,7 +74,7 @@ class SizeTransport_concentration_OSM:
         # Creating the base figure
         fig = plt.figure(figsize=self.figure_size)
         gs = fig.add_gridspec(nrows=self.figure_shape[0], ncols=self.figure_shape[1] + 1,
-                              width_ratios=[1, 0.1])
+                              width_ratios=[1, 0.05])
 
         ax_list = []
         for rows in range(self.figure_shape[0]):
