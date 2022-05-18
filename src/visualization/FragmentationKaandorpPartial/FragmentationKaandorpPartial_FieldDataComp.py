@@ -108,10 +108,10 @@ class FragmentationKaandorpPartial_FieldDataComp:
             if ax_index < 4:
                 sub_ax.fill_betweenx(np.arange(1e-4, 1e4), self.xmin, 0.33, color='grey', alpha=0.2)
 
-        for lambda_index, lambda_frag in enumerate(self.lambda_frag_list):
-            c = vUtils.discrete_color_from_cmap(index=lambda_index, subdivisions=self.lambda_frag_list.__len__())
-            twin_ax[1].plot([], [], color=c, label=self.label(lambda_frag), linestyle='-', linewidth=self.line_width)
-        twin_ax[1].legend(fontsize=self.legend_size, loc=self.legend_loc)
+        # for lambda_index, lambda_frag in enumerate(self.lambda_frag_list):
+        #     c = vUtils.discrete_color_from_cmap(index=lambda_index, subdivisions=self.lambda_frag_list.__len__())
+        #     twin_ax[0].plot([], [], color=c, label=self.label(lambda_frag), linestyle='-', linewidth=self.line_width)
+        # twin_ax[0].legend(fontsize=self.legend_size, loc=self.legend_loc)
 
         # # Field data - open ocean
         # norm_factor = field_dict['Cozar']['pdf_counts'][14]
