@@ -108,7 +108,7 @@ class SizeTransport_concentration_OSM:
         plt.savefig(self.plot_save_name(), bbox_inches='tight', dpi=400)
         plt.close('all')
 
-    def plot_save_name(self, file_type='.tif'):
+    def plot_save_name(self, file_type='.png'):
         name = self.output_direc + 'OSM_depth={}'.format(self.depth)
         return name + file_type
 

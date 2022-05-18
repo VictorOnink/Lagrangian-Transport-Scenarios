@@ -165,18 +165,9 @@ class FragmentationKaandorpPartial(base_scenario.BaseScenario):
     def beaching_kernel(particle, fieldset, time):
         """
         The basic beaching and resuspension procedure Onink et al. (2021). However, since Hinata et al. (2017) showed
-        that the resuspension  varies with
+        that the resuspension varies with size, we have expande
         Onink et al. (2021) = https://doi.org/10.1088/1748-9326/abecbd
         Hinata et al. (2017) = https://doi.org/10.1016/j.marpolbul.2017.05.012
-
-        For particles on the seabed, we follow the resuspension procedure outlined in Carvajalino-Fernandez et al.
-        (2020), where a particle at the sea bed gets resuspended if the estimated sea floor sea stress is greater than a
-        critical threshold. Particles can get stuck on the seabed if the potential depth due to KPP or internal tide
-        mixing is below the bathymetry depth
-
-        The bottom sea stress is calculated using a quadratic drag extrapolation according to Warner et al. (2008)
-        Carvajalino-Fernandez et al. (2020) = https://doi.org/10.1016/j.marpolbul.2020.111685
-        Warner et al. (2008) = https://doi.org/10.1016/j.cageo.2008.02.012
         """
         # First, the beaching of particles on the coastline
         if particle.beach == 0:

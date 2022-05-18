@@ -144,4 +144,4 @@ class SizeTransport_vertical_OSM:
 
     @staticmethod
     def legend_label(size):
-        return r'r = {:.3f} mm'.format(size * 1e3)
+        return r'd = {:.3f} mm'.format(size * 1e3)
