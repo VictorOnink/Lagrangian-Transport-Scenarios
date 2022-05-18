@@ -118,58 +118,57 @@ class FragmentationKaandorpPartial_FieldDataComp:
             ax[0].plot([], [], color=c, label=self.label(lambda_frag), linestyle='-', linewidth=self.line_width)
         ax[0].legend(fontsize=self.legend_size, loc=self.legend_loc)
 
+        # Field data - open ocean
+        norm_factor = field_dict['Cozar']['pdf_counts'][14]
+        ax[0].plot(field_dict['Cozar']['bin_midpoint'], field_dict['Cozar']['pdf_counts'] / norm_factor,
+                   marker=self.field_marker, linestyle=self.field_line, color='tab:red', label='Cozar et al. (2015)',
+                   linewidth=self.line_width, markersize=self.marker_size)
+        ax[0].legend(fontsize=self.legend_size, loc=self.legend_loc)
 
-        # # Field data - open ocean
-        # norm_factor = field_dict['Cozar']['pdf_counts'][14]
-        # ax[0].plot(field_dict['Cozar']['bin_midpoint'], field_dict['Cozar']['pdf_counts'] / norm_factor,
-        #            marker=self.field_marker, linestyle=self.field_line, color='tab:red', label='Cozar et al. (2015)',
-        #            linewidth=self.line_width, markersize=self.marker_size)
-        # ax[0].legend(fontsize=self.legend_size, loc=self.legend_loc)
-        #
-        # # Field data - coastal waters
-        # norm_factor = field_dict['RuizOrejon']['pdf_counts'][6]
-        # ax[2].plot(field_dict['RuizOrejon']['bin_midpoint'], field_dict['RuizOrejon']['pdf_counts'] / norm_factor,
-        #            marker=self.field_marker, linestyle=self.field_line, color='tab:red',
-        #            label=r'Ruiz-Orej$\`o$n et al. (2018)', linewidth=self.line_width, markersize=self.marker_size)
-        # ax[2].legend(fontsize=self.legend_size, loc=self.legend_loc)
-        #
-        # norm_factor = field_dict['Gundogdu2017']['pdf_counts'][14]
-        # ax[2].plot(field_dict['Gundogdu2017']['bin_midpoint'], field_dict['Gundogdu2017']['pdf_counts'] / norm_factor,
-        #            marker=self.field_marker, linestyle=self.field_line, color='tab:blue',
-        #            label=r'Gundogdu & Cem (2017)', linewidth=self.line_width, markersize=self.marker_size)
-        # ax[2].legend(fontsize=self.legend_size, loc=self.legend_loc)
-        #
-        # norm_factor = field_dict['DeHaanSanchez']['pdf_counts'][14]
-        # ax[2].plot(field_dict['DeHaanSanchez']['bin_midpoint'], field_dict['DeHaanSanchez']['pdf_counts'] / norm_factor,
-        #            marker=self.field_marker, linestyle=self.field_line, color='tab:orange',
-        #            label=r'de Haan et al. (2022)', linewidth=self.line_width, markersize=self.marker_size)
-        # ax[2].legend(fontsize=self.legend_size, loc=self.legend_loc)
-        #
-        # # Field data - beach, microplastic counts
-        # norm_factor = field_dict['Fok']['pdf_counts'][5]
-        # ax[4].plot(field_dict['Fok']['bin_midpoint'], field_dict['Fok']['pdf_counts'] / norm_factor,
-        #            marker=self.field_marker, linestyle=self.field_line, color='tab:red', label='Fok et al. (2017)',
-        #            linewidth=self.line_width, markersize=self.marker_size)
-        # norm_factor = field_dict['Constant1']['pdf_counts'][-2]
-        # ax[4].plot(field_dict['Constant1']['bin_midpoint'], field_dict['Constant1']['pdf_counts'] / norm_factor,
-        #            marker=self.field_marker, linestyle=self.field_line, color='tab:blue',
-        #            label='Constant et al. (2019), site 1', linewidth=self.line_width, markersize=self.marker_size)
-        # norm_factor = field_dict['Constant2']['pdf_counts'][-2]
-        # ax[4].plot(field_dict['Constant2']['bin_midpoint'], field_dict['Constant2']['pdf_counts'] / norm_factor,
-        #            marker=self.field_marker, linestyle=self.field_line, color='tab:orange',
-        #            label='Constant et al. (2019), site 2', linewidth=self.line_width, markersize=self.marker_size)
-        # norm_factor = field_dict['Merlino2020']['pdf_counts'][-1]
-        # ax[4].plot(field_dict['Merlino2020']['bin_midpoint'], field_dict['Merlino2020']['pdf_counts'] / norm_factor,
-        #            marker=self.field_marker, linestyle=self.field_line, color='tab:green',
-        #            label='Merlino et al. (2020)', linewidth=self.line_width, markersize=self.marker_size)
-        # ax[4].legend(fontsize=self.legend_size, loc=self.legend_loc)
-        #
-        # # Field data - beach, microplastic mass
-        # norm_factor = field_dict['Fok']['pdf_mass'][5]
-        # twin_ax[5].plot(field_dict['Fok']['bin_midpoint'], field_dict['Fok']['pdf_mass'] / norm_factor,
-        #                 marker=self.field_marker, linestyle=self.field_line, color='tab:red', label='Fok et al. (2017)',
-        #                 linewidth=self.line_width, markersize=self.marker_size)
-        # twin_ax[5].legend(fontsize=self.legend_size, loc=self.legend_loc)
+        # Field data - coastal waters
+        norm_factor = field_dict['RuizOrejon']['pdf_counts'][6]
+        ax[2].plot(field_dict['RuizOrejon']['bin_midpoint'], field_dict['RuizOrejon']['pdf_counts'] / norm_factor,
+                   marker=self.field_marker, linestyle=self.field_line, color='tab:red',
+                   label=r'Ruiz-Orej$\`o$n et al. (2018)', linewidth=self.line_width, markersize=self.marker_size)
+        ax[2].legend(fontsize=self.legend_size, loc=self.legend_loc)
+
+        norm_factor = field_dict['Gundogdu2017']['pdf_counts'][14]
+        ax[2].plot(field_dict['Gundogdu2017']['bin_midpoint'], field_dict['Gundogdu2017']['pdf_counts'] / norm_factor,
+                   marker=self.field_marker, linestyle=self.field_line, color='tab:blue',
+                   label=r'Gundogdu & Cem (2017)', linewidth=self.line_width, markersize=self.marker_size)
+        ax[2].legend(fontsize=self.legend_size, loc=self.legend_loc)
+
+        norm_factor = field_dict['DeHaanSanchez']['pdf_counts'][14]
+        ax[2].plot(field_dict['DeHaanSanchez']['bin_midpoint'], field_dict['DeHaanSanchez']['pdf_counts'] / norm_factor,
+                   marker=self.field_marker, linestyle=self.field_line, color='tab:orange',
+                   label=r'de Haan et al. (2022)', linewidth=self.line_width, markersize=self.marker_size)
+        ax[2].legend(fontsize=self.legend_size, loc=self.legend_loc)
+
+        # Field data - beach, microplastic counts
+        norm_factor = field_dict['Fok']['pdf_counts'][5]
+        ax[4].plot(field_dict['Fok']['bin_midpoint'], field_dict['Fok']['pdf_counts'] / norm_factor,
+                   marker=self.field_marker, linestyle=self.field_line, color='tab:red', label='Fok et al. (2017)',
+                   linewidth=self.line_width, markersize=self.marker_size)
+        norm_factor = field_dict['Constant1']['pdf_counts'][-2]
+        ax[4].plot(field_dict['Constant1']['bin_midpoint'], field_dict['Constant1']['pdf_counts'] / norm_factor,
+                   marker=self.field_marker, linestyle=self.field_line, color='tab:blue',
+                   label='Constant et al. (2019), site 1', linewidth=self.line_width, markersize=self.marker_size)
+        norm_factor = field_dict['Constant2']['pdf_counts'][-2]
+        ax[4].plot(field_dict['Constant2']['bin_midpoint'], field_dict['Constant2']['pdf_counts'] / norm_factor,
+                   marker=self.field_marker, linestyle=self.field_line, color='tab:orange',
+                   label='Constant et al. (2019), site 2', linewidth=self.line_width, markersize=self.marker_size)
+        norm_factor = field_dict['Merlino2020']['pdf_counts'][-1]
+        ax[4].plot(field_dict['Merlino2020']['bin_midpoint'], field_dict['Merlino2020']['pdf_counts'] / norm_factor,
+                   marker=self.field_marker, linestyle=self.field_line, color='tab:green',
+                   label='Merlino et al. (2020)', linewidth=self.line_width, markersize=self.marker_size)
+        ax[4].legend(fontsize=self.legend_size, loc=self.legend_loc)
+
+        # Field data - beach, microplastic mass
+        norm_factor = field_dict['Fok']['pdf_mass'][5]
+        twin_ax[5].plot(field_dict['Fok']['bin_midpoint'], field_dict['Fok']['pdf_mass'] / norm_factor,
+                        marker=self.field_marker, linestyle=self.field_line, color='tab:red', label='Fok et al. (2017)',
+                        linewidth=self.line_width, markersize=self.marker_size)
+        twin_ax[5].legend(fontsize=self.legend_size, loc=self.legend_loc)
 
         # Adding input data if self.with_input == True
         if self.with_input:
