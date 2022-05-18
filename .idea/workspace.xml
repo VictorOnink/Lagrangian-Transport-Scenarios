@@ -23,10 +23,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0c4cef02-7a2d-4584-8ba3-465926935993" name="Default Changelist" comment="Figure update">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/visualization/FragmentationKaandorpPartial/FragmentationKaandorpPartial_FieldDataComp.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/FragmentationKaandorpPartial/FragmentationKaandorpPartial_FieldDataComp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/FragmentationKaandorpPartial/FragmentationKaandorpPartial_Figures.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/FragmentationKaandorpPartial/FragmentationKaandorpPartial_Figures.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_Figures.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/visualization/SizeTransport/SizeTransport_Figures.py" afterDir="false" />
     </list>
     <list id="28b0dd66-7c93-4d18-89d9-5bdc1654a895" name="bug fix for adding the resuspension timescale" comment="" />
     <list id="c5adc810-e024-4e30-b33b-a2709ed2c5b7" name="moving the release repeat timescale to the scenario" comment="" />
@@ -113,27 +110,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
-    </task>
-    <task id="LOCAL-03734" summary="Restructuring">
-      <created>1651568853980</created>
-      <option name="number" value="03734" />
-      <option name="presentableId" value="LOCAL-03734" />
-      <option name="project" value="LOCAL" />
-      <updated>1651568853980</updated>
-    </task>
-    <task id="LOCAL-03735" summary="Restructuring">
-      <created>1651568964264</created>
-      <option name="number" value="03735" />
-      <option name="presentableId" value="LOCAL-03735" />
-      <option name="project" value="LOCAL" />
-      <updated>1651568964264</updated>
-    </task>
-    <task id="LOCAL-03736" summary="Restructuring">
-      <created>1651569168037</created>
-      <option name="number" value="03736" />
-      <option name="presentableId" value="LOCAL-03736" />
-      <option name="project" value="LOCAL" />
-      <updated>1651569168037</updated>
     </task>
     <task id="LOCAL-03737" summary="Restructuring">
       <created>1651569272965</created>
@@ -457,7 +433,28 @@
       <option name="project" value="LOCAL" />
       <updated>1652876340669</updated>
     </task>
-    <option name="localTasksCounter" value="3783" />
+    <task id="LOCAL-03783" summary="Figure update">
+      <created>1652877637138</created>
+      <option name="number" value="03783" />
+      <option name="presentableId" value="LOCAL-03783" />
+      <option name="project" value="LOCAL" />
+      <updated>1652877637138</updated>
+    </task>
+    <task id="LOCAL-03784" summary="Figure update">
+      <created>1652877788579</created>
+      <option name="number" value="03784" />
+      <option name="presentableId" value="LOCAL-03784" />
+      <option name="project" value="LOCAL" />
+      <updated>1652877788579</updated>
+    </task>
+    <task id="LOCAL-03785" summary="Figure update">
+      <created>1652877899342</created>
+      <option name="number" value="03785" />
+      <option name="presentableId" value="LOCAL-03785" />
+      <option name="project" value="LOCAL" />
+      <updated>1652877899342</updated>
+    </task>
+    <option name="localTasksCounter" value="3786" />
     <servers />
   </component>
   <component name="UnknownFeatures">

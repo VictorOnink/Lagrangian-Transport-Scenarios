@@ -49,7 +49,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
         self.field_marker = 'X'
         self.field_line = '--'
         self.line_width = 3
-        self.marker_size = 8
+        self.marker_size = 10
         self.legend_loc = 'upper right'
         self.with_input = with_input
 
