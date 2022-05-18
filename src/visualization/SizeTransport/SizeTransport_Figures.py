@@ -148,10 +148,10 @@ def run(scenario, figure_direc: str):
     # Figures for OSM 2022
     # for depth in ['column', 'surface_1m']:
     #     SizeTransport_concentration_OSM(scenario=scenario, figure_direc=figure_direc, depth=depth).plot()
-    for season in ['Winter', 'Summer']:
-        for year in [0, 1, 2]:
-            SizeTransport_vertical_OSM(scenario=scenario, figure_direc=figure_direc, time_selection=year,
-                                       season=season).plot()
+    # for season in ['Winter', 'Summer']:
+    #     for year in [0, 1, 2]:
+    #         SizeTransport_vertical_OSM(scenario=scenario, figure_direc=figure_direc, time_selection=year,
+    #                                    season=season).plot()
 
     # Calculate basic statistics
     # for size in np.array([5000, 2]) * settings.SIZE_FACTOR:
