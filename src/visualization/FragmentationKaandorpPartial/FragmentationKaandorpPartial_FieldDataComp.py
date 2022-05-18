@@ -90,28 +90,28 @@ class FragmentationKaandorpPartial_FieldDataComp:
 
         # Plotting the model distributions
         for ax_index, sub_ax in enumerate(ax):
-            # for input_scenario in self.input_list:
-            #     for lambda_index, lambda_frag in enumerate(self.lambda_frag_list):
-            #         c = vUtils.discrete_color_from_cmap(index=lambda_index, subdivisions=self.lambda_frag_list.__len__())
-            #         linestyle = self.input_line_style[input_scenario]
-            #         if ax_index % 2 == 0:
-            #             bin_norm_data = data_dict[input_scenario][lambda_frag][self.beach_state_list[ax_index // 2]][self.count][time_index] / size_classes
-            #             norm_factor = bin_norm_data[0]
-            #             sub_ax.plot(size_classes, bin_norm_data / norm_factor, linestyle=linestyle, color=c,
-            #                         linewidth=self.line_width)
-            #         else:
-            #             bin_norm_data = data_dict[input_scenario][lambda_frag][self.beach_state_list[ax_index // 2]][self.mass][time_index] / size_classes
-            #             norm_factor = bin_norm_data[0]
-            #             twin_ax[ax_index].plot(size_classes, bin_norm_data / norm_factor, linestyle=linestyle, color=c,
-            #                                    linewidth=self.line_width)
+            for input_scenario in self.input_list:
+                for lambda_index, lambda_frag in enumerate(self.lambda_frag_list):
+                    c = vUtils.discrete_color_from_cmap(index=lambda_index, subdivisions=self.lambda_frag_list.__len__())
+                    linestyle = self.input_line_style[input_scenario]
+                    if ax_index % 2 == 0:
+                        bin_norm_data = data_dict[input_scenario][lambda_frag][self.beach_state_list[ax_index // 2]][self.count][time_index] / size_classes
+                        norm_factor = bin_norm_data[0]
+                        sub_ax.plot(size_classes, bin_norm_data / norm_factor, linestyle=linestyle, color=c,
+                                    linewidth=self.line_width)
+                    else:
+                        bin_norm_data = data_dict[input_scenario][lambda_frag][self.beach_state_list[ax_index // 2]][self.mass][time_index] / size_classes
+                        norm_factor = bin_norm_data[0]
+                        twin_ax[ax_index].plot(size_classes, bin_norm_data / norm_factor, linestyle=linestyle, color=c,
+                                               linewidth=self.line_width)
             # Add shading to indicate the region where sampling by trawl net is more difficult
             if ax_index < 4:
                 sub_ax.fill_betweenx(np.arange(1e-4, 1e4), self.xmin, 0.33, color='grey', alpha=0.2)
 
-        # for lambda_index, lambda_frag in enumerate(self.lambda_frag_list):
-        #     c = vUtils.discrete_color_from_cmap(index=lambda_index, subdivisions=self.lambda_frag_list.__len__())
-        #     twin_ax[0].plot([], [], color=c, label=self.label(lambda_frag), linestyle='-', linewidth=self.line_width)
-        # twin_ax[0].legend(fontsize=self.legend_size, loc=self.legend_loc)
+        for lambda_index, lambda_frag in enumerate(self.lambda_frag_list):
+            c = vUtils.discrete_color_from_cmap(index=lambda_index, subdivisions=self.lambda_frag_list.__len__())
+            twin_ax[0].plot([], [], color=c, label=self.label(lambda_frag), linestyle='-', linewidth=self.line_width)
+        twin_ax[0].legend(fontsize=self.legend_size, loc=self.legend_loc)
 
         # # Field data - open ocean
         # norm_factor = field_dict['Cozar']['pdf_counts'][14]
