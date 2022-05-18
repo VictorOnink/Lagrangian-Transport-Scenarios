@@ -200,7 +200,7 @@ class FragmentationKaandorpPartial_FieldDataComp:
         # Plotting the normalized count and mass inputs
         ax[2].plot(utils.size_range(units='mm', size_class_number=settings.SIZE_CLASS_NUMBER),
                    number_norm, marker=self.field_marker, linestyle=self.field_line, color='tab:cyan',
-                   label=r'Zeri et al. (2021) Input', linewidth=self.line_width, markersize=self.marker_size)
+                   label=r'Zeri et al. (2021) Input', linewidth=self.line_width, markersize=self.marker_size + 2)
         ax[2].legend(fontsize=self.legend_size, loc=self.legend_loc)
 
     def subfigure_title(self, index):
