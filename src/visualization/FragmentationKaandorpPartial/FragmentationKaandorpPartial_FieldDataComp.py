@@ -46,9 +46,9 @@ class FragmentationKaandorpPartial_FieldDataComp:
         self.twin_ymin, self.twin_ymax = 1e-5, 1e1
         self.twin_ax_range = self.xmax, self.xmin, self.twin_ymax, self.twin_ymin
         self.number_of_plots = self.fig_shape[0] * self.fig_shape[1]
-        self.field_marker = 'x'
+        self.field_marker = 'P'
         self.field_line = '--'
-        self.line_width = 2
+        self.line_width = 3
         self.marker_size = 10
         self.legend_loc = 'upper right'
         self.with_input = with_input
