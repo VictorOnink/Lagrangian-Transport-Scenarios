@@ -87,7 +87,8 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
         for lambda_frag in self.lambda_frag_list:
             line = self.line_style[lambda_frag]
             for index_reservoir, reservoir in enumerate(self.reservoir_list):
-                ax[2 * index_reservoir].plot(size_classes, base_number[lambda_frag][reservoir], linestyle=line, c='k')
+                ax[2 * index_reservoir].plot(size_classes, base_number[lambda_frag][reservoir], linestyle=line, c='k',
+                                             linewidth=self.line_width)
                 twin_ax[2 * index_reservoir + 1].plot(size_classes, base_mass[lambda_frag][reservoir],
                                                       linestyle=line, c='k', linewidth=self.line_width)
                 # for index_fO, lambda_fO in enumerate(self.lambda_fO_list):
