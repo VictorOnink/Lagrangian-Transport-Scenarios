@@ -44,6 +44,7 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
         self.number_of_plots = self.fig_shape[0] * self.fig_shape[1]
         self.cmap = 'viridis'
         self.line_style = {388: '-', 35000: '--'}
+        self.line_width = 3
 
     def plot(self):
         # Getting the sizes of the size classes, and we convert from meters to mm
@@ -88,24 +89,26 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
             for index_reservoir, reservoir in enumerate(self.reservoir_list):
                 ax[2 * index_reservoir].plot(size_classes, base_number[lambda_frag][reservoir], linestyle=line, c='k')
                 twin_ax[2 * index_reservoir + 1].plot(size_classes, base_mass[lambda_frag][reservoir],
-                                                      linestyle=line, c='k')
+                                                      linestyle=line, c='k', linewidth=self.line_width)
                 for index_fO, lambda_fO in enumerate(self.lambda_fO_list):
                     c = vUtils.discrete_color_from_cmap(index=index_fO, subdivisions=self.lambda_fO_list.size,
                                                         cmap=self.cmap)
                     ax[2 * index_reservoir].plot(size_classes, lambda_fO_number[lambda_frag][lambda_fO][reservoir],
-                                                 linestyle=line, c=c)
+                                                 linestyle=line, c=c, linewidth=self.line_width)
                     twin_ax[2 * index_reservoir + 1].plot(size_classes, lambda_fO_mass[lambda_frag][lambda_fO][reservoir],
-                                                          linestyle=line, c=c)
+                                                          linestyle=line, c=c, linewidth=self.line_width)
 
         # Adding a legend
-        line_base_1 = [plt.plot([], [], c='k', label=r"$\lambda_{f, B}$ = 388 days", linestyle='-')[0]]
-        line_base_2 = [plt.plot([], [], c='k', label=r"$\lambda_{f, B}$ = 35000 days", linestyle='--')[0]]
+        line_base_1 = [plt.plot([], [], c='k', label=r"$\lambda_{f, B}$ = 388 days", linestyle='-',
+                                linewidth=self.line_width)[0]]
+        line_base_2 = [plt.plot([], [], c='k', label=r"$\lambda_{f, B}$ = 35000 days", linestyle='--',
+                                linewidth=self.line_width)[0]]
         line_colors = [plt.plot([], [], c=vUtils.discrete_color_from_cmap(index_fO, subdivisions=self.lambda_fO_list.size, cmap=self.cmap),
-                                label=label(fO), linestyle='-')[0] for index_fO, fO in enumerate(self.lambda_fO_list)]
+                                label=label(fO), linestyle='-', linewidth=self.line_width)[0] for index_fO, fO in enumerate(self.lambda_fO_list)]
         ax[-1].legend(handles=line_base_1 + line_base_2 + line_colors, fontsize=self.legend_size, loc='upper right')
 
         # Saving the figure
-        str_format = self.shore_time, lambda_frag, self.size_class_number
+        str_format = self.shore_time, self.size_class_number
         file_name = self.output_direc + 'boxmodel_ocean_frag-ST={}_size_classes={}.png'.format(*str_format)
         plt.savefig(file_name, bbox_inches='tight', dpi=300)
 
