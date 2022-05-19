@@ -90,13 +90,13 @@ class FragmentationKaandorpPartial_boxmodel_ocean:
                 ax[2 * index_reservoir].plot(size_classes, base_number[lambda_frag][reservoir], linestyle=line, c='k')
                 twin_ax[2 * index_reservoir + 1].plot(size_classes, base_mass[lambda_frag][reservoir],
                                                       linestyle=line, c='k', linewidth=self.line_width)
-                for index_fO, lambda_fO in enumerate(self.lambda_fO_list):
-                    c = vUtils.discrete_color_from_cmap(index=index_fO, subdivisions=self.lambda_fO_list.size,
-                                                        cmap=self.cmap)
-                    ax[2 * index_reservoir].plot(size_classes, lambda_fO_number[lambda_frag][lambda_fO][reservoir],
-                                                 linestyle=line, c=c, linewidth=self.line_width)
-                    twin_ax[2 * index_reservoir + 1].plot(size_classes, lambda_fO_mass[lambda_frag][lambda_fO][reservoir],
-                                                          linestyle=line, c=c, linewidth=self.line_width)
+                # for index_fO, lambda_fO in enumerate(self.lambda_fO_list):
+                #     c = vUtils.discrete_color_from_cmap(index=index_fO, subdivisions=self.lambda_fO_list.size,
+                #                                         cmap=self.cmap)
+                #     ax[2 * index_reservoir].plot(size_classes, lambda_fO_number[lambda_frag][lambda_fO][reservoir],
+                #                                  linestyle=line, c=c, linewidth=self.line_width)
+                #     twin_ax[2 * index_reservoir + 1].plot(size_classes, lambda_fO_mass[lambda_frag][lambda_fO][reservoir],
+                #                                           linestyle=line, c=c, linewidth=self.line_width)
 
         # Adding a legend
         line_base_1 = [plt.plot([], [], c='k', label=r"$\lambda_{f, B}$ = 388 days", linestyle='-',
