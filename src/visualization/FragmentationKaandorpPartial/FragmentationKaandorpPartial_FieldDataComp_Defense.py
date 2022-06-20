@@ -138,7 +138,6 @@ class FragmentationKaandorpPartial_FieldDataComp_Defense:
         ax[1].legend(fontsize=self.legend_size, loc=self.legend_loc)
 
     def subfigure_title(self, index):
-        alphabet = string.ascii_lowercase
         title_dict = {'adrift_open_surf': 'Adrift - Open water', 'adrift_10km_surf': 'Adrift - Coastal', 'beach': 'Beach'}
         return '{}'.format(title_dict[self.beach_state_list[index]])
 
