@@ -29,6 +29,7 @@ class SizeTransport_reservoirs_Defense:
         self.ax_ticklabel_size = 16
         self.legend_size = 16
         self.markersize = 140
+        self.markersize_legend = 10
         self.xmax, self.xmin = 1e1, 1e-3
         self.ymax, self.ymin = 100, 0
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
@@ -149,9 +150,9 @@ class SizeTransport_reservoirs_Defense:
         # Creating a legend
         # rho_lines = [plt.plot([], [], self.rho_marker_dict[rho], c='k', label=r'$\rho=$' + str(rho) + r' kg m$^{-3}$',
         #                       )[0] for rho in self.rho_list]
-        beach = [plt.plot([], [], 'o', c='b', label='Beach', markersize=self.markersize)[0]]
-        coastal = [plt.plot([], [], 'o', c='g', label='Coastal', markersize=self.markersize)[0]]
-        open = [plt.plot([], [], 'o', c='r', label='Open water', markersize=self.markersize)[0]]
+        beach = [plt.plot([], [], 'o', c='b', label='Beach', markersize=self.markersize_legend)[0]]
+        coastal = [plt.plot([], [], 'o', c='g', label='Coastal', markersize=self.markersize_legend)[0]]
+        open = [plt.plot([], [], 'o', c='r', label='Open water', markersize=self.markersize_legend)[0]]
         ax[-1].legend(handles=beach + coastal + open, fontsize=self.legend_size, loc='upper right')
         ax[-1].axis('off')
 
