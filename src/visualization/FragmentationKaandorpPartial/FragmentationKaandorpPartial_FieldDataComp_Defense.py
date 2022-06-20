@@ -38,7 +38,7 @@ class FragmentationKaandorpPartial_FieldDataComp_Defense:
         self.y_label = r'Normalized Particle Number (n mm$^{-1}$)'
         self.twiny_label = r'Normalized Particle Mass (g mm$^{-1}$)'
         self.ax_ticklabel_size = 12
-        self.ax_label_size = 14
+        self.ax_label_size = 16
         self.legend_size = 12
         self.xmin, self.xmax = 1e-1, 2e2
         self.ymin, self.ymax = 1e-1, 1e3
@@ -80,12 +80,12 @@ class FragmentationKaandorpPartial_FieldDataComp_Defense:
                                 y_label=self.y_label, ax_ticklabel_size=self.ax_ticklabel_size,
                                 ax_label_size=self.ax_label_size, shape=self.fig_shape,
                                 plot_num=self.number_of_plots, log_yscale=True, log_xscale=True,
-                                all_x_labels=True, all_y_labels=False)
+                                all_x_labels=True, all_y_labels=True)
 
         # Labelling the subfigures
         for index_ax in range(self.number_of_plots):
             ax[index_ax].set_title(self.subfigure_title(index_ax),
-                                   fontsize=self.ax_label_size)
+                                   fontsize=self.ax_label_size, weight='bold')
 
         # Plotting the model distributions
         for ax_index, sub_ax in enumerate(ax):
@@ -135,10 +135,10 @@ class FragmentationKaandorpPartial_FieldDataComp_Defense:
         number_norm = number_inter / utils.size_range(units='mm', size_class_number=settings.SIZE_CLASS_NUMBER)
         number_norm = number_norm / number_norm[0]
         # Plotting the normalized count and mass inputs
-        ax[2].plot(utils.size_range(units='mm', size_class_number=settings.SIZE_CLASS_NUMBER),
+        ax[1].plot(utils.size_range(units='mm', size_class_number=settings.SIZE_CLASS_NUMBER),
                    number_norm, marker=self.field_marker, linestyle=self.field_line, color='tab:cyan',
                    label=r'Zeri et al. (2021) Input', linewidth=self.line_width, markersize=self.marker_size + 2)
-        ax[2].legend(fontsize=self.legend_size, loc=self.legend_loc)
+        ax[1].legend(fontsize=self.legend_size, loc=self.legend_loc)
 
     def subfigure_title(self, index):
         alphabet = string.ascii_lowercase
