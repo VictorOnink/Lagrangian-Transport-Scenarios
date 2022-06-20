@@ -155,9 +155,9 @@ def run(scenario, figure_direc: str):
     #                                    season=season).plot()
 
     # Figure showing the beached/adrift fractions of each size class for the PhD Defense
-    SizeTransport_reservoirs_Defense(scenario=scenario, figure_direc=figure_direc).plot()
+    SizeTransport_reservoirs_Defense(scenario=scenario, figure_direc=figure_direc, single_plot=True).plot()
     SizeTransport_reservoirs_Defense(scenario=scenario, figure_direc=figure_direc, resus_time=7,
-                                     fixed_resus=True).plot()
+                                     fixed_resus=True, single_plot=True).plot()
 
     # Calculate basic statistics
     # for size in np.array([5000, 2]) * settings.SIZE_FACTOR:
