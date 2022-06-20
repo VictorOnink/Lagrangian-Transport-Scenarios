@@ -118,8 +118,7 @@ class FragmentationKaandorpPartial_FieldDataComp_Defense:
             self.add_input_distribution(ax)
 
         # Saving the figure
-        str_format = self.shore_time, self.rho, self.sink
-        file_name = self.output_direc + 'SizeSpectrumFieldData-ST={}-rho={}-sink={}_DEFENSE.png'.format(*str_format)
+        file_name = self.output_direc + 'SizeSpectrum_DEFENSE_Model={}.png'.format(self.with_model)
         plt.savefig(file_name, bbox_inches='tight', dpi=400)
         plt.close()
 
