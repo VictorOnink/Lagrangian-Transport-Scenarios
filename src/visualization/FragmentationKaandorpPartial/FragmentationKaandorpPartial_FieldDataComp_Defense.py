@@ -139,7 +139,7 @@ class FragmentationKaandorpPartial_FieldDataComp_Defense:
 
     def subfigure_title(self, index):
         title_dict = {'adrift_open_surf': 'Adrift - Open water', 'adrift_10km_surf': 'Adrift - Coastal', 'beach': 'Beach'}
-        return '{}'.format(title_dict[self.beach_state_list[index]])
+        return title_dict[self.beach_state_list[index]]
 
     @staticmethod
     def label(lambda_frag):
