@@ -101,7 +101,7 @@ class FragmentationKaandorpPartial_FieldDataComp_Defense:
                                     linewidth=self.line_width)
                 # Add shading to indicate the region where sampling by trawl net is more difficult
                 if ax_index < 2:
-                    sub_ax.fill_betweenx(np.arange(1e-4, 1e4), self.xmin, 0.33, color='grey', alpha=0.1)
+                    sub_ax.fill_betweenx(np.arange(1e-4, 1e4), self.xmin, 0.33, color='grey', alpha=0.2)
 
         if self.with_model:
             for lambda_index, lambda_frag in enumerate(self.lambda_frag_list):
