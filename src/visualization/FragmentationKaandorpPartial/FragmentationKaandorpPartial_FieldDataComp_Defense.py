@@ -11,7 +11,7 @@ import pandas as pd
 
 class FragmentationKaandorpPartial_FieldDataComp_Defense:
     def __init__(self, figure_direc, scenario, shore_time, lambda_frag_list, rho, sink=True, with_input=True,
-                 input_list=['LebretonDivision']):
+                 input_list=['LebretonDivision'], with_model=True):
         # Data parameters
         self.output_direc = figure_direc + 'size_distribution/'
         self.data_direc = settings.DATA_OUTPUT_DIREC + 'size_distribution/FragmentationKaandorpPartial/'
@@ -31,6 +31,7 @@ class FragmentationKaandorpPartial_FieldDataComp_Defense:
             self.count, self.mass = 'particle_number', 'particle_mass'
         self.input_list = input_list
         self.input_line_style = {'LebretonDivision': 'dotted', 'LebretonKaandorpInit': '-'}
+        self.with_model = with_model
         # Figure parameters
         self.fig_size = (14, 14)
         self.fig_shape = (2, 2)
@@ -39,9 +40,9 @@ class FragmentationKaandorpPartial_FieldDataComp_Defense:
         self.twiny_label = r'Normalized Particle Mass (g mm$^{-1}$)'
         self.ax_ticklabel_size = 12
         self.ax_label_size = 16
-        self.legend_size = 12
-        self.xmin, self.xmax = 1e-1, 2e2
-        self.ymin, self.ymax = 1e-1, 1e3
+        self.legend_size = 14
+        self.xmin, self.xmax = 1e-1, 1e1
+        self.ymin, self.ymax = 1e-1, 3e3
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
         self.twin_ymin, self.twin_ymax = 1e-3, 1e1
         self.twin_ax_range = self.xmax, self.xmin, self.twin_ymax, self.twin_ymin
@@ -88,18 +89,19 @@ class FragmentationKaandorpPartial_FieldDataComp_Defense:
                                    fontsize=self.ax_label_size, weight='bold')
 
         # Plotting the model distributions
-        for ax_index, sub_ax in enumerate(ax):
-            for input_scenario in self.input_list:
-                for lambda_index, lambda_frag in enumerate(self.lambda_frag_list):
-                    c = vUtils.discrete_color_from_cmap(index=lambda_index, subdivisions=self.lambda_frag_list.__len__())
-                    linestyle = self.input_line_style[input_scenario]
-                    bin_norm_data = data_dict[input_scenario][lambda_frag][self.beach_state_list[ax_index // 2]][self.count][time_index] / size_classes
-                    norm_factor = bin_norm_data[0]
-                    sub_ax.plot(size_classes, bin_norm_data / norm_factor, linestyle=linestyle, color=c,
-                                linewidth=self.line_width)
-            # Add shading to indicate the region where sampling by trawl net is more difficult
-            if ax_index < 4:
-                sub_ax.fill_betweenx(np.arange(1e-4, 1e4), self.xmin, 0.33, color='grey', alpha=0.2)
+        if self.with_model:
+            for ax_index, sub_ax in enumerate(ax):
+                for input_scenario in self.input_list:
+                    for lambda_index, lambda_frag in enumerate(self.lambda_frag_list):
+                        c = vUtils.discrete_color_from_cmap(index=lambda_index, subdivisions=self.lambda_frag_list.__len__())
+                        linestyle = self.input_line_style[input_scenario]
+                        bin_norm_data = data_dict[input_scenario][lambda_frag][self.beach_state_list[ax_index // 2]][self.count][time_index] / size_classes
+                        norm_factor = bin_norm_data[0]
+                        sub_ax.plot(size_classes, bin_norm_data / norm_factor, linestyle=linestyle, color=c,
+                                    linewidth=self.line_width)
+                # Add shading to indicate the region where sampling by trawl net is more difficult
+                if ax_index < 2:
+                    sub_ax.fill_betweenx(np.arange(1e-4, 1e4), self.xmin, 0.33, color='grey', alpha=0.2)
 
         # for lambda_index, lambda_frag in enumerate(self.lambda_frag_list):
         #     c = vUtils.discrete_color_from_cmap(index=lambda_index, subdivisions=self.lambda_frag_list.__len__())

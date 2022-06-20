@@ -80,6 +80,12 @@ def run(scenario, figure_direc: str):
                                                                              shore_time=shore_time,
                                                                              lambda_frag_list=lambda_frag_list, rho=rho,
                                                                              input_list=['LebretonKaandorpInit']).plot()
+    FieldDataComp_Defense.FragmentationKaandorpPartial_FieldDataComp_Defense(figure_direc=figure_direc,
+                                                                             scenario=scenario,
+                                                                             shore_time=shore_time,
+                                                                             lambda_frag_list=lambda_frag_list, rho=rho,
+                                                                             input_list=['LebretonKaandorpInit']).plot()
+
 
     utils.print_statement("That is all folks!", to_print=True)
 
