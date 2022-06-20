@@ -11,7 +11,7 @@ DEBUG=1
 # Which scenario would you like to run? The current options are listed below:
 # 'AdvectionDiffusionOnly', 'CoastalProximity', 'Stochastic', 'ShoreDependentResuspension', 'TurrellResuspension',
 # 'SizeTransport', 'FragmentationKaandorp', 'FragmentationKaandorpPartial', 'BlueCloud'
-SCENARIO='FragmentationKaandorpPartial'
+SCENARIO='SizeTransport'
 
 #What server everything is running on
 SERVER='UBELIX'

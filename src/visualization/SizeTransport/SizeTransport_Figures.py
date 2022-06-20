@@ -9,6 +9,7 @@ from visualization.SizeTransport.SizeTransport_SeparationDistance import SizeTra
 from visualization.SizeTransport.SizeTransport_VerticalProfile import SizeTransport_VerticalProfile
 from visualization.SizeTransport.SizeTransport_lonlat_averages import SizeTransport_lonlat_averages
 from visualization.SizeTransport.SizeTransport_reservoirs import SizeTransport_reservoirs
+from visualization.SizeTransport.SizeTransport_reservoirs_Defense import SizeTransport_reservoirs_Defense
 from visualization.SizeTransport.SizeTransport_rho_concentrations import SizeTransport_rho_concentrations
 from visualization.SizeTransport.SizeTransport_full_concentrations import SizeTransport_full_concentrations
 from visualization.SizeTransport.SizeTransport_MaxDistance import SizeTransport_MaxDistance
@@ -152,6 +153,11 @@ def run(scenario, figure_direc: str):
     #     for year in [0, 1, 2]:
     #         SizeTransport_vertical_OSM(scenario=scenario, figure_direc=figure_direc, time_selection=year,
     #                                    season=season).plot()
+
+    # Figure showing the beached/adrift fractions of each size class for the PhD Defense
+    SizeTransport_reservoirs_Defense(scenario=scenario, figure_direc=figure_direc).plot()
+    SizeTransport_reservoirs_Defense(scenario=scenario, figure_direc=figure_direc, resus_time=7,
+                                     fixed_resus=True).plot()
 
     # Calculate basic statistics
     # for size in np.array([5000, 2]) * settings.SIZE_FACTOR:
