@@ -112,20 +112,6 @@
       <option name="presentableId" value="Default" />
       <updated>1601543870775</updated>
     </task>
-    <task id="LOCAL-03755" summary="Restructuring">
-      <created>1651579461262</created>
-      <option name="number" value="03755" />
-      <option name="presentableId" value="LOCAL-03755" />
-      <option name="project" value="LOCAL" />
-      <updated>1651579461262</updated>
-    </task>
-    <task id="LOCAL-03756" summary="Figure update">
-      <created>1652085532811</created>
-      <option name="number" value="03756" />
-      <option name="presentableId" value="LOCAL-03756" />
-      <option name="project" value="LOCAL" />
-      <updated>1652085532811</updated>
-    </task>
     <task id="LOCAL-03757" summary="Figure update">
       <created>1652086039371</created>
       <option name="number" value="03757" />
@@ -455,7 +441,21 @@
       <option name="project" value="LOCAL" />
       <updated>1655733757792</updated>
     </task>
-    <option name="localTasksCounter" value="3804" />
+    <task id="LOCAL-03804" summary="Figure update">
+      <created>1655733835178</created>
+      <option name="number" value="03804" />
+      <option name="presentableId" value="LOCAL-03804" />
+      <option name="project" value="LOCAL" />
+      <updated>1655733835178</updated>
+    </task>
+    <task id="LOCAL-03805" summary="Figure update">
+      <created>1655734045306</created>
+      <option name="number" value="03805" />
+      <option name="presentableId" value="LOCAL-03805" />
+      <option name="project" value="LOCAL" />
+      <updated>1655734045306</updated>
+    </task>
+    <option name="localTasksCounter" value="3806" />
     <servers />
   </component>
   <component name="UnknownFeatures">
