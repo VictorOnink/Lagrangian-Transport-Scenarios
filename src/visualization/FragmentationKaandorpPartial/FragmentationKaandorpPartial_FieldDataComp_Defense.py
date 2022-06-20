@@ -42,7 +42,7 @@ class FragmentationKaandorpPartial_FieldDataComp_Defense:
         self.ax_label_size = 16
         self.legend_size = 14
         self.xmin, self.xmax = 1e-1, 1e1
-        self.ymin, self.ymax = 1e-1, 4e3
+        self.ymin, self.ymax = 1e-1, 5e3
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
         self.twin_ymin, self.twin_ymax = 1e-3, 1e1
         self.twin_ax_range = self.xmax, self.xmin, self.twin_ymax, self.twin_ymin
@@ -103,15 +103,11 @@ class FragmentationKaandorpPartial_FieldDataComp_Defense:
                 if ax_index < 2:
                     sub_ax.fill_betweenx(np.arange(1e-4, 1e4), self.xmin, 0.33, color='grey', alpha=0.2)
 
-        # for lambda_index, lambda_frag in enumerate(self.lambda_frag_list):
-        #     c = vUtils.discrete_color_from_cmap(index=lambda_index, subdivisions=self.lambda_frag_list.__len__())
-        #     twin_ax[1].plot([], [], color=c, label=self.label(lambda_frag), linestyle='-', linewidth=self.line_width)
-        # twin_ax[1].legend(fontsize=self.legend_size, loc=self.legend_loc)
-
-        for lambda_index, lambda_frag in enumerate(self.lambda_frag_list):
-            c = vUtils.discrete_color_from_cmap(index=lambda_index, subdivisions=self.lambda_frag_list.__len__())
-            ax[0].plot([], [], color=c, label=self.label(lambda_frag), linestyle='-', linewidth=self.line_width)
-        ax[0].legend(fontsize=self.legend_size, loc=self.legend_loc)
+        if self.with_model:
+            for lambda_index, lambda_frag in enumerate(self.lambda_frag_list):
+                c = vUtils.discrete_color_from_cmap(index=lambda_index, subdivisions=self.lambda_frag_list.__len__())
+                ax[0].plot([], [], color=c, label=self.label(lambda_frag), linestyle='-', linewidth=self.line_width)
+            ax[0].legend(fontsize=self.legend_size, loc=self.legend_loc)
 
         # Adding input data if self.with_input == True
         if self.with_input:
