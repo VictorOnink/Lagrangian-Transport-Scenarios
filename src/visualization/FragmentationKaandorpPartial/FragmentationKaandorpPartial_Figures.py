@@ -84,7 +84,8 @@ def run(scenario, figure_direc: str):
                                                                              scenario=scenario,
                                                                              shore_time=shore_time,
                                                                              lambda_frag_list=lambda_frag_list, rho=rho,
-                                                                             input_list=['LebretonKaandorpInit']).plot()
+                                                                             input_list=['LebretonKaandorpInit'],
+                                                                             with_model=False).plot()
 
 
     utils.print_statement("That is all folks!", to_print=True)
