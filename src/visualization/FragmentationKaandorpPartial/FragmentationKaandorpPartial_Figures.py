@@ -3,6 +3,7 @@ import numpy as np
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_Animation as Animation
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_timeseries as timeseries
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_FieldDataComp as FieldDataComp
+import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_FieldDataComp_Defense as FieldDataComp_Defense
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_Concentration as concentration
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_vertical_profile as vertical_profile
 import visualization.FragmentationKaandorpPartial.FragmentationKaandorpPartial_boxmodelcomparison as box_model
@@ -72,6 +73,13 @@ def run(scenario, figure_direc: str):
     #     base_statistics = Analysis.FragmentationKaandorpPartial_Statistics(scenario, lambda_frag)
     #     base_statistics.fraction_below_depth(reference_depth=10)
     #     base_statistics.mass_number_fraction_per_size_class()
+
+    # Showing the size distribution figure for in the PhD Defense
+    FieldDataComp_Defense.FragmentationKaandorpPartial_FieldDataComp_Defense(figure_direc=figure_direc,
+                                                                             scenario=scenario,
+                                                                             shore_time=shore_time,
+                                                                             lambda_frag_list=lambda_frag_list, rho=rho,
+                                                                             input_list=['LebretonKaandorpInit']).plot()
 
     utils.print_statement("That is all folks!", to_print=True)
 
