@@ -8,7 +8,7 @@ import numpy as np
 
 
 class SizeTransport_reservoirs_Defense:
-    def __init__(self, scenario, figure_direc, rho_list=[30, 920, 980, 1020], single_plot=False,
+    def __init__(self, scenario, figure_direc, rho_list=[920], single_plot=False,
                  fixed_resus=False, resus_time=7):
         utils.print_statement('Creating the SizeTransport reservoirs figure', to_print=True)
         # Simulation parameters
@@ -25,9 +25,9 @@ class SizeTransport_reservoirs_Defense:
         self.prefix = 'timeseries'
         # Figure parameters
         self.figure_size = (14, 8)
-        self.ax_label_size = 16
-        self.ax_ticklabel_size = 14
-        self.legend_size = 14
+        self.ax_label_size = 18
+        self.ax_ticklabel_size = 16
+        self.legend_size = 16
         self.markersize = 140
         self.xmax, self.xmin = 1e1, 1e-3
         self.ymax, self.ymin = 100, 0
@@ -149,9 +149,9 @@ class SizeTransport_reservoirs_Defense:
         # Creating a legend
         # rho_lines = [plt.plot([], [], self.rho_marker_dict[rho], c='k', label=r'$\rho=$' + str(rho) + r' kg m$^{-3}$',
         #                       )[0] for rho in self.rho_list]
-        beach = [plt.plot([], [], 'o', c='b', label='Beach')[0]]
-        coastal = [plt.plot([], [], 'o', c='g', label='Coastal')[0]]
-        open = [plt.plot([], [], 'o', c='r', label='Open water')[0]]
+        beach = [plt.plot([], [], 'o', c='b', label='Beach', markersize=self.markersize)[0]]
+        coastal = [plt.plot([], [], 'o', c='g', label='Coastal', markersize=self.markersize)[0]]
+        open = [plt.plot([], [], 'o', c='r', label='Open water', markersize=self.markersize)[0]]
         ax[-1].legend(handles=beach + coastal + open, fontsize=self.legend_size, loc='upper right')
         ax[-1].axis('off')
 
