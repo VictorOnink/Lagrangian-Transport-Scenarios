@@ -28,8 +28,8 @@ class SizeTransport_reservoirs:
         self.ax_label_size = 16
         self.ax_ticklabel_size = 14
         self.legend_size = 14
-        self.legend_marker_size = 12
-        self.markersize = 140
+        self.legend_marker_size = 13
+        self.markersize = 160
         self.xmax, self.xmin = 1e1, 1e-3
         self.ymax, self.ymin = 100, 0
         self.ax_range = self.xmax, self.xmin, self.ymax, self.ymin
