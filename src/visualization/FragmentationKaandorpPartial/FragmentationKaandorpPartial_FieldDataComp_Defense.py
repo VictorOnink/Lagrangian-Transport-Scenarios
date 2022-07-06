@@ -74,7 +74,6 @@ class FragmentationKaandorpPartial_FieldDataComp_Defense:
                     data_dict[input_scenario][lambda_frag][beach_state][self.count] = data[beach_state][self.count]
                     data_dict[input_scenario][lambda_frag][beach_state][self.mass] = data[beach_state][self.mass]
         time_index = data['final_index'] // 2
-        field_dict = utils.load_obj(vUtils.FragmentationKaandorpPartial_fielddata_filename())
 
         # Creating the figure
         ax = vUtils.base_figure(fig_size=self.fig_size, ax_range=self.ax_range, x_label=self.x_label,

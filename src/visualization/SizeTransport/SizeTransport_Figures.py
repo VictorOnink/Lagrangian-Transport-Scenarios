@@ -122,8 +122,8 @@ def run(scenario, figure_direc: str):
     #                                simulation_years=3, rho_list=[30, 920, 980, 1020]).plot()
 
     # Figure showing the beached/adrift fractions of each size class
-    # SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, resus_time=7).plot()
-    # SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, resus_time=50).plot()
+    SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, resus_time=7).plot()
+    SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, resus_time=50).plot()
     # for rho in [30, 920, 980, 1020]:
     #     SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc,
     #                              rho_list=[rho], resus_time=7).plot()
@@ -155,9 +155,9 @@ def run(scenario, figure_direc: str):
     #                                    season=season).plot()
 
     # Figure showing the beached/adrift fractions of each size class for the PhD Defense
-    SizeTransport_reservoirs_Defense(scenario=scenario, figure_direc=figure_direc, single_plot=True).plot()
-    SizeTransport_reservoirs_Defense(scenario=scenario, figure_direc=figure_direc, resus_time=7,
-                                     fixed_resus=True, single_plot=True).plot()
+    # SizeTransport_reservoirs_Defense(scenario=scenario, figure_direc=figure_direc, single_plot=True).plot()
+    # SizeTransport_reservoirs_Defense(scenario=scenario, figure_direc=figure_direc, resus_time=7,
+    #                                  fixed_resus=True, single_plot=True).plot()
 
     # Calculate basic statistics
     # for size in np.array([5000, 2]) * settings.SIZE_FACTOR:

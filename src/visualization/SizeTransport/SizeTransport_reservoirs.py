@@ -148,6 +148,7 @@ class SizeTransport_reservoirs:
 
         # Creating a legend
         rho_lines = [plt.plot([], [], self.rho_marker_dict[rho], c='k', label=r'$\rho=$' + str(rho) + r' kg m$^{-3}$',
+                              fc='none', ms=10
                               )[0] for rho in self.rho_list]
         beach = [plt.plot([], [], 'o', c='b', label='Beach')[0]]
         coastal = [plt.plot([], [], 'o', c='g', label='Coastal')[0]]
