@@ -122,8 +122,8 @@ def run(scenario, figure_direc: str):
     #                                simulation_years=3, rho_list=[30, 920, 980, 1020]).plot()
 
     # Figure showing the beached/adrift fractions of each size class
-    SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, resus_time=7).plot()
-    SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, resus_time=50).plot()
+    # SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, resus_time=7).plot()
+    # SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc, resus_time=50).plot()
     # for rho in [30, 920, 980, 1020]:
     #     SizeTransport_reservoirs(scenario=scenario, figure_direc=figure_direc,
     #                              rho_list=[rho], resus_time=7).plot()
@@ -147,8 +147,8 @@ def run(scenario, figure_direc: str):
     #                                         rho_list=[30, 920, 980, 1020]).plot()
 
     # Figures for OSM 2022
-    # for depth in ['column', 'surface_1m']:
-    #     SizeTransport_concentration_OSM(scenario=scenario, figure_direc=figure_direc, depth=depth).plot()
+    for depth in ['column', 'surface_1m']:
+        SizeTransport_concentration_OSM(scenario=scenario, figure_direc=figure_direc, depth=depth).plot()
     # for season in ['Winter', 'Summer']:
     #     for year in [0, 1, 2]:
     #         SizeTransport_vertical_OSM(scenario=scenario, figure_direc=figure_direc, time_selection=year,

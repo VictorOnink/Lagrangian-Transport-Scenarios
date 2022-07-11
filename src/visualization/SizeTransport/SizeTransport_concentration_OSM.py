@@ -123,9 +123,9 @@ class SizeTransport_concentration_OSM:
 
     def subfigure_title(self, index):
         if index == 0:
-            return 'Large microplastics (d = {:.3f} mm)'.format(self.size_list[index] * 1e3)
+            return 'Large microplastics ({:.3f} mm)'.format(self.size_list[index] * 1e3)
         else:
-            return 'Small microplastics (d = {:.3f} mm)'.format(self.size_list[index] * 1e3)
+            return 'Small microplastics ({:.3f} mm)'.format(self.size_list[index] * 1e3)
 
 
 
